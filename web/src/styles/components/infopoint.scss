@@ -1,0 +1,8 @@
+.infopoint {
+  &-edit-description {
+    width: 100%;
+    max-width: 400px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  min-height: 10vh;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  min-height: 10vh;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+}
+
+/* COLORS */
+
+$c-white: #fff;
+$c-black: #111;
+$c-grey: lighten($c-black, 30);
+$c-grey-dark: #646464;
+$c-grey-lighter: #c4c4c4;
+$c-grey-light: #d3d3d3;
+$c-blue-dark: #083d77;
+$c-blue-primary: #3366cc;
+$c-blue-light: #bbddfe;
+$c-blue-sky: #e0efff;
+$c-error: #ea5d5d;
+$c-positive: #e4f1e4;
+$c-maroon: #85144b;
+$c-red: #ff4136;
+$c-warning: #ffa136;
+
+/* BREAKPOINTS */
+
+$breakpoint-desktop-big: 1560px;
+$breakpoint-desktop-bigger: 1100px;
+$breakpoint-desktop: 800px;
+$breakpoint-tablet: 600px;
+$breakpoint-phablet: 500px;
+$breakpoint-mobile: 400px;
+$breakpoint-mini: 300px;
+$breakpoint-200: 200px;
+
+/* Tailwind breakpoints */
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+/* MD */
+
+@import "../../node_modules/react-md/src/scss/react-md";
+$md-primary-color: $c-blue-dark;
+$md-secondary-color: $c-blue-primary;
+$md-colors-warn-md: false;
+@include react-md-everything;
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+@import "components/main.scss";
+@import "components/dialogs.scss";
+@import "components/toolbar.scss";
+@import "components/exposition.scss";
+@import "components/structure.scss";
+@import "components/files.scss";
+@import "components/settings.scss";
+@import "components/screen.scss";
+@import "components/scrollbar.scss";
+@import "components/viewer.scss";
+@import "components/image-editor.scss";
+@import "components/infopoint.scss";
+@import "components/loader.scss";
+
+*:not(i) {
+  font-family: "Work Sans";
+}
+
+.__react_component_tooltip {
+  z-index: 100000 !important;
+  max-width: 60vw;
+}
+
+.test-env {
+  z-index: 10000000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: $c-red;
+  color: $c-white;
+  font-size: 11px;
+  padding: 1px 4px 2px;
+  border-top-right-radius: 4px;
+}

@@ -1,0 +1,103 @@
+$height-actions: 3.8em;
+$height-card-text: 15em;
+$height-card-new: $height-actions + $height-card-text;
+.expo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  &-card {
+    width: 310px;
+    margin: 10px;
+  }
+  &-new {
+    height: $height-card-new;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    i {
+      font-size: 3em;
+    }
+    p {
+      font-weight: bold;
+    }
+  }
+  &-card-text {
+    height: $height-card-text;
+    overflow-y: auto;
+  }
+  &-actions {
+    position: relative;
+    white-space: nowrap;
+    height: $height-actions;
+
+    @media (max-width: $breakpoint-mini) {
+      & .action-button {
+        display: none;
+      }
+    }
+  }
+  &-more {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    @media (min-width: ($breakpoint-mini + 1)) {
+      & .action {
+        display: none;
+      }
+    }
+  }
+}
+
+.exposition-menu {
+  &-button {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0.8em;
+  }
+
+  &-divider {
+    width: 100%;
+    height: 1px;
+    background-color: $c-grey-light;
+  }
+}
+
+@media (max-width: 655px) {
+  .expo-card {
+    width: 100%;
+  }
+}
+
+.expositions-container {
+  margin-top: 5em;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  height: calc(100% + 1em);
+  min-height: calc(100% + 1em);
+  max-height: calc(100% + 1em);
+  overflow-y: auto;
+
+  &-outter {
+    width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    margin-top: -5em;
+    padding-top: 5em;
+    padding-bottom: 60px;
+  }
+
+  &-inner {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+}

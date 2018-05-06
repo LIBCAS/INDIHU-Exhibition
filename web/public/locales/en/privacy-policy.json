@@ -1,0 +1,27 @@
+{
+  "title": "INDIHU Exhibition - Principles of working with personal data",
+  "paragraph1": "We are the Library of the Academy of Sciences of the Czech Republic, v. v. i., with headquarters at Národní 1009/3, Prague 1, 110 00. Contact: <mailLink>sekretariat@knav.cz</mailLink>, +420 221 403 260.",
+  "paragraph2": "We operate the website <externalLink>https://exhibition.indihu.cz</externalLink> where you can register for the INDIHU Exhibition application, which allows you to create and make your virtual exhibitions available to the public.",
+  "paragraph3": "To provide our service, we process some of your personal data.",
+  "whatPersonalDataSection": {
+    "title": "What personal data do we work with?",
+    "paragraph1": "If you want to register and use the INDIHU Exhibition tool, we will process your registration data. These are first name, last name, the name of the institution under which you appear, and an e-mail address.",
+    "paragraph2": "Why?",
+    "paragraph3": "we will send you a confirmation by e-mail that you have requested our tool, we will verify that you meet the conditions for registration, if you meet the conditions, we will set up your access account using these data, we will communicate with you via e-mail."
+  },
+  "whoAccessPersonalDataSection": {
+    "title": "Who gets access to the data?",
+    "paragraph1": "Your data will remain with us, only our employees will have access to it."
+  },
+  "howLongWorkWithPersonalDataSection": {
+    "title": "How long do we work with the data and on what basis?",
+    "paragraph1": "If we create an account for you, we will process your data for the duration of your active use of the account. You can cancel your account, or we will cancel your account if you do not use it for more than 3 years. Such processing is necessary for the provision of the service and is enabled by the GDPR regulation - because we fulfill our obligations and further obligations according to legal regulations.",
+    "paragraph2": "If you have contacted us, but in the end you will not use the services, we will process your data for a maximum of 6 months from our last communication. The GDPR allows us to work with data in this way - because we are dealing with a contract."
+  },
+  "youShouldAlsoKnowSection": {
+    "title": "You should also know:",
+    "paragraph1": "If you would like to discuss anything regarding personal data, please email us at <mailLink>info@indihu.cz</mailLink> or call us at +420 221 403 260. We will be happy to help you.",
+    "paragraph2": "We have a person in charge of personal data processing: Mgr. Radek Lomnický, phone number +420 221 403 466, +420 605 416 493, <mailLink>poverenec@ssc.cascz</mailLink>.",
+    "paragraph3": "The GDPR Regulation (Regulation (EU) No. 2016/679 of the European Parliament and of the Council on the protection of natural persons with regard to the processing of personal data and on the free movement of such data and on the repeal of Directive 95/46/EC), which governs the area of personal data, gives you other right to contact us and ask for information about what personal data we process, request access to this data from us and have it updated or corrected, or request restriction of processing, you can request a copy of the processed personal data, request deletion from us in certain situations personal data and in certain cases you have the right to their portability. If you think that we are not handling the data correctly, you have the right to file a complaint with the Office for Personal Data Protection, or take your claims to court."
+  }
+}

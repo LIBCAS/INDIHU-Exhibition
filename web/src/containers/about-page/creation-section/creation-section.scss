@@ -1,0 +1,66 @@
+@import "../../new-landing-page/variables.scss";
+
+/* -- Creation section -- */
+
+.creation-section {
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+  color: $primary-color;
+}
+
+.creation-section::before {
+  content: "";
+  background-image: url("../../../assets//img/landing-page/main-symbol-color.svg");
+  background-repeat: no-repeat;
+  width: 1000px;
+  height: 700px;
+  position: absolute;
+  top: 15vh;
+  right: -120px; // -300px previously
+  opacity: 0.03;
+}
+
+.creation-section div:first-child {
+  position: relative;
+}
+
+.creation-section h2 {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+@media (min-width: 576px) {
+  .creation-section h2 {
+    font-size: 40px;
+    line-height: 58px;
+  }
+}
+
+@media (min-width: 768px) {
+  .creation-section h2 {
+    font-size: 48px;
+    line-height: 58px;
+  }
+}
+
+.creation-section p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (min-width: 576px) {
+  .creation-section p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .creation-section p {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}

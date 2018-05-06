@@ -1,0 +1,222 @@
+.image-editor {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background: $c-white;
+
+  &-title {
+    margin: 0 0.25em 0 0.5em;
+  }
+
+  &-loading-title {
+    margin: 0 0 0 0.5em;
+  }
+
+  &-toolbar {
+    height: 4.1em;
+    padding: 0 0.5em;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $c-grey;
+
+    .button {
+      margin: 0;
+    }
+
+    .divider {
+      height: 1.75em;
+      margin: 0 0.75em;
+      border-right: 1px solid $c-grey;
+    }
+  }
+
+  &-container {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 4.1em - 1px);
+  }
+
+  .component-loader-container {
+    position: fixed;
+    top: calc(4.1em + 1px);
+    left: 0;
+    height: calc(100vh - 4.1em - 1px);
+    width: 100vw;
+    background: $c-white;
+
+    .component-loader {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .menu-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &-save-dialog {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 90vw;
+    height: 90vh;
+    &-content {
+      height: 100%;
+      min-height: 100%;
+      max-height: 100%;
+
+      .image-view {
+        width: calc(100% - 2em);
+        max-width: calc(100% - 2em);
+        height: calc(100% - 8em);
+        max-height: calc(100% - 8em);
+        margin: 0 1em 1em 1em;
+        img {
+          height: 100%;
+          width: 100%;
+          max-height: 100%;
+          max-width: 100%;
+          object-fit: contain;
+        }
+      }
+
+      .field-view {
+        padding: 0 1em;
+        height: 6em;
+        max-height: 6em;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        input {
+          min-width: 256px;
+          width: 40vw;
+          max-width: 40vw;
+        }
+        button {
+          margin: 0 0 0 0.5em;
+        }
+      }
+    }
+    .dialog-content {
+      padding: 0;
+      height: calc(100% - 3.8em - 1em);
+      max-height: calc(100% - 3.8em - 1em);
+    }
+  }
+
+  &-aspect-ratio {
+    ul {
+      min-width: 75px;
+      max-height: none;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .image-editor {
+    &-save-dialog {
+      .field-view {
+        input {
+          min-width: 100px;
+          width: 30vw;
+          max-width: 30vw;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .image-editor {
+    &-save-dialog {
+      .field-view {
+        input {
+          min-width: 100px;
+          width: 20vw;
+          max-width: 20vw;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop-bigger) {
+  .image-editor {
+    &-aspect-ratio {
+      ul {
+        max-height: 250px;
+      }
+    }
+    .screen-big-min {
+      display: none;
+    }
+  }
+}
+
+@media (max-height: $breakpoint-tablet) {
+  .image-editor {
+    &-aspect-ratio {
+      ul {
+        max-height: 250px;
+      }
+    }
+  }
+}
+
+@media (min-width: calc(#{$breakpoint-desktop-bigger} + 1px)) {
+  .image-editor {
+    .screen-big-max {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .image-editor {
+    .screen-medium-min {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .image-editor {
+    .screen-small-min {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .image-editor {
+    &-title,
+    &-loading-title {
+      font-size: 1.2em;
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  .image-editor {
+    &-title,
+    &-loading-title {
+      font-size: 1em;
+    }
+  }
+}

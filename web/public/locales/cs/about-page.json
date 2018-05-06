@@ -1,0 +1,9 @@
+{
+  "title": "INDIHU Exhibition - O aplikaci",
+  "paragraph1": "Aplikace na vytváření virtuálních výstav INDIHU Exhibition je provozována Knihovnou Akademie věd České republiky. Určena je především pracovníkům ústavů AV ČR, vysokých škol a paměťových institucí, ale v rámci popularizace vědy i široké veřejnosti. Využití je bezplatné a je podmíněno registrací, která je následně schválena administrátorem.",
+  "paragraph2": "Knihovna AV ČR se zavazuje tuto aplikaci dlouhodobě provozovat na adrese <externalLink>https://exhibition.indihu.cz/</externalLink>. V případě, že by se měnily podmínky provozování, budou uživatelé informováni. Technické podrobnosti a popis použití jsou uvedeny v uživatelském manuálu <externalLink>https://libcas.github.io/indihu-manual/</externalLink>.",
+  "paragraph3": "Další informace jsou k dispozici ve vývojovém prostředí na <externalLink>https://github.com/LIBCAS/INDIHU-Exhibition</externalLink>.",
+  "paragraph4": "Kontaktní e-mail: <mailLink>info@indihu.cz</mailLink>",
+  "creationSubtitle": "Vznik",
+  "creationParagraph": "Nástroj INDIHU Exhibition byl mezi léty 2021–2024 významně předesignován v rámci mezinárodního projektu Nahráno - Otevřeno. Digitalizace, zpřístupnění a edukativní využití uměleckých sbírek v paměťových institucích podpořeného prostřednictvím Fondů EHP, programu Kultura. Více o projektu na <externalLink>https://loaded-open.eu/cs/o-projektu/</externalLink>."
+}

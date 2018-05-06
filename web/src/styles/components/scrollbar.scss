@@ -1,0 +1,75 @@
+$c-scrollbar-color-primary: $c-blue-primary;
+$c-scrollbar-color-secondary: $c-white;
+
+.scrollbar {
+  width: 100%;
+  height: 100%;
+
+  &-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .scrollbar-arrow {
+      position: absolute;
+      bottom: 1px;
+      height: 16px;
+      width: 16px;
+      background-color: $c-scrollbar-color-secondary;
+      cursor: pointer;
+      display: flex;
+
+      &-inner {
+        height: 100%;
+        width: calc(100% - 2px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: inherit;
+
+        &:hover {
+          background-color: $c-grey-lighter;
+        }
+      }
+
+      &.scrollbar-arrow-left {
+        left: 0;
+
+        .scrollbar-icon {
+          margin-left: -1px;
+        }
+      }
+
+      &.scrollbar-arrow-right {
+        right: 0;
+        justify-content: flex-end;
+
+        .scrollbar-icon {
+          margin-right: -2px;
+        }
+      }
+    }
+
+    .scrollbar-icon {
+      font-size: 18px;
+      margin-bottom: -1px;
+      color: $c-scrollbar-color-primary;
+    }
+  }
+
+  .scrollbar-track-horizontal {
+    right: 16px;
+    bottom: 1px;
+    left: 16px;
+    height: 16px !important;
+    background-color: $c-scrollbar-color-secondary;
+    cursor: pointer;
+  }
+
+  .scrollbar-thumb-horizontal {
+    height: calc(100% - 4px) !important;
+    top: 2px;
+    border-radius: 4px;
+    background-color: $c-scrollbar-color-primary;
+  }
+}

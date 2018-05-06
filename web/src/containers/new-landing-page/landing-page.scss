@@ -1,0 +1,18 @@
+.new-landing-page *,
+.new-landing-page *::before,
+.new-landing-page *::after {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.new-landing-page h1,
+.new-landing-page h2,
+.new-landing-page h3,
+.new-landing-page h4,
+.new-landing-page h5,
+.new-landing-page h6,
+.new-landing-page p {
+  color: inherit;
+}

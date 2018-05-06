@@ -1,0 +1,411 @@
+{
+  "expoState": {
+    "prepare": "V přípravě",
+    "opened": "Zveřejněná",
+    "ended": "Ukončená",
+    "prepareTooltip": "Výstava je v přípravě. Obsah výstavy je možné libovolně upravovat. Výstava je přístupná pouze přihlášeným tvůrcem, se kterými je výstava sdílena.",
+    "openedTooltip": "Výstava je veřejně dostupná přes svoje URL. Výstavu není možné upravovat.",
+    "endedTooltip": "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení tvůrci s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”."
+  },
+  "structure": {
+    "tab": "Struktura výstavy",
+    "screenCategoryLabels": {
+      "chapter": "Kapitola",
+      "content_screen": "Obsahová obrazovka",
+      "interactive_screen": "Interaktivní obrazovka",
+      "game_screen": "Herní obrazovka"
+    },
+    "screenLabels": {
+      "start": "Úvod do výstavy",
+      "intro": "Úvod do kapitoly",
+      "image": "Obrazovka s obrázkem",
+      "video": "Obrazovka s videem",
+      "text": "Obrazovka s textem",
+      "parallax": "Parallax",
+      "image_zoom": "Animace přiblížení",
+      "slideshow": "Slideshow",
+      "photogallery_new": "Fotogalerie",
+      "image_change": "Foto před a po",
+      "external": "Obrazovka s externím obsahem",
+      "signpost": "Rozcestník",
+      "game_find": "Najdi na obrázku",
+      "game_draw": "Dokresli",
+      "game_wipe": "Stírací los",
+      "game_sizing": "Hádej velikost",
+      "game_move": "Posuň na správné místo",
+      "game_options": "Kvíz",
+      "finish": "Závěr výstavy"
+    },
+    "screenTooltips": {
+      "intro": "Uvádí sérii obrazovek, které na sebe navazují v jednom tématickém celku. Pro každou kapitolu vzniká záznam v seznamu kapitol výstavy.",
+      "image": "Obrazovka, jejímž ústředním motivem je obrázek, který můžete animovat a přidat infopointy.",
+      "video": "Obrazovka, která slouží k přehrání videa z knihovny dokumentů. Pro sdílení videa na internetu použijte “Obrazovku s externím obsahem.",
+      "text": "Obrazovka zobrazí text o max. rozsahu 300 znaků.",
+      "parallax": "Obrazovka zobrazí obraz s efektem parallax včetně imitace jeho prostorového pohybu, viz https://www.youtube.com/watch?v=cUfmUPhApJ0.",
+      "image_zoom": "Obrazovka nejprve zobrazí celkový obrázek a poté animuje sekvenci pohybů, ve kterých se přiblíží k vybraným detailům obrázku s infopointy.",
+      "slideshow": "Obrazovka se sérií obrázků.",
+      "photogallery_new": "Obrazovka fotogalerie.",
+      "image_change": "Obrazovka zobrazí dvě vzájemně se překrývající fotografie, kdy pomocí táhla odkrýváme jednu a zakrýváme druhou fotografii. Táhlo může být vertikální a  horizontální. Přechod jednoho obrázku v druhý lze nastavit také na kliknutí myši nebo jako prolínání.",
+      "external": "Obrazovka, která vám umožňuje vložit pomocí embed kódu obsah zveřejněný na internetu (např. Video z YouTube nebo mapu z Mapy.cz).",
+      "signpost": "Obrazovka rozcestníku.",
+      "game_find": "Hra, kde má návštěvník označit místo v obrázku.",
+      "game_draw": "Hra, kde návštěvník dokresluje chybějící část obrázku.",
+      "game_wipe": "Hra, kde návštěvník “gumováním” pomocí myši odhalí skrytý obrázek.",
+      "game_sizing": "Návštěvník má za úkol zmenšit nebo zvětšit velikost předmětu na obrázku tak, aby byl ve stejném poměru k referenčnímu předmětu na obrázku.",
+      "game_move": "Hra, kde návštěvník tažením myši přesouvá objekt nad obrázkem do správné cílové pozice.",
+      "game_options": "Návštěvník vybírá správnou odpověď na otázku ze 3 odpovědí. Každá odpověď je tvořena textem a obrázkem."
+    }
+  },
+  "files": {
+    "tab": "Soubory",
+    "newFolder": "NOVÝ ADRESÁŘ",
+    "uploadFile": "NAHRÁT SOUBOR",
+    "uploadFileTooltip": "Maximální velikost souboru je 250MB. Při nahrávání více souborů je limit 260MB.",
+    "sorting": {
+      "created": "Vytvořeno",
+      "name": "Název"
+    },
+    "sortingTooltip": "Řazení",
+    "orderASC": "Sestupně",
+    "orderDESC": "Vzestupně",
+    "fileActions": {
+      "rename": "Přejmenovat",
+      "move": "Přesunout",
+      "edit": "Editovat",
+      "download": "Stáhnout",
+      "delete": "Smazat"
+    },
+    "filePreview": "Náhled souboru",
+    "fileMetadata": "Metadata",
+    "nameCol": "Název:",
+    "typeCol": "Typ:",
+    "sizeCol": "Velikost:",
+    "durationCol": "Délka:",
+    "dimensionsCol": "Rozměry:",
+    "widthCol": "Šířka:",
+    "heightCol": "Výška:"
+  },
+  "settingsAndSharing": {
+    "tab": "Nastavení a sdílení",
+    "expoState": "Stav výstavy",
+    "expoUrl": "URL výstavy",
+    "copyUrlLabel": "Kopírovat URL",
+    "copyUrlMessage": "URL výstavy bylo zkopírováno do schránky.",
+    "actualizeLabel": "Aktualizovat",
+    "expoEmbedCode": "Embed kód pro výstavu",
+    "embedCodeWidth": "Šířka",
+    "embedCodeHeight": "Výška",
+    "generateEmbedCode": "Vygenerovat embed kód",
+    "generateEmbedCodeMessage": "Vygenerovaný embed kód byl zkopírován do schránky.",
+    "expoTags": "Tagy výstavy",
+    "tagsInfoLabel": "Zvolené tagy pro výstavu",
+    "saveLabel": "Uložit",
+    "selectLabel": "Vybrat",
+    "expoEndedInfo": {
+      "info": "Informace pro návštěvníka v případě, že je výstava již ukončená",
+      "backgroundImage": "Obrázek na pozadí",
+      "backgroundImageTooltip": "Obrázek vybraný z knihovny dokumentů, který se zobrazí na pozadí stránky.",
+      "redirectUrl": "URL pro přesměrování",
+      "redirectUrlTooltip": "URL adresa, kam je návštěvníkovi doporučeno pokračovat. Např. další výstava nebo webové stránky instituce, která výstavu realizovala.",
+      "infoForVisitor": "Oznámení návštevníkovi",
+      "infoForVisitorTooltip": "Stručný informační text, který se zobrazí návštěvníkovi."
+    },
+    "shareWithUsers": "Sdíleno s ostatními tvůrci",
+    "nameCol": "Jméno",
+    "emailCol": "E-mail",
+    "privilegesCol": "Práva",
+    "actionCol": "Akce",
+    "owner": "Vlastník",
+    "reading": "Čtení",
+    "readWrite": "Čtení a zápis"
+  },
+  "rating": {
+    "tab": "Hodnocení a návštěvnost",
+    "expoRating": "Hodnocení výstavy",
+    "expoNoRatingYet": "Tato výstava zatím nebyla hodnocena.",
+    "ratingTable": {
+      "rateCount": "Počet hodnocení",
+      "avgRate": "Průměrné hodnocení",
+      "peopleTopicLikeCount": "Počet lidí, kterým se líbilo téma výstavy:",
+      "peopleMediaLikeCount": "Počet lidí, kterým se líbila média výstavy:",
+      "peopleTextLikeCount": "Počet lidí, kterým se líbily texty výstavy:",
+      "peopleGameLikeCount": "Počet lidí, kterým se líbily hry výstavy:"
+    },
+    "numberOfViews": "Počet zhlédnutí:",
+    "expoComments": "Komentáře k výstavě",
+    "expoNoCommentsYet": "Tato výstava zatím nemá žádné komentáře.",
+    "created": "Vytvořeno:",
+    "rating": "Hodnocení:",
+    "ratingNotSpecified": "Neuvedeno",
+    "emailContact": "E-mail recenzenta:"
+  },
+  "theming": {
+    "tab": "Motiv",
+    "generalThemeSettings": {
+      "title": "1. Všeobecné nastavení motivu výstavy",
+      "expoThemeLabel": "Motiv",
+      "expoThemeLight": "Světlý",
+      "expoThemeDark": "Tmavý",
+      "expoBackgroundColorLabel": "Barva pozadí",
+      "expoIconsColorLabel": "Barva ikon",
+      "expoTagsColorLabel": "Barva tagů"
+    },
+    "logoAndWatermarkSettings": {
+      "title": "2. Nastavení loga a vodoznaku",
+      "expoLogoTypeLabel": "Typ loga expozice",
+      "expoLogoTypeLogo": "Logo",
+      "expoLogoTypeWatermark": "Vodoznak",
+      "expoLogoPositionLabel": "Pozice loga expozice",
+      "expoLogoPositionUpLeft": "Nahoře vlevo",
+      "expoLogoPositionUpRight": "Nahoře vpravo",
+      "expoLogoPositionDownLeft": "Dole vevo",
+      "expoLogoFileLabel": "Soubor loga / vodoznaku"
+    },
+    "defaultInfopointSettings": {
+      "title": "3. Předvolený motiv pro infopointy",
+      "infopointShapeLabel": "Tvar infopointu",
+      "infopointShapeSquare": "Čtverec",
+      "infopointShapeCurcle": "Kruh",
+      "infopointShapeIcon": "Ikona",
+      "infopointPxSizeLabel": "Velikost infopointu v pixelech",
+      "infopointColorLabel": "Barva infopointu",
+      "infopointIconFileLabel": "Soubor ikony infopointu"
+    },
+    "selectLabel": "Vybrat",
+    "exportLabel": "Exportovat",
+    "importLabel": "Importovat",
+    "resetSettingsLabel": "Resetovat nastavení",
+    "saveChangesLabel": "Uložit změny",
+    "saveThemeFailureDialog": {
+      "title": "Uložení změn nebylo úspěšné",
+      "text": "Při ukládání změn motivu nastala chyba."
+    },
+    "saveThemeSuccessDialog": {
+      "title": "Uložení změn proběhlo úspěšné",
+      "text": "Změny motivu byly úspěšně uloženy."
+    }
+  },
+  "tags": {
+    "exhibitionTopicGroupLabel": "Vyberte 1 téma, kterým se vaše výstava zabývá",
+    "historyAndPeople": "Dějiny a lidé",
+    "nature": "Příroda",
+    "society": "Společnost",
+    "art": "Umění",
+    "scienceAndTechnique": "Věda a technika",
+
+    "exhibitionFormalPropertyGroupLabel": "Vyberte max. 2 formální vlastnosti vaší výstavy",
+    "englishFriendly": "English friendly",
+    "aesthetic": "Estetická",
+    "informative": "Informativní",
+    "interactive": "Interaktivní",
+    "forMobiles": "Pro mobily",
+    "educational": "Vzdělávací",
+    "funny": "Zábavná",
+
+    "exhibitionIntendedForGroupLabel": "Vyberte, pro koho je výstava určena",
+    "children": "Děti",
+    "adults": "Dospělí",
+    "experts": "Odborníci",
+    "family": "Rodina",
+    "seniors": "Senioři",
+    "students": "Studenti",
+    "teenagers": "Teenageři"
+  },
+  "expoUnauthorizedAccessTitle": "Neautorizovaný přístup",
+  "expoUnauthorizedAccessText": "Nemáte oprávnění k přístupu na tuto výstavu.",
+  "expoNotFoundTitle": "Výstava nenalezena",
+  "expoNotFoundText": "Výstava umístěná pod touto URL nebyla nalezena.",
+
+  "expoDeleteDialog": {
+    "submitLabel": "Smazat",
+    "expoWillBeDeleted": "Vybraná výstava s názvem <strong>{{expoName}}</strong> bude smazaná.",
+    "actionIsPermanent": "Akce je nevratná a smaže výstavu včetne všech dokumentů a podkladů!"
+  },
+  "expoDuplicateDialog": {
+    "title": "Duplikace výstavy",
+    "submitLabel": "Duplikovat",
+    "newDuplicatedExpoNameFieldLabel": "Název výstavy"
+  },
+  "expoRenameDialog": {
+    "title": "Nový název výstavy",
+    "submitLabel": "Přejmenovat",
+    "nameFieldLabel": "Název výstavy"
+  },
+  "expoShareChangeOwnerDialog": {
+    "title": "Změnit vlastníka výstavy",
+    "submitLabelChange": "Změnit",
+    "submitLabelOk": "OK",
+    "userNameFieldLabel": "Uživatelské jméno",
+    "expoIsNotSharedWithAnyone": "Výstava není s nikým sdílena."
+  },
+  "expoShareRemoveCollaboratorDialog": {
+    "title": "Odebrání spolupracovníka",
+    "submitLabel": "Odebrat",
+    "collaboratorWillBeRemoved": "Spolupracovník {{collaboratorName}} bude odebrán."
+  },
+  "expoShareDialog": {
+    "title": "Sdílet s",
+    "submitLabel": "Sdílet",
+    "readOnlyOption": "Jen pro čtení",
+    "editOption": "Pro čtení a zápis",
+    "selectTypeFieldLabel": "Vyberte typ",
+    "userEmailField": "E-mail tvůrce",
+    "ifUserDoesNotExistSendEmailInvite": "Pokud tvůrce neexistuje, odeslat e-mailovou pozvánku",
+    "responseUserAdded": {
+      "title": "Tvůrce přidaný",
+      "text": "Výstava byla sdílena tvůrci {{userName}}."
+    },
+    "responseIndihuUserInvitedByEmail": {
+      "title": "Tvůrce pozvaný",
+      "text": "Tvůrci {{userName}} byla zaslána pozvánka na e-mail."
+    },
+    "responseNotIndihuUser": {
+      "title": "Pozvat tvůrce",
+      "text": "{{userName}} není tvůrce INDIHU Exhibition. Prosím vyberte možnost \"odeslat e-mailovou pozvánku\""
+    },
+    "responseUserIsAlreadyShared": {
+      "title": "Tvůrce již spolupracuje",
+      "text": "Výstava je již sdílena s tvůrcem {{userName}}."
+    }
+  },
+  "expoStateDialog": {
+    "title": "Změna stavu výstavy",
+    "submitLabel": "Změnit"
+  },
+  "fileDeleteFolderDialog": {
+    "submitLabel": "Smazat",
+    "warningText": "Vybraná složka <strong>{{folderName}}</strong> a všechen její obsah bude smazán.",
+    "actionIsIrreversible": "Akce je nevratná.",
+    "folderFilesAreUsedInFollowingScreens": "Soubory ze složky jsou používány v obrazovkách:"
+  },
+  "fileDeleteDialog": {
+    "submitLabel": "Smazat",
+    "warningText": "Vybraný soubor <strong>{{fileName}}</strong> bude smazán.",
+    "actionIsIrreversible": "Akce je nevratná.",
+    "fileIsUsedInScreen": "Soubor je používán v obrazovce"
+  },
+  "fileMoveDialog": {
+    "title": "Přesunutí souboru",
+    "submitLabel": "Přesunout",
+    "whereToMoveFile": "Kam chcete přesunout soubor {{fileName}} ?",
+    "uncategorized": "Nezařazené"
+  },
+  "fileNewFolderDialog": {
+    "title": "Nový adresář",
+    "submitLabel": "Vytvořit",
+    "folderNameField": "Název adresáře",
+    "folderWithThisNameAlreadyExists": "Složka s tímto jménem již existuje."
+  },
+  "fileRenameFolderDialog": {
+    "title": "Přejmenovat složku",
+    "submitLabel": "Přejmenovat",
+    "newFolderNameField": "Nový název složky",
+    "folderWithThisNameAlreadyExists": "Složka s tímto jménem již existuje."
+  },
+  "fileRenameDialog": {
+    "title": "Přejmenovat soubor",
+    "submitLabel": "Přejmenovat",
+    "newFileNameField": "Nový název souboru"
+  },
+  "imageEditorSaveDialog": {
+    "title": "Uložit jako",
+    "submitLabel": "Uložit",
+    "fileNameField": "Název souboru",
+    "stornoActionLabel": "Storno",
+    "confirmActionLabel": "Potvrdit"
+  },
+  "passwordResetDialog": {
+    "title": "Reset hesla",
+    "submitLabel": "Reset",
+    "emailField": "E-mail",
+    "responseSuccess": {
+      "title": "Reset hesla úspěšný",
+      "text": "Nové heslo bylo zasláno na zadaný e-mail."
+    },
+    "responseFailure": {
+      "title": "Reset hesla neúspěšný",
+      "text": "Reset hesla byl neúspěšný."
+    }
+  },
+  "screenAuthorsAddDialog": {
+    "title": "Přidat autory výstavy nebo spolupracovníky",
+    "submitLabel": "Uložit",
+    "roleField": "Role",
+    "textField": "Osoby nebo text"
+  },
+  "screenAuthorsChangeDialog": {
+    "title": "Změnit autory výstavy nebo spolupracovníky",
+    "submitLabel": "Uložit",
+    "roleField": "Role",
+    "textField": "Osoby nebo text"
+  },
+  "screenDeleteDialog": {
+    "submitLabel": "Smazat",
+    "introChapterScreenDeletion": "Obrazovka <strong>Úvod do kapitoly</strong> bude smazána.",
+    "introChapterWholeChapterDeletionWarning": "Pozor, smažete tím celou kapitolu. Akce je nevratná.",
+    "introChapterDocumentsStay": "Dokumenty, podklady a soubory v editoru zůstanou.",
+    "otherScreenDeletion": "Vybraná obrazovka <strong>{{screenName}}</strong> bude smazána.",
+    "otherScreenDocumentsStay": "Akce je nevratná. Smažete pouze obrazovku, ale dokumenty a podklady zůstanou na serveru zachovány!"
+  },
+  "screenDocumentChangeDialog": {
+    "title": "Upravit dokument",
+    "submitLabel": "Upravit",
+    "documentNameField": "Název dokumentu",
+    "urlAdressField": "URL adresa",
+    "fileTypeField": "Typ souboru",
+    "fileField": "Soubor",
+    "selectActionLabel": "Vybrat",
+    "typeOfChosenFile": "Typ vybraného souboru"
+  },
+  "screenDocumentChooseDialog": {
+    "title": "Vybrat soubor",
+    "submitLabel": "Vybrat",
+    "errorText": "*Vyber soubor"
+  },
+  "screenDocumentNewDialog": {
+    "title": "Nový dokument",
+    "submitLabel": "Vytvořit",
+    "fileNameField": "Název dokumentu",
+    "urlAddressField": "URL adresa",
+    "urlTypeField": "Typ souboru",
+    "fileField": "Soubor",
+    "chooseActionLabel": "Vybrat",
+    "documentFileTypeField": "Typ vybraného souboru",
+    "fileAlreadyExistsError": "*Soubor již existuje"
+  },
+  "screenDuplicateDialog": {
+    "titleScreen": "Pozice duplikované obrazovky",
+    "titleChapter": "Pozice duplikované kapitoly",
+    "submitLabel": "Duplikovat",
+    "chapterLabel": "Kapitola",
+    "screenLabel": "Obrazovka",
+    "positionLabel": "Pozice"
+  },
+  "screenFileChooseDialog": {
+    "title": "Vybrat soubor",
+    "submitLabel": "Vybrat",
+    "chooseFileErrorText": "*Vyber soubor"
+  },
+  "screenLinkDialog": {
+    "title": "Odkaz obrazovky",
+    "submitLabel": "Zavřít",
+    "copied": "Zkopírováno!",
+    "copyToClipboardLabel": "Kopírovat do schránky"
+  },
+  "screenMoveDialog": {
+    "titleScreen": "Nová pozice obrazovky",
+    "titleChapter": "Nová pozice kapitoly",
+    "submitLabel": "Přesunout",
+    "separateScreenFieldLabel": "Samostatná obrazovka",
+    "chapterFieldLabel": "Kapitola",
+    "screenFieldLabel": "Obrazovka",
+    "positionFieldLabel": "Pozice"
+  },
+  "viewWrapChapterDialog": {
+    "title": "Kapitoly"
+  },
+  "warningDialog": {
+    "title": "Varování",
+    "submitLabel": "OK"
+  }
+}

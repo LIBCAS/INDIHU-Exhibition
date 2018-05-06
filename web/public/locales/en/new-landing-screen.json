@@ -1,0 +1,92 @@
+{
+  "header": {
+    "introduction": "Introduction",
+    "about": "About",
+    "termsOfUse": "Terms of use",
+    "manual": "Manual",
+    "login": "Log in",
+    "register": "Registration"
+  },
+  "introSection": {
+    "title": "A creative tool for creating virtual exhibitions",
+    "subtitle": "INDIHU Exhibition is a tool for creating rich multimedia virtual exhibitions with interactive elements. Individuals and teams can create exhibitions on any topic. Visitors expect you to be online and this tool allows you to do that.",
+    "startCreatingLabel": "Start creating",
+    "scrollDown": "SCROLL DOWN"
+  },
+  "functionalitySection": {
+    "title": "Functionality",
+    "subtitle": "Easily create immersive virtual exhibitions that can be accessed online by visitors anytime, anywhere. INDIHU Exhibition allows you to combine text, visual and audio materials with interactive games to allow total immersion of the visitor.",
+    "func1Text": "Create virtual exhibitions without being an expert in web design.",
+    "func2Text": "Include multimedia content – videos, images, animations, music, games and more.",
+    "func3Text": "Collaborate with multiple creators to create your virtual exhibition.",
+    "func4Text": "Host the exhibition at <externalLink>https://exhibition.indihu.cz/</externalLink> domain operated by the Library of the Academy of Sciences of the Czech Republic.",
+    "func5Text": "Easily share the exhibition and personalize the url link.",
+    "func6Text": "Browse exhibitions on your computer as well as on your mobile device."
+  },
+  "selectedExhibitionsSection": {
+    "title": "Selected exhibitions",
+    "subtitle": "Get inspired by exhibitions created by other creators. Find ideas for your own exhibitions and see how interactive and fun exhibitions can be. Samples are continuously updated.",
+    "openOnlineExhibition": "Open online exhibition"
+  },
+  "registrationSection": {
+    "title": "Start creating exhibitions!",
+    "subtitle": "Easily create immersive virtual exhibitions that can be accessed online by visitors anytime, anywhere. INDIHU Exhibition allows you to combine text, visual and audio materials with interactive games to allow total immersion of the visitor.",
+    "toolIsFree": "The tool is completely free!",
+    "registerForm": {
+      "formTitle": "Registration",
+      "formSubtitle": "Start creating visual exhibitions for free!",
+      "or": "or",
+      "nameFieldLabel": "Name",
+      "surnameFieldLabel": "Surname",
+      "institutionFieldLabel": "Institution",
+      "emailFieldLabel": "E-mail",
+      "passwordFieldLabel": "Password",
+      "createAccountButton": "Create account",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Log in"
+    },
+    "loginForm": {
+      "usernameFieldLabel": "Username/e-mail",
+      "passwordFieldLabel": "Password",
+      "login": "Log in",
+      "forgetPassword": "Forgotten password?",
+      "remindPassword": "Remind password"
+    }
+  },
+  "footer": {
+    "about": {
+      "title": "About",
+      "creation": "Creation",
+      "projects": "Projects",
+      "history": "History",
+      "creators": "Creator Group",
+      "devInformation": "Development information"
+    },
+    "indihu": {
+      "title": "INDIHU Exhibition",
+      "termsOfUse": "Terms of use",
+      "manual": "Manual",
+      "events": "Events",
+      "adminContact": "Contact the administrator",
+      "githubSourceCode": "Github (source code)"
+    },
+    "language": {
+      "title": "Language",
+      "cs": "Czech",
+      "en": "English"
+    },
+    "privacyPolicy": "Privacy Policy",
+    "cookiesPolicy": "Cookies Policy"
+  },
+
+  "oauth": {
+    "login": "Log in"
+  },
+
+  "loginResponseErrors": {
+    "publicEmailError": "In the profile settings at the provider ({{providerName}}), you need to set a public e-mail address.",
+    "waitingForAdminAcceptInfo": "Registration was successful, but approval from the administrator is pending.",
+    "stillNotAcceptedError": "You are already registered and still haven't been confirmed by the administrator.",
+    "otherUnknownError": "An unexpected error occurred while trying to sign in."
+  }
+}

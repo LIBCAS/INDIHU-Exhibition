@@ -1,0 +1,182 @@
+.files {
+  &-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  &-col {
+    max-width: 100%;
+    flex-basis: 48%;
+    display: flex;
+    flex-direction: column;
+  }
+  &-wrap {
+    &--manager {
+      flex-basis: 48%;
+      margin: 1em;
+      max-width: calc(100% - 2em);
+    }
+    &--view {
+      &:before {
+        content: "Náhled souboru";
+        line-height: 1em;
+      }
+      margin: 1em;
+      margin-top: -0.4em;
+      max-width: calc(100% - 2em);
+    }
+    &--meta {
+      &:before {
+        content: "Metadata";
+        line-height: 1em;
+      }
+      margin: 1em;
+      margin-top: -0.1em;
+      max-width: calc(100% - 2em);
+    }
+  }
+  &-manager {
+    height: 32.2em;
+    overflow-y: auto;
+    .row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      padding: 7px 2px;
+      position: relative;
+      cursor: pointer;
+      &:hover,
+      &.active {
+        background: #ececec;
+      }
+      i {
+        color: $c-black;
+      }
+      p {
+        margin: auto 0;
+        max-width: calc(100% - 24px - 48px);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      &-actions {
+        position: absolute;
+        right: 0;
+        cursor: pointer;
+        button {
+          min-width: 0;
+          padding: 0;
+          background: none;
+        }
+      }
+    }
+    .categorized {
+      display: none;
+      padding-left: 1em;
+    }
+    .open {
+      display: block;
+    }
+  }
+  &-view {
+    height: 20em;
+    padding: 0px;
+    &-text {
+      height: 20em;
+      padding: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      i {
+        font-size: 18em;
+        color: #ececec;
+      }
+      img,
+      video {
+        display: block;
+        max-width: 100%;
+        max-height: 18em;
+        width: auto;
+        height: auto;
+      }
+      .placeholder {
+        max-width: 100%;
+        position: relative;
+        .label {
+          color: $c-black;
+          font-size: 5em;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+  &-meta {
+    height: 10em;
+    overflow-y: auto;
+
+    .files-meta-text {
+      padding-bottom: 16px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      &:last-child {
+        p {
+          margin-bottom: 0;
+        }
+      }
+
+      p:first-child {
+        font-weight: bold;
+        flex-basis: 20%;
+      }
+      p:last-child {
+        flex-basis: 80%;
+      }
+    }
+  }
+}
+
+.fileUploader {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .invalid {
+    color: $c-error;
+    overflow: hidden;
+    max-width: 200px;
+    word-break: break-word;
+    text-align: center;
+  }
+}
+
+@media (max-width: $breakpoint-tablet + 200px) {
+  .files-col,
+  .files-wrap--manager {
+    flex-basis: 100%;
+  }
+}

@@ -1,0 +1,7 @@
+RewriteEngine On
+#RewriteBase /
+RewriteRule ^api/(.*) http://10.3.240.70:8080/api/$1 [P]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !\.(html|js|css|jpg|png|ttf|woff|eot|map|pdf|ico|gif|zip|tar\.gz)$ index.html [L]

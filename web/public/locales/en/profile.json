@@ -1,0 +1,27 @@
+{
+  "title": "Settings",
+
+  "editProfileSubtitle": "Edit your profile",
+  "usernameLabel": "Username",
+  "firstnameLabel": "First name",
+  "lastnameLabel": "Last name",
+  "institutionLabel": "Institution",
+  "emailLabel": "E-mail",
+  "emailNotificationsLabel": "E-mail notifications",
+  "editProfileActionButtonLabel": "Edit profile",
+
+  "changePasswordSubtitle": "Password change",
+  "newPasswordLabel": "New password",
+  "confirmPasswordLabel": "Confirm password",
+  "changePasswordActionButtonLabel": "Change password",
+
+  "deleteAccountActionButtonLabel": "Deactivate account",
+
+  "deactivateAccountDialog": {
+    "title": "Deactivate account",
+    "submitLabel": "Deactivate",
+    "reallyWantToDeactivateAccount": "Are you sure you want to deactivate your account?",
+    "deactivateConsequences": "By deactivating this account, all exhibitions you own will be locked and it will not be possible to work with them any further!",
+    "failedToDeactivate": "Failed to deactivate account!"
+  }
+}

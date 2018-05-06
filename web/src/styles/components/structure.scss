@@ -1,0 +1,299 @@
+.structure {
+  &-screen-card-icon {
+    position: absolute;
+    top: 13px;
+    right: 28px;
+    font-size: 20px;
+  }
+  &-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    #icon {
+      margin: 1em 5.1em;
+    }
+    #large {
+      margin: 3em 0;
+    }
+  }
+  &-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    #icon {
+      margin: 2.6em 1.5em;
+    }
+    #large {
+      margin: 0 4.8em;
+    }
+  }
+  .col-line {
+    position: absolute;
+    background: $c-black;
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 6em;
+  }
+  .row-line {
+    position: absolute;
+    background: $c-black;
+    width: 5em;
+    height: 1px;
+    top: 3.5em;
+    right: -5em;
+    &.last {
+      width: 2em;
+      right: -2em;
+    }
+  }
+
+  .dragged-card-target-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.col {
+      flex-direction: column;
+      width: 12em;
+    }
+
+    .card {
+      border-width: 0;
+      box-shadow: none;
+      padding: 0;
+      background-color: $c-blue-primary;
+
+      .card-text {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+          margin: 0;
+          color: $c-white;
+        }
+      }
+    }
+
+    &-inner {
+      position: relative;
+      width: 5em;
+      height: 7em;
+    }
+
+    &-row-line {
+      position: absolute;
+      background: $c-black;
+      top: 3.5em;
+      left: 0;
+      width: 5em;
+      height: 1px;
+
+      &.last {
+        width: 2em;
+      }
+    }
+  }
+
+  &-screen-new-menu {
+    ul {
+      min-width: 300px;
+    }
+  }
+}
+
+.card,
+.start,
+.finish {
+  position: relative;
+  border: 1px solid $c-grey;
+  min-width: 12em;
+  width: 12em;
+  height: 7em;
+  padding-right: 4em;
+  &-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    button {
+      min-width: 0;
+      padding: 0;
+      background: none;
+      color: $c-grey;
+
+      &.md-btn--text {
+        margin-top: 6px;
+        margin-bottom: 6px;
+        font-size: 14px;
+        height: 36px;
+      }
+    }
+    .md-list--menu-scrollable {
+      max-height: none;
+    }
+  }
+  &-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  &.green {
+    background-color: $c-positive;
+  }
+}
+
+.start,
+.finish {
+  padding: 0;
+  background: $c-blue-sky;
+}
+
+#large {
+  height: 7em;
+  button {
+    padding: 0;
+    height: 100%;
+  }
+  .new-content {
+    border: 1px solid $c-grey;
+    min-width: 7em;
+    width: 7em;
+    height: 4em;
+    .new-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      margin-top: 0.5em;
+      cursor: pointer;
+      i {
+        font-size: 2em;
+      }
+    }
+  }
+}
+
+#icon {
+  button {
+    background: $c-blue-sky;
+    color: $c-grey;
+    width: 1.8em;
+    height: 1.8em;
+    transition: box-shadow 0.2s linear;
+    .material-icons {
+      position: absolute;
+      top: 0.8px;
+      left: 0.8px;
+    }
+    &:hover {
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.add-menu {
+  &-header {
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: default;
+  }
+  &-item {
+    .md-tile-text--primary {
+      margin-left: 1em;
+    }
+  }
+}
+
+.card {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &-background {
+    background-color: white;
+  }
+
+  &.dragged {
+    opacity: 0.15;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  &.dragged-card {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &.animate {
+      animation: shake 0.25s linear;
+    }
+
+    .card-screen {
+      cursor: move;
+    }
+  }
+
+  &-screen,
+  &-screen-start-finish {
+    cursor: pointer;
+  }
+
+  &-screen {
+    overflow: hidden;
+    height: 100%;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+    padding-left: 1em;
+    p {
+      margin: 0;
+      font-size: 13px;
+      max-height: 100%;
+      overflow: hidden;
+    }
+  }
+
+  &-empty {
+    width: 12em;
+    height: 7em;
+    border: 1px solid $c-grey;
+    background-color: $c-white;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  25% {
+    transform: rotateZ(-5deg);
+  }
+
+  50% {
+    transform: rotateZ(0deg);
+  }
+
+  75% {
+    transform: rotateZ(3deg);
+  }
+
+  100% {
+    transform: rotateZ(0deg);
+  }
+}

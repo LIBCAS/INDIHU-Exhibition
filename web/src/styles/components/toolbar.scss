@@ -1,0 +1,224 @@
+.toolbar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  justify-content: space-between;
+  height: 4em !important;
+  z-index: 1000;
+  &-noshadow {
+    box-shadow: none !important;
+  }
+  &-centered {
+    justify-content: center;
+  }
+  &-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  &-back {
+    margin: 0 0.5em 0 1em;
+    cursor: pointer;
+  }
+  &-left {
+    max-width: 50%;
+  }
+  &-right-auth {
+    display: flex;
+    align-items: center;
+    padding-right: 1em;
+    p {
+      margin: 0;
+      margin-right: 1.5em;
+    }
+  }
+  &-title {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    img {
+      height: 1em;
+      cursor: pointer;
+    }
+    &.with-link {
+      font-weight: 700px;
+      font-size: 26px;
+      cursor: pointer;
+    }
+  }
+  &-button {
+    display: block;
+    font-size: 1em;
+    text-align: center;
+    color: $c-white;
+    margin: 0.7em 1em 0.4em;
+    border-bottom: 1px solid transparent;
+    white-space: nowrap;
+    cursor: pointer;
+    &.active {
+      border-bottom: 1px solid $c-white;
+      cursor: auto;
+      &:hover {
+        color: $c-white;
+      }
+    }
+    &:hover {
+      color: $c-blue-light;
+    }
+    &.nonclickable {
+      cursor: auto;
+      &:hover {
+        color: $c-white;
+      }
+    }
+    &-link {
+      margin: 0 16px;
+      padding: 0;
+      background: none;
+      border: none;
+      text-decoration: none;
+    }
+  }
+  &-tablet {
+    display: none;
+  }
+  &-userRow {
+    .md-text {
+      font-weight: bold;
+    }
+  }
+  .hidden {
+    display: none;
+  }
+}
+
+.tabMenu {
+  position: fixed;
+  top: 3.9em;
+  width: 100%;
+  background: $c-blue-light;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  z-index: 999;
+  border-top: 2px solid $c-blue-light;
+  &-tab {
+    background: $c-blue-dark;
+    font-size: 1em;
+    text-align: center;
+    color: $c-white;
+    padding: 0.6em 1em 0.5em 1em;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      background: $c-blue-primary;
+    }
+    &.hidden {
+      display: block;
+    }
+    &.active {
+      background: $c-blue-primary;
+    }
+    &.selected {
+      display: none;
+      border-bottom: 1px solid $c-blue-light;
+    }
+  }
+
+  & .ie {
+    height: 1em;
+
+    &.hidden {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .toolbar-right-auth {
+    .toolbar-button {
+      display: block;
+    }
+  }
+  .toolbar {
+    &-button {
+      display: none;
+    }
+    &-tablet {
+      display: block;
+    }
+    &-left {
+      max-width: 80%;
+    }
+  }
+  .tabMenu {
+    flex-direction: column;
+    &-tab {
+      background: $c-blue-dark;
+      &:hover {
+        border: none;
+        background: $c-blue-primary;
+      }
+      &.hidden {
+        display: none;
+      }
+      &.active {
+        font-weight: normal;
+        color: $c-white;
+        border: none;
+        background: $c-blue-dark;
+        &:hover {
+          background: $c-blue-primary;
+        }
+      }
+      &.selected {
+        display: block;
+        background: $c-blue-dark;
+
+        &:hover {
+          border-bottom: 1px solid $c-blue-light;
+          color: $c-white;
+          background: $c-blue-dark;
+        }
+      }
+    }
+  }
+}
+
+.md-title--toolbar {
+  margin-left: 22px;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .toolbar {
+    &-left.authStyle {
+      max-width: 90%;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .toolbar {
+    &-title {
+      &.with-link {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-200) {
+  .toolbar {
+    &-title {
+      display: none;
+    }
+  }
+}
+
+#header-menuList {
+  z-index: 1000;
+  min-width: 120px;
+  text-align: center;
+}

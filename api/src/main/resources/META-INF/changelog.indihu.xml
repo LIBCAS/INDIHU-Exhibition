@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <property name="now" value="sysdate" dbms="oracle"/>
+    <property name="now" value="getDate()" dbms="mssql"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="now" value="now()" dbms="postgresql"/>
+
+    <include file="dbchangelog.core.xml"/>
+
+    <changeSet id="1" author="stora">
+
+        <createTable tableName="in_user">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_user_pk" nullable="false"/>
+            </column>
+            <column name="first_name" type="nvarchar(31)"/>
+            <column name="surname" type="nvarchar(31)"/>
+            <column name="email"    type="varchar(255)"/>
+            <column name="institution" type="nvarchar(255)"/>
+            <column name="role" type="varchar(7)"/>
+            <column name="accepted" type="boolean"/>
+            <column name="user_name" type="varchar(255)"/>
+            <column name="ldap_user" type="boolean"/>
+            <column name="password" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="in_registration">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_registration_pk" nullable="false"/>
+            </column>
+            <column name="issued" type="timestamp"/>
+            <column name="to_accept_id" type="varchar(255)">
+                <constraints foreignKeyName="in_registration_user_fk" referencedTableName="in_user" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <!-- dated object-->
+        <createTable tableName="in_notification">
+            <column name = "id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_notification_pk" nullable="false"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="deleted" type="timestamp"/>
+            <column name="to_notify_id" type="varchar(255)">
+                <constraints foreignKeyName="in_notification_user_fk" referencedTableName="in_user" referencedColumnNames="id"/>
+            </column>
+            <column name="message" type="nclob"/>
+        </createTable>
+
+        <createTable tableName="in_exposition">
+            <column name = "id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_exposition_pk" nullable="false"/>
+            </column>
+            <column name="author_id" type="varchar(255)">
+                <constraints foreignKeyName="in_exposition_author_fk" referencedTableName="in_user" referencedColumnNames="id"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="deleted" type="timestamp"/>
+            <column name="title" type="nvarchar(255)"/>
+            <column name="sub_title" type="nvarchar(255)"/>
+            <column name="perex" type="nvarchar(2047)"/>
+            <column name="url" type="varchar(255)"/>
+            <column name="exposition_end" type="timestamp"/>
+            <column name="structure" type="nclob"/>
+            <column name="is_editing" type="varchar(255)"/>
+            <column name="state" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="in_exposition_opening">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_exposition_opening_pk" nullable="false"/>
+            </column>
+            <column name="opening" type="timestamp"/>
+            <column name="exposition_id" type="varchar(255)">
+                <constraints foreignKeyName="in_exposition_opening_exposition_fk" referencedTableName="in_exposition" referencedColumnNames="id"/>
+            </column>
+            <column name="author_id" type="varchar(255)">
+                <constraints foreignKeyName="in_exposition_opening_author_fk" referencedTableName="in_user" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="in_collaborator">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true" primaryKeyName="in_collaborator_pk" nullable="false"/>
+            </column>
+            <column name="collaborator_id" type="varchar(255)">
+                <constraints foreignKeyName="in_collaborator_user_fk" referencedTableName="in_user" referencedColumnNames="id"/>
+            </column>
+            <column name="exposition_id" type="varchar(255)">
+                <constraints foreignKeyName="in_collaborator_exposition_fk" referencedTableName="in_exposition" referencedColumnNames="id"/>
+            </column>
+            <column name="collaboration_type" type="varchar(25)"/>
+             <column name="since" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="stora">
+        <createTable tableName="in_file_exposition_mapper">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true" primaryKeyName="in_file_exposition_mapper_pk" nullable="false"/>
+            </column>
+            <column name="exposition_id" type="varchar(255)">
+                <constraints foreignKeyName="in_file_exposition_mapper_exposition_fk" referencedTableName="in_exposition" referencedColumnNames="id"/>
+            </column>
+            <column name="file_id" type="varchar(255)">
+                <constraints foreignKeyName="in_file_exposition_mapper_file_fk" referencedTableName="uas_file" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="stora">
+        <modifyDataType tableName="in_user" columnName="role" newDataType="varchar(25)"/>
+
+        <insert tableName="in_user">
+            <column name="id" value="usuallyGenerated"/>
+            <column name="first_name" value="fero"/>
+            <column name="surname" value="taraba"/>
+            <column name="email" value="s@a.cz"/>
+            <column name="user_name" value="test"/>
+            <column name="password" value="test"/>
+            <column name="role" value="ROLE_ADMIN"/>
+            <column name="accepted" value="true"/>
+            <column name="ldap_user" value="false"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="stora">
+        <update tableName="in_user">
+            <column name="password" value="$2a$10$dHHpgIBfnTXE5lt8bKLuPOR9yexyyLnRa4mqWmuqJ5gL5xFhMb.US"/>
+            <where>user_name='test'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="5" author="stora">
+    <addColumn tableName="in_user">
+        <column name="created" type="timestamp"/>
+        <column name="updated" type="timestamp"/>
+        <column name="deleted" type="timestamp"/>
+    </addColumn>
+    </changeSet>
+
+    <changeSet id="6" author="stora">
+        <addColumn tableName="in_file_exposition_mapper">
+            <column name="duration" type="double"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="7" author="stora">
+        <addColumn tableName="in_file_exposition_mapper">
+            <column name="size" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="8" author="stora">
+        <modifyDataType tableName="in_file_exposition_mapper" columnName="duration" newDataType="bigint"/>
+    </changeSet>
+
+    <changeSet id="9" author="stora">
+        <addColumn tableName="in_user">
+            <column name="verified_email" type="boolean"/>
+        </addColumn>
+
+        <addColumn tableName="in_registration">
+            <column name="secret" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="10" author="stora">
+        <addColumn tableName="in_collaborator">
+            <column name="user_email" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="11" author="stora">
+        <createTable tableName="in_settings">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="settings_pk"/>
+            </column>
+            <column name="allowed_registration" type="boolean"/>
+            <column name="automatic_registration" type="boolean"/>
+            <column name="lock_duration" type="int"/>
+        </createTable>
+
+        <insert tableName="in_settings">
+            <column name="id" value="b63e1d62-d379-11e7-9296-cec278b6b50a"/>
+            <column name="allowed_registration" value="true"/>
+            <column name="automatic_registration" value="false"/>
+            <column name="lock_duration" value="60"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="12" author="stora">
+        <addColumn tableName="in_exposition">
+            <column name="organization" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="13" author="stora">
+        <createTable tableName="in_exposition_url">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="in_exposition_url_pk"/>
+            </column>
+            <column name="exposition_id" type="varchar(255)">
+                <constraints foreignKeyName="in_file_exposition_url_exposition_fk" referencedTableName="in_exposition" referencedColumnNames="id"/>
+            </column>
+            <column name="url" type="varchar(255)"/>
+        </createTable>
+        <addColumn tableName="in_user">
+            <column name="state" type="varchar(25)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="14" author="stora">
+        <addColumn tableName="in_exposition">
+            <column name="closed_url" type="varchar(255)"/>
+            <column name="closed_caption" type="varchar(255)"/>
+            <column name="closed_picture_id" type="varchar(255)">
+                <constraints foreignKeyName="in_exposition_file_exposition_mapper_fk" referencedTableName="in_file_exposition_mapper" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="15" author="stora">
+        <dropColumn tableName="in_exposition" columnName="closed_picture_id"/>
+        <addColumn tableName="in_exposition">
+            <column name="closed_picture" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="16" author="stora">
+        <addColumn tableName="in_exposition">
+            <column name="preview_picture" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="17" author="stora">
+        <sql> UPDATE in_user SET institution = 'iQ', state = 'ACCEPTED' WHERE id = 'usuallyGenerated'</sql>
+    </changeSet>
+
+    <changeSet id="18" author="camak">
+        <addColumn tableName="in_registration">
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="deleted" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="19" author="kollar">
+        <createTable tableName="in_exposition_rating">
+            <column name="id" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="rating_count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="average" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="game_count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="media_count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text_count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="topic_count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addColumn tableName="in_exposition">
+            <column name="exposition_rating_id" type="varchar(255)">
+                <constraints foreignKeyName="in_exposition_rating_FK"
+                             referencedTableName="in_exposition_rating"
+                             referencedColumnNames="id" nullable="true"/>
+            </column>
+        </addColumn>
+        <createIndex tableName="in_exposition_rating" indexName="exposition_rating_IDX">
+            <column name="average"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="20" author="kollar">
+        <addColumn tableName="in_exposition">
+            <column name="tags" type="varchar(2500)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="21" author="kollar">
+        <addColumn tableName="in_exposition">
+            <column name="color" type="varchar(255)"/>
+            <column name="logo_position" type="varchar(255)"/>
+            <column name="logo_type" type="varchar(255)"/>
+            <column name="logo_id" type="varchar(255)">
+                <constraints nullable="true"
+                             referencedColumnNames="id"
+                             referencedTableName="uas_file"
+                             foreignKeyName="in_exposition_logo_FK"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="22" author="kollar">
+        <dropColumn tableName="in_exposition" columnName="logo_id"/>
+        <dropColumn tableName="in_exposition" columnName="color"/>
+
+        <addColumn tableName="in_exposition">
+            <column name="theme" type="varchar(255)"/>
+            <column name="background_color" type="varchar(255)"/>
+            <column name="icons_color" type="varchar(255)"/>
+            <column name="tags_color" type="varchar(255)"/>
+            <column name="start_button_color" type="varchar(255)"/>
+            <column name="default_infopoint_shape" type="varchar(255)"/>
+            <column name="default_infopoint_px_size" type="double"/>
+            <column name="default_infopoint_color" type="varchar(255)"/>
+            <column name="default_infopoint_icon_file_id" type="varchar(255)">
+                <constraints nullable="true"
+                             referencedTableName="uas_file"
+                             referencedColumnNames="id"
+                             foreignKeyName="in_exposition_infopoint_icon_file_FK"/>
+            </column>
+            <column name="logo_file_id" type="varchar(255)">
+                <constraints nullable="true"
+                             referencedTableName="uas_file"
+                             referencedColumnNames="id"
+                             foreignKeyName="in_exposition_logo_file_FK"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="23" author="kollar">
+        <dropColumn tableName="in_exposition" columnName="start_button_color"/>
+    </changeSet>
+
+    <changeSet id="24" author="kollar">
+        <addColumn tableName="in_user">
+            <column name="registration_notifications" type="boolean" defaultValue="true"/>
+        </addColumn>
+        <sql>UPDATE in_user SET registration_notifications = 'true' WHERE registration_notifications = null</sql>
+    </changeSet>
+
+    <changeSet id="25" author="kollar">
+        <createTable tableName="in_pin">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="pinned_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(255)">
+                <constraints referencedColumnNames="id" referencedTableName="in_user" foreignKeyName="pin_user_FK" nullable="false"/>
+            </column>
+            <column name="exposition_id" type="varchar(255)">
+                <constraints referencedColumnNames="id" referencedTableName="in_exposition" foreignKeyName="pin_exposition_FK" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="26" author="kollar">
+        <createTable tableName="in_message">
+            <column name = "id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_message_pk" nullable="false"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="deleted" type="timestamp"/>
+            <column name="text " type="varchar(2500)"/>
+            <column name="exposition_id" type="varchar(255)">
+                <constraints nullable="false" foreignKeyName="in_message_exposition_FK" referencedColumnNames="id" referencedTableName="in_exposition"/>
+            </column>
+            <column name="rating" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="in:27" author="kollar">
+        <sql>UPDATE in_user SET state='REJECTED' WHERE state='DELETED'</sql>
+    </changeSet>
+
+    <changeSet id="in:28" author="kollar">
+        <addColumn tableName="in_exposition">
+            <column name="view_counter" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="in:29" author="kollar">
+        <addColumn tableName="in_message">
+            <column name="contact_email" type="varchar(255)"/>
+        </addColumn>
+        <dropNotNullConstraint tableName="in_message" columnName="rating"/>
+        <addNotNullConstraint tableName="in_message" columnName="text"/>
+    </changeSet>
+
+    <changeSet id="in:30" author="kollar">
+        <addColumn tableName="in_exposition">
+            <column name="last_edit" type="timestamp" defaultValue="now">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="in:31" author="kollar">
+        <sql>UPDATE in_exposition SET last_edit=updated</sql>
+    </changeSet>
+
+    <changeSet id="in:32" author="kollar">
+        <dropNotNullConstraint tableName="in_message" columnName="text"/>
+    </changeSet>
+</databaseChangeLog>
