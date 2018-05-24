@@ -1,0 +1,93 @@
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { change } from "redux-form";
+import MenuButton from "react-md/lib/Menus/MenuButton";
+import ListItem from "react-md/lib/Lists/ListItem";
+import Divider from "react-md/lib/Dividers";
+import FontIcon from "react-md/lib/FontIcons";
+
+import { setDialog } from "../../../actions/dialogActions";
+import { openViewer } from "../../../utils";
+
+const ScreenCardMenu = ({
+  name,
+  type,
+  rowNum,
+  colNum,
+  setDialog,
+  history,
+  cardType,
+  viewUrl,
+  editUrl,
+  change,
+  expoId
+}) => {
+  return (
+    <div className="card-menu">
+      <MenuButton
+        id="screen-card-menu-card-menu"
+        flat
+        buttonChildren="more_vert"
+        position="tl"
+      >
+        <ListItem primaryText="Upravit" onClick={() => history.push(editUrl)} />
+        <ListItem
+          primaryText="Náhled"
+          rightIcon={<FontIcon>open_in_new</FontIcon>}
+          onClick={() =>
+            openViewer(
+              type === "START" || type === "FINISH"
+                ? `/view/${viewUrl}/${type === "START" ? "start" : "finish"}`
+                : `/screen/${expoId}/${rowNum}/${colNum}`
+            )}
+        />
+        {cardType
+          ? <div>
+              <ListItem
+                primaryText="Přesunout"
+                onClick={() => {
+                  change("ScreenMove", "rowNum", rowNum);
+                  change("ScreenMove", "colNum", colNum);
+                  setDialog("ScreenMove", { rowNum, colNum });
+                }}
+              />
+              <ListItem
+                primaryText="Duplikovat"
+                onClick={() => {
+                  change("ScreenDuplicate", "rowNum", rowNum);
+                  change("ScreenDuplicate", "colNum", colNum);
+                  setDialog("ScreenDuplicate", { rowNum, colNum });
+                }}
+              />
+            </div>
+          : null}
+        <ListItem
+          primaryText="Získat odkaz obrazovky"
+          onClick={() =>
+            setDialog("ScreenLink", {
+              link:
+                type === "START"
+                  ? `${viewUrl}/start`
+                  : type === "FINISH"
+                    ? `${viewUrl}/finish`
+                    : `${viewUrl}/${rowNum}/${colNum}`
+            })}
+        />
+        <div>
+          {cardType &&
+            <div>
+              <Divider />
+              <ListItem
+                primaryText="Smazat"
+                onClick={() =>
+                  setDialog("ScreenDelete", { name, rowNum, colNum, type })}
+              />
+            </div>}
+        </div>
+      </MenuButton>
+    </div>
+  );
+};
+
+export default withRouter(connect(null, { setDialog, change })(ScreenCardMenu));

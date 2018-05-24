@@ -1,0 +1,62 @@
+.settings {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  &-state {
+    flex-basis: 200px;
+    p {
+      margin-left: 1em;
+    }
+  }
+  &-url {
+    flex-basis: 600px;
+    display: flex;
+    flex-direction: column;
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      & > * {
+        flex-basis: 74%;
+      }
+      .url {
+        flex-basis: 10%;
+        margin-top: 1em;
+        margin-right: 5px;
+        color: $c-grey;
+      }
+    }
+    .buttons {
+      text-align: right;
+      & > * {
+        margin: 5px;
+      }
+    }
+  }
+  &-state,
+  &-url {
+    margin: 1em;
+    .title {
+      font-weight: bold;
+    }
+  }
+}
+
+.sharing {
+  display: flex;
+  flex-direction: column;
+  p {
+    margin-left: 1em;
+    font-weight: bold;
+  }
+}
+
+.closed-expo {
+  max-width: 600px;
+  margin: 0 auto;
+
+  .title {
+    font-weight: bold;
+  }
+}

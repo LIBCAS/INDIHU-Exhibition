@@ -1,0 +1,64 @@
+$height-actions: 3.8em;
+$height-card-text: 15em;
+$height-card-new: $height-actions+$height-card-text;
+.expo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  &-card {
+    width: 300px;
+    margin: 10px;
+  }
+  &-new {
+    height: $height-card-new;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    i {
+      font-size: 3em;
+    }
+    p {
+      font-weight: bold;
+    }
+  }
+  &-card-text {
+    height: $height-card-text;
+    overflow-y: scroll;
+  }
+  &-actions {
+    position: relative;
+    white-space: nowrap;
+    height: $height-actions;
+
+    @media (max-width: $breakpoint-mini) {
+      & .action-button {
+        display: none;
+      }
+    }
+  }
+  &-more {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    @media (min-width: ($breakpoint-mini + 1)) {
+      & .action {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 1295px) {
+  .expo {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 655px) {
+  .expo-card {
+    width: 100%;
+  }
+}

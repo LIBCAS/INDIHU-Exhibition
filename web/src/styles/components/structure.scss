@@ -1,0 +1,166 @@
+.structure {
+  &-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    #icon {
+      margin: 1em 5.1em;
+    }
+    #large {
+      margin: 3em 0;
+    }
+  }
+  &-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    #icon {
+      margin: 2.6em 1.5em;
+    }
+    #large {
+      margin: 0 4.8em;
+    }
+  }
+  .col-line {
+    position: absolute;
+    z-index: -1;
+    background: $c-black;
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 6em;
+  }
+  .row-line {
+    position: absolute;
+    z-index: -1;
+    background: $c-black;
+    width: 5em;
+    height: 1px;
+    top: 3.5em;
+    right: -5em;
+    &.last {
+      width: 2em;
+      right: -2em;
+    }
+  }
+}
+
+.card,
+.start,
+.finish {
+  position: relative;
+  border: 1px solid $c-grey;
+  min-width: 12em;
+  width: 12em;
+  height: 7em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-right: 4em;
+  &-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    button {
+      min-width: 0;
+      padding: 0;
+      background: none;
+      color: $c-grey;
+    }
+  }
+  &-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  &.green {
+    background-color: $c-positive;
+  }
+}
+
+.start,
+.finish {
+  padding: 0;
+  background: $c-blue-sky;
+}
+
+#large {
+  height: 7em;
+  button {
+    padding: 0;
+  }
+  .new-content {
+    border: 1px solid $c-grey;
+    min-width: 7em;
+    width: 7em;
+    height: 4em;
+    .new-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      margin-top: .5em;
+      cursor: pointer;
+      i {
+        font-size: 2em;
+      }
+    }
+  }
+}
+
+#icon {
+  button {
+    background: $c-blue-sky;
+    color: $c-grey;
+    width: 1.8em;
+    height: 1.8em;
+    transition: box-shadow 0.2s linear;
+    .material-icons {
+      position: absolute;
+      top: 0.8px;
+      left: 0.8px;
+    }
+    &:hover {
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.add-menu {
+  &-header {
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: default;
+  }
+  &-item {
+    .md-tile-text--primary {
+      margin-left: 1em;
+    }
+  }
+}
+
+.card {
+  &-screen,
+  &-screen-start-finish {
+    cursor: pointer;
+  }
+
+  &-screen {
+    overflow: hidden;
+    height: calc(5em - 2px);
+    padding: 0px;
+    padding-left: 1em;
+  }
+
+  &-empty {
+    width: 12em;
+    height: 7em;
+    border: 1px solid $c-grey;
+    background-color: $c-white;
+  }
+}

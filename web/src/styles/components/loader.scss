@@ -1,0 +1,48 @@
+.async-loader {
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    background: rgba(#fff, .9);
+    z-index: 100000;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .animation {
+    z-index: 100000;
+    position: absolute;
+    top: 45%;
+    left: 47%;
+
+    .loader {
+      border: 8px solid $c-blue-primary;
+      border-top: 8px solid $c-blue-dark;
+      opacity: .7;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  .progress-bar {
+    z-index: 100000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40em;
+    max-width: calc(100% - 3em);
+  }
+}

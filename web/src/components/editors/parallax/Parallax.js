@@ -1,0 +1,174 @@
+import React from "react";
+import { connect } from "react-redux";
+import { map, filter, find } from "lodash";
+import { compose, withState } from "recompose";
+import { SelectField } from "react-md";
+
+import Carousel from "../Carousel";
+import Image from "../Image";
+import HelpIcon from "../../HelpIcon";
+
+import { setDialog } from "../../../actions/dialogActions";
+import { getFileById } from "../../../actions/fileActions";
+import { updateScreenData } from "../../../actions/expoActions";
+import { animationType, animationTypeText } from "../../../enums/animationType";
+
+import { helpIconText } from "../../../enums/text";
+
+const options = [
+  { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
+  { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
+  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
+  {
+    label: animationTypeText.FROM_LEFT_TO_RIGHT,
+    value: animationType.FROM_LEFT_TO_RIGHT
+  },
+  {
+    label: animationTypeText.FROM_RIGHT_TO_LEFT,
+    value: animationType.FROM_RIGHT_TO_LEFT
+  }
+];
+
+const Parallax = ({
+  activeScreen,
+  updateScreenData,
+  activeImageIndex,
+  setActiveImageIndex,
+  setDialog,
+  getFileById
+}) => {
+  const image =
+    activeImageIndex !== -1 &&
+    find(activeScreen.images, (image, i) => i === activeImageIndex && image)
+      ? getFileById(
+          find(
+            activeScreen.images,
+            (image, i) => i === activeImageIndex && image
+          )
+        )
+      : null;
+
+  const setImage = img => {
+    updateScreenData({
+      images: map(
+        activeScreen.images,
+        (image, i) => (activeImageIndex === i ? img.id : image)
+      )
+    });
+  };
+
+  return (
+    <div className="container container-tabMenu">
+      <div className="screen">
+        <Carousel
+          {...{
+            images: activeScreen.images,
+            activeImageIndex,
+            onClickCard: i =>
+              setActiveImageIndex(activeImageIndex === i ? -1 : i),
+            onClickLeft: i => {
+              updateScreenData({
+                images: [
+                  ...activeScreen.images.slice(0, i - 1),
+                  activeScreen.images[i],
+                  activeScreen.images[i - 1],
+                  ...activeScreen.images.slice(
+                    i + 1,
+                    activeScreen.images.length
+                  )
+                ]
+              });
+              setActiveImageIndex(activeImageIndex - 1);
+            },
+            onClickRight: i => {
+              updateScreenData({
+                images: [
+                  ...activeScreen.images.slice(0, i),
+                  activeScreen.images[i + 1],
+                  activeScreen.images[i],
+                  ...activeScreen.images.slice(
+                    i + 2,
+                    activeScreen.images.length
+                  )
+                ]
+              });
+              setActiveImageIndex(activeImageIndex + 1);
+            },
+            onDelete: i => {
+              updateScreenData({
+                images: filter(activeScreen.images, (img, j) => j !== i)
+              });
+              setActiveImageIndex(-1);
+            },
+            onAdd: () => {
+              updateScreenData({
+                images: activeScreen.images
+                  ? [...activeScreen.images, null]
+                  : [null]
+              });
+              if (activeScreen.images)
+                setActiveImageIndex(activeScreen.images.length - 1);
+            }
+          }}
+        />
+        <div className="flex-row flex-space-between margin-bottom">
+          <span>
+            <span>Nejspodnější</span>
+            <HelpIcon
+              {...{ label: helpIconText.EDITOR_PARALLAX_IMAGE_BOTTOM }}
+            />
+          </span>
+          <span>
+            <span>Nejvrchnější</span>
+            <HelpIcon {...{ label: helpIconText.EDITOR_PARALLAX_IMAGE_TOP }} />
+          </span>
+        </div>
+        {activeImageIndex !== -1 &&
+          <div className="screen-image">
+            <div className="screen-two-cols">
+              <div className="flex-row-nowrap one-image-row">
+                <Image
+                  {...{
+                    title: "Obrázek",
+                    image,
+                    setImage,
+                    onDelete: () =>
+                      updateScreenData({
+                        images: map(
+                          activeScreen.images,
+                          (image, i) => (i === activeImageIndex ? null : image)
+                        )
+                      })
+                  }}
+                />
+              </div>
+              <div className="flex-row-nowrap flex-centered">
+                <SelectField
+                  id="screen-parallax-selectfield-animation"
+                  className="select-field"
+                  label="Celková animace paralaxu"
+                  menuItems={options}
+                  itemLabel={"label"}
+                  itemValue={"value"}
+                  position={"below"}
+                  defaultValue={activeScreen.animationType}
+                  onChange={value =>
+                    updateScreenData({
+                      animationType: value
+                    })}
+                />
+                <HelpIcon
+                  {...{ label: helpIconText.EDITOR_PARALLAX_ANIMATION }}
+                />
+              </div>
+            </div>
+          </div>}
+      </div>
+    </div>
+  );
+};
+
+export default compose(
+  connect(null, { setDialog, getFileById, updateScreenData }),
+  withState("activeImageIndex", "setActiveImageIndex", -1)
+)(Parallax);

@@ -1,0 +1,139 @@
+.toolbar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  justify-content: space-between;
+  height: 4em !important;
+  z-index: 1000;
+  &-noshadow {
+    box-shadow: none !important;
+  }
+  &-centered {
+    justify-content: center;
+  }
+  &-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  &-back {
+    margin: 0 .5em 0 1em;
+    cursor: pointer;
+  }
+  &-left {
+    max-width: 50%;
+  }
+  &-title {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    img {
+      height: 1em;
+      cursor: pointer;
+    }
+  }
+  &-button {
+    display: block;
+    font-size: 1em;
+    text-align: center;
+    color: $c-white;
+    margin: .7em 1em .4em;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      color: $c-blue-light;
+    }
+  }
+  &-tablet {
+    display: none;
+  }
+  &-userRow {
+    .md-text {
+      font-weight: bold;
+    }
+  }
+  .hidden {
+    display: none;
+  }
+}
+
+.tabMenu {
+  position: fixed;
+  top: 3.9em;
+  width: 100%;
+  background: $c-blue-dark;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  z-index: 999;
+  &-tab {
+    font-size: 1em;
+    text-align: center;
+    color: $c-white;
+    padding: .7em 1em .4em 1em;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      color: $c-blue-light;
+    }
+    &.hidden {
+      display: block;
+    }
+    &.active {
+      color: $c-blue-light;
+      border-bottom: 3px solid $c-blue-light;
+    }
+    &.selected {
+      display: none;
+      border-bottom: 1px solid $c-blue-light;
+    }
+  }
+
+  & .ie {
+    height: 1em;
+
+    &.hidden {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .toolbar {
+    &-button {
+      display: none;
+    }
+    &-tablet {
+      display: block;
+    }
+    &-left {
+      max-width: 80%;
+    }
+  }
+  .tabMenu {
+    flex-direction: column;
+    &-tab {
+      &:hover {
+        color: $c-white;
+      }
+      &.hidden {
+        display: none;
+      }
+      &.active {
+        color: $c-blue-light;
+        border: none;
+      }
+      &.selected {
+        display: block;
+      }
+    }
+  }
+}
+
+#header-menuList {
+  z-index: 1000;
+  min-width: 120px;
+  text-align: center;
+}
