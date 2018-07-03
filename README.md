@@ -65,7 +65,7 @@ And then just check registration options in admin menu with login test/test, als
 
 For exmaple of configuration file in project look at `config.md`
 
-Indihu - API
+Indihu - WEB
 ===
 
 #### Example of exhibition structure 
