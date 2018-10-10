@@ -1,9 +1,10 @@
-INDIHU 
+INDIHU Exhibition
 ===
 Project website: https://indihu.cz/
+User manual: http://inqooltest.libj.cas.cz/manual/ 
 
 
-INDIHU - API
+INDIHU Exhibition - API
 ===
 
 Deployment
@@ -65,7 +66,7 @@ And then just check registration options in admin menu with login test/test, als
 
 For exmaple of configuration file in project look at `config.md`
 
-Indihu - WEB
+Indihu Exhibition - Frontend
 ===
 
 #### Example of exhibition structure 
