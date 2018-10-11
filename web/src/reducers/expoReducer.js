@@ -22,8 +22,13 @@ const initialState = {
   viewInteractive: false,
   viewInteractiveData: null,
   viewChapterMusic: null,
+  viewScreenAudio: null,
   viewLastChapter: null,
-  preloadedFiles: []
+  preloadedFiles: [],
+  expoEditor: {
+    startAuthorsFilter: { sort: "TITLE", order: "ASC", search: "" }
+  },
+  soundIsTurnedOff: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -193,24 +198,30 @@ const reducer = (state = initialState, action) => {
     case c.EXPO_RENAME:
       return {
         ...state,
-        expositions: [
-          ...map(filter(state.expositions, e => e.id !== action.payload.id)),
-          {
-            ...find(state.expositions, { id: action.payload.id }),
-            title: action.payload.title
-          }
-        ]
+        expositions: {
+          ...state.expositions,
+          items: [
+            ...filter(state.expositions.items, e => e.id !== action.payload.id),
+            {
+              ...find(state.expositions.items, { id: action.payload.id }),
+              title: action.payload.title
+            }
+          ]
+        }
       };
     case c.EXPO_STATE_CHANGE:
       return {
         ...state,
-        expositions: [
-          ...map(filter(state.expositions, e => e.id !== action.payload.id)),
-          {
-            ...find(state.expositions, { id: action.payload.id }),
-            state: action.payload.state
-          }
-        ],
+        expositions: {
+          ...state.expositions,
+          items: [
+            ...filter(state.expositions.items, e => e.id !== action.payload.id),
+            {
+              ...find(state.expositions.items, { id: action.payload.id }),
+              state: action.payload.state
+            }
+          ]
+        },
         activeExpo: {
           ...state.activeExpo,
           state: action.payload.state
@@ -219,14 +230,23 @@ const reducer = (state = initialState, action) => {
     case c.EXPO_DELETE:
       return {
         ...state,
-        expositions: [
-          ...map(filter(state.expositions, e => e.id !== action.payload.id))
-        ]
+        expositions: {
+          items: [
+            ...filter(state.expositions.items, e => e.id !== action.payload.id)
+          ],
+          count: filter(
+            state.expositions.items,
+            e => e.id !== action.payload.id
+          ).length
+        }
       };
     case c.EXPO_ADD:
       return {
         ...state,
-        expositions: [...state.expositions, action.payload]
+        expositions: {
+          items: [...state.expositions.items, action.payload],
+          count: [...state.expositions.items, action.payload].length
+        }
       };
     case c.EXPO_VIEWER:
       return {
@@ -254,6 +274,11 @@ const reducer = (state = initialState, action) => {
             ? state.viewExpo.filesLoaded + 1
             : 1
         }
+      };
+    case c.EXPO_EDITOR_UPDATE:
+      return {
+        ...state,
+        expoEditor: { ...state.expoEditor, ...action.payload }
       };
     default:
       return state;

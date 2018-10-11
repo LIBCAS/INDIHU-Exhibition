@@ -223,7 +223,7 @@ export default compose(
             : "100%"}; height: ${viewScreen.image2OrigData.height >
           viewScreen.image2OrigData.width
             ? "100%"
-            : "auto"}`
+            : "auto"}; object-fit: contain;`
         );
         document
           .getElementById("view-game-find-game-wrap")

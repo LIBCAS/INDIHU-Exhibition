@@ -202,6 +202,12 @@
     &.img-none {
       width: 450px;
       height: 350px;
+
+      @media (max-width: $breakpoint-mobile) {
+        .card-image-icon-placeholder {
+          font-size: 70vw;
+        }
+      }
     }
 
     &.img {
@@ -266,7 +272,7 @@
   background: $c-blue-dark;
   height: 3.8em;
   .inner {
-    max-width: 1300px;
+    max-width: 1340px;
     margin: 0 auto;
     height: 3.8em;
     display: flex;

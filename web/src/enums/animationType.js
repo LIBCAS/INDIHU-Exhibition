@@ -31,3 +31,9 @@ export const animationTypeText = {
   HORIZONTAL: "Horizontální táhlo",
   VERTICAL: "Vertikální táhlo"
 };
+
+export const animationTypeViewStartEnum = [
+  { value: animationType.WITHOUT, label: animationTypeText.WITHOUT },
+  { value: animationType.FROM_TOP, label: animationTypeText.FROM_TOP },
+  { value: animationType.FROM_BOTTOM, label: animationTypeText.FROM_BOTTOM }
+];

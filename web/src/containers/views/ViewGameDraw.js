@@ -21,7 +21,9 @@ const ViewGameDraw = ({
   paint,
   setPaint,
   setScrawl,
-  addScrawl
+  addScrawl,
+  resetButton,
+  setResetButton
 }) => {
   return (
     <div className="game">
@@ -91,7 +93,7 @@ const ViewGameDraw = ({
       <GameMenu
         {...{
           doneButton: true,
-          resetButton: true,
+          resetButton,
           task: viewScreen.task,
           getNextUrlPart,
           onClick: () => {
@@ -116,12 +118,13 @@ const ViewGameDraw = ({
                   : "100%"}; height: ${viewScreen.image2OrigData.height >
                 viewScreen.image2OrigData.width
                   ? "100%"
-                  : "auto"}`
+                  : "auto"}; object-fit: contain;`
               );
               document
                 .getElementById("view-game-find-game-wrap")
                 .appendChild(newNode);
             }
+            setResetButton(false);
           },
           onReset: () => {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -149,6 +152,7 @@ export default compose(
       mouseActualize
     }
   ),
+  withState("resetButton", "setResetButton", true),
   withState("ctx", "setCtx", null),
   withState("paint", "setPaint", false),
   withState("scrawl", "setScrawl", { x: [], y: [], drag: [] }),
@@ -159,7 +163,7 @@ export default compose(
         y: [...scrawl.y, y],
         drag: [...scrawl.drag, !!dragging]
       };
-      
+
       setScrawl(actScrawl);
 
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -203,7 +207,7 @@ export default compose(
             : "100%"}; height: ${viewScreen.image1OrigData.height >
           viewScreen.image1OrigData.width
             ? "100%"
-            : "auto"}`
+            : "auto"}; object-fit: contain;`
         );
         document
           .getElementById("view-game-find-game-wrap")

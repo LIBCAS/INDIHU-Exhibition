@@ -11,6 +11,11 @@
   opacity: 1;
   filter: alpha(opacity=100);
   overflow: auto;
+
+  &.big {
+    max-width: 600px;
+  }
+
   &-background {
     position: fixed;
     top: 0;
@@ -34,6 +39,10 @@
   &-content {
     width: 100%;
     margin-bottom: 1em;
+
+    &.no-margin-bottom {
+      margin-bottom: 0;
+    }
   }
   &-title {
     height: 3.8em;
@@ -55,7 +64,7 @@
   }
   &.large {
     width: 99vw;
-    max-width: 1300px;
+    max-width: 1340px;
     max-height: 99vh;
   }
 }

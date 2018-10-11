@@ -9,7 +9,7 @@ export const setDialog = (name, data) => ({
 });
 
 export const closeDialog = () => async dispatch => {
-  document.body.style.overflow = "scroll";
+  document.body.style.overflow = "auto";
   dispatch({
     type: DIALOG_CLOSE,
     payload: {}

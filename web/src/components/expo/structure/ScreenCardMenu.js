@@ -9,6 +9,7 @@ import FontIcon from "react-md/lib/FontIcons";
 
 import { setDialog } from "../../../actions/dialogActions";
 import { openViewer } from "../../../utils";
+import { screenType } from "../../../enums/screenType";
 
 const ScreenCardMenu = ({
   name,
@@ -21,7 +22,8 @@ const ScreenCardMenu = ({
   viewUrl,
   editUrl,
   change,
-  expoId
+  expoId,
+  aloneScreen
 }) => {
   return (
     <div className="card-menu">
@@ -31,7 +33,11 @@ const ScreenCardMenu = ({
         buttonChildren="more_vert"
         position="tl"
       >
-        <ListItem primaryText="Upravit" onClick={() => history.push(editUrl)} />
+        {type !== screenType.FINISH &&
+          <ListItem
+            primaryText="Upravit"
+            onClick={() => history.push(editUrl)}
+          />}
         <ListItem
           primaryText="Náhled"
           rightIcon={<FontIcon>open_in_new</FontIcon>}
@@ -42,26 +48,31 @@ const ScreenCardMenu = ({
                 : `/screen/${expoId}/${rowNum}/${colNum}`
             )}
         />
-        {cardType
-          ? <div>
-              <ListItem
-                primaryText="Přesunout"
-                onClick={() => {
-                  change("ScreenMove", "rowNum", rowNum);
-                  change("ScreenMove", "colNum", colNum);
-                  setDialog("ScreenMove", { rowNum, colNum });
-                }}
-              />
-              <ListItem
-                primaryText="Duplikovat"
-                onClick={() => {
-                  change("ScreenDuplicate", "rowNum", rowNum);
-                  change("ScreenDuplicate", "colNum", colNum);
-                  setDialog("ScreenDuplicate", { rowNum, colNum });
-                }}
-              />
-            </div>
-          : null}
+        {cardType &&
+          <div>
+            <ListItem
+              primaryText="Přesunout"
+              onClick={() => {
+                change("ScreenMove", "rowNum", rowNum);
+                change("ScreenMove", "colNum", colNum);
+                change("ScreenMove", "aloneScreen", !!aloneScreen);
+                setDialog("ScreenMove", {
+                  rowNum,
+                  colNum,
+                  aloneScreen: !!aloneScreen,
+                  type
+                });
+              }}
+            />
+            <ListItem
+              primaryText="Duplikovat"
+              onClick={() => {
+                change("ScreenDuplicate", "rowNum", rowNum);
+                change("ScreenDuplicate", "colNum", colNum);
+                setDialog("ScreenDuplicate", { rowNum, colNum });
+              }}
+            />
+          </div>}
         <ListItem
           primaryText="Získat odkaz obrazovky"
           onClick={() =>
@@ -74,17 +85,15 @@ const ScreenCardMenu = ({
                     : `${viewUrl}/${rowNum}/${colNum}`
             })}
         />
-        <div>
-          {cardType &&
-            <div>
-              <Divider />
-              <ListItem
-                primaryText="Smazat"
-                onClick={() =>
-                  setDialog("ScreenDelete", { name, rowNum, colNum, type })}
-              />
-            </div>}
-        </div>
+        {cardType &&
+          <div>
+            <Divider />
+            <ListItem
+              primaryText="Smazat"
+              onClick={() =>
+                setDialog("ScreenDelete", { name, rowNum, colNum, type })}
+            />
+          </div>}
       </MenuButton>
     </div>
   );

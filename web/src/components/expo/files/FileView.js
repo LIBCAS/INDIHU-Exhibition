@@ -5,7 +5,7 @@ import { Card, CardText, FontIcon } from "react-md";
 
 import { tabFile } from "../../../actions/fileActions";
 
-const FileView = ({ activeFile, activeFolder, tabFile }) =>
+const FileView = ({ activeFile, tabFile }) =>
   <Card
     className="files-view"
     onClick={() => {
@@ -18,7 +18,18 @@ const FileView = ({ activeFile, activeFolder, tabFile }) =>
       {activeFile &&
         activeFile.show &&
         (/^image.*$/.test(activeFile.type)
-          ? <img src={`/api/files/${activeFile.fileId}`} alt="img" />
+          ? <img
+              src={`/api/files/${activeFile.fileId}`}
+              alt="img"
+              id="file-view-img"
+              onLoad={() =>
+                document.getElementById("file-view-img") &&
+                tabFile({
+                  ...activeFile,
+                  width: document.getElementById("file-view-img").width,
+                  height: document.getElementById("file-view-img").height
+                })}
+            />
           : /^audio.*$/.test(activeFile.type)
             ? <audio controls>
                 <source
@@ -53,7 +64,9 @@ const FileView = ({ activeFile, activeFolder, tabFile }) =>
                       ? "movie"
                       : "insert_drive_file"}
               </i>}
-          {!/^image.*$/.test(activeFile.type) || !activeFile.thumbnailId
+          {/^audio.*$/.test(activeFile.type) ||
+          /^video.*$/.test(activeFile.type) ||
+          (/^image.*$/.test(activeFile.type) && !activeFile.thumbnailId)
             ? <FontIcon {...{ className: "label" }}>play_arrow</FontIcon>
             : <div />}
         </div>}

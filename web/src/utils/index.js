@@ -19,8 +19,15 @@ export const isAdmin = roles => indexOf(roles, "ROLE_ADMIN") >= 0;
 /**
  * Open viewer
  */
-export const openViewer = url =>
-  window.open(`${window.location.origin}${url}`, "_blank");
+export const openViewer = url => {
+  const a = document.createElement("a");
+  a.href = `${window.location.origin}${url}`;
+  a.target = "_blank";
+  a.className = "hidden";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
 
 /**
  * Format timestamp into human eye friendly format

@@ -50,27 +50,25 @@ const Description = ({
               />
               <HelpIcon {...{ label: helpIconText.EDITOR_GAME_TASK }} />
             </div>
-            <div className="flex-row-nowrap">
-              <Image
-                {...{
-                  title: "Doprovodný obrázek",
-                  image,
-                  setImage,
-                  onDelete: () =>
-                    updateScreenData({ image: null, imageOrigData: null }),
-                  onLoad: (width, height) =>
-                    updateScreenData({
-                      imageOrigData: {
-                        width,
-                        height
-                      }
-                    })
-                }}
-              />
-            </div>
+            <Image
+              {...{
+                title: "Doprovodný obrázek",
+                image,
+                setImage,
+                onDelete: () =>
+                  updateScreenData({ image: null, imageOrigData: null }),
+                onLoad: (width, height) =>
+                  updateScreenData({
+                    imageOrigData: {
+                      width,
+                      height
+                    }
+                  })
+              }}
+            />
           </div>
           <div className="part margin-bottom margin-horizontal">
-          <Music
+            <Music
               {...{
                 aloneScreen: activeScreen.aloneScreen,
                 music,

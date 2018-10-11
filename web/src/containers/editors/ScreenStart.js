@@ -13,7 +13,7 @@ import { updateScreenData } from "../../actions/expoActions";
 
 const Screenstart = props => {
   const { match, activeScreen, history, url } = props;
-  
+
   return (
     <div>
       <TabMenu
@@ -50,6 +50,12 @@ const Screenstart = props => {
         history={history}
         url={url}
         type="start"
+        noActions={
+          isNaN(Number(activeScreen.expoTime)) ||
+          Number(activeScreen.expoTime) > 1000000000
+        }
+        noActionTitle="Zadána neplatná hodnota"
+        noActionText="U pole s délkou trvání výstavy byla zadána neplatná hodnota."
       />
     </div>
   );

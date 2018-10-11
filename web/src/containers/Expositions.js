@@ -3,7 +3,6 @@ import { compose, lifecycle, withState } from "recompose";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { map, get } from "lodash";
-import { Button, FontIcon } from "react-md";
 
 import AppHeader from "../components/AppHeader";
 import Header from "../components/expositions/Header";
@@ -26,8 +25,8 @@ const Expositions = ({
 }) =>
   <div>
     <AppHeader expositionsStyle />
-    <div className="container padding-bottom">
-      <Header {...{ setExpoFilter }} />
+    <div className="container padding-bottom-small">
+      <Header {...{ cardsList, setExpoFilter, setDialog }} />
       {cardsList
         ? <div className="expo">
             <ExpoNewCard />
@@ -36,16 +35,6 @@ const Expositions = ({
             )}
           </div>
         : <div>
-            <Button
-              {...{
-                raised: true,
-                label: "Vytvořit novou výstavu",
-                className: "margin-bottom-small",
-                onClick: () => setDialog("ExpoNew")
-              }}
-            >
-              <FontIcon>add</FontIcon>
-            </Button>
             <Table
               {...{
                 expositions: expositions.items,

@@ -69,7 +69,7 @@ const AppHeader = ({
     {!authStyle &&
       <div className="toolbar-right toolbar-flex">
         {(expoStyle || (screenStyle && activeScreen)) &&
-          <p className="toolbar-button">
+          <p className="toolbar-button nonclickable">
             stav: {expoStateText[activeExpo.state]}
           </p>}
         {!expoStyle &&

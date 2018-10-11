@@ -50,7 +50,7 @@ const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
                       </video>
                     </CardText>
                   : <CardText className="flex-col padding-none">
-                      <FontIcon>movie</FontIcon>
+                      <FontIcon className="card-image-icon-placeholder">movie</FontIcon>
                       <div className="flex flex-centered">
                         <Button
                           raised

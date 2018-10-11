@@ -9,22 +9,24 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import Button from "react-md/lib/Buttons/Button";
 
 import Dialog from "./DialogWrap";
-// import TextField from "../form/TextField";
 
 const ScreenLink = ({ handleSubmit, initialValues, data }) =>
   initialValues.link
     ? <Dialog
         title="Odkaz obrazovky"
         name="ScreenLink"
-        submitLabel="Ok"
+        submitLabel="Zavřít"
         handleSubmit={handleSubmit}
+        noStornoButton={true}
+        big={true}
       >
         <form onSubmit={handleSubmit}>
-          <div className="flex-row flex-centered">
-            {`${window.location.origin}/view/${initialValues.link}`}
-            {/*<Field component={TextField} componentId="screen-link-textfield-link" name="link" disabled />*/}
+          <div className="flex-row">
+            <h4>{`${window.location.origin}/view/${initialValues.link}`}</h4>
           </div>
-          <CopyToClipboard text={`${window.location.origin}/view/${initialValues.link}`}>
+          <CopyToClipboard
+            text={`${window.location.origin}/view/${initialValues.link}`}
+          >
             <Button raised label="Kopírovat do schránky" />
           </CopyToClipboard>
         </form>

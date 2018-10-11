@@ -7,11 +7,10 @@ import LeftScreen from "../../components/views/interactiveScreen/LeftScreen";
 import RightScreen from "../../components/views/interactiveScreen/RightScreen";
 
 import { interactiveRouter } from "../../utils";
-import { getFileById } from "../../actions/fileActions";
+import { screenUrl } from "../../enums/screenType";
 
 const InteractiveScreen = ({
   viewScreen,
-  getFileById,
   interactiveScrollRouting,
   screenFiles,
   screenViewer
@@ -35,16 +34,11 @@ const InteractiveScreen = ({
 
 export default compose(
   withRouter,
-  connect(
-    ({ expo: { viewChapterMusic, viewExpo, viewScreen } }) => ({
-      viewChapterMusic,
-      viewExpo,
-      viewScreen
-    }),
-    {
-      getFileById
-    }
-  ),
+  connect(({ expo: { viewChapterMusic, viewExpo, viewScreen } }) => ({
+    viewChapterMusic,
+    viewExpo,
+    viewScreen
+  })),
   lifecycle({
     componentDidMount() {
       const { viewChapterMusic } = this.props;
@@ -80,9 +74,16 @@ export default compose(
 
         if (newSectionScreen) {
           await handleScreen(newSectionScreen);
-          history.push(
-            `/view/${name}/${newSectionScreen.section}/${newSectionScreen.screen}`
-          );
+          if (
+            newSectionScreen.section === screenUrl.START ||
+            newSectionScreen.section === screenUrl.FINISH
+          ) {
+            history.push(`/view/${name}/${newSectionScreen.section}`);
+          } else {
+            history.push(
+              `/view/${name}/${newSectionScreen.section}/${newSectionScreen.screen}`
+            );
+          }
         }
       }
     }

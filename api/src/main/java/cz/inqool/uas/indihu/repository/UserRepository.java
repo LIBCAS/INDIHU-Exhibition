@@ -84,7 +84,7 @@ public class UserRepository extends IndexedDatedStore<User, QUser, IndexedUser>{
      * delete given user
      */
     @Override
-    public void delete(User entity) {
+    public User delete(User entity) {
         if (!entityManager.contains(entity) && entity != null) {
             entity = entityManager.find(type, entity.getId());
         }
@@ -98,6 +98,7 @@ public class UserRepository extends IndexedDatedStore<User, QUser, IndexedUser>{
             entityManager.flush();
             detachAll();
         }
+        return entity;
     }
 
     @Override

@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import classNames from "classnames";
 
 import ScreenCardMenu from "./ScreenCardMenu";
-import { screenTypeText } from "../../../enums/screenType";
+import { screenType, screenTypeText } from "../../../enums/screenType";
 
 const ScreenCard = ({ activeExpo, type, history }) => {
   const editUrl = get(activeExpo, "id")
@@ -26,7 +26,10 @@ const ScreenCard = ({ activeExpo, type, history }) => {
         viewUrl={activeExpo.url}
       />
       <CardText className="card-screen-start-finish">
-        <p onClick={() => history.push(editUrl)}>
+        <p
+          onClick={() =>
+            type.toUpperCase() !== screenType.FINISH && history.push(editUrl)}
+        >
           {screenTypeText[type.toUpperCase()]}
         </p>
       </CardText>

@@ -1,8 +1,8 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 @import "./fonts.scss";
@@ -13,12 +13,13 @@ $c-white: #fff;
 $c-black: #000;
 $c-grey: lighten($c-black, 30);
 $c-grey-dark: #646464;
+$c-grey-light: #d3d3d3;
 $c-blue-dark: #083d77;
 $c-blue-primary: #3366cc;
 $c-blue-light: #bbddfe;
 $c-blue-sky: #e0efff;
 $c-error: #ea5d5d;
-$c-positive: #E4F1E4;
+$c-positive: #e4f1e4;
 $c-maroon: #85144b;
 
 /* BREAKPOINTS */
@@ -27,6 +28,7 @@ $breakpoint-desktop: 800px;
 $breakpoint-tablet: 600px;
 $breakpoint-mobile: 400px;
 $breakpoint-mini: 300px;
+$breakpoint-200: 200px;
 
 /* MD */
 
@@ -48,6 +50,6 @@ $md-colors-warn-md: false;
 @import "components/screen.scss";
 @import "components/viewer.scss";
 
-.md-text-field-container.md-text-field-container--input {
-    overflow: hidden;
+*:not(i) {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

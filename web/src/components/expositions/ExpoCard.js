@@ -5,7 +5,7 @@ import CardActions from "react-md/lib/Cards/CardActions";
 import Divider from "react-md/lib/Dividers";
 
 import ExpoCardActions from "./ExpoCardActions";
-import { formatDate } from "../../utils";
+import { formatTime } from "../../utils";
 import { expoStateText } from "../../enums/expoState";
 
 const ExpoCard = ({
@@ -53,7 +53,7 @@ const ExpoCard = ({
           </div>
           <div className="md-cell--right">
             <p>
-              {formatDate(created)}
+              {formatTime(created)}
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ const ExpoCard = ({
           </div>
           <div className="md-cell--right">
             <p>
-              {formatDate(lastEdit)}
+              {formatTime(lastEdit)}
             </p>
           </div>
         </div>
@@ -80,7 +80,7 @@ const ExpoCard = ({
           </div>}
       </CardText>
       <CardActions className="md-divider-border md-divider-border--top expo-actions">
-        <ExpoCardActions {...{ id, canEdit, canDelete, url, state }} />
+        <ExpoCardActions {...{ id, title, canEdit, canDelete, url, state }} />
       </CardActions>
     </Card>
   </div>;

@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { compose, withHandlers } from "recompose";
+import { compose, withHandlers, withState } from "recompose";
 
 import Dialog from "./DialogWrap";
+import Header from "../expo/files/Header";
 import FileManager from "../expo/files/FileManager";
 import FileMeta from "../expo/files/FileMeta";
 import FileView from "../expo/files/FileView";
@@ -16,7 +17,9 @@ const ScreenDocumentChoose = ({
   activeFolder,
   activeExpo,
   tabFolder,
-  tabFile
+  tabFile,
+  keyState,
+  setKeyState
 }) => {
   const onClose = () => {
     tabFolder(null);
@@ -30,6 +33,7 @@ const ScreenDocumentChoose = ({
       onClose={onClose}
       className="large"
     >
+      <Header onFileAdd={() => setKeyState(!keyState)} />
       <div className="files-row">
         <div className="files-wrap--manager">
           <FileManager
@@ -40,6 +44,7 @@ const ScreenDocumentChoose = ({
             tabFolder={tabFolder}
             tabFile={tabFile}
             typeMatch={dialogData && dialogData.typeMatch}
+            key={`files-file-manager-state-${keyState}`}
           />
           {dialogData &&
             dialogData.error &&
@@ -69,10 +74,19 @@ export default compose(
     }),
     { ...fileActions }
   ),
+  withState("keyState", "setKeyState", true),
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
-      if (props.activeFile) dialog.closeDialog();
-      else
+    onSubmit: dialog => async (
+      formData,
+      dispatch,
+      { activeFile, dialogData: { onChoose } }
+    ) => {
+      if (activeFile) {
+        if (onChoose) {
+          onChoose(activeFile);
+        }
+        dialog.closeDialog();
+      } else
         dialog.addDialogData("ScreenDocumentChoose", {
           error: "*Vyber soubor"
         });

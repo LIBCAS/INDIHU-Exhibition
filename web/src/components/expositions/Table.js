@@ -7,7 +7,7 @@ import ExpoMenu from "./ExpoMenu";
 
 import { changeCollaboratorType } from "../../actions/expoActions";
 
-import { formatDate } from "../../utils";
+import { formatTime } from "../../utils";
 
 import { expoStateText } from "../../enums/expoState";
 
@@ -98,10 +98,10 @@ const Table = ({
           {expoStateText[get(item, "state")]}
         </td>
         <td className="table-all-col">
-          {formatDate(get(item, "created"))}
+          {formatTime(get(item, "created"))}
         </td>
         <td className="table-all-col">
-          {formatDate(get(item, "lastEdit"))}
+          {formatTime(get(item, "lastEdit"))}
         </td>
         <td className="table-all-col">
           {get(item, "isEditing")}
@@ -109,7 +109,9 @@ const Table = ({
         <td className="table-all-col select actions">
           <ExpoMenu
             id={item.id}
+            title={item.title}
             canEdit={item.canEdit}
+            canDelete={item.canDelete}
             url={item.url}
             state={item.state}
             inProgress={item.inProgress}

@@ -17,8 +17,7 @@ const ExpoExport = ({ handleSubmit }) => (
 export default compose(
   withRouter,
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
-      console.log("export");
+    onSubmit: dialog => async () => {
       dialog.closeDialog();
     }
   }),

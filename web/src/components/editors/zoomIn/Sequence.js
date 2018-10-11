@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { map, compact, concat, find, filter } from "lodash";
+import { map, compact, concat, filter, get, find } from "lodash";
 import { compose, withState } from "recompose";
 
 import Image from "../Image";
@@ -9,12 +9,11 @@ import InfopointsSequencesTable from "../InfopointsSequencesTable";
 import { setDialog } from "../../../actions/dialogActions";
 import { updateScreenData } from "../../../actions/expoActions";
 import { getFileById } from "../../../actions/fileActions";
+import { hasValue } from "../../../utils";
 
 const Sequence = ({
   activeScreen,
-  setDialog,
   updateScreenData,
-  handleSubmit,
   setActivePoint,
   activePoint,
   getFileById
@@ -115,7 +114,7 @@ const Sequence = ({
                   updateScreenData({
                     sequences: filter(
                       activeScreen.sequences,
-                      (inf, idx) => i !== idx
+                      (_, idx) => i !== idx
                     )
                   }),
                 onSelect: (i, value) =>
@@ -138,9 +137,28 @@ const Sequence = ({
                     )
                   }),
                 initialValues: {
-                  text: find(activeScreen.sequences, i => i.edit)
-                    ? find(activeScreen.sequences, i => i.edit).text
-                    : undefined
+                  text:
+                    !hasValue(
+                      get(
+                        find(
+                          activeScreen.sequences,
+                          infopoint => infopoint.edit
+                        ),
+                        "text"
+                      )
+                    ) ||
+                    get(
+                      find(activeScreen.sequences, infopoint => infopoint.edit),
+                      "text"
+                    ) === "Vložte popis zoomu"
+                      ? ""
+                      : get(
+                          find(
+                            activeScreen.sequences,
+                            infopoint => infopoint.edit
+                          ),
+                          "text"
+                        )
                 }
               }}
             />}

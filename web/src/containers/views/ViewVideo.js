@@ -45,7 +45,11 @@ export default compose(
             )
           );
         }
-        document.getElementById("view-video-video").play();
+        const promise = document.getElementById("view-video-video").play();
+
+        promise.catch(_ => {
+          document.getElementById("view-video-video").controls = "true";
+        });
       }
     }
   }),

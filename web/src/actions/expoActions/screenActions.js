@@ -14,7 +14,8 @@ import {
   EXPO_SCREEN_DOCUMENT_DELETE,
   EXPO_STRUCTURE_SET,
   EXPO_STRUCTURE_SCREEN_SET,
-  EXPOSITIONS
+  EXPOSITIONS,
+  EXPO_EDITOR_UPDATE
 } from "./../constants";
 
 import { objectsEqual } from "../../utils";
@@ -199,5 +200,20 @@ export const removeScreenDocument = document => async dispatch => {
   dispatch({
     type: EXPO_SCREEN_DOCUMENT_DELETE,
     payload: document
+  });
+};
+
+export const updateStartAuthorsFilter = filter => async (
+  dispatch,
+  getState
+) => {
+  dispatch({
+    type: EXPO_EDITOR_UPDATE,
+    payload: {
+      startAuthorsFilter: {
+        ...getState().expo.expoEditor.startAuthorsFilter,
+        ...filter
+      }
+    }
   });
 };

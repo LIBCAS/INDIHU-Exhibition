@@ -18,8 +18,10 @@ import {
   loadExposition,
   loadScreen,
   setChapterMusic,
+  setScreenAudio,
   setLastChapter,
-  filePreloader
+  filePreloader,
+  turnSoundOff
 } from "../actions/expoActions/viewerActions";
 
 import { automaticRouting, screenUrl } from "../enums/screenType";
@@ -30,28 +32,29 @@ import {
   motionVolume
 } from "../utils";
 
-/**
- * TODO do buducna: odstranit opakovanie unmount-mount Screen 
- * pomocou key v Route a spravit logiku Screeny cez cwrp;
- */
-
 /** SCREEN */
 
 const ViewScreen = compose(
   withRouter,
   withState("stateMotionVol", "setStateMotionVol", false),
-  withState("stateAudio", "setStateAudio", null),
   withState("stateTimeout", "setStateTimeout", null),
   connect(
     ({
-      expo: { viewExpo, viewChapterMusic, viewLastChapter, preloadedFiles }
+      expo: {
+        viewExpo,
+        viewChapterMusic,
+        viewScreenAudio,
+        viewLastChapter,
+        preloadedFiles
+      }
     }) => ({
       viewExpo,
       viewChapterMusic,
+      viewScreenAudio,
       viewLastChapter,
       preloadedFiles
     }),
-    { setChapterMusic, setLastChapter }
+    { setChapterMusic, setLastChapter, setScreenAudio }
   ),
   lifecycle({
     async componentWillMount() {
@@ -67,9 +70,10 @@ const ViewScreen = compose(
         setChapterMusic,
         viewLastChapter,
         setLastChapter,
-        setStateAudio,
+        setScreenAudio,
         setStateTimeout,
-        setStateMotionVol
+        setStateMotionVol,
+        soundIsTurnedOff
       } = this.props;
       /** load screen data */
       const viewScreen = await handleScreen({ section, screen });
@@ -85,9 +89,11 @@ const ViewScreen = compose(
         if (get(viewExpo.structure.screens[section], "[0].music")) {
           const music = preloadedFiles[section][0]["music"];
           music.loop = true;
-          music.volume = 0.2;
+          music.volume = soundIsTurnedOff ? 0 : 0.2;
           music.play();
           setChapterMusic(music);
+        } else {
+          setChapterMusic(null);
         }
         setLastChapter(section);
       }
@@ -104,8 +110,11 @@ const ViewScreen = compose(
         if (viewScreen && viewScreen.audio) {
           const audio = screenFiles["audio"];
           audio.currentTime = 0;
+          audio.volume = soundIsTurnedOff ? 0 : 1;
           audio.play();
-          setStateAudio(audio);
+          setScreenAudio(audio);
+        } else {
+          setScreenAudio(null);
         }
       } else {
         /** motion volume for games and video */
@@ -117,25 +126,27 @@ const ViewScreen = compose(
 
       /** mute chapter music for screen */
       if (muteMusicForScreen && viewChapterMusic) {
-        motionVolume(viewChapterMusic, 0.2, 0);
+        motionVolume(viewChapterMusic, soundIsTurnedOff ? 0 : 0.2, 0);
         if (automaticRouting[nextViewType(viewExpo, section, screen)])
           setStateMotionVol(true);
       }
     },
     componentWillUnmount() {
       const {
-        stateAudio,
+        viewScreenAudio,
         stateTimeout,
         viewChapterMusic,
-        stateMotionVol
+        stateMotionVol,
+        soundIsTurnedOff
       } = this.props;
 
       if (viewChapterMusic && stateMotionVol) {
-        motionVolume(viewChapterMusic, 0, 0.2);
+        motionVolume(viewChapterMusic, 0, soundIsTurnedOff ? 0 : 0.2);
       }
 
-      if (stateAudio) {
-        stateAudio.pause();
+      if (viewScreenAudio) {
+        viewScreenAudio.pause();
+        setScreenAudio(null);
       }
 
       clearTimeout(stateTimeout);
@@ -200,10 +211,13 @@ const ViewInteractivity = compose(
 
 const ViewSection = compose(
   withRouter,
-  connect(({ expo: { preloadedFiles, viewChapterMusic } }) => ({
-    preloadedFiles,
-    viewChapterMusic
-  })),
+  connect(
+    ({ expo: { preloadedFiles, viewChapterMusic } }) => ({
+      preloadedFiles,
+      viewChapterMusic
+    }),
+    { setChapterMusic }
+  ),
   lifecycle({
     async componentWillMount() {
       const { match, handleScreen } = this.props;
@@ -220,7 +234,8 @@ const ViewSection = compose(
     handleScreen,
     viewScreen,
     preloadedFiles,
-    viewChapterMusic
+    viewChapterMusic,
+    setChapterMusic
   } = props;
 
   const section = match.params.section;
@@ -228,7 +243,10 @@ const ViewSection = compose(
   if (section === screenUrl.START)
     return <ViewStart {...{ screenFiles: preloadedFiles[screenUrl.START] }} />;
   else if (section === screenUrl.FINISH) {
-    if (viewChapterMusic) viewChapterMusic.pause();
+    if (viewChapterMusic) {
+      viewChapterMusic.pause();
+      setChapterMusic(null);
+    }
     return (
       <ViewFinish
         {...{ handleScreen, screenFiles: preloadedFiles[screenUrl.FINISH] }}
@@ -264,7 +282,8 @@ export default compose(
     {
       loadExposition,
       loadScreen,
-      filePreloader
+      filePreloader,
+      turnSoundOff
     }
   ),
   lifecycle({
@@ -300,10 +319,15 @@ export default compose(
 
       await filePreloader();
       setPrepared(true);
+    },
+    componentWillUnmount() {
+      const { turnSoundOff } = this.props;
+
+      turnSoundOff(false);
     }
   }),
   withHandlers({
-    handleScreen: ({ loadScreen, viewExpo, history, match }) => async ({
+    handleScreen: ({ loadScreen, history, match }) => async ({
       section,
       screen
     }) => {

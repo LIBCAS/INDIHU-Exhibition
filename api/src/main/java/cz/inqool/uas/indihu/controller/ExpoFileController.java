@@ -13,19 +13,15 @@ import cz.inqool.uas.indihu.service.CollaboratorService;
 import cz.inqool.uas.indihu.service.ExpositionFileService;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.http.entity.ContentType;
 import org.apache.tika.exception.TikaException;
 import org.imgscalr.Scalr;
-import org.jgroups.stack.StateTransferInfo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
-import org.yaml.snakeyaml.emitter.ScalarAnalysis;
 
 import javax.annotation.security.RolesAllowed;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -75,7 +71,7 @@ public class ExpoFileController {
                            @ApiParam(value = "Should be the content of file indexed")
                            @RequestParam(name = "index", defaultValue = "false") Boolean index,
                            @ApiParam(value = "exposition id")
-                           @RequestParam(name = "id") String expositionId) throws UnsupportedAudioFileException, TikaException, SAXException {
+                           @RequestParam(name = "id") String expositionId) throws TikaException, SAXException {
         Exposition exposition = expositionRepository.find(expositionId);
         notNull(exposition, () -> new MissingObject("exposition", expositionId));
         if (collaboratorService.canEdit(expositionId)) {
@@ -85,6 +81,7 @@ public class ExpoFileController {
 
                 if (filename != null) {
                     filename = FilenameUtils.getName(filename);
+                    filename = expositionFileService.ensureUniqueFilename(expositionId, filename);
                 }
 
                 String contentType = uploadFile.getContentType();

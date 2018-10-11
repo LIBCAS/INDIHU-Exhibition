@@ -2,12 +2,13 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { compose, withState, lifecycle } from "recompose";
 import { connect } from "react-redux";
-import { map } from "lodash";
+import { map, get } from "lodash";
 import classNames from "classnames";
 import FontIcon from "react-md/lib/FontIcons";
 
 import { getFileById } from "../../actions/fileActions";
 import { giveMeExpoTime, hasValue, secondsToFormatedTime } from "../../utils";
+import { animationType } from "../../enums/animationType";
 
 const ViewStart = ({
   viewExpo,
@@ -27,7 +28,12 @@ const ViewStart = ({
       >
         <div
           id="view-start-image-container"
-          className="image-fullscreen-wrap"
+          className={classNames("image-fullscreen-wrap", {
+            slideUp:
+              get(viewScreen, "animationType") === animationType.FROM_TOP,
+            slideDown:
+              get(viewScreen, "animationType") === animationType.FROM_BOTTOM
+          })}
         />
       </div>
       <div className="viewer-start-menu">
@@ -215,12 +221,20 @@ export default compose(
   ),
   lifecycle({
     componentDidMount() {
-      const { screenFiles } = this.props;
+      const { viewScreen, screenFiles } = this.props;
 
       if (screenFiles["image"]) {
         const newNode = screenFiles["image"];
 
-        newNode.className = "image-fullscreen animation-slideUp";
+        if (get(viewScreen, "animationType") === animationType.FROM_TOP) {
+          newNode.className = "image-fullscreen animation-slideUp";
+        } else if (
+          get(viewScreen, "animationType") === animationType.FROM_BOTTOM
+        ) {
+          newNode.className = "image-fullscreen animation-slideDown";
+        } else {
+          newNode.className = "image-fullscreen";
+        }
 
         document.getElementById("view-start-image-container").prepend(newNode);
       }

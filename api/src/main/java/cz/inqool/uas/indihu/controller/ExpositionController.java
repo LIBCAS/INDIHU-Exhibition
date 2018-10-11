@@ -96,6 +96,13 @@ public class ExpositionController {
         return expositionService.update(exposition);
     }
 
+    @ApiOperation(value = "Locks an exposition. Required role of editor")
+    @RolesAllowed("ROLE_EDITOR")
+    @RequestMapping(method = POST, path = "/lock/{id}")
+    public boolean lock(@PathVariable("id") String id){
+        return expositionService.lock(id);
+    }
+
     @ApiOperation(value = "Gets a specified exposition with files.Required role of editor")
     @RolesAllowed("ROLE_EDITOR")
     @RequestMapping(method = GET, path = "/{id}")

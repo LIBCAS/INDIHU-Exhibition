@@ -25,7 +25,7 @@ const AudioMusic = ({
       label={
         textFieldLabel
           ? textFieldLabel
-          : audio ? "Mluvené slovo" : "Hudební podkres obrazovky"
+          : isAudio ? "Zvuková stopa obrazovky" : "Zvuková stopa kapitoly"
       }
       value={audio ? audio.name : music ? music.name : ""}
       disabled

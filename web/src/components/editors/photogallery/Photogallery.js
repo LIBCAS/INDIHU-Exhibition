@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { map, filter, find, isEmpty, compact, concat } from "lodash";
+import { map, filter, find, isEmpty, compact, concat, get } from "lodash";
 import { compose, withState } from "recompose";
 import { SelectField } from "react-md";
 
@@ -13,8 +13,8 @@ import { setDialog } from "../../../actions/dialogActions";
 import { getFileById } from "../../../actions/fileActions";
 import { updateScreenData } from "../../../actions/expoActions";
 import { animationType, animationTypeText } from "../../../enums/animationType";
-
 import { helpIconText } from "../../../enums/text";
+import { hasValue } from "../../../utils";
 
 const options = [
   { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
@@ -27,24 +27,22 @@ const Photogallery = ({
   updateScreenData,
   activeImageIndex,
   setActiveImageIndex,
-  setDialog,
   getFileById,
-  handleSubmit,
   setActivePoint,
-  activePoint,
+  activePoint
 }) => {
   const image =
     activeImageIndex !== -1 &&
-      find(
-        activeScreen.images,
-        (image, i) => i === activeImageIndex && !isEmpty(image) && image.id
-      )
+    find(
+      activeScreen.images,
+      (image, i) => i === activeImageIndex && !isEmpty(image) && image.id
+    )
       ? getFileById(
-        find(
-          activeScreen.images,
-          (image, i) => i === activeImageIndex && !isEmpty(image) && image.id
-        ).id
-      )
+          find(
+            activeScreen.images,
+            (image, i) => i === activeImageIndex && !isEmpty(image) && image.id
+          ).id
+        )
       : null;
 
   const setImage = img => {
@@ -118,11 +116,11 @@ const Photogallery = ({
               updateScreenData({
                 images: activeScreen.images
                   ? [
-                    ...map(activeScreen.images, img => {
-                      return { ...img, active: false };
-                    }),
-                    { active: true }
-                  ]
+                      ...map(activeScreen.images, img => {
+                        return { ...img, active: false };
+                      }),
+                      { active: true }
+                    ]
                   : [{ active: true }]
               });
               if (!isEmpty(activeScreen.images))
@@ -154,12 +152,12 @@ const Photogallery = ({
                           (image, index) =>
                             index === activeImageIndex
                               ? {
-                                ...image,
-                                imageOrigData: {
-                                  width,
-                                  height
+                                  ...image,
+                                  imageOrigData: {
+                                    width,
+                                    height
+                                  }
                                 }
-                              }
                               : image
                         )
                       }),
@@ -197,7 +195,8 @@ const Photogallery = ({
                       infopoints:
                         activeScreen.images[activeImageIndex].infopoints,
                       activePoint,
-                      onRowClick: i => setActivePoint(activePoint === i ? null : i),
+                      onRowClick: i =>
+                        setActivePoint(activePoint === i ? null : i),
                       onSubmit: text =>
                         updateScreenData({
                           images: map(
@@ -205,15 +204,15 @@ const Photogallery = ({
                             (image, i) =>
                               i === activeImageIndex
                                 ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    infopoint =>
-                                      infopoint.edit
-                                        ? { ...infopoint, text, edit: false }
-                                        : infopoint
-                                  )
-                                }
+                                    ...image,
+                                    infopoints: map(
+                                      image.infopoints,
+                                      infopoint =>
+                                        infopoint.edit
+                                          ? { ...infopoint, text, edit: false }
+                                          : infopoint
+                                    )
+                                  }
                                 : image
                           )
                         }),
@@ -224,17 +223,17 @@ const Photogallery = ({
                             (image, j) =>
                               j === activeImageIndex
                                 ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    infopoint => {
-                                      return {
-                                        ...infopoint,
-                                        edit: false
-                                      };
-                                    }
-                                  )
-                                }
+                                    ...image,
+                                    infopoints: map(
+                                      image.infopoints,
+                                      infopoint => {
+                                        return {
+                                          ...infopoint,
+                                          edit: false
+                                        };
+                                      }
+                                    )
+                                  }
                                 : image
                           )
                         }),
@@ -245,42 +244,46 @@ const Photogallery = ({
                             (image, j) =>
                               j === activeImageIndex
                                 ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    (infopoint, idx) =>
-                                      i === idx
-                                        ? {
-                                          ...infopoint,
-                                          edit: true
-                                        }
-                                        : {
-                                          ...infopoint,
-                                          edit: false
-                                        }
-                                  )
-                                }
+                                    ...image,
+                                    infopoints: map(
+                                      image.infopoints,
+                                      (infopoint, idx) =>
+                                        i === idx
+                                          ? {
+                                              ...infopoint,
+                                              edit: true
+                                            }
+                                          : {
+                                              ...infopoint,
+                                              edit: false
+                                            }
+                                    )
+                                  }
                                 : image
                           )
                         }),
-                      onCheckbox: (chb, value) => updateScreenData({
-                        images: map(
-                          activeScreen.images,
-                          (image, i) =>
-                            i === activeImageIndex
-                              ? {
-                                ...image,
-                                infopoints: map(
-                                  image.infopoints,
-                                  (infopoint, idx) =>
-                                    chb === idx
-                                      ? { ...infopoint, alwaysVisible: value }
-                                      : infopoint
-                                )
-                              }
-                              : image
-                        )
-                      }),
+                      onCheckbox: (chb, value) =>
+                        updateScreenData({
+                          images: map(
+                            activeScreen.images,
+                            (image, i) =>
+                              i === activeImageIndex
+                                ? {
+                                    ...image,
+                                    infopoints: map(
+                                      image.infopoints,
+                                      (infopoint, idx) =>
+                                        chb === idx
+                                          ? {
+                                              ...infopoint,
+                                              alwaysVisible: value
+                                            }
+                                          : infopoint
+                                    )
+                                  }
+                                : image
+                          )
+                        }),
                       onDelete: i =>
                         updateScreenData({
                           images: map(
@@ -288,12 +291,12 @@ const Photogallery = ({
                             (image, j) =>
                               j === activeImageIndex
                                 ? {
-                                  ...image,
-                                  infopoints: filter(
-                                    image.infopoints,
-                                    (inf, idx) => i !== idx
-                                  )
-                                }
+                                    ...image,
+                                    infopoints: filter(
+                                      image.infopoints,
+                                      (inf, idx) => i !== idx
+                                    )
+                                  }
                                 : image
                           )
                         }),
@@ -304,36 +307,63 @@ const Photogallery = ({
                             (image, i) =>
                               i === activeImageIndex
                                 ? {
-                                  ...image,
-                                  infopoints: compact(
-                                    concat(image.infopoints, {
-                                      text: "Vložte popis infopointu",
-                                      top: 12,
-                                      left: 12,
-                                      alwaysVisible: false
-                                    })
-                                  )
-                                }
+                                    ...image,
+                                    infopoints: compact(
+                                      concat(image.infopoints, {
+                                        text: "Vložte popis infopointu",
+                                        top: 12,
+                                        left: 12,
+                                        alwaysVisible: false
+                                      })
+                                    )
+                                  }
                                 : image
                           )
                         }),
                       initialValues: {
                         text:
-                          find(
-                            activeScreen.images,
-                            image => image && image.active
-                          ) &&
-                            find(
-                              find(activeScreen.images, image => image.active)
-                                .infopoints,
-                              i => i.edit
+                          !hasValue(
+                            get(
+                              find(
+                                get(
+                                  find(
+                                    activeScreen.images,
+                                    (_, i) => i === activeImageIndex
+                                  ),
+                                  "infopoints"
+                                ),
+                                infopoint => infopoint.edit
+                              ),
+                              "text"
                             )
-                            ? find(
-                              find(activeScreen.images, image => image.active)
-                                .infopoints,
-                              i => i.edit
-                            ).text
-                            : undefined
+                          ) ||
+                          get(
+                            find(
+                              get(
+                                find(
+                                  activeScreen.images,
+                                  (_, i) => i === activeImageIndex
+                                ),
+                                "infopoints"
+                              ),
+                              infopoint => infopoint.edit
+                            ),
+                            "text"
+                          ) === "Vložte popis infopointu"
+                            ? ""
+                            : get(
+                                find(
+                                  get(
+                                    find(
+                                      activeScreen.images,
+                                      (_, i) => i === activeImageIndex
+                                    ),
+                                    "infopoints"
+                                  ),
+                                  infopoint => infopoint.edit
+                                ),
+                                "text"
+                              )
                       }
                     }}
                   />}

@@ -1,23 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
-import TextField from "react-md/lib/TextFields";
-import FontIcon from "react-md/lib/FontIcons";
-import Button from "react-md/lib/Buttons/Button";
-import Checkbox from "react-md/lib/SelectionControls/Checkbox";
+import { compose, withState } from "recompose";
+import { TextField, SelectField, FontIcon, Button, Checkbox } from "react-md";
+
 import { setDialog } from "../../../actions/dialogActions";
 import { getFileById } from "../../../actions/fileActions";
-
 import AudioMusic from "../AudioMusic";
 import HelpIcon from "../../HelpIcon";
 import CharacterCount from "../CharacterCount";
 
 import { helpIconText } from "../../../enums/text";
+import { animationTypeViewStartEnum } from "../../../enums/animationType";
 
 const Description = ({
   activeScreen,
   updateScreenData,
   setDialog,
-  getFileById
+  getFileById,
+  error,
+  setError
 }) => {
   const image = getFileById(activeScreen.image);
   const audio = getFileById(activeScreen.audio);
@@ -106,6 +107,22 @@ const Description = ({
                 />
               </div>
             </div>
+            <div className="flex-row-nowrap flex-space-between flex-center">
+              <SelectField
+                id="screen-start-selectfield-animation"
+                className="select-field"
+                label="Animace obrázku"
+                menuItems={animationTypeViewStartEnum}
+                itemLabel={"label"}
+                itemValue={"value"}
+                position={"below"}
+                defaultValue={activeScreen.animationType}
+                onChange={value => updateScreenData({ animationType: value })}
+              />
+              <HelpIcon
+                {...{ label: helpIconText.EDITOR_START_DESCRIPTION_ANIMATION }}
+              />
+            </div>
             <AudioMusic
               {...{
                 textFieldLabel: "Audio verze výstavy",
@@ -114,25 +131,38 @@ const Description = ({
                 isAudio: true
               }}
             />
-            <div className="flex-row-nowrap">
-              <div className="form-input">
-                <TextField
-                  id="screen-start-textfield-expoTime"
-                  label="Délka trvání výstavy"
-                  defaultValue={activeScreen.expoTime}
-                  onChange={value => {
-                    if (!isNaN(Number(value)))
+            <div className="flex-col">
+              <div className="flex-row-nowrap">
+                <div className="form-input form-input-with-suffix">
+                  <TextField
+                    id="screen-start-textfield-expoTime"
+                    label="Délka trvání výstavy"
+                    defaultValue={activeScreen.expoTime}
+                    onChange={value => {
+                      if (isNaN(Number(value)) || Number(value) > 1000000000) {
+                        setError("Zadejte číslo v rozsahu 0 až 1000000000.");
+                      } else {
+                        setError(null);
+                      }
+
                       updateScreenData({ expoTime: Math.abs(value) });
+                    }}
+                    type="number"
+                  />
+                  <span className="form-input-suffix">vteřin</span>
+                </div>
+                <HelpIcon
+                  {...{
+                    label: helpIconText.EDITOR_START_DESCRIPTION_EXPOTIME
                   }}
-                  type="number"
                 />
-                <span className="form-input-suffix">vteřin</span>
               </div>
-              <HelpIcon
-                {...{
-                  label: helpIconText.EDITOR_START_DESCRIPTION_EXPOTIME
-                }}
-              />
+              {error &&
+                <div>
+                  <span className="invalid">
+                    {error}
+                  </span>
+                </div>}
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -164,4 +194,7 @@ const Description = ({
   );
 };
 
-export default connect(null, { setDialog, getFileById })(Description);
+export default compose(
+  connect(null, { setDialog, getFileById }),
+  withState("error", "setError", null)
+)(Description);

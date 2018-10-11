@@ -1,9 +1,5 @@
 import React from "react";
 import Button from "react-md/lib/Buttons/Button";
-// import FontIcon from "react-md/lib/FontIcons";
-// import TextField from "react-md/lib/TextFields";
-// import ListItem from "react-md/lib/Lists/ListItem";
-// import MenuButton from "react-md/lib/Menus/MenuButton";
 
 import { compose, withHandlers, withState } from "recompose";
 import { connect } from "react-redux";
@@ -25,7 +21,6 @@ const Header = ({ setDialog, handleFile, expoId, keyState }) =>
       <FileUploader
         key={`file-uploader-${keyState ? "1" : "2"}`}
         url={`/api/file/?id=${expoId}`}
-        accept="image/*, audio/*, video/*, application/pdf"
         onComplete={handleFile}
       >
         <Button flat label="Nahrát soubor">
@@ -33,17 +28,6 @@ const Header = ({ setDialog, handleFile, expoId, keyState }) =>
         </Button>
       </FileUploader>
     </div>
-    {/* <div>
-      <MenuButton id="expo-files-filter-sort-menu" icon buttonChildren="sort_by_alpha" position="tl">
-        <ListItem primaryText="Název" />
-        <ListItem primaryText="Datum vložení" />
-        <ListItem primaryText="Velikost" />
-      </MenuButton>
-      <div className="search">
-        <TextField id="expo-files-textfield-search" placeholder="Hledat" className="search-input" />
-        <FontIcon className="search-icon">search</FontIcon>
-      </div>
-    </div> */}
   </div>;
 
 export default compose(

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field, SubmissionError } from "redux-form";
 import { compose, withHandlers, withState } from "recompose";
+import { get } from "lodash";
 import Button from "react-md/lib/Buttons/Button";
 import Radio from "react-md/lib/SelectionControls/Radio";
 
@@ -23,7 +24,7 @@ const fileTypeOpts = [
 ];
 
 const documentOpts = [
-  { label: "Žádny odkaz", value: "NONE" },
+  { label: "Žádný odkaz", value: "NONE" },
   { label: "URL", value: "URL" },
   { label: "Soubor", value: "FILE" }
 ];
@@ -32,105 +33,103 @@ const ScreenDocumentNew = ({
   handleSubmit,
   setDialog,
   addDialogData,
-  initialValues,
   tabFolder,
   documentType,
-  changeDocumentType
-}) => {
-  return (
-    <Dialog
-      title="Nový dokument"
-      name="ScreenDocumentNew"
-      submitLabel="Vytvořit"
-      handleSubmit={handleSubmit}
-      onClose={() => tabFolder(null)}
-    >
-      <form onSubmit={handleSubmit}>
-        <Field
-          component={TextField}
-          componentId="screen-document-new-textfield-filename"
-          name="fileName"
-          label="Název dokumentu"
-          validate={[Validation.required]}
-          onChange={(e, value) =>
-            addDialogData("ScreenDocumentNew", { fileName: value })}
-        />
+  changeDocumentType,
+  change
+}) =>
+  <Dialog
+    title="Nový dokument"
+    name="ScreenDocumentNew"
+    submitLabel="Vytvořit"
+    handleSubmit={handleSubmit}
+    onClose={() => tabFolder(null)}
+  >
+    <form onSubmit={handleSubmit}>
+      <Field
+        component={TextField}
+        componentId="screen-document-new-textfield-filename"
+        name="fileName"
+        label="Název dokumentu"
+        validate={[Validation.required]}
+        onChange={(e, value) =>
+          addDialogData("ScreenDocumentNew", { fileName: value })}
+      />
 
-        <Radio
-          id="screen-document-new-radio-none"
-          name="radioStatePrepare"
-          className="radio-option"
-          value={documentOpts[0].value}
-          label={documentOpts[0].label}
-          checked={documentType === documentOpts[0].value}
-          onClick={() => changeDocumentType(documentOpts[0].value)}
-        />
-        <Radio
-          id="screen-document-new-radio-url"
-          name="radioStatePrepare"
-          className="radio-option"
-          value={documentOpts[1].value}
-          label={documentOpts[1].label}
-          checked={documentType === documentOpts[1].value}
-          onClick={() => changeDocumentType(documentOpts[1].value)}
-        />
-        <Radio
-          id="screen-document-new-radio-file"
-          name="radioStatePrepare"
-          className="radio-option"
-          value={documentOpts[2].value}
-          label={documentOpts[2].label}
-          checked={documentType === documentOpts[2].value}
-          onClick={() => changeDocumentType(documentOpts[2].value)}
-        />
+      <Radio
+        id="screen-document-new-radio-none"
+        name="radioStatePrepare"
+        className="radio-option"
+        value={documentOpts[0].value}
+        label={documentOpts[0].label}
+        checked={documentType === documentOpts[0].value}
+        onClick={() => changeDocumentType(documentOpts[0].value)}
+      />
+      <Radio
+        id="screen-document-new-radio-url"
+        name="radioStatePrepare"
+        className="radio-option"
+        value={documentOpts[1].value}
+        label={documentOpts[1].label}
+        checked={documentType === documentOpts[1].value}
+        onClick={() => changeDocumentType(documentOpts[1].value)}
+      />
+      <Radio
+        id="screen-document-new-radio-file"
+        name="radioStatePrepare"
+        className="radio-option"
+        value={documentOpts[2].value}
+        label={documentOpts[2].label}
+        checked={documentType === documentOpts[2].value}
+        onClick={() => changeDocumentType(documentOpts[2].value)}
+      />
 
-        {documentType === documentOpts[1].value &&
-          <div>
-            <Field
-              component={TextField}
-              componentId="screen-document-new-textfield-url"
-              name="url"
-              label="URL adresa"
-              validate={[Validation.required]}
-              onChange={(e, value) =>
-                addDialogData("ScreenDocumentNew", { url: value })}
-            />
-            <Field
-              component={SelectField}
-              componentId="screen-document-new-selectfield-urltype"
-              name="urlType"
-              label="Typ souboru"
-              menuItems={fileTypeOpts}
-              validate={[Validation.required]}
-              onChange={(e, value) =>
-                addDialogData("ScreenDocumentNew", { urlType: value })}
-            />
-          </div>}
-        {documentType === documentOpts[2].value &&
-          <div className="flex-col">
-            <Field
-              component={TextField}
-              componentId="screen-document-new-textfield-name"
-              name="name"
-              label="Soubor"
-              validate={[Validation.required]}
-              disabled
-            />
-            <Button
-              flat
-              label="Vybrat"
-              onClick={() =>
-                setDialog("ScreenDocumentChoose", {
-                  typeMatch: new RegExp(
-                    /^(image\/png|image\/jpg|image\/jpeg|application\/pdf)$/
-                  )
-                })}
-            />
-          </div>}
-      </form>
-    </Dialog>
-  );
-};
+      {documentType === documentOpts[1].value &&
+        <div>
+          <Field
+            component={TextField}
+            componentId="screen-document-new-textfield-url"
+            name="url"
+            label="URL adresa"
+            validate={[Validation.required]}
+            onChange={(e, value) =>
+              addDialogData("ScreenDocumentNew", { url: value })}
+          />
+          <Field
+            component={SelectField}
+            componentId="screen-document-new-selectfield-urltype"
+            name="urlType"
+            label="Typ souboru"
+            menuItems={fileTypeOpts}
+            validate={[Validation.required]}
+            onChange={(e, value) =>
+              addDialogData("ScreenDocumentNew", { urlType: value })}
+          />
+        </div>}
+      {documentType === documentOpts[2].value &&
+        <div className="flex-col">
+          <Field
+            component={TextField}
+            componentId="screen-document-new-textfield-name"
+            name="name"
+            label="Soubor"
+            validate={[Validation.required]}
+            disabled
+          />
+          <Button
+            flat
+            label="Vybrat"
+            onClick={() =>
+              setDialog("ScreenDocumentChoose", {
+                typeMatch: new RegExp(
+                  /^(image\/png|image\/jpg|image\/jpeg|application\/pdf)$/
+                ),
+                onChoose: file => change("name", get(file, "name"))
+              })}
+          />
+        </div>}
+    </form>
+  </Dialog>;
 
 export default compose(
   connect(

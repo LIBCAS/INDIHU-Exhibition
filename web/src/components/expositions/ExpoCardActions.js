@@ -12,14 +12,12 @@ import { openViewer } from "../../utils";
 
 const ExpoCardActions = ({
   id,
+  title,
   url,
   canEdit,
   canDelete,
   inProgress,
   history,
-  changeRadioState,
-  activeExpo,
-  loadExpo,
   state,
   setDialog
 }) =>
@@ -28,7 +26,7 @@ const ExpoCardActions = ({
       flat
       label="Upravit"
       onClick={() =>
-        canEdit && state !== "ENDED" && !inProgress
+        canEdit && state !== "ENDED"
           ? history.push(`/expo/${id}/structure`)
           : setDialog("Info", {
               title: "Nelze upravovat",
@@ -46,6 +44,7 @@ const ExpoCardActions = ({
     <div className="expo-more">
       <ExpoMenu
         id={id}
+        title={title}
         canEdit={canEdit}
         canDelete={canDelete}
         url={url}

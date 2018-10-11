@@ -19,7 +19,12 @@ const DialogWrap = ({
   onClose,
   submitLabel,
   children,
-  className
+  className,
+  noStornoButton,
+  noSubmitButton,
+  noDialogMenu,
+  big,
+  style
 }) => {
   if (name === active) {
     document.body.style.overflow = "hidden";
@@ -28,11 +33,14 @@ const DialogWrap = ({
   return (
     <div className={classNames({ hidden: name !== active })}>
       <div className="dialog-background" />
-      <Card raise className={`dialog ${className}`}>
+      <Card
+        raise
+        style={style}
+        className={classNames(`dialog ${className}`, { big })}
+      >
         <FontIcon
           className="dialog-close"
           onClick={() => {
-            document.body.style.overflow = "scroll";
             if (onClose) onClose();
             closeDialog();
           }}
@@ -42,32 +50,37 @@ const DialogWrap = ({
         <CardText className="dialog-title">
           {title}
         </CardText>
-        <CardText className="dialog-content">
+        <CardText
+          className={classNames("dialog-content", {
+            "no-margin-bottom": noDialogMenu
+          })}
+        >
           {children}
         </CardText>
-        <CardActions className="dialog-menu">
-          <Button
-            flat
-            secondary
-            label="Storno"
-            onClick={() => {
-              document.body.style.overflow = "scroll";
-              if (onClose) onClose();
-              closeDialog();
-            }}
-            className="margin-right-small"
-          />
-          <Button
-            flat
-            primary
-            label={submitLabel}
-            onClick={() => {
-              document.body.style.overflow = "scroll";
-              handleSubmit();
-            }}
-            className="margin-right-small"
-          />
-        </CardActions>
+        {!noDialogMenu &&
+          <CardActions className="dialog-menu">
+            {!noStornoButton &&
+              <Button
+                flat
+                secondary
+                label="Storno"
+                onClick={() => {
+                  if (onClose) onClose();
+                  closeDialog();
+                }}
+                className="margin-right-small"
+              />}
+            {!noSubmitButton &&
+              <Button
+                flat
+                primary
+                label={submitLabel}
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className="margin-right-small"
+              />}
+          </CardActions>}
       </Card>
     </div>
   );

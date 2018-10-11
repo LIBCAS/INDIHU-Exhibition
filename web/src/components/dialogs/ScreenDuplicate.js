@@ -16,7 +16,6 @@ const ScreenDuplicate = ({
   activeExpo,
   dialogData,
   rowNum,
-  setRowNum,
   change
 }) => {
   const options = [];
@@ -36,7 +35,7 @@ const ScreenDuplicate = ({
         }
       });
 
-      forEach(activeExpo.structure.screens[rowNum], (screen, col) => {
+      forEach(activeExpo.structure.screens[rowNum], (_, col) => {
         if (col)
           options2.push({
             label: `${rowNum + 1}.${col}`,
@@ -50,7 +49,7 @@ const ScreenDuplicate = ({
         value: lastCol
       });
     } else {
-      forEach(activeExpo.structure.screens, (chapter, row) =>
+      forEach(activeExpo.structure.screens, (_, row) =>
         options.push({
           label: row + 1,
           value: row
@@ -74,6 +73,7 @@ const ScreenDuplicate = ({
       name="ScreenDuplicate"
       submitLabel="Duplikovat"
       handleSubmit={handleSubmit}
+      big={true}
     >
       {dialogData && get(activeExpo, "structure.screens")
         ? dialogData.colNum
@@ -129,10 +129,11 @@ export default compose(
     { duplicateScreen, duplicateChapter }
   ),
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
-      const { duplicateScreen, duplicateChapter, dialogData } = props;
-      const { rowNum, colNum } = formData;
-
+    onSubmit: dialog => async (
+      { rowNum, colNum },
+      _,
+      { duplicateScreen, duplicateChapter, dialogData }
+    ) => {
       if (dialogData.colNum)
         duplicateScreen(dialogData.rowNum, dialogData.colNum, rowNum, colNum);
       else duplicateChapter(dialogData.rowNum, rowNum);

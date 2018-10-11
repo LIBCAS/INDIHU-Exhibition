@@ -231,8 +231,8 @@ const Image = ({
           </div>}
           {/* NO IMAGE */}
           {!image &&
-            <CardText className="flex-col">
-              <FontIcon>image</FontIcon>
+            <CardText className="flex-col flex-centered full-height">
+              <FontIcon className="card-image-icon-placeholder">image</FontIcon>
               <div className="flex flex-centered">
                 <Button raised label="Vybrat" onClick={() => changeImage()} />
               </div>

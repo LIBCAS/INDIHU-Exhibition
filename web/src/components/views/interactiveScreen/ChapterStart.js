@@ -11,9 +11,11 @@ const ChapterStart = ({ viewScreen }) => {
         id="interactive-screen-chapter-start-container-inner"
         className="interactive-screen-chapter-start-container-inner"
       />
-      <p className="title-fullscreen">
-        {viewScreen.title}
-      </p>
+      <div className="title-container">
+        <p className="title-fullscreen">
+          {viewScreen.title}
+        </p>
+      </div>
     </div>
   );
 };

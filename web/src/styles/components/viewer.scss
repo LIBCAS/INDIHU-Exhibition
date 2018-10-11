@@ -15,6 +15,14 @@ $viewer-title-height: 1.8em;
   p {
     font-size: 1em;
   }
+  &-chapters {
+    &-button {
+      width: 100%;
+      margin: 0 !important;
+      padding: .8em;
+      height: auto;
+    }
+  }
   &-title {
     position: fixed;
     top: 0;
@@ -27,14 +35,64 @@ $viewer-title-height: 1.8em;
     align-items: center;
     background: $c-black;
     color: $c-white;
+    .view-wrap-icon {
+      color: white;
+      cursor: pointer;
+      font-size: 1.6em;
+    }
     div {
       flex-basis: 33.3%;
+      max-width: 33.3%;
     }
     &-institution {
       padding-left: .8em;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      font-size: 1em;
+
+      span {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
     &-name {
-      text-align: center;
+      padding-left: .8em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      cursor: pointer;
+      font-size: 1em;
+
+      span {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    &-menu {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+
+      &-button {
+        background-color: $c-black;
+        color: $c-white;
+        height: 100%;
+        margin: 0;
+        margin-right: -1px;
+        padding-top: 0;
+        padding-bottom: 0;
+        border: 0px;
+        border-radius: 0px;
+        font-size: 1em;
+        text-transform: none;
+      }
     }
   }
   &-screen {
@@ -58,13 +116,15 @@ $viewer-title-height: 1.8em;
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: center;
-      padding: 0em 1em;
+      padding: 0.5em 1em;
       height: 4em;
       .menu-text {
         flex-basis: 90%;
         max-width: 90%;
-        overflow-x: hidden;
-        text-overflow: ellipsis;
+        max-height: 100%;
+        overflow: hidden;
+        margin-right: 0.5em;
+        line-height: 1.5em;
       }
       .menu-icon {
         flex-basis: 10%;
@@ -127,14 +187,14 @@ $viewer-title-height: 1.8em;
       .slide-container {
         position: relative;
         width: 100%;
-        height: 100%;
+        height: calc(100% - 1.8em);
+        margin-top: 1.8em;
       }
 
       .back {
         position: relative;
-        margin-top: 1em;
         width: 100%;
-        height: calc(100% - 1em);
+        height: 100%;
 
         img {
           position: absolute;
@@ -169,10 +229,11 @@ $viewer-title-height: 1.8em;
       .slider {
         -webkit-appearance: none;
         position: absolute;
-        bottom: 6em;
+        bottom: 0;
+        left: 0;
         width: 100%;
-        height: 1em;
-        background-color: rgba(255, 255, 255, 0.3);
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0);
         cursor: pointer;
         &:focus,
         &:active {
@@ -180,17 +241,83 @@ $viewer-title-height: 1.8em;
         }
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
-          width: 30px;
-          height: 30px;
-          border: solid 2px $c-black;
-          border-radius: 50%;
-          background: $c-white;
+          width: 0;
+          height: 0;
         }
+
+        &::-webkit-slider-runnable-track,
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+        }
+
+        &::-ms-track {
+          height: 100%;
+        }
+        &::-ms-fill-lower,
+        &::-ms-fill-upper,
+        &::-ms-tooltip {
+          display: none;
+        }
+
+        &::-ms-thumb {
+          opacity: 0;
+        }
+
+        &__thumb {
+          position: absolute;
+          width: 20px;
+          height: 100vh;
+          border: 1px solid $c-black;
+          background: $c-white;
+          top: -2.6em;
+          left: 50%;
+          transform: translateX(-50%);
+          pointer-events: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          i {
+            color: $c-black;
+            font-size: 18px;
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            -o-transform: rotate(90deg);
+            transform: rotate(90deg);
+          }
+
+          &.vertical {
+            position: absolute;
+            width: 100vw;
+            height: 20px;
+            border: 1px solid $c-black;
+            background: $c-white;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+              -webkit-transform: none;
+              -moz-transform: none;
+              -ms-transform: none;
+              -o-transform: none;
+              transform: none;
+            }
+          }
+        }
+
         &.vertical {
-          transform: rotate(90deg);
-          bottom: calc(50vh - 0.8em);
-          right: 0;
-          width: calc(100vh - 3.4em);
+          writing-mode: bt-lr;
+          -webkit-appearance: slider-vertical;
+          top: 50%;
+          left: 110%;
+          transform: translate(-50%, -50%);
+          width: 220%;
         }
       }
     }
@@ -230,10 +357,14 @@ $viewer-title-height: 1.8em;
           .title {
             flex-basis: 75%;
             max-width: 75%;
+            h2 {
+              font-size: 22px;
+            }
             h2,
             p {
               overflow: hidden;
               text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
           .menu {
@@ -255,7 +386,7 @@ $viewer-title-height: 1.8em;
             height: 70em;
             justify-content: space-between;
             .content {
-              overflow-y: scroll;
+              overflow-y: auto;
               padding: 1em;
               padding-left: 0em;
             }
@@ -265,6 +396,10 @@ $viewer-title-height: 1.8em;
               padding: 5px 10px;
               margin-right: 10px;
               cursor: pointer;
+              &:hover {
+                background-color: $c-black;
+                color: $c-white;
+              }
             }
           }
         }
@@ -284,10 +419,10 @@ $viewer-title-height: 1.8em;
             padding-top: 1em;
             justify-content: space-between;
             .content {
-              overflow-y: scroll;
+              overflow-y: auto;
             }
             .part {
-              margin-bottom: 3em;
+              margin-bottom: 2em;
               p {
                 margin-bottom: 0;
               }
@@ -378,6 +513,7 @@ $viewer-title-height: 1.8em;
       background-color: $c-black;
       padding: 2em;
       padding-bottom: .8em;
+      padding-right: .8em;
       justify-content: space-between;
 
       p {
@@ -385,7 +521,7 @@ $viewer-title-height: 1.8em;
       }
 
       .content {
-        overflow-y: scroll;
+        overflow-y: auto;
         max-height: 100%;
 
         .document {
@@ -403,7 +539,7 @@ $viewer-title-height: 1.8em;
       }
 
       .part {
-        margin-bottom: 3em;
+        margin-bottom: 2em;
         p {
           margin-bottom: 0;
         }
@@ -434,7 +570,7 @@ $viewer-title-height: 1.8em;
     justify-content: space-between;
     padding: 1em;
     .text {
-      overflow: scroll;
+      overflow: auto;
       height: calc(100vh - #{$viewer-title-height} - 4em - 2em - 2em);
     }
     &.with-files {
@@ -451,8 +587,9 @@ $viewer-title-height: 1.8em;
     .menu-text {
       flex-basis: 90%;
       max-width: 90%;
-      overflow-x: hidden;
-      text-overflow: ellipsis;
+      max-height: 100%;
+      overflow: hidden;
+      margin-right: 0.5em;
     }
     .menu-icon {
       flex-basis: 10%;
@@ -466,7 +603,7 @@ $viewer-title-height: 1.8em;
     height: 20vh;
     background-color: $c-black;
     .content {
-      overflow-y: scroll;
+      overflow-y: auto;
       & > * {
         color: $c-white;
       }
@@ -649,8 +786,9 @@ $viewer-title-height: 1.8em;
     &-item {
       font-size: 3em;
       color: $c-white;
+      text-shadow: 0px 0px 3px $c-black;
       padding: 0 0.2em;
-      opacity: .5;
+      opacity: .6;
       transition: opacity .2s;
       cursor: pointer;
       &:hover {
@@ -862,12 +1000,15 @@ $viewer-title-height: 1.8em;
 /* COMPONENTS */
 
 .title {
-  &-fullscreen {
+  &-container {
     position: absolute;
     width: 100%;
     top: 50%;
-    text-align: center;
     transform: translate(0, -50%);
+  }
+  &-fullscreen {
+    width: 100%;
+    text-align: center;
     font-size: 12vh !important;
     color: $c-black;
     @include textBorder;
@@ -888,6 +1029,16 @@ $viewer-title-height: 1.8em;
   }
 }
 
+.subtitle {
+  &-fullscreen {
+    width: 100%;
+    text-align: center;
+    font-size: 7vh !important;
+    color: $c-black;
+    @include textBorder;
+  }
+}
+
 .infopoint-icon {
   position: absolute;
   cursor: pointer;
@@ -901,12 +1052,31 @@ $viewer-title-height: 1.8em;
   &-fullscreen {
     &-wrap {
       position: absolute;
-      top: 50%;
+      top: calc(50% - 4em);
       left: 50%;
       transform: translate(-50%, -50%);
-      height: 200vh;
+      height: calc(100vh - 11.6em);
+      width: 100vw;
+      &.slideUp {
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 200vh;
+        width: auto;
+      }
+      &.slideDown {
+        top: -50%;
+        transform: translate(-50%, 0);
+        height: 200vh;
+        width: auto;
+      }
     }
     height: 100%;
+    width: 100%;
+    object-fit: contain;
+    &.animation-slideUp,
+    &.animation-slideDown {
+      width: auto;
+    }
   }
   &-screen {
     height: 100%;

@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose, lifecycle, withState, withHandlers } from "recompose";
+import { get, filter, isEmpty } from "lodash";
 
 import Header from "./Header";
 import FileManager from "./FileManager";
@@ -16,7 +18,10 @@ const Files = props =>
       </div>
       <div className="files-col">
         <div className="files-wrap--view">
-          <FileView activeFile={props.activeFile} activeFolder={props.activeFolder} />
+          <FileView
+            activeFile={props.activeFile}
+            activeFolder={props.activeFolder}
+          />
         </div>
         <div className="files-wrap--meta">
           <FileMeta activeFile={props.activeFile} />
@@ -25,4 +30,51 @@ const Files = props =>
     </div>
   </div>;
 
-export default connect(({ file: { folder, file } }) => ({ activeFolder: folder, activeFile: file }), { ...fileActions })(Files);
+export default compose(
+  connect(
+    ({ file: { folder, file } }) => ({
+      activeFolder: folder,
+      activeFile: file
+    }),
+    { ...fileActions }
+  ),
+  withState("activeExpoReceived", "setActiveExpoReceived", false),
+  withHandlers({
+    init: ({
+      activeExpoReceived,
+      setActiveExpoReceived,
+      tabFile
+    }) => activeExpo => {
+      if (!activeExpoReceived) {
+        tabFile(null);
+
+        if (!isEmpty(activeExpo)) {
+          setActiveExpoReceived(true);
+          tabFile(
+            get(
+              get(
+                filter(
+                  get(activeExpo, "structure.files"),
+                  files => files.name === undefined
+                ),
+                "[0].files"
+              ),
+              "[0]",
+              null
+            )
+          );
+        }
+      }
+    }
+  }),
+  lifecycle({
+    componentWillMount() {
+      const { init, activeExpo } = this.props;
+      init(activeExpo);
+    },
+    componentWillReceiveProps({ activeExpo }) {
+      const { init } = this.props;
+      init(activeExpo);
+    }
+  })
+)(Files);

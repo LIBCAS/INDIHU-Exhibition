@@ -30,6 +30,17 @@
     display: flex;
     flex-wrap: nowrap;
   }
+
+  &-normal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &-nowrap {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
 }
 
 .flex-col {
@@ -39,6 +50,10 @@
 
 .flex-centered {
   justify-content: center;
+  align-items: center;
+}
+
+.flex-center {
   align-items: center;
 }
 
@@ -87,9 +102,17 @@
   }
   &-horizontal {
     margin: 0 1em;
+
+    &-very-small {
+      margin: 0 .5em;
+    }
   }
   &-left {
-    margin-left: 1em;
+    margin-left: 2em;
+
+    &-small {
+      margin-left: 1em;
+    }
   }
   &-right {
     margin-right: 2em;
@@ -97,6 +120,13 @@
     &-small {
       margin-right: 1em;
     }
+
+    &-very-small {
+      margin-right: .5em;
+    }
+  }
+  &-none {
+    margin: 0;
   }
 }
 
@@ -104,6 +134,13 @@
 
 .padding {
   padding: .5em;
+  &-bottom {
+    padding-bottom: 2em;
+
+    &-small {
+      padding-bottom: 1em;
+    }
+  }
   &-none {
     padding: 0px;
   }
@@ -116,7 +153,7 @@
 /* CONTAINERS */
 
 .container {
-  max-width: 1300px;
+  max-width: 1340px;
   margin: 0 auto;
   padding-top: 5em;
   padding-left: .5em;
@@ -168,6 +205,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 100%;
     & > * {
       margin: auto 0;
       margin-left: 5px;
@@ -175,6 +213,53 @@
   }
   &-text {
     margin: auto 0;
+    margin-right: 0.5em;
+    max-width: 100%;
+  }
+  &-select {
+    margin-right: 0.5em;
+    max-width: 100%;
+
+    span {
+      max-width: calc(100% - 24px);
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .flex-header {
+    &-actions {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    &-row {
+      width: 100%;
+      min-width: 100%;
+      margin-bottom: 0.5em;
+
+      &.with-search {
+        .button-with-tooltip {
+          margin-left: 0;
+        }
+        .search {
+          width: calc(100% - 48px - 5px);
+          min-width: calc(100% - 48px - 5px);
+        }
+      }
+    }
+    &-text {
+      width: 100%;
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.5em;
+    }
+    &-select {
+      width: 100%;
+      min-width: 100%;
+    }
   }
 }
 
@@ -250,6 +335,25 @@
   &-invalid {
     margin-left: 1.5em;
   }
+
+  .md-icon-text {
+    max-width: 95%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .md-list {
+    max-width: 100%;
+    .md-list-item {
+      .md-tile-text--primary.md-text {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
 }
 
 .form-input {
@@ -259,6 +363,16 @@
     .md-floating-label--inactive {
       max-width: calc(100% - 40px) !important;
       overflow-x: hidden;
+
+      @media screen and (max-width: 320px) {
+        & {
+          max-width: 100% !important;
+        }
+      }
+    }
+
+    input {
+      padding-right: 50px;
     }
   }
   &-suffix {
@@ -268,6 +382,12 @@
     top: 50%;
     &.withErr {
       top: 40%;
+    }
+
+    @media screen and (max-width: 320px) {
+      & {
+        top: 30%;
+      }
     }
   }
 }
@@ -382,6 +502,12 @@
     &.actions {
       justify-content: flex-end;
     }
+    &.small {
+      flex-basis: 50%;
+    }
+    &.very-small {
+      flex-basis: 25%;
+    }
   }
   &-select {
     margin-left: -5px;
@@ -406,6 +532,9 @@
       justify-content: center;
       &.actions {
         justify-content: center;
+      }
+      &.small {
+        flex-basis: 100%;
       }
     }
   }
@@ -589,5 +718,35 @@
 
   &.hidden-custom-tooltip {
     visibility: hidden;
+  }
+}
+
+/* MD */
+
+.md-text-field-container {
+  overflow: hidden;
+}
+
+.md-text-field {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 320px) {
+  .md-text-field--floating-margin {
+    margin-top: 19px;
+  }
+
+  .md-divider--text-field {
+    margin-bottom: 18px;
+  }
+
+  .md-floating-label--floating {
+    -webkit-transform: none;
+    transform: none;
+  }
+
+  .md-floating-label--inactive {
+    -webkit-transform: none;
+    transform: none;
   }
 }

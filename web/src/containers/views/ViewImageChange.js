@@ -3,6 +3,7 @@ import { compose, lifecycle, withState, withHandlers } from "recompose";
 import { connect } from "react-redux";
 import classNames from "classnames";
 import { get } from "lodash";
+import { FontIcon } from "react-md";
 
 import ScreenMenu from "../../components/views/ScreenMenu";
 import { getFileById } from "../../actions/fileActions";
@@ -27,7 +28,10 @@ const ViewImageChange = ({
         onClick={() => animClick && handleClick()}
       >
         {(animSlideV || animSlideH) &&
-          <div className="slide-container">
+          <div
+            id="view-imagechange-image-container-slide-container"
+            className="slide-container"
+          >
             <div id="back" className="back">
               <div
                 id="front"
@@ -41,6 +45,7 @@ const ViewImageChange = ({
               id="slider"
               className={classNames("slider", { vertical: animSlideV })}
               type="range"
+              orient={animSlideV && "vertical"}
               min="0"
               max="100"
               value={sliderValue}
@@ -48,6 +53,15 @@ const ViewImageChange = ({
                 handleSlider(e.target.value, animSlideV);
               }}
             />
+            {(animSlideV || animSlideH) &&
+              <div
+                id="slider__thumb"
+                className={classNames("slider__thumb", {
+                  vertical: animSlideV
+                })}
+              >
+                <FontIcon>unfold_more</FontIcon>
+              </div>}
           </div>}
       </div>
       <ScreenMenu viewScreen={viewScreen} />
@@ -122,22 +136,29 @@ export default compose(
           );
       }
     },
-    handleSlider: ({ viewScreen, getFileById, setSliderValue }) => (
-      value,
-      animSlideV
-    ) => {
+    handleSlider: ({ viewScreen, setSliderValue }) => (value, animSlideV) => {
       setSliderValue(value);
 
       const back = document.getElementById("back");
       const front = document.getElementById("front");
       const frontImage = document.getElementById("front-image");
       const backImage = document.getElementById("back-image");
+      const slider = document.getElementById("slider");
 
-      if (back && front && frontImage) {
+      if (back && front && frontImage && slider) {
         front.setAttribute(
           "style",
-          animSlideV ? `height: ${value}%;` : `width: ${value}%;`
+          animSlideV ? `height: ${100 - value}%;` : `width: ${value}%;`
         );
+
+        const thumb = document.getElementById("slider__thumb");
+
+        if (thumb) {
+          thumb.setAttribute(
+            "style",
+            animSlideV ? `top: ${100 - value}%` : `left: ${value}%`
+          );
+        }
 
         frontImage.setAttribute(
           "style",
@@ -195,16 +216,19 @@ export default compose(
       }
     },
     handlerAnimSlideV: () => () => {
-      document
-        .getElementById("slider")
-        .setAttribute("style", `right: ${-window.innerHeight / 2 + 50}px`);
-    },
-    loadingImages: ({
-      viewScreen,
-      animSlideV,
-      loadingInterval,
-      setLoadingInterval
-    }) => () => {
+      const container = document.getElementById("back");
+      if (container) {
+        document
+          .getElementById("slider")
+          .setAttribute(
+            "style",
+            `height: ${container.getBoundingClientRect().height}px`
+          );
+      }
+    }
+  }),
+  withHandlers({
+    loadingImages: ({ viewScreen, animSlideV, handlerAnimSlideV }) => () => {
       const back = document.getElementById("back");
       const front = document.getElementById("front");
       const frontImage = document.getElementById("front-image");
@@ -264,6 +288,11 @@ export default compose(
               get(viewScreen, "image1OrigData.height") *
               get(viewScreen, "image1OrigData.width")}px;`
         );
+      }
+
+      if (animSlideV) {
+        handlerAnimSlideV();
+        window.addEventListener("resize", () => handlerAnimSlideV());
       }
     }
   }),
@@ -380,11 +409,6 @@ export default compose(
             .prepend(newNode);
         }
       } else if (animSlideH || animSlideV) {
-        if (animSlideV) {
-          handlerAnimSlideV();
-          window.addEventListener("resize", () => handlerAnimSlideV());
-        }
-
         const container = document.getElementById(
           "view-imagechange-image-container"
         );
@@ -410,6 +434,11 @@ export default compose(
           newNode.style = null;
           newNode.className = null;
           document.getElementById("front").prepend(newNode);
+        }
+
+        if (animSlideV) {
+          handlerAnimSlideV();
+          window.addEventListener("resize", () => handlerAnimSlideV());
         }
 
         setLoadingInterval(setInterval(loadingImages, 300));

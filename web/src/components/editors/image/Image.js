@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { map, compact, concat, find } from "lodash";
+import { map, compact, concat, get, find } from "lodash";
 import { compose, withState } from "recompose";
 import SelectField from "react-md/lib/SelectFields";
 
@@ -8,12 +8,12 @@ import ImageContainer from "../Image";
 import InfopointsSequencesTable from "../InfopointsSequencesTable";
 import HelpIcon from "../../HelpIcon";
 
-import { setDialog } from "../../../actions/dialogActions";
 import { getFileById } from "../../../actions/fileActions";
 import { updateScreenData } from "../../../actions/expoActions";
 
 import { animationType, animationTypeText } from "../../../enums/animationType";
 import { helpIconText } from "../../../enums/text";
+import { hasValue } from "../../../utils";
 
 const options = [
   { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
@@ -23,10 +23,8 @@ const options = [
 
 const Image = ({
   activeScreen,
-  setDialog,
   getFileById,
   updateScreenData,
-  handleSubmit,
   setActivePoint,
   activePoint
 }) => {
@@ -85,7 +83,7 @@ const Image = ({
                   infopoints: activeScreen.infopoints,
                   activePoint,
                   onRowClick: i => setActivePoint(activePoint === i ? null : i),
-                  onSubmit: text =>
+                  onSubmit: text => {
                     updateScreenData({
                       infopoints: map(
                         activeScreen.infopoints,
@@ -94,12 +92,14 @@ const Image = ({
                             ? { ...infopoint, text, edit: false }
                             : infopoint
                       )
-                    }),
+                    });
+                  },
                   onClear: () =>
                     updateScreenData({
-                      infopoints: map(activeScreen.infopoints, infopoint => {
-                        return { ...infopoint, edit: false };
-                      })
+                      infopoints: map(activeScreen.infopoints, infopoint => ({
+                        ...infopoint,
+                        edit: false
+                      }))
                     }),
                   onEdit: i =>
                     updateScreenData({
@@ -133,9 +133,31 @@ const Image = ({
                       )
                     }),
                   initialValues: {
-                    text: find(activeScreen.infopoints, i => i.edit)
-                      ? find(activeScreen.infopoints, i => i.edit).text
-                      : undefined
+                    text:
+                      !hasValue(
+                        get(
+                          find(
+                            activeScreen.infopoints,
+                            infopoint => infopoint.edit
+                          ),
+                          "text"
+                        )
+                      ) ||
+                      get(
+                        find(
+                          activeScreen.infopoints,
+                          infopoint => infopoint.edit
+                        ),
+                        "text"
+                      ) === "Vložte popis infopointu"
+                        ? ""
+                        : get(
+                            find(
+                              activeScreen.infopoints,
+                              infopoint => infopoint.edit
+                            ),
+                            "text"
+                          )
                   }
                 }}
               />}
@@ -147,6 +169,6 @@ const Image = ({
 };
 
 export default compose(
-  connect(null, { setDialog, getFileById, updateScreenData }),
+  connect(null, { getFileById, updateScreenData }),
   withState("activePoint", "setActivePoint", null)
 )(Image);

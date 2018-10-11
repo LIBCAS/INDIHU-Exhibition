@@ -2,16 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { map } from "lodash";
 import classNames from "classnames";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field, change } from "redux-form";
 import { compose, withHandlers } from "recompose";
-import Button from "react-md/lib/Buttons/Button";
-import FontIcon from "react-md/lib/FontIcons";
-import SelectField from "react-md/lib/SelectFields";
-import Checkbox from "react-md/lib/SelectionControls/Checkbox";
+import { Button, FontIcon, SelectField, Checkbox } from "react-md";
 
 import TextField from "../form/TextField";
+import * as Validation from "../form/Validation";
 
-import { setDialog } from "../../actions/dialogActions";
 import { getFileById } from "../../actions/fileActions";
 import { updateScreenData } from "../../actions/expoActions";
 
@@ -23,7 +20,6 @@ const options = [
 
 const InfopointsSequencesTable = ({
   infopoints,
-  onSubmit,
   onClear,
   onEdit,
   onDelete,
@@ -32,63 +28,78 @@ const InfopointsSequencesTable = ({
   onCheckbox,
   onRowClick,
   activePoint,
-  setDialog,
-  getFileById,
-  updateScreenData,
   handleSubmit,
   label,
   imgIdx,
   onArrowUp,
-  onArrowDown
-}) => {
-  return (
-    <div {...{ label, className: "table-infopoints half-width-min" }}>
-      <div className="table margin-bottom-small">
-        <div className="table-row header">
-          {onArrowUp && onArrowDown && <div className="table-col">Pořadí</div>}
-          <div className="table-col">Popis</div>
-          {onSelect && <div className="table-col">Přiblížení</div>}
-          {onCheckbox && <div className="table-col">Stále zobrazen</div>}
-          <div className="table-col" />
-        </div>
-        {map(infopoints, (item, i) =>
-          <div
-            key={i}
-            className={classNames("table-row", { active: activePoint === i })}
-            onClick={() => onRowClick && onRowClick(i)}
-          >
-            {onArrowUp && onArrowDown && <div className="table-row-order">
+  onArrowDown,
+  change
+}) =>
+  <div {...{ label, className: "table-infopoints half-width-min" }}>
+    <div className="table margin-bottom-small">
+      <div className="table-row header">
+        {onArrowUp &&
+          onArrowDown &&
+          <div className="table-col small">Pořadí</div>}
+        <div className="table-col">Popis</div>
+        {onSelect && <div className="table-col small">Přiblížení</div>}
+        {onCheckbox && <div className="table-col small">Stále zobrazen</div>}
+        <div className="table-col very-small" />
+      </div>
+      {map(infopoints, (item, i) =>
+        <div
+          key={i}
+          className={classNames("table-row", { active: activePoint === i })}
+          onClick={() => {
+            if (onRowClick) onRowClick(i);
+          }}
+        >
+          {onArrowUp &&
+            onArrowDown &&
+            <div className="table-row-order">
               {i + 1}.
-              </div>}
-            {onArrowUp && onArrowDown && <div className="table-col">
+            </div>}
+          {onArrowUp &&
+            onArrowDown &&
+            <div className="table-col small">
               {i > 0
                 ? <FontIcon className="icon" onClick={() => onArrowUp(i)}>
-                  keyboard_arrow_up
-                    </FontIcon>
+                    keyboard_arrow_up
+                  </FontIcon>
                 : <div className="icon icon-placeholder" />}
               {i < infopoints.length - 1
                 ? <FontIcon className="icon" onClick={() => onArrowDown(i)}>
-                  keyboard_arrow_down
-                    </FontIcon>
+                    keyboard_arrow_down
+                  </FontIcon>
                 : <div className="icon icon-placeholder" />}
             </div>}
-            {item.edit ? <form onSubmit={handleSubmit} className="table-col">
-              <Field
-                component={TextField}
-                componentId="screen-infopoints-table-textfield-text"
-                name="text"
-              />
-              <Button icon type="submit">
-                done
-                    </Button>
-              <Button icon onClick={() => onClear()}>
-                clear
-                    </Button>
-            </form>
-              : <div className="table-col" onClick={() => onEdit(i)}>
+          {item.edit
+            ? <form onSubmit={handleSubmit} className="table-col">
+                <Field
+                  component={TextField}
+                  componentId="screen-infopoints-table-textfield-text"
+                  name="text"
+                  validate={[Validation.max100]}
+                />
+                <Button icon type="submit" onClick={e => e.stopPropagation()}>
+                  done
+                </Button>
+                <Button
+                  icon
+                  onClick={e => {
+                    e.stopPropagation();
+                    onClear();
+                    change("text", "");
+                  }}
+                >
+                  clear
+                </Button>
+              </form>
+            : <div className="table-col" onClick={() => onEdit(i)}>
                 {item.text}
               </div>}
-            {onSelect && <div className="table-col select">
+          {onSelect &&
+            <div className="table-col small select">
               <SelectField
                 id="screen-infopoints-table-selectfield-zoom"
                 className="select-field"
@@ -99,7 +110,8 @@ const InfopointsSequencesTable = ({
                 onChange={value => onSelect(i, value)}
               />
             </div>}
-            {onCheckbox && <div className="table-col">
+          {onCheckbox &&
+            <div className="table-col small">
               <Checkbox
                 id={`chbx-${imgIdx}-${i}`}
                 name="simple-checkbox"
@@ -108,31 +120,25 @@ const InfopointsSequencesTable = ({
                 onChange={value => onCheckbox(i, value)}
               />
             </div>}
-            <div className="table-col flex-right">
-              <FontIcon className="icon" onClick={() => onDelete(i)}>
-                delete
-              </FontIcon>
-            </div>
+          <div className="table-col very-small flex-right">
+            <FontIcon className="icon" onClick={() => onDelete(i)}>
+              delete
+            </FontIcon>
           </div>
-        )}
-      </div>
-      <Button icon onClick={() => onAdd()}>
-        add
-      </Button>
+        </div>
+      )}
     </div>
-  );
-};
+    <Button icon onClick={() => onAdd()}>
+      add
+    </Button>
+  </div>;
 
 export default compose(
-  connect(null, { setDialog, getFileById, updateScreenData }),
+  connect(null, { getFileById, updateScreenData, change }),
   withHandlers({
-    onSubmit: ({
-      initialValues,
-      updateScreenData,
-      activeScreen,
-      onSubmit
-    }) => async ({ text }) => {
-      onSubmit(text);
+    onSubmit: ({ onSubmit, change }) => async ({ text }) => {
+      await onSubmit(text);
+      change("screen-infopoints-table-edit", "text", "");
     }
   }),
   reduxForm({

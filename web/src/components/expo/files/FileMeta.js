@@ -5,7 +5,7 @@ import { round } from "lodash";
 
 const FileMeta = ({ activeFile }) =>
   <Card className="files-meta">
-    <CardText>
+    <CardText className="files-meta-text">
       {activeFile &&
         <div>
           <div className="meta-row">
@@ -33,6 +33,28 @@ const FileMeta = ({ activeFile }) =>
               <p>Délka:</p>
               <p>
                 {`${activeFile.duration} s`}
+              </p>
+            </div>}
+          {activeFile.width &&
+            activeFile.height &&
+            <div className="meta-row">
+              <p>Rozměry:</p>
+              <p>
+                {`${activeFile.width} x ${activeFile.height}`}
+              </p>
+            </div>}
+          {activeFile.width &&
+            <div className="meta-row">
+              <p>Šířka:</p>
+              <p>
+                {`${activeFile.width} pixelů`}
+              </p>
+            </div>}
+          {activeFile.height &&
+            <div className="meta-row">
+              <p>Výška:</p>
+              <p>
+                {`${activeFile.height} pixelů`}
               </p>
             </div>}
         </div>}

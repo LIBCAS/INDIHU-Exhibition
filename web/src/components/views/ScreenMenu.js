@@ -11,7 +11,7 @@ const ScreenMenu = ({ toggleInteractive, viewScreen }) => {
         {viewScreen.title}
       </div>
       <FontIcon className="menu-icon" onClick={() => toggleInteractive(true)}>
-        menu
+        pause_circle_outline
       </FontIcon>
     </div>
   );

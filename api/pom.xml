@@ -38,7 +38,7 @@
         <dependency>
             <groupId>cz.inqool.uas</groupId>
             <artifactId>core</artifactId>
-            <version>1.17.8</version>
+            <version>1.18.9</version>
         </dependency>
 
         <dependency>

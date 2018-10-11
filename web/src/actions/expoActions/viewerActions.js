@@ -80,6 +80,11 @@ export const setChapterMusic = viewChapterMusic => ({
   payload: { viewChapterMusic }
 });
 
+export const setScreenAudio = viewScreenAudio => ({
+  type: EXPO_VIEWER,
+  payload: { viewScreenAudio }
+});
+
 export const setLastChapter = viewLastChapter => ({
   type: EXPO_VIEWER,
   payload: { viewLastChapter }
@@ -146,15 +151,23 @@ const returnMeObject = (data, fileType, attribute, dispatch) => {
       video.appendChild(source);
 
       if (dispatch) {
+        let checkLoadId;
         const checkLoad = () => {
           if (video.readyState === 4) {
+            checkLoadId = null;
             dispatch(expoViewerFileLoaded());
           } else {
-            setTimeout(checkLoad, 100);
+            checkLoadId = setTimeout(checkLoad, 100);
           }
         };
 
-        setTimeout(checkLoad, 100);
+        checkLoadId = setTimeout(checkLoad, 100);
+        setTimeout(() => {
+          if (video.readyState === 0) {
+            clearTimeout(checkLoadId);
+            dispatch(expoViewerFileLoaded());
+          }
+        }, 5000);
         dispatch(expoViewerFilesTotalUpdate());
       }
 
@@ -301,4 +314,22 @@ export const screenFilePreloader = (activeScreen, section, screen) => async (
   dispatch(showLoader(false));
 
   return preloadedFiles;
+};
+
+export const turnSoundOff = soundIsTurnedOff => (dispatch, getState) => {
+  const viewChapterMusic = getState().expo.viewChapterMusic;
+  const viewScreenAudio = getState().expo.viewScreenAudio;
+
+  if (viewChapterMusic) {
+    viewChapterMusic.volume = soundIsTurnedOff ? 0 : 0.2;
+  }
+
+  if (viewScreenAudio) {
+    viewScreenAudio.volume = soundIsTurnedOff ? 0 : 1;
+  }
+
+  dispatch({
+    type: EXPO_VIEWER,
+    payload: { soundIsTurnedOff }
+  });
 };

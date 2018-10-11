@@ -52,3 +52,11 @@ nbdist/
 api/src/main/resources/application.yml
 
 Indihu-public-api/
+web/README.md
+web/Dockerfile
+web/.npmrc
+web/.deployment.yml
+api/readme.md
+api/Dockerfile
+api/config.md
+*.yml

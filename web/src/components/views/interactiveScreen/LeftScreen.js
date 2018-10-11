@@ -33,7 +33,7 @@ const LeftScreen = ({ viewScreen, toggleInteractive }) =>
             className="menu-icon"
             onClick={() => toggleInteractive(false)}
           >
-            volume_up
+            play_circle_outline
         </FontIcon>
         </div>
       </div>

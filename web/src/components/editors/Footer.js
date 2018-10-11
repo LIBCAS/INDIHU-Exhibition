@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose, withState, lifecycle, withHandlers } from "recompose";
 import Button from "react-md/lib/Buttons/Button";
 
 import { saveScreen } from "../../actions/expoActions";
@@ -14,40 +15,13 @@ const Footer = ({
   saveScreen,
   noActions,
   setDialog,
-  url,
   type,
   noActionTitle,
-  noActionText
+  noActionText,
+  save
 }) =>
   <div className="flex-row flex-centered fixed-bottom-footer">
     <div className="inner padding flex-row flex-space-between">
-      <Button
-        raised
-        label="Uložit"
-        className="btn"
-        onClick={async () => {
-          if (noActions)
-            setDialog("Info", {
-              title: noActionTitle ? noActionTitle : "Ukončete prováděné akce!",
-              text: noActionText
-                ? noActionText
-                : "Ukončete všechny prováděné akce než uložíte obrazovku!"
-            });
-          else {
-            if (await saveScreen(activeScreen, rowNum, colNum))
-              setDialog("Info", {
-                title: "Obrazovka úspěšně uložena",
-                text: "Obrazovka byla úspěšně uložena.",
-                autoClose: true
-              });
-            else
-              setDialog("Info", {
-                title: "Obrazovka není uložena!",
-                text: "Obrazovka nebyla uložena!"
-              });
-          }
-        }}
-      />
       <Button
         raised
         label="Náhled"
@@ -71,7 +45,72 @@ const Footer = ({
           }
         }}
       />
+      <Button raised label="Uložit" className="btn" onClick={save} />
     </div>
   </div>;
 
-export default connect(null, { saveScreen, setDialog })(Footer);
+export default compose(
+  connect(null, { saveScreen, setDialog }),
+  withState("ctrlKeyDown", "setCtrlKeyDown", false),
+  withHandlers({
+    save: ({
+      noActions,
+      noActionTitle,
+      noActionText,
+      activeScreen,
+      rowNum,
+      colNum,
+      saveScreen,
+      setDialog
+    }) => async () => {
+      if (noActions)
+        setDialog("Info", {
+          title: noActionTitle ? noActionTitle : "Ukončete prováděné akce!",
+          text: noActionText
+            ? noActionText
+            : "Ukončete všechny prováděné akce než uložíte obrazovku!"
+        });
+      else {
+        if (await saveScreen(activeScreen, rowNum, colNum)) {
+          setDialog("Info", {
+            title: "Obrazovka úspěšně uložena",
+            text: "Obrazovka byla úspěšně uložena.",
+            autoClose: true
+          });
+        } else {
+          setDialog("Info", {
+            title: "Obrazovka není uložena!",
+            text: "Obrazovka nebyla uložena!"
+          });
+        }
+      }
+    }
+  }),
+  withHandlers({
+    manageKeyAction: ({ save, ctrlKeyDown, setCtrlKeyDown }) => async e => {
+      if (e.keyCode === 17 && e.type === "keydown") {
+        setCtrlKeyDown(true);
+      } else if (ctrlKeyDown && e.keyCode === 83 && e.type === "keydown") {
+        e.preventDefault();
+        setCtrlKeyDown(false);
+        save();
+      } else {
+        setCtrlKeyDown(false);
+      }
+    }
+  }),
+  lifecycle({
+    componentWillMount() {
+      const { manageKeyAction } = this.props;
+
+      document.addEventListener("keydown", manageKeyAction);
+      document.addEventListener("keyup", manageKeyAction);
+    },
+    componentWillUnmount() {
+      const { manageKeyAction } = this.props;
+
+      document.removeEventListener("keydown", manageKeyAction);
+      document.addEventListener("keyup", manageKeyAction);
+    }
+  })
+)(Footer);

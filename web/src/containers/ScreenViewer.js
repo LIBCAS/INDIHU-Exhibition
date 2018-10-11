@@ -10,7 +10,10 @@ import { getCurrentUser } from "../actions/userActions";
 import {
   screenFilePreloader,
   setViewExpo,
-  setViewScreen
+  setViewScreen,
+  turnSoundOff,
+  setChapterMusic,
+  setScreenAudio
 } from "../actions/expoActions/viewerActions";
 import { screenUrl } from "../enums/screenType";
 
@@ -21,22 +24,26 @@ import ViewError from "./views/ViewError";
 import Viewers from "./views";
 import InteractiveScreen from "./views/InteractiveScreen";
 
-/** TODO refactor */
 const ViewScreen = compose(
   withRouter,
   withState("prepared", "setPrepared", false),
-  withState("stateMusic", "setStateMusic", null),
-  withState("stateAudio", "setStateAudio", null),
   connect(
     ({
-      expo: { activeExpo, preloadedFiles, viewScreen, viewInteractive }
+      expo: {
+        activeExpo,
+        preloadedFiles,
+        viewScreen,
+        viewInteractive,
+        soundIsTurnedOff
+      }
     }) => ({
       activeExpo,
       preloadedFiles,
       viewScreen,
-      viewInteractive
+      viewInteractive,
+      soundIsTurnedOff
     }),
-    { screenFilePreloader, setViewScreen }
+    { screenFilePreloader, setViewScreen, setChapterMusic, setScreenAudio }
   ),
   lifecycle({
     async componentWillMount() {
@@ -44,11 +51,12 @@ const ViewScreen = compose(
         match,
         section,
         activeExpo,
-        setStateMusic,
-        setStateAudio,
+        setChapterMusic,
+        setScreenAudio,
         screenFilePreloader,
         setViewScreen,
-        setPrepared
+        setPrepared,
+        soundIsTurnedOff
       } = this.props;
       const screen = match.params.screen;
       const viewScreen = activeExpo.structure.screens[section][screen] || {};
@@ -65,25 +73,23 @@ const ViewScreen = compose(
       if (preloadedFiles.music) {
         const music = preloadedFiles.music;
         music.loop = true;
-        music.volume = 0.2;
+        music.volume = soundIsTurnedOff ? 0 : 0.2;
         music.play();
-        setStateMusic(music);
+        setChapterMusic(music);
+      } else {
+        setChapterMusic(null);
       }
 
       /** screen audio */
       if (preloadedFiles.audio) {
         const audio = preloadedFiles.audio;
         audio.currentTime = 0;
+        audio.volume = soundIsTurnedOff ? 0 : 1;
         audio.play();
-        setStateAudio(audio);
+        setScreenAudio(audio);
+      } else {
+        setScreenAudio(null);
       }
-    },
-    componentWillUnmount() {
-      const { stateMusic, stateAudio } = this.props;
-
-      if (stateMusic) stateMusic.pause();
-
-      if (stateAudio) stateAudio.pause();
     }
   })
 )(({ prepared, preloadedFiles, viewInteractive }) => {
@@ -153,10 +159,12 @@ const ViewSection = compose(
 export default compose(
   withRouter,
   connect(
-    ({ expo: { activeExpo } }) => ({
-      activeExpo
+    ({ expo: { activeExpo, viewChapterMusic, viewScreenAudio } }) => ({
+      activeExpo,
+      viewChapterMusic,
+      viewScreenAudio
     }),
-    { loadExpo, getCurrentUser }
+    { loadExpo, getCurrentUser, turnSoundOff, setChapterMusic, setScreenAudio }
   ),
   lifecycle({
     componentWillMount() {
@@ -166,6 +174,24 @@ export default compose(
     async componentDidMount() {
       const { match, loadExpo } = this.props;
       await loadExpo(match.params.id);
+    },
+    componentWillUnmount() {
+      const {
+        turnSoundOff,
+        viewChapterMusic,
+        viewScreenAudio,
+        setChapterMusic,
+        setScreenAudio
+      } = this.props;
+
+      turnSoundOff(false);
+
+      if (viewChapterMusic) viewChapterMusic.pause();
+
+      if (viewScreenAudio) viewScreenAudio.pause();
+
+      setChapterMusic(null);
+      setScreenAudio(null);
     }
   })
 )(({ activeExpo, match }) => {

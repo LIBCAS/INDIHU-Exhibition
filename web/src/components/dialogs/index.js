@@ -1,8 +1,9 @@
 import React from "react";
-import { compose } from "recompose";
+import { compose, withHandlers, lifecycle } from "recompose";
 import { withRouter } from "react-router-dom";
 import { Prompt } from "react-router";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 import * as dialogActions from "../../actions/dialogActions";
 
 import Loader from "../Loader";
@@ -15,6 +16,7 @@ import ExpoRename from "./ExpoRename";
 import ExpoShare from "./ExpoShare";
 import ExpoShareChangeOwner from "./ExpoShareChangeOwner";
 import ExpoShareRemoveCollaborator from "./ExpoShareRemoveCollaborator";
+import ExpositionMenu from "./ExpositionMenu";
 import ExpoState from "./ExpoState";
 import FileDelete from "./FileDelete";
 import FileDeleteFolder from "./FileDeleteFolder";
@@ -38,6 +40,7 @@ import ScreenMove from "./ScreenMove";
 import UserAccept from "./UserAccept";
 import UserDelete from "./UserDelete";
 import UserReactivate from "./UserReactivate";
+import ViewWrapChapters from "./ViewWrapChapters";
 
 const Dialogs = ({
   setDialog,
@@ -71,6 +74,7 @@ const Dialogs = ({
       <ExpoShare {...dialogProps} />
       <ExpoShareChangeOwner {...dialogProps} />
       <ExpoShareRemoveCollaborator {...dialogProps} />
+      <ExpositionMenu {...dialogProps} />
       <ExpoState {...dialogProps} />
       <FileDelete {...dialogProps} />
       <FileDeleteFolder {...dialogProps} />
@@ -97,6 +101,7 @@ const Dialogs = ({
       <UserAccept {...dialogProps} />
       <UserDelete {...dialogProps} />
       <UserReactivate {...dialogProps} />
+      <ViewWrapChapters {...dialogProps} />
     </div>
   );
 };
@@ -104,7 +109,12 @@ const Dialogs = ({
 export default compose(
   withRouter,
   connect(
-    ({ dialog: { data }, app: { loader }, expo: { activeScreenEdited } }) => ({
+    ({
+      dialog: { dialogs, data },
+      app: { loader },
+      expo: { activeScreenEdited }
+    }) => ({
+      dialogs,
       data,
       loader,
       activeScreenEdited
@@ -112,5 +122,24 @@ export default compose(
     {
       ...dialogActions
     }
-  )
+  ),
+  withHandlers({
+    manageKeyAction: ({ dialogs, closeDialog }) => e => {
+      if (e.keyCode === 27 && !isEmpty(dialogs)) {
+        closeDialog();
+      }
+    }
+  }),
+  lifecycle({
+    componentWillMount() {
+      const { manageKeyAction } = this.props;
+
+      document.addEventListener("keydown", manageKeyAction);
+    },
+    componentWillUnmount() {
+      const { manageKeyAction } = this.props;
+
+      document.removeEventListener("keydown", manageKeyAction);
+    }
+  })
 )(Dialogs);

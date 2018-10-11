@@ -122,11 +122,27 @@
     height: 10em;
     min-width: 20em;
     overflow-y: scroll;
+
+    .files-meta-text {
+      padding-bottom: 16px;
+    }
+
     .meta-row {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      &:last-child {
+        p {
+          margin-bottom: 0;
+        }
+      }
+
       p:first-child {
         font-weight: bold;
         flex-basis: 20%;

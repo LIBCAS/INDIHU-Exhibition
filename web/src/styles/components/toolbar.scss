@@ -44,6 +44,12 @@
     &:hover {
       color: $c-blue-light;
     }
+    &.nonclickable {
+      cursor: auto;
+      &:hover {
+        color: $c-white;
+      }
+    }
   }
   &-tablet {
     display: none;
@@ -100,7 +106,7 @@
   }
 }
 
-@media (max-width: $breakpoint-tablet) {
+@media (max-width: $breakpoint-desktop) {
   .toolbar {
     &-button {
       display: none;
@@ -128,6 +134,18 @@
       &.selected {
         display: block;
       }
+    }
+  }
+}
+
+.md-title--toolbar {
+  margin-left: 22px;
+}
+
+@media (max-width: $breakpoint-200) {
+  .toolbar {
+    &-title {
+      display: none;
     }
   }
 }

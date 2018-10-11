@@ -183,32 +183,150 @@ export const moveScreen = (
   saveExpo(expo);
 };
 
-export const moveChapter = (rowNumOld, rowNumNew) => async (
-  dispatch,
-  getState
-) => {
+export const moveAloneScreenToChapter = (
+  rowNumOld,
+  rowNumNew,
+  colNumNew
+) => async (dispatch, getState) => {
   const expo = getState().expo.activeExpo;
-  const screens = expo.structure.screens;
-
-  if (rowNumOld === rowNumNew) return;
+  expo.structure.screens =
+    rowNumOld < rowNumNew
+      ? [
+          ...expo.structure.screens.slice(0, rowNumOld),
+          ...expo.structure.screens.slice(rowNumOld + 1, rowNumNew),
+          [
+            ...expo.structure.screens[rowNumNew].slice(0, colNumNew),
+            { ...expo.structure.screens[rowNumOld][0], aloneScreen: false },
+            ...expo.structure.screens[rowNumNew].slice(
+              colNumNew,
+              expo.structure.screens[rowNumNew].length
+            )
+          ],
+          ...expo.structure.screens.slice(
+            rowNumNew + 1,
+            expo.structure.screens.length
+          )
+        ]
+      : [
+          ...expo.structure.screens.slice(0, rowNumNew),
+          [
+            ...expo.structure.screens[rowNumNew].slice(0, colNumNew),
+            { ...expo.structure.screens[rowNumOld][0], aloneScreen: false },
+            ...expo.structure.screens[rowNumNew].slice(
+              colNumNew,
+              expo.structure.screens[rowNumNew].length
+            )
+          ],
+          ...expo.structure.screens.slice(rowNumNew + 1, rowNumOld),
+          ...expo.structure.screens.slice(
+            rowNumOld + 1,
+            expo.structure.screens.length
+          )
+        ];
 
   dispatch({
     type: EXPO_STRUCTURE_SET,
     payload: {
-      screens:
-        rowNumOld < rowNumNew
-          ? [
-              ...screens.slice(0, rowNumOld),
-              ...screens.slice(rowNumOld + 1, rowNumNew + 1),
-              screens[rowNumOld],
-              ...screens.slice(rowNumNew + 1, screens.length)
-            ]
-          : [
-              ...screens.slice(0, rowNumNew),
-              screens[rowNumOld],
-              ...screens.slice(rowNumNew, rowNumOld),
-              ...screens.slice(rowNumOld + 1, screens.length)
-            ]
+      screens: expo.structure.screens
+    }
+  });
+
+  saveExpo(expo);
+};
+
+export const moveScreenFromChapter = (
+  rowNumOld,
+  colNumOld,
+  rowNumNew
+) => async (dispatch, getState) => {
+  const expo = getState().expo.activeExpo;
+  expo.structure.screens =
+    rowNumOld < rowNumNew
+      ? [
+          ...expo.structure.screens.slice(0, rowNumOld),
+          [
+            ...expo.structure.screens[rowNumOld].slice(0, colNumOld),
+            ...expo.structure.screens[rowNumOld].slice(
+              colNumOld + 1,
+              expo.structure.screens[rowNumOld].length
+            )
+          ],
+          ...expo.structure.screens.slice(rowNumOld + 1, rowNumNew),
+          [
+            {
+              ...expo.structure.screens[rowNumOld][colNumOld],
+              aloneScreen: true
+            }
+          ],
+          ...expo.structure.screens.slice(
+            rowNumNew,
+            expo.structure.screens.length
+          )
+        ]
+      : [
+          ...expo.structure.screens.slice(0, rowNumNew),
+          [
+            {
+              ...expo.structure.screens[rowNumOld][colNumOld],
+              aloneScreen: true
+            }
+          ],
+          ...expo.structure.screens.slice(rowNumNew, rowNumOld),
+          [
+            ...expo.structure.screens[rowNumOld].slice(0, colNumOld),
+            ...expo.structure.screens[rowNumOld].slice(
+              colNumOld + 1,
+              expo.structure.screens[rowNumOld].length
+            )
+          ],
+          ...expo.structure.screens.slice(
+            rowNumOld + 1,
+            expo.structure.screens.length
+          )
+        ];
+
+  dispatch({
+    type: EXPO_STRUCTURE_SET,
+    payload: {
+      screens: expo.structure.screens
+    }
+  });
+
+  saveExpo(expo);
+};
+
+export const moveChapter = (rowNumOld, rowNumNew) => async (
+  dispatch,
+  getState
+) => {
+  if (rowNumOld === rowNumNew) return;
+
+  const expo = getState().expo.activeExpo;
+  expo.structure.screens =
+    rowNumOld < rowNumNew
+      ? [
+          ...expo.structure.screens.slice(0, rowNumOld),
+          ...expo.structure.screens.slice(rowNumOld + 1, rowNumNew + 1),
+          expo.structure.screens[rowNumOld],
+          ...expo.structure.screens.slice(
+            rowNumNew + 1,
+            expo.structure.screens.length
+          )
+        ]
+      : [
+          ...expo.structure.screens.slice(0, rowNumNew),
+          expo.structure.screens[rowNumOld],
+          ...expo.structure.screens.slice(rowNumNew, rowNumOld),
+          ...expo.structure.screens.slice(
+            rowNumOld + 1,
+            expo.structure.screens.length
+          )
+        ];
+
+  dispatch({
+    type: EXPO_STRUCTURE_SET,
+    payload: {
+      screens: expo.structure.screens
     }
   });
 
@@ -225,19 +343,11 @@ export const duplicateScreen = (
   const screens = expo.structure.screens;
 
   if (rowNumOld === rowNumNew) {
-    if (colNumOld < colNumNew) {
-      screens[rowNumOld] = [
-        ...screens[rowNumOld].slice(0, colNumNew + 1),
-        screens[rowNumOld][colNumOld],
-        ...screens[rowNumOld].slice(colNumNew + 1, screens[rowNumOld].length)
-      ];
-    } else {
-      screens[rowNumOld] = [
-        ...screens[rowNumOld].slice(0, colNumNew),
-        screens[rowNumOld][colNumOld],
-        ...screens[rowNumOld].slice(colNumNew, screens[rowNumOld].length)
-      ];
-    }
+    screens[rowNumOld] = [
+      ...screens[rowNumOld].slice(0, colNumNew),
+      screens[rowNumOld][colNumOld],
+      ...screens[rowNumOld].slice(colNumNew, screens[rowNumOld].length)
+    ];
   } else {
     screens[rowNumNew] = [
       ...screens[rowNumNew].slice(0, colNumNew),
@@ -261,23 +371,16 @@ export const duplicateChapter = (rowNumOld, rowNumNew) => async (
   getState
 ) => {
   const expo = getState().expo.activeExpo;
-  const screens = expo.structure.screens;
+  expo.structure.screens = [
+    ...expo.structure.screens.slice(0, rowNumNew),
+    expo.structure.screens[rowNumOld],
+    ...expo.structure.screens.slice(rowNumNew, expo.structure.screens.length)
+  ];
 
   dispatch({
     type: EXPO_STRUCTURE_SET,
     payload: {
-      screens:
-        rowNumOld < rowNumNew
-          ? [
-              ...screens.slice(0, rowNumNew + 1),
-              screens[rowNumOld],
-              ...screens.slice(rowNumNew + 1, screens.length)
-            ]
-          : [
-              ...screens.slice(0, rowNumNew),
-              screens[rowNumOld],
-              ...screens.slice(rowNumNew, screens.length)
-            ]
+      screens: expo.structure.screens
     }
   });
 

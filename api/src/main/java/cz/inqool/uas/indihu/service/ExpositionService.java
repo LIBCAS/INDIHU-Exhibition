@@ -2,10 +2,7 @@ package cz.inqool.uas.indihu.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.inqool.uas.exception.MissingObject;
-import cz.inqool.uas.index.dto.Filter;
-import cz.inqool.uas.index.dto.FilterOperation;
-import cz.inqool.uas.index.dto.Params;
-import cz.inqool.uas.index.dto.Result;
+import cz.inqool.uas.index.dto.*;
 import cz.inqool.uas.indihu.entity.domain.Collaborator;
 import cz.inqool.uas.indihu.entity.domain.Exposition;
 import cz.inqool.uas.indihu.entity.domain.ExpositionUrl;
@@ -79,8 +76,7 @@ public class ExpositionService {
         if (helperService.isAdmin()) {
             expositions = repository.findAll(params);
         } else {
-            Filter userFilter = buildUserFilters();
-            params.setFilter(asList(params.getFilter(), userFilter));
+            addPrefilter(params, buildUserFilters());
             expositions = repository.findAll(params);
         }
         if (expositions.getItems().size() > 0) {
@@ -97,36 +93,23 @@ public class ExpositionService {
      * Creates elastic filters for expositions where user is either author or collaborator
      */
     private Filter buildUserFilters() {
-        String currentEmail = helperService.getCurrent().getEmail();
-        Filter author = new Filter();
-        author.setOperation(FilterOperation.EQ);
-        author.setField("author");
-        author.setValue(currentEmail);
-        Filter notnull = new Filter();
-        notnull.setOperation(FilterOperation.NOT_NULL);
-        notnull.setField("readRights");
-        Filter readRights = new Filter();
-        readRights.setOperation(FilterOperation.CONTAINS);
-        readRights.setField("readRights");
-        Filter andFilter = new Filter();
-        andFilter.setOperation(FilterOperation.AND);
-        readRights.setValue(currentEmail);
-        andFilter.setFilter(asList(notnull, readRights));
+        String userEmail = helperService.getCurrent().getEmail();
 
-        Filter notnull2 = new Filter();
-        notnull2.setOperation(FilterOperation.NOT_NULL);
-        notnull2.setField("writeRights");
-        Filter wrightRights = new Filter();
-        wrightRights.setOperation(FilterOperation.CONTAINS);
-        wrightRights.setField("writeRights");
-        wrightRights.setValue(currentEmail);
-        Filter andFilter2 = new Filter();
-        andFilter2.setOperation(FilterOperation.AND);
-        andFilter2.setFilter(asList(notnull, wrightRights));
-        Filter orFilter = new Filter();
-        orFilter.setOperation(FilterOperation.OR);
-        orFilter.setFilter(asList(author, andFilter, andFilter2));
-        return orFilter;
+        // user is author
+        Filter author = new Filter("author", FilterOperation.EQ, userEmail, null);
+
+        // user has read permission
+        Filter readRightsNotNull = new Filter("readRights", FilterOperation.NOT_NULL, null, null);
+        Filter readRightsUser = new Filter("readRights", FilterOperation.CONTAINS, userEmail, null);
+        Filter hasReadRights = new Filter(null, FilterOperation.AND, null, asList(readRightsNotNull, readRightsUser));
+
+        // user has write permission
+        Filter writeRightsNotNull = new Filter("writeRights", FilterOperation.NOT_NULL, null, null);
+        Filter writeRightsUser = new Filter("writeRights", FilterOperation.CONTAINS, userEmail, null);
+        Filter hasWriteRights = new Filter(null, FilterOperation.AND, null, asList(writeRightsNotNull, writeRightsUser));
+
+        // return concatenated filters
+        return new Filter(null, FilterOperation.OR, null, asList(author, hasReadRights, hasWriteRights));
     }
 
     /**
@@ -376,6 +359,17 @@ public class ExpositionService {
         expositionUrl.setExposition(exposition);
         expositionUrl.setUrl(url);
         return expositionUrlRepository.save(expositionUrl);
+    }
+
+    @Transactional
+    public boolean lock(String id) {
+        Exposition exposition = repository.find(id);
+        notNull(exposition,() -> new MissingObject(Exposition.class,id));
+        Instant lastUpdated = exposition.getUpdated();
+        exposition.setIsEditing(helperService.getCurrent().getUserName());
+        exposition.setUpdated(Instant.now());
+        exposition = repository.save(exposition);
+        return exposition.getUpdated().isAfter(lastUpdated);
     }
 
     @Inject

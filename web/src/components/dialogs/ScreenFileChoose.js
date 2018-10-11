@@ -43,7 +43,7 @@ const ScreenFileChoose = ({
             tabFolder={tabFolder}
             tabFile={tabFile}
             typeMatch={dialogData && dialogData.typeMatch}
-            key={`files-file-manager-state${keyState ? "1" : "2"}`}
+            key={`files-file-manager-state-${keyState}`}
           />
           {dialogData &&
             dialogData.error &&

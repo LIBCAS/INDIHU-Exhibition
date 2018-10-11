@@ -6,10 +6,11 @@ import com.googlecode.mp4parser.MemoryDataSourceImpl;
 import cz.inqool.uas.indihu.entity.domain.FileExpositionMapper;
 import cz.inqool.uas.indihu.entity.dto.ExpoFile;
 import cz.inqool.uas.indihu.repository.FileExpositionMapperRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
 import org.apache.tika.sax.BodyContentHandler;
@@ -21,6 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 @Slf4j
 @Service
@@ -29,25 +34,28 @@ public class ExpositionFileService {
     private FileExpositionMapperRepository fileExpositionMapperRepository;
 
     /**
-     * Returned files associated with exposition
-     * @param expositionId id of exopsition
+     * Returns files associated with exposition
+     *
+     * @param expositionId id of exposition
      * @return {@link List} of {@link ExpoFile}
      */
     public List<ExpoFile> getFiles(String expositionId) {
         List<FileExpositionMapper> mappers = fileExpositionMapperRepository.getForExposition(expositionId);
         List<ExpoFile> files = new ArrayList<>();
         mappers.forEach(fileExpositionMapper -> {
-            ExpoFile file = new ExpoFile();
             if (fileExpositionMapper.getFile() != null) {
+                ExpoFile file = new ExpoFile();
                 file.setId(fileExpositionMapper.getFile().getId());
                 file.setName(fileExpositionMapper.getFile().getName());
+                files.add(file);
             }
         });
-        return files.size() > 0 ? files : null;
+        return !files.isEmpty() ? files : null;
     }
 
     /**
      * Gets duration in seconds of mp3 file
+     *
      * @param stream {@link InputStream} of file to ger duration for
      * @return length in seconds
      */
@@ -71,6 +79,7 @@ public class ExpositionFileService {
 
     /**
      * Gets duration of mp4 encoded video file in seconds
+     *
      * @param stream {@link InputStream} of video
      * @return duration in seconds
      */
@@ -85,6 +94,33 @@ public class ExpositionFileService {
             return lengthInSeconds;
         }
         return 0d;
+    }
+
+    /**
+     * Ensures that one particular exposition contains files with unique filenames. If a file with already existing
+     * filename is being uploaded, a numbered suffix is added to its name.
+     *
+     * @param expositionId id of the exposition
+     * @param filename     name of the file being uploaded
+     * @return unique filename for an exposition (possibly extended by a numbered suffix)
+     */
+    public String ensureUniqueFilename(String expositionId, String filename) {
+        List<ExpoFile> files = getFiles(expositionId);
+        if (files != null) {
+            Set<String> existingNames = files.stream()
+                    .map(ExpoFile::getName)
+                    .collect(Collectors.toSet());
+
+            int fileCounter = 1;
+            String baseName = FilenameUtils.getBaseName(filename);
+            String extension = FilenameUtils.getExtension(filename);
+
+            while (existingNames.contains(filename)) {
+                filename = format("%s_%d.%s", baseName, fileCounter++, extension);
+            }
+        }
+
+        return filename;
     }
 
     @Inject

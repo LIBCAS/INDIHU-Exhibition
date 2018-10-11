@@ -43,6 +43,7 @@ const ScreenCard = ({
           viewUrl={activeExpo.url}
           editUrl={editUrl}
           expoId={activeExpo.id}
+          aloneScreen={data.aloneScreen}
         />
         <CardText className="card-screen">
           <p onClick={() => history.push(editUrl)}>

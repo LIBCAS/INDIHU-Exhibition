@@ -9,8 +9,7 @@ import { mouseActualize } from "../../actions/appActions";
 const compDimensions = (container, image) => {
   if (container.width > container.height && image.width > image.height)
     return "width: 100%; height: auto;";
-  else
-    return "width: auto; height: 100%;";
+  else return "width: auto; height: 100%;";
 };
 
 const ViewGameMove = ({
@@ -37,10 +36,10 @@ const ViewGameMove = ({
               .setAttribute(
                 "style",
                 `left: ${e.pageX +
-                correlationX -
-                container.left}px; top: ${e.pageY +
-                correlationY -
-                container.top}px;`
+                  correlationX -
+                  container.left}px; top: ${e.pageY +
+                  correlationY -
+                  container.top}px;`
               );
           }
         }}
@@ -85,7 +84,7 @@ const ViewGameMove = ({
             imageNode2.id = "game-move-image";
             imageNode2.setAttribute(
               "style",
-              `top: 50%; left: 50%; transform: translate(-50%, -50%);
+              `top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: contain;
               ${compDimensions(container, viewScreen.image1OrigData)}`
             );
             document
@@ -130,7 +129,7 @@ export default compose(
         imageNode1.id = "game-move-image";
         imageNode1.setAttribute(
           "style",
-          `top: 50%; left: 50%; transform: translate(-50%, -50%);
+          `top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: contain;
           ${compDimensions(container, viewScreen.image1OrigData)}`
         );
         document.getElementById("game-move-container").appendChild(imageNode1);
@@ -143,7 +142,7 @@ export default compose(
         objectNode.className = "cursor-move";
         objectNode.setAttribute(
           "style",
-          "top: 50%; left: 50%; transform: translate(-50%, -50%);"
+          "top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: contain;"
         );
         document.getElementById("game-move-container").appendChild(objectNode);
       }
