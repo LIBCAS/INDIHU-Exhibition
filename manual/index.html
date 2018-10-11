@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>INDIHU – manuál tvorby elektronické výstavy</title>
+		<link rel="stylesheet" href="css/master.css">
+<!-- 		<script type="text/javascript">
+			let timeout = window.setTimeout(loadingKiller(),10000);
+			const loadingKiller = () => window.stop();
+		</script> -->
+	</head>
+	<body>
+		<nav class="navigation-top">
+			<h2>INDIHU</h2>
+		</nav>
+		<nav class="navigation">
+			<h2>INDIHU</h2>
+			<section class="nav-sec-bigger">
+				<a href="#o-projektu">O projektu</a>
+				<a href="#slovnik-pojmu">Slovník pojmů</a>
+				<a href="#expoeditor">ExpoEditor</a>
+				<a href="#struktura-vystavy">Struktura výstavy</a>
+			</section>
+			<section class="nav-sec-smaller">
+				<a href="#1">Úvodní stránka kapitoly</a>
+				<a href="#2">Obrázek</a>
+				<a href="#3">Video</a>
+				<a href="#4">Paralaxa</a>
+				<a href="#5">Zoom in</a>
+				<a href="#6">Sekvence obrázků</a>
+				<a href="#7">Před a po</a>
+				<a href="#8">Externí objekt</a>
+				<a href="#9">Citace</a>
+				<a href="#10">Najdi na obrázku</a>
+				<a href="#11">Dokresli</a>
+				<a href="#12">Stírací los</a>
+				<a href="#13">Uhodni velikost</a>
+				<a href="#14">Posuň na správné místo</a>
+				<a href="#15">Vyber z možností</a>
+			</section>
+		</nav>
+		<section>
+			<article class="">
+				<section class="--fullscreen --blue-border">
+					<h1>INDIHU – manuál tvorby<br>elektronické výstavy</h1>
+				</section>
+				<script type="text/javascript" src="js/crossbg.js"></script>
+			</article>
+			<article class="article-text">
+				<h2 id="o-projektu">O projektu</h2>
+				<h3 class="--left-col" style="margin-top: 1.5em;">Nové softwarové řešení pro tvorbu virtuálních výstav je součástí komplexního projektu INDIHU, jehož hlavním cílem je vytvořit softwarové nástroje a infrastrukturu pro vědeckou práci v humanitních oborech, jejímž základem nebudou dle stávajících zvyklostí analogové dokumenty, nýbrž zdroje dostupné v elektronické podobě – například digitalizované dokumenty, elektronické databáze či různé separátní kolekce elektronických dat vědecké povahy, jež vznikají na akademických pracovištích a které dosud nejsou používány v uspokojivém množství, nemluvě o absenci jejich systematického propojení.</h3>
+
+				<p class="--right-col">Cíl projektu je plně v souladu s novými přístupy pro vědeckou práci v oblasti humanitních věd, které lze charakterizovat termínem „Digital Humanities“.</p>
+				<p class="--right-col">Systém bude využitý k prezentaci kulturního dědictví odborné i laické veřejnosti. Pro paměťové a výzkumné instituce bude sloužit jako základní open-source nástroj pro vytvoření virtuální výstavy, která bude publikovatelná v prostředí internetu nebo uzavřené lokální počítačové sítě.</p>
+				<p class="--right-col">Systém bude dále využit k didaktickým účelům, kdy studenti budou mít možnost sestavovat takovéto výstavy v rámci výuky. Systém poskytne kurátorům a autorům virtuálních výstav širokou škálu nástrojů pro vytvoření vizuálně i obsahově hodnotné virtuální výstavy, včetně:</p>
+				<ul class="--right-col">
+					<li>Strukturování výstavy do kapitol</li>
+					<li>Vložení obrázků a videí</li>
+					<li>Animování obrázků, vytváření sekvencí</li>
+					<li>Popisování obrázků body zájmu</li>
+					<li>Vložení hudby a mluveného komentáře</li>
+					<li>Zakomponování miniher vyžadujících interakci uživatele hravou formou</li>
+					<li>Vkládání videí z YouTube, výseků map z Google Maps a integrace s dalšími externími službami</li>
+					<li>Detailního popsání jednotlivých obrazovek</li>
+					<li>Evidence použitých zdrojů a bibliografie</li>
+				</ul>
+				<p class="--right-col">Hotovou virtuální výstavu je možné přehrávat přímo v uživatelské části systému, která umožňuje tři módy prohlížení – prezentační mód, v kterém jsou jednotlivé obrazovky výstavy přepínány automaticky (má téměř povahu dokumentárního filmu), textový mód, který má textovou podobu a je řízený uživatelem, a interaktivní (klikací) mód, který je kombinací výše zmíněných dvou a umožňuje uživateli manuální pohyb mezi stránkami, avšak jednotlivé stránky se přehrávají v plné podobě včetně animací a zvuku.</p>
+				<p class="--right-col">Virtuální výstavy vytvořené v systému je možné jednoduše zveřejnit na vlastní URL adrese a zpřístupnit je například prostřednictvím sociálních sítí, webových stránek instituce, nebo i na interaktivních či statických projekčních zařízeních a obrazovkách v prezentačním módu s nebo bez umožnění interakce uživatelů.</p>
+			</article>
+			<article class="article-text">
+				<h2 id="slovnik-pojmu">Slovník pojmů</h2>
+				<h3 class="--right-col">Výstava</h3>
+				<p class="--right-col">Výstava, nebo virtuální výstava, je základním konceptem systému. Jedná se o ucelenou prezentaci určitého tématu, vytvořenou s použitím textových, audiovizuálních informací a interakce prostřednictvím systému.</p>
+				<p class="--right-col">Výstava vždy obsahuje úvodní stránku výstavy, která nese základní informace o celé výstavě, jako jsou:</p>
+				<ul class="--right-col">
+					<li>Název výstavy</li>
+					<li>Podtitul výstavy</li>
+					<li>Perex výstavy</li>
+					<li>Titulní obrázek kapitoly, který může být animovaný</li>
+					<li>Seznam kapitol – generuje se automaticky systémem</li>
+					<li>Seznam rolí výstavy</li>
+					<li>Seznam zdrojových a doplňujících dokumentů/odkazů k výstavě</li>
+				</ul>
+				<p class="--right-col">Výstava vždy obsahuje alespoň jednu kapitolu.</p>
+				<h3 class="--right-col">Autor</h3>
+				<p class="--right-col">Autor virtuální výstavy je uživatel systému, který vytváří či vytvořil danou virtuální výstavu. Jedna výstava může mít jednoho či více autorů.</p>
+				<h3 class="--right-col">Uživatel</h3>
+				<p class="--right-col">Uživatel je osoba, pro kterou existuje v systému uživatelský účet. Dokáže se tedy přihlásit do systému pomocí přihlašovacích údajů.</p>
+				<p class="--right-col">Uživatelský účet v systému vzniká registrací uživatele, případně je přebírán z externího systému pro správu identit.</p>
+				<h3 class="--right-col">Uživatelská role</h3>
+				<p class="--right-col">Uživatelská role opravňuje všechny uživatele, kteří jsou nositelem této role, k výkonu určité agendy v rámci systému. Např. uživatelé v roli Administrátora mohou konfigurovat systém či schvalovat žádosti o registraci do systému. Výchozí role jsou Administrátor a Editor.</p>
+				<h3 class="--right-col">Kapitola</h3>
+				<p class="--right-col">Kapitola je stavební jednotka výstavy, která v sobě obsahuje jednotlivé stránky výstavy. Výstava může obsahovat jednu či více kapitol.</p>
+				<p class="--right-col">Kapitola vždy obsahuje úvodní stránku kapitoly s názvem kapitoly a titulním obrázkem kapitoly, který může být animovaný.</p>
+				<p class="--right-col">Kapitola musí obsahovat alespoň jednu stránku.</p>
+				<h3 class="--right-col">Stránka</h3>
+				<p class="--right-col">Stránka je nejmenší stavební jednotkou výstavy. Představuje textový a audiovizuální obsah zobrazený v jednom okamžiku na obrazovce uživatele. Aby bylo zamezeno neomezené volnosti při umísťování audiovizuálních objektů na stránku, systém definuje omezený počet typů stránek, z nichž každý definuje omezující podmínky na to, co všechno lze na danou stránku umístit. Typy stránek jsou:</p>
+				<ul class="--right-col">
+					<li>Stránka s obrázkem</li>
+					<li>Stránka s videem</li>
+					<li>Stránka Parallax</li>
+					<li>Stránka Zoom in</li>
+					<li>Stránka se sekvencí obrázků</li>
+					<li>Stránka Před a po</li>
+					<li>Stránka s externím objektem</li>
+					<li>Stránka s minihrou</li>
+				</ul>
+				<p class="--right-col">Jednotlivé typy stránek jsou podrobněji popsány v poslední části Manuálu. Jediným povinným atributem stránky, který musí uživatel vždy vyplnit, je název stránky. Ostatní atributy potřebné pro přehrání výstavy jsou doplňovány systémem automaticky (a mohou být uživatelem změněny). Každá stránka bude obsahovat zaškrtávací pole Stránka je dokončená“ indikující, že daná stránka je připravená ke zveřejnění. Takto označené stránky budou i barevně odlišeny v editoru struktury výstavy.</p>
+				<h3 class="--right-col">Soubor</h3>
+				<p class="--right-col">Soubor může být elektronický dokument, obrázek, video, hudební soubor či jiný soubor nahraný do systému z lokálního úložiště některého z autorů výstavy. Soubor se vždy váže ke konkrétní výstavě a nezobrazuje se v seznamu souborů u jiných výstav. Tyto soubory pro danou výstavu lze následně používat při tvorbě kapitol a stránek výstavy.</p>
+				<h3 class="--right-col">Hudba kapitoly</h3>
+				<p class="--right-col">Hudba kapitoly je hudební soubor, který byl přiřazen určité kapitole při vytváření výstavy. Tento hudební soubor je přehráván v nekonečné smyčce v průběhu prohlížení libovolné stránky dané kapitoly. Jedná se typicky o podkladovou tematickou hudbu provázející uživatele celou kapitolou. Na každé stránce bude možnost tuto hudební stopu ztlumit.</p>
+				<h3 class="--right-col">Hudba stránky</h3>
+				<p class="--right-col">Hudba stránky je hudební soubor, který byl přiřazen určité stránce při vytváření výstavy. Tento hudební soubor je přehrán jednou vždy při zobrazení dané stránky. Jedná se typicky o mluvený komentář k obsahu stránky.</p>
+				<h3 class="--right-col">Obrázek stránky</h3>
+				<p class="--right-col">Obrázek stránky je obrazový soubor, který byl přiřazen určité stránce při vytváření výstavy. Tento obrazový soubor je zobrazen v rámci zobrazení dané stránky na základě autorem definovaných parametrů. Obrázek může obsahovat animaci a jeden nebo více bodů zájmu s vysvětlivkou, tzv. infopointů.</p>
+				<h3 class="--right-col">Video stránky</h3>
+				<p class="--right-col">Video stránky je videosoubor, který byl přiřazen určité stránce při vytváření výstavy. Tento videosoubor je přehrán jednou vždy při zobrazení dané stránky.</p>
+				<h3 class="--right-col">Dokument stránky</h3>
+				<p class="--right-col">Zdroj stránky je soubor, který byl přiřazen určité stránce při vytváření výstavy. Tento soubor je uveden mezi zdroji použitými při tvorbě dané stránky a je možné si jej stáhnout.</p>
+				<h3 class="--right-col">Infopoint obrázku</h3>
+				<p class="--right-col">Infopoint obrázku je bod zájmu na obrázku, tedy bod na obrázku, ke kterému chce autor poskytnout doplňující informace. Je reprezentován ikonou otazníčku a po kliknutí na něj se zobrazí okno s doplňující informací. Obrázek může obsahovat žádný, jeden, nebo více infopointů.</p>
+				<h3 class="--right-col">Animace obrázku</h3>
+				<p class="--right-col">Aminace obrázku je efekt, který se aplikuje na obrázek při jeho zobrazení v rámci stránky. Obrázek může obsahovat jednu z následujících animací – pohyb doprava, pohyb doleva, pohyb nahoru, pohyb dolů, přiblížení, oddálení. Animace obrázku může být definována autorem v rámci vytváření výstavy.</p>
+				<h3 class="--right-col">Interakce stránky</h3>
+				<p class="--right-col">Interakce stránky umožňuje osobě prohlížející si výstavu interagovat s výstavou. Interakce může spočívat např. ve výběru jedné z více možností či přesunutí objektu na stránce metodou drag&amp;drop. Interakce budou využity v rámci tzv. miniher, tedy stránek vyžadujících interakci uživatele hravou formou.</p>
+				<h3 class="--right-col">Notifikace</h3>
+				<p class="--right-col">Notifikace je systémové oznámení o určité události. Je vždy adresována jednomu uživateli, avšak jedna událost může vést k vzniku více notifikací pro různé uživatele systému.</p>
+			</article>
+			<article class="article-text">
+				<h2 id="expoeditor">ExpoEditor</h2>
+				<h3 class="--left-col">Na mnoha místech jsou u ovládacích prvků a polí použity malé ikonky otazníků - po kliknutí na ně bude editorovi zobrazena kontextová nápověda, která mu ulehčí pochopení funkcionalit ExpoEditoru a zrychlí jeho práci na přípravě výstavy.<br><br>U kterékoliv stránky lze kliknutím na tlačítko Náhled otevřít rozpracovanou výstavu v ExpoVieweru na dané stránce a prohlédnout si její aktuální podobu. Pro tento účel bude ExpoViewer kontrolovat stav výstavy a pokud není prohlížená výstava ve stavu Zveřejněná, kontroluje ExpoViewer autentizaci a autorizaci uživatele pro danou výstavu před jejím zobrazením.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Registrace</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/login-registrace-prehled_uzivatelu/registrace.png" alt="">
+					</div>
+					<p class="--right-col">Pokud chce osoba získat přístup do aplikace ExpoEditor, musí vyplnit registrační formulář a potvrdit registraci klinutím na odkaz, který je jí doručen na zadanou emailovou adresu. Na základě tohoto potvrzení vznikne žádost o vytvoření účtu. Žádost podléhá schválení administrátorem systému, pokud není zapnutá volba automatického schvalování žádostí. Po schválení žádosti administrátorem vzniká uživatelský účet s rolí Editor.</p>
+					<p class="--right-col">O odeslání žádosti ke schválení i o následném schválení a vytvoření uživatelského účtu je žadatel informován mailovými notifikacemi.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Přihlášení</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/login-registrace-prehled_uzivatelu/login.png" alt="">
+					</div>
+					<p class="--right-col">Uživatel se přihlašuje uživatelským jménem (e-mail) a heslem, které si zvolil při registraci, anebo které mu bylo přiděleno v rámci instituce.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Správa uživatelského účtu</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/login-registrace-prehled_uzivatelu/uzivatele copy.png" alt="">
+					</div>
+					<p class="--right-col">Přihlášený uživatel v pravé části hlavičky aplikace ExpoEditor klikne na ikonku uživatele. Zobrazí se rozbalovací menu a jednou z možností je Správa účtu. Zde má uživatel možnost zadat či upravit svoje osobní údaje a změnit přihlašovací heslo. Má zde také možnost zrušit svůj účet.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Administrační rozhraní</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/login-registrace-prehled_uzivatelu/uzivatele.png" alt="">
+					</div>
+					<p class="--right-col">Uživatel s rolí Administrátor má v pravé části hlavičky aplikace k dispozici záložku Administrace. Po kliknutí se mu zobrazí rozbalovací menu s možnostmi Nastavení pro nastavení systému a Uživatelé pro správu uživatelů a schvalování žádostí o vytvoření účtu.</p>
+				</div>
+				<h3 class="--right-col">Nastavení systému</h3>
+				<p class="--right-col">Zde má administrátor možnost měnit některá systémová nastavení:</p>
+				<ul class="--right-col"><li>Zapnutí/vypnutí automatického schvalování žádostí o vytvoření uživatelského účtu</li></ul>
+				<h3 class="--right-col">Schvalování žádostí o&nbsp;vytvoření uživatelského účtu</h3>
+				<p class="--right-col">Administrátor vidí seznam všech uživatelů v systému v přehledné tabulce s možností vyhledávání a filtrování. U každého uživatele mu systém nabízí akce s uživatelem, jako je schválení žádosti o vytvoření účtu či zablokování účtu.</p>
+				<div class="text-with-images">
+					<h3 class="--left-col">Seznam virtuálních výstav</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/seznam_vystav/vystavy.png" alt="">
+					</div>
+					<p class="--right-col">Po přihlášení se uživateli zobrazí seznam výstav, které vytváří či vytvořil. U každé výstavy vidí základní informace, jako jsou název výstavy, vlastník výstavy, stav výstavy a datum poslední změny. Uživatel může vyhledávat v seznamu výstav podle názvu. V pravé části vidí seznam naposledy otevřených výstav s možností rychle se k některé z výstav vrátit. Uživatel má také možnost vytvořit novou výstavu kliknutím na tlačítko.</p>
+					<p class="--right-col">U každé výstavy lze otevřít kontextové menu s možností základních operací, jako je přejmenování výstavy, sdílení výstavy či její části, export výstavy, změna stavu výstavy, zkopírování výstavy či smazání výstavy.</p>
+					<p class="--right-col">Každá výstava je v jednom z těchto stavů:</p>
+					<ul class="--right-col">
+						<li>V přípravě (výstava není zveřejněná a její náhled je dostupný pouze registrovaným uživatelům, kteří k ní mají přístup)</li>
+						<li>veřejněná (výstava je veřejně dostupná na URL adrese bez omezení)</li>
+						<li>Ukončená (výstava již není veřejně dostupná a nedá se editovat)</li>
+					</ul>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--right-col"></h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/seznam_vystav/sdílet 3.png" alt="">
+					</div>
+					<p class="--right-col">Systém umožňuje pozvat další editory v systému k spolupráci na výstavě podobně, jako je tomu u Google dokumentů – zadáním uživatelského jména a výběrem uživatelů. Uživatelům je o této skutečnosti odeslaná mailová notifikace.</p>
+					<p class="--right-col">Výstavu je dále možné sdílet odesláním URL adresy výstavy, a to jak odkazu na titulní stránku, tak na libovolnou kapitolu či stránku. Pořád ale platí pravidla pro zveřejnění výstavy, tedy pokud výstava není ve stavu Zveřejněná, anonymní uživatel ani uživatelé, kteří na ní nespolupracují, ji neuvidí.</p>
+					<p class="--right-col">Administrátor systému vidí v seznamu všechny výstavy všech uživatelů a může s nimi vykonávat všechny operace tak, jakoby by měl na všech výstavách oprávnění pro čtení i zápis. Nemůže výstavy mazat.</p>
+				</div>
+				<h3 class="--left-col">Detail výstavy</h3>
+				<h3 class="--left-col">Po otevření detailu výstavy se uživateli zobrazí první záložka - Struktura výstavy - která slouží pro definování členění výstavy na kapitoly a stránky. Lze se přepnout na záložky Soubory pro správu souborů relevantních k výstavě, Nastavení pro obecná nastavení celé výstavy a Sdílení.<br><br>Všechny změny, které uživatel na detailu výstavy udělá, jsou okamžitě ukládány, není zde žádné tlačítko Uložit.</h3>
+				<div class="text-with-images">
+					<h3 class="--right-col"></h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/struktura_vystavy/detail výstavy.png" alt="" style="margin-bottom: 4em;">
+						<img src="images/screeny_administrace/struktura_vystavy/detail výstavy - menu.png" alt="">
+					</div>
+					<h3 class="--right-col" id="struktura-vystavy">Struktura výstavy</h3>
+					<p class="--right-col">Každá výstava obsahuje dvě povinné části, a to Úvod výstavy a Závěr výstavy. Mezi nimi je výstava strukturována do kapitol. Každá kapitola obsahuje povinně úvodní stránku kapitoly a pak další stránky s obsahem.</p>
+					<p class="--right-col">Struktura výstavy je uživateli zobrazená v grafické podobě v editoru, který nabízí interaktivní možnosti správy struktury, tedy přidávat nové části výstavy na jednotlivá místa, přesouvat stránky a kapitoly či mazat části výstavy.</p>
+					<p class="--right-col">Každá stránka dále obsahuje kontextové menu, které umožňuje mimo jiné zobrazit náhled dané stránky výstavy ve Vieweru nebo možnost Upravit, která otevře detail stránky k editaci.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--right-col"></h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/soubory_vystavy/detail vystavy.png" alt="">
+					</div>
+					<h3 class="--right-col">Soubory výstavy</h3>
+					<p class="--right-col">Každá výstava disponuje svým vlastním souborovým depozitářem, do kterého si uživatel může nahrávat soubory potřebné pro tvorbu výstavy. Uživatel také může vytvářet adresářové struktury a přesouvat soubory mezi složkami. K dispozici je náhled obrázku a metadat souboru. Tyto soubory pak uživatel dále využívá při vytváření a editaci jednotlivých stránek, proto je potřebné zabezpečit co nejvyšší přehlednost dokumentového repozitáře výstavy.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--right-col"></h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/nastaveni_vystavy/detail vystavy.png" alt="">
+					</div>
+					<h3 class="--right-col">Nastavení</h3>
+					<p class="--right-col">Záložka obsahuje veškerá nastavení virtuální výstavy, která se netýkají konkrétní stránky výstavy. Zatím sem řadíme pouze nastavení stavu a URL výstavy, další mohou vyplynout v průběhu implementace.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--right-col"></h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/sdileni_vystavy/sdílení.png" alt="">
+						<img src="images/screeny_administrace/sdileni_vystavy/sdílení 2.png" alt="">
+					</div>
+					<h3 class="--right-col">Sdílení</h3>
+					<p class="--right-col">Výstavu lze sdílet s dalšími editory, kterým lze umožnit pouze prohlížení výstavy nebo i editaci. Přidání další osoby probíhá stejně jako u Seznamu virtuálních výstav.</p>
+				</div>
+				<h3 class="--right-col">Zamykání výstavy</h3>
+				<p class="--right-col">Pokud některý z uživatelů otevře detail výstavy k editaci, zamkne tuto výstavu pro editaci ostatními uživateli na konfiguračně definovanou dobu (standardně 1 minuta). Informace o tom, který uživatel právě výstavu upravuje, bude viditelná jak v seznamu výstav, tak na detailu výstavy. Ostatní uživatelé mohou detail výstavy prohlížet, avšak ne upravovat.</p>
+			</article>
+			<section class="--fullscreen" id="1">
+				<video loop preload="none" src="video/uvod vystavy/uvodni_stranka_vystavy.mp4" ></video>
+			</section>
+			<article class="article-text">
+				<h2>Úvodní stránka výstavy</h2>
+				<h3 class="--left-col">Úvodní stránka výstavy obsahuje obrázek s případnou animací, název výstavy, informace o použitých zdrojích, informace o osobách podílejících se na přípravě výstavy a odkazy související dokumenty ke stažení. Editor se na tuto stránku dostane ze struktury výstavy kliknutím na čtvereček úvodu výstavy nebo výběrem z kontextového menu tohoto čtverečku.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/priprava_data.png" alt="">
+					</div>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/uvod_vystavy/vybrat obrazek.png" alt="">
+					</div>
+					<h3 class="--right-col">Základní info o výstavě</h3>
+					<p class="--right-col">Na hlavní záložce editor vyplňuje základní údaje k výstavě, vybírá obrázek výstavy ze seznamu dokumentů, volí animaci obrázku. Editor může vybrat ze seznamu dokumentů audiosoubor představující audioverzi celé výstavy - tato je pak dostupná uživatelům ke stažení na úvodní stránce výstavy.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<img src="images/screeny_administrace/uvod_vystavy/autoři editace.png" alt="">
+					</div>
+					<h3 class="--right-col">Autoři a spolupracovníci</h3>
+					<p class="--right-col">Na této záložce editor přidává osoby podílející se na přípravě výstavy. Vždy volí oprávnění (pro čtení a zápis, pouze pro čtení), a osobu. Výběr osoby probíhá zadáním e-mailové adresy. Pokud zadaná e-mailová adresa v systému neexistuje, je odeslána pozvánka e-mailem. Uživatel, který výstavu vytvořil, má oprávnění Vlastník výstavy. V rámci editace oprávnění spolupracovníků může označit jiného uživatele jako vlastníka a on sám vlastnictví výstavy tímto ztratí a získá oprávnění pro čtení i zápis.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<img src="images/screeny_administrace/uvod_vystavy/dokumenty editace.png" alt="">
+					</div>
+					<h3 class="--right-col">Dokumenty a zdroje</h3>
+					<p class="--right-col">Zde editor výstavy tvoří seznam zdrojů a relevantních dokumentů. Zde je možné vybrat dokument z knihovny dokumentů výstavy nebo vložit URL adresu dokumentu dostupného online. Editor doplní název dokumentu a typ dokumentu, nebyly-li tyto informace rozpoznány či doplněny automaticky, například převzetím z knihovny dokumentů. Tyto dokumenty jsou následně dostupné ke stažení na úvodní stránce výstavy.</p>
+				</div>
+			</article>
+			<section class="--fullscreen" id="2">
+				<video loop preload="none" src="video/uvod kapitoly/uvod_kapitoly_artel.mp4" ></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Úvodní stránka kapitoly</h2>
+				<h3 class="--left-col">Každá nová kapitola je otevřena stránkou jako je tato, jedná se titulní stránku. Obsahuje název kapitoly a titulní obrázek kapitoly, jež může být i animovaný.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/ptaci.png" alt="">
+					</div>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s&nbsp;rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/uvod_kapitoly/detail obrazovky.png" alt="">
+					</div>
+					<ol class="--right-col" style="margin-top: 5.5em">
+						<li>Na hlavní záložce editor vyplňuje základní údaje ke kapitole – název a podnázev. Výběrem z knihovny dokumentů lze vybrat dvě zvukové stopy – pro celou kapitolu a pro úvodní stránku kapitoly. Zvuková stopa pro celou kapitolu je přehrávána ve smyčce počas průchodu všemi stránkami kapitoly. Zvuková stopa pro úvodní stránku kapitoly je přehrána pouze jednou a definuje svou délkou i délku animace obrázku a celkově délku setrvání na této stránce při prohlížení v prezentačním módu. Tuto délku v sekundách lze manuálně změnit, pokud editorovi automaticky vypočtená délka nevyhovuje.</li>
+						<li>Na záložce Obrázek vybírá editor obrázek z knihovny dokumentů. K němu vybírá animaci ze seznamu dostupných animací. V tabulce s infopointy může přidat nový infopoint – bod zájmu – a umístit ho na obrázek ve formě ikonky otazníčku. V tabulce pak k tomuto bodu zájmu vyplní textový popis. Při přehrávání výstavy se pak tyto infopointy na obrázku zobrazí a po kliknutí na otazníček se zobrazí průvodný text.</li>
+					</ol>
+				</div>
+			</article>
+			<article class="article-text" style="background:#F0F0F0;">
+				<div class="text-with-images" style="margin-top: 0;">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/obrazek/obrazek.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Fotografie doplňující mluvené slovo</h3>
+					<p class="--right-col">Divák si prohlíží fotografii vztahující se k mluvenému slovu, jenž je současně přehráváno.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/obrazek/obrazek infopointy.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Fotografie doplňující mluvené slovo s&nbsp;infopointy</h3>
+					<p class="--right-col">Divák si prohlíží fotografii vztahující se k mluvenému slovu, jenž je současně přehráváno a je zároveň upozorněn na detaily pomocí infopointů.</p>
+				</div>
+			</article>
+
+
+			<section class="--fullscreen" id="3">
+				<video loop preload="none" src="video/video/video.mp4"  ></video>
+			</section>
+			<article class="article-text">
+				<h2>Video</h2>
+				<h3 class="--left-col">Jedná se o stránku, která obsahuje pouze videosoubor, který určuje svou délkou délku přehrávání stránky.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/priprava_data.png" alt="">
+					</div>
+					<p class="--right-col">Video připravujte v rozlišení FullHD (1920×1080), 25 snímků za vteřinu, v rendrovacím formátu H.264</p>
+					<p class="--right-col --tip">TIP: Velikost videa lze výrazně zmenšit, při zachování ucházející kvality v programu HandBrake <a href="https://handbrake.fr">https://handbrake.fr</a></p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/uvod_vystavy/vybrat obrazek.png" alt="">
+					</div>
+					<p class="--right-col">Na hlavní záložce editor vyplňuje stejné údaje jako u předchozí stránky s tím rozdílem, že nevybírá z knihovny dokumentů zvukovou stopu, nýbrž videosoubor, který určuje svou délkou délku přehrávání stránky.</p>
+				</div>
+			</article>
+			<article class="article-text" style="background:#F0F0F0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+            <video loop preload="none" src="video/video/video_listovani.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Prolistování knihou</h3>
+					<p class="--right-col">Videosoubor s prolistováním knihou je zde použit jako zábavný doplněk mluveného slova (úryvku z knihy).</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/video/video_mluvici_hlava.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Mluvící hlava</h3>
+					<p class="--right-col">Videosoubor s názorem oborníka na danné téma.</p>
+				</div>
+				<div class="text-with-images" style="margin-top: 0;">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/video/video_podpis.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Animace</h3>
+					<p class="--right-col">Animace je velmi poutavá forma videosouboru. Perfektně se hodí pro rozhýbání infografik, psaných textů apod.</p>
+				</div>
+				<section>
+					<video loop preload="none" src=""></video>
+				</section>
+			</article>
+
+
+			<section class="--fullscreen" id="4">
+				<video loop preload="none" src="video/paralax/paralaxa.mp4" ></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Paralaxa</h2>
+				<h3 class="--left-col">Tato technika se nazývá parallax a imituje prostorový pohyb obrazu, čímž vyvolává 3D dojem.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col" style="margin-bottom: 5em;">
+						<img src="images/screeny_administrace/paralax/Image_23.png" alt="" style="width: 50%;display:inline-block;"><!--
+						 --><img src="images/screeny_administrace/paralax/Image_24.png" alt="" style="width: 50%;display:inline-block;">
+					</div>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/paralax/Image_25.png">
+					</div>
+					<!-- <div class="--left-col"><img src="" alt=""></div> -->
+					<ol class="--right-col">
+						<li style="margin-top: 4.7em;">Nejprve je nutné vybrat vhodnou fotografii, která by se dala rozdělit do minimálně dvou perspetivních plánů. Ne všechny fotografie jsou pro parallax vhodné.</li>
+						<li style="margin-top: 10em;">Při přípravě dat pro parallax je nutné rozřezat fotografii do dvou a více vrstev. Je nutné postupovat podle logiky perspektivy - to, co je na fotografii blíže oddělit od toho, co je na fotografii dále. Po rozřezání je nutné uměle doretušovat všem určitý překryv, neboť při animaci se jednotlivé vrstvy vůči sobě posouvají. Při tvorbě překryvu je nutné brát v potaz to, kterým směrem se vrstvy budou vůči sobě animovat.</li>
+					</ol>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920x1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/paralax/thumbnail_menu.png" alt="">
+					</div>
+					<p class="--right-col">Údaje na hlavní záložce jsou stejné jako s obrázkem. Na záložce Parallax může editor vybrat z knihovny dokumentů 2 a více obrázků, které v sznamu obrázků na levé straně seřadí od nejvrchnější po nejspodnější vrstvu. Editor dále zvolí typ animace společný pro všechyn vrstvy ze seznamu povolených animací. Při přehrávání této stránky v rámci výstavy jsou všechyn obrázkové vrstvy animovány zvolenou animací a to tak, že nejspodnější vrstva je animována nejpomaleji a animace jednotlivých vrstev pevně definovaným koeficientem zrychluje až k nejvrchnější vrstvě. Tato technika se nazývá paralax a imituje prostorový pohyb obrazu, čímž vyvolává 3D dojem.</p>
+				</div>
+			</article>
+
+
+			<section class="--fullscreen" id="5">
+				<video loop preload="none" src="video/zoom_in/ZoomIN_dilo.mp4" ></video>
+			</section>
+			<article class="article-text">
+				<h2>Zoom in</h2>
+				<h3 class="--left-col">Tato technika umožňuje ukázat divákovi objekt vcelku a poté upozornit na důležité detaily, jež jsou popsány pomocí infopointů.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/zoom-in/mucha.png" alt="">
+					</div>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920x1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+						<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+				</div>
+				<div class="text-with-images">
+					<h3>Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/zoom-in/thumbnail_menu.png" alt="">
+					</div>
+					<p class="--right-col">Údaje na hlavní záložce jsou stejné jako u Stránky s obrázkem. Na záložce Sekvence vybírá editor obrázek z knihovny dokumentů. V tabulce se sekvencí zoomů může přidat nový bod pro zoom a umístit ho na obrázek. V tabulce pak k tomuto bodu zájmu vybere úroveň zoomu a délku trvání animace. Součet trvání všech zoomů musí být menší nebo rovný celkové délce přehrávání stránky definované délkou zvukové stopy nebo ručně v sekundách. Pokud součet překročí tento limit, je na tuto skutečnost editor upozorněn a délky zoomů se automaticky upraví tak, aby tato podmínka byla dodržená.
+					</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/zoom_in/ZoomIN_dilo.mp4" ></video>
+					</div>
+						<h3 class="--right-col">Detaily uměleckého díla</h3>
+						<p class="--right-col">Tato stránka umožňuje divákovi prohlédnout si celé umělecké dílo vcelku a poté upozorní na důležité detaily, jež mouhou být popsány pomocí infopointů.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/zoom_in/ZoomIN_lokace.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Lokace v krajině</h3>
+					<p class="--right-col">Tato stránka umožňuje divákovi prohlédnout si celou lokaci a poté upozorní na důležité detaily, jež mohou být popsány pomocí infopointů.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/zoom_in/ZoomIN_dokument.mp4" ></video>
+					</div>
+					<h3 class="--right-col">Část dokumentu</h3>
+					<p class="--right-col">Tato stránka umožňuje divákovi prohlédnout si celý dokument a poté upozorní na důležité detaily, jež mohou být popsány pomocí infopointů.</p>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="6">
+				<video loop preload="none" src="video/sekvence/sekvence_zuby.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Sekvence obrázků</h2>
+				<h3 class="--left-col">Tento modul funguje vlastně jako sekvenční animace mnoha fotografií za sebou. Umožňuje ukázat divákovi objekt ze všech stran a upozornit na důležité detaily.</h3>
+				<h3 class="--left-col">Při přípravě dat k modulu lze postupovat dvěma způsoby: Je možné objekt nafotit nebo je možné vytvořit animaci ve 3D programu.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Varianty modulu</h3>
+						<div class="--left-col" style="margin-top: 0;">
+							<video loop preload="none" src="video/sekvence/sekvence_zuby.mp4"></video>
+						</div>
+					<h3 class="--right-col">Varianta focení objektu</h3>
+					<p class="--right-col">Exponovaný objekt je možné nafotit pokud je dostupný ve fyzické podobě.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/sekvence/sekvence_socha_1.mp4"></video>
+					</div>
+					<h3 class="--right-col">Varianta užití 3D programu</h3>
+					<p class="--right-col">Sekvenci snímků lze také vytvořit ve 3D programu.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/sekvence/Image 30.png" alt="">
+					</div>
+					<h3 class="--right-col">Varianta focení objektu</h3>
+					<p class="--right-col">Je možné objekt nafotit - a to alespoň 36 fotografiemi ze všech stran. Čím více bude fotografií, tím jemnější bude pohyb animace.</p>
+					<p class="--right-col">Je dobré vždy najít idální poměr mezi co jejmenším datovým objemem a zároveň co jevětší plynulostí animace. Snímků tedy nesmí být příliš mnoho ani příliš málo.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<img src="images/nahledy/sekvence/Image 31.png" alt="">
+					</div>
+					<h3 class="--right-col">Varianta užití 3D programu</h3>
+					<p class="--right-col">Je možné vytvořit animaci ve 3D programu a&nbsp;vyrenderovat ji jako JPG (PNG) sekvenci.</p>
+					<p class="--right-col">Je dobré vždy najít idální poměr mezi co jejmenším datovým objemem a zároveň co jevětší plynulostí animace. Snímků tedy nesmí být příliš mnoho ani příliš málo.</p>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920x1080) s rozlišením 72 dpi a ve formátu .png neob .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/sekvence/Image_33.png" alt="">
+					</div>
+					<p class="--right-col">Údaje na hlavní záložce jsou stejné jako u Stránky s obrázkem. Na záložce Sekvence může editor vybrat z knihovny dokumentů 2&nbsp;a&nbsp;více obrázků, které v seznamu obrázků na levé straně seřadí od prvního po poslední. Editor dále zvolí typ přechodové animace společný pro všechny obrázky ze seznamu povolených přechodových animací. Po kliknutí na některý z obrázků v&nbsp;levém seznamu se zobrazí jeho detail, na kterém je možné defiovat infopointy stejným způsobem jako u Stránky s obrázkem.</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col" style="margin-top:0;">
+						<video loop preload="none" src="video/sekvence/sekvence_zuby.mp4"></video>
+					</div>
+					<h3 class="--right-col">360° zobrazení</h3>
+					<p class="--right-col">Umožňuje divákovi prohlédnout si objekt ze všech stran nebo úhlů.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top:0;">
+						<video loop preload="none" src="video/sekvence/sekvence_socha_1.mp4"></video>
+					</div>
+					<h3 class="--right-col">Zaměření na detaily</h3>
+					<p class="--right-col">Umožňuje divákovi prohlédnout si objekt ze všech stran. Diváka pak zvlášť upozorňuje na jednotlivé detaily.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top:0;">
+						<video loop preload="none" src="video/sekvence/sekvence_mapa_2.mp4"></video>
+					</div>
+					<h3 class="--right-col">Trasa se zastávkami</h3>
+					<p class="--right-col">Umožňuje divákovi prohlédnout si například mapu a to nejen v celku, ale i jednotlivé detaily, například zastávky na trase.</p>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="7">
+				<video loop preload="none" src="video/pred_po/Pred_a_po_tahlo_vertikalni.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Před a po</h2>
+				<h3 class="--left-col">U modulu Před a po se jedná o dvě vzájemně se překrývající fotografie, kdy pomocí táhla odkrýváme jednu a zakrýváme druhou. Můžeme tak krásně porovnat kterak fotografovaný objekt vypadal před njakou dobou a dnes.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Varianty modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/pred_po/Pred_a_po_hover.mp4"></video>
+					</div>
+					<h3 class="--right-col">Varianta myš nad obrázkem</h3>
+					<p class="--right-col">Jedná se o dvě vzájemně se překrývající fotografie, kdy se pomocí najetí myší na obrázek odkryje spodní vrstva.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top: 0;">
+						<video loop preload="none" src="video/pred_po/Pred_a_po.mp4"></video>
+					</div>
+					<h3 class="--right-col">Varianta s kliknutím na obrázek</h3>
+					<p class="--right-col">Jedná se o dvě vzájemně se překrývající fotografie, kdy se po kliknutí na obrázek odkryje spodní vrstva.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top: 0;">
+						<video loop preload="none" src="video/pred_po/Pred_a_po_tahlo_horizontalni.mp4"></video>
+					</div>
+					<h3 class="--right-col">Varianta s horizontálním táhlem</h3>
+					<p class="--right-col">Jedná se o dvě vzájemně se překrývající fotografie, kdy se pomocí táhla odkrývá spodní vrstva.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top: 0;">
+						<video loop preload="none" src="video/pred_po/Pred_a_po_tahlo_vertikalni.mp4"></video>
+					</div>
+					<h3 class="--right-col">Varianta s vertikálním táhlem</h3>
+					<p class="--right-col">Jedná se o dvě vzájemně se překrývající fotografie, kdy se pomocí táhla odkrývá spodní vrstva.</p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/pred-po/Image 35.png" alt="">
+					</div>
+					<p class="--right-col">Aby efekt dobře fungoval, musí se obě fotografie dokonale překrývat. Je nutné, aby byly fotografie vyfocené přesně ze stejného místa a pokud možno stejným objektivem. Fotografie musí také mít stejný poměr stran a stejné rozlišení (ideálně 1920x1080).</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+					<div class="--left-col">
+						<img src="images/nahledy/pred-po/Image 36.png" alt="">
+					</div>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/pred-po/obrazky_prazdne.png" alt="">
+					</div>
+					<p class="--right-col">Údaje na hlavní záložce jsou stejné jakou Stránky s obrázkem. Na záložce Obrázky vybírá editor Obrázek před a Obrázek po z&nbsp;knihovny dokumentů. Dále editor volí Způsob přechodu mezi obrázky ze seznamu povolených přechodů.</p>
+					<ul class="--right-col">
+						<li>Myš nad obrázkem</li>
+						<li>Kliknutí na obrázek</li>
+						<li>Horizontální táhlo</li>
+						<li>Vertikální táhlo</li>
+					</ul>
+
+				</div>
+			</article>
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+				</div>
+				<div class="text-with-images" style="margin-top: 0">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/pred_po/pred_a_po_tahlo_vertikalni.mp4"></video>
+					</div>
+					<h3 class="--right-col">Fotografie před a po retuši</h3>
+					<p class="--right-col">Divákovi je umožněno pozorovat, kterak vypadala historická fotografie původně a jak po retuši a kolorizaci.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col"  style="margin-top: 0">
+						<video loop preload="none" src="video/pred_po/Ukazka_tahlo_dubaj.mp4"></video>
+					</div>
+					<h3 class="--right-col">Původní vs. současný stav</h3>
+					<p class="--right-col">Divákovi je umožněno pozorovat, kterak fotografovaný objekt vyadal před nějakou dobou a jak vypadá například dnes. Lze použít u architektury, exteriéru, interiéru, apod.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col"  style="margin-top: 0">
+						<video loop preload="none" src="video/pred_po/ukazka_tahlo_miska.mp4"></video>
+					</div>
+					<h3 class="--right-col">Před a po retuši</h3>
+					<p class="--right-col">Divákovi je umožněno porovnat, kterak fotografovaný objekt vypadal předtím a jak poté, co byl zrekonstruován a nebo zrestaurován.</p>
+				</div>
+
+			</article>
+
+			<section class="--fullscreen" id="8">
+				<video loop preload="none" src=""></video>
+			</section>
+			<article class="article-text" style="margin-top: 0">
+				<h2 class="--left-col">Externí objekt</h2>
+				<h3 class="--left-col">Modul, jež umožňuje vložit např. výsledek mapy z Google Maps nebo Mapy.cz či video z YouTube.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/externi_zdroj/externi_data.png" alt="">
+					</div>
+					<p class="--right-col">Údaje na hlaví záložce jsou stejné jako u Stránky s obrázkem. Na záložce Externí data vkládá editor do textového pole HTML kód externího objektu, který chcec v rámci stránky zobrazit, např. výsek mapy z Google Maps nebo Mapy.cz či video z YouTube.</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+				</div>
+				<div class="text-with-images" style="margin-top: 0;">
+					<div class="--left-col" >
+						<video loop preload="none" src="video/externi objekt/externi_objekt_mapa.mp4"></video>
+					</div>
+					<h3 class="--right-col">Google / Seznam mapa</h3>
+					<p class="--right-col">Divák je seznámen s lokací pomocí mapy.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top: 0;">
+						<video loop preload="none" src="video/externi objekt/externi_objekt.mp4"></video>
+					</div>
+					<h3 class="--right-col">Google street view</h3>
+					<p class="--right-col">Divák je přenesen na konkrétní místo pomocí Google street view.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col" style="margin-top: 0;">
+						<video loop preload="none" src="video/externi objekt/externi_objekt_video_1.mp4"></video>
+					</div>
+					<h3 class="--right-col">Video z YouTube</h3>
+					<p class="--right-col">Nahraje video z exterích stránek.</p>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="9">
+				<video loop preload="none" src="video/citace/text.mp4"></video>
+			</section>
+			<article class="article-text" style="margin-top: 0">
+				<h2 class="--left-col">Citace</h2>
+				<h3 class="--left-col">Modul, jež slouží k prezentaci citací a nebo kratších úryvků textu. Doporučujeme nepřekračovat počet 300 znaků aby texxt zůstal pro diváka čitelný a snadno stravitelný.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+
+					</div>
+					<p class="--right-col">Administrace přístupná v updatu 2.0</p>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="10">
+				<video loop preload="none" src="video/najdi_na_obr/najdi_na_obrazku_prase.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Najdi na obrázku</h2>
+				<h3 class="--left-col">Minihra</h3>
+				<h3 class="--left-col">Obsahuje obrázek a definuje bod obrázku, který má divák uhodnout kliknutím na obrázek.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/minihra-najdi_na_obrazku/prase.png" alt="">
+					</div>
+					<p class="--right-col">Pro přípravu této minihry je potřeba vytvořit dva obrázky a to obrázek Základní a obrázek Výsedku, který se zobrazí poté, co uživatel prohlížející výstavu označí na obrázku Zadání od, o kterém se domnívá, že je odpovědí na zadání hry.</p>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<div class="--left-col">
+						<img src="images/nahledy/minihra-najdi_na_obrazku/prase_reseni.png" alt="">
+					</div>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/minihra-najdi_na_mape/obrazek_prazdny.png" alt="">
+					</div>
+					<p class="--right-col">Na záložce Obrázky editor vybírá z knihovny dokumentů obrázek Zadání a obrázek Výsledek, který se zobrazí poté, co uživatel prohlížející výstavu označí na obrázku Zadání bod, o kterém se domnívá, že je odpovědí na zadání minihry.<br>Zaškrtávací pole<br>Zobrazit uživatelům tip určuje, zda se má na obrázku Výsledek zobrazit i uživatelova volba bodu.</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/najdi_na_obr/najdi_na_obrazku_osobu.mp4"></video>
+					</div>
+					<h3 class="--right-col">Najděte konkrétní osobu</h3>
+					<p class="--right-col">Divák tipuje, ve které části obrazu se nachází konkrétní osoba</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/najdi_na_obr/najdi_na_obrazku_misto.mp4"></video>
+					</div>
+					<h3 class="--right-col">Ve které části se nachází</h3>
+					<p class="--right-col">Divák tipuje, ve které části obrazu se nachází objekt, o němž je řeč. Např.: Ve které části hradu byla hladomorna?</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/najdi_na_obr/najdi_na_obrazku_prase.mp4"></video>
+					</div>
+					<h3 class="--right-col">Urči konkrétní místo</h3>
+					<p class="--right-col">Divák určuje, kde konkrétně se na mapě nachází zmiňovaný objekt. Např.: Ze které části vepře se dělá šunka?</p>
+				</div>
+
+			</article>
+
+
+			<section class="--fullscreen" id="11">
+				<video loop preload="none" src="video/dokresli/dokresli_symbol.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Dookresli</h2>
+				<h3 class="--left-col">Minihra</h3>
+				<h3 class="--left-col">Obsahuje obrázek a umožňuje divákovi kliknutím a tažením myši do tohoto obrázku kreslit. Poté co divák svou kresbu dokončí, zobrazí se správné řešení. </h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/dokresli/pul_ornamentu.png">
+					</div>
+					<p class="--right-col">Pro tuto minihru je potřeba připravit obrázek Zadání a obrázek Výsledek, který se zobrazí poté, co uživatel prohlížející výstavu ukončí kreslení do obrázku Zadání.</p>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+					<div class="--left-col">
+						<img src="images/nahledy/dokresli/cely_ornament.png">
+					</div>
+				</div>
+
+				<div class="text-with-images">
+					<h3>Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/minihra-dokresli_nebo_spoj/obrazek_prazdny.png" alt="">
+					</div>
+					<p class="--right-col">V záložce Obrázky editor vybírá z knihovny dokumentů obrázek Zadání a obrázek Výsledek, který se zobrazí poté, co uživatel prohlížející výstavu ukončí kreslení do obrázku Zadání. Zaškrtávací pole Zobrzit uživatelovu kresbu určuje, zda se má na obrázku Výsleedek zobrazit uživatelovat kresba.</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3>Nápady na využití modulu</h3>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="12">
+				<video loop preload="none" src="video/stiraci_los/los_stalin.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Stírací los</h2>
+				<h3 class="--left-col">Minihra</h3>
+				<h3 class="--left-col">Osahuje 2 obrázky, obrázek před a obrázek po, které se na obrazovce překrývají, a umožňuje divákovi kliknutím a tažením myši "stírat" vrchní obrázek a odhalit tím spodní obrázek.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/stiraci_los/stalin_bez.png" alt="">
+					</div>
+					<p class="--right-col">Pro přípravu této minihry je potřeba vytvořit Vrchní obrázek a Spodní obrázek, který se zobrazí pod Vrchním obrázkem na základě masky, kterou vytvoří uživatel prohlížející výstavu tím, že klikne nevým tlačítkem myši a prochází kursorem po Vrchním obrázku.</p>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p><p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+					<div class="--left-col">
+						<img src="images/nahledy/stiraci_los/stalin.png" alt="">
+					</div>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/stiraci_los/obrazky_prazdne.png" alt="">
+					</div>
+					<p class="--right-col">Na záložce Obrázky editor vybírá z knihovny dokumentů Vrchní obrázek a Spodní obrázek, který se zobrazí pod Vrchním obrázkem na základě masky, kterou vytvoří uživatel prohlížející výstavu tím,  že klikne levým tlačítkem myši a prochází kurorem po Vrchním obrázku.</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/stiraci_los/los_stalin.mp4"></video>
+					</div>
+					<h3 class="--left-col">Odhal skrytý detail</h3>
+					<p class="--right-col">Divák ma za úkol například odhalit, ve které části fotografie se nacházela osoba, jež byla díky nepohodlnosti z fotografie vyretušována.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/stiraci_los/los_unionka.mp4"></video>
+					</div>
+					<h3 class="--left-col">Původní stav vs. současný stav</h3>
+					<p class="--right-col">Divákovi je umožněno setřít horní vrstvu a dozvědět se tak, kterak forografovaný objekt vypadal před nějakou dobou. Lze použít u architektury, exteriéru, interiéru apod.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/stiraci_los/los_unionka.mp4"></video>
+					</div>
+					<h3 class="--left-col">Před a po rekonstrukci</h3>
+					<p class="--right-col">Divákovi je umožněno setřít horní vrstvu a dozvědět se tak, jak forografovaný objekt vypadal předtím, co byl zrekonstruován nebo zrestaurován.</p>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="13">
+				<video loop preload="none" src="video/uhodni_velikost/velikost.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Uhodni velikost</h2>
+				<h3 class="--left-col">Minihra</h3>
+				<h3 class="--left-col">Obsahuje obrzek výchozího objektu, a umožňuje divákovi tetno referenční oekt zmenšovat a zvětšovat - uživatel se snaží uhodnout správnou velikost referenčního objektu, vůči výchozímu objektu</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/uhodni_velikost/venuse.png" alt="">
+					</div>
+					<p class="--right-col">Pro tuto minihru je potřeba připravit dva orázky. LEvý, jehož velikost se nemění a Pravý, který bude uživateli sloužit jako referenční pro udání měřítka.
+					</p>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+					<div class="--left-col">
+						<img src="images/nahledy/uhodni_velikost/sirky.png" alt="">
+					</div>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/uhodni_velikost/obrazky_prazdne.png" alt="">
+					</div>
+					<p class="--right-col">Na záložce Obrázky editor vybírá z knihovny dokuméntů Levý obrázek a Pravý obrázek. Levý obrázek má pevnou velikost, Pravý obrázek může uživatel při prohlížení výstavy myší zmenšovat a zvětšovat, přičemž se snaží uhodnout správný poměr obrázků v realitě. Editor také zadává správný poměr obou obrázků. Po odeslání uživatelovy volby se obrázky zobrazí v tomto správném poměru.</p>
+				</div>
+			</article>
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/uhodni_velikost/velikost.mp4"></video>
+					</div>
+					<h3 class="--right-col">Uhodni velikost</h3>
+					<p class="--right col">Divák se snaží uhodnout správnou velikost referenčnho objektu vůči výchozímu objektu.</p>
+				</div>
+			</article>
+
+						<!-- LAST EDIT -->
+			<section class="--fullscreen" id="14">
+				<video loop preload="none" src="video/posun/posun_talir_video.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Posuň na správné místo</h2>
+				<h3 class="--left-col">Minihra</h3>
+				<h3 class="--left-col">Obsahuje podkladový obrázek a obrázek objektu, a umožňuje divákovi objekt přesouvat metodou drag and drop - divák se snaží přesunout objekt na správné místo.</h3>
+				<div class="text-with-images">
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<div class="--left-col">
+							<img src="images/nahledy/posun/talir_hadanka.png">
+						</div>
+					</div>
+					<p class="--right-col">Pro přípravu této minihry je potřeba vytvořit obrázek Zadání a obrázek Výsledku, který se zorazí poté, co uživatel prohlížející výstavu posune metodou drag and drop Objekt po statickém Podkladovém obrázku na místo, o němži se dopmnívá, že je správným řešením hry.</p>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/posun/obrazky_prazdne.png" alt="">
+					</div>
+					<p class="--right-col">Na záložce Obrázky editor vybírá z knihovny dokumentů Podkladový obrázek a Objekt. Uživatel prohlížející výstavu posouvá metodou drag and drop Óbjekt po statickém Podkladovém obrázku a snaž se uhodnout jeho správnou polohu. Následně je zobrazen Výsledný obrázek, zobrazující správnou polohu Objektu.</p>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/posun/posun_talir_video.mp4"></video>
+					</div>
+					<h3 class="--right-col">Posuň na správné místo</h3>
+					<p class="--right-col">Divák má za úkol najít a posunout na správné místo poslední chybějící díl. Např.: Dokončít skládačku, doplnit chybějčí část apod.</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/posun/posun_talir_video.mp4"></video>
+					</div>
+					<h3 class="--right-col">Vyber a aplikuj</h3>
+					<p class="--right-col">Divák má za úkol například najít správný nástroj na to, aby docílil požadovaného výsledku.</p>
+					<p class="--right-col">Např.: Jaká byla druhá charakteristická barva těchto athénských váz?</p>
+				</div>
+			</article>
+
+			<section class="--fullscreen" id="15">
+				<video loop preload="none" src="video/vyber/vyber_ptaci.mp4"></video>
+			</section>
+			<article class="article-text">
+				<h2 class="--left-col">Vyber z možností</h2>
+				<h3 class="--left-col">Minihra</h3>
+				<h3 class="--left-col">Obsahuje otázky a 3 odpovědi, kdy každá odpověď je tvořená textem a obrázkem, a umožňuje divákovi zvolit kliknutím jednu ze tří odpovědí.</h3>
+				<div class="text-with-images">
+
+					<h3 class="--left-col">Příprava dat</h3>
+					<div class="--left-col">
+						<img src="images/nahledy/vyber/dudek.png" alt="">
+					</div>
+					<p class="--right-col">Obrázky připravujte v rozlišení minimálně full HD (1920×1080) s rozlišením 72 dpi a ve formátu .png nebo .jpg.</p>
+					<p class="--right-col --tip">TIP: Obrázky ve formátu .png a .jpg je možné zmenšit až o&nbsp;80% velikosti na adrese <a href="https://tinypng.com">https://tinypng.com</a></p>
+					<div class="--left-col">
+						<img src="images/nahledy/vyber/lednacek.png" alt="">
+					</div>
+					<br>
+					<div class="--left-col">
+						<img src="images/nahledy/vyber/sykora.png" alt="">
+					</div>
+				</div>
+				<div class="text-with-images">
+					<h3 class="--left-col">Práce v editoru</h3>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/vyber/nazev_text_audio.png" alt="">
+					</div>
+					<br>
+					<div class="--left-col">
+						<img src="images/screeny_administrace/vyber/obrazky_prazdne.png" alt="">
+					</div>
+					<ol class="--right-col" style="margin-top: 5.5em">
+						<li>Na hlavní záložce editor vyplňuje vyplňuje název stránky a vybírá doprovodný ilustrační obrázek z knihovný dokumentů.</li>
+						<li style>Na záložce Odpovědi editor zadává text odpovědí na otázku A-C a ke každé odpovědi vybírá ilustrační obrázek z knihovny dokumentů. Dále zde editor indikuje, která z odpovědí je správná.</li>
+					</ol>
+				</div>
+			</article>
+
+			<article class="article-text" style="background:#F0F0F0; margin-top:0;">
+				<div class="text-with-images">
+					<h3 class="--left-col">Nápady na využití modulu</h3>
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/vyber/vyber_ptaci.mp4"></video>
+					</div>
+					<h3 class="--right-col">Tipování</h3>
+					<p class="--right-col">Divák tipuje správnou odpověď na otázku. Například: Tipněte si, který ze zobrazených ptáků je dudek?</p>
+				</div>
+				<div class="text-with-images">
+					<div class="--left-col">
+						<video poster="video/video-poster.png" loop preload="none" src="video/vyber/vyber_hlasovani.mp4"></video>
+					</div>
+					<h3 class="--right-col">Hlasování</h3>
+					<p class="--right-col">Divák hlasuje pro jednu z variant.</p>
+				</div>
+			</article>
+		</section>
+		<script type="text/javascript" src="js/slowLoad.js"></script>
+		<script type="text/javascript" src="js/smooth-scrooling.js"></script>
+	</body>
+</html>
