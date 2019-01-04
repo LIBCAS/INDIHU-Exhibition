@@ -31,7 +31,12 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) =>
           checked={radio === expoState.PREPARE}
           onChange={() => changeRadioState(expoState.PREPARE)}
         />
-        <HelpIcon {...{ label: helpIconText.EXPO_STATE_RADIO_PREPARE }} />
+        <HelpIcon
+          {...{
+            label: helpIconText.EXPO_STATE_RADIO_PREPARE,
+            dataFor: "react-tooltip-for-help-icon-in-dialog"
+          }}
+        />
       </div>
       <div className="radio-row">
         <Radio
@@ -43,7 +48,12 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) =>
           checked={radio === expoState.OPENED}
           onChange={() => changeRadioState(expoState.OPENED)}
         />
-        <HelpIcon {...{ label: helpIconText.EXPO_STATE_RADIO_OPENED }} />
+        <HelpIcon
+          {...{
+            label: helpIconText.EXPO_STATE_RADIO_OPENED,
+            dataFor: "react-tooltip-for-help-icon-in-dialog"
+          }}
+        />
       </div>
       <div className="radio-row">
         <Radio
@@ -55,7 +65,12 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) =>
           checked={radio === expoState.ENDED}
           onChange={() => changeRadioState(expoState.ENDED)}
         />
-        <HelpIcon {...{ label: helpIconText.EXPO_STATE_RADIO_ENDED }} />
+        <HelpIcon
+          {...{
+            label: helpIconText.EXPO_STATE_RADIO_ENDED,
+            dataFor: "react-tooltip-for-help-icon-in-dialog"
+          }}
+        />
       </div>
     </form>
   </Dialog>;

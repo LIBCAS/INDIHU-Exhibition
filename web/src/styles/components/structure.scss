@@ -27,7 +27,6 @@
   }
   .col-line {
     position: absolute;
-    z-index: -1;
     background: $c-black;
     width: 1px;
     height: 100%;
@@ -36,7 +35,6 @@
   }
   .row-line {
     position: absolute;
-    z-index: -1;
     background: $c-black;
     width: 5em;
     height: 1px;

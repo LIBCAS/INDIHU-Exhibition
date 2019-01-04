@@ -1,9 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 import { withRouter } from "react-router-dom";
-import { compose, lifecycle, withState } from "recompose";
+import { compose, lifecycle, withState, withHandlers } from "recompose";
 import { connect } from "react-redux";
-import { get } from "lodash";
+import { get, escapeRegExp } from "lodash";
 
 import { animationType } from "../../enums/animationType";
 
@@ -33,6 +33,49 @@ export default compose(
   withState("subTitle", "setSubTitle", ""),
   withState("titleTimeout", "setTitleTimeout", null),
   withState("subTitleTimeout", "setSubTitleTimeout", null),
+  withHandlers({
+    getTypingAdd: () => (resultStr, str) => {
+      let add = "";
+      let escapedAdd = add;
+      const escapedStr = escapeRegExp(str);
+      if (
+        get(
+          resultStr.replace(new RegExp("^" + escapedStr), ""),
+          "[0]",
+          ""
+        ).match(/\s/)
+      ) {
+        while (
+          get(
+            resultStr.replace(new RegExp("^" + escapedStr + escapedAdd), ""),
+            "[0]",
+            ""
+          ).match(/\s/)
+        ) {
+          add += get(
+            resultStr.replace(new RegExp("^" + escapedStr + escapedAdd), ""),
+            "[0]",
+            ""
+          );
+          escapedAdd = escapeRegExp(add);
+        }
+        add += get(
+          resultStr.replace(new RegExp("^" + escapedStr + escapedAdd), ""),
+          "[0]",
+          ""
+        );
+        escapedAdd = escapeRegExp(add);
+      } else {
+        add = get(
+          resultStr.replace(new RegExp("^" + escapedStr), ""),
+          "[0]",
+          ""
+        );
+      }
+
+      return add;
+    }
+  }),
   lifecycle({
     componentDidMount() {
       const {
@@ -41,7 +84,8 @@ export default compose(
         setTitle,
         setSubTitle,
         setTitleTimeout,
-        setSubTitleTimeout
+        setSubTitleTimeout,
+        getTypingAdd
       } = this.props;
 
       if (screenFiles["image"]) {
@@ -68,40 +112,8 @@ export default compose(
 
       if (get(viewScreen, "title")) {
         const titleTyping = title => {
-          let add = "";
-          if (
-            get(
-              viewScreen.title.replace(new RegExp("^" + title), ""),
-              "[0]",
-              ""
-            ).match(/\s/)
-          ) {
-            while (
-              get(
-                viewScreen.title.replace(new RegExp("^" + title + add), ""),
-                "[0]",
-                ""
-              ).match(/\s/)
-            ) {
-              add += get(
-                viewScreen.title.replace(new RegExp("^" + title + add), ""),
-                "[0]",
-                ""
-              );
-            }
-            add += get(
-              viewScreen.title.replace(new RegExp("^" + title + add), ""),
-              "[0]",
-              ""
-            );
-          } else {
-            add = get(
-              viewScreen.title.replace(new RegExp("^" + title), ""),
-              "[0]",
-              ""
-            );
-          }
-          const newTitle = title + add;
+          const newTitle =
+            title + getTypingAdd(get(viewScreen, "title"), title);
           setTitle(newTitle);
           if (newTitle !== title) {
             setTitleTimeout(setTimeout(() => titleTyping(newTitle), 100));
@@ -113,46 +125,8 @@ export default compose(
 
       if (get(viewScreen, "subTitle")) {
         const subTitleTyping = subTitle => {
-          let add = "";
-          if (
-            get(
-              viewScreen.subTitle.replace(new RegExp("^" + subTitle), ""),
-              "[0]",
-              ""
-            ).match(/\s/)
-          ) {
-            while (
-              get(
-                viewScreen.subTitle.replace(
-                  new RegExp("^" + subTitle + add),
-                  ""
-                ),
-                "[0]",
-                ""
-              ).match(/\s/)
-            ) {
-              add += get(
-                viewScreen.subTitle.replace(
-                  new RegExp("^" + subTitle + add),
-                  ""
-                ),
-                "[0]",
-                ""
-              );
-            }
-            add += get(
-              viewScreen.subTitle.replace(new RegExp("^" + subTitle + add), ""),
-              "[0]",
-              ""
-            );
-          } else {
-            add = get(
-              viewScreen.subTitle.replace(new RegExp("^" + subTitle), ""),
-              "[0]",
-              ""
-            );
-          }
-          const newSubTitle = subTitle + add;
+          const newSubTitle =
+            subTitle + getTypingAdd(get(viewScreen, "subTitle"), subTitle);
           setSubTitle(newSubTitle);
           if (newSubTitle !== subTitle) {
             setSubTitleTimeout(

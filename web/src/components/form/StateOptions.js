@@ -21,7 +21,13 @@ const StateOptions = ({ activeExpo, changeStateExpo }) =>
         checked={activeExpo.state === expoState.PREPARE}
         onClick={() => changeStateExpo(activeExpo.id, expoState.PREPARE)}
       />
-      <HelpIcon {...{ label: helpIconText.STATE_OPTIONS_PREPARE }} />
+      <HelpIcon
+        {...{
+          label: helpIconText.STATE_OPTIONS_PREPARE,
+          id: "state-options-prepare",
+          place: "right"
+        }}
+      />
     </div>
     <div className="radio-row">
       <Radio
@@ -33,7 +39,13 @@ const StateOptions = ({ activeExpo, changeStateExpo }) =>
         checked={activeExpo.state === expoState.OPENED}
         onClick={() => changeStateExpo(activeExpo.id, expoState.OPENED)}
       />
-      <HelpIcon {...{ label: helpIconText.STATE_OPTIONS_OPENED }} />
+      <HelpIcon
+        {...{
+          label: helpIconText.STATE_OPTIONS_OPENED,
+          id: "state-options-opened",
+          place: "right"
+        }}
+      />
     </div>
     <div className="radio-row">
       <Radio
@@ -45,7 +57,13 @@ const StateOptions = ({ activeExpo, changeStateExpo }) =>
         checked={activeExpo.state === expoState.ENDED}
         onClick={() => changeStateExpo(activeExpo.id, expoState.ENDED)}
       />
-      <HelpIcon {...{ label: helpIconText.STATE_OPTIONS_ENDED }} />
+      <HelpIcon
+        {...{
+          label: helpIconText.STATE_OPTIONS_ENDED,
+          id: "state-options-ended",
+          place: "right"
+        }}
+      />
     </div>
   </div>;
 

@@ -20,8 +20,9 @@ const ViewWrapChapters = ({ handleSubmit, dialogData, history, closeDialog }) =>
     <div className="flex-col flex-centered viewer-chapters">
       {map(
         get(dialogData, "chapters"),
-        ({ chapter: { title }, chapterNumber }) =>
+        ({ chapter: { title }, chapterNumber }, key) =>
           <Button
+            key={key}
             flat
             label={title}
             onClick={() => {

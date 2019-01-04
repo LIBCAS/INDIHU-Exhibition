@@ -16,20 +16,7 @@ import { changeScreenDocument } from "../../actions/expoActions";
 import { changeSwitchState } from "../../actions/appActions";
 import { tabFolder } from "../../actions/fileActions";
 
-import { fileType, fileTypeText } from "../../enums/fileType";
-
-const fileTypeOpts = [
-  { label: fileTypeText.AUDIO, value: fileType.AUDIO },
-  { label: fileTypeText.IMAGE, value: fileType.IMAGE },
-  { label: fileTypeText.PDF, value: fileType.PDF },
-  { label: fileTypeText.VIDEO, value: fileType.VIDEO }
-];
-
-const documentOpts = [
-  { label: "Žádný odkaz", value: "NONE" },
-  { label: "URL", value: "URL" },
-  { label: "Soubor", value: "FILE" }
-];
+import { fileTypeOpts, documentOpts } from "../../enums/fileType";
 
 const ScreenDocumentChange = ({
   handleSubmit,

@@ -3,67 +3,41 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { compose, withHandlers } from "recompose";
 import Button from "react-md/lib/Buttons/Button";
-import FontIcon from "react-md/lib/FontIcons";
 
 import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { updateCurrentUser } from "../../actions/userActions";
 import { setDialog } from "../../actions/dialogActions";
 
-const PasswordChange = ({ handleSubmit, activeForm, setActiveForm }) =>
+const PasswordChange = ({ handleSubmit }) =>
   <div>
-    {activeForm === "userPassw"
-      ? <form className="flex-form" onSubmit={handleSubmit}>
-          <Field
-            component={TextField}
-            componentId="profile-password-change-textfield-password"
-            name="password"
-            type="password"
-            label="Nové heslo"
-            validate={[Validation.required]}
-          />
-          <Field
-            component={TextField}
-            componentId="profile-password-change-textfield-passwordsecond"
-            name="passwordSecond"
-            type="password"
-            label="Potvrdit heslo"
-            validate={[Validation.required]}
-          />
-          <div className="flex-row flex-centered">
-            <Button
-              className="flex-form-submit"
-              raised
-              primary
-              label="Potvrdit"
-              type="submit"
-            />
-            <Button
-              className="flex-form-submit"
-              raised
-              label="Zrušit"
-              onClick={() => setActiveForm(null)}
-            />
-          </div>
-        </form>
-      : <div className="flex-form">
-          <div className="flex-form editable">
-            <p>
-              <span>Heslo: </span>
-              **********
-            </p>
-            <div className="flex-row flex-centered">
-              <Button
-                className="flex-form-edit"
-                flat
-                label="Změnit"
-                onClick={() => setActiveForm("userPassw")}
-              >
-                <FontIcon>edit</FontIcon>
-              </Button>
-            </div>
-          </div>
-        </div>}
+    <form className="flex-form" onSubmit={handleSubmit}>
+      <Field
+        component={TextField}
+        componentId="profile-password-change-textfield-password"
+        name="password"
+        type="password"
+        label="Nové heslo"
+        validate={[Validation.required]}
+      />
+      <Field
+        component={TextField}
+        componentId="profile-password-change-textfield-passwordsecond"
+        name="passwordSecond"
+        type="password"
+        label="Potvrdit heslo"
+        validate={[Validation.required]}
+      />
+      <div className="flex-row flex-centered">
+        <Button
+          className="flex-form-submit edit-profile-button"
+          flat
+          primary
+          label="Změnit heslo"
+          type="submit"
+        />
+      </div>
+    </form>
   </div>;
 
 const validate = (values, props) => {
@@ -87,7 +61,10 @@ export default compose(
       initialValues
     }) => async ({ password }) => {
       if (await updateCurrentUser({ ...initialValues, password })) {
-        setActiveForm(null);
+        setDialog("Info", {
+          title: "Změna hesla",
+          text: "Heslo bylo úspěšně změněno."
+        });
       } else {
         setDialog("Info", {
           title: "Změna hesla",

@@ -56,7 +56,9 @@ const Image = ({
                   }),
                 infopoints: activeScreen.infopoints,
                 updateScreenData,
-                activePoint
+                activePoint,
+                helpIconLabel: helpIconText.EDITOR_IMAGE_IMAGE,
+                id: "editor-image-image"
               }}
             />
           </div>
@@ -73,7 +75,12 @@ const Image = ({
                 defaultValue={activeScreen.animationType}
                 onChange={value => updateScreenData({ animationType: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_IMAGE_ANIMATION }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_IMAGE_ANIMATION,
+                  id: "editor-image-animation"
+                }}
+              />
             </div>
             {image &&
               <InfopointsSequencesTable

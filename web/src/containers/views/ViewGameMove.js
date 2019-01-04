@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose, lifecycle } from "recompose";
+import { compose, lifecycle, withState } from "recompose";
 
 import GameMenu from "../../components/views/GameMenu";
 
@@ -19,7 +19,11 @@ const ViewGameMove = ({
   mouseDown,
   correlationX,
   correlationY,
-  getNextUrlPart
+  getNextUrlPart,
+  doneButton,
+  setDoneButton,
+  passButton,
+  setPassButton
 }) =>
   <div className="game">
     <div id="game-wrap" className="game-wrap">
@@ -68,7 +72,8 @@ const ViewGameMove = ({
     </div>
     <GameMenu
       {...{
-        doneButton: true,
+        doneButton,
+        passButton,
         task: viewScreen.task,
         getNextUrlPart,
         onClick: () => {
@@ -91,6 +96,8 @@ const ViewGameMove = ({
               .getElementById("game-move-container")
               .appendChild(imageNode2);
           }
+          setDoneButton(false);
+          setPassButton(false);
         }
       }}
     />
@@ -112,6 +119,8 @@ export default compose(
       mouseActualize
     }
   ),
+  withState("doneButton", "setDoneButton", true),
+  withState("passButton", "setPassButton", true),
   lifecycle({
     componentDidMount() {
       const { viewScreen, screenFiles } = this.props;

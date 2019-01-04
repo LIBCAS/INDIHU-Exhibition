@@ -41,7 +41,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_FIND_IMAGE1,
+                id: "editor-game-find-image1"
               }}
             />
           </div>
@@ -59,7 +61,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_FIND_IMAGE2,
+                id: "editor-game-find-image2"
               }}
             />
           </div>
@@ -72,7 +76,12 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             value={activeScreen.showTip}
             onChange={value => updateScreenData({ showTip: value })}
           />
-          <HelpIcon {...{ label: helpIconText.EDITOR_GAME_FIND_SHOW_TIP }} />
+          <HelpIcon
+            {...{
+              label: helpIconText.EDITOR_GAME_FIND_SHOW_TIP,
+              id: "editor-game-find-show-tip"
+            }}
+          />
         </div>
       </div>
     </div>

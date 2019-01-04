@@ -16,7 +16,12 @@ const ExternalData = ({ activeScreen, updateScreenData }) =>
           onChange={value => updateScreenData({ externalData: value })}
           rows={5}
         />
-        <HelpIcon {...{ label: helpIconText.EDITOR_EXTERNAL_EXTERNALDATA }} />
+        <HelpIcon
+          {...{
+            label: helpIconText.EDITOR_EXTERNAL_EXTERNALDATA,
+            id: "editor-external-externaldata"
+          }}
+        />
       </div>
     </div>
   </div>;

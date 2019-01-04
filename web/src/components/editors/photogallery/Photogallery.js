@@ -163,7 +163,9 @@ const Photogallery = ({
                       }),
                     images: activeScreen.images,
                     updateScreenData,
-                    activePoint
+                    activePoint,
+                    helpIconLabel: helpIconText.EDITOR_PHOTOGALLERY_IMAGE,
+                    id: "editor-photogallery-image"
                   }}
                 />
               </div>
@@ -184,7 +186,10 @@ const Photogallery = ({
                       })}
                   />
                   <HelpIcon
-                    {...{ label: helpIconText.EDITOR_PHOTOGALLERY_ANIMATION }}
+                    {...{
+                      label: helpIconText.EDITOR_PHOTOGALLERY_ANIMATION,
+                      id: "editor-photogallery-animation"
+                    }}
                   />
                 </div>
                 {image &&

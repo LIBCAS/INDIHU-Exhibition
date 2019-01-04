@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { compose, lifecycle, withState } from "recompose";
+import { compose, lifecycle, withState, defaultProps } from "recompose";
 
 import { setTimeoutId } from "../../actions/appActions";
 
@@ -15,7 +15,8 @@ const ViewGameMove = ({
   resetButton,
   onReset,
   clicked,
-  setClicked
+  setClicked,
+  passButton
 }) =>
   <div className="game-menu cursor">
     <div className="menu-text">
@@ -44,28 +45,30 @@ const ViewGameMove = ({
       <div className="menu-right-text cursor-pointer" onClick={() => onReset()}>
         Reset
       </div>}
-    <div
-      className="menu-right-text cursor-pointer"
-      onClick={() => {
-        if (!clicked) {
-          setClicked(true);
-          onClick();
-          if (getNextUrlPart) {
-            setTimeoutId(
-              setTimeout(async () => {
-                history.push(getNextUrlPart());
-              }, 1000)
-            );
+    {passButton &&
+      <div
+        className="menu-right-text cursor-pointer"
+        onClick={() => {
+          if (!clicked) {
+            setClicked(true);
+            onClick();
+            if (getNextUrlPart) {
+              setTimeoutId(
+                setTimeout(async () => {
+                  history.push(getNextUrlPart());
+                }, 1000)
+              );
+            }
           }
-        }
-      }}
-    >
-      Přeskočit úkol
-    </div>
+        }}
+      >
+        Přeskočit úkol
+      </div>}
   </div>;
 
 export default compose(
   withRouter,
+  defaultProps({ passButton: true }),
   connect(
     ({ app: { timeout } }) => ({
       timeout

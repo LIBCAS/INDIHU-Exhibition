@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { map, get, isEmpty } from "lodash";
+import ReactTooltip from "react-tooltip";
 
 import Draggable from "./Draggable";
 import ScreenCard from "./ScreenCard";
@@ -34,6 +35,9 @@ const Structure = ({ activeExpo }) => {
                       colNum={colNum}
                       data={structCol}
                       isFilled={structCol.screenCompleted}
+                      menuPosition={
+                        colNum && colNum >= structRow.length - 1 ? "tr" : "tl"
+                      }
                     />
                     {(structRow[0].type === screenType.INTRO ||
                       !structRow[0].aloneScreen) &&
@@ -46,10 +50,20 @@ const Structure = ({ activeExpo }) => {
                 )}
                 {(structRow[0].type === screenType.INTRO ||
                   !structRow[0].aloneScreen) &&
-                  <ScreenNew rowNum={rowNum} />}
+                  <ScreenNew
+                    rowNum={rowNum}
+                    position="tr"
+                    style={{ marginRight: "1em" }}
+                  />}
               </div>
             </div>
           )}
+
+          <ReactTooltip
+            type="dark"
+            effect="solid"
+            id="expo-structure-screen-new-tooltip"
+          />
 
           <ScreenNew large={isEmpty(screens)} section />
           <ScreenStartFinish type="finish" activeExpo={activeExpo} />

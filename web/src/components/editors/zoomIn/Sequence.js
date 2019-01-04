@@ -10,6 +10,7 @@ import { setDialog } from "../../../actions/dialogActions";
 import { updateScreenData } from "../../../actions/expoActions";
 import { getFileById } from "../../../actions/fileActions";
 import { hasValue } from "../../../utils";
+import { helpIconText } from "../../../enums/text";
 
 const Sequence = ({
   activeScreen,
@@ -49,7 +50,9 @@ const Sequence = ({
                   }),
                 sequences: activeScreen.sequences,
                 updateScreenData,
-                activePoint
+                activePoint,
+                helpIconLabel: helpIconText.EDITOR_ZOOM_IN_IMAGE,
+                id: "editor-zoom-in-image"
               }}
             />
           </div>

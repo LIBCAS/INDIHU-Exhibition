@@ -33,7 +33,12 @@ const Description = ({
                 defaultValue={activeScreen.title}
                 onChange={value => updateScreenData({ title: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_DESCRIPTION_TITLE }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_TITLE,
+                  id: "editor-chapter-start-description-title"
+                }}
+              />
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -43,7 +48,10 @@ const Description = ({
                 onChange={value => updateScreenData({ subTitle: value })}
               />
               <HelpIcon
-                {...{ label: helpIconText.EDITOR_DESCRIPTION_SUBTITLE }}
+                {...{
+                  label: helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_SUBTITLE,
+                  id: "editor-chapter-start-description-title"
+                }}
               />
             </div>
           </div>
@@ -52,21 +60,27 @@ const Description = ({
               {...{
                 isAudio: true,
                 audio,
-                updateScreenData
+                updateScreenData,
+                helpIconTitle:
+                  helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_AUDIO,
+                id: "editor-chapter-start-description-audio"
               }}
             />
             <Time {...{ audio, activeScreen, updateScreenData }} />
             <AudioMusic
               {...{
                 music,
-                updateScreenData
+                updateScreenData,
+                helpIconTitle:
+                  helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_MUSIC,
+                id: "editor-chapter-start-description-music"
               }}
             />
             <div className="row flex-centered">
               <Checkbox
                 id="chapter-start-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label="Stránka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}

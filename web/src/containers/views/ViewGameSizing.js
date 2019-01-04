@@ -14,7 +14,11 @@ const ViewGameSizing = ({
   getNextUrlPart,
   screenFiles,
   imageSize,
-  setImageSize
+  setImageSize,
+  doneButton,
+  setDoneButton,
+  passButton,
+  setPassButton
 }) =>
   <div className="game">
     <div id="game-wrap" className="game-wrap">
@@ -61,7 +65,8 @@ const ViewGameSizing = ({
     </div>
     <GameMenu
       {...{
-        doneButton: true,
+        doneButton,
+        passButton,
         task: viewScreen.task,
         getNextUrlPart,
         onClick: () => {
@@ -77,6 +82,8 @@ const ViewGameSizing = ({
             const newNode = screenFiles["image3"];
             document.getElementById("game-wrap").appendChild(newNode);
           }
+          setDoneButton(false);
+          setPassButton(false);
         }
       }}
     />
@@ -96,6 +103,8 @@ export default compose(
       mouseActualize
     }
   ),
+  withState("doneButton", "setDoneButton", true),
+  withState("passButton", "setPassButton", true),
   withState("imageSize", "setImageSize", 50),
   lifecycle({
     componentDidMount() {

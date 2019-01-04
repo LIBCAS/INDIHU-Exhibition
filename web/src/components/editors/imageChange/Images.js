@@ -54,7 +54,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_IMAGE_CHANGE_IMAGE_BEFORE,
+                id: "editor-image-change-image-before"
               }}
             />
           </div>
@@ -72,7 +74,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_IMAGE_CHANGE_IMAGE_AFTER,
+                id: "editor-image-change-image-after"
               }}
             />
           </div>
@@ -90,7 +94,10 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             onChange={value => updateScreenData({ animationType: value })}
           />
           <HelpIcon
-            {...{ label: helpIconText.EDITOR_IMAGE_CHANGE_ANIMATION }}
+            {...{
+              label: helpIconText.EDITOR_IMAGE_CHANGE_ANIMATION,
+              id: "editor-image-change-animation"
+            }}
           />
         </div>
       </div>

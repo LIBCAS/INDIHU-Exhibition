@@ -27,6 +27,7 @@ import InteractiveScreen from "./views/InteractiveScreen";
 const ViewScreen = compose(
   withRouter,
   withState("prepared", "setPrepared", false),
+  withState("viewInteractiveState", "setViewInteractiveState", false),
   connect(
     ({
       expo: {
@@ -34,14 +35,18 @@ const ViewScreen = compose(
         preloadedFiles,
         viewScreen,
         viewInteractive,
-        soundIsTurnedOff
+        soundIsTurnedOff,
+        viewChapterMusic,
+        viewScreenAudio
       }
     }) => ({
       activeExpo,
       preloadedFiles,
       viewScreen,
       viewInteractive,
-      soundIsTurnedOff
+      soundIsTurnedOff,
+      viewChapterMusic,
+      viewScreenAudio
     }),
     { screenFilePreloader, setViewScreen, setChapterMusic, setScreenAudio }
   ),
@@ -51,12 +56,12 @@ const ViewScreen = compose(
         match,
         section,
         activeExpo,
-        setChapterMusic,
-        setScreenAudio,
         screenFilePreloader,
         setViewScreen,
         setPrepared,
-        soundIsTurnedOff
+        soundIsTurnedOff,
+        setChapterMusic,
+        setScreenAudio
       } = this.props;
       const screen = match.params.screen;
       const viewScreen = activeExpo.structure.screens[section][screen] || {};
@@ -89,6 +94,35 @@ const ViewScreen = compose(
         setScreenAudio(audio);
       } else {
         setScreenAudio(null);
+      }
+    },
+    componentWillReceiveProps({ viewInteractive }) {
+      const {
+        viewChapterMusic,
+        viewScreenAudio,
+        viewInteractiveState,
+        setViewInteractiveState
+      } = this.props;
+
+      if (viewInteractiveState !== viewInteractive) {
+        setViewInteractiveState(viewInteractive);
+
+        if (viewChapterMusic) {
+          if (!viewInteractive) {
+            viewChapterMusic.play();
+          } else {
+            viewChapterMusic.pause();
+          }
+        }
+
+        if (viewScreenAudio) {
+          if (!viewInteractive) {
+            viewScreenAudio.currentTime = 0;
+            viewScreenAudio.play();
+          } else {
+            viewScreenAudio.pause();
+          }
+        }
       }
     }
   })

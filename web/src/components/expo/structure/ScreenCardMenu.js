@@ -23,7 +23,8 @@ const ScreenCardMenu = ({
   editUrl,
   change,
   expoId,
-  aloneScreen
+  aloneScreen,
+  position
 }) => {
   return (
     <div className="card-menu">
@@ -31,7 +32,7 @@ const ScreenCardMenu = ({
         id="screen-card-menu-card-menu"
         flat
         buttonChildren="more_vert"
-        position="tl"
+        position={position || "tl"}
       >
         {type !== screenType.FINISH &&
           <ListItem

@@ -12,15 +12,17 @@ const Music = ({
   music,
   updateScreenData,
   setDialog,
-  muteChapterMusic
+  muteChapterMusic,
+  helpIconTitle,
+  id
 }) =>
   aloneScreen
-    ? <AudioMusic {...{ music, updateScreenData }} />
+    ? <AudioMusic {...{ music, updateScreenData, helpIconTitle, id }} />
     : <div className="row flex-centered">
         <Checkbox
           id="editor-music-checkbox-chapter-music"
           name="simple-checkboxes"
-          label="Vypnout hudbu kapitoly"
+          label="Vypnout zvukovou stopu kapitoly"
           checked={muteChapterMusic}
           value={muteChapterMusic}
           onChange={value => updateScreenData({ muteChapterMusic: value })}

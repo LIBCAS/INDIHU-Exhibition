@@ -35,7 +35,12 @@ const Description = ({
                 defaultValue={activeScreen.title}
                 onChange={value => updateScreenData({ title: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_DESCRIPTION_TITLE }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_DESCRIPTION_TITLE,
+                  id: "editor-description-title"
+                }}
+              />
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -45,7 +50,12 @@ const Description = ({
                 onChange={value => updateScreenData({ text: value })}
                 rows={5}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_DESCRIPTION_TEXT }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_DESCRIPTION_TEXT,
+                  id: "editor-description-text"
+                }}
+              />
             </div>
             <CharacterCount {...{ text: activeScreen.text }} />
           </div>
@@ -54,7 +64,9 @@ const Description = ({
               {...{
                 isAudio: true,
                 audio,
-                updateScreenData
+                updateScreenData,
+                helpIconTitle: helpIconText.EDITOR_DESCRIPTION_AUDIO,
+                id: "editor-description-audio"
               }}
             />
             <Time {...{ audio, activeScreen, updateScreenData }} />
@@ -63,14 +75,16 @@ const Description = ({
                 aloneScreen: activeScreen.aloneScreen,
                 music,
                 updateScreenData,
-                muteChapterMusic: activeScreen.muteChapterMusic
+                muteChapterMusic: activeScreen.muteChapterMusic,
+                helpIconTitle: helpIconText.EDITOR_DESCRIPTION_MUSIC,
+                id: "editor-description-music"
               }}
             />
             <div className="row flex-centered">
               <Checkbox
                 id="editor-description-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label="Stránka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}

@@ -2,9 +2,10 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { compose, lifecycle, withHandlers } from "recompose";
 import { connect } from "react-redux";
-import { map, get } from "lodash";
+import { get } from "lodash";
 
 import ScreenMenu from "../../components/views/ScreenMenu";
+import { parseText } from "../../utils/viewText";
 
 const ViewText = ({ viewScreen }) => {
   return (
@@ -18,10 +19,7 @@ const ViewText = ({ viewScreen }) => {
                   id: "view-text-paragraph"
                 }}
               >
-                {map(
-                  viewScreen.mainText,
-                  (char, key) => (char === "\n" ? <br {...{ key }} /> : char)
-                )}
+                {parseText(viewScreen.mainText)}
               </p>}
           </div>
         </div>

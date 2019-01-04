@@ -2,12 +2,12 @@ import React from "react";
 import classNames from "classnames";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { compose, lifecycle } from "recompose";
+import { compose, lifecycle, withState } from "recompose";
 import FontIcon from "react-md/lib/FontIcons";
 
 import GameMenu from "../../components/views/GameMenu";
 
-import { mouseActualize, setTimeoutId } from "../../actions/appActions";
+import { mouseActualize } from "../../actions/appActions";
 
 const ViewGameFind = ({
   viewScreen,
@@ -16,10 +16,14 @@ const ViewGameFind = ({
   mouseXPos,
   mouseYPos,
   mouseActualize,
-  history,
-  setTimeoutId,
   getNextUrlPart,
-  screenFiles
+  screenFiles,
+  doneButton,
+  setDoneButton,
+  resetButton,
+  setResetButton,
+  passButton,
+  setPassButton
 }) => {
   return (
     <div className="game">
@@ -28,35 +32,9 @@ const ViewGameFind = ({
         className={classNames("game-wrap", {
           "cursor-none": !mouseClicked
         })}
-        onClick={e => {
+        onClick={() => {
           if (!mouseClicked) {
-            setTimeoutId(
-              setTimeout(async () => {
-                history.push(getNextUrlPart());
-              }, 5000)
-            );
             mouseActualize({ mouseClicked: true, mouseDown: false });
-            if (document.getElementById("view-game-find-first-image")) {
-              document.getElementById("view-game-find-first-image").outerHTML =
-                "";
-              delete document.getElementById("view-game-find-first-image");
-            }
-            if (viewScreen.image2) {
-              const newNode = screenFiles["image2"];
-              newNode.setAttribute(
-                "style",
-                `width: ${viewScreen.image2OrigData.height >
-                viewScreen.image2OrigData.width
-                  ? "auto"
-                  : "100%"}; height: ${viewScreen.image2OrigData.height >
-                viewScreen.image2OrigData.width
-                  ? "100%"
-                  : "auto"}; object-fit: contain;`
-              );
-              document
-                .getElementById("view-game-find-game-wrap")
-                .appendChild(newNode);
-            }
           }
         }}
         onMouseMove={e =>
@@ -79,6 +57,7 @@ const ViewGameFind = ({
           !mouseClicked &&
           mouseXPos !== null &&
           mouseYPos !== null &&
+          document.getElementById("view-game-find-game-wrap") &&
           mouseYPos + 18 <
             document
               .getElementById("view-game-find-game-wrap")
@@ -107,6 +86,7 @@ const ViewGameFind = ({
           mouseClicked &&
           mouseXPos !== null &&
           mouseYPos !== null &&
+          document.getElementById("view-game-find-game-wrap") &&
           <FontIcon
             className="mouse-icon"
             iconClassName="fa fa-flag"
@@ -127,13 +107,14 @@ const ViewGameFind = ({
       </div>
       <GameMenu
         {...{
+          doneButton,
+          resetButton,
+          passButton,
           task: viewScreen.task,
           getNextUrlPart,
           onClick: () => {
             mouseActualize({
               mouseClicked: true,
-              mouseXPos: null,
-              mouseYPos: null,
               mouseDown: false
             });
             if (document.getElementById("view-game-find-first-image")) {
@@ -157,6 +138,15 @@ const ViewGameFind = ({
                 .getElementById("view-game-find-game-wrap")
                 .appendChild(newNode);
             }
+            setResetButton(false);
+            setDoneButton(false);
+            setPassButton(false);
+          },
+          onReset: () => {
+            mouseActualize({
+              mouseClicked: false,
+              mouseDown: false
+            });
           }
         }}
       />
@@ -166,6 +156,9 @@ const ViewGameFind = ({
 
 export default compose(
   withRouter,
+  withState("doneButton", "setDoneButton", true),
+  withState("resetButton", "setResetButton", true),
+  withState("passButton", "setPassButton", true),
   connect(
     ({
       app: {
@@ -174,7 +167,6 @@ export default compose(
       },
       expo: { viewScreen }
     }) => ({
-      timeout,
       mouseClicked,
       mouseDown,
       mouseXPos,
@@ -182,8 +174,7 @@ export default compose(
       viewScreen
     }),
     {
-      mouseActualize,
-      setTimeoutId
+      mouseActualize
     }
   ),
   lifecycle({
@@ -213,13 +204,6 @@ export default compose(
         document
           .getElementById("view-game-find-game-wrap")
           .appendChild(newNode);
-      }
-    },
-    componentWillUnmount() {
-      const { timeout, setTimeoutId } = this.props;
-      if (timeout) {
-        clearTimeout(timeout);
-        setTimeoutId(null);
       }
     }
   })

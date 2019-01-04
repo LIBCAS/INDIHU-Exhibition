@@ -2,14 +2,16 @@ export const fileType = {
   VIDEO: "video/*",
   AUDIO: "audio/*",
   IMAGE: "image/*",
-  PDF: "application/pdf"
+  PDF: "application/pdf",
+  WEB: "WEB"
 };
 
 export const fileTypeText = {
-  VIDEO: "video",
-  AUDIO: "audio",
-  IMAGE: "obraz",
-  PDF: "PDF"
+  VIDEO: "Video",
+  AUDIO: "Audio",
+  IMAGE: "Obraz",
+  PDF: "PDF",
+  WEB: "Webová stránka"
 };
 
 export const possibleFiles = [
@@ -41,3 +43,17 @@ export const fileObjects = {
   "answers[1].image": "image",
   "answers[2].image": "image"
 };
+
+export const fileTypeOpts = [
+  { label: fileTypeText.AUDIO, value: fileType.AUDIO },
+  { label: fileTypeText.IMAGE, value: fileType.IMAGE },
+  { label: fileTypeText.VIDEO, value: fileType.VIDEO },
+  { label: fileTypeText.PDF, value: fileType.PDF },
+  { label: fileTypeText.WEB, value: fileType.WEB }
+];
+
+export const documentOpts = [
+  { label: "Žádný odkaz", value: "NONE" },
+  { label: "URL", value: "URL" },
+  { label: "Soubor", value: "FILE" }
+];

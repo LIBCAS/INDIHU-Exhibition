@@ -115,12 +115,20 @@ const Parallax = ({
           <span>
             <span>Nejspodnější</span>
             <HelpIcon
-              {...{ label: helpIconText.EDITOR_PARALLAX_IMAGE_BOTTOM }}
+              {...{
+                label: helpIconText.EDITOR_PARALLAX_IMAGE_BOTTOM,
+                id: "editor-parallax-image-bottom"
+              }}
             />
           </span>
           <span>
             <span>Nejvrchnější</span>
-            <HelpIcon {...{ label: helpIconText.EDITOR_PARALLAX_IMAGE_TOP }} />
+            <HelpIcon
+              {...{
+                label: helpIconText.EDITOR_PARALLAX_IMAGE_TOP,
+                id: "editor-parallax-image-top"
+              }}
+            />
           </span>
         </div>
         {activeImageIndex !== -1 &&
@@ -138,7 +146,9 @@ const Parallax = ({
                           activeScreen.images,
                           (image, i) => (i === activeImageIndex ? null : image)
                         )
-                      })
+                      }),
+                    helpIconLabel: helpIconText.EDITOR_PARALLAX_IMAGE,
+                    id: "editor-parallax-image"
                   }}
                 />
               </div>
@@ -158,7 +168,10 @@ const Parallax = ({
                     })}
                 />
                 <HelpIcon
-                  {...{ label: helpIconText.EDITOR_PARALLAX_ANIMATION }}
+                  {...{
+                    label: helpIconText.EDITOR_PARALLAX_ANIMATION,
+                    id: "editor-parallax-animation"
+                  }}
                 />
               </div>
             </div>

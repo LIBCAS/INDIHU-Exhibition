@@ -5,7 +5,7 @@ import { compose } from "recompose";
 import { setDialog } from "../../../actions/dialogActions";
 import { getFileById } from "../../../actions/fileActions";
 import { updateScreenData } from "../../../actions/expoActions";
-
+import { helpIconText } from "../../../enums/text";
 import Image from "../Image";
 
 const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
@@ -37,7 +37,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_WIPE_IMAGE1,
+                id: "editor-game-wipe-image1"
               }}
             />
           </div>
@@ -55,7 +57,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_WIPE_IMAGE2,
+                id: "editor-game-wipe-image2"
               }}
             />
           </div>

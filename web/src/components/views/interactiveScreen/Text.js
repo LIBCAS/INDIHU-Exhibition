@@ -1,6 +1,7 @@
 import React from "react";
 import { compose, lifecycle, withHandlers } from "recompose";
-import { map } from "lodash";
+
+import { parseText } from "../../../utils/viewText";
 
 const Text = ({ mainText }) => {
   if (!mainText) return <div />;
@@ -13,10 +14,7 @@ const Text = ({ mainText }) => {
               id: "interactive-screen-view-text-paragraph"
             }}
           >
-            {map(
-              mainText,
-              (char, key) => (char === "\n" ? <br {...{ key }} /> : char)
-            )}
+            {parseText(mainText)}
           </p>}
       </div>
     </div>

@@ -134,18 +134,6 @@ export default compose(
   withState("scrolling", "setScrolling", false),
   withState("scrollStateTimeout", "setScrollStateTimeout", null),
   withState("animationActive", "setAnimationActive", false),
-  lifecycle({
-    componentDidMount() {
-      const { setScrollState, setScrollStateTimeout } = this.props;
-
-      setScrollStateTimeout(setTimeout(() => setScrollState(true), 1000));
-    },
-    componentWillUnmount() {
-      const { scrollStateTimeout } = this.props;
-
-      clearTimeout(scrollStateTimeout);
-    }
-  }),
   withHandlers({
     interactiveScroll: ({
       scrollState,
@@ -167,6 +155,35 @@ export default compose(
           setScrolling(true);
         }
       }
+    }
+  }),
+  withHandlers({
+    manageKeyAction: ({ interactiveScroll }) => e => {
+      if (e.keyCode === 37 || e.keyCode === 38) {
+        interactiveScroll(true);
+      } else if (e.keyCode === 39 || e.keyCode === 40) {
+        interactiveScroll(false);
+      }
+    }
+  }),
+  lifecycle({
+    componentDidMount() {
+      const {
+        setScrollState,
+        setScrollStateTimeout,
+        manageKeyAction
+      } = this.props;
+
+      document.addEventListener("keydown", manageKeyAction);
+
+      setScrollStateTimeout(setTimeout(() => setScrollState(true), 1000));
+    },
+    componentWillUnmount() {
+      const { scrollStateTimeout, manageKeyAction } = this.props;
+
+      document.removeEventListener("keydown", manageKeyAction);
+
+      clearTimeout(scrollStateTimeout);
     }
   })
 )(RightScreen);

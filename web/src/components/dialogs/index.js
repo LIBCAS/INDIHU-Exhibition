@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Prompt } from "react-router";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
+import ReactTooltip from "react-tooltip";
 import * as dialogActions from "../../actions/dialogActions";
 
 import Loader from "../Loader";
@@ -63,6 +64,11 @@ const Dialogs = ({
       <Prompt
         when={activeScreenEdited}
         message="Provedené úpravy obrazovky nebyly uloženy. Opravdu chcete opustit stránku?"
+      />
+      <ReactTooltip
+        type="dark"
+        effect="solid"
+        id="react-tooltip-for-help-icon-in-dialog"
       />
       {loader && <Loader />}
       <DeleteAccount {...dialogProps} />

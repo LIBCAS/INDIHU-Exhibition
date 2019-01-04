@@ -35,7 +35,9 @@ export const getUsers = (
               ])
             )}`
           )
-        : await fetch("/api/registration/toFinish");
+        : await fetch("/api/registration/toFinish", {
+            params: { page, pageSize, order: "ASC" }
+          });
 
     if (response.status === 200) {
       const users = await response.json();

@@ -99,12 +99,18 @@
     &-small {
       margin-bottom: 1em;
     }
-  }
-  &-horizontal {
-    margin: 0 1em;
 
     &-very-small {
-      margin: 0 .5em;
+      margin-bottom: .5em;
+    }
+  }
+  &-horizontal {
+    margin-left: 1em;
+    margin-right: 1em;
+
+    &-very-small {
+      margin-left: .5em;
+      margin-right: .5em;
     }
   }
   &-left {
@@ -123,6 +129,17 @@
 
     &-very-small {
       margin-right: .5em;
+    }
+  }
+  &-top {
+    margin-top: 2em;
+
+    &-small {
+      margin-top: 1em;
+    }
+
+    &-very-small {
+      margin-top: .5em;
     }
   }
   &-none {
@@ -158,6 +175,7 @@
   padding-top: 5em;
   padding-left: .5em;
   padding-right: .5em;
+  min-height: 100vh;
   &.form {
     // skontrolovat
     max-width: 400px;
@@ -166,10 +184,19 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  &-big {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-left: .5em;
+    padding-right: .5em;
+    min-height: 100vh;
+  }
 }
 
 .container-tabMenu {
   padding-top: 8em;
+  min-height: 100vh;
 }
 
 .container-modeller {
@@ -177,6 +204,7 @@
   cursor: move;
   margin: 0 auto;
   padding: 8em 1em;
+  min-height: 100vh;
   // overflow-x: scroll;
 }
 
@@ -317,6 +345,25 @@
         flex-basis: 50%;
         text-align: right;
         margin-right: 1em;
+      }
+    }
+  }
+}
+
+.edit-profile {
+  button.edit-profile-button {
+    background-color: rgba(0, 0, 0, .05);
+    color: $c-black;
+    &:hover {
+      background-color: rgba(0, 0, 0, .15);
+    }
+
+    &.flex-form-submit {
+      background-color: $md-primary-color;
+      color: $c-white;
+
+      &:hover {
+        background-color: $md-secondary-color;
       }
     }
   }
@@ -670,6 +717,28 @@
   }
 }
 
+.authentication {
+  &-buttons {
+    display: flex;
+
+    @media (max-width: $breakpoint-desktop-bigger) {
+      .authentication-button {
+        min-height: 50px;
+      }
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column;
+
+      .authentication-button {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+      }
+    }
+  }
+}
+
 .invalid {
   color: $c-error;
 }
@@ -681,6 +750,14 @@
   &-bold {
     font-weight: bold;
   }
+}
+
+.chip {
+  background: $c-blue-primary;
+  color: $c-white;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
 }
 
 .custom-tooltip {

@@ -47,7 +47,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_MOVE_IMAGE1,
+                id: "editor-game-move-image1"
               }}
             />
           </div>
@@ -65,7 +67,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_MOVE_IMAGE2,
+                id: "editor-game-move-image2"
               }}
             />
           </div>
@@ -95,7 +99,12 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                   typeMatch: new RegExp(/^image\/.*$/)
                 })}
             />
-            <HelpIcon {...{ label: helpIconText.EDITOR_GAME_MOVE_OBJECT }} />
+            <HelpIcon
+              {...{
+                label: helpIconText.EDITOR_GAME_MOVE_OBJECT,
+                id: "editor-game-move-object"
+              }}
+            />
           </div>
         </div>
         {object &&

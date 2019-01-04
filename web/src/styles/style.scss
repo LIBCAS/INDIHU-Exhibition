@@ -1,8 +1,17 @@
+html {
+  min-height: 10vh;
+  height: 100vh;
+  max-height: 100vh;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  min-height: 10vh;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 @import "./fonts.scss";
@@ -24,6 +33,8 @@ $c-maroon: #85144b;
 
 /* BREAKPOINTS */
 
+$breakpoint-desktop-big: 1560px;
+$breakpoint-desktop-bigger: 1100px;
 $breakpoint-desktop: 800px;
 $breakpoint-tablet: 600px;
 $breakpoint-mobile: 400px;
@@ -52,4 +63,9 @@ $md-colors-warn-md: false;
 
 *:not(i) {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.__react_component_tooltip {
+  z-index: 100000 !important;
+  max-width: 60vw;
 }

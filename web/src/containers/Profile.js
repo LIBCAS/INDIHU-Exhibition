@@ -4,6 +4,7 @@ import { compose, withState, lifecycle } from "recompose";
 import { isEmpty } from "lodash";
 import Button from "react-md/lib/Buttons/Button";
 import FontIcon from "react-md/lib/FontIcons";
+import Divider from "react-md/lib/Dividers";
 
 import AppHeader from "../components/AppHeader";
 import Header from "../components/profile/Header";
@@ -16,18 +17,33 @@ const Profile = props =>
   <div>
     <AppHeader profileStyle />
     {!isEmpty(props.initialValues) &&
-      <div className="container">
+      <div className="container edit-profile">
         <Header />
+        <div className="flex-form">
+          <h3 className="margin-none" style={{ fontSize: 18 }}>
+            Editace profilu
+          </h3>
+        </div>
         <UserInfoChange {...props} />
+        <div className="flex-form margin-top">
+          <h3 className="margin-none" style={{ fontSize: 18 }}>
+            Změna hesla
+          </h3>
+        </div>
         <PasswordChange {...props} />
-        <div className="flex-row flex-centered">
-          <Button
-            flat
-            label="Zrušit účet"
-            onClick={() => props.setDialog("DeleteAccount")}
-          >
-            <FontIcon>delete</FontIcon>
-          </Button>
+        <div className="flex-form margin-top padding-bottom">
+          <Divider />
+          <div className="flex-row flex-centered margin-top">
+            <Button
+              primary
+              flat
+              label="Zrušit účet"
+              className="edit-profile-button"
+              onClick={() => props.setDialog("DeleteAccount")}
+            >
+              <FontIcon>delete</FontIcon>
+            </Button>
+          </div>
         </div>
       </div>}
   </div>;

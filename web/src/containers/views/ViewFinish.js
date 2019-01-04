@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { compose, lifecycle } from "recompose";
+import { compose, lifecycle, withState } from "recompose";
 import { map } from "lodash";
 import classNames from "classnames";
 import FontIcon from "react-md/lib/FontIcons";
@@ -12,12 +12,19 @@ import {
   FacebookShareButton,
   TwitterShareButton,
   GooglePlusShareButton
-} from 'react-share';
+} from "react-share";
 
 import { getFileById } from "../../actions/fileActions";
 import { screenUrl } from "../../enums/screenType";
 
-const ViewFinish = ({ viewScreen, viewExpo, getFileById, history }) => {
+const ViewFinish = ({
+  viewScreen,
+  viewExpo,
+  getFileById,
+  history,
+  collapsed,
+  setCollapsed
+}) => {
   const audio = viewScreen.audio ? getFileById(viewScreen.audio) : null;
   const fullUrl = `http://inqooltest.libj.cas.cz/view/${viewExpo.url}`;
 
@@ -25,7 +32,7 @@ const ViewFinish = ({ viewScreen, viewExpo, getFileById, history }) => {
     <div className="viewer-screen viewer-finish">
       <div className="viewer-finish-container">
         <div id="view-finish-image-container" className="image-container" />
-        <div className="left">
+        <div className={classNames("left", { full: collapsed })}>
           <div className="left-row">
             <div
               className="icon-container"
@@ -36,7 +43,10 @@ const ViewFinish = ({ viewScreen, viewExpo, getFileById, history }) => {
             {/* <div className="icon-container" onClick={() => null}>
               <FontIcon className="icon">file_upload</FontIcon>Sdílet výstavu
             </div> */}
-            <div className="icon-container" onClick={() => null}>
+            <div
+              className="icon-container"
+              onClick={() => setCollapsed(!collapsed)}
+            >
               <FontIcon className="icon">crop_square</FontIcon>Bibliografie
             </div>
           </div>
@@ -52,7 +62,7 @@ const ViewFinish = ({ viewScreen, viewExpo, getFileById, history }) => {
             </GooglePlusShareButton>
           </div>
         </div>
-        <div className="right">
+        <div className={classNames("right", { collapsed })}>
           <div className="content">
             {map(viewScreen.collaborators, (c, i) =>
               <div className="part" key={`coll${i}`}>
@@ -100,23 +110,23 @@ const ViewFinish = ({ viewScreen, viewExpo, getFileById, history }) => {
                       >
                         {d.name
                           ? <FontIcon className="icon">
-                            {/^image.*$/.test(d.type)
-                              ? "image"
-                              : /^audio.*$/.test(d.type)
-                                ? "music_note"
-                                : /^video.*$/.test(d.type)
-                                  ? "movie"
-                                  : "insert_drive_file"}
-                          </FontIcon>
+                              {/^image.*$/.test(d.type)
+                                ? "image"
+                                : /^audio.*$/.test(d.type)
+                                  ? "music_note"
+                                  : /^video.*$/.test(d.type)
+                                    ? "movie"
+                                    : "insert_drive_file"}
+                            </FontIcon>
                           : <FontIcon className="icon">
-                            {/^image.*$/.test(d.urlType)
-                              ? "image"
-                              : /^audio.*$/.test(d.urlType)
-                                ? "music_note"
-                                : /^video.*$/.test(d.urlType)
-                                  ? "movie"
-                                  : "insert_drive_file"}
-                          </FontIcon>}
+                              {/^image.*$/.test(d.urlType)
+                                ? "image"
+                                : /^audio.*$/.test(d.urlType)
+                                  ? "music_note"
+                                  : /^video.*$/.test(d.urlType)
+                                    ? "movie"
+                                    : "insert_drive_file"}
+                            </FontIcon>}
                         <p>
                           {d.fileName}
                         </p>
@@ -151,7 +161,7 @@ const ViewFinish = ({ viewScreen, viewExpo, getFileById, history }) => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
@@ -164,6 +174,7 @@ export default compose(
     }),
     { getFileById }
   ),
+  withState("collapsed", "setCollapsed", true),
   lifecycle({
     componentWillMount() {
       const { handleScreen } = this.props;
@@ -178,12 +189,12 @@ export default compose(
         newNode.setAttribute(
           "style",
           `width: ${viewScreen.imageOrigData.height >
-            viewScreen.imageOrigData.width
+          viewScreen.imageOrigData.width
             ? "auto"
             : "100%"}; height: ${viewScreen.imageOrigData.height >
-              viewScreen.imageOrigData.width
-              ? "100%"
-              : "auto"};`
+          viewScreen.imageOrigData.width
+            ? "100%"
+            : "auto"};`
         );
 
         document.getElementById("view-finish-image-container").prepend(newNode);

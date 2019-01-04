@@ -7,7 +7,6 @@ import cz.inqool.uas.indihu.entity.domain.Exposition;
 import cz.inqool.uas.indihu.entity.domain.User;
 import cz.inqool.uas.indihu.entity.enums.CollaborationType;
 import cz.inqool.uas.indihu.entity.enums.CollaboratorCreateState;
-import cz.inqool.uas.indihu.entity.enums.UserRole;
 import cz.inqool.uas.indihu.repository.CollaboratorRepository;
 import cz.inqool.uas.indihu.repository.ExpositionRepository;
 import cz.inqool.uas.indihu.repository.UserRepository;
@@ -59,6 +58,7 @@ public class CollaboratorService {
     public CollaboratorCreateState addCollaborator(String userEmail, String expositionId, CollaborationType type, boolean allowNotPersisted) {
         CollaboratorCreateState collaboratorCreateState = addCollaboratorWithoutMailNotification(userEmail, expositionId, type, allowNotPersisted);
         Exposition exposition = expositionRepository.find(expositionId);
+        expositionRepository.index(exposition);
         User found = userRepository.findByEmail(userEmail);
         if (collaboratorCreateState.equals(CollaboratorCreateState.CREATED)) {
             indihuNotificationService.notifyAddedToCollaborate(found, helperService.getCurrent(), exposition);
@@ -166,6 +166,8 @@ public class CollaboratorService {
         if (collaborator != null) {
             collaboratorRepository.delete(collaborator);
             log.info(MARKER, "Collaborator "+collaborator.getUserEmail()+" removed himself from exposition with id:" + expositionId);
+
+            expositionRepository.index(expositionRepository.find(expositionId));
         }
     }
 

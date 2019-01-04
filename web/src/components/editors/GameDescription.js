@@ -10,7 +10,12 @@ import { getFileById } from "../../actions/fileActions";
 
 import { helpIconText } from "../../enums/text";
 
-const Description = ({ activeScreen, updateScreenData, getFileById }) => {
+const Description = ({
+  activeScreen,
+  updateScreenData,
+  getFileById,
+  taskHelpIconLabel
+}) => {
   const music = getFileById(activeScreen.music);
 
   return (
@@ -25,7 +30,12 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 defaultValue={activeScreen.title}
                 onChange={value => updateScreenData({ title: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_GAME_TITLE }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_GAME_TITLE,
+                  id: "editor-game-title"
+                }}
+              />
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -34,7 +44,12 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 defaultValue={activeScreen.task}
                 onChange={value => updateScreenData({ task: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_GAME_TASK }} />
+              <HelpIcon
+                {...{
+                  label: taskHelpIconLabel,
+                  id: "editor-game-task"
+                }}
+              />
             </div>
           </div>
           <div className="part margin-bottom margin-horizontal">
@@ -43,14 +58,16 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 aloneScreen: activeScreen.aloneScreen,
                 music,
                 updateScreenData,
-                muteChapterMusic: activeScreen.muteChapterMusic
+                muteChapterMusic: activeScreen.muteChapterMusic,
+                helpIconTitle: helpIconText.EDITOR_DESCRIPTION_MUSIC,
+                id: "editor-game-description-music"
               }}
             />
             <div className="row flex-centered">
               <Checkbox
                 id="game-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label="Stránka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}

@@ -1,4 +1,5 @@
 import { find } from "lodash";
+import * as uuid from 'uuid/v4';
 
 import { EXPO_STRUCTURE_SET } from "./../constants";
 import { saveExpo } from "./expoActions";
@@ -24,6 +25,7 @@ export const addScreen = (row, idx, type, aloneScreen) => async (
     const screens = expo.structure.screens;
     const arr = [
       {
+        id: uuid(),
         type,
         title,
         aloneScreen: type === screenType.INTRO ? undefined : aloneScreen,
@@ -51,6 +53,7 @@ export const addScreen = (row, idx, type, aloneScreen) => async (
   } else {
     const screens = expo.structure.screens[row];
     const screenObject = {
+      id: uuid(),
       type,
       title,
       animationType: find(screenWithAnimation, s => s === type)

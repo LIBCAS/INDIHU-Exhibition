@@ -11,21 +11,43 @@ import { getFileById } from "../../actions/fileActions";
 
 import { animationType } from "../../enums/animationType";
 
+const getImageData = (
+  containerWidth,
+  containerHeight,
+  elementWidth,
+  elementHeight
+) => {
+  let left = (containerWidth - elementWidth) / 2;
+  let top = (containerHeight - elementHeight) / 2;
+  let ratio = 1;
+
+  const widthRatio = elementWidth / containerWidth;
+  const heightRatio = elementHeight / containerHeight;
+
+  if (widthRatio > 1 || heightRatio > 1) {
+    if (widthRatio > heightRatio) {
+      left = 0;
+      top = (containerHeight - elementHeight / widthRatio) / 2;
+      ratio = widthRatio;
+    } else {
+      top = 0;
+      left = (containerWidth - elementWidth / heightRatio) / 2;
+      ratio = heightRatio;
+    }
+  }
+
+  return { left, top, ratio };
+};
+
 const ViewPhotogallery = ({
   viewScreen,
-  getFileById,
   activeImageIndex,
-  onImageLoad,
   animationTypeState
 }) => {
   const container = document.getElementById("view-photogallery-image-container")
     ? document
         .getElementById("view-photogallery-image-container")
         .getBoundingClientRect()
-    : null;
-
-  const image = document.getElementById("view-photogallery-image")
-    ? document.getElementById("view-photogallery-image").getBoundingClientRect()
     : null;
 
   if (
@@ -38,6 +60,15 @@ const ViewPhotogallery = ({
   ) {
   }
 
+  const imageData = container
+    ? getImageData(
+        container.width,
+        container.height,
+        get(viewScreen, `images[${activeImageIndex}].imageOrigData.width`),
+        get(viewScreen, `images[${activeImageIndex}].imageOrigData.height`)
+      )
+    : null;
+
   return (
     <div>
       <div className="viewer-screen">
@@ -48,10 +79,7 @@ const ViewPhotogallery = ({
               key={i}
               id={`view-photogallery-image-infopoint-hidden-${i}`}
               className={classNames(
-                "infopoint-icon custom-tooltip hidden-custom-tooltip",
-                {
-                  show: infopoint.alwaysVisible
-                }
+                "infopoint-icon custom-tooltip hidden-custom-tooltip"
               )}
             >
               <div
@@ -66,17 +94,22 @@ const ViewPhotogallery = ({
         {viewScreen.images &&
           <div
             id="view-photogallery-image-container"
-            className={classNames("image-screen", {
-              "animation-fade-in": animationTypeState === animationType.FADE_IN,
-              "animation-fade-out":
-                animationTypeState === animationType.FADE_OUT,
-              "animation-fly-in": animationTypeState === animationType.FLY_IN,
-              "animation-fly-out": animationTypeState === animationType.FLY_OUT
-            })}
+            className={classNames(
+              "image-screen view-photogallery-image-container",
+              {
+                "animation-fade-in":
+                  animationTypeState === animationType.FADE_IN,
+                "animation-fade-out":
+                  animationTypeState === animationType.FADE_OUT,
+                "animation-fly-in": animationTypeState === animationType.FLY_IN,
+                "animation-fly-out":
+                  animationTypeState === animationType.FLY_OUT
+              }
+            )}
           >
             <div
               id="view-photogallery-image-container-inner"
-              className="image-screen-inner"
+              className="image-screen-inner view-photogallery-image-container-inner"
             />
             {get(viewScreen, `images[${activeImageIndex}].infopoints`) &&
             document.getElementById("view-photogallery-image") &&
@@ -96,89 +129,33 @@ const ViewPhotogallery = ({
                         position: "absolute",
                         top:
                           container &&
-                          image &&
+                          imageData &&
                           document.getElementById(
                             `view-photogallery-image-infopoint-tooltip-hidden-${i}`
                           )
-                            ? get(
-                                viewScreen,
-                                `images[${activeImageIndex}].imageOrigData`
-                              ).height >
-                              get(
-                                viewScreen,
-                                `images[${activeImageIndex}].imageOrigData`
-                              ).width
-                              ? container.height /
-                                  get(
-                                    viewScreen,
-                                    `images[${activeImageIndex}].imageOrigData`
-                                  ).height *
-                                  infopoint.top +
-                                image.top -
-                                container.top -
-                                12 -
-                                document
-                                  .getElementById(
-                                    `view-photogallery-image-infopoint-tooltip-hidden-${i}`
-                                  )
-                                  .getBoundingClientRect().height
-                              : container.width /
-                                  get(
-                                    viewScreen,
-                                    `images[${activeImageIndex}].imageOrigData`
-                                  ).width *
-                                  infopoint.top +
-                                image.top -
-                                container.top -
-                                12 -
-                                document
-                                  .getElementById(
-                                    `view-photogallery-image-infopoint-tooltip-hidden-${i}`
-                                  )
-                                  .getBoundingClientRect().height
+                            ? imageData.top +
+                              infopoint.top / imageData.ratio -
+                              document
+                                .getElementById(
+                                  `view-photogallery-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().height -
+                              12 / imageData.ratio
                             : 0,
                         left:
                           container &&
-                          image &&
+                          imageData &&
                           document.getElementById(
                             `view-photogallery-image-infopoint-tooltip-hidden-${i}`
                           )
-                            ? get(
-                                viewScreen,
-                                `images[${activeImageIndex}].imageOrigData`
-                              ).width >
-                              get(
-                                viewScreen,
-                                `images[${activeImageIndex}].imageOrigData`
-                              ).height
-                              ? container.width /
-                                  get(
-                                    viewScreen,
-                                    `images[${activeImageIndex}].imageOrigData`
-                                  ).width *
-                                  infopoint.left +
-                                image.left -
-                                container.left -
-                                document
-                                  .getElementById(
-                                    `view-photogallery-image-infopoint-tooltip-hidden-${i}`
-                                  )
-                                  .getBoundingClientRect().width /
-                                  2
-                              : container.height /
-                                  get(
-                                    viewScreen,
-                                    `images[${activeImageIndex}].imageOrigData`
-                                  ).height *
-                                  infopoint.left +
-                                image.left -
-                                container.left -
-                                document
-                                  .getElementById(
-                                    `view-photogallery-image-infopoint-tooltip-hidden-${i}`
-                                  )
-                                  .getBoundingClientRect().width /
-                                  2
+                            ? imageData.left +
+                              infopoint.left / imageData.ratio -
+                              document
+                                .getElementById(
+                                  `view-photogallery-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().width /
+                                2
                             : 0
                       }}
                     >
@@ -220,34 +197,15 @@ export default compose(
         const timeouts = [];
         const animationTime = 1.3;
 
-        const container = document
-          .getElementById("view-photogallery-image-container")
-          .getBoundingClientRect();
+        // const container = document
+        //   .getElementById("view-photogallery-image-container")
+        //   .getBoundingClientRect();
 
         const newNode = screenFiles["images[0]"];
-
         newNode.id = "view-photogallery-image";
         newNode.setAttribute(
           "style",
-          `top: ${viewScreen.images[0].imageOrigData.height >
-          viewScreen.images[0].imageOrigData.width
-            ? 0
-            : container.height / 2 -
-              viewScreen.images[0].imageOrigData.height *
-                (container.width / viewScreen.images[0].imageOrigData.width) /
-                2}px; left: ${viewScreen.images[0].imageOrigData.width >
-          viewScreen.images[0].imageOrigData.height
-            ? 0
-            : container.width / 2 -
-              viewScreen.images[0].imageOrigData.width *
-                (container.height / viewScreen.images[0].imageOrigData.height) /
-                2}px; width: ${viewScreen.images[0].imageOrigData.height >
-          viewScreen.images[0].imageOrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.images[0].imageOrigData.height >
-          viewScreen.images[0].imageOrigData.width
-            ? "100%"
-            : "auto"};`
+          `position: static; max-width: 100%; max-height: 100%;`
         );
         document
           .getElementById("view-photogallery-image-container-inner")
@@ -300,36 +258,15 @@ export default compose(
                       : animationType.WITHOUT
                 );
 
-                const container = document
-                  .getElementById("view-photogallery-image-container")
-                  .getBoundingClientRect();
+                // const container = document
+                //   .getElementById("view-photogallery-image-container")
+                //   .getBoundingClientRect();
 
                 const newNode = screenFiles[`images[${i + 1}]`];
-
                 newNode.id = "view-photogallery-image";
                 newNode.setAttribute(
                   "style",
-                  `top: ${viewScreen.images[i + 1].imageOrigData.height >
-                  viewScreen.images[i + 1].imageOrigData.width
-                    ? 0
-                    : container.height / 2 -
-                      viewScreen.images[i + 1].imageOrigData.height *
-                        (container.width /
-                          viewScreen.images[i + 1].imageOrigData.width) /
-                        2}px; left: ${viewScreen.images[i + 1].imageOrigData
-                    .width > viewScreen.images[i + 1].imageOrigData.height
-                    ? 0
-                    : container.width / 2 -
-                      viewScreen.images[i + 1].imageOrigData.width *
-                        (container.height /
-                          viewScreen.images[i + 1].imageOrigData.height) /
-                        2}px; width: ${viewScreen.images[i + 1].imageOrigData
-                    .height > viewScreen.images[i + 1].imageOrigData.width
-                    ? "auto"
-                    : "100%"}; height: ${viewScreen.images[i + 1].imageOrigData
-                    .height > viewScreen.images[i + 1].imageOrigData.width
-                    ? "100%"
-                    : "auto"};`
+                  `position: static; max-width: 100%; max-height: 100%;`
                 );
                 document
                   .getElementById("view-photogallery-image-container-inner")

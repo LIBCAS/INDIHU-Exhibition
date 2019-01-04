@@ -42,14 +42,14 @@ export const screenTypeText = {
   START: "Úvod výstavy",
   FINISH: "Závěr výstavy",
   INTRO: "Úvod do kapitoly",
-  IMAGE: "Stránka s obrázkem", // animacia/infopointy
-  VIDEO: "Stránka s videem",
-  TEXT: "Stránka s textem",
+  IMAGE: "Obrazovka s obrázkem", // animacia/infopointy
+  VIDEO: "Obrazovka s videem",
+  TEXT: "Obrazovka s textem",
   PARALLAX: "Parallax",
   IMAGE_ZOOM: "Zoom in",
   PHOTOGALERY: "Fotogalerie",
   IMAGE_CHANGE: "Foto před a po",
-  EXTERNAL: "Stránka s externím objektem",
+  EXTERNAL: "Obrazovka s externím objektem",
   GAME_FIND: "Najdi na obrázku",
   GAME_DRAW: "Dokresli",
   GAME_WIPE: "Stírací los",
@@ -81,14 +81,14 @@ export const screenTypeIcon = {
 /** menu pre vytvorenie novej obrazovky */
 export const newScreen = {
   SCREEN: [
-    ["IMAGE", "Stránka s obrázkem"],
-    ["VIDEO", "Stránka s videem"],
-    ["TEXT", "Stránka s textem"],
+    ["IMAGE", "Obrazovka s obrázkem"],
+    ["VIDEO", "Obrazovka s videem"],
+    ["TEXT", "Obrazovka s textem"],
     ["PARALLAX", "Parallax"],
     ["IMAGE_ZOOM", "Zoom in"],
     ["PHOTOGALERY", "Fotogalerie"],
     ["IMAGE_CHANGE", "Foto před a po"],
-    ["EXTERNAL", "Stránka s externím objektem"]
+    ["EXTERNAL", "Obrazovka s externím objektem"]
   ],
   GAME: [
     ["GAME_FIND", "Nájdi v obrázku"],

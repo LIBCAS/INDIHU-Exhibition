@@ -20,7 +20,9 @@ const ViewGameWipe = ({
   paint,
   setPaint,
   setScrawl,
-  addScrawl
+  addScrawl,
+  passButton,
+  setPassButton
 }) => {
   return (
     <div className="game">
@@ -89,6 +91,7 @@ const ViewGameWipe = ({
       {/* FOOTER */}
       <GameMenu
         {...{
+          passButton,
           task: viewScreen.task,
           getNextUrlPart,
           onClick: () => {
@@ -99,6 +102,7 @@ const ViewGameWipe = ({
               mouseXPos: null,
               mouseYPos: null
             });
+            setPassButton(false);
           }
         }}
       />
@@ -122,6 +126,7 @@ export default compose(
       mouseActualize
     }
   ),
+  withState("passButton", "setPassButton", true),
   withState("ctx", "setCtx", null),
   withState("paint", "setPaint", false),
   withState("scrawl", "setScrawl", { x: [], y: [], drag: [] }),
@@ -203,6 +208,23 @@ export default compose(
                 viewScreen.image1OrigData.width *
                 viewScreen.image1OrigData.height
           );
+
+          if (viewScreen.image2) {
+            const newNode = screenFiles["image2"];
+            newNode.setAttribute(
+              "style",
+              `width: ${viewScreen.image2OrigData.height >
+              viewScreen.image2OrigData.width
+                ? "auto"
+                : "100%"}; height: ${viewScreen.image2OrigData.height >
+              viewScreen.image2OrigData.width
+                ? "100%"
+                : "auto"}; object-fit: contain;`
+            );
+            document
+              .getElementById("view-game-find-game-wrap")
+              .appendChild(newNode);
+          }
         };
       } else {
         // there is no img, so fill with color
@@ -212,23 +234,6 @@ export default compose(
         ctx.fillRect(0, 0, width, height);
       }
       setCtx(ctx);
-
-      if (viewScreen.image2) {
-        const newNode = screenFiles["image2"];
-        newNode.setAttribute(
-          "style",
-          `width: ${viewScreen.image2OrigData.height >
-          viewScreen.image2OrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.image2OrigData.height >
-          viewScreen.image2OrigData.width
-            ? "100%"
-            : "auto"}; object-fit: contain;`
-        );
-        document
-          .getElementById("view-game-find-game-wrap")
-          .appendChild(newNode);
-      }
     }
   })
 )(ViewGameWipe);

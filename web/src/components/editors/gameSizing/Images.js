@@ -7,6 +7,7 @@ import Image from "../Image";
 import { setDialog } from "../../../actions/dialogActions";
 import { getFileById } from "../../../actions/fileActions";
 import { updateScreenData } from "../../../actions/expoActions";
+import { helpIconText } from "../../../enums/text";
 
 const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
   const image1 = activeScreen.image1 ? getFileById(activeScreen.image1) : null;
@@ -30,7 +31,7 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
           <div className="flex-row-nowrap one-image-row">
             <Image
               {...{
-                title: "Levý obrázek",
+                title: "Obrázek referenčního předmětu",
                 image: image1,
                 setImage: setImage1,
                 onDelete: () =>
@@ -41,14 +42,16 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_SIZING_IMAGE1,
+                id: "editor-game-sizing-image1"
               }}
             />
           </div>
           <div className="flex-row-nowrap one-image-row">
             <Image
               {...{
-                title: "Pravý obrázek",
+                title: "Obrázek porovnávaného předmětu",
                 image: image2,
                 setImage: setImage2,
                 onDelete: () =>
@@ -59,7 +62,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_SIZING_IMAGE2,
+                id: "editor-game-sizing-image2"
               }}
             />
           </div>
@@ -79,7 +84,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_SIZING_IMAGE3,
+                id: "editor-game-sizing-image3"
               }}
             />
           </div>

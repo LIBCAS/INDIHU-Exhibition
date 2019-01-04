@@ -44,7 +44,10 @@ const Image = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel:
+                  helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_IMAGE,
+                id: "editor-chapter-start-description-image"
               }}
             />
           </div>
@@ -60,7 +63,12 @@ const Image = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
               defaultValue={activeScreen.animationType}
               onChange={value => updateScreenData({ animationType: value })}
             />
-            <HelpIcon {...{ label: helpIconText.EDITOR_INTRO_ANIMATION }} />
+            <HelpIcon
+              {...{
+                label: helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_ANIMATION,
+                id: "editor-chapter-start-description-animation"
+              }}
+            />
           </div>
         </div>
       </div>

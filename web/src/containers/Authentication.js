@@ -31,19 +31,26 @@ const Authentication = ({ handleSubmit, setDialog, regAvailable }) =>
           label="Heslo"
           validate={[Validation.required]}
         />
-        <div className="flex">
+        <div className="authentication-buttons">
+          <Button
+            flat
+            label="Přihlásit"
+            type="submit"
+            className="authentication-button"
+          />
           {regAvailable &&
             <Button
               flat
               label="Registrovat"
               onClick={() => setDialog("Registration")}
+              className="authentication-button"
             />}
           <Button
             flat
             label="Resetovat heslo"
             onClick={() => setDialog("PasswordReset")}
+            className="authentication-button"
           />
-          <Button flat label="Přihlásit" type="submit" />
         </div>
       </form>
     </div>

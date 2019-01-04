@@ -13,13 +13,13 @@ const ScreenDelete = ({ handleSubmit, dialogData }) =>
     handleSubmit={handleSubmit}
   >
     <p>
-      Vybraná obrazovka {get(dialogData, "name")} bude smazána.
+      Vybraná obrazovka <strong>{get(dialogData, "name")}</strong> bude smazána.
     </p>
     <p>
-      Tato operace je nevratná a smaže
+      Tato operace je nevratná a
       {get(dialogData, "colNum") === 0 && get(dialogData, "type") === "INTRO"
-        ? <strong> celou kategorii! </strong>
-        : <span> pouze obrazovku. </span>}
+        ? <strong> smaže celou kategorii! </strong>
+        : <span> smaže pouze obrazovku. </span>}
       Dokumenty a podklady zůstanou na serveru zachovány!
     </p>
   </Dialog>;

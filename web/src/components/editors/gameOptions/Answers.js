@@ -59,11 +59,11 @@ const Answers = ({
   };
 
   return (
-    <div className="container container-tabMenu">
+    <div className="container-big container-tabMenu">
       <div className="screen">
-        <div className="flex-row flex-spaced">
+        <div className="game-options-answers">
           {map(activeScreen.answers, (answer, i) =>
-            <div key={i} className="flex-col margin-bottom">
+            <div key={i} className="answer">
               <div className="flex-row flex-centered">
                 <h2
                   className={classNames({
@@ -95,26 +95,9 @@ const Answers = ({
                 />
                 <HelpIcon
                   {...{
-                    label: helpIconText.EDITOR_GAME_OPTIONS_CORRECT_ANSWER
+                    label: helpIconText.EDITOR_GAME_OPTIONS_CORRECT_ANSWER,
+                    id: "editor-game-options-correct-answer"
                   }}
-                />
-              </div>
-              <div className="flex-row-nowrap margin-bottom">
-                <TextField
-                  id={`game-options-textfield-text-${i}`}
-                  label="Text odpovědi"
-                  defaultValue={answer.text}
-                  onChange={value =>
-                    updateScreenData({
-                      answers: map(
-                        activeScreen.answers,
-                        (a, j) => (i === j ? { ...a, text: value } : a)
-                      )
-                    })}
-                  rows={3}
-                />
-                <HelpIcon
-                  {...{ label: helpIconText.EDITOR_GAME_OPTIONS_TEXT }}
                 />
               </div>
               <Image
@@ -145,7 +128,30 @@ const Answers = ({
                           : a
                     )
                   })}
+                helpIconLabel={helpIconText.EDITOR_GAME_OPTIONS_ANSWER_IMAGE}
+                id="editor-game-options-answer-image"
               />
+              <div className="flex-row-nowrap margin-top">
+                <TextField
+                  id={`game-options-textfield-text-${i}`}
+                  label="Text odpovědi"
+                  defaultValue={answer.text}
+                  onChange={value =>
+                    updateScreenData({
+                      answers: map(
+                        activeScreen.answers,
+                        (a, j) => (i === j ? { ...a, text: value } : a)
+                      )
+                    })}
+                  rows={3}
+                />
+                <HelpIcon
+                  {...{
+                    label: helpIconText.EDITOR_GAME_OPTIONS_TEXT,
+                    id: "editor-game-options-text"
+                  }}
+                />
+              </div>
             </div>
           )}
         </div>

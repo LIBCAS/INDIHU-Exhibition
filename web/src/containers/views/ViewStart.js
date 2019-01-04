@@ -53,9 +53,9 @@ const ViewStart = ({
             >
               <div className="flex-row icons">
                 <FontIcon className="icon">menu</FontIcon>
-                <FontIcon className="icon">volume_up</FontIcon>
+                <FontIcon className="icon second-icon">volume_up</FontIcon>
               </div>
-              <p>Více informací</p>
+              <p className="text">Více informací</p>
             </div>
           </div>
           <div className="flex-col info">
@@ -166,9 +166,11 @@ const ViewStart = ({
                                     ? "music_note"
                                     : /^video.*$/.test(d.urlType)
                                       ? "movie"
-                                      : "insert_drive_file"}
+                                      : /^WEB.*$/.test(d.urlType)
+                                        ? "web"
+                                        : "insert_drive_file"}
                               </FontIcon>}
-                          <p>
+                          <p className="margin-none">
                             {d.fileName}
                           </p>
                         </div>

@@ -21,7 +21,8 @@ const ScreenCard = ({
   data,
   isFilled,
   activeExpo,
-  history
+  history,
+  menuPosition
 }) => {
   const number = ` ${rowNum + 1}${colNum > 0 ? `.${colNum} ` : " "}`;
   const header = `${data.title || screenTypeText[data.type]}`;
@@ -44,6 +45,7 @@ const ScreenCard = ({
           editUrl={editUrl}
           expoId={activeExpo.id}
           aloneScreen={data.aloneScreen}
+          position={menuPosition}
         />
         <CardText className="card-screen">
           <p onClick={() => history.push(editUrl)}>

@@ -39,7 +39,12 @@ const Description = ({
                 defaultValue={activeScreen.title}
                 onChange={value => updateScreenData({ title: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_DESCRIPTION_TITLE }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_START_DESCRIPTION_TITLE,
+                  id: "editor-start-description-title"
+                }}
+              />
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -49,7 +54,10 @@ const Description = ({
                 onChange={value => updateScreenData({ subTitle: value })}
               />
               <HelpIcon
-                {...{ label: helpIconText.EDITOR_DESCRIPTION_SUBTITLE }}
+                {...{
+                  label: helpIconText.EDITOR_START_DESCRIPTION_SUBTITLE,
+                  id: "editor-start-description-subtitle"
+                }}
               />
             </div>
             <div className="flex-row-nowrap">
@@ -60,7 +68,12 @@ const Description = ({
                 defaultValue={activeScreen.perex}
                 onChange={value => updateScreenData({ perex: value })}
               />
-              <HelpIcon {...{ label: helpIconText.EDITOR_DESCRIPTION_PEREX }} />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_START_DESCRIPTION_PEREX,
+                  id: "editor-start-description-perex"
+                }}
+              />
             </div>
             <CharacterCount {...{ text: activeScreen.perex }} />
           </div>
@@ -103,7 +116,10 @@ const Description = ({
                     })}
                 />
                 <HelpIcon
-                  {...{ label: helpIconText.EDITOR_START_DESCRIPTION_IMAGE }}
+                  {...{
+                    label: helpIconText.EDITOR_START_DESCRIPTION_IMAGE,
+                    id: "editor-start-description-image"
+                  }}
                 />
               </div>
             </div>
@@ -118,9 +134,13 @@ const Description = ({
                 position={"below"}
                 defaultValue={activeScreen.animationType}
                 onChange={value => updateScreenData({ animationType: value })}
+                style={{ minWidth: 200 }}
               />
               <HelpIcon
-                {...{ label: helpIconText.EDITOR_START_DESCRIPTION_ANIMATION }}
+                {...{
+                  label: helpIconText.EDITOR_START_DESCRIPTION_ANIMATION,
+                  id: "editor-start-description-animation"
+                }}
               />
             </div>
             <AudioMusic
@@ -128,7 +148,9 @@ const Description = ({
                 textFieldLabel: "Audio verze výstavy",
                 audio,
                 updateScreenData,
-                isAudio: true
+                isAudio: true,
+                helpIconTitle: helpIconText.EDITOR_START_DESCRIPTION_AUDIO,
+                id: "editor-start-description-audio"
               }}
             />
             <div className="flex-col">
@@ -153,7 +175,8 @@ const Description = ({
                 </div>
                 <HelpIcon
                   {...{
-                    label: helpIconText.EDITOR_START_DESCRIPTION_EXPOTIME
+                    label: helpIconText.EDITOR_START_DESCRIPTION_EXPOTIME,
+                    id: "editor-start-description-expotime"
                   }}
                 />
               </div>
@@ -173,7 +196,8 @@ const Description = ({
               />
               <HelpIcon
                 {...{
-                  label: helpIconText.EDITOR_START_DESCRIPTION_ORGANIZATION
+                  label: helpIconText.EDITOR_START_DESCRIPTION_ORGANIZATION,
+                  id: "editor-start-description-organization"
                 }}
               />
             </div>
@@ -181,7 +205,7 @@ const Description = ({
               <Checkbox
                 id="screen-start-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label="Stránka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}

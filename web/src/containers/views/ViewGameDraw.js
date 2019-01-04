@@ -22,8 +22,12 @@ const ViewGameDraw = ({
   setPaint,
   setScrawl,
   addScrawl,
+  doneButton,
+  setDoneButton,
   resetButton,
-  setResetButton
+  setResetButton,
+  passButton,
+  setPassButton
 }) => {
   return (
     <div className="game">
@@ -92,8 +96,9 @@ const ViewGameDraw = ({
       {/* FOOTER */}
       <GameMenu
         {...{
-          doneButton: true,
+          doneButton,
           resetButton,
+          passButton,
           task: viewScreen.task,
           getNextUrlPart,
           onClick: () => {
@@ -125,6 +130,8 @@ const ViewGameDraw = ({
                 .appendChild(newNode);
             }
             setResetButton(false);
+            setDoneButton(false);
+            setPassButton(false);
           },
           onReset: () => {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -152,7 +159,9 @@ export default compose(
       mouseActualize
     }
   ),
+  withState("doneButton", "setDoneButton", true),
   withState("resetButton", "setResetButton", true),
+  withState("passButton", "setPassButton", true),
   withState("ctx", "setCtx", null),
   withState("paint", "setPaint", false),
   withState("scrawl", "setScrawl", { x: [], y: [], drag: [] }),

@@ -12,13 +12,17 @@ const ViewGameOptions = ({
   viewScreen,
   getNextUrlPart,
   onAnswerChoose,
-  setAnswerSelected
+  setAnswerSelected,
+  passButton,
+  setPassButton
 }) =>
   <div className="game">
     <div id="game-wrap" className="game-wrap">
       <div id="game-options" className="game-options">
         <div id="game-options-top" className="game-options-top" />
-        <p className="game-options-title">{viewScreen.task}</p>
+        <p className="game-options-title">
+          {viewScreen.task}
+        </p>
         <div
           id="game-options-bottom"
           className="game-options-bottom cursor-pointer"
@@ -28,6 +32,7 @@ const ViewGameOptions = ({
     </div>
     <GameMenu
       {...{
+        passButton,
         task: viewScreen.task,
         getNextUrlPart,
         onClick: () => {
@@ -45,6 +50,8 @@ const ViewGameOptions = ({
 
           document.getElementById("game-options-bottom").className =
             "game-options-bottom";
+
+          setPassButton(false);
         }
       }}
     />
@@ -59,6 +66,7 @@ export default compose(
     }),
     { setTimeoutId }
   ),
+  withState("passButton", "setPassButton", true),
   withState("timeouts", "setTimeouts", []),
   withState("answerSelected", "setAnswerSelected", false),
   lifecycle({
@@ -116,12 +124,14 @@ export default compose(
       timeouts,
       setTimeouts,
       answerSelected,
-      setAnswerSelected
+      setAnswerSelected,
+      setPassButton
     }) => () => {
       if (!answerSelected) {
         setAnswerSelected(true);
+        setPassButton(false);
 
-        const animationTime = 1300;
+        const animationTime = 1250;
 
         forEach(viewScreen.answers, (answer, i) => {
           if (!answer.correct) {
@@ -146,7 +156,7 @@ export default compose(
 
         setTimeoutId(
           setTimeout(async () => {
-            history.push(getNextUrlPart());
+            if (getNextUrlPart) history.push(getNextUrlPart());
           }, 5000 + animationTime)
         );
       }

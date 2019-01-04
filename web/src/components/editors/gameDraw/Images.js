@@ -41,7 +41,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_DRAW_IMAGE1,
+                id: "editor-game-draw-image1"
               }}
             />
           </div>
@@ -59,7 +61,9 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
                       width,
                       height
                     }
-                  })
+                  }),
+                helpIconLabel: helpIconText.EDITOR_GAME_DRAW_IMAGE2,
+                id: "editor-game-draw-image2"
               }}
             />
           </div>
@@ -73,7 +77,10 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             onChange={value => updateScreenData({ showDrawing: value })}
           />
           <HelpIcon
-            {...{ label: helpIconText.EDITOR_GAME_DRAW_SHOW_DRAWING }}
+            {...{
+              label: helpIconText.EDITOR_GAME_DRAW_SHOW_DRAWING,
+              id: "editor-game-draw-show-drawing"
+            }}
           />
         </div>
       </div>

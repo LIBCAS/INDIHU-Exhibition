@@ -33,7 +33,14 @@ const Pagination = ({ users, getUsers }) => {
             defaultValue={"" + users.pageSize}
             position="below"
             onChange={value =>
-              getUsers(0, value, users.filter, users.sort, users.search)}
+              getUsers(
+                0,
+                value,
+                users.filter,
+                users.sort,
+                users.search,
+                users.table
+              )}
           />
         </div>
         <div className="flex-header-row">
@@ -49,7 +56,8 @@ const Pagination = ({ users, getUsers }) => {
                 users.pageSize,
                 users.filter,
                 users.sort,
-                users.search
+                users.search,
+                users.table
               )}
             disabled={users.page <= 0}
           >
@@ -63,7 +71,8 @@ const Pagination = ({ users, getUsers }) => {
                 users.pageSize,
                 users.filter,
                 users.sort,
-                users.search
+                users.search,
+                users.table
               )}
             disabled={(users.page + 1) * users.pageSize >= users.count}
           >

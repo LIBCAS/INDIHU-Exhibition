@@ -17,7 +17,9 @@ const Text = ({ activeScreen, updateScreenData }) =>
           onChange={value => updateScreenData({ mainText: value })}
           rows={3}
         />
-        <HelpIcon {...{ label: helpIconText.EDITOR_TEXT_TEXT }} />
+        <HelpIcon
+          {...{ label: helpIconText.EDITOR_TEXT_TEXT, id: "editor-text-text" }}
+        />
       </div>
     </div>
   </div>;

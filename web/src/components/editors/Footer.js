@@ -7,44 +7,10 @@ import { saveScreen } from "../../actions/expoActions";
 import { setDialog } from "../../actions/dialogActions";
 import { openViewer } from "../../utils";
 
-const Footer = ({
-  activeExpo,
-  activeScreen,
-  rowNum,
-  colNum,
-  saveScreen,
-  noActions,
-  setDialog,
-  type,
-  noActionTitle,
-  noActionText,
-  save
-}) =>
+const Footer = ({ save, openView }) =>
   <div className="flex-row flex-centered fixed-bottom-footer">
     <div className="inner padding flex-row flex-space-between">
-      <Button
-        raised
-        label="Náhled"
-        className="btn"
-        onClick={async () => {
-          if (noActions)
-            setDialog("Info", {
-              title: noActionTitle ? noActionTitle : "Ukončete prováděné akce!",
-              text: noActionText
-                ? noActionText
-                : "Ukončete všechny prováděné akce než otevřete náhled obrazovky!"
-            });
-          else {
-            await saveScreen(activeScreen, rowNum, colNum);
-
-            openViewer(
-              type
-                ? `/screen/${activeExpo.id}/${type}`
-                : `/screen/${activeExpo.id}/${rowNum}/${colNum}`
-            );
-          }
-        }}
-      />
+      <Button raised label="Náhled" className="btn" onClick={openView} />
       <Button raised label="Uložit" className="btn" onClick={save} />
     </div>
   </div>;
@@ -84,16 +50,54 @@ export default compose(
           });
         }
       }
+    },
+    openView: ({
+      activeExpo,
+      activeScreen,
+      rowNum,
+      colNum,
+      saveScreen,
+      noActions,
+      setDialog,
+      type,
+      noActionTitle,
+      noActionText,
+    }) => async () => {
+      if (noActions)
+        setDialog("Info", {
+          title: noActionTitle ? noActionTitle : "Ukončete prováděné akce!",
+          text: noActionText
+            ? noActionText
+            : "Ukončete všechny prováděné akce než otevřete náhled obrazovky!"
+        });
+      else {
+        await saveScreen(activeScreen, rowNum, colNum);
+
+        openViewer(
+          type
+            ? `/screen/${activeExpo.id}/${type}`
+            : `/screen/${activeExpo.id}/${rowNum}/${colNum}`
+        );
+      }
     }
   }),
   withHandlers({
-    manageKeyAction: ({ save, ctrlKeyDown, setCtrlKeyDown }) => async e => {
+    manageKeyAction: ({
+      save,
+      openView,
+      ctrlKeyDown,
+      setCtrlKeyDown
+    }) => async e => {
       if (e.keyCode === 17 && e.type === "keydown") {
         setCtrlKeyDown(true);
       } else if (ctrlKeyDown && e.keyCode === 83 && e.type === "keydown") {
         e.preventDefault();
         setCtrlKeyDown(false);
         save();
+      } else if (ctrlKeyDown && e.keyCode === 80 && e.type === "keydown") {
+        e.preventDefault();
+        setCtrlKeyDown(false);
+        openView();
       } else {
         setCtrlKeyDown(false);
       }

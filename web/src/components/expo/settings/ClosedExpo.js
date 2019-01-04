@@ -46,7 +46,11 @@ const ClosedExpo = ({
           />
         </div>
         <HelpIcon
-          {...{ label: helpIconText.EXPO_SETTINGS_CLOSED_EXPO_IMAGE }}
+          {...{
+            label: helpIconText.EXPO_SETTINGS_CLOSED_EXPO_IMAGE,
+            id: "expo-settings-closed-expo-image",
+            place: "left"
+          }}
         />
       </div>
       <div className="flex-row-nowrap flex-centered">
@@ -56,7 +60,13 @@ const ClosedExpo = ({
           label="Url pro přesměrování"
           name="closedUrl"
         />
-        <HelpIcon {...{ label: helpIconText.EXPO_SETTINGS_CLOSED_EXPO_URL }} />
+        <HelpIcon
+          {...{
+            label: helpIconText.EXPO_SETTINGS_CLOSED_EXPO_URL,
+            id: "expo-settings-closed-expo-url",
+            place: "left"
+          }}
+        />
       </div>
       <div className="flex-row-nowrap flex-centered">
         <Field
@@ -68,7 +78,11 @@ const ClosedExpo = ({
           multiLine
         />
         <HelpIcon
-          {...{ label: helpIconText.EXPO_SETTINGS_CLOSED_EXPO_CAPTION }}
+          {...{
+            label: helpIconText.EXPO_SETTINGS_CLOSED_EXPO_CAPTION,
+            id: "expo-settings-closed-expo-caption",
+            place: "left"
+          }}
         />
       </div>
       <div className="flex-row flex-right">

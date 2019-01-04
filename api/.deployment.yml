@@ -1,0 +1,71 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: indihu-api
+  labels:
+    name: indihu-api
+    app: review-exec
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        name: indihu-api
+        app: review-exec
+    spec:
+      containers:
+        - name: indihu-api
+          image: eu.gcr.io/inqool-1301/cz.inqool.indihu/api:latest
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "32Mi"
+            limits:
+              cpu: "1500m"
+              memory: "2248Mi"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: console
+              containerPort: 8081
+              protocol: TCP  
+          volumeMounts:
+            - name: data-volume
+              mountPath: /usr/src/data
+            - name: files-volume
+              mountPath: /usr/src/files
+
+      volumes:
+        - name: indihu-disk
+          gcePersistentDisk:
+            pdName: indihu-disk
+            fsType: ext4
+        - name: data-volume
+          hostPath:
+            path: /var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts/indihu-disk/files/data
+        - name: files-volume
+          hostPath:
+            path: /var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts/indihu-disk/files/files
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: indihu-api
+  labels:
+    name: indihu-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 8081
+    targetPort: 8081
+    protocol: TCP
+    name: console
+  selector:
+    name: indihu-api
+  clusterIP:

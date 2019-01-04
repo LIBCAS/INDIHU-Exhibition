@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { isEmpty } from "lodash";
+import { get, map } from "lodash";
 import FontIcon from "react-md/lib/FontIcons";
 import Button from "react-md/lib/Buttons/Button";
 
@@ -12,6 +12,7 @@ import { tabFolder } from "../../actions/fileActions";
 import { changeSwitchState } from "../../actions/appActions";
 
 import { helpIconText } from "../../enums/text";
+import { fileTypeText } from "../../enums/fileType";
 
 const Documents = ({
   activeScreen,
@@ -22,17 +23,18 @@ const Documents = ({
 }) =>
   <div className="container container-tabMenu">
     <div className="screen">
-      {activeScreen &&
-        !isEmpty(activeScreen.documents) &&
-        <div className="flex-row-nowrap">
-          <div className="table margin-bottom">
-            <div className="table-row header">
-              <div className="table-col">Název</div>
-              <div className="table-col">Soubor</div>
-              <div className="table-col">Typ</div>
-              <div className="table-col" />
-            </div>
-            {activeScreen.documents.map((item, i) =>
+      <div className="flex-row-nowrap">
+        <div className="table margin-bottom">
+          <div className="table-row header">
+            <div className="table-col">Název</div>
+            <div className="table-col">Soubor/URL</div>
+            <div className="table-col">Typ</div>
+            <div className="table-col" />
+          </div>
+          {map(get(activeScreen, "documents"), (item, i) => {
+            const type = get(item, "type", get(item, "urlType", ""));
+
+            return (
               <div className="table-row" key={i}>
                 <div className="table-col">
                   {item.fileName}
@@ -41,7 +43,15 @@ const Documents = ({
                   {item.name || item.url}
                 </div>
                 <div className="table-col">
-                  {item.name ? item.type : item.urlType}
+                  {type.match(/^image/)
+                    ? fileTypeText.IMAGE
+                    : type.match(/^audio/)
+                      ? fileTypeText.AUDIO
+                      : type.match(/^video/)
+                        ? fileTypeText.VIDEO
+                        : type.match(/^application\/pdf/)
+                          ? fileTypeText.PDF
+                          : type.match(/^WEB/) ? fileTypeText.WEB : type}
                 </div>
                 <div className="table-col flex-right">
                   <FontIcon
@@ -58,10 +68,11 @@ const Documents = ({
                   </FontIcon>
                 </div>
               </div>
-            )}
-          </div>
-          <HelpIcon {...{ label: helpIconText.EDITOR_DOCUMENTS }} />
-        </div>}
+            );
+          })}
+        </div>
+        <HelpIcon {...{ label: helpIconText.EDITOR_DOCUMENTS }} />
+      </div>
       <Button
         icon
         onClick={() => {

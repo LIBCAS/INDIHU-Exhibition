@@ -1,7 +1,8 @@
 .screen {
   padding-left: .5em;
   padding-right: .5em;
-  margin-bottom: 20em;
+  margin-bottom: 3.8em;
+  padding-bottom: 1em;
 
   .screen-two-cols {
     width: 100%;
@@ -23,6 +24,34 @@
 
   .small-margin {
     margin: 0px 5px;
+  }
+
+  .start {
+    &-authors {
+      &-filter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .left-filter {
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: center;
+          align-items: center;
+        }
+
+        @media (max-width: $breakpoint-tablet) {
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        @media (max-width: $breakpoint-mobile) {
+          .left-filter {
+            flex-wrap: wrap;
+          }
+        }
+      }
+    }
   }
 
   .carousel-container {
@@ -197,7 +226,7 @@
     padding: 0px;
     max-width: 100%;
     display: inline-block;
-    overflow: scroll;
+    overflow: auto;
 
     &.img-none {
       width: 450px;
@@ -205,7 +234,7 @@
 
       @media (max-width: $breakpoint-mobile) {
         .card-image-icon-placeholder {
-          font-size: 70vw;
+          font-size: 60vw;
         }
       }
     }
@@ -260,6 +289,33 @@
     &:before {
       line-height: 1em;
       content: attr(label);
+    }
+  }
+
+  .game-options-answers {
+    max-width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+    .answer {
+      display: flex;
+      flex-direction: column;
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+
+    @media (max-width: $breakpoint-desktop-big) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .answer {
+        max-width: calc(100% - 2em);
+        margin-left: 1em;
+        margin-right: 1em;
+        padding-bottom: 2em;
+      }
     }
   }
 }

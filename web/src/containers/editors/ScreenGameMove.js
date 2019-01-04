@@ -9,6 +9,7 @@ import Images from "../../components/editors/gameMove/Images";
 import Footer from "../../components/editors/Footer";
 
 import { updateScreenData } from "../../actions/expoActions";
+import { helpIconText } from "../../enums/text";
 
 const ScreenGameMove = props => {
   const { match, activeScreen, history, url } = props;
@@ -29,7 +30,11 @@ const ScreenGameMove = props => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <Description {...props} />}
+        render={() =>
+          <Description
+            {...props}
+            taskHelpIconLabel={helpIconText.EDITOR_GAME_MOVE_TASK}
+          />}
       />
       <Route
         path={`${match.url}/images`}

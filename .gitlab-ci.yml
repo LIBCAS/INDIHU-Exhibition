@@ -1,0 +1,129 @@
+stages:
+    - build
+    - docker
+    - deploy
+
+build-web:
+    stage: build
+    tags:
+        - yarn
+    only:
+        - master
+    script:
+        - "cd web"
+        - "yarn"
+        - "yarn run build"
+    artifacts:
+            paths:
+            - web/build
+
+build-api:
+    stage: build
+    tags:
+        - maven
+    only:
+        - master
+    script:
+        - "cd api"
+        - "wget --header \"PRIVATE-TOKEN: $SECRET_KEY\" http://git.inqool.cz/api/v4/projects/430/snippets/36/raw -O src/main/resources/application.yml"
+        - "mvn clean package -B -Dmaven.test.skip=true"
+    artifacts:
+        paths:
+            - api/target/Indihu-0.1-SNAPSHOT.jar
+
+docker-web:
+    stage: docker
+    tags:
+        - docker
+    only:
+        - master
+    dependencies:
+        - build-web
+    variables:
+        IMAGE_NAME: indihu/web
+    script:
+        - "cd web"
+        - "wget --header \"PRIVATE-TOKEN: $SECRET_KEY\" \"http://git.inqool.cz/api/v4/projects/432/repository/files/apache%2F00_general.conf/raw?ref=master\" -O httpd.conf"
+        - "wget --header \"PRIVATE-TOKEN: $SECRET_KEY\" \"http://git.inqool.cz/api/v4/projects/432/repository/files/apache%2F00_run.sh/raw?ref=master\" -O run.sh"
+        - "printf \"\nProxyPass /api http://$CLUSTER_IP_API:8080/api\n\" >> httpd.conf"
+        - "createDocker"
+
+docker-api:
+    stage: docker
+    tags:
+        - docker
+    only:
+        - master
+    dependencies:
+        - build-api
+    variables:
+        IMAGE_NAME: indihu/api
+    script:
+        - "cd api"
+        - "createDocker"
+
+deploy-web:
+    stage: deploy
+    tags:
+        - deploy
+    only:
+        - master
+    variables:
+        APP: $CI_COMMIT_REF_NAME
+        CI_ENVIRONMENT_URL: http://$CLUSTER_IP_WEB
+    script:
+        - "cd web"
+        - "sed -i \"s/clusterIP:$/clusterIP: $CLUSTER_IP_WEB/g\" .deployment.yml"
+        - "sed -i \"s/app: review-exec/app: $CI_ENVIRONMENT_SLUG/g\" .deployment.yml"
+        - "deploy -m delete -f .deployment.yml -n production"
+    environment:
+        name: web/$CI_COMMIT_REF_NAME
+        url: http://$CLUSTER_IP_WEB
+        on_stop: stop-web
+
+deploy-api:
+    stage: deploy
+    tags:
+        - deploy
+    only:
+        - master
+    variables:
+        APP: $CI_COMMIT_REF_NAME
+        CI_ENVIRONMENT_URL: http://$CLUSTER_IP_API:8080/swagger-ui.html
+    script:
+        - "cd api"
+        - "sed -i \"s/clusterIP:$/clusterIP: $CLUSTER_IP_API/g\" .deployment.yml"
+        - "sed -i \"s/app: review-exec/app: $CI_ENVIRONMENT_SLUG/g\" .deployment.yml"
+        - "deploy -m delete -f .deployment.yml -n production"
+    environment:
+        name: api/$CI_COMMIT_REF_NAME
+        url: http://$CLUSTER_IP_API:8080/swagger-ui.html
+        on_stop: stop-api
+
+stop-web:
+    stage: deploy
+    when: manual
+    tags:
+        - deploy
+    only:
+        - master
+    script:
+        - "cd web"
+        - "kubectl delete -f .deployment.yml -n production"
+    environment:
+        name: web/$CI_COMMIT_REF_NAME
+        action: stop
+
+stop-api:
+    stage: deploy
+    when: manual
+    tags:
+        - deploy
+    only:
+        - master
+    script:
+        - "cd api"
+        - "kubectl delete -f .deployment.yml -n production"
+    environment:
+        name: api/$CI_COMMIT_REF_NAME
+        action: stop

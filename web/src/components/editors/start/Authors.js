@@ -39,9 +39,11 @@ const Authors = ({
   return (
     <div className="container container-tabMenu">
       <div className="screen">
-        <div className="flex-row flex-space-between flex-center">
-          <div className="flex-row-normal flex-centered">
-            <p className="flex-header-text">Filtr:</p>
+        <div className="start-authors-filter">
+          <div className="left-filter">
+            <p className="margin-bottom-small margin-top-small margin-left-very-small margin-right-very-small">
+              Filtr:
+            </p>
             <SelectField
               id="expo-editor-start-selectfield-filter"
               className="flex-header-select"
@@ -63,7 +65,7 @@ const Authors = ({
               }}
               data-tip={order === "ASC" ? "Sestupně" : "Vzestupně"}
               data-for="expo-editor-start-react-tooltip-order"
-              className="margin-right-very-small"
+              className="margin-right-very-small margin-top-very-small margin-bottom-very-small"
             >
               {order === "ASC" ? "arrow_downward" : "arrow_upward"}
             </Button>

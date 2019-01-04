@@ -53,7 +53,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               <Checkbox
                 id="screen-video-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label="Stránka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}

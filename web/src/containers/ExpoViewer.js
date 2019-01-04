@@ -45,14 +45,16 @@ const ViewScreen = compose(
         viewChapterMusic,
         viewScreenAudio,
         viewLastChapter,
-        preloadedFiles
+        preloadedFiles,
+        soundIsTurnedOff
       }
     }) => ({
       viewExpo,
       viewChapterMusic,
       viewScreenAudio,
       viewLastChapter,
-      preloadedFiles
+      preloadedFiles,
+      soundIsTurnedOff
     }),
     { setChapterMusic, setLastChapter, setScreenAudio }
   ),
@@ -275,9 +277,10 @@ export default compose(
   withRouter,
   withState("prepared", "setPrepared", false),
   connect(
-    ({ expo: { viewExpo, viewScreen } }) => ({
+    ({ expo: { viewExpo, viewScreen, viewInteractive } }) => ({
       viewExpo,
-      viewScreen
+      viewScreen,
+      viewInteractive
     }),
     {
       loadExposition,
@@ -340,57 +343,68 @@ export default compose(
       return viewScreen;
     }
   })
-)(({ match, handleScreen, viewExpo, viewScreen, prepared }) => {
-  if (prepared) {
-    if (viewExpo) {
-      if (
-        viewExpo.filesTotal &&
-        (!viewExpo.filesLoaded || viewExpo.filesLoaded < viewExpo.filesTotal)
-      ) {
+)(
+  ({
+    match,
+    handleScreen,
+    viewExpo,
+    viewScreen,
+    prepared,
+    viewInteractive
+  }) => {
+    if (prepared) {
+      if (viewExpo) {
+        if (
+          viewExpo.filesTotal &&
+          (!viewExpo.filesLoaded || viewExpo.filesLoaded < viewExpo.filesTotal)
+        ) {
+          return (
+            <Progress
+              {...{
+                percent: viewExpo.filesLoaded
+                  ? viewExpo.filesLoaded / viewExpo.filesTotal * 100 < 100
+                    ? viewExpo.filesLoaded / viewExpo.filesTotal * 100
+                    : 100
+                  : 0
+              }}
+            />
+          );
+        }
+
         return (
-          <Progress
-            {...{
-              percent: viewExpo.filesLoaded
-                ? viewExpo.filesLoaded / viewExpo.filesTotal * 100 < 100
-                  ? viewExpo.filesLoaded / viewExpo.filesTotal * 100
-                  : 100
-                : 0
-            }}
-          />
+          <ViewWrap
+            title={get(viewExpo, "title")}
+            institution={get(viewExpo, "organization")}
+            expoViewer={true}
+            viewInteractive={viewInteractive}
+          >
+            <Helmet>
+              <title>
+                {viewExpo.title}
+              </title>
+              <meta
+                name="description"
+                content={get(viewExpo, "structure.start.perex")}
+              />
+            </Helmet>
+            <Route
+              path={`${match.url}/:section`}
+              render={props =>
+                <ViewSection
+                  key={`expo-viewer-view-section-${get(
+                    props,
+                    "match.params.section"
+                  )}`}
+                  viewScreen={viewScreen} // must be there
+                  name={match.params.name} // ok
+                  handleScreen={handleScreen} // ok
+                />}
+            />
+          </ViewWrap>
         );
       }
-
-      return (
-        <ViewWrap
-          title={get(viewExpo, "title")}
-          institution={get(viewExpo, "organization")}
-        >
-          <Helmet>
-            <title>
-              {viewExpo.title}
-            </title>
-            <meta
-              name="description"
-              content={get(viewExpo, "structure.start.perex")}
-            />
-          </Helmet>
-          <Route
-            path={`${match.url}/:section`}
-            render={props =>
-              <ViewSection
-                key={`expo-viewer-view-section-${get(
-                  props,
-                  "match.params.section"
-                )}`}
-                viewScreen={viewScreen} // must be there
-                name={match.params.name} // ok
-                handleScreen={handleScreen} // ok
-              />}
-          />
-        </ViewWrap>
-      );
+      return <ViewNotPublic />;
     }
-    return <ViewNotPublic />;
+    return <div />;
   }
-  return <div />;
-});
+);

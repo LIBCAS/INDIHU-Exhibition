@@ -17,7 +17,9 @@ const AudioMusic = ({
   music,
   updateScreenData,
   setDialog,
-  textFieldLabel
+  textFieldLabel,
+  id,
+  helpIconTitle
 }) =>
   <div className="row flex-centered">
     <TextField
@@ -58,7 +60,10 @@ const AudioMusic = ({
       />
       <HelpIcon
         {...{
-          label: isAudio ? helpIconText.EDITOR_AUDIO : helpIconText.EDITOR_MUSIC
+          label: helpIconTitle
+            ? helpIconTitle
+            : isAudio ? helpIconText.EDITOR_AUDIO : helpIconText.EDITOR_MUSIC,
+          id
         }}
       />
     </div>

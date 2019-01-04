@@ -33,7 +33,7 @@ const Filter = ({ users, getUsers }) =>
         position="below"
         onChange={value =>
           getUsers(
-            users.page,
+            0,
             users.pageSize,
             users.filter,
             users.sort,
@@ -161,7 +161,7 @@ const Filter = ({ users, getUsers }) =>
             className="search-input"
             onChange={value =>
               getUsers(
-                users.page,
+                0,
                 users.pageSize,
                 users.filter,
                 users.sort,
