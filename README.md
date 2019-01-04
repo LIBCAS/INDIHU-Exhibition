@@ -7,7 +7,7 @@ Verze k testování: http://inqooltest.libj.cas.cz/
 
 Uživatelský manuál: http://inqooltest.libj.cas.cz/manual/ 
 
-Technické informace: wiki
+Technické informace: https://github.com/LIBCAS/INDIHU-Exhibition/wiki
 
 Projekt je součástí platformy INDIHU
 ---
