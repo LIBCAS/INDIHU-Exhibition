@@ -4,7 +4,9 @@ INDIHU Exhibition
 Popularizace vědy široké veřejnosti je dnes nedílnou součástí vědecké práce. Popularizace je tradičně řešena zejména vydáváním méně či více vědecko-populárních periodik či monografií nebo pořádáním speciálních akcí či výstav. Nástroj INDIHU Exhibition umožní tvůrcům vytvářet efektní a komplexní online prezentace včetně zapojení interaktivních herních prvků. Nástroj samozřejmě nemusí sloužit jen vědcům, ale i muzeím.
 
 Verze k testování: http://inqooltest.libj.cas.cz/
+
 Uživatelský manuál: http://inqooltest.libj.cas.cz/manual/ 
+
 Technické informace: wiki
 
 Projekt je součástí platformy INDIHU
