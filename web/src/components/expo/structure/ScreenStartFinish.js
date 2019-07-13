@@ -25,13 +25,13 @@ const ScreenCard = ({ activeExpo, type, history }) => {
         editUrl={editUrl}
         viewUrl={activeExpo.url}
       />
-      <CardText className="card-screen-start-finish">
-        <p
-          onClick={() =>
-            type.toUpperCase() !== screenType.FINISH && history.push(editUrl)}
-        >
-          {screenTypeText[type.toUpperCase()]}
-        </p>
+      <CardText
+        className="card-screen-start-finish"
+        onClick={() =>
+          type.toUpperCase() !== screenType.FINISH && history.push(editUrl)
+        }
+      >
+        <p>{screenTypeText[type.toUpperCase()]}</p>
       </CardText>
     </Card>
   );

@@ -3,39 +3,43 @@ import { withRouter } from "react-router-dom";
 import { compose, lifecycle, withState, withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { isEmpty, forEach } from "lodash";
-import FontIcon from "react-md/lib/FontIcons";
+import classNames from "classnames";
 import ReactTooltip from "react-tooltip";
 
+import InfopointIcon from "../../components/InfopointIcon";
 import ScreenMenu from "../../components/views/ScreenMenu";
+import { zoomInTooltipPosition } from "../../enums/screenEnums";
 
 const timeS = 2;
 const timeM = timeS * 1000;
 
-const ViewZoomIn = ({
-  viewScreen,
-  actTime,
-  actPosition,
-  actScale,
-  infoText
-}) => {
+const ViewZoomIn = ({ viewScreen, infoText }) => {
+  const bottomRight =
+    !viewScreen.tooltipPosition ||
+    viewScreen.tooltipPosition === zoomInTooltipPosition.BOTTOM_RIGHT;
+  const topLeft = viewScreen.tooltipPosition === zoomInTooltipPosition.TOP_LEFT;
+  const topRight =
+    viewScreen.tooltipPosition === zoomInTooltipPosition.TOP_RIGHT;
   return (
     <div>
       <div className="viewer-screen">
         <div id="view-zoom-in-container" className="image-container zoom-in" />
-        <FontIcon
+        <InfopointIcon
           id="tooltip"
           className="infopoint-icon"
           style={{
             position: "absolute",
-            bottom: 10,
-            right: 10
+            bottom: bottomRight ? 10 : "auto",
+            top: topLeft || topRight ? 40 : "auto",
+            right: bottomRight || topRight ? 10 : "auto",
+            left: topLeft ? 10 : "auto"
           }}
           data-tip={infoText}
-        >
-          help_outline
-        </FontIcon>
+        />
         <ReactTooltip
-          className="infopoint-tooltip"
+          className={classNames("infopoint-tooltip zoom-in-tooltip", {
+            short: bottomRight
+          })}
           type="dark"
           effect="solid"
         />
@@ -47,7 +51,10 @@ const ViewZoomIn = ({
 
 export default compose(
   withRouter,
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), null),
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    null
+  ),
   withState("timeouts", "setTimeouts", null),
   withState("imageLoadInterval", "setImageLoadInterval", null),
   withState("infoText", "setInfoText", null),

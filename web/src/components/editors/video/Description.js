@@ -49,14 +49,15 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 muteChapterMusic: activeScreen.muteChapterMusic
               }}
             />
-            <div className="row flex-centered">
+            <div className="row">
               <Checkbox
                 id="screen-video-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Stránka je dokončená"
+                label="Obrazovka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}
+                className="checkbox-no-padding-left"
               />
             </div>
           </div>
@@ -66,4 +67,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
   );
 };
 
-export default connect(null, { getFileById })(Description);
+export default connect(
+  null,
+  { getFileById }
+)(Description);

@@ -1,5 +1,6 @@
 import React from "react";
-import { reduxForm, Field } from "redux-form";
+import { connect } from "react-redux";
+import { reduxForm, Field, reset } from "redux-form";
 import { compose, withHandlers } from "recompose";
 
 import Dialog from "./DialogWrap";
@@ -8,9 +9,9 @@ import * as Validation from "../form/Validation";
 
 import { addScreenCollaborators } from "../../actions/expoActions";
 
-const ScreenAuthorsAdd = ({ handleSubmit, initialValues }) =>
+const ScreenAuthorsAdd = ({ handleSubmit, initialValues }) => (
   <Dialog
-    title="Přidat autory obrazovky nebo spolupracovníky"
+    title="Přidat autory výstavy nebo spolupracovníky"
     name="ScreenAuthorsAdd"
     submitLabel="Uložit"
     handleSubmit={handleSubmit}
@@ -32,15 +33,23 @@ const ScreenAuthorsAdd = ({ handleSubmit, initialValues }) =>
         multiLine
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
+  connect(
+    null,
+    { reset, addScreenCollaborators }
+  ),
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
-      await dispatch(
-        addScreenCollaborators({ role: formData.role, text: formData.text })
-      );
-      dialog.closeDialog();
+    onSubmit: ({
+      reset,
+      closeDialog,
+      addScreenCollaborators
+    }) => async formData => {
+      addScreenCollaborators({ role: formData.role, text: formData.text });
+      reset("screenAuthorsAdd");
+      closeDialog();
     }
   }),
   reduxForm({

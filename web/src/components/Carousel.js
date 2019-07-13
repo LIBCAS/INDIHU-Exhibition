@@ -15,11 +15,7 @@ const sliderSettings = {
 };
 
 const Carousel = ({ children }) => {
-  return (
-    <Slider {...sliderSettings}>
-      {children}
-    </Slider>
-  );
+  return <Slider {...sliderSettings}>{children}</Slider>;
 };
 
 export default Carousel;

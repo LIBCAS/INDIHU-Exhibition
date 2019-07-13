@@ -50,9 +50,8 @@ const Parallax = ({
 
   const setImage = img => {
     updateScreenData({
-      images: map(
-        activeScreen.images,
-        (image, i) => (activeImageIndex === i ? img.id : image)
+      images: map(activeScreen.images, (image, i) =>
+        activeImageIndex === i ? img.id : image
       )
     });
   };
@@ -131,20 +130,20 @@ const Parallax = ({
             />
           </span>
         </div>
-        {activeImageIndex !== -1 &&
+        {activeImageIndex !== -1 && (
           <div className="screen-image">
             <div className="screen-two-cols">
               <div className="flex-row-nowrap one-image-row">
                 <Image
                   {...{
+                    key: `image-${activeImageIndex}`,
                     title: "Obrázek",
                     image,
                     setImage,
                     onDelete: () =>
                       updateScreenData({
-                        images: map(
-                          activeScreen.images,
-                          (image, i) => (i === activeImageIndex ? null : image)
+                        images: map(activeScreen.images, (image, i) =>
+                          i === activeImageIndex ? null : image
                         )
                       }),
                     helpIconLabel: helpIconText.EDITOR_PARALLAX_IMAGE,
@@ -165,7 +164,8 @@ const Parallax = ({
                   onChange={value =>
                     updateScreenData({
                       animationType: value
-                    })}
+                    })
+                  }
                 />
                 <HelpIcon
                   {...{
@@ -175,13 +175,17 @@ const Parallax = ({
                 />
               </div>
             </div>
-          </div>}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default compose(
-  connect(null, { setDialog, getFileById, updateScreenData }),
+  connect(
+    null,
+    { setDialog, getFileById, updateScreenData }
+  ),
   withState("activeImageIndex", "setActiveImageIndex", -1)
 )(Parallax);

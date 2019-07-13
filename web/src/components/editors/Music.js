@@ -16,17 +16,25 @@ const Music = ({
   helpIconTitle,
   id
 }) =>
-  aloneScreen
-    ? <AudioMusic {...{ music, updateScreenData, helpIconTitle, id }} />
-    : <div className="row flex-centered">
-        <Checkbox
-          id="editor-music-checkbox-chapter-music"
-          name="simple-checkboxes"
-          label="Vypnout zvukovou stopu kapitoly"
-          checked={muteChapterMusic}
-          value={muteChapterMusic}
-          onChange={value => updateScreenData({ muteChapterMusic: value })}
-        />
-      </div>;
+  aloneScreen ? (
+    <AudioMusic {...{ music, updateScreenData, helpIconTitle, id }} />
+  ) : (
+    <div className="row">
+      <Checkbox
+        id="editor-music-checkbox-chapter-music"
+        name="simple-checkboxes"
+        label="Vypnout zvukovou stopu kapitoly"
+        checked={muteChapterMusic}
+        value={muteChapterMusic}
+        onChange={value => updateScreenData({ muteChapterMusic: value })}
+        className="checkbox-no-padding-left"
+      />
+    </div>
+  );
 
-export default compose(connect(null, { setDialog }))(Music);
+export default compose(
+  connect(
+    null,
+    { setDialog }
+  )
+)(Music);

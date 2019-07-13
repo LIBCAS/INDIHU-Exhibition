@@ -9,7 +9,7 @@ import { changeStateExpo } from "../../actions/expoActions";
 import { expoState, expoStateText } from "../../enums/expoState";
 import { helpIconText } from "../../enums/text";
 
-const StateOptions = ({ activeExpo, changeStateExpo }) =>
+const StateOptions = ({ activeExpo, changeStateExpo }) => (
   <div>
     <div className="radio-row">
       <Radio
@@ -65,8 +65,12 @@ const StateOptions = ({ activeExpo, changeStateExpo }) =>
         }}
       />
     </div>
-  </div>;
+  </div>
+);
 
-export default connect(({ expo: { activeExpo } }) => ({ activeExpo }), {
-  changeStateExpo
-})(StateOptions);
+export default connect(
+  ({ expo: { activeExpo } }) => ({ activeExpo }),
+  {
+    changeStateExpo
+  }
+)(StateOptions);

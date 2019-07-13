@@ -6,7 +6,7 @@ import FontIcon from "react-md/lib/FontIcons";
 
 import { changeAdminSettings } from "../../actions/adminActions";
 
-const Settings = ({ settings, setActiveForm }) =>
+const Settings = ({ settings, setActiveForm }) => (
   <div className="flex-form">
     <div className="flex-form editable">
       <p>
@@ -20,7 +20,7 @@ const Settings = ({ settings, setActiveForm }) =>
       <p>
         <span>Zamknutí výstavy: </span>
         {settings.lockDuration} vteřin
-          </p>
+      </p>
       <div className="flex-row flex-centered">
         <Button
           className="flex-form-edit"
@@ -32,10 +32,14 @@ const Settings = ({ settings, setActiveForm }) =>
         </Button>
       </div>
     </div>
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(null, {
-    changeAdminSettings
-  })
+  connect(
+    null,
+    {
+      changeAdminSettings
+    }
+  )
 )(Settings);

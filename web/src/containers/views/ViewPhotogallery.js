@@ -1,52 +1,27 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { compose, lifecycle, withState } from "recompose";
+import { compose, lifecycle, withState, withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { isEmpty, get, map, forEach } from "lodash";
 import classNames from "classnames";
-import FontIcon from "react-md/lib/FontIcons";
 
+import InfopointIcon from "../../components/InfopointIcon";
 import ScreenMenu from "../../components/views/ScreenMenu";
 import { getFileById } from "../../actions/fileActions";
-
 import { animationType } from "../../enums/animationType";
-
-const getImageData = (
-  containerWidth,
-  containerHeight,
-  elementWidth,
-  elementHeight
-) => {
-  let left = (containerWidth - elementWidth) / 2;
-  let top = (containerHeight - elementHeight) / 2;
-  let ratio = 1;
-
-  const widthRatio = elementWidth / containerWidth;
-  const heightRatio = elementHeight / containerHeight;
-
-  if (widthRatio > 1 || heightRatio > 1) {
-    if (widthRatio > heightRatio) {
-      left = 0;
-      top = (containerHeight - elementHeight / widthRatio) / 2;
-      ratio = widthRatio;
-    } else {
-      top = 0;
-      left = (containerWidth - elementWidth / heightRatio) / 2;
-      ratio = heightRatio;
-    }
-  }
-
-  return { left, top, ratio };
-};
+import { getObjectFitSize, getImageData } from "../../utils/viewer";
 
 const ViewPhotogallery = ({
   viewScreen,
   activeImageIndex,
-  animationTypeState
+  animationTypeState,
+  imageBoundingClientRect
 }) => {
-  const container = document.getElementById("view-photogallery-image-container")
+  const container = document.getElementById(
+    "view-photogallery-infopoints-container"
+  )
     ? document
-        .getElementById("view-photogallery-image-container")
+        .getElementById("view-photogallery-infopoints-container")
         .getBoundingClientRect()
     : null;
 
@@ -60,22 +35,25 @@ const ViewPhotogallery = ({
   ) {
   }
 
-  const imageData = container
-    ? getImageData(
-        container.width,
-        container.height,
-        get(viewScreen, `images[${activeImageIndex}].imageOrigData.width`),
-        get(viewScreen, `images[${activeImageIndex}].imageOrigData.height`)
-      )
-    : null;
+  const imageData =
+    container && imageBoundingClientRect
+      ? getImageData(
+          container.width,
+          container.height,
+          get(viewScreen, `images[${activeImageIndex}].imageOrigData.width`),
+          get(viewScreen, `images[${activeImageIndex}].imageOrigData.height`),
+          imageBoundingClientRect.width,
+          imageBoundingClientRect.height
+        )
+      : null;
 
   return (
     <div>
       <div className="viewer-screen">
         {map(
           get(viewScreen, `images[${activeImageIndex}].infopoints`),
-          (infopoint, i) =>
-            <FontIcon
+          (infopoint, i) => (
+            <InfopointIcon
               key={i}
               id={`view-photogallery-image-infopoint-hidden-${i}`}
               className={classNames(
@@ -88,10 +66,10 @@ const ViewPhotogallery = ({
               >
                 {infopoint.text}
               </div>
-              help_outline
-            </FontIcon>
+            </InfopointIcon>
+          )
         )}
-        {viewScreen.images &&
+        {viewScreen.images && (
           <div
             id="view-photogallery-image-container"
             className={classNames(
@@ -116,11 +94,15 @@ const ViewPhotogallery = ({
             get(viewScreen, `images[${activeImageIndex}].imageOrigData`) &&
             document.getElementById(
               "view-photogallery-image-infopoint-hidden-0"
-            )
-              ? map(
+            ) ? (
+              <div
+                id="view-photogallery-infopoints-container"
+                className="view-photogallery-infopoints-container"
+              >
+                {map(
                   get(viewScreen, `images[${activeImageIndex}].infopoints`),
-                  (infopoint, i) =>
-                    <FontIcon
+                  (infopoint, i) => (
+                    <InfopointIcon
                       key={i}
                       className={classNames("infopoint-icon custom-tooltip", {
                         show: infopoint.alwaysVisible
@@ -133,14 +115,13 @@ const ViewPhotogallery = ({
                           document.getElementById(
                             `view-photogallery-image-infopoint-tooltip-hidden-${i}`
                           )
-                            ? imageData.top +
-                              infopoint.top / imageData.ratio -
-                              document
-                                .getElementById(
-                                  `view-photogallery-image-infopoint-tooltip-hidden-${i}`
-                                )
-                                .getBoundingClientRect().height -
-                              12 / imageData.ratio
+                            ? `calc(${imageData.top +
+                                infopoint.top / imageData.ratio -
+                                document
+                                  .getElementById(
+                                    `view-photogallery-image-infopoint-tooltip-hidden-${i}`
+                                  )
+                                  .getBoundingClientRect().height}px - 0.5em)`
                             : 0,
                         left:
                           container &&
@@ -160,11 +141,15 @@ const ViewPhotogallery = ({
                       }}
                     >
                       <div className="tooltip-text">{infopoint.text}</div>
-                      help_outline
-                    </FontIcon>
-                )
-              : <div />}
-          </div>}
+                    </InfopointIcon>
+                  )
+                )}
+              </div>
+            ) : (
+              <div />
+            )}
+          </div>
+        )}
       </div>
       <ScreenMenu viewScreen={viewScreen} />
     </div>
@@ -173,9 +158,13 @@ const ViewPhotogallery = ({
 
 export default compose(
   withRouter,
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), {
-    getFileById
-  }),
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    {
+      getFileById
+    }
+  ),
+  withState("intervalId", "setIntervalId", null),
   withState("timeouts", "setTimeouts", []),
   withState(
     "animationTypeState",
@@ -183,6 +172,23 @@ export default compose(
     animationType.WITHOUT
   ),
   withState("activeImageIndex", "setActiveImageIndex", 0),
+  withState("imageBoundingClientRect", "setImageBoundingClientRect", null),
+  withHandlers({
+    updateImageBoundingClientRect: ({ setImageBoundingClientRect }) => () => {
+      const img = document.getElementById("view-photogallery-image");
+      if (img) {
+        setImageBoundingClientRect(
+          getObjectFitSize(
+            true,
+            img.width,
+            img.height,
+            img.naturalWidth,
+            img.naturalHeight
+          )
+        );
+      }
+    }
+  }),
   lifecycle({
     componentDidMount() {
       const {
@@ -190,16 +196,14 @@ export default compose(
         setTimeouts,
         setAnimationTypeState,
         screenFiles,
-        setActiveImageIndex
+        setActiveImageIndex,
+        updateImageBoundingClientRect,
+        setIntervalId
       } = this.props;
 
       if (!isEmpty(viewScreen.images)) {
         const timeouts = [];
         const animationTime = 1.3;
-
-        // const container = document
-        //   .getElementById("view-photogallery-image-container")
-        //   .getBoundingClientRect();
 
         const newNode = screenFiles["images[0]"];
         newNode.id = "view-photogallery-image";
@@ -209,7 +213,9 @@ export default compose(
         );
         document
           .getElementById("view-photogallery-image-container-inner")
-          .prepend(newNode);
+          .appendChild(newNode);
+
+        setIntervalId(setInterval(updateImageBoundingClientRect, 30));
 
         const showTime =
           viewScreen.time &&
@@ -238,8 +244,8 @@ export default compose(
                   viewScreen.animationType === animationType.FADE_IN_OUT
                     ? animationType.FADE_OUT
                     : viewScreen.animationType === animationType.FLY_IN_OUT
-                      ? animationType.FLY_OUT
-                      : animationType.WITHOUT
+                    ? animationType.FLY_OUT
+                    : animationType.WITHOUT
                 );
               }, showTime * (i + 1) + 2 * animationTime * 1000 * i)
             );
@@ -254,13 +260,9 @@ export default compose(
                   viewScreen.animationType === animationType.FADE_IN_OUT
                     ? animationType.FADE_IN
                     : viewScreen.animationType === animationType.FLY_IN_OUT
-                      ? animationType.FLY_IN
-                      : animationType.WITHOUT
+                    ? animationType.FLY_IN
+                    : animationType.WITHOUT
                 );
-
-                // const container = document
-                //   .getElementById("view-photogallery-image-container")
-                //   .getBoundingClientRect();
 
                 const newNode = screenFiles[`images[${i + 1}]`];
                 newNode.id = "view-photogallery-image";
@@ -270,7 +272,7 @@ export default compose(
                 );
                 document
                   .getElementById("view-photogallery-image-container-inner")
-                  .prepend(newNode);
+                  .appendChild(newNode);
               }, (showTime + animationTime * 1000) * (i + 1) + animationTime * 1000 * i)
             );
           }
@@ -280,9 +282,11 @@ export default compose(
       }
     },
     componentWillUnmount() {
-      const { timeouts } = this.props;
+      const { timeouts, intervalId } = this.props;
 
       forEach(timeouts, t => clearTimeout(t));
+
+      clearInterval(intervalId);
     }
   })
 )(ViewPhotogallery);

@@ -12,7 +12,7 @@ const TabsHeader = ({ tabs, toggleMenu, open, location }) => {
       <div className="tabMenu-tab selected" onClick={() => toggleMenu(!open)}>
         {get(selected, "[0]label", "Menu")}
       </div>
-      {tabs.map((t, i) =>
+      {tabs.map((t, i) => (
         <NavLink
           key={i}
           to={t.link}
@@ -23,7 +23,7 @@ const TabsHeader = ({ tabs, toggleMenu, open, location }) => {
         >
           {t.label}
         </NavLink>
-      )}
+      ))}
       {ie && <div className={classNames("ie", { hidden: !open })} />}
     </div>
   );

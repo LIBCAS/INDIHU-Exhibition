@@ -39,12 +39,10 @@ const reducer = (state = initialState, action) => {
           state.name === action.payload.name
             ? { ...state.data, ...action.payload.data }
             : state.data,
-        dialogs: map(
-          state.dialogs,
-          d =>
-            d.name === action.payload.name
-              ? { ...d, data: { ...d.data, ...action.payload.data } }
-              : d
+        dialogs: map(state.dialogs, d =>
+          d.name === action.payload.name
+            ? { ...d, data: { ...d.data, ...action.payload.data } }
+            : d
         )
       };
     default:

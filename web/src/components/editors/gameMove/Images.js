@@ -83,21 +83,32 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             disabled
           />
           <div className="row flex-centered">
-            <FontIcon
-              className="icon"
-              onClick={() =>
-                updateScreenData({ object: null, objectOrigData: null })}
-            >
-              delete
-            </FontIcon>
+            {object && (
+              <FontIcon
+                className="icon"
+                onClick={() =>
+                  setDialog("ConfirmDialog", {
+                    title: <FontIcon className="color-black">delete</FontIcon>,
+                    text: "Opravdu chcete odstranit objekt?",
+                    onSubmit: () =>
+                      updateScreenData({ object: null, objectOrigData: null })
+                  })
+                }
+              >
+                delete
+              </FontIcon>
+            )}
             <Button
               raised
               label="vybrat"
               onClick={() =>
                 setDialog("ScreenFileChoose", {
                   onChoose: setObject,
-                  typeMatch: new RegExp(/^image\/.*$/)
-                })}
+                  typeMatch: new RegExp(/^image\/.*$/),
+                  accept: "image/*"
+                })
+              }
+              className={!object ? "margin-left-small" : undefined}
             />
             <HelpIcon
               {...{
@@ -107,7 +118,7 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             />
           </div>
         </div>
-        {object &&
+        {object && (
           <img
             src={`/api/files/${object.fileId}`}
             onLoad={({ target: img }) => {
@@ -120,16 +131,20 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             }}
             className="hidden"
             alt=""
-          />}
+          />
+        )}
       </div>
     </div>
   );
 };
 
 export default compose(
-  connect(null, {
-    setDialog,
-    getFileById,
-    updateScreenData
-  })
+  connect(
+    null,
+    {
+      setDialog,
+      getFileById,
+      updateScreenData
+    }
+  )
 )(Images);

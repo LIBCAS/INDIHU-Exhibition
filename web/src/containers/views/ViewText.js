@@ -13,14 +13,15 @@ const ViewText = ({ viewScreen }) => {
       <div className="viewer-screen">
         <div className="text-screen">
           <div className="text">
-            {viewScreen.mainText &&
+            {viewScreen.mainText && (
               <p
                 {...{
                   id: "view-text-paragraph"
                 }}
               >
                 {parseText(viewScreen.mainText)}
-              </p>}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -31,7 +32,10 @@ const ViewText = ({ viewScreen }) => {
 
 export default compose(
   withRouter,
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), null),
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    null
+  ),
   withHandlers({
     onResize: ({ viewScreen }) => () => {
       const paragraph = document.getElementById("view-text-paragraph");
@@ -43,9 +47,11 @@ export default compose(
       ) {
         paragraph.style.setProperty(
           "font-size",
-          `${window.innerWidth > window.innerHeight
-            ? window.innerWidth
-            : window.innerHeight}px`
+          `${
+            window.innerWidth > window.innerHeight
+              ? window.innerWidth
+              : window.innerHeight
+          }px`
         );
 
         while (

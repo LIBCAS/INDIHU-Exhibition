@@ -5,7 +5,7 @@ import HelpIcon from "../../HelpIcon";
 
 import { helpIconText } from "../../../enums/text";
 
-const ExternalData = ({ activeScreen, updateScreenData }) =>
+const ExternalData = ({ activeScreen, updateScreenData }) => (
   <div className="container container-tabMenu">
     <div className="screen">
       <div className="flex-row-nowrap">
@@ -24,6 +24,7 @@ const ExternalData = ({ activeScreen, updateScreenData }) =>
         />
       </div>
     </div>
-  </div>;
+  </div>
+);
 
 export default ExternalData;

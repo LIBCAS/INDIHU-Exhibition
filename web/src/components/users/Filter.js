@@ -21,7 +21,7 @@ const options2 = [
   { label: "Smazán", value: "DELETED" }
 ];
 
-const Filter = ({ users, getUsers }) =>
+const Filter = ({ users, getUsers }) => (
   <div className="flex-header-actions">
     <div className="flex-header-row">
       <SelectField
@@ -39,9 +39,10 @@ const Filter = ({ users, getUsers }) =>
             users.sort,
             users.search,
             value
-          )}
+          )
+        }
       />
-      {users.table === "ALL" &&
+      {users.table === "ALL" && (
         <SelectField
           id="users-selectfield-filter2"
           menuItems={options2}
@@ -57,9 +58,11 @@ const Filter = ({ users, getUsers }) =>
               users.sort,
               users.search,
               users.table
-            )}
-        />}
-      {users.table === "ALL" &&
+            )
+          }
+        />
+      )}
+      {users.table === "ALL" && (
         <MenuButton
           id="users-filter-sort-menu"
           icon
@@ -76,7 +79,8 @@ const Filter = ({ users, getUsers }) =>
                 "updated",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
           <ListItem
             primaryText="Datum vytvoření"
@@ -88,7 +92,8 @@ const Filter = ({ users, getUsers }) =>
                 "created",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
           <ListItem
             primaryText="Uživatelské jméno"
@@ -100,7 +105,8 @@ const Filter = ({ users, getUsers }) =>
                 "userName",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
           <ListItem
             primaryText="Jméno"
@@ -112,7 +118,8 @@ const Filter = ({ users, getUsers }) =>
                 "firstName",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
           <ListItem
             primaryText="Příjmení"
@@ -124,7 +131,8 @@ const Filter = ({ users, getUsers }) =>
                 "surname",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
           <ListItem
             primaryText="Email"
@@ -136,7 +144,8 @@ const Filter = ({ users, getUsers }) =>
                 "email",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
           <ListItem
             primaryText="Instituce"
@@ -148,11 +157,13 @@ const Filter = ({ users, getUsers }) =>
                 "institution",
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
-        </MenuButton>}
+        </MenuButton>
+      )}
     </div>
-    {users.table === "ALL" &&
+    {users.table === "ALL" && (
       <div className="flex-header-row">
         <div className="search">
           <TextField
@@ -167,14 +178,24 @@ const Filter = ({ users, getUsers }) =>
                 users.sort,
                 value,
                 users.table
-              )}
+              )
+            }
             defaultValue={users.search}
           />
           <FontIcon className="search-icon">search</FontIcon>
         </div>
-      </div>}
-  </div>;
+      </div>
+    )}
+  </div>
+);
 
-export default connect(({ user: { users: { all } } }) => ({ users: all }), {
-  getUsers
-})(Filter);
+export default connect(
+  ({
+    user: {
+      users: { all }
+    }
+  }) => ({ users: all }),
+  {
+    getUsers
+  }
+)(Filter);

@@ -80,14 +80,15 @@ const Description = ({
                 id: "editor-description-music"
               }}
             />
-            <div className="row flex-centered">
+            <div className="row">
               <Checkbox
                 id="editor-description-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Stránka je dokončená"
+                label="Obrazovka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}
+                className="checkbox-no-padding-left"
               />
             </div>
           </div>
@@ -97,4 +98,7 @@ const Description = ({
   );
 };
 
-export default connect(null, { setDialog, getFileById })(Description);
+export default connect(
+  null,
+  { setDialog, getFileById }
+)(Description);

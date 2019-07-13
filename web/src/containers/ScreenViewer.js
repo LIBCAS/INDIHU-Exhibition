@@ -2,7 +2,13 @@ import React from "react";
 import { withRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { get, isEmpty } from "lodash";
-import { compose, lifecycle, withState } from "recompose";
+import {
+  compose,
+  lifecycle,
+  withState,
+  withProps,
+  withHandlers
+} from "recompose";
 import { Helmet } from "react-helmet";
 
 import { loadExpo } from "../actions/expoActions";
@@ -17,6 +23,8 @@ import {
 } from "../actions/expoActions/viewerActions";
 import { screenUrl } from "../enums/screenType";
 
+import Progress from "../components/Progress";
+import PlayExpo from "../components/views/PlayExpo";
 import ViewWrap from "../components/views/ViewWrap";
 import ViewStart from "./views/ViewStart";
 import ViewFinish from "./views/ViewFinish";
@@ -27,7 +35,6 @@ import InteractiveScreen from "./views/InteractiveScreen";
 const ViewScreen = compose(
   withRouter,
   withState("prepared", "setPrepared", false),
-  withState("viewInteractiveState", "setViewInteractiveState", false),
   connect(
     ({
       expo: {
@@ -58,55 +65,28 @@ const ViewScreen = compose(
         activeExpo,
         screenFilePreloader,
         setViewScreen,
-        setPrepared,
-        soundIsTurnedOff,
-        setChapterMusic,
-        setScreenAudio
+        setPrepared
       } = this.props;
       const screen = match.params.screen;
       const viewScreen = activeExpo.structure.screens[section][screen] || {};
 
       setViewScreen(viewScreen);
-      const preloadedFiles = await screenFilePreloader(
-        viewScreen,
-        section,
-        screen
-      );
+      await screenFilePreloader(viewScreen, section, screen);
       setPrepared(true);
-
-      /** chapter music */
-      if (preloadedFiles.music) {
-        const music = preloadedFiles.music;
-        music.loop = true;
-        music.volume = soundIsTurnedOff ? 0 : 0.2;
-        music.play();
-        setChapterMusic(music);
-      } else {
-        setChapterMusic(null);
-      }
-
-      /** screen audio */
-      if (preloadedFiles.audio) {
-        const audio = preloadedFiles.audio;
-        audio.currentTime = 0;
-        audio.volume = soundIsTurnedOff ? 0 : 1;
-        audio.play();
-        setScreenAudio(audio);
-      } else {
-        setScreenAudio(null);
-      }
     },
-    componentWillReceiveProps({ viewInteractive }) {
+    componentWillReceiveProps({ viewInteractive, preloadedFiles, started }) {
       const {
+        viewScreen,
         viewChapterMusic,
         viewScreenAudio,
-        viewInteractiveState,
-        setViewInteractiveState
+        viewInteractive: oldViewInteractive,
+        soundIsTurnedOff,
+        setChapterMusic,
+        setScreenAudio,
+        started: oldStarted
       } = this.props;
 
-      if (viewInteractiveState !== viewInteractive) {
-        setViewInteractiveState(viewInteractive);
-
+      if (oldViewInteractive !== viewInteractive) {
         if (viewChapterMusic) {
           if (!viewInteractive) {
             viewChapterMusic.play();
@@ -124,21 +104,85 @@ const ViewScreen = compose(
           }
         }
       }
-    }
-  })
-)(({ prepared, preloadedFiles, viewInteractive }) => {
-  if (prepared) {
-    if (viewInteractive)
-      return (
-        <InteractiveScreen
-          {...{ screenViewer: true, screenFiles: preloadedFiles }}
-        />
-      );
 
-    return <Viewers sFiles={preloadedFiles} />;
+      if (started && !oldStarted) {
+        /** chapter music */
+        if (preloadedFiles.music) {
+          const music = preloadedFiles.music;
+          music.loop = true;
+          music.volume =
+            viewScreen.muteChapterMusic || soundIsTurnedOff ? 0 : 0.2;
+          music.play();
+          setChapterMusic(music);
+        } else {
+          setChapterMusic(null);
+        }
+
+        /** screen audio */
+        if (preloadedFiles.audio) {
+          const audio = preloadedFiles.audio;
+          audio.currentTime = 0;
+          audio.volume = soundIsTurnedOff ? 0 : 1;
+          audio.play();
+          setScreenAudio(audio);
+        } else {
+          setScreenAudio(null);
+        }
+      }
+    }
+  }),
+  withProps(({ viewExpo }) => ({
+    allFilesLoaded:
+      viewExpo &&
+      (!viewExpo.filesTotal ||
+        (viewExpo.filesTotal &&
+          viewExpo.filesLoaded &&
+          viewExpo.filesLoaded >= viewExpo.filesTotal))
+  }))
+)(
+  ({
+    prepared,
+    preloadedFiles,
+    viewInteractive,
+    viewExpo,
+    allFilesLoaded,
+    started,
+    setStarted
+  }) => {
+    if (prepared) {
+      if (!allFilesLoaded) {
+        return (
+          <Progress
+            {...{
+              percent: viewExpo.filesLoaded
+                ? (viewExpo.filesLoaded / viewExpo.filesTotal) * 100 < 100
+                  ? (viewExpo.filesLoaded / viewExpo.filesTotal) * 100
+                  : 100
+                : 0,
+              text: "Obrazovka se načítá"
+            }}
+          />
+        );
+      }
+
+      if (!started) {
+        return (
+          <PlayExpo onClick={() => setStarted(true)} text="Spustit obrazovku" />
+        );
+      }
+
+      if (viewInteractive)
+        return (
+          <InteractiveScreen
+            {...{ screenViewer: true, screenFiles: preloadedFiles }}
+          />
+        );
+
+      return <Viewers sFiles={preloadedFiles} />;
+    }
+    return <div />;
   }
-  return <div />;
-});
+);
 
 const ViewSection = compose(
   withRouter,
@@ -170,39 +214,96 @@ const ViewSection = compose(
         setPrepared(true);
       }
     }
-  })
-)(({ match, location, preloadedFiles, prepared }) => {
-  const section = match.params.section;
+  }),
+  withProps(({ viewExpo }) => ({
+    allFilesLoaded:
+      viewExpo &&
+      (!viewExpo.filesTotal ||
+        (viewExpo.filesTotal &&
+          viewExpo.filesLoaded &&
+          viewExpo.filesLoaded >= viewExpo.filesTotal))
+  }))
+)(
+  ({
+    match,
+    location,
+    preloadedFiles,
+    prepared,
+    viewExpo,
+    allFilesLoaded,
+    started,
+    setStarted
+  }) => {
+    const section = match.params.section;
 
-  if (prepared) {
-    if (section === screenUrl.START)
-      return <ViewStart {...{ screenFiles: preloadedFiles }} />;
-    else if (section === screenUrl.FINISH) {
-      return <ViewFinish {...{ screenFiles: preloadedFiles }} />;
-    } else if (match.url === location.pathname) return <ViewError />;
+    if (prepared) {
+      if (!allFilesLoaded) {
+        return (
+          <Progress
+            {...{
+              percent: viewExpo.filesLoaded
+                ? (viewExpo.filesLoaded / viewExpo.filesTotal) * 100 < 100
+                  ? (viewExpo.filesLoaded / viewExpo.filesTotal) * 100
+                  : 100
+                : 0,
+              text: "Obrazovka se načítá"
+            }}
+          />
+        );
+      }
+
+      if (section === screenUrl.START)
+        return <ViewStart {...{ screenFiles: preloadedFiles }} />;
+      else if (section === screenUrl.FINISH) {
+        return <ViewFinish {...{ screenFiles: preloadedFiles }} />;
+      } else if (match.url === location.pathname) return <ViewError />;
+    }
+
+    return (
+      <Route
+        path={`${match.url}/:screen`}
+        render={() => (
+          <ViewScreen {...{ viewExpo, section, started, setStarted }} />
+        )}
+      />
+    );
   }
-
-  return (
-    <Route
-      path={`${match.url}/:screen`}
-      render={() => <ViewScreen {...{ section }} />}
-    />
-  );
-});
+);
 
 export default compose(
   withRouter,
+  withState("started", "setStarted", false),
   connect(
-    ({ expo: { activeExpo, viewChapterMusic, viewScreenAudio } }) => ({
+    ({
+      expo: {
+        activeExpo,
+        viewChapterMusic,
+        viewScreenAudio,
+        viewInteractive,
+        viewExpo
+      }
+    }) => ({
       activeExpo,
       viewChapterMusic,
-      viewScreenAudio
+      viewScreenAudio,
+      viewInteractive,
+      viewExpo
     }),
     { loadExpo, getCurrentUser, turnSoundOff, setChapterMusic, setScreenAudio }
   ),
+  withHandlers({
+    enterListener: ({ started, setStarted }) => e => {
+      if (!started && e.key === "Enter") {
+        setStarted(true);
+      }
+    }
+  }),
   lifecycle({
     componentWillMount() {
-      const { getCurrentUser } = this.props;
+      const { getCurrentUser, enterListener } = this.props;
+
+      document.addEventListener("keydown", enterListener);
+
       getCurrentUser();
     },
     async componentDidMount() {
@@ -215,8 +316,11 @@ export default compose(
         viewChapterMusic,
         viewScreenAudio,
         setChapterMusic,
-        setScreenAudio
+        setScreenAudio,
+        enterListener
       } = this.props;
+
+      document.removeEventListener("keydown", enterListener);
 
       turnSoundOff(false);
 
@@ -228,18 +332,31 @@ export default compose(
       setScreenAudio(null);
     }
   })
-)(({ activeExpo, match }) => {
+)(({ activeExpo, viewExpo, match, viewInteractive, started, setStarted }) => {
   if (!isEmpty(activeExpo)) {
     return (
       <ViewWrap
         title={activeExpo.title}
         institution={get(activeExpo, "organization")}
+        viewInteractive={viewInteractive}
+        progressEnabled={viewExpo && started}
       >
         <Helmet>
-          <title>{`INDIHU - ${activeExpo.title}`}</title>
+          <title>{`INDIHU Exhibition${
+            get(activeExpo, "title") ? ` - ${get(activeExpo, "title")}` : ""
+          }`}</title>
           <meta name="description" content="Náhled obrazovky" />
         </Helmet>
-        <Route path={`${match.url}/:section`} render={() => <ViewSection />} />
+        <Route
+          path={`${match.url}/:section`}
+          render={() => (
+            <ViewSection
+              viewExpo={viewExpo}
+              started={started}
+              setStarted={setStarted}
+            />
+          )}
+        />
       </ViewWrap>
     );
   }

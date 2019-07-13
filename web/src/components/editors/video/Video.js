@@ -39,32 +39,38 @@ const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
                   "img-none": !video
                 })}
               >
-                {video
-                  ? <CardText>
-                      <video controls width="100%">
-                        <source
-                          src={`/api/files/${video.fileId}`}
-                          type={video.type}
-                        />
-                        Váš prohlížeč nepodporuje přehrávání videa.
-                      </video>
-                    </CardText>
-                  : <CardText className="flex-col padding-none">
-                      <FontIcon className="card-image-icon-placeholder">movie</FontIcon>
-                      <div className="flex flex-centered">
-                        <Button
-                          raised
-                          label="Vybrat"
-                          onClick={() =>
-                            setDialog("ScreenFileChoose", {
-                              onChoose: setVideo,
-                              typeMatch: new RegExp(/^video\/.*$/)
-                            })}
-                        />
-                      </div>
-                    </CardText>}
+                {video ? (
+                  <CardText>
+                    <video controls width="100%">
+                      <source
+                        src={`/api/files/${video.fileId}`}
+                        type={video.type}
+                      />
+                      Váš prohlížeč nepodporuje přehrávání videa.
+                    </video>
+                  </CardText>
+                ) : (
+                  <CardText className="flex-col padding-none">
+                    <FontIcon className="card-image-icon-placeholder">
+                      movie
+                    </FontIcon>
+                    <div className="flex flex-centered">
+                      <Button
+                        raised
+                        label="Vybrat"
+                        onClick={() =>
+                          setDialog("ScreenFileChoose", {
+                            onChoose: setVideo,
+                            typeMatch: new RegExp(/^video\/.*$/),
+                            accept: "video/*"
+                          })
+                        }
+                      />
+                    </div>
+                  </CardText>
+                )}
               </Card>
-              {video &&
+              {video && (
                 <div className="flex-row flex-right">
                   <div>
                     <FontIcon
@@ -72,19 +78,30 @@ const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
                       onClick={() =>
                         setDialog("ScreenFileChoose", {
                           onChoose: setVideo,
-                          typeMatch: new RegExp(/^video\/.*$/)
-                        })}
+                          typeMatch: new RegExp(/^video\/.*$/),
+                          accept: "video/*"
+                        })
+                      }
                     >
                       mode_edit
                     </FontIcon>
                     <FontIcon
                       className="icon"
-                      onClick={() => updateScreenData({ video: null })}
+                      onClick={() =>
+                        setDialog("ConfirmDialog", {
+                          title: (
+                            <FontIcon className="color-black">delete</FontIcon>
+                          ),
+                          text: "Opravdu chcete odstranit video?",
+                          onSubmit: () => updateScreenData({ video: null })
+                        })
+                      }
                     >
                       delete
                     </FontIcon>
                   </div>
-                </div>}
+                </div>
+              )}
             </div>
             <HelpIcon {...{ label: helpIconText.EDITOR_VIDEO_VIDEO }} />
           </div>
@@ -94,4 +111,7 @@ const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
   );
 };
 
-export default connect(null, { setDialog, getFileById })(Video);
+export default connect(
+  null,
+  { setDialog, getFileById }
+)(Video);

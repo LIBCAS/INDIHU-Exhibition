@@ -35,25 +35,22 @@ const Answers = ({
 
   const setImage1 = image => {
     updateScreenData({
-      answers: map(
-        activeScreen.answers,
-        (a, i) => (i === 0 ? { ...a, image: image.id } : a)
+      answers: map(activeScreen.answers, (a, i) =>
+        i === 0 ? { ...a, image: image.id } : a
       )
     });
   };
   const setImage2 = image => {
     updateScreenData({
-      answers: map(
-        activeScreen.answers,
-        (a, i) => (i === 1 ? { ...a, image: image.id } : a)
+      answers: map(activeScreen.answers, (a, i) =>
+        i === 1 ? { ...a, image: image.id } : a
       )
     });
   };
   const setImage3 = image => {
     updateScreenData({
-      answers: map(
-        activeScreen.answers,
-        (a, i) => (i === 2 ? { ...a, image: image.id } : a)
+      answers: map(activeScreen.answers, (a, i) =>
+        i === 2 ? { ...a, image: image.id } : a
       )
     });
   };
@@ -62,7 +59,7 @@ const Answers = ({
     <div className="container-big container-tabMenu">
       <div className="screen">
         <div className="game-options-answers">
-          {map(activeScreen.answers, (answer, i) =>
+          {map(activeScreen.answers, (answer, i) => (
             <div key={i} className="answer">
               <div className="flex-row flex-centered">
                 <h2
@@ -84,14 +81,13 @@ const Answers = ({
                   checked={answer.correct}
                   onClick={() =>
                     updateScreenData({
-                      answers: map(
-                        activeScreen.answers,
-                        (a, j) =>
-                          i === j
-                            ? { ...a, correct: true }
-                            : { ...a, correct: false }
+                      answers: map(activeScreen.answers, (a, j) =>
+                        i === j
+                          ? { ...a, correct: true }
+                          : { ...a, correct: false }
                       )
-                    })}
+                    })
+                  }
                 />
                 <HelpIcon
                   {...{
@@ -106,28 +102,26 @@ const Answers = ({
                 setImage={i === 0 ? setImage1 : i === 1 ? setImage2 : setImage3}
                 onDelete={() =>
                   updateScreenData({
-                    answers: map(
-                      activeScreen.answers,
-                      (a, j) =>
-                        i === j ? { ...a, image: null, imageOrigData: null } : a
+                    answers: map(activeScreen.answers, (a, j) =>
+                      i === j ? { ...a, image: null, imageOrigData: null } : a
                     )
-                  })}
+                  })
+                }
                 onLoad={(width, height) =>
                   updateScreenData({
-                    answers: map(
-                      activeScreen.answers,
-                      (a, j) =>
-                        i === j
-                          ? {
-                              ...a,
-                              imageOrigData: {
-                                width,
-                                height
-                              }
+                    answers: map(activeScreen.answers, (a, j) =>
+                      i === j
+                        ? {
+                            ...a,
+                            imageOrigData: {
+                              width,
+                              height
                             }
-                          : a
+                          }
+                        : a
                     )
-                  })}
+                  })
+                }
                 helpIconLabel={helpIconText.EDITOR_GAME_OPTIONS_ANSWER_IMAGE}
                 id="editor-game-options-answer-image"
               />
@@ -138,11 +132,11 @@ const Answers = ({
                   defaultValue={answer.text}
                   onChange={value =>
                     updateScreenData({
-                      answers: map(
-                        activeScreen.answers,
-                        (a, j) => (i === j ? { ...a, text: value } : a)
+                      answers: map(activeScreen.answers, (a, j) =>
+                        i === j ? { ...a, text: value } : a
                       )
-                    })}
+                    })
+                  }
                   rows={3}
                 />
                 <HelpIcon
@@ -153,7 +147,7 @@ const Answers = ({
                 />
               </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </div>
@@ -161,9 +155,12 @@ const Answers = ({
 };
 
 export default compose(
-  connect(null, {
-    setDialog,
-    getFileById,
-    updateScreenData
-  })
+  connect(
+    null,
+    {
+      setDialog,
+      getFileById,
+      updateScreenData
+    }
+  )
 )(Answers);

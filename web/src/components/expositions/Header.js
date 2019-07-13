@@ -15,22 +15,24 @@ const Header = ({
   changeExpositionsViewType,
   getExpositions,
   setDialog
-}) =>
+}) => (
   <div className="flex-header">
     <h2 className="flex-header-title">Výstavy</h2>
     <Filter />
     <div className="flex-row flex-space-between flex-center">
-      {!cardsList
-        ? <Button
-            {...{
-              raised: true,
-              label: "Vytvořit novou výstavu",
-              onClick: () => setDialog("ExpoNew")
-            }}
-          >
-            <FontIcon>add</FontIcon>
-          </Button>
-        : <div />}
+      {!cardsList ? (
+        <Button
+          {...{
+            raised: true,
+            label: "Vytvořit novou výstavu",
+            onClick: () => setDialog("ExpoNew")
+          }}
+        >
+          <FontIcon>add</FontIcon>
+        </Button>
+      ) : (
+        <div />
+      )}
       <Button
         icon
         onClick={() => {
@@ -52,9 +54,13 @@ const Header = ({
         place="bottom"
       />
     </div>
-  </div>;
+  </div>
+);
 
-export default connect(null, {
-  changeExpositionsViewType,
-  getExpositions
-})(Header);
+export default connect(
+  null,
+  {
+    changeExpositionsViewType,
+    getExpositions
+  }
+)(Header);

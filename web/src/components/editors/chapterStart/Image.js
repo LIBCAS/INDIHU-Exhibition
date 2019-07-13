@@ -14,9 +14,24 @@ import { animationType, animationTypeText } from "../../../enums/animationType";
 import { helpIconText } from "../../../enums/text";
 
 const options = [
-  { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
+  {
+    label: animationTypeText.WITHOUT_FULL_SCREEN,
+    value: animationType.WITHOUT_FULL_SCREEN
+  },
+  {
+    label: animationTypeText.WITHOUT_NO_CROP,
+    value: animationType.WITHOUT_NO_CROP
+  },
   { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
-  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM }
+  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
+  {
+    label: animationTypeText.FROM_LEFT_TO_RIGHT,
+    value: animationType.FROM_LEFT_TO_RIGHT
+  },
+  {
+    label: animationTypeText.FROM_RIGHT_TO_LEFT,
+    value: animationType.FROM_RIGHT_TO_LEFT
+  }
 ];
 
 const Image = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
@@ -55,6 +70,7 @@ const Image = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
             <SelectField
               id="chapter-start-selectfield-animation"
               className="select-field"
+              style={{ minWidth: 260 }}
               label="Animace obrázku"
               menuItems={options}
               itemLabel={"label"}
@@ -77,9 +93,12 @@ const Image = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
 };
 
 export default compose(
-  connect(null, {
-    setDialog,
-    getFileById,
-    updateScreenData
-  })
+  connect(
+    null,
+    {
+      setDialog,
+      getFileById,
+      updateScreenData
+    }
+  )
 )(Image);

@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { compose, withProps } from "recompose";
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 import CardActions from "react-md/lib/Cards/CardActions";
@@ -9,6 +10,7 @@ import FontIcon from "react-md/lib/FontIcons";
 import Button from "react-md/lib/Buttons/Button";
 
 import { closeDialog } from "../../actions/dialogActions";
+import { withKeyShortcuts } from "../hoc";
 
 const DialogWrap = ({
   name,
@@ -23,6 +25,7 @@ const DialogWrap = ({
   noStornoButton,
   noSubmitButton,
   noDialogMenu,
+  noToolbar,
   big,
   style
 }) => {
@@ -38,28 +41,29 @@ const DialogWrap = ({
         style={style}
         className={classNames(`dialog ${className}`, { big })}
       >
-        <FontIcon
-          className="dialog-close"
-          onClick={() => {
-            if (onClose) onClose();
-            closeDialog();
-          }}
-        >
-          close
-        </FontIcon>
-        <CardText className="dialog-title">
-          {title}
-        </CardText>
+        {!noToolbar && (
+          <FontIcon
+            className="dialog-close"
+            onClick={() => {
+              if (onClose) onClose();
+              closeDialog();
+            }}
+          >
+            close
+          </FontIcon>
+        )}
+        {!noToolbar && <CardText className="dialog-title">{title}</CardText>}
         <CardText
           className={classNames("dialog-content", {
-            "no-margin-bottom": noDialogMenu
+            "no-margin-bottom": noDialogMenu,
+            "padding-big": noToolbar && noDialogMenu
           })}
         >
           {children}
         </CardText>
-        {!noDialogMenu &&
+        {!noDialogMenu && (
           <CardActions className="dialog-menu">
-            {!noStornoButton &&
+            {!noStornoButton && (
               <Button
                 flat
                 secondary
@@ -69,18 +73,22 @@ const DialogWrap = ({
                   closeDialog();
                 }}
                 className="margin-right-small"
-              />}
-            {!noSubmitButton &&
+              />
+            )}
+            {!noSubmitButton && (
               <Button
-                flat
+                id={`dialog-submit-button-${name}`}
+                raised
                 primary
                 label={submitLabel}
                 onClick={() => {
                   handleSubmit();
                 }}
                 className="margin-right-small"
-              />}
-          </CardActions>}
+              />
+            )}
+          </CardActions>
+        )}
       </Card>
     </div>
   );
@@ -96,6 +104,18 @@ DialogWrap.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
-export default connect(({ dialog: { name } }) => ({ active: name }), {
-  closeDialog
-})(DialogWrap);
+export default compose(
+  connect(
+    ({ dialog: { name } }) => ({ active: name }),
+    {
+      closeDialog
+    }
+  ),
+  withProps(({ name, active, noDialogMenu, noSubmitButton }) => ({
+    onEnterButtonId:
+      !noDialogMenu && !noSubmitButton && name === active
+        ? `dialog-submit-button-${name}`
+        : undefined
+  })),
+  withKeyShortcuts
+)(DialogWrap);

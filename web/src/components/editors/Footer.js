@@ -7,16 +7,20 @@ import { saveScreen } from "../../actions/expoActions";
 import { setDialog } from "../../actions/dialogActions";
 import { openViewer } from "../../utils";
 
-const Footer = ({ save, openView }) =>
+const Footer = ({ save, openView }) => (
   <div className="flex-row flex-centered fixed-bottom-footer">
     <div className="inner padding flex-row flex-space-between">
       <Button raised label="Náhled" className="btn" onClick={openView} />
       <Button raised label="Uložit" className="btn" onClick={save} />
     </div>
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(null, { saveScreen, setDialog }),
+  connect(
+    null,
+    { saveScreen, setDialog }
+  ),
   withState("ctrlKeyDown", "setCtrlKeyDown", false),
   withHandlers({
     save: ({
@@ -39,9 +43,16 @@ export default compose(
       else {
         if (await saveScreen(activeScreen, rowNum, colNum)) {
           setDialog("Info", {
-            title: "Obrazovka úspěšně uložena",
-            text: "Obrazovka byla úspěšně uložena.",
-            autoClose: true
+            content: (
+              <h2 className="text-center margin-none">
+                Obrazovka byla úspěšně uložena.
+              </h2>
+            ),
+            autoClose: true,
+            autoCloseTime: 1000,
+            noDialogMenu: true,
+            noToolbar: true,
+            big: true
           });
         } else {
           setDialog("Info", {
@@ -61,7 +72,7 @@ export default compose(
       setDialog,
       type,
       noActionTitle,
-      noActionText,
+      noActionText
     }) => async () => {
       if (noActions)
         setDialog("Info", {
@@ -114,7 +125,7 @@ export default compose(
       const { manageKeyAction } = this.props;
 
       document.removeEventListener("keydown", manageKeyAction);
-      document.addEventListener("keyup", manageKeyAction);
+      document.removeEventListener("keyup", manageKeyAction);
     }
   })
 )(Footer);

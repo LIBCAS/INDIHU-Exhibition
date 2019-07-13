@@ -5,7 +5,7 @@ import HelpIcon from "../../HelpIcon";
 
 import { helpIconText } from "../../../enums/text";
 
-const Text = ({ activeScreen, updateScreenData }) =>
+const Text = ({ activeScreen, updateScreenData }) => (
   <div className="container container-tabMenu">
     <div className="screen">
       <div className="flex-row-nowrap">
@@ -22,6 +22,7 @@ const Text = ({ activeScreen, updateScreenData }) =>
         />
       </div>
     </div>
-  </div>;
+  </div>
+);
 
 export default Text;

@@ -7,7 +7,7 @@ import Dialog from "./DialogWrap";
 
 import { deleteAccount, signOut } from "../../actions/userActions";
 
-const DeleteAccount = ({ handleSubmit, data, fail }) =>
+const DeleteAccount = ({ handleSubmit, data, fail }) => (
   <Dialog
     title="Zrušit účet"
     name="DeleteAccount"
@@ -22,7 +22,8 @@ const DeleteAccount = ({ handleSubmit, data, fail }) =>
       </strong>
     </p>
     {fail && <span className="invalid">Nepodařilo se odstranit účet!</span>}
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   connect(

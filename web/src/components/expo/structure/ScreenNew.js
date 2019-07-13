@@ -12,13 +12,14 @@ import * as expoActions from "../../../actions/expoActions";
 import { newScreen, screenType } from "../../../enums/screenType";
 import { helpIconText } from "../../../enums/text";
 
-const CardStyle = () =>
+const CardStyle = () => (
   <Card raise className="new-content">
     <CardText className="new-screen">
       <i className="material-icons">add</i>
       <p>Nová obrazovka</p>
     </CardText>
-  </Card>;
+  </Card>
+);
 
 const ScreenNew = ({
   large,
@@ -28,7 +29,7 @@ const ScreenNew = ({
   colNum,
   position,
   style
-}) =>
+}) => (
   <div style={{ cursor: "auto", ...style }}>
     <MenuButton
       id={large ? "large" : "icon"}
@@ -37,7 +38,7 @@ const ScreenNew = ({
       flat={large}
       icon={!large}
     >
-      {section &&
+      {section && (
         <div>
           <Subheader
             className="add-menu-header"
@@ -54,13 +55,15 @@ const ScreenNew = ({
             onMouseEnter={() =>
               ReactTooltip.show(
                 document.getElementById("expo-structure-screen-new-intro")
-              )}
+              )
+            }
             onMouseLeave={() => ReactTooltip.hide()}
           />
-        </div>}
+        </div>
+      )}
       <Subheader className="add-menu-header" primaryText="Obrazovka" primary />
       <div>
-        {map(newScreen.SCREEN, s =>
+        {map(newScreen.SCREEN, s => (
           <ListItem
             key={s[0]}
             id={`expo-structure-screen-new-${s[0]}`}
@@ -73,14 +76,15 @@ const ScreenNew = ({
             onMouseEnter={() =>
               ReactTooltip.show(
                 document.getElementById(`expo-structure-screen-new-${s[0]}`)
-              )}
+              )
+            }
             onMouseLeave={() => ReactTooltip.hide()}
           />
-        )}
+        ))}
       </div>
       <Subheader className="add-menu-header" primaryText="Minihra" primary />
       <div>
-        {map(newScreen.GAME, s =>
+        {map(newScreen.GAME, s => (
           <ListItem
             key={s[0]}
             id={`expo-structure-screen-new-${s[0]}`}
@@ -93,12 +97,17 @@ const ScreenNew = ({
             onMouseEnter={() =>
               ReactTooltip.show(
                 document.getElementById(`expo-structure-screen-new-${s[0]}`)
-              )}
+              )
+            }
             onMouseLeave={() => ReactTooltip.hide()}
           />
-        )}
+        ))}
       </div>
     </MenuButton>
-  </div>;
+  </div>
+);
 
-export default connect(null, { ...expoActions })(ScreenNew);
+export default connect(
+  null,
+  { ...expoActions }
+)(ScreenNew);

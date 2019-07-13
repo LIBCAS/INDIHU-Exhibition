@@ -9,14 +9,17 @@ import { showLoader } from "../actions/appActions";
 
 export default compose(
   withRouter,
-  connect(null, { verify, setDialog, showLoader }),
+  connect(
+    null,
+    { verify, setDialog, showLoader }
+  ),
   lifecycle({
     async componentDidMount() {
       const { history, match, verify, setDialog, showLoader } = this.props;
       showLoader(true);
       const status = await verify(match.params.secret);
       if (status === 202) {
-        history.push("/expositions");
+        history.push("/exhibitions");
         setDialog("Info", {
           title: "Registrace úspěšná",
           text: "Byl jste úspěšně registrován."
@@ -25,7 +28,7 @@ export default compose(
         history.push("/");
         setDialog("Info", {
           title: "Registrace ve frontě",
-          text: "Registrace čeká ve frontě na schválení od admina."
+          text: "Registrace čeká ve frontě na schválení od admina do 3 dnů."
         });
       } else {
         history.push("/");

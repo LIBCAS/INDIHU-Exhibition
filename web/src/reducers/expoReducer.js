@@ -25,6 +25,7 @@ const initialState = {
   viewScreenAudio: null,
   viewLastChapter: null,
   preloadedFiles: [],
+  errorFiles: [],
   expoEditor: {
     startAuthorsFilter: { sort: "TITLE", order: "ASC", search: "" }
   },
@@ -64,18 +65,14 @@ const reducer = (state = initialState, action) => {
           ...state.activeExpo,
           structure: {
             ...state.activeExpo.structure,
-            screens: map(
-              state.activeExpo.structure.screens,
-              (row, rowNum) =>
-                rowNum === action.payload.rowNum
-                  ? map(
-                      row,
-                      (screen, colNum) =>
-                        colNum === action.payload.colNum
-                          ? action.payload.screen
-                          : screen
-                    )
-                  : row
+            screens: map(state.activeExpo.structure.screens, (row, rowNum) =>
+              rowNum === action.payload.rowNum
+                ? map(row, (screen, colNum) =>
+                    colNum === action.payload.colNum
+                      ? action.payload.screen
+                      : screen
+                  )
+                : row
             )
           }
         }
@@ -115,6 +112,22 @@ const reducer = (state = initialState, action) => {
           ]
         }
       };
+    case c.EXPO_SCREEN_COLLABORATORS_SWAP:
+      return {
+        ...state,
+        activeScreen: {
+          ...state.activeScreen,
+          collaborators: map(state.activeScreen.collaborators, c =>
+            c.role === action.payload.collaborators1.role &&
+            c.text === action.payload.collaborators1.text
+              ? action.payload.collaborators2
+              : c.role === action.payload.collaborators2.role &&
+                c.text === action.payload.collaborators2.text
+              ? action.payload.collaborators1
+              : c
+          )
+        }
+      };
     case c.EXPO_SCREEN_COLLABORATORS_DELETE:
       return {
         ...state,
@@ -149,6 +162,20 @@ const reducer = (state = initialState, action) => {
             ),
             action.payload.documentNew
           ]
+        }
+      };
+    case c.EXPO_SCREEN_DOCUMENT_SWAP:
+      return {
+        ...state,
+        activeScreen: {
+          ...state.activeScreen,
+          documents: map(state.activeScreen.documents, (d, i) =>
+            i === action.payload.index1
+              ? state.activeScreen.documents[action.payload.index2]
+              : i === action.payload.index2
+              ? state.activeScreen.documents[action.payload.index1]
+              : d
+          )
         }
       };
     case c.EXPO_SCREEN_DOCUMENT_DELETE:
@@ -186,12 +213,10 @@ const reducer = (state = initialState, action) => {
         ...state,
         activeExpo: {
           ...state.activeExpo,
-          collaborators: map(
-            state.activeExpo.collaborators,
-            c =>
-              c.id === action.payload.id
-                ? { ...c, collaborationType: action.payload.type }
-                : c
+          collaborators: map(state.activeExpo.collaborators, c =>
+            c.id === action.payload.id
+              ? { ...c, collaborationType: action.payload.type }
+              : c
           )
         }
       };
@@ -256,7 +281,6 @@ const reducer = (state = initialState, action) => {
     case c.EXPO_VIEWER_FILES_TOTAL:
       return {
         ...state,
-        ...action.payload,
         viewExpo: {
           ...state.viewExpo,
           filesTotal: state.viewExpo.filesTotal
@@ -267,13 +291,37 @@ const reducer = (state = initialState, action) => {
     case c.EXPO_VIEWER_FILE_LOADED:
       return {
         ...state,
-        ...action.payload,
         viewExpo: {
           ...state.viewExpo,
           filesLoaded: state.viewExpo.filesLoaded
             ? state.viewExpo.filesLoaded + 1
             : 1
         }
+      };
+    case c.EXPO_VIEWER_VIDEO_FILES_TOTAL:
+      return {
+        ...state,
+        viewExpo: {
+          ...state.viewExpo,
+          videoFilesTotal: state.viewExpo.videoFilesTotal
+            ? state.viewExpo.videoFilesTotal + 1
+            : 1
+        }
+      };
+    case c.EXPO_VIEWER_VIDEO_FILE_LOADED:
+      return {
+        ...state,
+        viewExpo: {
+          ...state.viewExpo,
+          videoFilesLoaded: state.viewExpo.videoFilesLoaded
+            ? state.viewExpo.videoFilesLoaded + 1
+            : 1
+        }
+      };
+    case c.EXPO_VIEWER_FILE_ERROR_ADD:
+      return {
+        ...state,
+        errorFiles: [...state.errorFiles, action.payload.name]
       };
     case c.EXPO_EDITOR_UPDATE:
       return {

@@ -1,5 +1,5 @@
 import fetch from "../utils/fetch";
-import { sortBy, map, find, findIndex, filter, forEach, isEmpty } from "lodash";
+import { map, find, findIndex, filter, forEach, isEmpty, sortBy } from "lodash";
 import { TAB_FOLDER, TAB_FILE, EXPO_STRUCTURE_SET } from "./constants";
 import { saveExpo } from "./expoActions";
 
@@ -22,7 +22,7 @@ export const addFolder = name => async (dispatch, getState) => {
   files.push({ name, files: [] });
   expo.structure.files = sortBy(files, f => f.name);
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -39,6 +39,7 @@ export const addFolder = name => async (dispatch, getState) => {
 export const addFile = (file, folder) => async (dispatch, getState) => {
   const expo = getState().expo.activeExpo;
   const files = expo.structure.files;
+  file.created = new Date().toISOString();
   if (folder === null || folder === undefined) {
     map(files, f => (f.name ? f : f.files.push(file)));
   } else {
@@ -46,7 +47,7 @@ export const addFile = (file, folder) => async (dispatch, getState) => {
   }
   expo.structure.files = files;
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -69,21 +70,20 @@ export const renameFile = (fileId, fileNameNew) => async (
   const idx = !fileId
     ? null
     : folderName === null || folderName === undefined
-      ? findIndex(files, f => !f.name)
-      : findIndex(files, f => f.name === folderName);
+    ? findIndex(files, f => !f.name)
+    : findIndex(files, f => f.name === folderName);
   if (idx === null) {
     return false;
   }
 
   const filesInFolder = files[idx];
-  filesInFolder.files = map(
-    filesInFolder.files,
-    f => (f.id === fileId ? { ...f, name: fileNameNew } : f)
+  filesInFolder.files = map(filesInFolder.files, f =>
+    f.id === fileId ? { ...f, name: fileNameNew } : f
   );
   files[idx] = filesInFolder;
   expo.structure.files = files;
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -115,7 +115,7 @@ export const deleteFile = fileId => async (dispatch, getState) => {
   const files = expo.structure.files;
   const folderName = getState().file.folder;
 
-  if (!fileId || !await dispatch(deleteFileById(fileId))) {
+  if (!fileId || !(await dispatch(deleteFileById(fileId)))) {
     return false;
   }
 
@@ -129,7 +129,7 @@ export const deleteFile = fileId => async (dispatch, getState) => {
   files[idx] = filesInFolder;
   expo.structure.files = files;
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -158,8 +158,8 @@ export const moveFile = (file, folder, folderFrom) => async (
   const idx = !fileId
     ? null
     : folderFrom === null || folderFrom === undefined
-      ? findIndex(files, f => !f.name)
-      : findIndex(files, f => f.name === folderFrom);
+    ? findIndex(files, f => !f.name)
+    : findIndex(files, f => f.name === folderFrom);
   if (idx === null) {
     return false;
   }
@@ -179,7 +179,7 @@ export const moveFile = (file, folder, folderFrom) => async (
 
   expo.structure.files = files;
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -204,12 +204,11 @@ export const renameFolder = (nameNew, nameOld) => async (
     return false;
   }
 
-  expo.structure.files = map(
-    expo.structure.files,
-    f => (f.name && f.name === nameOld ? { ...f, name: nameNew } : f)
+  expo.structure.files = map(expo.structure.files, f =>
+    f.name && f.name === nameOld ? { ...f, name: nameNew } : f
   );
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -242,7 +241,7 @@ export const deleteFolder = name => async (dispatch, getState) => {
 
   expo.structure.files = filter(expo.structure.files, f => f.name !== name);
 
-  if (!await saveExpo(expo)) {
+  if (!(await saveExpo(expo))) {
     return false;
   }
 
@@ -268,8 +267,8 @@ export const getFileById = id => (_, getState) => {
   const files = !isEmpty(getState().expo.activeExpo)
     ? getState().expo.activeExpo.structure.files
     : !isEmpty(getState().expo.viewExpo)
-      ? getState().expo.viewExpo.structure.files
-      : null;
+    ? getState().expo.viewExpo.structure.files
+    : null;
   if (!files) return null;
   const found = find(files, fold => find(fold.files, f => f.id === id));
   return found ? find(found.files, f => f.id === id) : null;
@@ -311,4 +310,28 @@ export const isFileInFolderUsed = name => (_, getState) => {
   const folder = find(files, f => f.name === name);
   if (!folder) return false;
   return !!find(folder.files, f => isFileUsed(f.id));
+};
+
+export const postFile = async (file, url = "/api/files/") => {
+  try {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData
+    });
+
+    if (response.status === 200) {
+      const file = await response.json();
+
+      return file;
+    }
+
+    return null;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };

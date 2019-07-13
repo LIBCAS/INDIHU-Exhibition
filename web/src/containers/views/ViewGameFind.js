@@ -43,15 +43,18 @@ const ViewGameFind = ({
             mouseDown: true,
             mouseXPos: e.pageX,
             mouseYPos: e.pageY
-          })}
+          })
+        }
         onMouseEnter={() =>
           mouseActualize({
             mouseDown: true
-          })}
+          })
+        }
         onMouseLeave={() =>
           mouseActualize({
             mouseDown: false
-          })}
+          })
+        }
       >
         {mouseDown &&
           !mouseClicked &&
@@ -64,46 +67,48 @@ const ViewGameFind = ({
               .getBoundingClientRect().height +
               document
                 .getElementById("view-game-find-game-wrap")
-                .getBoundingClientRect().top &&
-          <FontIcon
-            className="mouse-icon"
-            iconClassName="fa fa-flag"
-            style={{
-              position: "absolute",
-              left:
-                mouseXPos -
-                document
-                  .getElementById("view-game-find-game-wrap")
-                  .getBoundingClientRect().left,
-              top:
-                mouseYPos -
-                document
-                  .getElementById("view-game-find-game-wrap")
-                  .getBoundingClientRect().top
-            }}
-          />}
+                .getBoundingClientRect().top && (
+            <FontIcon
+              className="mouse-icon"
+              iconClassName="fa fa-flag"
+              style={{
+                position: "absolute",
+                left:
+                  mouseXPos -
+                  document
+                    .getElementById("view-game-find-game-wrap")
+                    .getBoundingClientRect().left,
+                top:
+                  mouseYPos -
+                  document
+                    .getElementById("view-game-find-game-wrap")
+                    .getBoundingClientRect().top
+              }}
+            />
+          )}
         {viewScreen.showTip &&
           mouseClicked &&
           mouseXPos !== null &&
           mouseYPos !== null &&
-          document.getElementById("view-game-find-game-wrap") &&
-          <FontIcon
-            className="mouse-icon"
-            iconClassName="fa fa-flag"
-            style={{
-              position: "absolute",
-              left:
-                mouseXPos -
-                document
-                  .getElementById("view-game-find-game-wrap")
-                  .getBoundingClientRect().left,
-              top:
-                mouseYPos -
-                document
-                  .getElementById("view-game-find-game-wrap")
-                  .getBoundingClientRect().top
-            }}
-          />}
+          document.getElementById("view-game-find-game-wrap") && (
+            <FontIcon
+              className="mouse-icon"
+              iconClassName="fa fa-flag"
+              style={{
+                position: "absolute",
+                left:
+                  mouseXPos -
+                  document
+                    .getElementById("view-game-find-game-wrap")
+                    .getBoundingClientRect().left,
+                top:
+                  mouseYPos -
+                  document
+                    .getElementById("view-game-find-game-wrap")
+                    .getBoundingClientRect().top
+              }}
+            />
+          )}
       </div>
       <GameMenu
         {...{
@@ -126,13 +131,17 @@ const ViewGameFind = ({
               const newNode = screenFiles["image2"];
               newNode.setAttribute(
                 "style",
-                `width: ${viewScreen.image2OrigData.height >
-                viewScreen.image2OrigData.width
-                  ? "auto"
-                  : "100%"}; height: ${viewScreen.image2OrigData.height >
-                viewScreen.image2OrigData.width
-                  ? "100%"
-                  : "auto"}; object-fit: contain;`
+                `width: ${
+                  viewScreen.image2OrigData.height >
+                  viewScreen.image2OrigData.width
+                    ? "auto"
+                    : "100%"
+                }; height: ${
+                  viewScreen.image2OrigData.height >
+                  viewScreen.image2OrigData.width
+                    ? "100%"
+                    : "auto"
+                }; object-fit: contain;`
               );
               document
                 .getElementById("view-game-find-game-wrap")
@@ -193,13 +202,15 @@ export default compose(
         newNode.id = "view-game-find-first-image";
         newNode.setAttribute(
           "style",
-          `width: ${viewScreen.image1OrigData.height >
-          viewScreen.image1OrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.image1OrigData.height >
-          viewScreen.image1OrigData.width
-            ? "100%"
-            : "auto"}; object-fit: contain;`
+          `width: ${
+            viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+              ? "auto"
+              : "100%"
+          }; height: ${
+            viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+              ? "100%"
+              : "auto"
+          }; object-fit: contain;`
         );
         document
           .getElementById("view-game-find-game-wrap")

@@ -9,9 +9,11 @@ import {
   EXPO_SCREEN_COLLABORATORS_ADD,
   EXPO_SCREEN_COLLABORATORS_DELETE,
   EXPO_SCREEN_COLLABORATORS_CHANGE,
+  EXPO_SCREEN_COLLABORATORS_SWAP,
   EXPO_SCREEN_DOCUMENT_ADD,
   EXPO_SCREEN_DOCUMENT_CHANGE,
   EXPO_SCREEN_DOCUMENT_DELETE,
+  EXPO_SCREEN_DOCUMENT_SWAP,
   EXPO_STRUCTURE_SET,
   EXPO_STRUCTURE_SCREEN_SET,
   EXPOSITIONS,
@@ -154,6 +156,11 @@ export const changeScreenCollaborators = (
   payload: { collaboratorsNew, collaboratorsOld }
 });
 
+export const swapScreenCollaborators = (collaborators1, collaborators2) => ({
+  type: EXPO_SCREEN_COLLABORATORS_SWAP,
+  payload: { collaborators1, collaborators2 }
+});
+
 export const removeScreenCollaborators = collaborators => ({
   type: EXPO_SCREEN_COLLABORATORS_DELETE,
   payload: collaborators
@@ -176,7 +183,7 @@ export const addScreenDocument = document => async (dispatch, getState) => {
   return true;
 };
 
-export const changeScreenDocument = (documentNew, documentOld) => async (
+export const changeScreenDocument = (documentNew, documentOld) => (
   dispatch,
   getState
 ) => {
@@ -185,8 +192,9 @@ export const changeScreenDocument = (documentNew, documentOld) => async (
   if (
     documentNew.fileName !== documentOld.fileName &&
     findIndex(documents, d => d.fileName === documentNew.fileName) >= 0
-  )
+  ) {
     return false;
+  }
 
   dispatch({
     type: EXPO_SCREEN_DOCUMENT_CHANGE,
@@ -195,6 +203,11 @@ export const changeScreenDocument = (documentNew, documentOld) => async (
 
   return true;
 };
+
+export const swapScreenDocuments = (index1, index2) => ({
+  type: EXPO_SCREEN_DOCUMENT_SWAP,
+  payload: { index1, index2 }
+});
 
 export const removeScreenDocument = document => async dispatch => {
   dispatch({

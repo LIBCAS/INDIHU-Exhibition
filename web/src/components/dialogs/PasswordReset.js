@@ -7,7 +7,7 @@ import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { passwordReset } from "../../actions/userActions";
 
-const PasswordReset = ({ handleSubmit }) =>
+const PasswordReset = ({ handleSubmit }) => (
   <Dialog
     title="Reset hesla"
     name="PasswordReset"
@@ -23,7 +23,8 @@ const PasswordReset = ({ handleSubmit }) =>
         validate={[Validation.required, Validation.email]}
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   withHandlers({

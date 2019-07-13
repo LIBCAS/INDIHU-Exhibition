@@ -1,6 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose, lifecycle, withState, withHandlers } from "recompose";
+import {
+  compose,
+  lifecycle,
+  withState,
+  withHandlers,
+  withProps
+} from "recompose";
 import { get, filter, isEmpty } from "lodash";
 
 import Header from "./Header";
@@ -8,13 +14,20 @@ import FileManager from "./FileManager";
 import FileView from "./FileView";
 import FileMeta from "./FileMeta";
 import * as fileActions from "../../../actions/fileActions";
+import { setDialog } from "../../../actions/dialogActions";
+import { keyShortcutsEnhancer, sortFilterFiles } from "./utils";
 
-const Files = props =>
+const Files = ({ setSort, setOrder, containerID, ...props }) => (
   <div className="container container-tabMenu">
-    <Header />
+    <Header
+      sort={props.sort}
+      setSort={setSort}
+      order={props.order}
+      setOrder={setOrder}
+    />
     <div className="files-row">
       <div className="files-wrap--manager">
-        <FileManager {...props} />
+        <FileManager {...props} id={containerID} />
       </div>
       <div className="files-col">
         <div className="files-wrap--view">
@@ -28,7 +41,8 @@ const Files = props =>
         </div>
       </div>
     </div>
-  </div>;
+  </div>
+);
 
 export default compose(
   connect(
@@ -36,27 +50,26 @@ export default compose(
       activeFolder: folder,
       activeFile: file
     }),
-    { ...fileActions }
+    { ...fileActions, setDialog }
   ),
   withState("activeExpoReceived", "setActiveExpoReceived", false),
+  withState("sort", "setSort", "CREATED"),
+  withState("order", "setOrder", "ASC"),
+  withProps(({ activeExpo, sort, order }) => ({
+    containerID: "expo-files-manager",
+    files: sortFilterFiles(activeExpo, sort, order)
+  })),
   withHandlers({
-    init: ({
-      activeExpoReceived,
-      setActiveExpoReceived,
-      tabFile
-    }) => activeExpo => {
+    init: ({ activeExpoReceived, setActiveExpoReceived, tabFile }) => files => {
       if (!activeExpoReceived) {
         tabFile(null);
 
-        if (!isEmpty(activeExpo)) {
+        if (!isEmpty(files)) {
           setActiveExpoReceived(true);
           tabFile(
             get(
               get(
-                filter(
-                  get(activeExpo, "structure.files"),
-                  files => files.name === undefined
-                ),
+                filter(files, files => files.name === undefined),
                 "[0].files"
               ),
               "[0]",
@@ -67,14 +80,15 @@ export default compose(
       }
     }
   }),
+  keyShortcutsEnhancer,
   lifecycle({
     componentWillMount() {
-      const { init, activeExpo } = this.props;
-      init(activeExpo);
+      const { init, files } = this.props;
+      init(files);
     },
-    componentWillReceiveProps({ activeExpo }) {
+    componentWillReceiveProps({ files }) {
       const { init } = this.props;
-      init(activeExpo);
+      init(files);
     }
   })
 )(Files);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Line } from "rc-progress";
 
-const Progress = ({ percent }) =>
+const Progress = ({ percent }) => (
   <div className="viewer-progress-bar">
     <Line
       {...{
@@ -11,6 +11,7 @@ const Progress = ({ percent }) =>
         trailWidth: 3
       }}
     />
-  </div>;
+  </div>
+);
 
 export default Progress;

@@ -19,7 +19,10 @@ const ViewVideo = ({ viewScreen }) => {
 
 export default compose(
   withRouter,
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), null),
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    null
+  ),
   withState("videoCheckInterval", "setVideoCheckInterval", null),
   withState("timeout", "setStateTimeout", null),
   withState("videoStarted", "setVideoStarted", false),

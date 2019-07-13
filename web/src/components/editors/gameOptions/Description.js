@@ -5,27 +5,15 @@ import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 
 import Music from "../Music";
-import Image from "../Image";
 import HelpIcon from "../../HelpIcon";
 
-import { setDialog } from "../../../actions/dialogActions";
 import { getFileById } from "../../../actions/fileActions";
 import { updateScreenData } from "../../../actions/expoActions";
 
 import { helpIconText } from "../../../enums/text";
 
-const Description = ({
-  activeScreen,
-  updateScreenData,
-  setDialog,
-  getFileById
-}) => {
+const Description = ({ activeScreen, updateScreenData, getFileById }) => {
   const music = getFileById(activeScreen.music);
-  const image = activeScreen.image ? getFileById(activeScreen.image) : null;
-
-  const setImage = image => {
-    updateScreenData({ image: image.id });
-  };
 
   return (
     <div className="container container-tabMenu">
@@ -60,24 +48,6 @@ const Description = ({
                 }}
               />
             </div>
-            <Image
-              {...{
-                title: "Doprovodný obrázek",
-                image,
-                setImage,
-                onDelete: () =>
-                  updateScreenData({ image: null, imageOrigData: null }),
-                onLoad: (width, height) =>
-                  updateScreenData({
-                    imageOrigData: {
-                      width,
-                      height
-                    }
-                  }),
-                helpIconLabel: helpIconText.EDITOR_GAME_OPTIONS_IMAGE,
-                id: "editor-game-options-image"
-              }}
-            />
           </div>
           <div className="part margin-bottom margin-horizontal">
             <Music
@@ -90,14 +60,15 @@ const Description = ({
                 id: "editor-game-options-music"
               }}
             />
-            <div className="row flex-centered">
+            <div className="row">
               <Checkbox
                 id="game-options-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Stránka je dokončená"
+                label="Obrazovka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}
+                className="checkbox-no-padding-left"
               />
             </div>
           </div>
@@ -108,9 +79,11 @@ const Description = ({
 };
 
 export default compose(
-  connect(null, {
-    setDialog,
-    getFileById,
-    updateScreenData
-  })
+  connect(
+    null,
+    {
+      getFileById,
+      updateScreenData
+    }
+  )
 )(Description);

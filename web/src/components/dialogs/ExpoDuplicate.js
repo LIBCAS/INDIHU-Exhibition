@@ -9,7 +9,7 @@ import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { duplicateExpo } from "../../actions/expoActions";
 
-const ExpoDuplicate = ({ handleSubmit }) =>
+const ExpoDuplicate = ({ handleSubmit }) => (
   <Dialog
     title="Duplikace výstavy"
     name="ExpoDuplicate"
@@ -25,10 +25,14 @@ const ExpoDuplicate = ({ handleSubmit }) =>
         validate={[Validation.required]}
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    null
+  ),
   withRouter,
   withHandlers({
     onSubmit: dialog => async (formData, dispatch, props) => {

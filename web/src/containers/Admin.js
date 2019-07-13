@@ -9,24 +9,31 @@ import Header from "../components/admin/Header";
 import Settings from "../components/admin/Settings";
 import SettingsForm from "../components/admin/SettingsForm";
 
-const Admin = ({ settings, activeForm, setActiveForm }) =>
+const Admin = ({ settings, activeForm, setActiveForm }) => (
   <div>
     <AppHeader adminStyle />
-    {settings &&
+    {settings && (
       <div className="container">
         <Header />
-        {activeForm === "adminSettingsForm"
-          ? <SettingsForm
-              {...{ initialValues: settings, settings, setActiveForm }}
-            />
-          : <Settings {...{ settings, setActiveForm }} />}
-      </div>}
-  </div>;
+        {activeForm === "adminSettingsForm" ? (
+          <SettingsForm
+            {...{ initialValues: settings, settings, setActiveForm }}
+          />
+        ) : (
+          <Settings {...{ settings, setActiveForm }} />
+        )}
+      </div>
+    )}
+  </div>
+);
 
 export default compose(
-  connect(({ admin: { settings } }) => ({ settings }), {
-    getAdminSettings
-  }),
+  connect(
+    ({ admin: { settings } }) => ({ settings }),
+    {
+      getAdminSettings
+    }
+  ),
   withState("activeForm", "setActiveForm", null),
   lifecycle({
     componentWillMount() {

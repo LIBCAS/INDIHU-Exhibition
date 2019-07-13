@@ -8,19 +8,29 @@ import ViewText from "./ViewText";
 import ViewParallax from "./ViewParallax";
 import ViewZoomIn from "./ViewZoomIn";
 import ViewPhotogallery from "./ViewPhotogallery";
-import ViewImageChange from './ViewImageChange';
-import ViewExternal from './ViewExternal';
+import ViewImageChange from "./ViewImageChange";
+import ViewExternal from "./ViewExternal";
 import ViewGameFind from "./ViewGameFind";
-import ViewGameDraw from './ViewGameDraw';
-import ViewGameWipe from './ViewGameWipe';
-import ViewGameSizing from './ViewGameSizing';
-import ViewGameMove from './ViewGameMove';
-import ViewGameOptions from './ViewGameOptions';
+import ViewGameDraw from "./ViewGameDraw";
+import ViewGameWipe from "./ViewGameWipe";
+import ViewGameSizing from "./ViewGameSizing";
+import ViewGameMove from "./ViewGameMove";
+import ViewGameOptions from "./ViewGameOptions";
 import ViewError from "./ViewError";
 
 import { screenType } from "../../enums/screenType";
 
-const Viewers = ({ viewExpo, viewScreen, preloadedFiles, sFiles, name, section, screen, getNextUrlPart, getPrevUrlPath }) => {
+const Viewers = ({
+  viewExpo,
+  viewScreen,
+  preloadedFiles,
+  sFiles,
+  name,
+  section,
+  screen,
+  getNextUrlPart,
+  getPrevUrlPath
+}) => {
   const screenFiles = sFiles || preloadedFiles[section][screen];
 
   const screenProps = {
@@ -67,6 +77,11 @@ const Viewers = ({ viewExpo, viewScreen, preloadedFiles, sFiles, name, section, 
   } else return <ViewError />;
 };
 
-export default connect(({ expo: { viewExpo, viewScreen, preloadedFiles } }) => ({ viewExpo, viewScreen, preloadedFiles }), null)(
-  Viewers
-);
+export default connect(
+  ({ expo: { viewExpo, viewScreen, preloadedFiles } }) => ({
+    viewExpo,
+    viewScreen,
+    preloadedFiles
+  }),
+  null
+)(Viewers);

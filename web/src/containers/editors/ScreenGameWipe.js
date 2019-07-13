@@ -30,11 +30,12 @@ const ScreenGameWipe = props => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() =>
+        render={() => (
           <Description
             {...props}
             taskHelpIconLabel={helpIconText.EDITOR_GAME_WIPE_TASK}
-          />}
+          />
+        )}
       />
       <Route
         path={`${match.url}/images`}
@@ -53,8 +54,11 @@ const ScreenGameWipe = props => {
 };
 
 export default compose(
-  connect(({ expo: { activeScreen } }) => ({ activeScreen }), {
-    updateScreenData
-  }),
+  connect(
+    ({ expo: { activeScreen } }) => ({ activeScreen }),
+    {
+      updateScreenData
+    }
+  ),
   withRouter
 )(ScreenGameWipe);

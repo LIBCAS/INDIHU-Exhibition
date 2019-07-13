@@ -97,9 +97,12 @@ const Images = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
 };
 
 export default compose(
-  connect(null, {
-    setDialog,
-    getFileById,
-    updateScreenData
-  })
+  connect(
+    null,
+    {
+      setDialog,
+      getFileById,
+      updateScreenData
+    }
+  )
 )(Images);

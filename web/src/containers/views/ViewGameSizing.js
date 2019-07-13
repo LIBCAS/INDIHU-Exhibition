@@ -19,7 +19,7 @@ const ViewGameSizing = ({
   setDoneButton,
   passButton,
   setPassButton
-}) =>
+}) => (
   <div className="game">
     <div id="game-wrap" className="game-wrap">
       <div id="game-half1" className="game-half" />
@@ -31,8 +31,12 @@ const ViewGameSizing = ({
             mouseActualize({ mouseYPos: e.pageY });
             setImageSize(
               e.pageY < mouseYPos
-                ? imageSize < 100 ? imageSize + 1 : imageSize
-                : imageSize > 0 ? imageSize - 1 : imageSize
+                ? imageSize < 100
+                  ? imageSize + 1
+                  : imageSize
+                : imageSize > 0
+                ? imageSize - 1
+                : imageSize
             );
           }
         }}
@@ -43,24 +47,28 @@ const ViewGameSizing = ({
           mouseActualize({ mouseDown: false });
         }}
       >
-        <img
-          alt=""
-          src={screenFiles["image2"].src}
-          style={{
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            width:
-              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
-                ? "auto"
-                : `${imageSize}%`,
-            height:
-              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
-                ? `${imageSize}%`
-                : "auto"
-          }}
-          draggable="false"
-        />
+        {screenFiles["image2"] && (
+          <img
+            alt=""
+            src={screenFiles["image2"].src}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              width:
+                viewScreen.image2OrigData.height >
+                viewScreen.image2OrigData.width
+                  ? "auto"
+                  : `${imageSize}%`,
+              height:
+                viewScreen.image2OrigData.height >
+                viewScreen.image2OrigData.width
+                  ? `${imageSize}%`
+                  : "auto"
+            }}
+            draggable="false"
+          />
+        )}
       </div>
     </div>
     <GameMenu
@@ -87,12 +95,15 @@ const ViewGameSizing = ({
         }
       }}
     />
-  </div>;
+  </div>
+);
 
 export default compose(
   connect(
     ({
-      app: { mouseInfo: { mouseDown, mouseYPos } },
+      app: {
+        mouseInfo: { mouseDown, mouseYPos }
+      },
       expo: { viewScreen }
     }) => ({
       mouseDown,
@@ -116,13 +127,15 @@ export default compose(
 
         imageNode1.setAttribute(
           "style",
-          `width: ${viewScreen.image1OrigData.height >
-          viewScreen.image1OrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.image1OrigData.height >
-          viewScreen.image1OrigData.width
-            ? "100%"
-            : "auto"}`
+          `width: ${
+            viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+              ? "auto"
+              : "100%"
+          }; height: ${
+            viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+              ? "100%"
+              : "auto"
+          }`
         );
         document.getElementById("game-half1").appendChild(imageNode1);
       }

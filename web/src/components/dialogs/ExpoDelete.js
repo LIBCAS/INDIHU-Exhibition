@@ -4,12 +4,14 @@ import { compose, withHandlers } from "recompose";
 import { reduxForm } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { get } from "lodash";
+import { FontIcon } from "react-md/lib";
+
 import Dialog from "./DialogWrap";
 import { deleteExpo } from "../../actions/expoActions";
 
-const ExpoDelete = ({ handleSubmit, data }) =>
+const ExpoDelete = ({ handleSubmit, data }) => (
   <Dialog
-    title="Smazání výstavy"
+    title={<FontIcon className="color-black">delete</FontIcon>}
     name="ExpoDelete"
     handleSubmit={handleSubmit}
     submitLabel="Smazat"
@@ -18,14 +20,22 @@ const ExpoDelete = ({ handleSubmit, data }) =>
       Vybraná výstava s názvem <strong>{get(data, "name")}</strong> bude
       smazána.
     </p>
-    <p>
-      Tato operace je nevratná a smaže výstavu včetne všech dokumentů a
-      podkladů!
-    </p>
-  </Dialog>;
+    <div className="flex-row-nowrap flex-center">
+      <FontIcon className="color-red">priority_high</FontIcon>
+      <p>
+        <strong style={{ fontSize: "0.9em" }}>
+          Akce je nevratná a smaže výstavu včetne všech dokumentů a podkladů!
+        </strong>
+      </p>
+    </div>
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    null
+  ),
   withRouter,
   withHandlers({
     onSubmit: dialog => async (_, dispatch, props) => {

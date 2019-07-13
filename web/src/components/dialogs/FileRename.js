@@ -8,7 +8,7 @@ import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { renameFile, tabFile } from "../../actions/fileActions";
 
-const FileRename = ({ handleSubmit }) =>
+const FileRename = ({ handleSubmit }) => (
   <Dialog
     title="Přejmenovat soubor"
     name="FileRename"
@@ -24,7 +24,8 @@ const FileRename = ({ handleSubmit }) =>
         validate={[Validation.required]}
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   connect(

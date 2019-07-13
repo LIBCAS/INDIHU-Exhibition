@@ -26,36 +26,39 @@ const FileMove = ({
       <p>
         Kam chcete přesunout soubor{data && data.name ? ` ${data.name}` : ""}?
       </p>
-      {folders &&
+      {folders && (
         <form onSubmit={handleSubmit}>
-          {map(folders, (folder, i) =>
+          {map(folders, (folder, i) => (
             <div key={i}>
-              {folder.name
-                ? <Radio
-                    id={`fileMove-${folder.name}`}
-                    name={`FOLDER_${folder.name}`}
-                    className="radio-option"
-                    value={`FOLDER_${folder.name}`}
-                    label={folder.name}
-                    checkedIconChildren={"folder"}
-                    uncheckedIconChildren={"folder_open"}
-                    checked={radio === `FOLDER_${folder.name}`}
-                    onChange={() => changeRadioState(`FOLDER_${folder.name}`)}
-                  />
-                : <Radio
-                    id={`fileMove-${folder.name}`}
-                    name={"ROOT"}
-                    className="radio-option"
-                    value={"ROOT"}
-                    label={"Nezařazené"}
-                    checkedIconChildren={"folder"}
-                    uncheckedIconChildren={"folder_open"}
-                    checked={radio === "ROOT"}
-                    onChange={() => changeRadioState("ROOT")}
-                  />}
+              {folder.name ? (
+                <Radio
+                  id={`fileMove-${folder.name}`}
+                  name={`FOLDER_${folder.name}`}
+                  className="radio-option"
+                  value={`FOLDER_${folder.name}`}
+                  label={folder.name}
+                  checkedIconChildren={"folder"}
+                  uncheckedIconChildren={"folder_open"}
+                  checked={radio === `FOLDER_${folder.name}`}
+                  onChange={() => changeRadioState(`FOLDER_${folder.name}`)}
+                />
+              ) : (
+                <Radio
+                  id={`fileMove-${folder.name}`}
+                  name={"ROOT"}
+                  className="radio-option"
+                  value={"ROOT"}
+                  label={"Nezařazené"}
+                  checkedIconChildren={"folder"}
+                  uncheckedIconChildren={"folder_open"}
+                  checked={radio === "ROOT"}
+                  onChange={() => changeRadioState("ROOT")}
+                />
+              )}
             </div>
-          )}
-        </form>}
+          ))}
+        </form>
+      )}
     </Dialog>
   );
 };
@@ -65,7 +68,9 @@ export default compose(
     ({
       dialog: { data },
       app: { radio },
-      expo: { activeExpo: { structure } }
+      expo: {
+        activeExpo: { structure }
+      }
     }) => ({
       data,
       radio,

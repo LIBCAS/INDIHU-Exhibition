@@ -22,32 +22,35 @@ const Expositions = ({
   filter,
   setExpoFilter,
   getExpositions
-}) =>
+}) => (
   <div>
     <AppHeader expositionsStyle />
     <div className="container padding-bottom-small">
       <Header {...{ cardsList, setExpoFilter, setDialog }} />
-      {cardsList
-        ? <div className="expo">
-            <ExpoNewCard />
-            {map(expositions.items, expo =>
-              <ExpoCard key={expo.id} {...expo} history={history} />
-            )}
-          </div>
-        : <div>
-            <Table
-              {...{
-                expositions: expositions.items,
-                history,
-                filter,
-                getExpositions,
-                setExpoFilter
-              }}
-            />
-            <Pager {...{ count: expositions.count }} />
-          </div>}
+      {cardsList ? (
+        <div className="expo">
+          <ExpoNewCard />
+          {map(expositions.items, expo => (
+            <ExpoCard key={expo.id} {...expo} history={history} />
+          ))}
+        </div>
+      ) : (
+        <div>
+          <Table
+            {...{
+              expositions: expositions.items,
+              history,
+              filter,
+              getExpositions,
+              setExpoFilter
+            }}
+          />
+          <Pager {...{ count: expositions.count }} />
+        </div>
+      )}
     </div>
-  </div>;
+  </div>
+);
 
 export default compose(
   withRouter,

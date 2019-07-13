@@ -9,15 +9,22 @@ import { refreshToken } from "../actions/userActions";
 
 const noAuthRoutes = [
   { regex: new RegExp(/\/view\/.*/) }, // expoViewer
-  { regex: new RegExp(/\/verify\/.*/) }, // verify mail
+  { regex: new RegExp(/\/verify\/.*/) } // verify mail
 ];
 
 export default compose(
   withRouter,
-  connect(null, { refreshToken }),
+  connect(
+    null,
+    { refreshToken }
+  ),
   lifecycle({
     componentWillMount() {
-      const { history, location: { pathname }, refreshToken } = this.props;
+      const {
+        history,
+        location: { pathname },
+        refreshToken
+      } = this.props;
 
       // keepalive
       window.interval = setInterval(() => refreshToken(), 180000);
@@ -48,10 +55,11 @@ export default compose(
 
       if (!signed) {
         storage.remove("token");
-        history.replace("/");
-      }
-      else if (signed && pathname === "/") {
-        history.replace("/expositions");
+        if (pathname !== "/sign-in") {
+          history.replace("/");
+        }
+      } else if (signed && pathname === "/") {
+        history.replace("/exhibitions");
       }
     },
     componentWillUnmount() {

@@ -5,11 +5,14 @@ import { withRouter } from "react-router-dom";
 import Dialog from "./DialogWrap";
 
 const ExpoExport = ({ handleSubmit }) => (
-  <Dialog title="Export výstavy" name="ExpoExport" handleSubmit={handleSubmit} submitLabel="Exportovat">
+  <Dialog
+    title="Export výstavy"
+    name="ExpoExport"
+    handleSubmit={handleSubmit}
+    submitLabel="Exportovat"
+  >
     <form onSubmit={handleSubmit}>
-    <p>
-      Export výstavy
-    </p>
+      <p>Export výstavy</p>
     </form>
   </Dialog>
 );

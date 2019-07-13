@@ -34,22 +34,24 @@ const ScreenCardMenu = ({
         buttonChildren="more_vert"
         position={position || "tl"}
       >
-        {type !== screenType.FINISH &&
+        {type !== screenType.FINISH && (
           <ListItem
             primaryText="Upravit"
             onClick={() => history.push(editUrl)}
-          />}
+          />
+        )}
         <ListItem
           primaryText="Náhled"
-          rightIcon={<FontIcon>open_in_new</FontIcon>}
+          rightIcon={<FontIcon className="color-black">open_in_new</FontIcon>}
           onClick={() =>
             openViewer(
               type === "START" || type === "FINISH"
                 ? `/view/${viewUrl}/${type === "START" ? "start" : "finish"}`
                 : `/screen/${expoId}/${rowNum}/${colNum}`
-            )}
+            )
+          }
         />
-        {cardType &&
+        {cardType && (
           <div>
             <ListItem
               primaryText="Přesunout"
@@ -73,7 +75,8 @@ const ScreenCardMenu = ({
                 setDialog("ScreenDuplicate", { rowNum, colNum });
               }}
             />
-          </div>}
+          </div>
+        )}
         <ListItem
           primaryText="Získat odkaz obrazovky"
           onClick={() =>
@@ -82,22 +85,31 @@ const ScreenCardMenu = ({
                 type === "START"
                   ? `${viewUrl}/start`
                   : type === "FINISH"
-                    ? `${viewUrl}/finish`
-                    : `${viewUrl}/${rowNum}/${colNum}`
-            })}
+                  ? `${viewUrl}/finish`
+                  : `${viewUrl}/${rowNum}/${colNum}`
+            })
+          }
         />
-        {cardType &&
+        {cardType && (
           <div>
             <Divider />
             <ListItem
               primaryText="Smazat"
+              rightIcon={<FontIcon className="color-black">delete</FontIcon>}
               onClick={() =>
-                setDialog("ScreenDelete", { name, rowNum, colNum, type })}
+                setDialog("ScreenDelete", { name, rowNum, colNum, type })
+              }
             />
-          </div>}
+          </div>
+        )}
       </MenuButton>
     </div>
   );
 };
 
-export default withRouter(connect(null, { setDialog, change })(ScreenCardMenu));
+export default withRouter(
+  connect(
+    null,
+    { setDialog, change }
+  )(ScreenCardMenu)
+);

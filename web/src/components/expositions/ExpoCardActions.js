@@ -20,7 +20,7 @@ const ExpoCardActions = ({
   history,
   state,
   setDialog
-}) =>
+}) => (
   <div onClick={e => e.stopPropagation()}>
     <Button
       flat
@@ -32,7 +32,8 @@ const ExpoCardActions = ({
               title: "Nelze upravovat",
               text: "Výstavu nelze upravovat.",
               autoClose: true
-            })}
+            })
+      }
       className="action-button"
     />
     <Button
@@ -53,7 +54,8 @@ const ExpoCardActions = ({
         inProgress={inProgress}
       />
     </div>
-  </div>;
+  </div>
+);
 
 export default withRouter(
   connect(

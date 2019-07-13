@@ -6,7 +6,7 @@ import { compose, withHandlers } from "recompose";
 import Dialog from "./DialogWrap";
 import { removeCollaborator } from "../../actions/expoActions";
 
-const ExpoShareRemoveCollaborator = ({ handleSubmit, dialogData, data }) =>
+const ExpoShareRemoveCollaborator = ({ handleSubmit, dialogData, data }) => (
   <Dialog
     title="Odebrání spolupracovníka"
     name="ExpoShareRemoveCollaborator"
@@ -16,10 +16,14 @@ const ExpoShareRemoveCollaborator = ({ handleSubmit, dialogData, data }) =>
     <p>
       Spolupracovník {data && data.name ? `${data.name} ` : ""}bude odebrán.
     </p>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    null
+  ),
   withHandlers({
     onSubmit: dialog => async (formData, dispatch, props) => {
       if (await dispatch(removeCollaborator(props.data.id)))

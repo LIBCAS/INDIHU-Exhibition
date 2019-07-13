@@ -18,52 +18,55 @@ const ScreenLink = ({
   timeoutId,
   setTimeoutId
 }) =>
-  initialValues.link
-    ? <Dialog
-        title="Odkaz obrazovky"
-        name="ScreenLink"
-        submitLabel="Zavřít"
-        handleSubmit={handleSubmit}
-        noStornoButton={true}
-        big={true}
-      >
-        <form onSubmit={handleSubmit}>
-          <div className="flex-row">
-            <h4>{`${window.location.origin}/view/${initialValues.link}`}</h4>
-          </div>
-          <div className="flex-row">
-            <CopyToClipboard
-              text={`${window.location.origin}/view/${initialValues.link}`}
-            >
-              <div style={{ position: "relative" }}>
-                {showCopied &&
-                  <div
-                    className="chip"
-                    style={{
-                      position: "absolute",
-                      top: -40,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      margin: 0
-                    }}
-                  >
-                    Zkopírováno!
-                  </div>}
-                <Button
-                  raised
-                  label="Kopírovat do schránky"
-                  onClick={() => {
-                    setShowCopied(true);
-                    clearTimeout(timeoutId);
-                    setTimeoutId(setTimeout(() => setShowCopied(false), 1500));
+  initialValues.link ? (
+    <Dialog
+      title="Odkaz obrazovky"
+      name="ScreenLink"
+      submitLabel="Zavřít"
+      handleSubmit={handleSubmit}
+      noStornoButton={true}
+      big={true}
+    >
+      <form onSubmit={handleSubmit}>
+        <div className="flex-row">
+          <h4>{`${window.location.origin}/view/${initialValues.link}`}</h4>
+        </div>
+        <div className="flex-row">
+          <CopyToClipboard
+            text={`${window.location.origin}/view/${initialValues.link}`}
+          >
+            <div style={{ position: "relative" }}>
+              {showCopied && (
+                <div
+                  className="chip"
+                  style={{
+                    position: "absolute",
+                    top: -40,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    margin: 0
                   }}
-                />
-              </div>
-            </CopyToClipboard>
-          </div>
-        </form>
-      </Dialog>
-    : <div />;
+                >
+                  Zkopírováno!
+                </div>
+              )}
+              <Button
+                raised
+                label="Kopírovat do schránky"
+                onClick={() => {
+                  setShowCopied(true);
+                  clearTimeout(timeoutId);
+                  setTimeoutId(setTimeout(() => setShowCopied(false), 1500));
+                }}
+              />
+            </div>
+          </CopyToClipboard>
+        </div>
+      </form>
+    </Dialog>
+  ) : (
+    <div />
+  );
 
 export default compose(
   withState("showCopied", "setShowCopied", false),

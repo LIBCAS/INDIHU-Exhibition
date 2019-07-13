@@ -24,7 +24,7 @@ const ScreenDocumentNew = ({
   documentType,
   changeDocumentType,
   change
-}) =>
+}) => (
   <Dialog
     title="Nový dokument"
     name="ScreenDocumentNew"
@@ -40,7 +40,8 @@ const ScreenDocumentNew = ({
         label="Název dokumentu"
         validate={[Validation.required]}
         onChange={(e, value) =>
-          addDialogData("ScreenDocumentNew", { fileName: value })}
+          addDialogData("ScreenDocumentNew", { fileName: value })
+        }
       />
 
       <Radio
@@ -71,7 +72,7 @@ const ScreenDocumentNew = ({
         onClick={() => changeDocumentType(documentOpts[2].value)}
       />
 
-      {documentType === documentOpts[1].value &&
+      {documentType === documentOpts[1].value && (
         <div>
           <Field
             component={TextField}
@@ -80,7 +81,8 @@ const ScreenDocumentNew = ({
             label="URL adresa"
             validate={[Validation.required]}
             onChange={(e, value) =>
-              addDialogData("ScreenDocumentNew", { url: value })}
+              addDialogData("ScreenDocumentNew", { url: value })
+            }
           />
           <Field
             component={SelectField}
@@ -90,10 +92,12 @@ const ScreenDocumentNew = ({
             menuItems={fileTypeOpts}
             validate={[Validation.required]}
             onChange={(e, value) =>
-              addDialogData("ScreenDocumentNew", { urlType: value })}
+              addDialogData("ScreenDocumentNew", { urlType: value })
+            }
           />
-        </div>}
-      {documentType === documentOpts[2].value &&
+        </div>
+      )}
+      {documentType === documentOpts[2].value && (
         <div className="flex-col">
           <Field
             component={TextField}
@@ -108,15 +112,18 @@ const ScreenDocumentNew = ({
             label="Vybrat"
             onClick={() =>
               setDialog("ScreenDocumentChoose", {
-                typeMatch: new RegExp(
-                  /^(image\/png|image\/jpg|image\/jpeg|application\/pdf)$/
-                ),
+                // typeMatch: new RegExp(
+                //   /^(image\/png|image\/jpg|image\/jpeg|application\/pdf)$/
+                // ),
                 onChoose: file => change("name", get(file, "name"))
-              })}
+              })
+            }
           />
-        </div>}
+        </div>
+      )}
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   connect(
@@ -145,12 +152,12 @@ export default compose(
                   fileName: formData.fileName
                 }
               : documentType === documentOpts[1].value
-                ? {
-                    fileName: formData.fileName,
-                    url: formData.url,
-                    urlType: formData.urlType
-                  }
-                : { fileName: formData.fileName }
+              ? {
+                  fileName: formData.fileName,
+                  url: formData.url,
+                  urlType: formData.urlType
+                }
+              : { fileName: formData.fileName }
           )
         )
       ) {

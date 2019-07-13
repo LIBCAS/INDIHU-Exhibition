@@ -2,7 +2,7 @@ import { TAB_FOLDER, TAB_FILE } from "../actions/constants";
 
 const initialState = {
   folder: null,
-  file: null,
+  file: null
 };
 
 const reducer = (state = initialState, action) => {

@@ -7,20 +7,26 @@ import { get, escapeRegExp } from "lodash";
 
 import { animationType } from "../../enums/animationType";
 
-const ViewChapter = ({ title, subTitle }) => {
+const ViewChapter = ({ title, subTitle, viewScreen }) => {
   return (
     <div className="viewer-screen">
       <div
         id="view-chapter-image-container"
-        className="image-fullscreen-wrap"
+        className={classNames("image-fullscreen-wrap chapter", {
+          slideUp: get(viewScreen, "animationType") === animationType.FROM_TOP,
+          slideDown:
+            get(viewScreen, "animationType") === animationType.FROM_BOTTOM,
+          slideRight:
+            get(viewScreen, "animationType") ===
+            animationType.FROM_LEFT_TO_RIGHT,
+          slideLeft:
+            get(viewScreen, "animationType") ===
+            animationType.FROM_RIGHT_TO_LEFT
+        })}
       />
       <div className="title-container">
-        <p className="title-fullscreen">
-          {title}
-        </p>
-        <p className="subtitle-fullscreen">
-          {subTitle}
-        </p>
+        <p className="title-fullscreen">{title}</p>
+        <p className="subtitle-fullscreen">{subTitle}</p>
       </div>
     </div>
   );
@@ -28,7 +34,10 @@ const ViewChapter = ({ title, subTitle }) => {
 
 export default compose(
   withRouter,
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), null),
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    null
+  ),
   withState("title", "setTitle", ""),
   withState("subTitle", "setSubTitle", ""),
   withState("titleTimeout", "setTitleTimeout", null),
@@ -92,18 +101,28 @@ export default compose(
         const newNode = screenFiles["image"];
 
         newNode.className = classNames("image-fullscreen", {
+          cover:
+            viewScreen.animationType === animationType.WITHOUT ||
+            viewScreen.animationType === animationType.WITHOUT_FULL_SCREEN,
+          contain: viewScreen.animationType === animationType.WITHOUT_NO_CROP,
           "animation-slideDown":
             viewScreen.animationType &&
             viewScreen.animationType === animationType.FROM_TOP,
           "animation-slideUp":
             viewScreen.animationType &&
-            viewScreen.animationType === animationType.FROM_BOTTOM
+            viewScreen.animationType === animationType.FROM_BOTTOM,
+          "animation-slideRight":
+            viewScreen.animationType &&
+            viewScreen.animationType === animationType.FROM_LEFT_TO_RIGHT,
+          "animation-slideLeft":
+            viewScreen.animationType &&
+            viewScreen.animationType === animationType.FROM_RIGHT_TO_LEFT
         });
         newNode.setAttribute(
           "style",
-          `animation-duration: ${viewScreen.time && viewScreen.time > 0
-            ? viewScreen.time
-            : "20"}s`
+          `animation-duration: ${
+            viewScreen.time && viewScreen.time > 0 ? viewScreen.time : "20"
+          }s`
         );
         document
           .getElementById("view-chapter-image-container")

@@ -34,9 +34,9 @@ const ScreenMove = ({
       forEach(activeExpo.structure.screens, (chapter, row) => {
         if (chapter[0] && chapter[0].type === "INTRO") {
           options.push({
-            label: `${row + 1}${chapter[0].title
-              ? ` ${chapter[0].title}`
-              : ""}`,
+            label: `${row + 1}${
+              chapter[0].title ? ` ${chapter[0].title}` : ""
+            }`,
             value: row
           });
         }
@@ -93,83 +93,88 @@ const ScreenMove = ({
         find(
           get(activeExpo, "structure.screens"),
           screen => get(screen, "[0].type") === "INTRO"
-        ) &&
-        <Field
-          component={CheckBox}
-          componentId="screen-move-checkbox-aloneScreen"
-          label="Samostatná obrazovka"
-          name="aloneScreen"
-          change={change}
-          onClick={value => {
-            if (value === !!get(dialogData, "aloneScreen")) {
-              change("rowNum", get(dialogData, "rowNum"));
-              if (!value) {
-                change("colNum", get(dialogData, "colNum"));
-              }
-            } else {
-              if (value) {
-                change(
-                  "rowNum",
-                  get(activeExpo, "structure.screens.length", 1)
-                );
+        ) && (
+          <Field
+            component={CheckBox}
+            componentId="screen-move-checkbox-aloneScreen"
+            label="Samostatná obrazovka"
+            name="aloneScreen"
+            change={change}
+            onClick={value => {
+              if (value === !!get(dialogData, "aloneScreen")) {
+                change("rowNum", get(dialogData, "rowNum"));
+                if (!value) {
+                  change("colNum", get(dialogData, "colNum"));
+                }
               } else {
-                change(
-                  "rowNum",
-                  findIndex(
-                    get(activeExpo, "structure.screens"),
-                    screen => get(screen, "[0].type") === "INTRO"
-                  )
-                );
-                change(
-                  "colNum",
-                  get(
-                    activeExpo,
-                    `structure.screens[${findIndex(
+                if (value) {
+                  change(
+                    "rowNum",
+                    get(activeExpo, "structure.screens.length", 1)
+                  );
+                } else {
+                  change(
+                    "rowNum",
+                    findIndex(
                       get(activeExpo, "structure.screens"),
                       screen => get(screen, "[0].type") === "INTRO"
-                    )}].length`,
-                    0
-                  )
-                );
-              }
-            }
-          }}
-        />}
-      {dialogData && get(activeExpo, "structure.screens")
-        ? dialogData.type !== "INTRO" && !aloneScreen
-          ? <div>
-              <Field
-                component={SelectField}
-                componentId="screen-move-selectfield-chapter"
-                label="Kapitola"
-                name="rowNum"
-                menuItems={options}
-                onChange={(_, value) => {
-                  change("rowNum", value);
+                    )
+                  );
                   change(
                     "colNum",
-                    value === dialogData.rowNum
-                      ? dialogData.colNum
-                      : activeExpo.structure.screens[value].length
+                    get(
+                      activeExpo,
+                      `structure.screens[${findIndex(
+                        get(activeExpo, "structure.screens"),
+                        screen => get(screen, "[0].type") === "INTRO"
+                      )}].length`,
+                      0
+                    )
                   );
-                }}
-              />
-              <Field
-                component={SelectField}
-                componentId="screen-move-selectfield-screen"
-                label="Obrazovka"
-                name="colNum"
-                menuItems={options2}
-              />
-            </div>
-          : <Field
+                }
+              }
+            }}
+          />
+        )}
+      {dialogData && get(activeExpo, "structure.screens") ? (
+        dialogData.type !== "INTRO" && !aloneScreen ? (
+          <div>
+            <Field
               component={SelectField}
-              componentId="screen-move-selectfield-position"
-              label="Pozice"
+              componentId="screen-move-selectfield-chapter"
+              label="Kapitola"
               name="rowNum"
               menuItems={options}
+              onChange={(_, value) => {
+                change("rowNum", value);
+                change(
+                  "colNum",
+                  value === dialogData.rowNum
+                    ? dialogData.colNum
+                    : activeExpo.structure.screens[value].length
+                );
+              }}
             />
-        : <div />}
+            <Field
+              component={SelectField}
+              componentId="screen-move-selectfield-screen"
+              label="Obrazovka"
+              name="colNum"
+              menuItems={options2}
+            />
+          </div>
+        ) : (
+          <Field
+            component={SelectField}
+            componentId="screen-move-selectfield-position"
+            label="Pozice"
+            name="rowNum"
+            menuItems={options}
+          />
+        )
+      ) : (
+        <div />
+      )}
     </Dialog>
   );
 };

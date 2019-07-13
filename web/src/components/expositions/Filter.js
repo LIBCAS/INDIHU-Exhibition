@@ -34,7 +34,7 @@ const Filter = ({
   setExpoFilter,
   setExpoPager,
   getExpositions
-}) =>
+}) => (
   <div className="flex-header-actions">
     <div className="flex-header-row">
       <p className="flex-header-text"> Filtr projektů: </p>
@@ -112,12 +112,16 @@ const Filter = ({
         <FontIcon className="search-icon">search</FontIcon>
       </div>
     </div>
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(({ expo: { filter, pager } }) => ({ filter, pager }), {
-    setExpoFilter,
-    setExpoPager,
-    getExpositions
-  })
+  connect(
+    ({ expo: { filter, pager } }) => ({ filter, pager }),
+    {
+      setExpoFilter,
+      setExpoPager,
+      getExpositions
+    }
+  )
 )(Filter);

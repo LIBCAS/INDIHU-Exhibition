@@ -9,7 +9,7 @@ import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { renameExpo } from "../../actions/expoActions";
 
-const ExpoRename = ({ handleSubmit }) =>
+const ExpoRename = ({ handleSubmit }) => (
   <Dialog
     title="Nový název výstavy"
     name="ExpoRename"
@@ -25,10 +25,14 @@ const ExpoRename = ({ handleSubmit }) =>
         validate={[Validation.required]}
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    null
+  ),
   withRouter,
   withHandlers({
     onSubmit: dialog => async (formData, dispatch, props) => {

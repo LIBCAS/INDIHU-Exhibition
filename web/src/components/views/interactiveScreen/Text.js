@@ -8,14 +8,15 @@ const Text = ({ mainText }) => {
   return (
     <div className="text-screen">
       <div className="text">
-        {mainText &&
+        {mainText && (
           <p
             {...{
               id: "interactive-screen-view-text-paragraph"
             }}
           >
             {parseText(mainText)}
-          </p>}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -31,9 +32,11 @@ export default compose(
       if (paragraph && mainText && mainText.length) {
         paragraph.style.setProperty(
           "font-size",
-          `${window.innerWidth > window.innerHeight
-            ? window.innerWidth
-            : window.innerHeight}px`
+          `${
+            window.innerWidth > window.innerHeight
+              ? window.innerWidth
+              : window.innerHeight
+          }px`
         );
 
         while (

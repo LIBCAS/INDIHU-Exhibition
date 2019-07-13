@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from 'classnames';
+import classNames from "classnames";
 import TextField from "react-md/lib/TextFields";
 
 const FormInput = props => {
@@ -26,16 +26,16 @@ const FormInput = props => {
         disabled={disabled}
         maxLength={maxLength}
         rows={multiLine && 2}
-        autoComplete={"new-password"}
+        autoComplete="off"
       />
-      <span className={classNames("form-input-suffix", { "withErr": touched && error })}>
+      <span
+        className={classNames("form-input-suffix", {
+          withErr: touched && error
+        })}
+      >
         {suffix}
       </span>
-      {touched &&
-        error &&
-        <span className="invalid">
-          {error}
-        </span>}
+      {touched && error && <span className="invalid">{error}</span>}
     </div>
   );
 };

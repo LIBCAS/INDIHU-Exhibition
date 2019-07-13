@@ -18,7 +18,7 @@ const ExpositionMenu = ({
   changeRadioState,
   loadExpo,
   closeDialog
-}) =>
+}) => (
   <Dialog
     title={get(dialogData, "title", "Výstava")}
     name="ExpositionMenu"
@@ -128,9 +128,10 @@ const ExpositionMenu = ({
         }}
         className="exposition-menu-button"
       />
-      {get(dialogData, "canDelete") &&
-        <div className="exposition-menu-divider" />}
-      {get(dialogData, "canDelete") &&
+      {get(dialogData, "canDelete") && (
+        <div className="exposition-menu-divider" />
+      )}
+      {get(dialogData, "canDelete") && (
         <Button
           flat
           label="Smazat"
@@ -148,12 +149,17 @@ const ExpositionMenu = ({
             });
           }}
           className="exposition-menu-button"
-        />}
+        />
+      )}
     </div>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(null, { changeRadioState, loadExpo }),
+  connect(
+    null,
+    { changeRadioState, loadExpo }
+  ),
   withHandlers({
     onSubmit: ({ closeDialog }) => () => {
       closeDialog();

@@ -19,7 +19,7 @@ const Form = ({
   setAllowedRegistration,
   automaticRegistration,
   setAutomaticRegistration
-}) =>
+}) => (
   <form className="flex-form" onSubmit={handleSubmit}>
     <Checkbox
       id="admin-checkbox-allowedregistration"
@@ -60,13 +60,17 @@ const Form = ({
         onClick={() => setActiveForm(null)}
       />
     </div>
-  </form>;
+  </form>
+);
 
 export default compose(
-  connect(null, {
-    changeAdminSettings,
-    getAdminSettings
-  }),
+  connect(
+    null,
+    {
+      changeAdminSettings,
+      getAdminSettings
+    }
+  ),
   withState("allowedRegistration", "setAllowedRegistration", false),
   withState("automaticRegistration", "setAutomaticRegistration", false),
   withHandlers({

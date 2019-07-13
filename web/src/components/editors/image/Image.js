@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { map, compact, concat, get, find } from "lodash";
+import { map, compact, concat, get, find, filter } from "lodash";
 import { compose, withState } from "recompose";
 import SelectField from "react-md/lib/SelectFields";
 
@@ -18,7 +18,15 @@ import { hasValue } from "../../../utils";
 const options = [
   { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
   { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
-  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM }
+  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
+  {
+    label: animationTypeText.FROM_LEFT_TO_RIGHT,
+    value: animationType.FROM_LEFT_TO_RIGHT
+  },
+  {
+    label: animationTypeText.FROM_RIGHT_TO_LEFT,
+    value: animationType.FROM_RIGHT_TO_LEFT
+  }
 ];
 
 const Image = ({
@@ -82,7 +90,7 @@ const Image = ({
                 }}
               />
             </div>
-            {image &&
+            {image && (
               <InfopointsSequencesTable
                 {...{
                   label: "Infopointy",
@@ -92,12 +100,10 @@ const Image = ({
                   onRowClick: i => setActivePoint(activePoint === i ? null : i),
                   onSubmit: text => {
                     updateScreenData({
-                      infopoints: map(
-                        activeScreen.infopoints,
-                        infopoint =>
-                          infopoint.edit
-                            ? { ...infopoint, text, edit: false }
-                            : infopoint
+                      infopoints: map(activeScreen.infopoints, infopoint =>
+                        infopoint.edit
+                          ? { ...infopoint, text, edit: false }
+                          : infopoint
                       )
                     });
                   },
@@ -133,10 +139,17 @@ const Image = ({
                       infopoints: compact(
                         concat(activeScreen.infopoints, {
                           text: "Vložte popis infopointu",
-                          top: 12,
-                          left: 12,
+                          top: 17,
+                          left: 17,
                           alwaysVisible: false
                         })
+                      )
+                    }),
+                  onDelete: i =>
+                    updateScreenData({
+                      infopoints: filter(
+                        activeScreen.infopoints,
+                        (_, idx) => i !== Number(idx)
                       )
                     }),
                   initialValues: {
@@ -167,7 +180,8 @@ const Image = ({
                           )
                   }
                 }}
-              />}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -176,6 +190,9 @@ const Image = ({
 };
 
 export default compose(
-  connect(null, { getFileById, updateScreenData }),
+  connect(
+    null,
+    { getFileById, updateScreenData }
+  ),
   withState("activePoint", "setActivePoint", null)
 )(Image);

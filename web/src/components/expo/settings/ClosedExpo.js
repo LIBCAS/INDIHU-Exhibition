@@ -18,10 +18,10 @@ const ClosedExpo = ({
   closedPicture,
   setClosedPicture,
   setDialog
-}) =>
+}) => (
   <div {...{ className: "closed-expo" }}>
     <p className="title">
-      Informace uživateli v případě, že je výstava již ukončená
+      Informace návštěvníkovi v případě, že je výstava již ukončená
     </p>
     <form onSubmit={handleSubmit}>
       <div className="flex-row-nowrap flex-centered">
@@ -32,17 +32,30 @@ const ClosedExpo = ({
           disabled
         />
         <div className="flex-row-nowrap flex-centered">
-          <FontIcon className="icon" onClick={() => setClosedPicture(null)}>
-            delete
-          </FontIcon>
+          {closedPicture && (
+            <FontIcon
+              className="icon"
+              onClick={() =>
+                setDialog("ConfirmDialog", {
+                  title: <FontIcon className="color-black">delete</FontIcon>,
+                  text: "Opravdu chcete odstranit obrázek?",
+                  onSubmit: () => setClosedPicture(null)
+                })
+              }
+            >
+              delete
+            </FontIcon>
+          )}
           <Button
             raised
             label="vybrat"
             onClick={() =>
               setDialog("ScreenFileChoose", {
                 onChoose: setClosedPicture,
-                typeMatch: new RegExp(/^image\/.*$/)
-              })}
+                typeMatch: new RegExp(/^image\/.*$/),
+                accept: "image/*"
+              })
+            }
           />
         </div>
         <HelpIcon
@@ -72,7 +85,7 @@ const ClosedExpo = ({
         <Field
           component={TextField}
           componentId="closed-expo-caption"
-          label="Oznámení uživateli"
+          label="Oznámení návštěvníkovi"
           name="closedCaption"
           maxLength={200}
           multiLine
@@ -89,10 +102,14 @@ const ClosedExpo = ({
         <Button raised label="Uložit" type="submit" />
       </div>
     </form>
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(null, { updateExpo, setDialog, getFileById }),
+  connect(
+    null,
+    { updateExpo, setDialog, getFileById }
+  ),
   withState("closedPicture", "setClosedPicture", null),
   withHandlers({
     onSubmit: ({ activeExpo, updateExpo, closedPicture }) => async ({
@@ -100,12 +117,12 @@ export default compose(
       closedCaption
     }) => {
       if (
-        !await updateExpo({
+        !(await updateExpo({
           ...activeExpo,
           closedPicture: get(closedPicture, "id", null),
           closedUrl,
           closedCaption
-        })
+        }))
       ) {
         throw new SubmissionError({
           closedCaption: "Nepodařilo se uložit změny."

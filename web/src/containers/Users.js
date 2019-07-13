@@ -9,7 +9,7 @@ import Header from "../components/users/Header";
 import Table from "../components/users/Table";
 import Pagination from "../components/users/Pagination";
 
-const Users = ({ users }) =>
+const Users = ({ users }) => (
   <div>
     <AppHeader adminStyle />
     <div className="container">
@@ -17,12 +17,20 @@ const Users = ({ users }) =>
       <Table tableType={users.table} />
       <Pagination />
     </div>
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(({ user: { users: { all } } }) => ({ users: all }), {
-    getUsers
-  }),
+  connect(
+    ({
+      user: {
+        users: { all }
+      }
+    }) => ({ users: all }),
+    {
+      getUsers
+    }
+  ),
   lifecycle({
     componentWillMount() {
       const { users, getUsers } = this.props;

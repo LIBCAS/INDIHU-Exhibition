@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 import { compose, lifecycle, withState } from "recompose";
 import { map } from "lodash";
 import classNames from "classnames";
-import FontIcon from "react-md/lib/FontIcons";
+import { TextField, Button, FontIcon, Snackbar } from "react-md";
 import {
   FacebookIcon,
   TwitterIcon,
-  GooglePlusIcon,
   FacebookShareButton,
-  TwitterShareButton,
-  GooglePlusShareButton
+  TwitterShareButton
 } from "react-share";
+import ReactTooltip from "react-tooltip";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 import { getFileById } from "../../actions/fileActions";
 import { screenUrl } from "../../enums/screenType";
@@ -23,10 +23,12 @@ const ViewFinish = ({
   getFileById,
   history,
   collapsed,
-  setCollapsed
+  setCollapsed,
+  isCopied,
+  setIsCopied
 }) => {
   const audio = viewScreen.audio ? getFileById(viewScreen.audio) : null;
-  const fullUrl = `http://inqooltest.libj.cas.cz/view/${viewExpo.url}`;
+  const fullUrl = `${window.location.origin}/view/${viewExpo.url}`;
 
   return (
     <div className="viewer-screen viewer-finish">
@@ -57,30 +59,48 @@ const ViewFinish = ({
             <TwitterShareButton className="icon-social" url={fullUrl}>
               <TwitterIcon size={50} round={true} />
             </TwitterShareButton>
-            <GooglePlusShareButton className="icon-social" url={fullUrl}>
-              <GooglePlusIcon size={50} round={true} />
-            </GooglePlusShareButton>
+          </div>
+          <div className="left-row">
+            <div className="share-link">
+              <p>Získejte odkaz na výstavu:</p>
+              <div className="bottom-row">
+                <TextField disabled={true} value={fullUrl} />
+                <CopyToClipboard text={fullUrl}>
+                  <Button
+                    icon
+                    className="copybutton"
+                    onClick={() => setIsCopied(true)}
+                    data-tip="Získat odkaz na výstavu"
+                    data-for="view-finish-share-link-tooltip"
+                  >
+                    link
+                  </Button>
+                </CopyToClipboard>
+              </div>
+              <ReactTooltip
+                type="dark"
+                effect="solid"
+                id="view-finish-share-link-tooltip"
+                // className="help-icon-react-tooltip"
+              />
+            </div>
           </div>
         </div>
         <div className={classNames("right", { collapsed })}>
           <div className="content">
-            {map(viewScreen.collaborators, (c, i) =>
+            {map(viewScreen.collaborators, (c, i) => (
               <div className="part" key={`coll${i}`}>
-                <p>
-                  {c.role}
-                </p>
-                {c.text.split("\n").map((t, i) =>
-                  <p key={`text-${i}`}>
-                    {t}
-                  </p>
-                )}
+                <p>{c.role}</p>
+                {c.text.split("\n").map((t, i) => (
+                  <p key={`text-${i}`}>{t}</p>
+                ))}
               </div>
-            )}
+            ))}
             <div className="flex-row">
               <div className={classNames({ "half-width": audio })}>
                 <p>Dokumenty k výstavě:</p>
                 <div className="flex-col">
-                  {map(viewScreen.documents, (d, i) =>
+                  {map(viewScreen.documents, (d, i) => (
                     <div key={i}>
                       <a
                         id={`view-finish-file-link-${i}`}
@@ -91,7 +111,9 @@ const ViewFinish = ({
                         a
                       </a>
                       <div
-                        className="document"
+                        className={classNames("document", {
+                          "document-link": d.fileId || d.url
+                        })}
                         onClick={() => {
                           if (d.name)
                             document
@@ -108,34 +130,36 @@ const ViewFinish = ({
                               .focus();
                         }}
                       >
-                        {d.name
-                          ? <FontIcon className="icon">
-                              {/^image.*$/.test(d.type)
-                                ? "image"
-                                : /^audio.*$/.test(d.type)
-                                  ? "music_note"
-                                  : /^video.*$/.test(d.type)
-                                    ? "movie"
-                                    : "insert_drive_file"}
-                            </FontIcon>
-                          : <FontIcon className="icon">
-                              {/^image.*$/.test(d.urlType)
-                                ? "image"
-                                : /^audio.*$/.test(d.urlType)
-                                  ? "music_note"
-                                  : /^video.*$/.test(d.urlType)
-                                    ? "movie"
-                                    : "insert_drive_file"}
-                            </FontIcon>}
-                        <p>
-                          {d.fileName}
-                        </p>
+                        {d.name ? (
+                          <FontIcon className="icon">
+                            {/^image.*$/.test(d.type)
+                              ? "image"
+                              : /^audio.*$/.test(d.type)
+                              ? "music_note"
+                              : /^video.*$/.test(d.type)
+                              ? "movie"
+                              : "insert_drive_file"}
+                          </FontIcon>
+                        ) : (
+                          <FontIcon className="icon">
+                            {/^image.*$/.test(d.urlType)
+                              ? "image"
+                              : /^audio.*$/.test(d.urlType)
+                              ? "music_note"
+                              : /^video.*$/.test(d.urlType)
+                              ? "movie"
+                              : /^WEB$/.test(d.urlType)
+                              ? "web"
+                              : "insert_drive_file"}
+                          </FontIcon>
+                        )}
+                        <p style={{ margin: 0 }}>{d.fileName}</p>
                       </div>
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
-              {audio &&
+              {audio && (
                 <div className="half-width">
                   <p>Audio verze výstavy:</p>
                   <a
@@ -149,18 +173,25 @@ const ViewFinish = ({
                   <div
                     className="document"
                     onClick={() =>
-                      document.getElementById("view-finish-audio-link").click()}
+                      document.getElementById("view-finish-audio-link").click()
+                    }
                   >
                     <FontIcon className="icon">headset</FontIcon>
-                    <p>
-                      {audio.name}
-                    </p>
+                    <p>{audio.name}</p>
                   </div>
-                </div>}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+      <Snackbar
+        id="snackbar"
+        toasts={isCopied ? [{ text: "Odkaz zkopírován" }] : undefined}
+        autohide={true}
+        onDismiss={() => setIsCopied(false)}
+        className="color-background-white color-black flex-row-normal flex-centered"
+      />
     </div>
   );
 };
@@ -175,6 +206,7 @@ export default compose(
     { getFileById }
   ),
   withState("collapsed", "setCollapsed", true),
+  withState("isCopied", "setIsCopied", false),
   lifecycle({
     componentWillMount() {
       const { handleScreen } = this.props;
@@ -188,16 +220,20 @@ export default compose(
 
         newNode.setAttribute(
           "style",
-          `width: ${viewScreen.imageOrigData.height >
-          viewScreen.imageOrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.imageOrigData.height >
-          viewScreen.imageOrigData.width
-            ? "100%"
-            : "auto"};`
+          `width: ${
+            viewScreen.imageOrigData.height > viewScreen.imageOrigData.width
+              ? "auto"
+              : "100%"
+          }; height: ${
+            viewScreen.imageOrigData.height > viewScreen.imageOrigData.width
+              ? "100%"
+              : "auto"
+          };`
         );
 
-        document.getElementById("view-finish-image-container").prepend(newNode);
+        document
+          .getElementById("view-finish-image-container")
+          .appendChild(newNode);
       }
     }
   })

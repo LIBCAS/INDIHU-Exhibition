@@ -70,8 +70,11 @@ const Pager = ({ pager, setExpoPager, getExpositions, count }) => {
 };
 
 export default compose(
-  connect(({ expo: { pager } }) => ({ pager }), {
-    setExpoPager,
-    getExpositions
-  })
+  connect(
+    ({ expo: { pager } }) => ({ pager }),
+    {
+      setExpoPager,
+      getExpositions
+    }
+  )
 )(Pager);

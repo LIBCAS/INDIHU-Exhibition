@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose, withProps, lifecycle } from "recompose";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 import AuthController from "./components/AuthController";
 import Dialogs from "./components/dialogs";
@@ -15,21 +16,30 @@ import ExpoViewer from "./containers/ExpoViewer";
 import Profile from "./containers/Profile";
 import Users from "./containers/Users";
 import Admin from "./containers/Admin";
+import { setDialog } from "./actions/dialogActions";
 
-import { isAdmin } from "./utils";
+import { isAdmin, isIE } from "./utils";
 
-const App = props =>
+const App = props => (
   <Provider store={props.store}>
     <Router>
       <AuthController>
         <Helmet>
-          <title>INDIHU</title>
-          <meta name="description" content="Vývoj nástrojů a infrastruktury pro digital humanities" />
+          <title>INDIHU Exhibition</title>
+          <meta
+            name="description"
+            content="Vývoj nástrojů a infrastruktury pro digital humanities"
+          />
         </Helmet>
         <Dialogs />
         <Route exact path="/" component={Authentication} />
+        <Route
+          exact
+          path="/sign-in"
+          component={withProps({ isSignIn: true })(Authentication)}
+        />
         <Route path="/verify/:secret" component={Verify} />
-        <Route path="/expositions" component={Expositions} />
+        <Route path="/exhibitions" component={Expositions} />
         <Route path="/expo/:id" component={Expo} />
         <Route path="/screen/:id" component={ScreenViewer} />
         <Route path="/view/:name" component={ExpoViewer} />
@@ -38,8 +48,24 @@ const App = props =>
         {props.admin && <Route path="/administration" component={Admin} />}
       </AuthController>
     </Router>
-  </Provider>;
+  </Provider>
+);
 
-export default connect(
-  ({ user: { role } }) => ({ admin: isAdmin(role) }), null
+export default compose(
+  connect(
+    ({ user: { role } }) => ({ admin: isAdmin(role) }),
+    { setDialog }
+  ),
+  lifecycle({
+    componentWillMount() {
+      const { setDialog } = this.props;
+      if (isIE()) {
+        setDialog("Info", {
+          title: "Varování",
+          text:
+            "Používáte nepodporovaný prohlížeč, doporučujeme používat Google Chrome!"
+        });
+      }
+    }
+  })
 )(App);

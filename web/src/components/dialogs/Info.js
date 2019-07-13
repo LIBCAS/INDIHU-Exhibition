@@ -6,17 +6,19 @@ import { get } from "lodash";
 
 import Dialog from "./DialogWrap";
 
-const Info = ({ handleSubmit, data }) =>
+const Info = ({ handleSubmit, data }) => (
   <Dialog
-    title={data && data.title ? data.title : "Info"}
+    title={get(data, "title", "Info")}
     name="Info"
     handleSubmit={handleSubmit}
     submitLabel="Ok"
+    noDialogMenu={get(data, "noDialogMenu")}
+    noToolbar={get(data, "noToolbar")}
+    big={get(data, "big")}
   >
-    <p>
-      {data && data.text ? data.text : ""}
-    </p>
-  </Dialog>;
+    {get(data, "content") ? data.content : <p>{get(data, "text", "")}</p>}
+  </Dialog>
+);
 
 export default compose(
   connect(
@@ -26,7 +28,7 @@ export default compose(
     null
   ),
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
+    onSubmit: dialog => async () => {
       dialog.closeDialog();
     }
   }),
@@ -35,7 +37,7 @@ export default compose(
       if (get(nextProps, "data.autoClose")) {
         setTimeout(() => {
           nextProps.onSubmit();
-        }, 2000);
+        }, get(nextProps, "data.autoCloseTime", 2000));
       }
     }
   }),

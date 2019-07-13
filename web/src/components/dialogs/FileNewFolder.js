@@ -7,7 +7,7 @@ import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { addFolder } from "../../actions/fileActions";
 
-const FileNewFolder = ({ handleSubmit }) =>
+const FileNewFolder = ({ handleSubmit }) => (
   <Dialog
     title="Nový adresář"
     name="FileNewFolder"
@@ -23,7 +23,8 @@ const FileNewFolder = ({ handleSubmit }) =>
         validate={[Validation.required]}
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   withHandlers({

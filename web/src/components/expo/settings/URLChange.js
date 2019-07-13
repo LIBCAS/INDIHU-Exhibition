@@ -16,13 +16,11 @@ const validURL = value =>
     ? "*URL může obsahovat jenom znaky abecedy, čísla a pomlčku"
     : undefined;
 
-const URLChange = ({ handleSubmit, resetForm }) =>
+const URLChange = ({ handleSubmit, resetForm }) => (
   <div>
     <form onSubmit={handleSubmit}>
       <div className="row">
-        <p className="url">
-          {window.location.origin}/view/
-        </p>
+        <p className="url">{`${window.location.origin}/view/`}</p>
         <Field
           component={TextField}
           componentId="expo-url-change-textfield-url"
@@ -35,10 +33,14 @@ const URLChange = ({ handleSubmit, resetForm }) =>
         <Button raised label="Aktualizovat" type="submit" />
       </div>
     </form>
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(null, { resetForm, checkExpoURL, setDialog }),
+  connect(
+    null,
+    { resetForm, checkExpoURL, setDialog }
+  ),
   withHandlers({
     onSubmit: ({ initialValues, checkExpoURL, setDialog }) => async ({
       url

@@ -13,7 +13,7 @@ import HelpIcon from "../HelpIcon";
 import { expoState, expoStateText } from "../../enums/expoState";
 import { helpIconText } from "../../enums/text";
 
-const ExpoState = ({ handleSubmit, radio, changeRadioState }) =>
+const ExpoState = ({ handleSubmit, radio, changeRadioState }) => (
   <Dialog
     title="Změna stavu výstavy"
     name="ExpoState"
@@ -73,10 +73,14 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) =>
         />
       </div>
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    null
+  ),
   withRouter,
   connect(
     ({ app: { radio } }) => ({

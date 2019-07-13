@@ -27,11 +27,9 @@ const FormInput = props => {
         position={position || "below"}
         placeholder={placeholder}
       />
-      {touched &&
-        error &&
-        <span className="invalid select-field-invalid">
-          {error}
-        </span>}
+      {touched && error && (
+        <span className="invalid select-field-invalid">{error}</span>
+      )}
     </div>
   );
 };

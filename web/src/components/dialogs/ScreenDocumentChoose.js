@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { compose, withHandlers, withState } from "recompose";
+import { compose, withHandlers, withState, withProps } from "recompose";
+import { get } from "lodash";
 
 import Dialog from "./DialogWrap";
 import Header from "../expo/files/Header";
@@ -9,17 +10,23 @@ import FileManager from "../expo/files/FileManager";
 import FileMeta from "../expo/files/FileMeta";
 import FileView from "../expo/files/FileView";
 import * as fileActions from "../../actions/fileActions";
+import { keyShortcutsEnhancer, sortFilterFiles } from "../expo/files/utils";
 
 const ScreenDocumentChoose = ({
   handleSubmit,
   dialogData,
   activeFile,
   activeFolder,
-  activeExpo,
+  files,
   tabFolder,
   tabFile,
   keyState,
-  setKeyState
+  setKeyState,
+  sort,
+  setSort,
+  order,
+  setOrder,
+  containerID
 }) => {
   const onClose = () => {
     tabFolder(null);
@@ -33,12 +40,22 @@ const ScreenDocumentChoose = ({
       onClose={onClose}
       className="large"
     >
-      <Header onFileAdd={() => setKeyState(!keyState)} />
+      <Header
+        onFileAdd={() => setKeyState(!keyState)}
+        sort={sort}
+        setSort={setSort}
+        order={order}
+        setOrder={setOrder}
+        accept={get(dialogData, "accept")}
+      />
       <div className="files-row">
         <div className="files-wrap--manager">
           <FileManager
+            id={containerID}
+            sort={sort}
+            setSort={setSort}
             inDialog
-            activeExpo={activeExpo}
+            files={files}
             activeFile={activeFile}
             activeFolder={activeFolder}
             tabFolder={tabFolder}
@@ -46,11 +63,7 @@ const ScreenDocumentChoose = ({
             typeMatch={dialogData && dialogData.typeMatch}
             key={`files-file-manager-state-${keyState}`}
           />
-          {dialogData &&
-            dialogData.error &&
-            <p>
-              {dialogData.error}
-            </p>}
+          {dialogData && dialogData.error && <p>{dialogData.error}</p>}
         </div>
         <div className="files-col">
           <div className="files-wrap--view">
@@ -67,14 +80,28 @@ const ScreenDocumentChoose = ({
 
 export default compose(
   connect(
-    ({ expo: { activeExpo }, file: { folder, file } }) => ({
+    ({ expo: { activeExpo }, file: { folder, file }, dialog: { name } }) => ({
       activeExpo,
       activeFolder: folder,
-      activeFile: file
+      activeFile: file,
+      dialogName: name
     }),
     { ...fileActions }
   ),
   withState("keyState", "setKeyState", true),
+  withState("sort", "setSort", "CREATED"),
+  withState("order", "setOrder", "ASC"),
+  withProps(({ dialogName, activeExpo, sort, order, dialogData }) => ({
+    containerID: "screen-document-choose-files-manager",
+    shortcutsEnabled: dialogName === "ScreenDocumentChoose",
+    files: sortFilterFiles(
+      activeExpo,
+      sort,
+      order,
+      get(dialogData, "typeMatch")
+    )
+  })),
+  keyShortcutsEnhancer,
   withHandlers({
     onSubmit: dialog => async (
       formData,

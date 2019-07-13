@@ -18,7 +18,7 @@
     }
     &--view {
       &:before {
-        content: 'Náhled souboru';
+        content: "Náhled souboru";
         line-height: 1em;
       }
       margin: 1em;
@@ -26,7 +26,7 @@
     }
     &--meta {
       &:before {
-        content: 'Metadata';
+        content: "Metadata";
         line-height: 1em;
       }
       margin: 1em;
@@ -36,14 +36,14 @@
   &-manager {
     height: 32.2em;
     min-width: 20em;
-    overflow-y: scroll;
+    overflow-y: auto;
     .row {
       width: 100%;
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: center;
-      padding: .5em 2px;
+      padding: 7px 2px;
       position: relative;
       cursor: pointer;
       &:hover,
@@ -121,7 +121,7 @@
   &-meta {
     height: 10em;
     min-width: 20em;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .files-meta-text {
       padding-bottom: 16px;
@@ -155,18 +155,22 @@
 }
 
 .fileUploader {
-  position: relative;
-  display: inline-block;
-  .progress {
-    position: absolute;
-    left: 10%;
-    width: 85%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .invalid {
-    position: absolute;
-    left: 10%;
-    width: 85%;
     color: $c-error;
+    overflow: hidden;
+    max-width: 200px;
+    word-break: break-word;
+    text-align: center;
   }
 }
 

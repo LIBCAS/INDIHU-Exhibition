@@ -27,7 +27,7 @@ const Screenstart = props => {
             link: `${match.url}/authors`
           },
           {
-            label: "Dokumenty",
+            label: "Dokumenty/Bibliografie",
             link: `${match.url}/documents`
           }
         ]}
@@ -62,8 +62,11 @@ const Screenstart = props => {
 };
 
 export default compose(
-  connect(({ expo: { activeScreen } }) => ({ activeScreen }), {
-    updateScreenData
-  }),
+  connect(
+    ({ expo: { activeScreen } }) => ({ activeScreen }),
+    {
+      updateScreenData
+    }
+  ),
   withRouter
 )(Screenstart);

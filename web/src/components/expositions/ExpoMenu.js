@@ -16,7 +16,7 @@ const ExpoMenu = ({
   activeExpo,
   state,
   inProgress
-}) =>
+}) => (
   <Button
     id="expo-menu-card-action-menu"
     icon
@@ -36,7 +36,8 @@ const ExpoMenu = ({
     }}
   >
     more_vert
-  </Button>;
+  </Button>
+);
 
 export default withRouter(
   connect(

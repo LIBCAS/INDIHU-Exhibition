@@ -4,16 +4,21 @@ import { connect } from "react-redux";
 
 import ScreenMenu from "../../components/views/ScreenMenu";
 
-const ViewExternal = ({ viewScreen }) =>
+const ViewExternal = ({ viewScreen }) => (
   <div className="viewer-screen">
-    {viewScreen.externalData &&
+    {viewScreen.externalData && (
       <div
         className="external"
         dangerouslySetInnerHTML={{ __html: viewScreen.externalData }}
-      />}
+      />
+    )}
     <ScreenMenu viewScreen={viewScreen} />
-  </div>;
+  </div>
+);
 
 export default compose(
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), null)
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    null
+  )
 )(ViewExternal);

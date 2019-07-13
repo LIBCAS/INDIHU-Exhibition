@@ -8,7 +8,7 @@ const CheckBox = ({
   change,
   componentId,
   onClick
-}) =>
+}) => (
   <div>
     <Checkbox
       {...input}
@@ -25,11 +25,8 @@ const CheckBox = ({
         }
       }}
     />
-    {touched &&
-      error &&
-      <span className="invalid">
-        {error}
-      </span>}
-  </div>;
+    {touched && error && <span className="invalid">{error}</span>}
+  </div>
+);
 
 export default CheckBox;

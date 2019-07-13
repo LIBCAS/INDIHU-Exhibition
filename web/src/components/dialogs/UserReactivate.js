@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
+import { get } from "lodash";
 import { compose, withHandlers } from "recompose";
 import Dialog from "./DialogWrap";
 import { reactivateUser, getUsers } from "../../actions/adminActions";
 
-const UserReactivate = ({ handleSubmit, dialogData, data }) =>
+const UserReactivate = ({ handleSubmit, dialogData, data }) => (
   <Dialog
     title="Reaktivace uživatele"
     name="UserReactivate"
@@ -13,13 +14,19 @@ const UserReactivate = ({ handleSubmit, dialogData, data }) =>
     handleSubmit={handleSubmit}
   >
     <p>
-      Uživatel {data && data.name ? `${data.name} ` : ""}bude aktivován.
+      Uživatel <strong>{get(data, "name", "")}</strong> bude aktivován.
     </p>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   connect(
-    ({ dialog: { data }, user: { users: { all } } }) => ({ data, users: all }),
+    ({
+      dialog: { data },
+      user: {
+        users: { all }
+      }
+    }) => ({ data, users: all }),
     {
       getUsers
     }

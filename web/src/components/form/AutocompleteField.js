@@ -28,11 +28,7 @@ const AutocompleteField = props => {
         onAutocomplete={onAutocomplete}
         clearOnAutocomplete={clearOnAutocomplete}
       />
-      {touched &&
-        error &&
-        <span className="invalid">
-          {error}
-        </span>}
+      {touched && error && <span className="invalid">{error}</span>}
     </div>
   );
 };

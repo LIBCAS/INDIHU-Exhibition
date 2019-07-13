@@ -40,7 +40,8 @@ const Pagination = ({ users, getUsers }) => {
                 users.sort,
                 users.search,
                 users.table
-              )}
+              )
+            }
           />
         </div>
         <div className="flex-header-row">
@@ -58,7 +59,8 @@ const Pagination = ({ users, getUsers }) => {
                 users.sort,
                 users.search,
                 users.table
-              )}
+              )
+            }
             disabled={users.page <= 0}
           >
             <FontIcon>keyboard_arrow_left</FontIcon>
@@ -73,7 +75,8 @@ const Pagination = ({ users, getUsers }) => {
                 users.sort,
                 users.search,
                 users.table
-              )}
+              )
+            }
             disabled={(users.page + 1) * users.pageSize >= users.count}
           >
             <FontIcon>keyboard_arrow_right</FontIcon>
@@ -84,6 +87,13 @@ const Pagination = ({ users, getUsers }) => {
   );
 };
 
-export default connect(({ user: { users: { all } } }) => ({ users: all }), {
-  getUsers
-})(Pagination);
+export default connect(
+  ({
+    user: {
+      users: { all }
+    }
+  }) => ({ users: all }),
+  {
+    getUsers
+  }
+)(Pagination);

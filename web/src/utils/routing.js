@@ -11,18 +11,17 @@ export const nextViewType = (viewExpo, section, screen) => {
       ? screens[0][0].type
       : screenType.FINISH;
   else if (section === "finish") return screenType.FINISH;
+  // ak existuje dalsia screen
   else
-    // ak existuje dalsia screen
     return screens[parseInt(section, 10)].length - 1 > screen
       ? // vrat dalsiu
         screens[section][parseInt(screen, 10) + 1].type
       : // inak ak existuje dalsia chapter && chapter ma screeny
-        screens.length - 1 > section &&
-        screens[parseInt(section, 10) + 1].length
-        ? // vrat prvy screen dalsej chapter
-          screens[parseInt(section, 10) + 1][0].type
-        : // inak finish
-          screenType.FINISH;
+      screens.length - 1 > section && screens[parseInt(section, 10) + 1].length
+      ? // vrat prvy screen dalsej chapter
+        screens[parseInt(section, 10) + 1][0].type
+      : // inak finish
+        screenType.FINISH;
 };
 
 export const prevViewType = (viewExpo, section, screen) => {
@@ -32,13 +31,13 @@ export const prevViewType = (viewExpo, section, screen) => {
     ? // vrat predchadzjucu
       screens[section][parseInt(screen, 10) - 1].type
     : // inak ak existuje predchadajuca chapter && chapter ma screeny
-      section > 0 && screens[parseInt(section, 10) - 1].length
-      ? // vrat posledny screen predchadzajucej chapter
-        screens[parseInt(section, 10) - 1][
-          screens[parseInt(section, 10) - 1].length - 1
-        ].type
-      : // inak start
-        screenType.START;
+    section > 0 && screens[parseInt(section, 10) - 1].length
+    ? // vrat posledny screen predchadzajucej chapter
+      screens[parseInt(section, 10) - 1][
+        screens[parseInt(section, 10) - 1].length - 1
+      ].type
+    : // inak start
+      screenType.START;
 };
 
 export const viewerRouter = (name, viewExpo, section, screen, next) => {
@@ -54,16 +53,16 @@ export const viewerRouter = (name, viewExpo, section, screen, next) => {
         ? `/view/${name}/${section}/${parseInt(screen, 10) + 1}`
         : screens.length - 1 > section &&
           screens[parseInt(section, 10) + 1].length
-          ? `/view/${name}/${parseInt(section, 10) + 1}/0`
-          : `/view/${name}/finish`;
+        ? `/view/${name}/${parseInt(section, 10) + 1}/0`
+        : `/view/${name}/finish`;
   } else {
     return screen > 0
       ? `/view/${name}/${section}/${parseInt(screen, 10) - 1}`
       : section > 0 && screens[parseInt(section, 10) - 1].length
-        ? `/view/${name}/${parseInt(section, 10) - 1}/${screens[
-            parseInt(section, 10) - 1
-          ].length - 1}`
-        : `/view/${name}/start`;
+      ? `/view/${name}/${parseInt(section, 10) - 1}/${screens[
+          parseInt(section, 10) - 1
+        ].length - 1}`
+      : `/view/${name}/start`;
   }
 };
 

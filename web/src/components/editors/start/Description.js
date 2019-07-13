@@ -85,7 +85,7 @@ const Description = ({
                 value={image ? image.name : ""}
                 disabled
               />
-              {image &&
+              {image && (
                 <img
                   src={`/api/files/${image.fileId}`}
                   onLoad={({ target: img }) => {
@@ -98,22 +98,35 @@ const Description = ({
                   }}
                   className="hidden"
                   alt=""
-                />}
+                />
+              )}
               <div className="row flex-centered">
-                <FontIcon
-                  className="icon"
-                  onClick={() => updateScreenData({ image: null })}
-                >
-                  delete
-                </FontIcon>
+                {image && (
+                  <FontIcon
+                    className="icon"
+                    onClick={() =>
+                      setDialog("ConfirmDialog", {
+                        title: (
+                          <FontIcon className="color-black">delete</FontIcon>
+                        ),
+                        text: "Opravdu chcete odstranit obrázek?",
+                        onSubmit: () => updateScreenData({ image: null })
+                      })
+                    }
+                  >
+                    delete
+                  </FontIcon>
+                )}
                 <Button
                   raised
                   label="vybrat"
                   onClick={() =>
                     setDialog("ScreenFileChoose", {
                       onChoose: setImage,
-                      typeMatch: new RegExp(/^image\/.*$/)
-                    })}
+                      typeMatch: new RegExp(/^image\/.*$/),
+                      accept: "image/*"
+                    })
+                  }
                 />
                 <HelpIcon
                   {...{
@@ -180,12 +193,11 @@ const Description = ({
                   }}
                 />
               </div>
-              {error &&
+              {error && (
                 <div>
-                  <span className="invalid">
-                    {error}
-                  </span>
-                </div>}
+                  <span className="invalid">{error}</span>
+                </div>
+              )}
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -201,14 +213,15 @@ const Description = ({
                 }}
               />
             </div>
-            <div className="row flex-centered">
+            <div className="row">
               <Checkbox
                 id="screen-start-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Stránka je dokončená"
+                label="Obrazovka je dokončená"
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={value => updateScreenData({ screenCompleted: value })}
+                className="checkbox-no-padding-left"
               />
             </div>
           </div>
@@ -219,6 +232,9 @@ const Description = ({
 };
 
 export default compose(
-  connect(null, { setDialog, getFileById }),
+  connect(
+    null,
+    { setDialog, getFileById }
+  ),
   withState("error", "setError", null)
 )(Description);

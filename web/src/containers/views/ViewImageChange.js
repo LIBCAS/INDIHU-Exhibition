@@ -27,7 +27,7 @@ const ViewImageChange = ({
         className="view-imagechange-image-container"
         onClick={() => animClick && handleClick()}
       >
-        {(animSlideV || animSlideH) &&
+        {(animSlideV || animSlideH) && (
           <div
             id="view-imagechange-image-container-slide-container"
             className="slide-container"
@@ -53,7 +53,7 @@ const ViewImageChange = ({
                 handleSlider(e.target.value, animSlideV);
               }}
             />
-            {(animSlideV || animSlideH) &&
+            {(animSlideV || animSlideH) && (
               <div
                 id="slider__thumb"
                 className={classNames("slider__thumb", {
@@ -61,8 +61,10 @@ const ViewImageChange = ({
                 })}
               >
                 <FontIcon>unfold_more</FontIcon>
-              </div>}
-          </div>}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <ScreenMenu viewScreen={viewScreen} />
     </div>
@@ -70,9 +72,12 @@ const ViewImageChange = ({
 };
 
 export default compose(
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), {
-    getFileById
-  }),
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    {
+      getFileById
+    }
+  ),
   withState("imageChanged", "setImageChanged", false),
   withState("sliderValue", "setSliderValue", 50),
   withState("loadingInterval", "setLoadingInterval", null),
@@ -85,26 +90,30 @@ export default compose(
           .getElementById("interactive-screen-image1")
           .setAttribute(
             "style",
-            `width: ${viewScreen.image1OrigData.height >
-            viewScreen.image1OrigData.width
-              ? "auto"
-              : "100%"}; height: ${viewScreen.image1OrigData.height >
-            viewScreen.image1OrigData.width
-              ? "100%"
-              : "auto"};`
+            `width: ${
+              viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+                ? "auto"
+                : "100%"
+            }; height: ${
+              viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+                ? "100%"
+                : "auto"
+            };`
           );
 
         document
           .getElementById("interactive-screen-image2")
           .setAttribute(
             "style",
-            `width: ${viewScreen.image2OrigData.height >
-            viewScreen.image2OrigData.width
-              ? "auto"
-              : "100%"}; height: ${viewScreen.image2OrigData.height >
-            viewScreen.image2OrigData.width
-              ? "100%"
-              : "auto"}; opacity: 0; filter: alpha(opacity=0);`
+            `width: ${
+              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
+                ? "auto"
+                : "100%"
+            }; height: ${
+              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
+                ? "100%"
+                : "auto"
+            }; opacity: 0; filter: alpha(opacity=0);`
           );
       } else {
         setImageChanged(true);
@@ -113,26 +122,30 @@ export default compose(
           .getElementById("interactive-screen-image1")
           .setAttribute(
             "style",
-            `width: ${viewScreen.image1OrigData.height >
-            viewScreen.image1OrigData.width
-              ? "auto"
-              : "100%"}; height: ${viewScreen.image1OrigData.height >
-            viewScreen.image1OrigData.width
-              ? "100%"
-              : "auto"}; opacity: 0; filter: alpha(opacity=0);`
+            `width: ${
+              viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+                ? "auto"
+                : "100%"
+            }; height: ${
+              viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+                ? "100%"
+                : "auto"
+            }; opacity: 0; filter: alpha(opacity=0);`
           );
 
         document
           .getElementById("interactive-screen-image2")
           .setAttribute(
             "style",
-            `width: ${viewScreen.image2OrigData.height >
-            viewScreen.image2OrigData.width
-              ? "auto"
-              : "100%"}; height: ${viewScreen.image2OrigData.height >
-            viewScreen.image2OrigData.width
-              ? "100%"
-              : "auto"};`
+            `width: ${
+              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
+                ? "auto"
+                : "100%"
+            }; height: ${
+              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
+                ? "100%"
+                : "auto"
+            };`
           );
       }
     },
@@ -165,25 +178,25 @@ export default compose(
           `top: ${back.getBoundingClientRect().height / 2 -
             frontImage.getBoundingClientRect().height /
               2}px; left: ${back.getBoundingClientRect().width / 2 -
+            frontImage.getBoundingClientRect().width / 2}px; height: ${
+            frontImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height >
             frontImage.getBoundingClientRect().width /
-              2}px; height: ${frontImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height >
-          frontImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width
-            ? back.getBoundingClientRect().height
-            : back.getBoundingClientRect().width /
-              get(viewScreen, "image2OrigData.width") *
-              get(
-                viewScreen,
-                "image2OrigData.height"
-              )}px; width: ${frontImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width >
-          frontImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height
-            ? back.getBoundingClientRect().width
-            : back.getBoundingClientRect().height /
-              get(viewScreen, "image2OrigData.height") *
-              get(viewScreen, "image2OrigData.width")}px;`
+              back.getBoundingClientRect().width
+              ? back.getBoundingClientRect().height
+              : (back.getBoundingClientRect().width /
+                  get(viewScreen, "image2OrigData.width")) *
+                get(viewScreen, "image2OrigData.height")
+          }px; width: ${
+            frontImage.getBoundingClientRect().width /
+              back.getBoundingClientRect().width >
+            frontImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height
+              ? back.getBoundingClientRect().width
+              : (back.getBoundingClientRect().height /
+                  get(viewScreen, "image2OrigData.height")) *
+                get(viewScreen, "image2OrigData.width")
+          }px;`
         );
       }
 
@@ -193,25 +206,25 @@ export default compose(
           `top: ${back.getBoundingClientRect().height / 2 -
             backImage.getBoundingClientRect().height /
               2}px; left: ${back.getBoundingClientRect().width / 2 -
+            backImage.getBoundingClientRect().width / 2}px; height: ${
+            backImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height >
             backImage.getBoundingClientRect().width /
-              2}px; height: ${backImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height >
-          backImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width
-            ? back.getBoundingClientRect().height
-            : back.getBoundingClientRect().width /
-              get(viewScreen, "image1OrigData.width") *
-              get(
-                viewScreen,
-                "image1OrigData.height"
-              )}px; width: ${backImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width >
-          backImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height
-            ? back.getBoundingClientRect().width
-            : back.getBoundingClientRect().height /
-              get(viewScreen, "image1OrigData.height") *
-              get(viewScreen, "image1OrigData.width")}px;`
+              back.getBoundingClientRect().width
+              ? back.getBoundingClientRect().height
+              : (back.getBoundingClientRect().width /
+                  get(viewScreen, "image1OrigData.width")) *
+                get(viewScreen, "image1OrigData.height")
+          }px; width: ${
+            backImage.getBoundingClientRect().width /
+              back.getBoundingClientRect().width >
+            backImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height
+              ? back.getBoundingClientRect().width
+              : (back.getBoundingClientRect().height /
+                  get(viewScreen, "image1OrigData.height")) *
+                get(viewScreen, "image1OrigData.width")
+          }px;`
         );
       }
     },
@@ -240,25 +253,25 @@ export default compose(
           `top: ${back.getBoundingClientRect().height / 2 -
             frontImage.getBoundingClientRect().height /
               2}px; left: ${back.getBoundingClientRect().width / 2 -
+            frontImage.getBoundingClientRect().width / 2}px; height: ${
+            frontImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height >
             frontImage.getBoundingClientRect().width /
-              2}px; height: ${frontImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height >
-          frontImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width
-            ? back.getBoundingClientRect().height
-            : back.getBoundingClientRect().width /
-              get(viewScreen, "image2OrigData.width") *
-              get(
-                viewScreen,
-                "image2OrigData.height"
-              )}px; width: ${frontImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width >
-          frontImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height
-            ? back.getBoundingClientRect().width
-            : back.getBoundingClientRect().height /
-              get(viewScreen, "image2OrigData.height") *
-              get(viewScreen, "image2OrigData.width")}px;`
+              back.getBoundingClientRect().width
+              ? back.getBoundingClientRect().height
+              : (back.getBoundingClientRect().width /
+                  get(viewScreen, "image2OrigData.width")) *
+                get(viewScreen, "image2OrigData.height")
+          }px; width: ${
+            frontImage.getBoundingClientRect().width /
+              back.getBoundingClientRect().width >
+            frontImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height
+              ? back.getBoundingClientRect().width
+              : (back.getBoundingClientRect().height /
+                  get(viewScreen, "image2OrigData.height")) *
+                get(viewScreen, "image2OrigData.width")
+          }px;`
         );
       }
 
@@ -268,25 +281,25 @@ export default compose(
           `top: ${back.getBoundingClientRect().height / 2 -
             backImage.getBoundingClientRect().height /
               2}px; left: ${back.getBoundingClientRect().width / 2 -
+            backImage.getBoundingClientRect().width / 2}px; height: ${
+            backImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height >
             backImage.getBoundingClientRect().width /
-              2}px; height: ${backImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height >
-          backImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width
-            ? back.getBoundingClientRect().height
-            : back.getBoundingClientRect().width /
-              get(viewScreen, "image1OrigData.width") *
-              get(
-                viewScreen,
-                "image1OrigData.height"
-              )}px; width: ${backImage.getBoundingClientRect().width /
-            back.getBoundingClientRect().width >
-          backImage.getBoundingClientRect().height /
-            back.getBoundingClientRect().height
-            ? back.getBoundingClientRect().width
-            : back.getBoundingClientRect().height /
-              get(viewScreen, "image1OrigData.height") *
-              get(viewScreen, "image1OrigData.width")}px;`
+              back.getBoundingClientRect().width
+              ? back.getBoundingClientRect().height
+              : (back.getBoundingClientRect().width /
+                  get(viewScreen, "image1OrigData.width")) *
+                get(viewScreen, "image1OrigData.height")
+          }px; width: ${
+            backImage.getBoundingClientRect().width /
+              back.getBoundingClientRect().width >
+            backImage.getBoundingClientRect().height /
+              back.getBoundingClientRect().height
+              ? back.getBoundingClientRect().width
+              : (back.getBoundingClientRect().height /
+                  get(viewScreen, "image1OrigData.height")) *
+                get(viewScreen, "image1OrigData.width")
+          }px;`
         );
       }
 
@@ -323,14 +336,14 @@ export default compose(
             newNode.className = "animation-fade-out";
             newNode.setAttribute(
               "style",
-              `animation-duration: ${viewScreen.time && viewScreen.time > 0
-                ? viewScreen.time
-                : 20}s;`
+              `animation-duration: ${
+                viewScreen.time && viewScreen.time > 0 ? viewScreen.time : 20
+              }s;`
             );
           }
           document
             .getElementById("view-imagechange-image-container")
-            .prepend(newNode);
+            .appendChild(newNode);
         }
 
         if (viewScreen.image2) {
@@ -342,44 +355,18 @@ export default compose(
             newNode.className = "animation-fade-in";
             newNode.setAttribute(
               "style",
-              `animation-duration: ${viewScreen.time && viewScreen.time > 0
-                ? viewScreen.time
-                : 20}s;`
+              `animation-duration: ${
+                viewScreen.time && viewScreen.time > 0 ? viewScreen.time : 20
+              }s;`
             );
           }
           document
             .getElementById("view-imagechange-image-container")
-            .prepend(newNode);
+            .appendChild(newNode);
         }
       } else if (animHover || animClick) {
         document.getElementById("view-imagechange-image-container").className +=
           " click-hover";
-
-        if (viewScreen.image1 && screenFiles["image1"]) {
-          const newNode = screenFiles["image1"];
-
-          newNode.id = "interactive-screen-image1";
-          newNode.className = "";
-
-          if (animHover) {
-            newNode.className = "interactive-screen-image1";
-          }
-
-          newNode.setAttribute(
-            "style",
-            `width: ${viewScreen.image1OrigData.height >
-            viewScreen.image1OrigData.width
-              ? "auto"
-              : "100%"}; height: ${viewScreen.image1OrigData.height >
-            viewScreen.image1OrigData.width
-              ? "100%"
-              : "auto"}`
-          );
-
-          document
-            .getElementById("view-imagechange-image-container")
-            .prepend(newNode);
-        }
 
         if (viewScreen.image2 && screenFiles["image2"]) {
           const newNode = screenFiles["image2"];
@@ -393,20 +380,48 @@ export default compose(
 
           newNode.setAttribute(
             "style",
-            `width: ${viewScreen.image2OrigData.height >
-            viewScreen.image2OrigData.width
-              ? "auto"
-              : "100%"}; height: ${viewScreen.image2OrigData.height >
-            viewScreen.image2OrigData.width
-              ? "100%"
-              : "auto"}; ${animClick
-              ? `opacity: 0; filter: alpha(opacity=0);`
-              : ""}`
+            `width: ${
+              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
+                ? "auto"
+                : "100%"
+            }; height: ${
+              viewScreen.image2OrigData.height > viewScreen.image2OrigData.width
+                ? "100%"
+                : "auto"
+            }; ${animClick ? `opacity: 0; filter: alpha(opacity=0);` : ""}`
           );
 
           document
             .getElementById("view-imagechange-image-container")
-            .prepend(newNode);
+            .appendChild(newNode);
+        }
+
+        if (viewScreen.image1 && screenFiles["image1"]) {
+          const newNode = screenFiles["image1"];
+
+          newNode.id = "interactive-screen-image1";
+          newNode.className = "";
+
+          if (animHover) {
+            newNode.className = "interactive-screen-image1";
+          }
+
+          newNode.setAttribute(
+            "style",
+            `width: ${
+              viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+                ? "auto"
+                : "100%"
+            }; height: ${
+              viewScreen.image1OrigData.height > viewScreen.image1OrigData.width
+                ? "100%"
+                : "auto"
+            }`
+          );
+
+          document
+            .getElementById("view-imagechange-image-container")
+            .appendChild(newNode);
         }
       } else if (animSlideH || animSlideV) {
         const container = document.getElementById(
@@ -423,7 +438,12 @@ export default compose(
           newNode.id = "back-image";
           newNode.style = null;
           newNode.className = null;
-          document.getElementById("back").prepend(newNode);
+          document
+            .getElementById("back")
+            .insertBefore(
+              newNode,
+              document.getElementById("back").childNodes[0]
+            );
         }
         if (viewScreen.image2 && screenFiles["image2"]) {
           const newNode = screenFiles["image2"];
@@ -433,7 +453,7 @@ export default compose(
           newNode.id = "front-image";
           newNode.style = null;
           newNode.className = null;
-          document.getElementById("front").prepend(newNode);
+          document.getElementById("front").appendChild(newNode);
         }
 
         if (animSlideV) {
@@ -441,7 +461,7 @@ export default compose(
           window.addEventListener("resize", () => handlerAnimSlideV());
         }
 
-        setLoadingInterval(setInterval(loadingImages, 300));
+        setLoadingInterval(setInterval(loadingImages, 50));
       }
     },
     componentWillUnmount() {

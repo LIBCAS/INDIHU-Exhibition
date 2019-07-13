@@ -40,10 +40,11 @@ const RightScreen = ({
       })}
     >
       {/* SCREEN INTRO */}
-      {viewScreen.type === screenType.INTRO &&
-        <ChapterStart {...{ viewScreen, screenFiles, screenType }} />}
+      {viewScreen.type === screenType.INTRO && (
+        <ChapterStart {...{ viewScreen, screenFiles, screenType }} />
+      )}
       {/* SCREEN PHOTOGALERY */}
-      {viewScreen.type === screenType.PHOTOGALERY &&
+      {viewScreen.type === screenType.PHOTOGALERY && (
         <Photogallery
           {...{
             viewScreen,
@@ -53,10 +54,11 @@ const RightScreen = ({
             setScrolling,
             moveForward
           }}
-        />}
+        />
+      )}
       {/* SCREEN WITH IMAGE */}
       {(viewScreen.type === screenType.IMAGE ||
-        viewScreen.type === screenType.IMAGE_ZOOM) &&
+        viewScreen.type === screenType.IMAGE_ZOOM) && (
         <Image
           {...{
             viewScreen,
@@ -70,15 +72,18 @@ const RightScreen = ({
             screenFiles,
             screenType
           }}
-        />}
+        />
+      )}
       {/* VIDEO */}
-      {viewScreen.type === screenType.VIDEO &&
-        <Video {...{ viewScreen, screenFiles }} />}
+      {viewScreen.type === screenType.VIDEO && (
+        <Video {...{ viewScreen, screenFiles }} />
+      )}
       {/* TEXT */}
-      {viewScreen.type === screenType.TEXT &&
-        <Text {...{ mainText: viewScreen.mainText }} />}
+      {viewScreen.type === screenType.TEXT && (
+        <Text {...{ mainText: viewScreen.mainText }} />
+      )}
       {/* PARALLAX */}
-      {viewScreen.type === screenType.PARALLAX &&
+      {viewScreen.type === screenType.PARALLAX && (
         <Parallax
           {...{
             viewScreen,
@@ -90,9 +95,10 @@ const RightScreen = ({
             moveForward,
             screenFiles
           }}
-        />}
+        />
+      )}
       {/* IMAGE_CHANGE */}
-      {viewScreen.type === screenType.IMAGE_CHANGE &&
+      {viewScreen.type === screenType.IMAGE_CHANGE && (
         <ImageChange
           {...{
             viewScreen,
@@ -103,15 +109,17 @@ const RightScreen = ({
             moveForward,
             screenFiles
           }}
-        />}
+        />
+      )}
       {/* EXTERNAL */}
-      {viewScreen.type === screenType.EXTERNAL &&
+      {viewScreen.type === screenType.EXTERNAL && (
         <div
           className="external"
           dangerouslySetInnerHTML={{ __html: viewScreen.externalData }}
-        />}
+        />
+      )}
       {/* NAVIGATION */}
-      {!screenViewer &&
+      {!screenViewer && (
         <div className="interactive-navigation">
           <FontIcon
             className="interactive-navigation-item"
@@ -123,7 +131,8 @@ const RightScreen = ({
             iconClassName="fa fa-caret-right"
             onClick={() => interactiveScrollRouting(true)}
           />
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

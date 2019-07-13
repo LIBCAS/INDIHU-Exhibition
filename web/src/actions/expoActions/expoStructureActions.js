@@ -1,5 +1,5 @@
 import { find } from "lodash";
-import * as uuid from 'uuid/v4';
+import * as uuid from "uuid/v4";
 
 import { EXPO_STRUCTURE_SET } from "./../constants";
 import { saveExpo } from "./expoActions";
@@ -34,8 +34,8 @@ export const addScreen = (row, idx, type, aloneScreen) => async (
           find(screenWithAnimation, s => s === type)
             ? animationType.WITHOUT
             : type === screenType.IMAGE_CHANGE
-              ? animationType.HOVER
-              : undefined,
+            ? animationType.HOVER
+            : undefined,
         answers:
           type === screenType.GAME_OPTIONS
             ? [
@@ -58,7 +58,9 @@ export const addScreen = (row, idx, type, aloneScreen) => async (
       title,
       animationType: find(screenWithAnimation, s => s === type)
         ? animationType.WITHOUT
-        : type === screenType.IMAGE_CHANGE ? animationType.HOVER : undefined,
+        : type === screenType.IMAGE_CHANGE
+        ? animationType.HOVER
+        : undefined,
       answers:
         type === screenType.GAME_OPTIONS
           ? [
@@ -167,12 +169,12 @@ export const moveScreen = (
     screens[rowNumNew] = [
       ...screens[rowNumNew].slice(0, colNumNew),
       screens[rowNumOld][colNumOld],
-      ...screens[rowNumNew].slice(colNumNew, screens[rowNumOld].length)
+      ...screens[rowNumNew].slice(colNumNew)
     ];
 
     screens[rowNumOld] = [
       ...screens[rowNumOld].slice(0, colNumOld),
-      ...screens[rowNumOld].slice(colNumOld + 1, screens[rowNumOld].length)
+      ...screens[rowNumOld].slice(colNumOld + 1)
     ];
   }
 

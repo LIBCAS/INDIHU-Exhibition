@@ -72,7 +72,7 @@ export default compose(
 
             document
               .getElementById("interactive-screen-image-change-container")
-              .append(newNode);
+              .appendChild(newNode);
           }
         }
 
@@ -85,21 +85,25 @@ export default compose(
 
             newNode.setAttribute(
               "style",
-              `left: ${document.getElementById(
-                "interactive-screen-image-change-image-1"
-              )
-                ? document
-                    .getElementById("interactive-screen-image-change-image-1")
-                    .getBoundingClientRect().right -
-                  document
-                    .getElementById("interactive-screen-image-change-container")
-                    .getBoundingClientRect().left
-                : 0}px;`
+              `left: ${
+                document.getElementById(
+                  "interactive-screen-image-change-image-1"
+                )
+                  ? document
+                      .getElementById("interactive-screen-image-change-image-1")
+                      .getBoundingClientRect().right -
+                    document
+                      .getElementById(
+                        "interactive-screen-image-change-container"
+                      )
+                      .getBoundingClientRect().left
+                  : 0
+              }px;`
             );
 
             document
               .getElementById("interactive-screen-image-change-container")
-              .append(newNode);
+              .appendChild(newNode);
           }
         }
 

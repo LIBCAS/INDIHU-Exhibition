@@ -8,6 +8,7 @@ import ReactTooltip from "react-tooltip";
 import * as dialogActions from "../../actions/dialogActions";
 
 import Loader from "../Loader";
+import ConfirmDialog from "./ConfirmDialog";
 import DeleteAccount from "./DeleteAccount";
 import ExpoDelete from "./ExpoDelete";
 import ExpoDuplicate from "./ExpoDuplicate";
@@ -25,9 +26,9 @@ import FileMove from "./FileMove";
 import FileNewFolder from "./FileNewFolder";
 import FileRename from "./FileRename";
 import FileRenameFolder from "./FileRenameFolder";
+import FilesManagerMenu from "./FilesManagerMenu";
 import Info from "./Info";
 import PasswordReset from "./PasswordReset";
-import Registration from "./Registration";
 import ScreenAuthorsAdd from "./ScreenAuthorsAdd";
 import ScreenAuthorsChange from "./ScreenAuthorsChange";
 import ScreenDelete from "./ScreenDelete";
@@ -69,8 +70,11 @@ const Dialogs = ({
         type="dark"
         effect="solid"
         id="react-tooltip-for-help-icon-in-dialog"
+        place="right"
+        className="help-icon-react-tooltip"
       />
       {loader && <Loader />}
+      <ConfirmDialog {...dialogProps} />
       <DeleteAccount {...dialogProps} />
       <ExpoDelete {...dialogProps} />
       <ExpoDuplicate {...dialogProps} />
@@ -88,14 +92,13 @@ const Dialogs = ({
       <FileNewFolder {...dialogProps} />
       <FileRename {...dialogProps} />
       <FileRenameFolder {...dialogProps} />
+      <FilesManagerMenu {...dialogProps} />
       <Info {...dialogProps} />
       <PasswordReset {...dialogProps} />
-      <Registration {...dialogProps} />
       <ScreenAuthorsAdd {...dialogProps} />
-      {data &&
-        data.role &&
-        data.text &&
-        <ScreenAuthorsChange {...dialogProps} />}
+      {data && data.role && data.text && (
+        <ScreenAuthorsChange {...dialogProps} />
+      )}
       <ScreenDelete {...dialogProps} />
       {data && <ScreenDocumentChange {...dialogProps} />}
       <ScreenDocumentChoose {...dialogProps} />

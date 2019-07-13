@@ -6,7 +6,7 @@ import FontIcon from "react-md/lib/FontIcons";
 
 import { toggleInteractive } from "../../../actions/expoActions/viewerActions";
 
-const LeftScreen = ({ viewScreen, toggleInteractive }) =>
+const LeftScreen = ({ viewScreen, toggleInteractive }) => (
   <div className="left">
     <div className="flex-col interactive-text">
       <div
@@ -17,32 +17,29 @@ const LeftScreen = ({ viewScreen, toggleInteractive }) =>
         <p className="text">
           {viewScreen.text &&
             (viewScreen.text.indexOf("\n") !== -1
-              ? viewScreen.text.split("\n").map((item, i) =>
-                <span key={i}>
-                  {item}
-                  <br />
-                </span>
-              )
+              ? viewScreen.text.split("\n").map((item, i) => (
+                  <span key={i}>
+                    {item}
+                    <br />
+                  </span>
+                ))
               : viewScreen.text)}
         </p>
         <div className="flex-row interactive-menu">
-          <div className="menu-text">
-            {viewScreen.title}
-          </div>
+          <div className="menu-text">{viewScreen.title}</div>
           <FontIcon
             className="menu-icon"
             onClick={() => toggleInteractive(false)}
           >
             play_circle_outline
-        </FontIcon>
+          </FontIcon>
         </div>
       </div>
-      {viewScreen.documents &&
-        !isEmpty(viewScreen.documents) &&
+      {viewScreen.documents && !isEmpty(viewScreen.documents) && (
         <div className="flex-col interactive-files">
           <div className="content">
             <p>Související dokumenty:</p>
-            {map(viewScreen.documents, (d, i) =>
+            {map(viewScreen.documents, (d, i) => (
               <div key={i}>
                 <a
                   id={`view-interactive-file-link-${i}`}
@@ -51,7 +48,7 @@ const LeftScreen = ({ viewScreen, toggleInteractive }) =>
                   hidden
                 >
                   a
-              </a>
+                </a>
                 <div
                   className="document"
                   onClick={() => {
@@ -70,34 +67,39 @@ const LeftScreen = ({ viewScreen, toggleInteractive }) =>
                         .focus();
                   }}
                 >
-                  {d.name
-                    ? <FontIcon className="icon">
+                  {d.name ? (
+                    <FontIcon className="icon">
                       {/^image.*$/.test(d.type)
                         ? "image"
                         : /^audio.*$/.test(d.type)
-                          ? "music_note"
-                          : /^video.*$/.test(d.type)
-                            ? "movie"
-                            : "insert_drive_file"}
+                        ? "music_note"
+                        : /^video.*$/.test(d.type)
+                        ? "movie"
+                        : "insert_drive_file"}
                     </FontIcon>
-                    : <FontIcon className="icon">
+                  ) : (
+                    <FontIcon className="icon">
                       {/^image.*$/.test(d.urlType)
                         ? "image"
                         : /^audio.*$/.test(d.urlType)
-                          ? "music_note"
-                          : /^video.*$/.test(d.urlType)
-                            ? "movie"
-                            : "insert_drive_file"}
-                    </FontIcon>}
-                  <p>
-                    {d.fileName}
-                  </p>
+                        ? "music_note"
+                        : /^video.*$/.test(d.urlType)
+                        ? "movie"
+                        : "insert_drive_file"}
+                    </FontIcon>
+                  )}
+                  <p>{d.fileName}</p>
                 </div>
               </div>
-            )}
+            ))}
           </div>
-        </div>}
+        </div>
+      )}
     </div>
-  </div>;
+  </div>
+);
 
-export default connect(null, { toggleInteractive })(LeftScreen);
+export default connect(
+  null,
+  { toggleInteractive }
+)(LeftScreen);

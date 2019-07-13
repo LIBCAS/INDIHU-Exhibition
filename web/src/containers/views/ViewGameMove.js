@@ -24,7 +24,7 @@ const ViewGameMove = ({
   setDoneButton,
   passButton,
   setPassButton
-}) =>
+}) => (
   <div className="game">
     <div id="game-wrap" className="game-wrap">
       <div
@@ -101,12 +101,15 @@ const ViewGameMove = ({
         }
       }}
     />
-  </div>;
+  </div>
+);
 
 export default compose(
   connect(
     ({
-      app: { mouseInfo: { mouseDown, correlationX, correlationY } },
+      app: {
+        mouseInfo: { mouseDown, correlationX, correlationY }
+      },
       expo: { viewScreen, viewerFiles }
     }) => ({
       mouseDown,

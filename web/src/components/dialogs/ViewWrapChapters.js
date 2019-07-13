@@ -9,7 +9,12 @@ import Dialog from "./DialogWrap";
 import { changeRadioState } from "../../actions/appActions";
 import { loadExpo } from "../../actions/expoActions";
 
-const ViewWrapChapters = ({ handleSubmit, dialogData, history, closeDialog }) =>
+const ViewWrapChapters = ({
+  handleSubmit,
+  dialogData,
+  history,
+  closeDialog
+}) => (
   <Dialog
     title="Kapitoly"
     name="ViewWrapChapters"
@@ -20,7 +25,7 @@ const ViewWrapChapters = ({ handleSubmit, dialogData, history, closeDialog }) =>
     <div className="flex-col flex-centered viewer-chapters">
       {map(
         get(dialogData, "chapters"),
-        ({ chapter: { title }, chapterNumber }, key) =>
+        ({ chapter: { title }, chapterNumber }, key) => (
           <Button
             key={key}
             flat
@@ -33,12 +38,17 @@ const ViewWrapChapters = ({ handleSubmit, dialogData, history, closeDialog }) =>
             }}
             className="viewer-chapters-button"
           />
+        )
       )}
     </div>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(null, { changeRadioState, loadExpo }),
+  connect(
+    null,
+    { changeRadioState, loadExpo }
+  ),
   withHandlers({
     onSubmit: ({ closeDialog }) => () => {
       closeDialog();

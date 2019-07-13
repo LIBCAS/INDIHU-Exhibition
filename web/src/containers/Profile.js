@@ -13,10 +13,10 @@ import PasswordChange from "../components/profile/PasswordChange";
 import { getCurrentUser } from "../actions/userActions";
 import { setDialog } from "../actions/dialogActions";
 
-const Profile = props =>
+const Profile = props => (
   <div>
     <AppHeader profileStyle />
-    {!isEmpty(props.initialValues) &&
+    {!isEmpty(props.initialValues) && (
       <div className="container edit-profile">
         <Header />
         <div className="flex-form">
@@ -41,18 +41,23 @@ const Profile = props =>
               className="edit-profile-button"
               onClick={() => props.setDialog("DeleteAccount")}
             >
-              <FontIcon>delete</FontIcon>
+              <FontIcon className="color-black">delete</FontIcon>
             </Button>
           </div>
         </div>
-      </div>}
-  </div>;
+      </div>
+    )}
+  </div>
+);
 
 export default compose(
-  connect(({ user: { info } }) => ({ initialValues: info, info }), {
-    getCurrentUser,
-    setDialog
-  }),
+  connect(
+    ({ user: { info } }) => ({ initialValues: info, info }),
+    {
+      getCurrentUser,
+      setDialog
+    }
+  ),
   withState("activeForm", "setActiveForm", null),
   lifecycle({
     async componentWillMount() {

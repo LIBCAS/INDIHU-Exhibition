@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { compose, lifecycle, withHandlers } from "recompose";
+import { compose, lifecycle, withHandlers, withState } from "recompose";
 
 import LeftScreen from "../../components/views/interactiveScreen/LeftScreen";
 import RightScreen from "../../components/views/interactiveScreen/RightScreen";
@@ -13,9 +13,10 @@ const InteractiveScreen = ({
   viewScreen,
   interactiveScrollRouting,
   screenFiles,
-  screenViewer
+  screenViewer,
+  changing
 }) => {
-  if (!viewScreen) return <div className="interactive" />;
+  if (!viewScreen || changing) return <div className="interactive" />;
 
   return (
     <div className="interactive">
@@ -34,6 +35,7 @@ const InteractiveScreen = ({
 
 export default compose(
   withRouter,
+  withState("changing", "setChanging", false),
   connect(({ expo: { viewChapterMusic, viewExpo, viewScreen } }) => ({
     viewChapterMusic,
     viewExpo,
@@ -62,7 +64,8 @@ export default compose(
       section,
       screen,
       handleScreen,
-      screenViewer
+      screenViewer,
+      setChanging
     }) => async next => {
       if (!screenViewer) {
         const newSectionScreen = interactiveRouter(
@@ -73,6 +76,7 @@ export default compose(
         );
 
         if (newSectionScreen) {
+          setChanging(true);
           await handleScreen(newSectionScreen);
           if (
             newSectionScreen.section === screenUrl.START ||
@@ -81,7 +85,9 @@ export default compose(
             history.push(`/view/${name}/${newSectionScreen.section}`);
           } else {
             history.push(
-              `/view/${name}/${newSectionScreen.section}/${newSectionScreen.screen}`
+              `/view/${name}/${newSectionScreen.section}/${
+                newSectionScreen.screen
+              }`
             );
           }
         }

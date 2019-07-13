@@ -27,9 +27,9 @@ const ScreenDuplicate = ({
       forEach(activeExpo.structure.screens, (chapter, row) => {
         if (chapter[0] && chapter[0].type === "INTRO") {
           options.push({
-            label: `${row + 1}${chapter[0].title
-              ? ` ${chapter[0].title}`
-              : ""}`,
+            label: `${row + 1}${
+              chapter[0].title ? ` ${chapter[0].title}` : ""
+            }`,
             value: row
           });
         }
@@ -75,41 +75,45 @@ const ScreenDuplicate = ({
       handleSubmit={handleSubmit}
       big={true}
     >
-      {dialogData && get(activeExpo, "structure.screens")
-        ? dialogData.colNum
-          ? <div>
-              <Field
-                component={SelectField}
-                componentId="screen-duplicate-selectfield-chapter"
-                label="Kapitola"
-                name="rowNum"
-                menuItems={options}
-                onChange={(e, value) => {
-                  change("rowNum", value);
-                  change(
-                    "colNum",
-                    value === dialogData.rowNum
-                      ? dialogData.colNum
-                      : activeExpo.structure.screens[value].length
-                  );
-                }}
-              />
-              <Field
-                component={SelectField}
-                componentId="screen-duplicate-selectfield-screen"
-                label="Obrazovka"
-                name="colNum"
-                menuItems={options2}
-              />
-            </div>
-          : <Field
+      {dialogData && get(activeExpo, "structure.screens") ? (
+        dialogData.colNum ? (
+          <div>
+            <Field
               component={SelectField}
-              componentId="screen-duplicate-selectfield-position"
-              label="Pozice"
+              componentId="screen-duplicate-selectfield-chapter"
+              label="Kapitola"
               name="rowNum"
               menuItems={options}
+              onChange={(e, value) => {
+                change("rowNum", value);
+                change(
+                  "colNum",
+                  value === dialogData.rowNum
+                    ? dialogData.colNum
+                    : activeExpo.structure.screens[value].length
+                );
+              }}
             />
-        : <div />}
+            <Field
+              component={SelectField}
+              componentId="screen-duplicate-selectfield-screen"
+              label="Obrazovka"
+              name="colNum"
+              menuItems={options2}
+            />
+          </div>
+        ) : (
+          <Field
+            component={SelectField}
+            componentId="screen-duplicate-selectfield-position"
+            label="Pozice"
+            name="rowNum"
+            menuItems={options}
+          />
+        )
+      ) : (
+        <div />
+      )}
     </Dialog>
   );
 };

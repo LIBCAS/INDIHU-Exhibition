@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, withHandlers, withState } from "recompose";
+import classNames from "classnames";
 import { withRouter } from "react-router-dom";
-import { forEach } from "lodash";
+import { forEach, find } from "lodash";
 
 import GameMenu from "../../components/views/GameMenu";
 
@@ -15,17 +16,22 @@ const ViewGameOptions = ({
   setAnswerSelected,
   passButton,
   setPassButton
-}) =>
+}) => (
   <div className="game">
     <div id="game-wrap" className="game-wrap">
       <div id="game-options" className="game-options">
-        <div id="game-options-top" className="game-options-top" />
-        <p className="game-options-title">
-          {viewScreen.task}
-        </p>
+        <div
+          className={classNames("game-options-title", {
+            fill: !find(viewScreen.answers, ({ image }) => image)
+          })}
+        >
+          <p>{viewScreen.task}</p>
+        </div>
         <div
           id="game-options-bottom"
-          className="game-options-bottom cursor-pointer"
+          className={classNames("game-options-bottom cursor-pointer", {
+            fill: !find(viewScreen.answers, ({ image }) => image)
+          })}
           onClick={() => onAnswerChoose()}
         />
       </div>
@@ -55,7 +61,8 @@ const ViewGameOptions = ({
         }
       }}
     />
-  </div>;
+  </div>
+);
 
 export default compose(
   withRouter,
@@ -73,37 +80,41 @@ export default compose(
     componentDidMount() {
       const { viewScreen, screenFiles } = this.props;
 
-      if (viewScreen.image) {
-        const imageNode = screenFiles["image"];
-
-        imageNode.id = "game-options-image";
-        document.getElementById("game-options-top").appendChild(imageNode);
-      }
-
       forEach(viewScreen.answers, (answer, i) => {
         const divNode = document.createElement("div");
         divNode.id = `game-options-answer${i}`;
         divNode.className = "game-options-answer with-mark";
 
+        const answerOption = document.createElement("p");
+        answerOption.className = "answer-option";
+        answerOption.appendChild(
+          document.createTextNode(i === 0 ? "A" : i === 1 ? "B" : "C")
+        );
+        divNode.appendChild(answerOption);
         if (answer.image) {
           const imageNode = screenFiles[`answers[${i}].image`];
           imageNode.id = `game-options-answer${i}-image`;
           const innerDivNode = document.createElement("div");
           innerDivNode.className = "game-options-answer-inner";
-          innerDivNode.append(imageNode);
-          divNode.append(innerDivNode);
+          innerDivNode.appendChild(imageNode);
+          divNode.appendChild(innerDivNode);
         }
 
-        const textNode = document.createElement("div");
-        textNode.id = `game-options-answer${i}-text`;
-        textNode.className = "game-options-answer-text";
-        forEach(answer.text.split("\n"), item => {
-          textNode.appendChild(document.createTextNode(item));
-          textNode.appendChild(document.createElement("br"));
+        const textContainer = document.createElement("div");
+        textContainer.id = `game-options-answer${i}-text`;
+        textContainer.className = classNames("game-options-answer-text", {
+          fill: !answer.image
         });
-        divNode.append(textNode);
+        const p = document.createElement("p");
+        p.className = "text";
+        forEach(answer.text.split("\n"), item => {
+          p.appendChild(document.createTextNode(item));
+          p.appendChild(document.createElement("br"));
+        });
+        textContainer.appendChild(p);
+        divNode.appendChild(textContainer);
 
-        document.getElementById("game-options-bottom").append(divNode);
+        document.getElementById("game-options-bottom").appendChild(divNode);
       });
     },
     componentWillUnmount() {

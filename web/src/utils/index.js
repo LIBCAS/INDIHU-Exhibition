@@ -5,14 +5,15 @@ import {
   get,
   isEmpty,
   filter as lodashFilter,
-  forEach
+  forEach,
+  isArray
 } from "lodash";
 
 export * from "./routing";
 
 /**
  * Find if user have ROLE_ADMIN
- * @param {array} roles 
+ * @param {array} roles
  */
 export const isAdmin = roles => indexOf(roles, "ROLE_ADMIN") >= 0;
 
@@ -38,8 +39,8 @@ export const formatTime = time => format(time, "DD.MM.YYYY HH:mm:ss");
 export const secondsToTime = seconds => {
   return {
     h: Math.floor(seconds / 3600),
-    m: Math.floor(seconds % 3600 / 60),
-    s: Math.floor(seconds % 3600 % 60)
+    m: Math.floor((seconds % 3600) / 60),
+    s: Math.floor((seconds % 3600) % 60)
   };
 };
 
@@ -47,10 +48,10 @@ export const secondsToFormatedTime = seconds => {
   const time = secondsToTime(seconds);
   return time.h > 0 || time.m > 0 || time.s > 0
     ? (time.h > 0 ? `${time.h} hod` : "") +
-      (time.h > 0 && (time.m > 0 || time.s > 0) ? " " : "") +
-      (time.m > 0 ? `${time.m} min` : "") +
-      ((time.h > 0 || time.m > 0) && time.s > 0 ? " " : "") +
-      (time.s > 0 ? `${time.s} s` : "")
+        (time.h > 0 && (time.m > 0 || time.s > 0) ? " " : "") +
+        (time.m > 0 ? `${time.m} min` : "") +
+        ((time.h > 0 || time.m > 0) && time.s > 0 ? " " : "") +
+        (time.s > 0 ? `${time.s} s` : "")
     : "0 min";
 };
 
@@ -60,14 +61,12 @@ export const secondsToFormatedTime = seconds => {
 export const giveMeExpoTime = screens => {
   let time = 0;
   map(screens, chapter =>
-    map(
-      chapter,
-      screen =>
-        screen.timeAuto && !isNaN(Number(get(screen, "audio.duration")))
-          ? (time += Number(get(screen, "audio.duration")))
-          : !isNaN(Number(get(screen, "time"))) && Number(screen.time) > 0
-            ? (time += Number(screen.time))
-            : (time += 20)
+    map(chapter, screen =>
+      screen.timeAuto && !isNaN(Number(get(screen, "audio.duration")))
+        ? (time += Number(get(screen, "audio.duration")))
+        : !isNaN(Number(get(screen, "time"))) && Number(screen.time) > 0
+        ? (time += Number(screen.time))
+        : (time += 20)
     )
   );
   return secondsToFormatedTime(time);
@@ -202,4 +201,30 @@ export const createQuery = queryParams => {
   }
 
   return "";
+};
+
+export const asyncForEach = async (array, callback) => {
+  if (isArray(array)) {
+    for (let index = 0; index < array.length; index++) {
+      if (!(await callback(array[index], index, array))) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
+
+export const isIE = () => /MSIE|Trident/.test(window.navigator.userAgent);
+
+/**
+ * Downloads file from URL
+ */
+export const downloadFileFromUrl = url => {
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };

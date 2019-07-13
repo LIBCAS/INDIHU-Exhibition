@@ -32,8 +32,7 @@ const ExpoEditor = props => {
 
   return (
     <div>
-      {activeScreen &&
-        activeScreen.type &&
+      {activeScreen && activeScreen.type && (
         <div>
           <Route
             path={`${match.url}/${screenUrl.START}`}
@@ -99,7 +98,8 @@ const ExpoEditor = props => {
             path={`${match.url}/${screenUrl.EXTERNAL}/:position`}
             render={() => <ScreenExternal {...props} />}
           />
-        </div>}
+        </div>
+      )}
     </div>
   );
 };
@@ -107,7 +107,12 @@ const ExpoEditor = props => {
 export default compose(
   withRouter,
   connect(
-    ({ expo: { activeExpo: { url }, activeScreen } }) => ({
+    ({
+      expo: {
+        activeExpo: { url },
+        activeScreen
+      }
+    }) => ({
       url,
       activeScreen
     }),

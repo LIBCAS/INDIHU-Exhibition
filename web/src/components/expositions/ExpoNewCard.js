@@ -5,15 +5,18 @@ import CardText from "react-md/lib/Cards/CardText";
 import { connect } from "react-redux";
 import { setDialog } from "../../actions/dialogActions";
 
-const ExpoNewCard = ({setDialog}) => (
+const ExpoNewCard = ({ setDialog }) => (
   <div className="expo-card">
-    <Card raise onClick={() => setDialog('ExpoNew')}>
+    <Card raise onClick={() => setDialog("ExpoNew")}>
       <CardText className="expo-new">
-          <i className="material-icons">add</i>
-          <p> Vytvořit novou výstavu </p>
+        <i className="material-icons">add</i>
+        <p> Vytvořit novou výstavu </p>
       </CardText>
     </Card>
   </div>
 );
 
-export default connect(null, { setDialog })(ExpoNewCard);
+export default connect(
+  null,
+  { setDialog }
+)(ExpoNewCard);

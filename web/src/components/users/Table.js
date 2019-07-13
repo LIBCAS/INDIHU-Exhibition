@@ -7,7 +7,7 @@ import { setDialog } from "../../actions/dialogActions";
 
 import { userStatesTexts, userStates } from "../../enums/users";
 
-const Table = ({ list, setDialog, tableType }) =>
+const Table = ({ list, setDialog, tableType }) => (
   <table className="table-all">
     <tr className="table-all-row header">
       <td className="table-all-col">Uživatelské jméno</td>
@@ -18,7 +18,7 @@ const Table = ({ list, setDialog, tableType }) =>
       <td className="table-all-col">Stav</td>
       <td className="table-all-col actions">Akce</td>
     </tr>
-    {list.map((item, i) =>
+    {list.map((item, i) => (
       <tr className="table-all-row" key={item.id}>
         <td className="table-all-col">
           {tableType === "ALL" ? item.userName : item.toAccept.username}
@@ -40,44 +40,62 @@ const Table = ({ list, setDialog, tableType }) =>
         </td>
         <td className="table-all-col actions">
           {item.id &&
-            (tableType === "ALL"
-              ? userStates.DELETED === item.state
-                ? <FontIcon
+            (tableType === "ALL" ? (
+              userStates.DELETED === item.state ? (
+                <FontIcon
+                  onClick={() =>
+                    setDialog("UserReactivate", {
+                      id: item.id,
+                      name: item.userName
+                    })
+                  }
+                  title="Obnovit uživatele"
+                >
+                  refresh
+                </FontIcon>
+              ) : (
+                <div>
+                  <FontIcon
                     onClick={() =>
-                      setDialog("UserReactivate", {
+                      setDialog("UserDelete", {
                         id: item.id,
                         name: item.userName
-                      })}
-                    title="Obnovit uživatele"
+                      })
+                    }
+                    title="Odstranit uživatele"
+                    className="color-black"
                   >
-                    refresh
+                    delete
                   </FontIcon>
-                : <div>
-                    <FontIcon
-                      onClick={() =>
-                        setDialog("UserDelete", {
-                          id: item.id,
-                          name: item.userName
-                        })}
-                      title="Odstranit uživatele"
-                    >
-                      delete
-                    </FontIcon>
-                  </div>
-              : <FontIcon
-                  onClick={() =>
-                    setDialog("UserAccept", {
-                      user: item
-                    })}
-                  title="Schválit uživatele"
-                >
-                  done
-                </FontIcon>)}
+                </div>
+              )
+            ) : (
+              <FontIcon
+                onClick={() =>
+                  setDialog("UserAccept", {
+                    user: item
+                  })
+                }
+                title="Schválit uživatele"
+              >
+                done
+              </FontIcon>
+            ))}
         </td>
       </tr>
-    )}
-  </table>;
+    ))}
+  </table>
+);
 
-export default connect(({ user: { users: { all: { list } } } }) => ({ list }), {
-  setDialog
-})(Table);
+export default connect(
+  ({
+    user: {
+      users: {
+        all: { list }
+      }
+    }
+  }) => ({ list }),
+  {
+    setDialog
+  }
+)(Table);

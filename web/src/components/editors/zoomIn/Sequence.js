@@ -2,15 +2,21 @@ import React from "react";
 import { connect } from "react-redux";
 import { map, compact, concat, filter, get, find } from "lodash";
 import { compose, withState } from "recompose";
+import { SelectField } from "react-md";
 
 import Image from "../Image";
 import InfopointsSequencesTable from "../InfopointsSequencesTable";
+import HelpIcon from "../../HelpIcon";
 
 import { setDialog } from "../../../actions/dialogActions";
 import { updateScreenData } from "../../../actions/expoActions";
 import { getFileById } from "../../../actions/fileActions";
 import { hasValue } from "../../../utils";
 import { helpIconText } from "../../../enums/text";
+import {
+  zoomInTooltipPosition,
+  zoomInTooltipPositionText
+} from "../../../enums/screenEnums";
 
 const Sequence = ({
   activeScreen,
@@ -56,7 +62,34 @@ const Sequence = ({
               }}
             />
           </div>
-          {image &&
+          <div className="flex-row-nowrap flex-centered">
+            <SelectField
+              id="screen-zoom-in-tooltip-position"
+              className="select-field"
+              label="Pozice popisu zoomu"
+              menuItems={map(zoomInTooltipPosition, value => ({
+                value,
+                label: get(zoomInTooltipPositionText, value)
+              }))}
+              defaultValue={activeScreen.tooltipPosition}
+              itemLabel={"label"}
+              itemValue={"value"}
+              position={"below"}
+              onChange={tooltipPosition =>
+                updateScreenData({
+                  tooltipPosition
+                })
+              }
+              style={{ minWidth: 250 }}
+            />
+            <HelpIcon
+              {...{
+                label: helpIconText.EDITOR_ZOOM_IN_TOOLTIP_POSITION,
+                id: "editor-zoom-in-tooltip-position"
+              }}
+            />
+          </div>
+          {image && (
             <InfopointsSequencesTable
               {...{
                 label: "Sekvence zoomu",
@@ -89,12 +122,10 @@ const Sequence = ({
                   }),
                 onSubmit: text =>
                   updateScreenData({
-                    sequences: map(
-                      activeScreen.sequences,
-                      sequence =>
-                        sequence.edit
-                          ? { ...sequence, text, edit: false }
-                          : sequence
+                    sequences: map(activeScreen.sequences, sequence =>
+                      sequence.edit
+                        ? { ...sequence, text, edit: false }
+                        : sequence
                     )
                   }),
                 onClear: () =>
@@ -105,12 +136,10 @@ const Sequence = ({
                   }),
                 onEdit: i =>
                   updateScreenData({
-                    sequences: map(
-                      activeScreen.sequences,
-                      (sequence, idx) =>
-                        i === idx
-                          ? { ...sequence, edit: true }
-                          : { ...sequence, edit: false }
+                    sequences: map(activeScreen.sequences, (sequence, idx) =>
+                      i === idx
+                        ? { ...sequence, edit: true }
+                        : { ...sequence, edit: false }
                     )
                   }),
                 onDelete: i =>
@@ -122,10 +151,8 @@ const Sequence = ({
                   }),
                 onSelect: (i, value) =>
                   updateScreenData({
-                    sequences: map(
-                      activeScreen.sequences,
-                      (sequence, idx) =>
-                        i === idx ? { ...sequence, zoom: value } : sequence
+                    sequences: map(activeScreen.sequences, (sequence, idx) =>
+                      i === idx ? { ...sequence, zoom: value } : sequence
                     )
                   }),
                 onAdd: () =>
@@ -134,8 +161,8 @@ const Sequence = ({
                       concat(activeScreen.sequences, {
                         text: "Vložte popis zoomu",
                         zoom: 2,
-                        top: 12,
-                        left: 12
+                        top: 17,
+                        left: 17
                       })
                     )
                   }),
@@ -164,7 +191,8 @@ const Sequence = ({
                         )
                 }
               }}
-            />}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -172,6 +200,9 @@ const Sequence = ({
 };
 
 export default compose(
-  connect(null, { setDialog, updateScreenData, getFileById }),
+  connect(
+    null,
+    { setDialog, updateScreenData, getFileById }
+  ),
   withState("activePoint", "setActivePoint", null)
 )(Sequence);

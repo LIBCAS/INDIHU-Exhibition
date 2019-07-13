@@ -56,8 +56,12 @@ export const getExpositions = (inSilence, expoCount) => async (
                   field: "pageSize",
                   value:
                     expoCount && count
-                      ? expoCount > count ? expoCount : count
-                      : expoCount ? expoCount : count
+                      ? expoCount > count
+                        ? expoCount
+                        : count
+                      : expoCount
+                      ? expoCount
+                      : count
                 }
               : null
             : { field: "pageSize", value: pager.pageSize },

@@ -17,7 +17,8 @@ export const addCollaborators = (collaborator, type, invite, expoId) => async (
       }
     );
 
-    if (response.status === 200 || response.status === 201) dispatch(loadExpo(expoId));
+    if (response.status === 200 || response.status === 201)
+      dispatch(loadExpo(expoId));
 
     return response.status;
   } catch (error) {

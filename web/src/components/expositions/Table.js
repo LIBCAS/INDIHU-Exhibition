@@ -17,7 +17,7 @@ const Table = ({
   filter,
   setExpoFilter,
   getExpositions
-}) =>
+}) => (
   <table className="table-all">
     <tr className="table-all-row header">
       <td
@@ -82,30 +82,21 @@ const Table = ({
       </td>
       <td className="table-all-col actions">Akce</td>
     </tr>
-    {map(expositions, (item, i) =>
+    {map(expositions, (item, i) => (
       <tr
         className="table-all-row"
         key={i}
         onClick={() =>
           item.canEdit &&
           item.state !== "ENDED" &&
-          history.push(`/expo/${item.id}/structure`)}
+          history.push(`/expo/${item.id}/structure`)
+        }
       >
-        <td className="table-all-col">
-          {get(item, "title")}
-        </td>
-        <td className="table-all-col">
-          {expoStateText[get(item, "state")]}
-        </td>
-        <td className="table-all-col">
-          {formatTime(get(item, "created"))}
-        </td>
-        <td className="table-all-col">
-          {formatTime(get(item, "lastEdit"))}
-        </td>
-        <td className="table-all-col">
-          {get(item, "isEditing")}
-        </td>
+        <td className="table-all-col">{get(item, "title")}</td>
+        <td className="table-all-col">{expoStateText[get(item, "state")]}</td>
+        <td className="table-all-col">{formatTime(get(item, "created"))}</td>
+        <td className="table-all-col">{formatTime(get(item, "lastEdit"))}</td>
+        <td className="table-all-col">{get(item, "isEditing")}</td>
         <td className="table-all-col select actions">
           <ExpoMenu
             id={item.id}
@@ -119,7 +110,11 @@ const Table = ({
           />
         </td>
       </tr>
-    )}
-  </table>;
+    ))}
+  </table>
+);
 
-export default connect(null, { changeCollaboratorType })(Table);
+export default connect(
+  null,
+  { changeCollaboratorType }
+)(Table);

@@ -1,10 +1,10 @@
 import React from "react";
 import { map, isEmpty } from "lodash";
-import FontIcon from "react-md/lib/FontIcons";
-import ReactTooltip from "react-tooltip";
 import { compose, lifecycle, withState } from "recompose";
+import classNames from "classnames";
 
 import { animationType } from "../../../enums/animationType";
+import InfopointIcon from "../../InfopointIcon";
 
 const Image = ({
   viewScreen,
@@ -18,6 +18,26 @@ const Image = ({
       id="interactive-screen-image-container"
       className="interactive-screen-image-container"
     >
+      {map(
+        viewScreen.infopoints
+          ? viewScreen.infopoints
+          : viewScreen.sequences
+          ? viewScreen.sequences
+          : viewScreen.images[activeImageIndex].infopoints,
+        (item, i) => (
+          <InfopointIcon
+            key={i}
+            className="infopoint-icon custom-tooltip hidden-custom-tooltip"
+          >
+            <div
+              id={`inveractive-image-infopoint-tooltip-hidden-${i}`}
+              className="tooltip-text"
+            >
+              {item.text}
+            </div>
+          </InfopointIcon>
+        )
+      )}
       <div
         id="interactive-screen-image-container-inner"
         className="interactive-screen-image-container-inner"
@@ -33,18 +53,22 @@ const Image = ({
           viewScreen.infopoints
             ? viewScreen.infopoints
             : viewScreen.sequences
-              ? viewScreen.sequences
-              : viewScreen.images[activeImageIndex].infopoints,
-          (item, i) =>
+            ? viewScreen.sequences
+            : viewScreen.images[activeImageIndex].infopoints,
+          (item, i) => (
             <div className="image-screen-infopoint" key={i}>
-              <FontIcon
-                className="infopoint-icon"
+              <InfopointIcon
+                className={classNames("infopoint-icon custom-tooltip", {
+                  show: item.alwaysVisible
+                })}
                 style={
                   viewScreen.type === screenType.IMAGE_ZOOM
                     ? {
                         position: "absolute",
-                        top:
-                          actScale === 1
+                        top: document.getElementById(
+                          `inveractive-image-infopoint-tooltip-hidden-${i}`
+                        )
+                          ? actScale === 1
                             ? (document
                                 .getElementById(
                                   "interactive-screen-image-container"
@@ -53,16 +77,29 @@ const Image = ({
                                 viewScreen.imageOrigData.height) /
                                 2 +
                               item.top -
-                              12
+                              17 -
+                              document
+                                .getElementById(
+                                  `inveractive-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().height
                             : document
                                 .getElementById(
                                   "interactive-screen-image-container"
                                 )
                                 .getBoundingClientRect().height /
                                 2 -
-                              12,
-                        left:
-                          actScale === 1
+                              17 -
+                              document
+                                .getElementById(
+                                  `inveractive-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().height
+                          : 0,
+                        left: document.getElementById(
+                          `inveractive-image-infopoint-tooltip-hidden-${i}`
+                        )
+                          ? actScale === 1
                             ? (document
                                 .getElementById(
                                   "interactive-screen-image-container"
@@ -71,14 +108,27 @@ const Image = ({
                                 viewScreen.imageOrigData.width) /
                                 2 +
                               item.left -
-                              12
+                              17 -
+                              document
+                                .getElementById(
+                                  `inveractive-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().width /
+                                2
                             : document
                                 .getElementById(
                                   "interactive-screen-image-container"
                                 )
                                 .getBoundingClientRect().width /
                                 2 -
-                              12
+                              17 -
+                              document
+                                .getElementById(
+                                  `inveractive-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().width /
+                                2
+                          : 0
                       }
                     : {
                         position: "absolute",
@@ -99,20 +149,25 @@ const Image = ({
                                 ? viewScreen.imageOrigData.height
                                 : viewScreen.images[activeImageIndex]
                                     .imageOrigData.height)) -
-                          12,
+                          17 -
+                          document
+                            .getElementById(
+                              `inveractive-image-infopoint-tooltip-hidden-${i}`
+                            )
+                            .getBoundingClientRect().height,
                         left:
                           (document
                             .getElementById(
                               "interactive-screen-image-container"
                             )
                             .getBoundingClientRect().width -
-                            document
+                            (document
                               .getElementById("interactive-screen-image")
                               .getBoundingClientRect().height /
                               (viewScreen.image
                                 ? viewScreen.imageOrigData.height
                                 : viewScreen.images[activeImageIndex]
-                                    .imageOrigData.height) *
+                                    .imageOrigData.height)) *
                               (viewScreen.image
                                 ? viewScreen.imageOrigData.width
                                 : viewScreen.images[activeImageIndex]
@@ -126,19 +181,20 @@ const Image = ({
                                 ? viewScreen.imageOrigData.height
                                 : viewScreen.images[activeImageIndex]
                                     .imageOrigData.height)) -
-                          12
+                          17 -
+                          document
+                            .getElementById(
+                              `inveractive-image-infopoint-tooltip-hidden-${i}`
+                            )
+                            .getBoundingClientRect().width /
+                            2
                       }
                 }
-                data-tip={item.text}
               >
-                help_outline
-              </FontIcon>
-              <ReactTooltip
-                className="infopoint-tooltip"
-                type="dark"
-                effect="solid"
-              />
+                <div className="tooltip-text">{item.text}</div>
+              </InfopointIcon>
             </div>
+          )
         )}
     </div>
   );
@@ -173,18 +229,20 @@ export default compose(
         newNode.className = "";
         newNode.setAttribute(
           "style",
-          `width: ${viewScreen.imageOrigData.height >
-          viewScreen.imageOrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.imageOrigData.height >
-          viewScreen.imageOrigData.width
-            ? "100%"
-            : "auto"}`
+          `width: ${
+            viewScreen.imageOrigData.height > viewScreen.imageOrigData.width
+              ? "auto"
+              : "100%"
+          }; height: ${
+            viewScreen.imageOrigData.height > viewScreen.imageOrigData.width
+              ? "100%"
+              : "auto"
+          }`
         );
 
         document
           .getElementById("interactive-screen-image-container-inner")
-          .prepend(newNode);
+          .appendChild(newNode);
       } else if (
         viewScreen.type === screenType.IMAGE_ZOOM &&
         viewScreen.imageOrigData &&
@@ -208,7 +266,7 @@ export default compose(
 
         document
           .getElementById("interactive-screen-image-container-inner")
-          .prepend(newNode);
+          .appendChild(newNode);
       }
     }
   })

@@ -57,8 +57,11 @@ const ScreenImageChange = props => {
 };
 
 export default compose(
-  connect(({ expo: { activeScreen } }) => ({ activeScreen }), {
-    updateScreenData
-  }),
+  connect(
+    ({ expo: { activeScreen } }) => ({ activeScreen }),
+    {
+      updateScreenData
+    }
+  ),
   withRouter
 )(ScreenImageChange);

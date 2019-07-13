@@ -42,14 +42,14 @@ export const screenTypeText = {
   START: "Úvod výstavy",
   FINISH: "Závěr výstavy",
   INTRO: "Úvod do kapitoly",
-  IMAGE: "Obrazovka s obrázkem", // animacia/infopointy
+  IMAGE: "Obrazovka s obrázkem",
   VIDEO: "Obrazovka s videem",
   TEXT: "Obrazovka s textem",
   PARALLAX: "Parallax",
-  IMAGE_ZOOM: "Zoom in",
+  IMAGE_ZOOM: "Animace přiblížení",
   PHOTOGALERY: "Fotogalerie",
   IMAGE_CHANGE: "Foto před a po",
-  EXTERNAL: "Obrazovka s externím objektem",
+  EXTERNAL: "Obrazovka s externím obsahem",
   GAME_FIND: "Najdi na obrázku",
   GAME_DRAW: "Dokresli",
   GAME_WIPE: "Stírací los",
@@ -85,17 +85,17 @@ export const newScreen = {
     ["VIDEO", "Obrazovka s videem"],
     ["TEXT", "Obrazovka s textem"],
     ["PARALLAX", "Parallax"],
-    ["IMAGE_ZOOM", "Zoom in"],
+    ["IMAGE_ZOOM", "Animace přiblížení"],
     ["PHOTOGALERY", "Fotogalerie"],
     ["IMAGE_CHANGE", "Foto před a po"],
-    ["EXTERNAL", "Obrazovka s externím objektem"]
+    ["EXTERNAL", "Obrazovka s externím obsahem"]
   ],
   GAME: [
-    ["GAME_FIND", "Nájdi v obrázku"],
+    ["GAME_FIND", "Najdi na obrázku"],
     ["GAME_DRAW", "Dokresli"],
     ["GAME_WIPE", "Stírací los"],
     ["GAME_SIZING", "Hádej velikost"],
-    ["GAME_MOVE", "Posuň na správne místo"],
+    ["GAME_MOVE", "Posuň na správné místo"],
     ["GAME_OPTIONS", "Výběr z možností"]
   ]
 };

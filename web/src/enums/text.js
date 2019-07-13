@@ -1,5 +1,6 @@
 export const helpIconText = {
-  EDITOR_DOCUMENTS: "Text",
+  EDITOR_DOCUMENTS:
+    "Dokumenty a bibliografie, které budou zobrazeny na úvodní a závěrečné obrazovce.",
   EDITOR_EXTERNAL_EXTERNALDATA:
     "Zde vložte embed kód webové stránky či služby, kterou chcete do výstavy zapojit.",
   EDITOR_AUDIO: "Text",
@@ -117,6 +118,7 @@ export const helpIconText = {
   EDITOR_VIDEO_VIDEO: "Text",
   EDITOR_ZOOM_IN_IMAGE:
     "Hlavní obrázek, nad kterým je prováděn zoom. V tabulce se sekvencí zoomů můžete přidat nový bod pro zoom a umístit ho na obrázek. V tabulce pak k tomuto bodu zájmu vyberte úroveň zoomu a délku trvání animace.",
+  EDITOR_ZOOM_IN_TOOLTIP_POSITION: "Pozice popisu zoomu v prezentačním módu.",
   EXPO_SETTINGS_CLOSED_EXPO_IMAGE:
     "Obrázek vybraný z knihovny dokumentů, který se zobrazí na pozadí stránky.",
   EXPO_SETTINGS_CLOSED_EXPO_URL:
@@ -128,7 +130,7 @@ export const helpIconText = {
   EXPO_STRUCTURE_SCREEN_NEW_IMAGE:
     "Obrazovka, jejímž ústředním motivem je obrázek, který můžete animovat a přidat infopointy.",
   EXPO_STRUCTURE_SCREEN_NEW_VIDEO:
-    "Obrazovka, která slouží k přehrání videa z knihovny dokumentů. Pro sdílení videa na internetu použijte “Obrazovku s externím objektem”.",
+    "Obrazovka, která slouží k přehrání videa z knihovny dokumentů. Pro sdílení videa na internetu použijte “Obrazovku s externím obsahem.",
   EXPO_STRUCTURE_SCREEN_NEW_TEXT:
     "Obrazovka zobrazí text o max. rozsahu 300 znaků.",
   EXPO_STRUCTURE_SCREEN_NEW_PARALLAX:
@@ -158,6 +160,8 @@ export const helpIconText = {
     "Výstava je veřejně dostupná přes svoje URL. Výstavu není možné upravovat.",
   EXPO_STATE_RADIO_ENDED:
     "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení uživateli s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”.",
+  FILES_HEADER_UPLOAD_FILE:
+    "Maximální velikost souboru je 25MB. Při nahrávání více souborů je limit 125MB.",
   STATE_OPTIONS_PREPARE:
     "Výstava je v přípravě. Obsah výstavy je možné libovolně upravovat. Výstava je přístupná pouze přihlášeným uživatelům, se kterými je výstava sdílena.",
   STATE_OPTIONS_OPENED:

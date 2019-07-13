@@ -47,12 +47,10 @@ const Photogallery = ({
 
   const setImage = img => {
     updateScreenData({
-      images: map(
-        activeScreen.images,
-        (image, i) =>
-          activeImageIndex === i
-            ? { ...image, id: img.id, infopoints: [] }
-            : image
+      images: map(activeScreen.images, (image, i) =>
+        activeImageIndex === i
+          ? { ...image, id: img.id, infopoints: [] }
+          : image
       )
     });
   };
@@ -67,14 +65,12 @@ const Photogallery = ({
             onClickCard: i => {
               setActiveImageIndex(activeImageIndex === i ? -1 : i);
               updateScreenData({
-                images: map(
-                  activeScreen.images,
-                  (image, j) =>
-                    i === j
-                      ? activeImageIndex === i
-                        ? { ...image, active: false }
-                        : { ...image, active: true }
-                      : { ...image, active: false }
+                images: map(activeScreen.images, (image, j) =>
+                  i === j
+                    ? activeImageIndex === i
+                      ? { ...image, active: false }
+                      : { ...image, active: true }
+                    : { ...image, active: false }
                 )
               });
             },
@@ -128,7 +124,7 @@ const Photogallery = ({
             }
           }}
         />
-        {activeImageIndex !== -1 &&
+        {activeImageIndex !== -1 && (
           <div className="screen-image">
             <div className="screen-two-cols">
               <div className="flex-row-nowrap one-image-row">
@@ -140,25 +136,22 @@ const Photogallery = ({
                     setImage,
                     onDelete: () =>
                       updateScreenData({
-                        images: map(
-                          activeScreen.images,
-                          (image, i) => (i === activeImageIndex ? {} : image)
+                        images: map(activeScreen.images, (image, i) =>
+                          i === activeImageIndex ? {} : image
                         )
                       }),
                     onLoad: (width, height) =>
                       updateScreenData({
-                        images: map(
-                          activeScreen.images,
-                          (image, index) =>
-                            index === activeImageIndex
-                              ? {
-                                  ...image,
-                                  imageOrigData: {
-                                    width,
-                                    height
-                                  }
+                        images: map(activeScreen.images, (image, index) =>
+                          index === activeImageIndex
+                            ? {
+                                ...image,
+                                imageOrigData: {
+                                  width,
+                                  height
                                 }
-                              : image
+                              }
+                            : image
                         )
                       }),
                     images: activeScreen.images,
@@ -183,7 +176,8 @@ const Photogallery = ({
                     onChange={value =>
                       updateScreenData({
                         animationType: value
-                      })}
+                      })
+                    }
                   />
                   <HelpIcon
                     {...{
@@ -192,7 +186,7 @@ const Photogallery = ({
                     }}
                   />
                 </div>
-                {image &&
+                {image && (
                   <InfopointsSequencesTable
                     {...{
                       label: "Infopointy",
@@ -204,125 +198,111 @@ const Photogallery = ({
                         setActivePoint(activePoint === i ? null : i),
                       onSubmit: text =>
                         updateScreenData({
-                          images: map(
-                            activeScreen.images,
-                            (image, i) =>
-                              i === activeImageIndex
-                                ? {
-                                    ...image,
-                                    infopoints: map(
-                                      image.infopoints,
-                                      infopoint =>
-                                        infopoint.edit
-                                          ? { ...infopoint, text, edit: false }
-                                          : infopoint
-                                    )
-                                  }
-                                : image
+                          images: map(activeScreen.images, (image, i) =>
+                            i === activeImageIndex
+                              ? {
+                                  ...image,
+                                  infopoints: map(image.infopoints, infopoint =>
+                                    infopoint.edit
+                                      ? { ...infopoint, text, edit: false }
+                                      : infopoint
+                                  )
+                                }
+                              : image
                           )
                         }),
                       onClear: () =>
                         updateScreenData({
-                          images: map(
-                            activeScreen.images,
-                            (image, j) =>
-                              j === activeImageIndex
-                                ? {
-                                    ...image,
-                                    infopoints: map(
-                                      image.infopoints,
-                                      infopoint => {
-                                        return {
-                                          ...infopoint,
-                                          edit: false
-                                        };
-                                      }
-                                    )
-                                  }
-                                : image
+                          images: map(activeScreen.images, (image, j) =>
+                            j === activeImageIndex
+                              ? {
+                                  ...image,
+                                  infopoints: map(
+                                    image.infopoints,
+                                    infopoint => {
+                                      return {
+                                        ...infopoint,
+                                        edit: false
+                                      };
+                                    }
+                                  )
+                                }
+                              : image
                           )
                         }),
                       onEdit: i =>
                         updateScreenData({
-                          images: map(
-                            activeScreen.images,
-                            (image, j) =>
-                              j === activeImageIndex
-                                ? {
-                                    ...image,
-                                    infopoints: map(
-                                      image.infopoints,
-                                      (infopoint, idx) =>
-                                        i === idx
-                                          ? {
-                                              ...infopoint,
-                                              edit: true
-                                            }
-                                          : {
-                                              ...infopoint,
-                                              edit: false
-                                            }
-                                    )
-                                  }
-                                : image
+                          images: map(activeScreen.images, (image, j) =>
+                            j === activeImageIndex
+                              ? {
+                                  ...image,
+                                  infopoints: map(
+                                    image.infopoints,
+                                    (infopoint, idx) =>
+                                      i === idx
+                                        ? {
+                                            ...infopoint,
+                                            edit: true
+                                          }
+                                        : {
+                                            ...infopoint,
+                                            edit: false
+                                          }
+                                  )
+                                }
+                              : image
                           )
                         }),
                       onCheckbox: (chb, value) =>
                         updateScreenData({
-                          images: map(
-                            activeScreen.images,
-                            (image, i) =>
-                              i === activeImageIndex
-                                ? {
-                                    ...image,
-                                    infopoints: map(
-                                      image.infopoints,
-                                      (infopoint, idx) =>
-                                        chb === idx
-                                          ? {
-                                              ...infopoint,
-                                              alwaysVisible: value
-                                            }
-                                          : infopoint
-                                    )
-                                  }
-                                : image
+                          images: map(activeScreen.images, (image, i) =>
+                            i === activeImageIndex
+                              ? {
+                                  ...image,
+                                  infopoints: map(
+                                    image.infopoints,
+                                    (infopoint, idx) =>
+                                      chb === idx
+                                        ? {
+                                            ...infopoint,
+                                            alwaysVisible: value
+                                          }
+                                        : infopoint
+                                  )
+                                }
+                              : image
                           )
                         }),
                       onDelete: i =>
                         updateScreenData({
-                          images: map(
-                            activeScreen.images,
-                            (image, j) =>
-                              j === activeImageIndex
-                                ? {
-                                    ...image,
-                                    infopoints: filter(
-                                      image.infopoints,
-                                      (inf, idx) => i !== idx
-                                    )
-                                  }
-                                : image
+                          images: map(activeScreen.images, (image, j) =>
+                            j === activeImageIndex
+                              ? {
+                                  ...image,
+                                  infopoints: filter(
+                                    image.infopoints,
+                                    (inf, idx) => i !== idx
+                                  )
+                                }
+                              : image
                           )
                         }),
                       onAdd: () =>
                         updateScreenData({
-                          images: map(
-                            activeScreen.images,
-                            (image, i) =>
-                              i === activeImageIndex
-                                ? {
-                                    ...image,
-                                    infopoints: compact(
-                                      concat(image.infopoints, {
-                                        text: "Vložte popis infopointu",
-                                        top: 12,
-                                        left: 12,
-                                        alwaysVisible: false
-                                      })
-                                    )
-                                  }
-                                : image
+                          images: map(activeScreen.images, (image, i) =>
+                            i === activeImageIndex
+                              ? {
+                                  ...image,
+                                  infopoints: compact(
+                                    concat(image.infopoints, {
+                                      text: "Vložte popis infopointu",
+                                      top: 17,
+                                      left: 17,
+                                      alwaysVisible: false
+                                    })
+                                  )
+                                }
+                              : image
                           )
                         }),
                       initialValues: {
@@ -371,17 +351,22 @@ const Photogallery = ({
                               )
                       }
                     }}
-                  />}
+                  />
+                )}
               </div>
             </div>
-          </div>}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default compose(
-  connect(null, { setDialog, getFileById, updateScreenData }),
+  connect(
+    null,
+    { setDialog, getFileById, updateScreenData }
+  ),
   withState("activeImageIndex", "setActiveImageIndex", -1),
   withState("activePoint", "setActivePoint", null)
 )(Photogallery);

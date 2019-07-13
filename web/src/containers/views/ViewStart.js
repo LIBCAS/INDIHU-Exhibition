@@ -1,12 +1,13 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { compose, withState, lifecycle } from "recompose";
+import { compose, withState, lifecycle, defaultProps } from "recompose";
 import { connect } from "react-redux";
-import { map, get } from "lodash";
+import { map, get, noop } from "lodash";
 import classNames from "classnames";
 import FontIcon from "react-md/lib/FontIcons";
 
 import { getFileById } from "../../actions/fileActions";
+import { toggleInteractive } from "../../actions/expoActions/viewerActions";
 import { giveMeExpoTime, hasValue, secondsToFormatedTime } from "../../utils";
 import { animationType } from "../../enums/animationType";
 
@@ -32,7 +33,13 @@ const ViewStart = ({
             slideUp:
               get(viewScreen, "animationType") === animationType.FROM_TOP,
             slideDown:
-              get(viewScreen, "animationType") === animationType.FROM_BOTTOM
+              get(viewScreen, "animationType") === animationType.FROM_BOTTOM,
+            slideRight:
+              get(viewScreen, "animationType") ===
+              animationType.FROM_LEFT_TO_RIGHT,
+            slideLeft:
+              get(viewScreen, "animationType") ===
+              animationType.FROM_RIGHT_TO_LEFT
           })}
         />
       </div>
@@ -40,12 +47,8 @@ const ViewStart = ({
         <div className={classNames("menu-tab left", { collapsed })}>
           <div className="flex-row main">
             <div className="flex-col title">
-              <h2>
-                {viewScreen.title}
-              </h2>
-              <p>
-                {viewScreen.subTitle}
-              </p>
+              <h2>{viewScreen.title}</h2>
+              <p>{viewScreen.subTitle}</p>
             </div>
             <div
               className="flex-col menu"
@@ -55,7 +58,9 @@ const ViewStart = ({
                 <FontIcon className="icon">menu</FontIcon>
                 <FontIcon className="icon second-icon">volume_up</FontIcon>
               </div>
-              <p className="text">Více informací</p>
+              <p className="text">
+                {collapsed ? "Méně informací" : "Více informací"}
+              </p>
             </div>
           </div>
           <div className="flex-col info">
@@ -63,12 +68,12 @@ const ViewStart = ({
               <div className="margin-bottom">
                 {viewScreen.perex &&
                   (viewScreen.perex.indexOf("\n") !== -1
-                    ? viewScreen.perex.split("\n").map((item, i) =>
+                    ? viewScreen.perex.split("\n").map((item, i) => (
                         <span key={i}>
                           {item}
                           <br />
                         </span>
-                      )
+                      ))
                     : viewScreen.perex)}
               </div>
               <div>
@@ -76,15 +81,17 @@ const ViewStart = ({
                 {map(
                   viewExpo.structure.screens,
                   (chapter, i) =>
-                    chapter[0].type === "INTRO" &&
-                    <p
-                      key={i}
-                      className="info-chapter"
-                      onClick={() =>
-                        history.push(`/view/${viewExpo.url}/${i}/0`)}
-                    >
-                      {chapter[0].title || "(Nepojmenovaná kapitola)"}
-                    </p>
+                    chapter[0].type === "INTRO" && (
+                      <p
+                        key={i}
+                        className="info-chapter"
+                        onClick={() =>
+                          history.push(`/view/${viewExpo.url}/${i}/0`)
+                        }
+                      >
+                        {chapter[0].title || "(Nepojmenovaná kapitola)"}
+                      </p>
+                    )
                 )}
               </div>
             </div>
@@ -105,23 +112,19 @@ const ViewStart = ({
           </div>
           <div className="flex-col info">
             <div className="content">
-              {map(viewScreen.collaborators, (c, i) =>
+              {map(viewScreen.collaborators, (c, i) => (
                 <div className="part" key={`coll${i}`}>
-                  <p className="bold">
-                    {c.role}
-                  </p>
-                  {c.text.split("\n").map((t, i) =>
-                    <p key={`text-${i}`}>
-                      {t}
-                    </p>
-                  )}
+                  <p className="bold">{c.role}</p>
+                  {c.text.split("\n").map((t, i) => (
+                    <p key={`text-${i}`}>{t}</p>
+                  ))}
                 </div>
-              )}
+              ))}
               <div className="flex-row">
                 <div className={classNames({ "half-width": audio })}>
                   <p>Dokumenty k výstavě:</p>
                   <div className="flex-col">
-                    {map(viewScreen.documents, (d, i) =>
+                    {map(viewScreen.documents, (d, i) => (
                       <div key={i}>
                         <a
                           id={`view-start-file-link-${i}`}
@@ -132,7 +135,9 @@ const ViewStart = ({
                           a
                         </a>
                         <div
-                          className="document"
+                          className={classNames("document", {
+                            "document-link": d.fileId || d.url
+                          })}
                           onClick={() => {
                             if (d.name)
                               document
@@ -149,36 +154,36 @@ const ViewStart = ({
                                 .focus();
                           }}
                         >
-                          {d.name
-                            ? <FontIcon className="icon">
-                                {/^image.*$/.test(d.type)
-                                  ? "image"
-                                  : /^audio.*$/.test(d.type)
-                                    ? "music_note"
-                                    : /^video.*$/.test(d.type)
-                                      ? "movie"
-                                      : "insert_drive_file"}
-                              </FontIcon>
-                            : <FontIcon className="icon">
-                                {/^image.*$/.test(d.urlType)
-                                  ? "image"
-                                  : /^audio.*$/.test(d.urlType)
-                                    ? "music_note"
-                                    : /^video.*$/.test(d.urlType)
-                                      ? "movie"
-                                      : /^WEB.*$/.test(d.urlType)
-                                        ? "web"
-                                        : "insert_drive_file"}
-                              </FontIcon>}
-                          <p className="margin-none">
-                            {d.fileName}
-                          </p>
+                          {d.name ? (
+                            <FontIcon className="icon">
+                              {/^image.*$/.test(d.type)
+                                ? "image"
+                                : /^audio.*$/.test(d.type)
+                                ? "music_note"
+                                : /^video.*$/.test(d.type)
+                                ? "movie"
+                                : "insert_drive_file"}
+                            </FontIcon>
+                          ) : (
+                            <FontIcon className="icon">
+                              {/^image.*$/.test(d.urlType)
+                                ? "image"
+                                : /^audio.*$/.test(d.urlType)
+                                ? "music_note"
+                                : /^video.*$/.test(d.urlType)
+                                ? "movie"
+                                : /^WEB$/.test(d.urlType)
+                                ? "web"
+                                : "insert_drive_file"}
+                            </FontIcon>
+                          )}
+                          <p style={{ margin: 0 }}>{d.fileName}</p>
                         </div>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </div>
-                {audio &&
+                {audio && (
                   <div className="half-width">
                     <p>Audio verze výstavy:</p>
                     <a
@@ -192,16 +197,14 @@ const ViewStart = ({
                     <div
                       className="document"
                       onClick={() =>
-                        document
-                          .getElementById("view-start-audio-link")
-                          .click()}
+                        document.getElementById("view-start-audio-link").click()
+                      }
                     >
                       <FontIcon className="icon">headset</FontIcon>
-                      <p>
-                        {audio.name}
-                      </p>
+                      <p>{audio.name}</p>
                     </div>
-                  </div>}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -213,15 +216,22 @@ const ViewStart = ({
 
 export default compose(
   withRouter,
+  defaultProps({ setStarted: noop }),
   withState("collapsed", "handleCollapse", false),
   connect(
     ({ expo: { viewExpo, viewScreen } }) => ({
       viewExpo,
       viewScreen
     }),
-    { getFileById }
+    { getFileById, toggleInteractive }
   ),
   lifecycle({
+    componentWillMount() {
+      const { toggleInteractive, setStarted } = this.props;
+
+      toggleInteractive(false);
+      setStarted();
+    },
     componentDidMount() {
       const { viewScreen, screenFiles } = this.props;
 
@@ -234,11 +244,21 @@ export default compose(
           get(viewScreen, "animationType") === animationType.FROM_BOTTOM
         ) {
           newNode.className = "image-fullscreen animation-slideDown";
+        } else if (
+          get(viewScreen, "animationType") === animationType.FROM_LEFT_TO_RIGHT
+        ) {
+          newNode.className = "image-fullscreen animation-slideRight";
+        } else if (
+          get(viewScreen, "animationType") === animationType.FROM_RIGHT_TO_LEFT
+        ) {
+          newNode.className = "image-fullscreen animation-slideLeft";
         } else {
           newNode.className = "image-fullscreen";
         }
 
-        document.getElementById("view-start-image-container").prepend(newNode);
+        document
+          .getElementById("view-start-image-container")
+          .appendChild(newNode);
       }
     }
   })

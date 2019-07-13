@@ -9,7 +9,7 @@ import * as Validation from "../form/Validation";
 import { updateCurrentUser } from "../../actions/userActions";
 import { setDialog } from "../../actions/dialogActions";
 
-const PasswordChange = ({ handleSubmit }) =>
+const PasswordChange = ({ handleSubmit }) => (
   <div>
     <form className="flex-form" onSubmit={handleSubmit}>
       <Field
@@ -38,7 +38,8 @@ const PasswordChange = ({ handleSubmit }) =>
         />
       </div>
     </form>
-  </div>;
+  </div>
+);
 
 const validate = (values, props) => {
   const errors = {};
@@ -52,7 +53,10 @@ const validate = (values, props) => {
 };
 
 export default compose(
-  connect(null, { updateCurrentUser, setDialog }),
+  connect(
+    null,
+    { updateCurrentUser, setDialog }
+  ),
   withHandlers({
     onSubmit: ({
       updateCurrentUser,

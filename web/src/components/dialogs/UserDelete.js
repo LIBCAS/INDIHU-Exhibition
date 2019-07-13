@@ -1,25 +1,34 @@
 import React from "react";
 import { connect } from "react-redux";
+import { get } from "lodash";
 import { reduxForm } from "redux-form";
 import { compose, withHandlers } from "recompose";
+import { FontIcon } from "react-md/lib";
+
 import Dialog from "./DialogWrap";
 import { deleteUser, getUsers } from "../../actions/adminActions";
 
-const UserDelete = ({ handleSubmit, dialogData, data }) =>
+const UserDelete = ({ handleSubmit, dialogData, data }) => (
   <Dialog
-    title="Odstranění uživatele"
+    title={<FontIcon className="color-black">delete</FontIcon>}
     name="UserDelete"
     submitLabel="Odstranit"
     handleSubmit={handleSubmit}
   >
     <p>
-      Uživatel {data && data.name ? `${data.name} ` : ""}bude odstraněn.
+      Uživatel <strong>{get(data, "name", "")}</strong> bude odstraněn.
     </p>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   connect(
-    ({ dialog: { data }, user: { users: { all } } }) => ({ data, users: all }),
+    ({
+      dialog: { data },
+      user: {
+        users: { all }
+      }
+    }) => ({ data, users: all }),
     {
       getUsers
     }

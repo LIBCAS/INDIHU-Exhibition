@@ -16,7 +16,7 @@ const options = [
   { label: "Pro čtení a zápis", value: "EDIT" }
 ];
 
-const ExpoShare = ({ handleSubmit, change }) =>
+const ExpoShare = ({ handleSubmit, change }) => (
   <Dialog
     title="Sdílet s"
     name="ExpoShare"
@@ -45,10 +45,14 @@ const ExpoShare = ({ handleSubmit, change }) =>
       label="Pokud uživatel neexistuje, odeslat e-mailovou pozvánku"
       change={change}
     />
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    null
+  ),
   withHandlers({
     onSubmit: dialog => async (formData, dispatch, { data }) => {
       const response = await dispatch(
@@ -74,7 +78,9 @@ export default compose(
       } else if (response === 406) {
         dialog.setDialog("Info", {
           title: "Pozvat uživatele",
-          text: `${formData.name} není uživatel Indihu. Prosím vyberte možnost "odeslat e-mailovou pozvánku"`
+          text: `${
+            formData.name
+          } není uživatel Indihu. Prosím vyberte možnost "odeslat e-mailovou pozvánku"`
         });
       } else if (response === 409) {
         dialog.closeDialog();

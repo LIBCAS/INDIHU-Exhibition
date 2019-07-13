@@ -1,93 +1,126 @@
 import React from "react";
 import classNames from "classnames";
 import { withRouter } from "react-router-dom";
-import { compose, lifecycle, withState } from "recompose";
+import { compose, lifecycle, withState, withHandlers } from "recompose";
 import { connect } from "react-redux";
-import { map } from "lodash";
-import FontIcon from "react-md/lib/FontIcons";
+import { map, get } from "lodash";
 
+import InfopointIcon from "../../components/InfopointIcon";
 import ScreenMenu from "../../components/views/ScreenMenu";
 import { animationType } from "../../enums/animationType";
 import { getFileById } from "../../actions/fileActions";
+import { getObjectFitSize, getImageData } from "../../utils/viewer";
 
-const ViewImage = ({ viewScreen, getFileById, state }) => {
+const ViewImage = ({ viewScreen, getFileById, imageBoundingClientRect }) => {
   const image = viewScreen.image ? getFileById(viewScreen.image) : null;
 
-  const container = document.getElementById("view-image-image-container")
+  const container = document.getElementById("view-image-image-container-inner")
     ? document
-      .getElementById("view-image-image-container")
-      .getBoundingClientRect()
+        .getElementById("view-image-image-container-inner")
+        .getBoundingClientRect()
     : null;
+
+  const imageData =
+    container && imageBoundingClientRect
+      ? getImageData(
+          container.width,
+          container.height,
+          get(viewScreen, `imageOrigData.width`),
+          get(viewScreen, `imageOrigData.height`),
+          imageBoundingClientRect.width,
+          imageBoundingClientRect.height
+        )
+      : null;
 
   return (
     <div>
       <div className="viewer-screen">
+        {map(viewScreen.infopoints, (infopoint, i) => (
+          <InfopointIcon
+            key={i}
+            className="infopoint-icon custom-tooltip hidden-custom-tooltip"
+          >
+            <div
+              id={`view-image-image-infopoint-tooltip-hidden-${i}`}
+              className="tooltip-text"
+            >
+              {infopoint.text}
+            </div>
+          </InfopointIcon>
+        ))}
         <div
           id="view-image-image-container"
           className={classNames("image-screen", {
             "animation-imageSlideDown":
               viewScreen.animationType === animationType.FROM_TOP,
             "animation-imageSlideUp":
-              viewScreen.animationType === animationType.FROM_BOTTOM
+              viewScreen.animationType === animationType.FROM_BOTTOM,
+            "animation-imageSlideRight":
+              viewScreen.animationType === animationType.FROM_LEFT_TO_RIGHT,
+            "animation-imageSlideLeft":
+              viewScreen.animationType === animationType.FROM_RIGHT_TO_LEFT
           })}
           style={{
-            animationDuration: `${viewScreen.time && viewScreen.time > 0
-              ? viewScreen.time
-              : "20"}s`
+            animationDuration: `${
+              viewScreen.time && viewScreen.time > 0 ? viewScreen.time : "20"
+            }s`
           }}
         >
           <div
             id="view-image-image-container-inner"
-            className="image-screen-inner"
+            className="image-screen-inner view-image-image-container-inner"
           />
           {image &&
             viewScreen.image &&
             viewScreen.imageOrigData &&
-            viewScreen.infopoints &&
-            map(viewScreen.infopoints, (infopoint, i) =>
-              <FontIcon
-                key={i}
-                className={classNames("infopoint-icon custom-tooltip", { "show": infopoint.alwaysVisible })}
-                style={{
-                  position: "absolute",
-                  top: container
-                    ? viewScreen.imageOrigData.height >
-                      viewScreen.imageOrigData.width
-                      ? container.height /
-                      viewScreen.imageOrigData.height *
-                      infopoint.top -
-                      12
-                      : container.height / 2 -
-                      viewScreen.imageOrigData.height *
-                      (container.width / viewScreen.imageOrigData.width) /
-                      2 +
-                      container.width /
-                      viewScreen.imageOrigData.width *
-                      infopoint.top -
-                      12
-                    : 0,
-                  left: container
-                    ? viewScreen.imageOrigData.width >
-                      viewScreen.imageOrigData.height
-                      ? container.width /
-                      viewScreen.imageOrigData.width *
-                      infopoint.left -
-                      12
-                      : container.width / 2 -
-                      viewScreen.imageOrigData.width *
-                      (container.height /
-                        viewScreen.imageOrigData.height) /
-                      2 +
-                      container.height /
-                      viewScreen.imageOrigData.height *
-                      infopoint.left -
-                      12
-                    : 0
-                }}
+            viewScreen.infopoints && (
+              <div
+                id="view-image-infopoints-container"
+                className="view-image-infopoints-container"
               >
-                <div className="tooltip-text">{infopoint.text}</div>
-                help_outline
-              </FontIcon>
+                {map(viewScreen.infopoints, (infopoint, i) => (
+                  <InfopointIcon
+                    key={i}
+                    className={classNames("infopoint-icon custom-tooltip", {
+                      show: infopoint.alwaysVisible
+                    })}
+                    style={{
+                      position: "absolute",
+                      top:
+                        container &&
+                        imageData &&
+                        document.getElementById(
+                          `view-image-image-infopoint-tooltip-hidden-${i}`
+                        )
+                          ? `calc(${imageData.top +
+                              infopoint.top / imageData.ratio -
+                              document
+                                .getElementById(
+                                  `view-image-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().height}px - 0.5em)`
+                          : 0,
+                      left:
+                        container &&
+                        imageData &&
+                        document.getElementById(
+                          `view-image-image-infopoint-tooltip-hidden-${i}`
+                        )
+                          ? imageData.left +
+                            infopoint.left / imageData.ratio -
+                            document
+                              .getElementById(
+                                `view-image-image-infopoint-tooltip-hidden-${i}`
+                              )
+                              .getBoundingClientRect().width /
+                              2
+                          : 0
+                    }}
+                  >
+                    <div className="tooltip-text">{infopoint.text}</div>
+                  </InfopointIcon>
+                ))}
+              </div>
             )}
         </div>
       </div>
@@ -98,50 +131,64 @@ const ViewImage = ({ viewScreen, getFileById, state }) => {
 
 export default compose(
   withRouter,
-  connect(({ expo: { viewScreen } }) => ({ viewScreen }), {
-    getFileById
+  connect(
+    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    {
+      getFileById
+    }
+  ),
+  withState("intervalId", "setIntervalId", null),
+  withState("imageBoundingClientRect", "setImageBoundingClientRect", null),
+  withHandlers({
+    updateImageBoundingClientRect: ({ setImageBoundingClientRect }) => () => {
+      const img = document.getElementById("view-image-image");
+      if (img) {
+        setImageBoundingClientRect(
+          getObjectFitSize(
+            true,
+            img.width,
+            img.height,
+            img.naturalWidth,
+            img.naturalHeight
+          )
+        );
+      }
+    }
   }),
-  withState("state", "setState", false), // pro vykreslení infopointů
   lifecycle({
     componentDidMount() {
-      const { viewScreen, screenFiles, setState } = this.props;
+      const {
+        viewScreen,
+        screenFiles,
+        updateImageBoundingClientRect,
+        setIntervalId
+      } = this.props;
 
       if (viewScreen.image) {
         const newNode = screenFiles["image"];
 
-        const container = document
-          .getElementById("view-image-image-container-inner")
-          .getBoundingClientRect();
-
         newNode.id = "view-image-image";
         newNode.setAttribute(
           "style",
-          `top: ${viewScreen.imageOrigData.height >
-            viewScreen.imageOrigData.width
-            ? 0
-            : container.height / 2 -
-            viewScreen.imageOrigData.height *
-            (container.width / viewScreen.imageOrigData.width) /
-            2}px; left: ${viewScreen.imageOrigData.width >
-              viewScreen.imageOrigData.height
-              ? 0
-              : container.width / 2 -
-              viewScreen.imageOrigData.width *
-              (container.height / viewScreen.imageOrigData.height) /
-              2}px; width: ${viewScreen.imageOrigData.height >
-                viewScreen.imageOrigData.width
-                ? "auto"
-                : "100%"}; height: ${viewScreen.imageOrigData.height >
-                  viewScreen.imageOrigData.width
-                  ? "100%"
-                  : "auto"};`
+          viewScreen.animationType === animationType.FROM_LEFT_TO_RIGHT ||
+            viewScreen.animationType === animationType.FROM_RIGHT_TO_LEFT
+            ? "position: static; min-width: 120vw; width: 120vw; height: auto;"
+            : viewScreen.animationType === animationType.FROM_TOP ||
+              viewScreen.animationType === animationType.FROM_BOTTOM
+            ? "position: static; min-height: 120vh; height: 120vh; width: auto;"
+            : "position: static; max-width: 100%; max-height: 100%;"
         );
         document
           .getElementById("view-image-image-container-inner")
-          .prepend(newNode);
+          .appendChild(newNode);
 
-        setState(true);
+        setIntervalId(setInterval(updateImageBoundingClientRect, 30));
       }
+    },
+    componentWillUnmount() {
+      const { intervalId } = this.props;
+
+      clearInterval(intervalId);
     }
   })
 )(ViewImage);

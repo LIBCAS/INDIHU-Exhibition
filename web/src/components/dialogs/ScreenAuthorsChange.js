@@ -9,9 +9,9 @@ import * as Validation from "../form/Validation";
 
 import { changeScreenCollaborators } from "../../actions/expoActions";
 
-const ScreenAuthorsChange = ({ handleSubmit }) =>
+const ScreenAuthorsChange = ({ handleSubmit }) => (
   <Dialog
-    title="Změnit autory obrazovky nebo spolupracovníky"
+    title="Změnit autory výstavy nebo spolupracovníky"
     name="ScreenAuthorsChange"
     submitLabel="Uložit"
     handleSubmit={handleSubmit}
@@ -33,10 +33,14 @@ const ScreenAuthorsChange = ({ handleSubmit }) =>
         multiLine
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ initialValues: data }), null),
+  connect(
+    ({ dialog: { data } }) => ({ initialValues: data }),
+    null
+  ),
   withHandlers({
     onSubmit: dialog => async (formData, dispatch, props) => {
       await dispatch(

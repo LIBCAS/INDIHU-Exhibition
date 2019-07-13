@@ -31,15 +31,17 @@ const ExpoShareChangeOwner = ({ handleSubmit, activeExpo }) => {
     >
       <form onSubmit={handleSubmit}>
         <div className="dialog-share">
-          {!isEmpty(options)
-            ? <Field
-                component={SelectField}
-                componentId="expo-share-change-owner-selectfield-username"
-                label="Uživatelské jméno"
-                name="collaborator"
-                menuItems={options}
-              />
-            : <p>Výstava není s nikým sdílena.</p>}
+          {!isEmpty(options) ? (
+            <Field
+              component={SelectField}
+              componentId="expo-share-change-owner-selectfield-username"
+              label="Uživatelské jméno"
+              name="collaborator"
+              menuItems={options}
+            />
+          ) : (
+            <p>Výstava není s nikým sdílena.</p>
+          )}
         </div>
       </form>
     </Dialog>
@@ -48,7 +50,12 @@ const ExpoShareChangeOwner = ({ handleSubmit, activeExpo }) => {
 
 export default compose(
   connect(
-    ({ user: { users: { active } }, expo: { activeExpo } }) => ({
+    ({
+      user: {
+        users: { active }
+      },
+      expo: { activeExpo }
+    }) => ({
       users: active,
       activeExpo
     }),

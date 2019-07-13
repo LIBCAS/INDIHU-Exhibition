@@ -1,7 +1,13 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { compose, lifecycle, withState, defaultProps } from "recompose";
+import {
+  compose,
+  lifecycle,
+  withState,
+  defaultProps,
+  withProps
+} from "recompose";
 
 import { setTimeoutId } from "../../actions/appActions";
 
@@ -17,12 +23,10 @@ const ViewGameMove = ({
   clicked,
   setClicked,
   passButton
-}) =>
+}) => (
   <div className="game-menu cursor">
-    <div className="menu-text">
-      {task}
-    </div>
-    {doneButton &&
+    <div className="menu-text">{task}</div>
+    {doneButton && (
       <div
         className="menu-right-text cursor-pointer"
         onClick={() => {
@@ -40,12 +44,14 @@ const ViewGameMove = ({
         }}
       >
         Hotovo
-      </div>}
-    {resetButton &&
+      </div>
+    )}
+    {resetButton && (
       <div className="menu-right-text cursor-pointer" onClick={() => onReset()}>
-        Reset
-      </div>}
-    {passButton &&
+        Zahrát znovu
+      </div>
+    )}
+    {passButton && (
       <div
         className="menu-right-text cursor-pointer"
         onClick={() => {
@@ -63,8 +69,10 @@ const ViewGameMove = ({
         }}
       >
         Přeskočit úkol
-      </div>}
-  </div>;
+      </div>
+    )}
+  </div>
+);
 
 export default compose(
   withRouter,
@@ -86,5 +94,17 @@ export default compose(
         setTimeoutId(null);
       }
     }
-  })
+  }),
+  withProps(({ clicked, task }) => ({
+    task: clicked ? (
+      <span>
+        <span style={{ fontSize: "1.5em" }} className="color-red text-bold">
+          Výsledek{" "}
+        </span>{" "}
+        (za chvíli dojde k přechodu na další obrazovku)
+      </span>
+    ) : (
+      task
+    )
+  }))
 )(ViewGameMove);

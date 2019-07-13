@@ -45,9 +45,8 @@ const reducer = (state = initialState, action) => {
           ...state.users,
           all: {
             ...state.users.all,
-            list: map(
-              state.users.all.list,
-              l => (l.id !== action.payload.id ? l : action.payload)
+            list: map(state.users.all.list, l =>
+              l.id !== action.payload.id ? l : action.payload
             )
           }
         }
@@ -61,10 +60,8 @@ const reducer = (state = initialState, action) => {
           ...state.users,
           all: {
             ...state.users.all,
-            list: map(
-              state.users.all.list,
-              l =>
-                l.id !== action.payload.id ? l : { ...l, deletedUser: true }
+            list: map(state.users.all.list, l =>
+              l.id !== action.payload.id ? l : { ...l, deletedUser: true }
             )
           }
         }
@@ -76,10 +73,8 @@ const reducer = (state = initialState, action) => {
           ...state.users,
           all: {
             ...state.users.all,
-            list: map(
-              state.users.all.list,
-              l =>
-                l.id !== action.payload.id ? l : { ...l, deletedUser: false }
+            list: map(state.users.all.list, l =>
+              l.id !== action.payload.id ? l : { ...l, deletedUser: false }
             )
           }
         }

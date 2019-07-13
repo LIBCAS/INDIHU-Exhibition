@@ -12,9 +12,7 @@ const ChapterStart = ({ viewScreen }) => {
         className="interactive-screen-chapter-start-container-inner"
       />
       <div className="title-container">
-        <p className="title-fullscreen">
-          {viewScreen.title}
-        </p>
+        <p className="title-fullscreen">{viewScreen.title}</p>
       </div>
     </div>
   );
@@ -36,18 +34,20 @@ export default compose(
         newNode.className = "";
         newNode.setAttribute(
           "style",
-          `width: ${viewScreen.imageOrigData.height >
-          viewScreen.imageOrigData.width
-            ? "auto"
-            : "100%"}; height: ${viewScreen.imageOrigData.height >
-          viewScreen.imageOrigData.width
-            ? "100%"
-            : "auto"}`
+          `width: ${
+            viewScreen.imageOrigData.height > viewScreen.imageOrigData.width
+              ? "auto"
+              : "100%"
+          }; height: ${
+            viewScreen.imageOrigData.height > viewScreen.imageOrigData.width
+              ? "100%"
+              : "auto"
+          }`
         );
 
         document
           .getElementById("interactive-screen-chapter-start-container-inner")
-          .prepend(newNode);
+          .appendChild(newNode);
       }
     }
   })

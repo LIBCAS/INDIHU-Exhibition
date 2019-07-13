@@ -155,7 +155,7 @@
           position: absolute;
           cursor: move;
           color: $c-blue-primary;
-          font-size: 24px !important;
+          font-size: 34px !important;
         }
 
         &-tooltip {
@@ -343,6 +343,6 @@
 
 @keyframes infopoint-pulse {
   50% {
-    font-size: 34px;
+    font-size: 40px;
   }
 }

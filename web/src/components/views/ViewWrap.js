@@ -1,8 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose, lifecycle, withState, withHandlers } from "recompose";
+import {
+  compose,
+  lifecycle,
+  withState,
+  withHandlers,
+  withProps
+} from "recompose";
 import { withRouter } from "react-router-dom";
-import { get, map, filter, isEqual } from "lodash";
+import { get, map, filter, isEqual, isEmpty } from "lodash";
 import { Button, FontIcon } from "react-md";
 
 import { setDialog } from "../../actions/dialogActions";
@@ -19,59 +25,53 @@ const ViewWrap = ({
   history,
   soundIsTurnedOff,
   turnSoundOff,
-  viewScreen,
+  showVolumeIcon,
   progress,
-  showProgress
-}) =>
+  showProgress,
+  chapters
+}) => (
   <div className="viewer">
     <div className="viewer-title">
       <div className="viewer-title-institution">
-        <span>
-          {institution}
-        </span>
+        <span>{institution}</span>
       </div>
       <div
         className="viewer-title-name"
         onClick={() => history.push(`/view/${get(viewExpo, "url")}/start`)}
       >
-        <span>
-          {title}
-        </span>
+        <span>{title}</span>
       </div>
       <div className="viewer-title-menu">
         {showProgress() && <Progress percent={progress} />}
-        <Button
-          flat
-          id="viewer-title-menu-button"
-          className="viewer-title-menu-button"
-          label="Kapitoly"
-          onClick={() =>
-            setDialog("ViewWrapChapters", {
-              title: get(viewExpo, "title", ""),
-              url: get(viewExpo, "url", ""),
-              chapters: filter(
-                map(get(viewExpo, "structure.screens", []), (screens, i) => ({
-                  chapter: get(screens, "[0]"),
-                  chapterNumber: i
-                })),
-                item => get(item, "chapter.type") === "INTRO"
-              )
-            })}
-        />
-        {get(viewScreen, "type") &&
-          get(viewScreen, "type") !== "START" &&
-          get(viewScreen, "type") !== "FINISH" &&
+        {!isEmpty(chapters) && (
+          <Button
+            flat
+            id="viewer-title-menu-button"
+            className="viewer-title-menu-button"
+            label="Kapitoly"
+            onClick={() =>
+              setDialog("ViewWrapChapters", {
+                title: get(viewExpo, "title", ""),
+                url: get(viewExpo, "url", ""),
+                chapters
+              })
+            }
+          />
+        )}
+        {showVolumeIcon() && (
           <FontIcon
             className="view-wrap-icon margin-horizontal-very-small"
             onClick={() => turnSoundOff(!soundIsTurnedOff)}
             title={soundIsTurnedOff ? "Zapnout zvuk" : "Vypnout zvuk"}
           >
             {soundIsTurnedOff ? "volume_off" : "volume_up"}
-          </FontIcon>}
+          </FontIcon>
+        )}
       </div>
     </div>
     {children}
-  </div>;
+  </div>
+);
 
 export default compose(
   withRouter,
@@ -86,9 +86,17 @@ export default compose(
   ),
   withState("url", "setUrl", null),
   withState("viewScreenState", "setViewScreenState", null),
-  withState("viewInteractiveState", "setViewInteractiveState", false),
   withState("progress", "setProgress", 0),
   withState("progressIntervalId", "setProgressIntervalId", null),
+  withProps(({ viewExpo }) => ({
+    chapters: filter(
+      map(get(viewExpo, "structure.screens", []), (screens, i) => ({
+        chapter: get(screens, "[0]"),
+        chapterNumber: i
+      })),
+      item => get(item, "chapter.type") === "INTRO"
+    )
+  })),
   withHandlers({
     showProgress: ({
       viewInteractive,
@@ -108,7 +116,19 @@ export default compose(
       viewScreen.type !== screenType.GAME_WIPE &&
       (expoViewer ||
         viewScreen.type !== screenType.VIDEO ||
-        !isNaN(get(preloadedFiles, `video.duration`)))
+        !isNaN(get(preloadedFiles, `video.duration`))),
+    showVolumeIcon: ({ viewScreen }) => () =>
+      viewScreen &&
+      viewScreen.type !== screenType.START &&
+      viewScreen.type !== screenType.FINISH &&
+      viewScreen.type !== screenType.GAME_DRAW &&
+      viewScreen.type !== screenType.GAME_FIND &&
+      viewScreen.type !== screenType.GAME_MOVE &&
+      viewScreen.type !== screenType.GAME_OPTIONS &&
+      viewScreen.type !== screenType.GAME_SIZING &&
+      viewScreen.type !== screenType.GAME_WIPE &&
+      viewScreen.type !== screenType.START &&
+      viewScreen.type !== screenType.FINISH
   }),
   lifecycle({
     componentWillReceiveProps(nextProps) {
@@ -116,38 +136,40 @@ export default compose(
         viewScreen,
         viewScreenState,
         url,
-        viewInteractiveState,
         viewInteractive,
         preloadedFiles,
-        location
+        location,
+        progressEnabled
       } = nextProps;
       const {
         setUrl,
         setProgress,
         progressIntervalId,
         setProgressIntervalId,
-        setViewInteractiveState,
+        viewInteractive: oldViewInteractive,
         showProgress,
         expoViewer,
-        setViewScreenState
+        setViewScreenState,
+        progressEnabled: oldProgressEnabled
       } = this.props;
 
       if (
-        (viewScreen &&
-          ((get(viewScreen, "id") &&
-            get(viewScreenState, "id") !== get(viewScreen, "id")) ||
-            !isEqual(viewScreen, viewScreenState)) &&
+        viewScreen &&
+        ((((get(viewScreen, "id") &&
+          get(viewScreenState, "id") !== get(viewScreen, "id")) ||
+          !isEqual(viewScreen, viewScreenState) ||
+          !viewScreenState) &&
           url !== location.pathname) ||
-        viewInteractiveState !== viewInteractive
+          oldViewInteractive !== viewInteractive ||
+          oldProgressEnabled !== progressEnabled)
       ) {
         setViewScreenState(viewScreen);
         setUrl(location.pathname);
-        setViewInteractiveState(viewInteractive);
         setProgress(0);
 
         clearInterval(progressIntervalId);
 
-        if (showProgress()) {
+        if (showProgress() && progressEnabled) {
           const start = new Date().getTime();
           const screenNumbers = window.location.pathname.match(/(\d+)\/(\d+)$/);
           const section = Number(get(screenNumbers, "[1]"));
@@ -172,13 +194,13 @@ export default compose(
                       )
                     : 20
                   : !isNaN(get(preloadedFiles, `video.duration`))
-                    ? get(preloadedFiles, `video.duration`)
-                    : 20
+                  ? get(preloadedFiles, `video.duration`)
+                  : 20
                 : 20
             ) * 1000;
           setProgressIntervalId(
             setInterval(() => {
-              const progress = (new Date().getTime() - start) / time * 100;
+              const progress = ((new Date().getTime() - start) / time) * 100;
               setProgress(progress > 100 ? 100 : progress);
             }, 10)
           );

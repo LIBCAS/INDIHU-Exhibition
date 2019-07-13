@@ -7,7 +7,6 @@ import FontIcon from "react-md/lib/FontIcons";
 import MenuButton from "react-md/lib/Menus/MenuButton";
 import ListItem from "react-md/lib/Lists/ListItem";
 
-import Logo from "../assets/img/logo-white.png";
 import { signOut } from "../actions/userActions";
 import { expoStateText } from "../enums/expoState";
 import { screenTypeText } from "../enums/screenType";
@@ -18,99 +17,152 @@ const mdStyles =
 
 const AppHeader = ({
   history,
-  userName,
   authStyle,
   expoStyle,
   screenStyle,
   adminStyle,
   profileStyle,
   expositionsStyle,
+  isSignIn,
   activeExpo,
   activeScreen,
   admin,
-  signOut
-}) =>
+  signOut,
+  match
+}) => (
   <header
     className={classNames(mdStyles, "toolbar", {
-      "toolbar-noshadow": expoStyle || screenStyle,
-      "toolbar-centered": authStyle
+      "toolbar-noshadow": expoStyle || screenStyle
     })}
   >
     <div className="toolbar-left toolbar-flex">
-      {expoStyle &&
+      {expoStyle && (
         <FontIcon
           className="toolbar-back"
-          onClick={() => history.push("/expositions")}
+          onClick={() => history.push("/exhibitions")}
         >
           arrow_back
-        </FontIcon>}
-      {screenStyle &&
+        </FontIcon>
+      )}
+      {screenStyle && (
         <FontIcon
           className="toolbar-back"
           onClick={() => history.push(`/expo/${activeExpo.id}/structure`)}
         >
           arrow_back
-        </FontIcon>}
-      <h2 className="md-title md-title--toolbar toolbar-title">
+        </FontIcon>
+      )}
+      <h2
+        className="md-title md-title--toolbar toolbar-title"
+        style={
+          adminStyle || authStyle || profileStyle || expositionsStyle
+            ? {
+                fontWeight: 700,
+                fontSize: 26,
+                cursor: "pointer"
+              }
+            : undefined
+        }
+        onClick={() =>
+          (adminStyle || authStyle || profileStyle || expositionsStyle) &&
+          history.push(authStyle ? "/" : "/exhibitions")
+        }
+      >
         {adminStyle || authStyle || profileStyle || expositionsStyle
-          ? <img
-              src={Logo}
-              alt="INDIHU - Editor virtuálních výstav"
-              onClick={() => history.push(authStyle ? "/" : "/expositions")}
-            />
+          ? "INDIHU Exhibition"
           : screenStyle && activeScreen
-            ? activeScreen.type
-              ? screenTypeText[activeScreen.type]
-              : get(activeExpo, "title", "INDIHU - Editor virtuálních výstav")
-            : get(activeExpo, "title", "INDIHU - Editor virtuálních výstav")}
+          ? activeScreen.type
+            ? screenTypeText[activeScreen.type]
+            : get(activeExpo, "title", "INDIHU Exhibition")
+          : get(activeExpo, "title", "INDIHU Exhibition")}
       </h2>
     </div>
 
-    {!authStyle &&
+    {authStyle && (
+      <div className="toolbar-right-auth">
+        <p
+          className="toolbar-button"
+          onClick={() => {
+            history.push(isSignIn ? "/" : "/sign-in");
+          }}
+        >
+          {isSignIn ? "Registrace" : "Přihlášení"}
+        </p>
+        <MenuButton
+          id="appheader-header-auth-menu"
+          icon
+          buttonChildren="menu"
+          position="tr"
+        >
+          <ListItem
+            primaryText="INDIHU OCR (nástroj na konverzi obrázků na text)"
+            onClick={() =>
+              (window.location.href = "http://inqooltest.libj.cas.cz/ocr-web/")
+            }
+          />
+          <ListItem
+            primaryText="O projektu INDIHU"
+            onClick={() => (window.location.href = "https://indihu.cz/")}
+          />
+        </MenuButton>
+      </div>
+    )}
+
+    {!authStyle && (
       <div className="toolbar-right toolbar-flex">
-        {(expoStyle || (screenStyle && activeScreen)) &&
+        {(expoStyle || (screenStyle && activeScreen)) && (
           <p className="toolbar-button nonclickable">
             stav: {expoStateText[activeExpo.state]}
-          </p>}
+          </p>
+        )}
         {!expoStyle &&
           !screenStyle &&
           admin &&
-          <p
-            className="toolbar-button"
-            onClick={() => {
-              history.push("/administration");
-            }}
-          >
-            Nastavení
-          </p>}
+          get(match, "path") !== "/administration" && (
+            <p
+              className="toolbar-button"
+              onClick={() => {
+                history.push("/administration");
+              }}
+            >
+              Nastavení
+            </p>
+          )}
         {!expoStyle &&
           !screenStyle &&
           admin &&
+          get(match, "path") !== "/users" && (
+            <p
+              className="toolbar-button"
+              onClick={() => {
+                history.push("/users");
+              }}
+            >
+              Uživatelé
+            </p>
+          )}
+        {!expoStyle && !screenStyle && get(match, "path") !== "/exhibitions" && (
           <p
             className="toolbar-button"
-            onClick={() => {
-              history.push("/users");
-            }}
-          >
-            Uživatelé
-          </p>}
-        {!expoStyle &&
-          !screenStyle &&
-          <p
-            className="toolbar-button"
-            onClick={() => history.push("/expositions")}
+            onClick={() => history.push("/exhibitions")}
           >
             Výstavy
-          </p>}
-        <p className="toolbar-button" onClick={() => history.push("/profile")}>
-          <i className="fa fa-fw fa-user" />
-          Správa účtu
-        </p>
+          </p>
+        )}
+        {get(match, "path") !== "/profile" && (
+          <p
+            className="toolbar-button"
+            onClick={() => history.push("/profile")}
+          >
+            <i className="fa fa-fw fa-user" />
+            Správa účtu
+          </p>
+        )}
         <p
           className="toolbar-button"
           onClick={() => {
             signOut();
-            history.replace("/");
+            history.replace("/sign-in");
           }}
         >
           <i className="fa fa-fw fa-sign-out" />
@@ -130,23 +182,25 @@ const AppHeader = ({
               history.push("/profile");
             }}
           />
-          {admin &&
+          {admin && (
             <ListItem
               primaryText="Nastavení"
               onClick={() => {
                 history.push("/administration");
               }}
-            />}
-          {admin &&
+            />
+          )}
+          {admin && (
             <ListItem
               primaryText="Uživatelé"
               onClick={() => {
                 history.push("/users");
               }}
-            />}
+            />
+          )}
           <ListItem
             primaryText="Výstavy"
-            onClick={() => history.push("/expositions")}
+            onClick={() => history.push("/exhibitions")}
           />
           <ListItem
             primaryText="Odhlásit"
@@ -156,8 +210,10 @@ const AppHeader = ({
             }}
           />
         </MenuButton>
-      </div>}
-  </header>;
+      </div>
+    )}
+  </header>
+);
 
 export default withRouter(
   connect(

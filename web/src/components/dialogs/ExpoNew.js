@@ -7,7 +7,7 @@ import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
 import { newExpo } from "../../actions/expoActions";
 
-const ExpoNew = ({ handleSubmit }) =>
+const ExpoNew = ({ handleSubmit }) => (
   <Dialog
     title="Nová výstava"
     name="ExpoNew"
@@ -23,7 +23,8 @@ const ExpoNew = ({ handleSubmit }) =>
         validate={[Validation.required]}
       />
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   withHandlers({
@@ -32,7 +33,6 @@ export default compose(
 
       if (id) {
         props.history.push(`/expo/${id}/structure`);
-        // props.reset();
         dialog.closeDialog();
       }
     }

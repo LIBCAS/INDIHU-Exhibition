@@ -1,4 +1,10 @@
 .structure {
+  &-screen-card-icon {
+    position: absolute;
+    top: 13px;
+    right: 28px;
+    font-size: 20px;
+  }
   &-col {
     position: relative;
     display: flex;
@@ -45,6 +51,57 @@
       right: -2em;
     }
   }
+
+  .dragged-card-target-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.col {
+      flex-direction: column;
+      width: 12em;
+    }
+
+    .card {
+      border-width: 0;
+      box-shadow: none;
+      padding: 0;
+      background-color: $c-blue-primary;
+
+      .card-text {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+          margin: 0;
+          color: $c-white;
+        }
+      }
+    }
+
+    &-inner {
+      position: relative;
+      width: 5em;
+      height: 7em;
+    }
+
+    &-row-line {
+      position: absolute;
+      background: $c-black;
+      top: 3.5em;
+      left: 0;
+      width: 5em;
+      height: 1px;
+
+      &.last {
+        width: 2em;
+      }
+    }
+  }
 }
 
 .card,
@@ -55,8 +112,6 @@
   min-width: 12em;
   width: 12em;
   height: 7em;
-  padding-top: 1em;
-  padding-bottom: 1em;
   padding-right: 4em;
   &-menu {
     position: absolute;
@@ -67,6 +122,16 @@
       padding: 0;
       background: none;
       color: $c-grey;
+
+      &.md-btn--text {
+        margin-top: 6px;
+        margin-bottom: 6px;
+        font-size: 14px;
+        height: 36px;
+      }
+    }
+    .md-list--menu-scrollable {
+      max-height: none;
     }
   }
   &-actions {
@@ -102,7 +167,7 @@
       flex-direction: column;
       justify-content: center;
       text-align: center;
-      margin-top: .5em;
+      margin-top: 0.5em;
       cursor: pointer;
       i {
         font-size: 2em;
@@ -144,6 +209,40 @@
 }
 
 .card {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &-background {
+    background-color: white;
+  }
+
+  &.dragged {
+    opacity: 0.15;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  &.dragged-card {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &.animate {
+      animation: shake 0.25s linear;
+    }
+
+    .card-screen {
+      cursor: move;
+    }
+  }
+
   &-screen,
   &-screen-start-finish {
     cursor: pointer;
@@ -151,9 +250,16 @@
 
   &-screen {
     overflow: hidden;
-    height: calc(5em - 2px);
-    padding: 0px;
+    height: 100%;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
     padding-left: 1em;
+    p {
+      margin: 0;
+      font-size: 13px;
+      max-height: 100%;
+      overflow: hidden;
+    }
   }
 
   &-empty {
@@ -161,5 +267,27 @@
     height: 7em;
     border: 1px solid $c-grey;
     background-color: $c-white;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  25% {
+    transform: rotateZ(-5deg);
+  }
+
+  50% {
+    transform: rotateZ(0deg);
+  }
+
+  75% {
+    transform: rotateZ(3deg);
+  }
+
+  100% {
+    transform: rotateZ(0deg);
   }
 }

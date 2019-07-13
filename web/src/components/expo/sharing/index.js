@@ -13,7 +13,7 @@ const Sharing = ({ activeExpo, setDialog, user }) => {
 
   return (
     <div>
-      {activeExpo &&
+      {activeExpo && (
         <div className="container container-tabMenu sharing">
           <p>Sdíleno s uživateli</p>
           <Table {...{ collaborators, author, isAuthor }} />
@@ -23,14 +23,17 @@ const Sharing = ({ activeExpo, setDialog, user }) => {
             onClick={() => {
               setDialog("ExpoShare", { id, author });
             }}
+            className="color-black"
           >
             add
           </Button>
-        </div>}
+        </div>
+      )}
     </div>
   );
 };
 
-export default connect(({ user: { info } }) => ({ user: info }), { setDialog })(
-  Sharing
-);
+export default connect(
+  ({ user: { info } }) => ({ user: info }),
+  { setDialog }
+)(Sharing);

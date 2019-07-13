@@ -1,8 +1,9 @@
 import React from "react";
 import { withRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
+import { get } from "lodash";
 import { compose, lifecycle } from "recompose";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 import AppHeader from "../components/AppHeader";
 import TabMenu from "../components/TabMenu";
@@ -21,11 +22,13 @@ const Expo = props => {
   return (
     <div>
       <Helmet>
-        <title>{`INDIHU - ${activeExpo.title}`}</title>
+        <title>{`INDIHU Exhibition${
+          get(activeExpo, "title") ? ` - ${get(activeExpo, "title")}` : ""
+        }`}</title>
         <meta name="description" content="Editace výstavy" />
       </Helmet>
       <AppHeader expoStyle={!screenEditor} screenStyle={screenEditor} />
-      {!screenEditor &&
+      {!screenEditor && (
         <TabMenu
           tabs={[
             {
@@ -36,7 +39,8 @@ const Expo = props => {
             { label: "Nastavení", link: `/expo/${activeExpo.id}/settings` },
             { label: "Sdílení", link: `/expo/${activeExpo.id}/sharing` }
           ]}
-        />}
+        />
+      )}
       <Route
         path={`${match.url}/structure`}
         render={() => <Structure {...props} />}

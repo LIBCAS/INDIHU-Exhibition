@@ -7,7 +7,10 @@ import Button from "react-md/lib/Buttons/Button";
 import HelpIcon from "../HelpIcon";
 
 import { setDialog } from "../../actions/dialogActions";
-import { removeScreenDocument } from "../../actions/expoActions";
+import {
+  removeScreenDocument,
+  swapScreenDocuments
+} from "../../actions/expoActions";
 import { tabFolder } from "../../actions/fileActions";
 import { changeSwitchState } from "../../actions/appActions";
 
@@ -19,13 +22,17 @@ const Documents = ({
   setDialog,
   removeScreenDocument,
   tabFolder,
-  changeSwitchState
-}) =>
+  changeSwitchState,
+  swapScreenDocuments
+}) => (
   <div className="container container-tabMenu">
     <div className="screen">
       <div className="flex-row-nowrap">
         <div className="table margin-bottom">
           <div className="table-row header">
+            {get(activeScreen, "documents.length", 0) > 1 && (
+              <div className="table-col" />
+            )}
             <div className="table-col">Název</div>
             <div className="table-col">Soubor/URL</div>
             <div className="table-col">Typ</div>
@@ -36,22 +43,45 @@ const Documents = ({
 
             return (
               <div className="table-row" key={i}>
-                <div className="table-col">
-                  {item.fileName}
-                </div>
-                <div className="table-col">
-                  {item.name || item.url}
-                </div>
+                {get(get(activeScreen, "documents"), "length", 0) > 1 && (
+                  <div className="table-col">
+                    <FontIcon
+                      onClick={() => swapScreenDocuments(i - 1, i)}
+                      style={{
+                        visibility: i > 0 ? "visible" : "hidden"
+                      }}
+                      className="color-black"
+                    >
+                      keyboard_arrow_up
+                    </FontIcon>
+                    <FontIcon
+                      onClick={() => swapScreenDocuments(i, i + 1)}
+                      style={{
+                        visibility:
+                          i < get(activeScreen, "documents").length - 1
+                            ? "visible"
+                            : "hidden"
+                      }}
+                      className="color-black"
+                    >
+                      keyboard_arrow_down
+                    </FontIcon>
+                  </div>
+                )}
+                <div className="table-col">{item.fileName}</div>
+                <div className="table-col">{item.name || item.url}</div>
                 <div className="table-col">
                   {type.match(/^image/)
                     ? fileTypeText.IMAGE
                     : type.match(/^audio/)
-                      ? fileTypeText.AUDIO
-                      : type.match(/^video/)
-                        ? fileTypeText.VIDEO
-                        : type.match(/^application\/pdf/)
-                          ? fileTypeText.PDF
-                          : type.match(/^WEB/) ? fileTypeText.WEB : type}
+                    ? fileTypeText.AUDIO
+                    : type.match(/^video/)
+                    ? fileTypeText.VIDEO
+                    : type.match(/^application\/pdf/)
+                    ? fileTypeText.PDF
+                    : type.match(/^WEB/)
+                    ? fileTypeText.WEB
+                    : type}
                 </div>
                 <div className="table-col flex-right">
                   <FontIcon
@@ -60,10 +90,22 @@ const Documents = ({
                       changeSwitchState(!!(item.name && item.name !== ""));
                       setDialog("ScreenDocumentChange", item);
                     }}
+                    className="color-black"
                   >
                     mode_edit
                   </FontIcon>
-                  <FontIcon onClick={() => removeScreenDocument(item)}>
+                  <FontIcon
+                    onClick={() =>
+                      setDialog("ConfirmDialog", {
+                        title: (
+                          <FontIcon className="color-black">delete</FontIcon>
+                        ),
+                        text: "Opravdu chcete odstranit zvolený dokument?",
+                        onSubmit: () => removeScreenDocument(item)
+                      })
+                    }
+                    className="color-black"
+                  >
                     delete
                   </FontIcon>
                 </div>
@@ -80,15 +122,21 @@ const Documents = ({
           changeSwitchState(true);
           setDialog("ScreenDocumentNew");
         }}
+        className="color-black"
       >
         add
       </Button>
     </div>
-  </div>;
+  </div>
+);
 
-export default connect(null, {
-  setDialog,
-  removeScreenDocument,
-  tabFolder,
-  changeSwitchState
-})(Documents);
+export default connect(
+  null,
+  {
+    setDialog,
+    removeScreenDocument,
+    tabFolder,
+    changeSwitchState,
+    swapScreenDocuments
+  }
+)(Documents);

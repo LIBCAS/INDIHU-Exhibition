@@ -27,7 +27,7 @@ const ScreenDocumentChange = ({
   changeDocumentType,
   file,
   data
-}) =>
+}) => (
   <Dialog
     title="Upravit dokument"
     name="ScreenDocumentChange"
@@ -43,7 +43,8 @@ const ScreenDocumentChange = ({
         label="Název dokumentu"
         validate={[Validation.required]}
         onChange={(e, value) =>
-          addDialogData("ScreenDocumentChange", { fileName: value })}
+          addDialogData("ScreenDocumentChange", { fileName: value })
+        }
       />
 
       <Radio
@@ -74,7 +75,7 @@ const ScreenDocumentChange = ({
         onClick={() => changeDocumentType(documentOpts[2].value)}
       />
 
-      {documentType === documentOpts[1].value &&
+      {documentType === documentOpts[1].value && (
         <div>
           <Field
             component={TextField}
@@ -83,7 +84,8 @@ const ScreenDocumentChange = ({
             label="URL adresa"
             validate={[Validation.required]}
             onChange={(e, value) =>
-              addDialogData("ScreenDocumentChange", { url: value })}
+              addDialogData("ScreenDocumentChange", { url: value })
+            }
           />
           <Field
             component={SelectField}
@@ -93,10 +95,12 @@ const ScreenDocumentChange = ({
             menuItems={fileTypeOpts}
             validate={[Validation.required]}
             onChange={(e, value) =>
-              addDialogData("ScreenDocumentChange", { urlType: value })}
+              addDialogData("ScreenDocumentChange", { urlType: value })
+            }
           />
-        </div>}
-      {documentType === documentOpts[2].value &&
+        </div>
+      )}
+      {documentType === documentOpts[2].value && (
         <div className="flex-col">
           <TextFieldMD
             componentId="screen-document-change-textfield-name"
@@ -109,61 +113,81 @@ const ScreenDocumentChange = ({
             label="Vybrat"
             onClick={() =>
               setDialog("ScreenDocumentChoose", {
-                typeMatch: new RegExp(
-                  /^(image\/png|image\/jpg|image\/jpeg|application\/pdf)$/
-                )
-              })}
+                // typeMatch: new RegExp(
+                //   /^(image\/png|image\/jpg|image\/jpeg|application\/pdf)$/
+                // )
+              })
+            }
           />
-        </div>}
+        </div>
+      )}
     </form>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
   connect(
-    ({ app: { switchState }, dialog: { data }, file: { file } }) => ({
+    ({ app: { switchState }, dialog: { data, name }, file: { file } }) => ({
       switchState,
       initialValues: file ? { ...file, ...data } : data,
       file,
-      data
+      data,
+      dialogName: name
     }),
-    { tabFolder, changeSwitchState }
+    { tabFolder, changeSwitchState, changeScreenDocument }
   ),
   withState("documentType", "changeDocumentType", "NONE"),
+  withState("oldFile", "setOldFile", null),
   lifecycle({
     componentDidMount() {
-      const { initialValues: { fileId, url }, changeDocumentType } = this.props;
+      const {
+        initialValues: { fileId, url },
+        changeDocumentType
+      } = this.props;
       if (url) changeDocumentType(documentOpts[1].value);
       else if (fileId) changeDocumentType(documentOpts[2].value);
+    },
+    componentWillReceiveProps({ dialogName, oldFile, initialValues }) {
+      const { setOldFile } = this.props;
+
+      if (dialogName === "ScreenDocumentChange" && !oldFile) {
+        setOldFile(initialValues);
+      } else if (dialogName !== "ScreenDocumentChange" && oldFile) {
+        setOldFile(null);
+      }
     }
   }),
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
-      const { file, tabFolder, initialValues, documentType } = props;
-
+    onSubmit: ({
+      changeScreenDocument,
+      closeDialog,
+      file,
+      tabFolder,
+      oldFile,
+      documentType
+    }) => formData => {
       if (
-        await dispatch(
-          changeScreenDocument(
-            documentType === documentOpts[2].value
-              ? {
-                  ...file,
-                  fileName: formData.fileName
-                }
-              : documentType === documentOpts[1].value
-                ? {
-                    fileName: formData.fileName,
-                    url: formData.url,
-                    urlType: formData.urlType
-                  }
-                : { fileName: formData.fileName },
-            initialValues
-          )
+        changeScreenDocument(
+          documentType === documentOpts[2].value
+            ? {
+                ...file,
+                fileName: formData.fileName
+              }
+            : documentType === documentOpts[1].value
+            ? {
+                fileName: formData.fileName,
+                url: formData.url,
+                urlType: formData.urlType
+              }
+            : { fileName: formData.fileName },
+          oldFile
         )
       ) {
         tabFolder(null);
-        dialog.closeDialog();
+        closeDialog();
       } else
         throw new SubmissionError({
-          type: "*Soubor již existuje"
+          fileName: "*Soubor s tímto názvem již existuje"
         });
     }
   }),

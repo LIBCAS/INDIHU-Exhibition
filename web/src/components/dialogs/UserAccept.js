@@ -8,7 +8,7 @@ import Dialog from "./DialogWrap";
 
 import { acceptUser, getUsers } from "../../actions/adminActions";
 
-const UserAccept = ({ handleSubmit, dialogData, data }) =>
+const UserAccept = ({ handleSubmit, dialogData, data }) => (
   <Dialog
     title="Schválení uživatele"
     name="UserAccept"
@@ -19,12 +19,17 @@ const UserAccept = ({ handleSubmit, dialogData, data }) =>
       Uživatel{" "}
       {get(data, "user.toAccept.username")
         ? `${get(data, "user.toAccept.username")} `
-        : ""}bude schválen.
+        : ""}
+      bude schválen.
     </p>
-  </Dialog>;
+  </Dialog>
+);
 
 export default compose(
-  connect(({ dialog: { data } }) => ({ data }), { getUsers }),
+  connect(
+    ({ dialog: { data } }) => ({ data }),
+    { getUsers }
+  ),
   withHandlers({
     onSubmit: dialog => async (formData, dispatch, props) => {
       const { data, getUsers } = props;

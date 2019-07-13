@@ -1,11 +1,13 @@
 import React from "react";
 
-const ViewNotPublic = () =>
+const ViewNotPublic = () => (
   <div className="viewer-screen">
     <p className="title-centered">
       <span className="smile">:(</span>
-      Výstava není ve stavu "Zveřejněná" nebo zadaná URL adresa výstavy neexistuje.
+      Výstava není ve stavu "Zveřejněná" nebo zadaná URL adresa výstavy
+      neexistuje.
     </p>
-  </div>;
+  </div>
+);
 
 export default ViewNotPublic;
