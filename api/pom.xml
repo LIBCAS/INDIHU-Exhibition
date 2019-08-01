@@ -32,11 +32,17 @@
 
     <repositories>
         <repository>
-            <id>nexus.inqool.cz</id>
-            <name>nexus.inqool.cz</name>
-            <url>http://nexus.inqool.cz/repository/maven-public/</url>
+            <id>local-maven-repo</id>
+            <url>file:///${project.basedir}/local-mvn-repo</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>local-maven-repo</id>
+            <url>file:///${project.basedir}/local-mvn-repo</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <dependency>
