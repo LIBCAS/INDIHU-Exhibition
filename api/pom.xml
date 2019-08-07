@@ -32,14 +32,16 @@
 
     <repositories>
         <repository>
-            <id>local-maven-repo</id>
+            <id>nexus.inqool.cz</id>
+            <name>nexus.inqool.cz</name>
             <url>file:///${project.basedir}/local-mvn-repo</url>
-        </repository>
+			</repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-            <id>local-maven-repo</id>
+            <id>nexus.inqool.cz</id>
+            <name>nexus.inqool.cz</name>
             <url>file:///${project.basedir}/local-mvn-repo</url>
         </pluginRepository>
     </pluginRepositories>

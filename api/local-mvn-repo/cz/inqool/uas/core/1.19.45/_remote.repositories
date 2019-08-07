@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Aug 06 12:44:07 CEST 2019
+core-1.19.45.jar>nexus.inqool.cz=
+core-1.19.45.jar>local-maven-repo=
+core-1.19.45.pom>local-maven-repo=
+core-1.19.45.pom>nexus.inqool.cz=
