@@ -27,6 +27,7 @@ import FileNewFolder from "./FileNewFolder";
 import FileRename from "./FileRename";
 import FileRenameFolder from "./FileRenameFolder";
 import FilesManagerMenu from "./FilesManagerMenu";
+import ImageEditorSave from "./ImageEditorSave";
 import Info from "./Info";
 import PasswordReset from "./PasswordReset";
 import ScreenAuthorsAdd from "./ScreenAuthorsAdd";
@@ -44,6 +45,8 @@ import UserDelete from "./UserDelete";
 import UserReactivate from "./UserReactivate";
 import ViewWrapChapters from "./ViewWrapChapters";
 
+export { default as WarningDialog } from "./WarningDialog";
+
 const Dialogs = ({
   setDialog,
   closeDialog,
@@ -51,14 +54,14 @@ const Dialogs = ({
   data,
   history,
   loader,
-  activeScreenEdited
+  activeScreenEdited,
 }) => {
   const dialogProps = {
     setDialog,
     closeDialog,
     addDialogData,
     dialogData: data,
-    history
+    history,
   };
   return (
     <div>
@@ -93,6 +96,7 @@ const Dialogs = ({
       <FileRename {...dialogProps} />
       <FileRenameFolder {...dialogProps} />
       <FilesManagerMenu {...dialogProps} />
+      <ImageEditorSave {...dialogProps} />
       <Info {...dialogProps} />
       <PasswordReset {...dialogProps} />
       <ScreenAuthorsAdd {...dialogProps} />
@@ -121,23 +125,23 @@ export default compose(
     ({
       dialog: { dialogs, data },
       app: { loader },
-      expo: { activeScreenEdited }
+      expo: { activeScreenEdited },
     }) => ({
       dialogs,
       data,
       loader,
-      activeScreenEdited
+      activeScreenEdited,
     }),
     {
-      ...dialogActions
+      ...dialogActions,
     }
   ),
   withHandlers({
-    manageKeyAction: ({ dialogs, closeDialog }) => e => {
+    manageKeyAction: ({ dialogs, closeDialog }) => (e) => {
       if (e.keyCode === 27 && !isEmpty(dialogs)) {
         closeDialog();
       }
-    }
+    },
   }),
   lifecycle({
     componentWillMount() {
@@ -149,6 +153,6 @@ export default compose(
       const { manageKeyAction } = this.props;
 
       document.removeEventListener("keydown", manageKeyAction);
-    }
+    },
   })
 )(Dialogs);

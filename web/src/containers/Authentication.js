@@ -159,19 +159,14 @@ const Authentication = ({
       </div>
     </div>
     <div className="authentication-footer">
-      <div className="inner-left">
-        <div>
-          Projekt INDIHU - <a href="https://indihu.cz/">https://indihu.cz/</a>
-        </div>
-        <div>
-          Info o INDIHU Exhibition -{" "}
-          <a href="https://github.com/LIBCAS/INDIHU-Exhibition">
-            https://github.com/LIBCAS/INDIHU-Exhibition
-          </a>
-        </div>
-      </div>
-      <div className="inner-right">
+      <div className="screen-size-tablet-min">
         Aplikace je optimalizována pro prohlížeč Google Chrome.
+      </div>
+      <div className="screen-size-tablet-max text-smaller">
+        Optimalizováno pro Google Chrome.
+      </div>
+      <div>
+        <a href="mailto: info@indihu.cz">info@indihu.cz</a>
       </div>
     </div>
   </div>
@@ -231,9 +226,7 @@ export default compose(
           await closeDialog();
           setDialog("Info", {
             title: "Potvrzení registrace",
-            text: `Potvrďte svou registraci linkem zaslaným na adresu ${
-              formData.email
-            }`
+            text: `Potvrďte svou registraci linkem zaslaným na adresu ${formData.email}`
           });
         } else if (ret === 412) {
           resetForm("auth");

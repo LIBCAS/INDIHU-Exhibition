@@ -4,7 +4,6 @@ import { compose, lifecycle, withState, withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { isEmpty, forEach } from "lodash";
 import classNames from "classnames";
-import ReactTooltip from "react-tooltip";
 
 import InfopointIcon from "../../components/InfopointIcon";
 import ScreenMenu from "../../components/views/ScreenMenu";
@@ -13,7 +12,7 @@ import { zoomInTooltipPosition } from "../../enums/screenEnums";
 const timeS = 2;
 const timeM = timeS * 1000;
 
-const ViewZoomIn = ({ viewScreen, infoText }) => {
+const ViewZoomIn = ({ viewScreen, infoText, tooltipVisible }) => {
   const bottomRight =
     !viewScreen.tooltipPosition ||
     viewScreen.tooltipPosition === zoomInTooltipPosition.BOTTOM_RIGHT;
@@ -34,15 +33,22 @@ const ViewZoomIn = ({ viewScreen, infoText }) => {
             right: bottomRight || topRight ? 10 : "auto",
             left: topLeft ? 10 : "auto"
           }}
-          data-tip={infoText}
         />
-        <ReactTooltip
-          className={classNames("infopoint-tooltip zoom-in-tooltip", {
-            short: bottomRight
-          })}
-          type="dark"
-          effect="solid"
-        />
+        {tooltipVisible && (
+          <div
+            className={classNames("infopoint-tooltip zoom-in-tooltip", {
+              short: bottomRight
+            })}
+            style={{
+              bottom: bottomRight ? 10 : "auto",
+              top: topLeft || topRight ? 40 : "auto",
+              right: bottomRight || topRight ? 55 : "auto",
+              left: topLeft ? 55 : "auto"
+            }}
+          >
+            {infoText}
+          </div>
+        )}
       </div>
       <ScreenMenu viewScreen={viewScreen} />
     </div>
@@ -58,8 +64,14 @@ export default compose(
   withState("timeouts", "setTimeouts", null),
   withState("imageLoadInterval", "setImageLoadInterval", null),
   withState("infoText", "setInfoText", null),
+  withState("tooltipVisible", "setTooltipVisible", false),
   withHandlers({
-    makeCircus: ({ viewScreen, setTimeouts, setInfoText }) => () => {
+    makeCircus: ({
+      viewScreen,
+      setTimeouts,
+      setInfoText,
+      setTooltipVisible
+    }) => () => {
       const image = document.getElementById("view-zoom-in-image");
 
       const defX = image.getBoundingClientRect().width / 2;
@@ -71,6 +83,7 @@ export default compose(
       if (!isEmpty(viewScreen.sequences)) {
         forEach(viewScreen.sequences, seq => {
           const moveConst = seq.zoom / 2;
+          const zoomTime = seq.time ? seq.time * 1000 : timeM;
 
           // wait and zoom in
           timeouts.push(
@@ -91,7 +104,7 @@ export default compose(
                     seq.zoom}px) scale(${seq.zoom})`
               );
               setInfoText(seq.text);
-              ReactTooltip.show(document.getElementById("tooltip"));
+              setTooltipVisible(true);
             }, lastSequenceTime + timeM)
           );
 
@@ -106,12 +119,12 @@ export default compose(
                 `transition: transform ${moveConst * timeS}s;
                 transform: translate(${-defX}px, ${-defY}px) scale(1)`
               );
-              ReactTooltip.hide(document.getElementById("tooltip"));
-            }, lastSequenceTime + 2 * timeM)
+              setTooltipVisible(true);
+            }, lastSequenceTime + zoomTime)
           );
 
           // gift for next loop
-          lastSequenceTime += 2 * timeM + moveConst * timeM;
+          lastSequenceTime += zoomTime + moveConst * timeM;
         });
       }
 

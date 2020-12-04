@@ -20,17 +20,15 @@ const ViewGameMove = ({
   correlationX,
   correlationY,
   getNextUrlPart,
-  doneButton,
-  setDoneButton,
-  passButton,
-  setPassButton
+  done,
+  setDone,
 }) => (
   <div className="game">
     <div id="game-wrap" className="game-wrap">
       <div
         id="game-move-container"
         className="game-move-container"
-        onMouseMove={e => {
+        onMouseMove={(e) => {
           if (mouseDown) {
             const container = document
               .getElementById("game-move-container")
@@ -47,7 +45,7 @@ const ViewGameMove = ({
               );
           }
         }}
-        onMouseDown={e => {
+        onMouseDown={(e) => {
           const object = document
             .getElementById("game-move-object")
             .getBoundingClientRect();
@@ -61,7 +59,7 @@ const ViewGameMove = ({
             mouseActualize({
               mouseDown: true,
               correlationX: object.left - e.pageX,
-              correlationY: object.top - e.pageY
+              correlationY: object.top - e.pageY,
             });
           }
         }}
@@ -72,9 +70,11 @@ const ViewGameMove = ({
     </div>
     <GameMenu
       {...{
-        doneButton,
-        passButton,
+        doneButton: !done,
+        passButton: !done,
+        resetButton: !done,
         task: viewScreen.task,
+        resultTime: viewScreen.resultTime,
         getNextUrlPart,
         onClick: () => {
           document.getElementById("game-move-image").outerHTML = "";
@@ -96,9 +96,17 @@ const ViewGameMove = ({
               .getElementById("game-move-container")
               .appendChild(imageNode2);
           }
-          setDoneButton(false);
-          setPassButton(false);
-        }
+          setDone(true);
+        },
+        onReset: () => {
+          const gameObject = document.getElementById("game-move-object");
+          if (gameObject) {
+            gameObject.setAttribute(
+              "style",
+              "top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: contain;"
+            );
+          }
+        },
       }}
     />
   </div>
@@ -108,27 +116,26 @@ export default compose(
   connect(
     ({
       app: {
-        mouseInfo: { mouseDown, correlationX, correlationY }
+        mouseInfo: { mouseDown, correlationX, correlationY },
       },
-      expo: { viewScreen, viewerFiles }
+      expo: { viewScreen, viewerFiles },
     }) => ({
       mouseDown,
       correlationX,
       correlationY,
       viewScreen,
-      viewerFiles
+      viewerFiles,
     }),
     {
-      mouseActualize
+      mouseActualize,
     }
   ),
-  withState("doneButton", "setDoneButton", true),
-  withState("passButton", "setPassButton", true),
+  withState("done", "setDone", false),
   lifecycle({
     componentDidMount() {
       const { viewScreen, screenFiles } = this.props;
       mouseActualize({
-        mouseDown: false
+        mouseDown: false,
       });
 
       const container = document
@@ -158,6 +165,6 @@ export default compose(
         );
         document.getElementById("game-move-container").appendChild(objectNode);
       }
-    }
+    },
   })
 )(ViewGameMove);

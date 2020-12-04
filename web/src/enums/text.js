@@ -1,19 +1,17 @@
 export const helpIconText = {
   EDITOR_DOCUMENTS:
-    "Dokumenty a bibliografie, které budou zobrazeny na úvodní a závěrečné obrazovce.",
+    "Dokumenty a soubory k výstavě, které budou zobrazeny na úvodní a závěrečné obrazovce.",
   EDITOR_EXTERNAL_EXTERNALDATA:
     "Zde vložte embed kód webové stránky či služby, kterou chcete do výstavy zapojit.",
-  EDITOR_AUDIO: "Text",
+  EDITOR_AUDIO: "Audio",
   EDITOR_DESCRIPTION_AUDIO:
     "Zde nahrajte podkresovou hudbu či audio verzi komentáře nebo komentář zkombinovaný s hudbou pro tuto obrazovku. Návštěvník může zvuk při prohlížení výstavy vypnout.",
   EDITOR_DESCRIPTION_MUSIC:
     "Sem nahrajte podkresovou hudbu, která bude ve smyčce přehrávána při prohlížení všech obrazovek této kapitoly.",
   EDITOR_DESCRIPTION_TEXT:
     "Doplňující text k tématu poskytující informace a vysvětlení návštěvníkovi.",
-  EDITOR_DESCRIPTION_SUBTITLE: "Text",
   EDITOR_DESCRIPTION_TITLE:
     "Pojmenování obrazovky, které se zobrazí návštěvníkovi v liště pro textovou verzi. Název se také zobrazí jako pojmenování obrazovek ve výpisu všech obrazovek v editaci. Pokud jej nevyplníte, ve výpisu zůstane uveden jako název typ obrazovky.",
-  EDITOR_DESCRIPTION_PEREX: "Text",
   EDITOR_CHAPTER_START_DESCRIPTION_ANIMATION:
     "Vyberte z několika typů animace obrázku na pozadí.",
   EDITOR_CHAPTER_START_DESCRIPTION_AUDIO:
@@ -58,6 +56,8 @@ export const helpIconText = {
     "Otázka, kterou má návštěvník zodpovědět výběrem ze 3 možností.",
   EDITOR_GAME_OPTIONS_TEXT:
     "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi.",
+  EDITOR_GAME_RESULT_TIME:
+    "Počet sekund určující, jak dlouho uživatel uvidí výsledek minihry.",
   EDITOR_GAME_SIZING_IMAGE1:
     "Z knihovny dokumentů vyberte obrázek hádaného předmětu, jehož velikost má uživatel porovnat s referečním obrázkem.",
   EDITOR_GAME_SIZING_IMAGE2:
@@ -66,7 +66,6 @@ export const helpIconText = {
     "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů.",
   EDITOR_GAME_SIZING_TASK:
     "Co nejpřesněji popište uživateli jeho úkol (např. Odhadněte, jak je soška Věstonické Venuše velká v porovnání s krabičkou od sirek).",
-  EDITOR_GAME_TASK: "Text",
   EDITOR_GAME_TITLE:
     "Pojmenování obrazovky, které se zobrazí návštěvníkovi v liště pro textovou verzi. Název se také zobrazí jako pojmenování obrazovek ve výpisu všech obrazovek v editaci. Pokud jej nevyplníte, ve výpisu zůstane uveden jako název typ obrazovky.",
   EDITOR_GAME_WIPE_IMAGE1:
@@ -75,18 +74,19 @@ export const helpIconText = {
     "Z knihovny dokumentů vyberte obrázek, který se objeví po vygumování vrchního obrázku a ukazuje fázi “po”.",
   EDITOR_GAME_WIPE_TASK:
     "Co nejpřesněji popište uživateli jeho úkol (např. Podívejte se, jak vypadala budova před její rekonstrukcí). ",
-  EDITOR_IMAGE: "Text",
+  EDITOR_IMAGE: "Obrázek",
   EDITOR_IMAGE_ANIMATION: "Vyberte z několika typů animace obrázku na pozadí.",
   EDITOR_IMAGE_CHANGE_ANIMATION:
     "Zvolte jednu z 5 možností, jak obrázek bude přecházet v druhý.",
+  EDITOR_IMAGE_CHANGE_TRANSITION:
+    "Zvolte jednu z 2 možností, jak obrazovka přejde na druhou.",
   EDITOR_IMAGE_CHANGE_IMAGE_AFTER:
     "Z knihovny dokumentů vyberte obrázek stavu “po”. Pozor, oba obrázky musí mít stejnou velikost, aby se zobrazovaly správně.",
   EDITOR_IMAGE_CHANGE_IMAGE_BEFORE:
     "Z knihovny dokumentů vyberte obrázek stavu “před”. Pozor, oba obrázky musí mít stejnou velikost, aby se zobrazovaly správně.",
   EDITOR_IMAGE_IMAGE:
     "Obrázek z knihovny dokumentů, který se zobrazí na pozadí obrazovky. Obrázek může být doplněn o animaci pohybu a infopointy.",
-  EDITOR_INTRO_ANIMATION: "Text",
-  EDITOR_MUSIC: "Text",
+  EDITOR_MUSIC: "Hudba",
   EDITOR_PARALLAX_ANIMATION: "Směr animace všech vrstev paralaxu.",
   EDITOR_PARALLAX_IMAGE:
     "Obrázek představující vybranou vrstvu. Každá vrstva je reprezentována jedním obrázkem.",
@@ -107,6 +107,8 @@ export const helpIconText = {
   EDITOR_START_DESCRIPTION_IMAGE:
     "Obrázek z knihovny dokumentů, který se zobrazí na pozadí úvodní obrazovky výstavy. Obrázek může být doplněn o animaci pohybu.",
   EDITOR_START_DESCRIPTION_ORGANIZATION: "Instituce, která výstavu vytvořila.",
+  EDITOR_START_DESCRIPTION_ORGANIZATION_LINK:
+    "Odkaz na webové stránky instituce, která výstavu vytvořila.",
   EDITOR_START_DESCRIPTION_PEREX:
     "Text uvádějící výstavu po kliknutí na tlačítko “Více informací” na úvodní obrazovce. Zobrazuje se před spuštěním výstavy.",
   EDITOR_START_DESCRIPTION_SUBTITLE:
@@ -115,7 +117,8 @@ export const helpIconText = {
     "Název výstavy, který se zobrazí při prohlížení výstavy.",
   EDITOR_TEXT_TEXT:
     "Textový obsah obrazovky, který se zobrazí uživateli uprostřed a zarovnaný na střed. Maximální délka 300 znaků včetně mezer. Velikost písma se upravuje automaticky podle délky textu.",
-  EDITOR_VIDEO_VIDEO: "Text",
+  EDITOR_VIDEO_VIDEO:
+    "Nahrajte video z počítače nebo vyberte z nahraných souborů.",
   EDITOR_ZOOM_IN_IMAGE:
     "Hlavní obrázek, nad kterým je prováděn zoom. V tabulce se sekvencí zoomů můžete přidat nový bod pro zoom a umístit ho na obrázek. V tabulce pak k tomuto bodu zájmu vyberte úroveň zoomu a délku trvání animace.",
   EDITOR_ZOOM_IN_TOOLTIP_POSITION: "Pozice popisu zoomu v prezentačním módu.",
@@ -161,11 +164,11 @@ export const helpIconText = {
   EXPO_STATE_RADIO_ENDED:
     "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení uživateli s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”.",
   FILES_HEADER_UPLOAD_FILE:
-    "Maximální velikost souboru je 25MB. Při nahrávání více souborů je limit 125MB.",
+    "Maximální velikost souboru je 250MB. Při nahrávání více souborů je limit 260MB.",
   STATE_OPTIONS_PREPARE:
     "Výstava je v přípravě. Obsah výstavy je možné libovolně upravovat. Výstava je přístupná pouze přihlášeným uživatelům, se kterými je výstava sdílena.",
   STATE_OPTIONS_OPENED:
     "Výstava je veřejně dostupná přes svoje URL. Výstavu není možné upravovat.",
   STATE_OPTIONS_ENDED:
-    "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení uživateli s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”."
+    "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení uživateli s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”.",
 };

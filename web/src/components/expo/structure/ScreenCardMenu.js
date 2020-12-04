@@ -41,7 +41,7 @@ const ScreenCardMenu = ({
           />
         )}
         <ListItem
-          primaryText="Náhled"
+          primaryText={type === "START" ? "Náhled celé výstavy" : "Náhled"}
           rightIcon={<FontIcon className="color-black">open_in_new</FontIcon>}
           onClick={() =>
             openViewer(

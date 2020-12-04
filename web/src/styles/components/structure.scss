@@ -102,6 +102,12 @@
       }
     }
   }
+
+  &-screen-new-menu {
+    ul {
+      min-width: 300px;
+    }
+  }
 }
 
 .card,

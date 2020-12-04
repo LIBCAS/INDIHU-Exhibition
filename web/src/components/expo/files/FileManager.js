@@ -1,10 +1,12 @@
 import React from "react";
 import classNames from "classnames";
+import { compose, withState } from "recompose";
 import { Card, CardText, Button, FontIcon } from "react-md";
 import { map, get } from "lodash";
-
 import { connect } from "react-redux";
+
 import { setDialog } from "../../../actions/dialogActions";
+import ImageEditor from "../../ImageEditor";
 
 const FileManager = ({
   activeFolder,
@@ -13,7 +15,13 @@ const FileManager = ({
   tabFile,
   setDialog,
   id,
-  files
+  files,
+  imageEditorOpen,
+  setImageEditorOpen,
+  selectedFileAndFolder,
+  setSelectedFileAndFolder,
+  expoId,
+  enableImageEditor
 }) => (
   <Card id={id} className="files-manager">
     <CardText>
@@ -83,13 +91,19 @@ const FileManager = ({
                   <div className="row-actions">
                     <Button
                       icon
-                      onClick={() =>
+                      onClick={() => {
+                        setSelectedFileAndFolder({
+                          file,
+                          folder: get(folder, "name")
+                        });
                         setDialog("FilesManagerMenu", {
                           file,
                           folder,
-                          files
-                        })
-                      }
+                          files,
+                          openImageEditor: () => setImageEditorOpen(true),
+                          enableImageEditor
+                        });
+                      }}
                     >
                       <FontIcon>more_horiz</FontIcon>
                     </Button>
@@ -101,10 +115,26 @@ const FileManager = ({
         );
       })}
     </CardText>
+    <ImageEditor
+      open={imageEditorOpen && selectedFileAndFolder}
+      expoId={expoId}
+      folder={get(selectedFileAndFolder, "folder")}
+      src={`/api/files/${get(selectedFileAndFolder, "file.fileId")}`}
+      type={get(selectedFileAndFolder, "file.type")}
+      onClose={() => setImageEditorOpen(false)}
+    />
   </Card>
 );
 
-export default connect(
-  null,
-  { setDialog }
+export default compose(
+  connect(
+    ({
+      expo: {
+        activeExpo: { id }
+      }
+    }) => ({ expoId: id }),
+    { setDialog }
+  ),
+  withState("imageEditorOpen", "setImageEditorOpen", false),
+  withState("selectedFileAndFolder", "setSelectedFileAndFolder", null)
 )(FileManager);

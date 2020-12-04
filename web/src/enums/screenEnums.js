@@ -9,3 +9,13 @@ export const zoomInTooltipPositionText = {
   TOP_LEFT: "Vlevo nahoře",
   TOP_RIGHT: "Vpravo nahoře"
 };
+
+export const screenTransition = {
+  ON_TIME: "ON_TIME",
+  ON_BUTTON: "ON_BUTTON"
+};
+
+export const screenTransitionText = {
+  ON_TIME: "Po uplynutí času",
+  ON_BUTTON: "Tlačítko pro přesun"
+};

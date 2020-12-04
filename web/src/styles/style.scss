@@ -7,7 +7,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Raleway';
+  font-family: "Raleway";
   -webkit-font-smoothing: antialiased;
   min-height: 10vh;
   height: 100vh;
@@ -31,7 +31,7 @@ $c-blue-sky: #e0efff;
 $c-error: #ea5d5d;
 $c-positive: #e4f1e4;
 $c-maroon: #85144b;
-$c-red: #FF4136;
+$c-red: #ff4136;
 
 /* BREAKPOINTS */
 
@@ -39,13 +39,14 @@ $breakpoint-desktop-big: 1560px;
 $breakpoint-desktop-bigger: 1100px;
 $breakpoint-desktop: 800px;
 $breakpoint-tablet: 600px;
+$breakpoint-phablet: 500px;
 $breakpoint-mobile: 400px;
 $breakpoint-mini: 300px;
 $breakpoint-200: 200px;
 
 /* MD */
 
-@import '../../node_modules/react-md/src/scss/react-md';
+@import "../../node_modules/react-md/src/scss/react-md";
 $md-primary-color: $c-blue-dark;
 $md-secondary-color: $c-blue-primary;
 $md-colors-warn-md: false;
@@ -61,13 +62,27 @@ $md-colors-warn-md: false;
 @import "components/files.scss";
 @import "components/settings.scss";
 @import "components/screen.scss";
+@import "components/scrollbar.scss";
 @import "components/viewer.scss";
+@import "components/image-editor.scss";
 
 *:not(i) {
-  font-family: 'Raleway';
+  font-family: "Raleway";
 }
 
 .__react_component_tooltip {
   z-index: 100000 !important;
   max-width: 60vw;
+}
+
+.test-env {
+  z-index: 10000000;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: $c-red;
+  color: $c-white;
+  font-size: 11px;
+  padding: 1px 4px 2px;
+  border-top-right-radius: 4px;
 }

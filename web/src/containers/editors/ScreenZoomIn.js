@@ -50,7 +50,9 @@ const ScreenZoomIn = props => {
         activeScreen={activeScreen}
         rowNum={position.match(/^(\d*)/)[0]}
         colNum={position.match(/(\d*)$/)[0]}
-        noActions={!!find(activeScreen.sequences, item => item.edit)}
+        noActions={
+          !!find(activeScreen.sequences, item => item.edit || item.timeError)
+        }
         history={history}
         url={url}
       />

@@ -20,20 +20,20 @@ const ViewGameWipe = ({
   addScrawl,
   done,
   setDone,
-  init
+  init,
 }) => {
   return (
     <div className="game">
       <div
         id="view-game-wipe-game-wrap"
         className={classNames("game-wrap", {
-          "cursor-none": !mouseClicked
+          "cursor-none": !mouseClicked,
         })}
-        onMouseDown={e => {
+        onMouseDown={(e) => {
           setPaint(true);
           addScrawl(e.pageX, e.pageY);
         }}
-        onMouseMove={e => {
+        onMouseMove={(e) => {
           if (!mouseClicked) {
             const moveIcon = document.getElementById(
               "view-game-wipe-move-icon"
@@ -63,12 +63,12 @@ const ViewGameWipe = ({
         onMouseUp={() => setPaint(false)}
         onMouseEnter={() =>
           mouseActualize({
-            mouseDown: true
+            mouseDown: true,
           })
         }
         onMouseLeave={() => {
           mouseActualize({
-            mouseDown: false
+            mouseDown: false,
           });
           setPaint(false);
         }}
@@ -89,6 +89,7 @@ const ViewGameWipe = ({
           passButton: !done,
           resetButton: !done,
           task: viewScreen.task,
+          resultTime: viewScreen.resultTime,
           getNextUrlPart,
           onClick: () => {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -98,7 +99,7 @@ const ViewGameWipe = ({
             );
             moveIcon.style.display = "none";
             mouseActualize({
-              mouseClicked: true
+              mouseClicked: true,
             });
             setDone(true);
           },
@@ -110,7 +111,7 @@ const ViewGameWipe = ({
               delete document.getElementById("view-game-wipe-game-wrap-image2");
             }
             init(ctx);
-          }
+          },
         }}
       />
     </div>
@@ -121,17 +122,17 @@ export default compose(
   connect(
     ({
       app: {
-        mouseInfo: { mouseClicked, mouseDown }
+        mouseInfo: { mouseClicked, mouseDown },
       },
-      expo: { viewScreen }
+      expo: { viewScreen },
     }) => ({
       mouseClicked,
       mouseDown,
-      viewScreen
+      viewScreen,
     }),
     {
       mouseActualize,
-      showLoader
+      showLoader,
     }
   ),
   withState("done", "setDone", false),
@@ -144,7 +145,7 @@ export default compose(
       const actScrawl = {
         x: [...scrawl.x, x],
         y: [...scrawl.y, y],
-        drag: [...scrawl.drag, !!dragging]
+        drag: [...scrawl.drag, !!dragging],
       };
 
       setScrawl(actScrawl);
@@ -167,7 +168,7 @@ export default compose(
         ctx.stroke();
       }
     },
-    init: ({ screenFiles, viewScreen, showLoader, setScrawl }) => ctx => {
+    init: ({ screenFiles, viewScreen, showLoader, setScrawl }) => (ctx) => {
       showLoader(true);
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       setScrawl({ x: [], y: [], drag: [] });
@@ -214,7 +215,7 @@ export default compose(
         showLoader(false);
       };
       img.onerror = () => showLoader(false);
-    }
+    },
   }),
   lifecycle({
     componentDidMount() {
@@ -223,7 +224,7 @@ export default compose(
         mouseClicked: false,
         mouseDown: false,
         mouseXPos: null,
-        mouseYPos: null
+        mouseYPos: null,
       });
 
       // canvas
@@ -241,6 +242,6 @@ export default compose(
         ctx.fillRect(0, 0, width, height);
       }
       setCtx(ctx);
-    }
+    },
   })
 )(ViewGameWipe);

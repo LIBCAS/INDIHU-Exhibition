@@ -13,7 +13,7 @@ const ConfirmDialog = ({ handleSubmit, data }) => (
     handleSubmit={handleSubmit}
     submitLabel="Potvrdit"
   >
-    <p>{get(data, "text")}</p>
+    {get(data, "content") ? data.content : <p>{get(data, "text")}</p>}
   </Dialog>
 );
 

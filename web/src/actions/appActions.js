@@ -1,7 +1,6 @@
 import { reset } from "redux-form";
 
 import {
-  LOADER,
   RADIO_STATE_CHANGE,
   SWITCH_STATE_CHANGE,
   MOUSE_ACTUALIZE,
@@ -11,9 +10,9 @@ import {
   APP
 } from "./constants";
 
-export const showLoader = bool => ({
-  type: LOADER,
-  payload: { loader: bool }
+export const showLoader = loader => ({
+  type: APP,
+  payload: { loader }
 });
 
 export const changeRadioState = state => ({
@@ -62,5 +61,12 @@ export const setTimeoutId = timeout => ({
   type: APP,
   payload: {
     timeout
+  }
+});
+
+export const setExpositionsScrollTop = expositionsScrollTop => ({
+  type: APP,
+  payload: {
+    expositionsScrollTop
   }
 });

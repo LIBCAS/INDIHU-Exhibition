@@ -97,7 +97,7 @@ const DialogWrap = ({
 DialogWrap.propTypes = {
   name: PropTypes.string,
   active: PropTypes.string,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   closeDialog: PropTypes.func,
   handleSubmit: PropTypes.func,
   submitLabel: PropTypes.string,

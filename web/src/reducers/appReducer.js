@@ -1,5 +1,4 @@
 import {
-  LOADER,
   RADIO_STATE_CHANGE,
   SWITCH_STATE_CHANGE,
   MOUSE_ACTUALIZE,
@@ -24,13 +23,12 @@ const initialState = {
   zoom: 100,
   zoom2: 100,
   zoom3: 100,
-  timeout: null
+  timeout: null,
+  expositionsScrollTop: 0
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOADER:
-      return { ...state, ...action.payload };
     case RADIO_STATE_CHANGE:
       return { ...state, ...action.payload };
     case SWITCH_STATE_CHANGE:

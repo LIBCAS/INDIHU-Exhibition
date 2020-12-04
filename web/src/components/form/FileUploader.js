@@ -6,8 +6,8 @@ import { Uploader, UploadField } from "@navjobs/upload";
 import { postFile } from "../../actions/fileActions";
 import { asyncForEach } from "../../utils";
 
-const MAX_FILE_SIZE = 26214400; // 25MB
-const MAX_FILES_SIZE = 131072000; // 125MB
+const MAX_FILE_SIZE = 262144000; // 250MB
+const MAX_FILES_SIZE = 272629760; // 260MB
 
 const FileUploader = ({
   accept,
@@ -71,9 +71,9 @@ export default compose(
       const filesArray = map(files, file => file);
 
       if (find(files, ({ size }) => size > MAX_FILE_SIZE)) {
-        setFileError("Maximální velikost souboru je 25MB.");
+        setFileError("Maximální velikost souboru je 250MB.");
       } else if (sumBy(files, "size") > MAX_FILES_SIZE) {
-        setFileError("Součet velikostí všech souborů nesmí překročit 125MB.");
+        setFileError("Součet velikostí všech souborů nesmí překročit 260MB.");
       } else if (files.length > 0 && every(files, isEmpty)) {
         setFileError(null);
 

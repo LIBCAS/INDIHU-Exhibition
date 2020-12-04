@@ -19,7 +19,7 @@
     flex-wrap: nowrap;
   }
   &-back {
-    margin: 0 .5em 0 1em;
+    margin: 0 0.5em 0 1em;
     cursor: pointer;
   }
   &-left {
@@ -41,15 +41,28 @@
       height: 1em;
       cursor: pointer;
     }
+    &.with-link {
+      font-weight: 700px;
+      font-size: 26px;
+      cursor: pointer;
+    }
   }
   &-button {
     display: block;
     font-size: 1em;
     text-align: center;
     color: $c-white;
-    margin: .7em 1em .4em;
+    margin: 0.7em 1em 0.4em;
+    border-bottom: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer;
+    &.active {
+      border-bottom: 1px solid $c-white;
+      cursor: auto;
+      &:hover {
+        color: $c-white;
+      }
+    }
     &:hover {
       color: $c-blue-light;
     }
@@ -58,6 +71,10 @@
       &:hover {
         color: $c-white;
       }
+    }
+    &-link {
+      margin: 0 16px;
+      text-decoration: none;
     }
   }
   &-tablet {
@@ -88,7 +105,7 @@
     font-size: 1em;
     text-align: center;
     color: $c-white;
-    padding: .6em 1em .5em 1em;
+    padding: 0.6em 1em 0.5em 1em;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
@@ -169,6 +186,24 @@
 
 .md-title--toolbar {
   margin-left: 22px;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .toolbar {
+    &-left.authStyle {
+      max-width: 90%;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .toolbar {
+    &-title {
+      &.with-link {
+        font-size: 20px;
+      }
+    }
+  }
 }
 
 @media (max-width: $breakpoint-200) {

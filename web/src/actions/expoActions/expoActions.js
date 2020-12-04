@@ -9,18 +9,15 @@ import {
   EXPO_UPDATE
 } from "./../constants";
 import { showLoader } from "./../appActions";
-import { getCurrentUser } from "./../userActions";
 import { createQuery, createFilter } from "../../utils";
 
-export const getExpositions = (inSilence, expoCount) => async (
+export const getExpositions = ( expoCount) => async (
   dispatch,
   getState
 ) => {
-  dispatch(showLoader(!inSilence));
   try {
     const cardsList = getState().expo.cardsList;
 
-    await dispatch(getCurrentUser(true));
     const user = getState().user.info;
     const email = get(user, "email");
 
@@ -86,10 +83,8 @@ export const getExpositions = (inSilence, expoCount) => async (
       });
     }
 
-    dispatch(showLoader(false));
     return response.status === 200;
   } catch (error) {
-    dispatch(showLoader(false));
     return false;
   }
 };

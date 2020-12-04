@@ -9,8 +9,8 @@ import MenuButton from "react-md/lib/Menus/MenuButton";
 import { getUsers } from "../../actions/adminActions";
 
 const options = [
-  { label: "Tabulka všech uživatelů", value: "ALL" },
-  { label: "Tabulka uživatelů ke schválení", value: "FOR_ACCEPT" }
+  { label: "Všichni uživatelé", value: "ALL" },
+  { label: "Uživatelé ke schválení", value: "FOR_ACCEPT" }
 ];
 
 const options2 = [
@@ -52,7 +52,7 @@ const Filter = ({ users, getUsers }) => (
           position="below"
           onChange={value =>
             getUsers(
-              users.page,
+              0,
               users.pageSize,
               value,
               users.sort,

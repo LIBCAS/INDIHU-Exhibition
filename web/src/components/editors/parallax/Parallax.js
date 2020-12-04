@@ -58,7 +58,7 @@ const Parallax = ({
 
   return (
     <div className="container container-tabMenu">
-      <div className="screen">
+      <div className="screen screen-with-select-on-bottom-small">
         <Carousel
           {...{
             images: activeScreen.images,

@@ -98,7 +98,7 @@ const ClosedExpo = ({
           }}
         />
       </div>
-      <div className="flex-row flex-right">
+      <div className="flex-row flex-right padding-bottom-small">
         <Button raised label="Uložit" type="submit" />
       </div>
     </form>

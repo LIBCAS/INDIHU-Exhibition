@@ -26,6 +26,7 @@ const initialState = {
   viewLastChapter: null,
   preloadedFiles: [],
   errorFiles: [],
+  errorTimeoutFiles: [],
   expoEditor: {
     startAuthorsFilter: { sort: "TITLE", order: "ASC", search: "" }
   },
@@ -298,6 +299,26 @@ const reducer = (state = initialState, action) => {
             : 1
         }
       };
+    case c.EXPO_VIEWER_AUDIO_FILES_TOTAL:
+      return {
+        ...state,
+        viewExpo: {
+          ...state.viewExpo,
+          audioFilesTotal: state.viewExpo.audioFilesTotal
+            ? state.viewExpo.audioFilesTotal + 1
+            : 1
+        }
+      };
+    case c.EXPO_VIEWER_AUDIO_FILE_LOADED:
+      return {
+        ...state,
+        viewExpo: {
+          ...state.viewExpo,
+          audioFilesLoaded: state.viewExpo.audioFilesLoaded
+            ? state.viewExpo.audioFilesLoaded + 1
+            : 1
+        }
+      };
     case c.EXPO_VIEWER_VIDEO_FILES_TOTAL:
       return {
         ...state,
@@ -322,6 +343,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         errorFiles: [...state.errorFiles, action.payload.name]
+      };
+    case c.EXPO_VIEWER_FILE_ERROR_TIMEOUT_ADD:
+      return {
+        ...state,
+        errorTimeoutFiles: [...state.errorTimeoutFiles, action.payload.name]
       };
     case c.EXPO_EDITOR_UPDATE:
       return {

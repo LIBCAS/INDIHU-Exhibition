@@ -240,4 +240,12 @@
     <changeSet id="17" author="stora">
         <sql> UPDATE in_user SET institution = 'iQ', state = 'ACCEPTED' WHERE id = 'usuallyGenerated'</sql>
     </changeSet>
+
+    <changeSet id="18" author="camak">
+        <addColumn tableName="in_registration">
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="deleted" type="timestamp"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

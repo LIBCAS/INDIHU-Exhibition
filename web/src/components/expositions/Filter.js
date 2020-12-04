@@ -49,8 +49,8 @@ const Filter = ({
         onChange={async value => {
           setExpoFilter(value, filter.sort, filter.search, filter.order);
           setExpoPager(0, pager.pageSize);
-          const expositions = await getExpositions(true);
-          getExpositions(true, get(expositions, "count"));
+          const expositions = await getExpositions();
+          getExpositions(get(expositions, "count"));
         }}
       />
     </div>
@@ -65,8 +65,8 @@ const Filter = ({
         position="below"
         onChange={async value => {
           setExpoFilter(filter.filter, value, filter.search, filter.order);
-          const expositions = await getExpositions(true);
-          getExpositions(true, get(expositions, "count"));
+          const expositions = await getExpositions();
+          getExpositions(get(expositions, "count"));
         }}
       />
     </div>
@@ -82,8 +82,8 @@ const Filter = ({
               filter.search,
               filter.order === "ASC" ? "DESC" : "ASC"
             );
-            const expositions = await getExpositions(true);
-            getExpositions(true, get(expositions, "count"));
+            const expositions = await getExpositions();
+            getExpositions(get(expositions, "count"));
           }}
           data-tip={filter.order === "ASC" ? "Sestupně" : "Vzestupně"}
         >
@@ -104,8 +104,8 @@ const Filter = ({
           onChange={async value => {
             setExpoFilter(filter.filter, filter.sort, value, filter.order);
             setExpoPager(0, pager.pageSize);
-            const expositions = await getExpositions(true);
-            getExpositions(true, get(expositions, "count"));
+            const expositions = await getExpositions();
+            getExpositions(get(expositions, "count"));
           }}
           defaultValue={filter.search}
         />

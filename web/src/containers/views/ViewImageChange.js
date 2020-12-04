@@ -4,17 +4,23 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 import { get } from "lodash";
 import { FontIcon } from "react-md";
+import { withRouter } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 
 import ScreenMenu from "../../components/views/ScreenMenu";
 import { getFileById } from "../../actions/fileActions";
 
 import { animationType } from "../../enums/animationType";
+import { screenTransition } from "../../enums/screenEnums";
 
 const ViewImageChange = ({
   viewScreen,
   handleClick,
   handleSlider,
-  sliderValue
+  sliderValue,
+  transitionButtonVisible,
+  history,
+  getNextUrlPart
 }) => {
   const animClick = viewScreen.animationType === animationType.CLICK;
   const animSlideV = viewScreen.animationType === animationType.VERTICAL;
@@ -65,6 +71,31 @@ const ViewImageChange = ({
             )}
           </div>
         )}
+        {transitionButtonVisible && getNextUrlPart && (
+          <div>
+            <div
+              className="view-imagechange-transition-button"
+              onClick={e => {
+                e.stopPropagation();
+                history.push(getNextUrlPart());
+              }}
+              data-tip="Další obrazovka"
+              data-for="view-imagechange-tooltip"
+            >
+              <FontIcon
+                className="transition-icon"
+                iconClassName="fa fa-angle-right"
+              />
+            </div>
+            <ReactTooltip
+              type="dark"
+              effect="solid"
+              id="view-imagechange-tooltip"
+              place="left"
+              className="help-icon-react-tooltip"
+            />
+          </div>
+        )}
       </div>
       <ScreenMenu viewScreen={viewScreen} />
     </div>
@@ -72,6 +103,7 @@ const ViewImageChange = ({
 };
 
 export default compose(
+  withRouter,
   connect(
     ({ expo: { viewScreen } }) => ({ viewScreen }),
     {
@@ -81,6 +113,8 @@ export default compose(
   withState("imageChanged", "setImageChanged", false),
   withState("sliderValue", "setSliderValue", 50),
   withState("loadingInterval", "setLoadingInterval", null),
+  withState("transitionTimeout", "setTransitionTimeout", null),
+  withState("transitionButtonVisible", "setTransitionButtonVisible", false),
   withHandlers({
     handleClick: ({ viewScreen, imageChanged, setImageChanged }) => () => {
       if (imageChanged) {
@@ -316,8 +350,14 @@ export default compose(
         screenFiles,
         handlerAnimSlideV,
         setLoadingInterval,
-        loadingImages
+        loadingImages,
+        getNextUrlPart,
+        setTransitionTimeout,
+        setTransitionButtonVisible,
+        history
       } = this.props;
+      const screenTime =
+        viewScreen.time && viewScreen.time > 0 ? viewScreen.time : 20;
 
       const animHover = viewScreen.animationType === animationType.HOVER;
       const animClick = viewScreen.animationType === animationType.CLICK;
@@ -336,9 +376,7 @@ export default compose(
             newNode.className = "animation-fade-out";
             newNode.setAttribute(
               "style",
-              `animation-duration: ${
-                viewScreen.time && viewScreen.time > 0 ? viewScreen.time : 20
-              }s;`
+              `animation-duration: ${screenTime}s;`
             );
           }
           document
@@ -355,9 +393,7 @@ export default compose(
             newNode.className = "animation-fade-in";
             newNode.setAttribute(
               "style",
-              `animation-duration: ${
-                viewScreen.time && viewScreen.time > 0 ? viewScreen.time : 20
-              }s;`
+              `animation-duration: ${screenTime}s;`
             );
           }
           document
@@ -463,13 +499,28 @@ export default compose(
 
         setLoadingInterval(setInterval(loadingImages, 50));
       }
+
+      if (
+        (getNextUrlPart && !viewScreen.transitionType) ||
+        viewScreen.transitionType === screenTransition.ON_TIME
+      ) {
+        setTransitionTimeout(
+          setTimeout(() => history.push(getNextUrlPart()), screenTime * 1000)
+        );
+      } else if (viewScreen.transitionType === screenTransition.ON_BUTTON) {
+        setTransitionTimeout(
+          setTimeout(() => setTransitionButtonVisible(true), screenTime * 1000)
+        );
+      }
     },
     componentWillUnmount() {
       const {
         viewScreen,
         handlerAnimSlideV,
         loadingInterval,
-        setLoadingInterval
+        setLoadingInterval,
+        transitionTimeout,
+        setTransitionTimeout
       } = this.props;
 
       const animSlideV = viewScreen.animationType === animationType.VERTICAL;
@@ -478,10 +529,11 @@ export default compose(
         window.removeEventListener("resize", () => handlerAnimSlideV());
       }
 
-      if (loadingInterval) {
-        clearInterval(loadingInterval);
-        setLoadingInterval(null);
-      }
+      clearInterval(loadingInterval);
+      setLoadingInterval(null);
+
+      clearTimeout(transitionTimeout);
+      setTransitionTimeout(null);
     }
   })
 )(ViewImageChange);

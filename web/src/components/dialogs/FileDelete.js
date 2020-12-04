@@ -8,37 +8,43 @@ import { FontIcon } from "react-md/lib";
 import Dialog from "./DialogWrap";
 import { deleteFile, tabFile, isFileUsed } from "../../actions/fileActions";
 
-const FileDelete = ({ handleSubmit, data, activeExo, isFileUsed }) => (
-  <Dialog
-    title={<FontIcon className="color-black">delete</FontIcon>}
-    name="FileDelete"
-    handleSubmit={handleSubmit}
-    submitLabel="Smazat"
-  >
-    <p>
-      Vybraný soubor <strong>{get(data, "name", "")}</strong> bude smazán.
-    </p>
-    <div className="flex-row-nowrap flex-center">
-      <FontIcon className="color-red">priority_high</FontIcon>
+const FileDelete = ({ handleSubmit, data, isFileUsed }) => {
+  const screen = data ? isFileUsed(data.id) : false;
+  return (
+    <Dialog
+      title={<FontIcon className="color-black">delete</FontIcon>}
+      name="FileDelete"
+      handleSubmit={handleSubmit}
+      submitLabel="Smazat"
+    >
       <p>
-        <strong style={{ fontSize: "0.9em" }}>
-          Akce je nevratná.
-          {data && activeExo && isFileUsed(data.id)
-            ? ` Soubor je používán!`
-            : ""}
-        </strong>
+        Vybraný soubor <strong>{get(data, "name", "")}</strong> bude smazán.
       </p>
-    </div>
-  </Dialog>
-);
+      <div className="flex-row-nowrap flex-center">
+        <FontIcon className="color-red">priority_high</FontIcon>
+        <p style={{ fontSize: "0.9em" }}>
+          <strong>Akce je nevratná.</strong>
+        </p>
+      </div>
+      {screen ? (
+        <p style={{ fontSize: "0.9em", marginLeft: 24 }}>
+          <br />
+          Soubor je používán v obrazovce <strong>{screen}</strong>.
+        </p>
+      ) : (
+        ""
+      )}
+    </Dialog>
+  );
+};
 
 export default compose(
   connect(
-    ({ dialog: { data }, expo: { activeExo } }) => ({ data, activeExo }),
+    ({ dialog: { data } }) => ({ data }),
     { isFileUsed }
   ),
   withHandlers({
-    onSubmit: dialog => async (formData, dispatch, props) => {
+    onSubmit: dialog => async (_, dispatch, props) => {
       if (await dispatch(deleteFile(props.data.id))) {
         dispatch(tabFile(null));
       }

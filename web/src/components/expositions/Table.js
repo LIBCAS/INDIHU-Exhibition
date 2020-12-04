@@ -26,7 +26,7 @@ const Table = ({
         })}
         onClick={() => {
           setExpoFilter(filter.filter, "title", filter.search, filter.order);
-          getExpositions(true);
+          getExpositions();
         }}
       >
         Název
@@ -37,7 +37,7 @@ const Table = ({
         })}
         onClick={() => {
           setExpoFilter(filter.filter, "state", filter.search, filter.order);
-          getExpositions(true);
+          getExpositions();
         }}
       >
         Stav
@@ -48,7 +48,7 @@ const Table = ({
         })}
         onClick={() => {
           setExpoFilter(filter.filter, "created", filter.search, filter.order);
-          getExpositions(true);
+          getExpositions();
         }}
       >
         Vytvořeno
@@ -59,7 +59,7 @@ const Table = ({
         })}
         onClick={() => {
           setExpoFilter(filter.filter, "updated", filter.search, filter.order);
-          getExpositions(true);
+          getExpositions();
         }}
       >
         Poslední editace
@@ -75,7 +75,7 @@ const Table = ({
             filter.search,
             filter.order
           );
-          getExpositions(true);
+          getExpositions();
         }}
       >
         Pravě upravováno

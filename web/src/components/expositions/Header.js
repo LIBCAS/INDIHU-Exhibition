@@ -9,12 +9,14 @@ import {
   changeExpositionsViewType,
   getExpositions
 } from "../../actions/expoActions";
+import { showLoader } from "../../actions/appActions";
 
 const Header = ({
   cardsList,
   changeExpositionsViewType,
   getExpositions,
-  setDialog
+  setDialog,
+  showLoader
 }) => (
   <div className="flex-header">
     <h2 className="flex-header-title">Výstavy</h2>
@@ -35,11 +37,12 @@ const Header = ({
       )}
       <Button
         icon
-        onClick={() => {
+        onClick={async () => {
           ReactTooltip.hide();
           changeExpositionsViewType(!cardsList);
-          getExpositions(true);
-          getExpositions(true);
+          showLoader(true);
+          await getExpositions();
+          showLoader(false);
         }}
         data-tip={cardsList ? "Seznam" : "Mřížka"}
         data-for="expositions-filter-react-tooltip-order"
@@ -60,6 +63,7 @@ const Header = ({
 export default connect(
   null,
   {
+    showLoader,
     changeExpositionsViewType,
     getExpositions
   }

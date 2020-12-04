@@ -9,13 +9,14 @@ import {
   FacebookIcon,
   TwitterIcon,
   FacebookShareButton,
-  TwitterShareButton
+  TwitterShareButton,
 } from "react-share";
 import ReactTooltip from "react-tooltip";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 import { getFileById } from "../../actions/fileActions";
 import { screenUrl } from "../../enums/screenType";
+import { openInNewTab, getDocumentIconName } from "../../utils";
 
 const ViewFinish = ({
   viewScreen,
@@ -25,7 +26,7 @@ const ViewFinish = ({
   collapsed,
   setCollapsed,
   isCopied,
-  setIsCopied
+  setIsCopied,
 }) => {
   const audio = viewScreen.audio ? getFileById(viewScreen.audio) : null;
   const fullUrl = `${window.location.origin}/view/${viewExpo.url}`;
@@ -49,7 +50,7 @@ const ViewFinish = ({
               className="icon-container"
               onClick={() => setCollapsed(!collapsed)}
             >
-              <FontIcon className="icon">crop_square</FontIcon>Bibliografie
+              <FontIcon className="icon">crop_square</FontIcon>Soubory k výstavě
             </div>
           </div>
           <div className="left-row">
@@ -64,7 +65,11 @@ const ViewFinish = ({
             <div className="share-link">
               <p>Získejte odkaz na výstavu:</p>
               <div className="bottom-row">
-                <TextField disabled={true} value={fullUrl} />
+                <TextField
+                  readonly={true}
+                  value={fullUrl}
+                  onFocus={(event) => event.target.select()}
+                />
                 <CopyToClipboard text={fullUrl}>
                   <Button
                     icon
@@ -81,13 +86,17 @@ const ViewFinish = ({
                 type="dark"
                 effect="solid"
                 id="view-finish-share-link-tooltip"
-                // className="help-icon-react-tooltip"
               />
             </div>
           </div>
         </div>
         <div className={classNames("right", { collapsed })}>
           <div className="content">
+            <div className="flex-row flex-right">
+              <div className="close-button" onClick={() => setCollapsed(true)}>
+                Zavřít
+              </div>
+            </div>
             {map(viewScreen.collaborators, (c, i) => (
               <div className="part" key={`coll${i}`}>
                 <p>{c.role}</p>
@@ -97,7 +106,9 @@ const ViewFinish = ({
               </div>
             ))}
             <div className="flex-row">
-              <div className={classNames({ "half-width": audio })}>
+              <div
+                className={classNames("full-width", { "half-width": audio })}
+              >
                 <p>Dokumenty k výstavě:</p>
                 <div className="flex-col">
                   {map(viewScreen.documents, (d, i) => (
@@ -112,47 +123,19 @@ const ViewFinish = ({
                       </a>
                       <div
                         className={classNames("document", {
-                          "document-link": d.fileId || d.url
+                          "document-link": d.fileId || d.url,
                         })}
                         onClick={() => {
                           if (d.name)
                             document
                               .getElementById(`view-finish-file-link-${i}`)
                               .click();
-                          else if (d.url)
-                            window
-                              .open(
-                                /^(http:\/\/|https:\/\/).*$/.test(d.url)
-                                  ? d.url
-                                  : `http://${d.url}`,
-                                "_blank"
-                              )
-                              .focus();
+                          else if (d.url) openInNewTab(d.url);
                         }}
                       >
-                        {d.name ? (
-                          <FontIcon className="icon">
-                            {/^image.*$/.test(d.type)
-                              ? "image"
-                              : /^audio.*$/.test(d.type)
-                              ? "music_note"
-                              : /^video.*$/.test(d.type)
-                              ? "movie"
-                              : "insert_drive_file"}
-                          </FontIcon>
-                        ) : (
-                          <FontIcon className="icon">
-                            {/^image.*$/.test(d.urlType)
-                              ? "image"
-                              : /^audio.*$/.test(d.urlType)
-                              ? "music_note"
-                              : /^video.*$/.test(d.urlType)
-                              ? "movie"
-                              : /^WEB$/.test(d.urlType)
-                              ? "web"
-                              : "insert_drive_file"}
-                          </FontIcon>
-                        )}
+                        <FontIcon className="icon">
+                          {getDocumentIconName(d.name ? d.type : d.urlType)}
+                        </FontIcon>
                         <p style={{ margin: 0 }}>{d.fileName}</p>
                       </div>
                     </div>
@@ -201,7 +184,7 @@ export default compose(
   connect(
     ({ expo: { viewScreen, viewExpo } }) => ({
       viewScreen,
-      viewExpo
+      viewExpo,
     }),
     { getFileById }
   ),
@@ -235,6 +218,6 @@ export default compose(
           .getElementById("view-finish-image-container")
           .appendChild(newNode);
       }
-    }
+    },
   })
 )(ViewFinish);

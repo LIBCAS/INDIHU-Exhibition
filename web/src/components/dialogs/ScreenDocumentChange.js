@@ -166,6 +166,11 @@ export default compose(
       oldFile,
       documentType
     }) => formData => {
+      if (!oldFile) {
+        throw new SubmissionError({
+          fileName: "Nebyla provedena žádná úprava!"
+        });
+      }
       if (
         changeScreenDocument(
           documentType === documentOpts[2].value

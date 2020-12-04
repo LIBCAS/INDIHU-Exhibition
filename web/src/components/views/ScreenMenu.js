@@ -7,7 +7,9 @@ import { toggleInteractive } from "../../actions/expoActions/viewerActions";
 const ScreenMenu = ({ toggleInteractive, viewScreen }) => {
   return (
     <div className="viewer-screen-menu">
-      <div className="menu-text">{viewScreen.title}</div>
+      <div className="menu-text">
+        <div>{viewScreen.title}</div>
+      </div>
       <FontIcon className="menu-icon" onClick={() => toggleInteractive(true)}>
         notes
       </FontIcon>

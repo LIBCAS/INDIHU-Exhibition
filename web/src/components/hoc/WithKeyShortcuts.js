@@ -1,16 +1,13 @@
 import * as React from "react";
-import { noop } from "lodash";
 import {
   compose,
   withHandlers,
   mapProps,
   lifecycle,
-  defaultProps,
   withState
 } from "recompose";
 
 const enhance = compose(
-  defaultProps({ onUp: noop, onDown: noop, onDelete: noop }),
   withState("allowUpAndDown", "setAllowUpAndDown", true),
   withState("timeoutId", "setTimeoutId", null),
   withHandlers({
@@ -26,7 +23,6 @@ const enhance = compose(
       if (e.type === "keydown") {
         // Enter
         if (e.keyCode === 13) {
-          e.preventDefault();
           if (onEnterButtonId) {
             const button = document.getElementById(onEnterButtonId);
 
@@ -36,24 +32,23 @@ const enhance = compose(
           }
           // Arrow Up
         } else if (e.keyCode === 38) {
-          e.preventDefault();
-          if (allowUpAndDown) {
+          if (onUp && allowUpAndDown) {
             setAllowUpAndDown(false);
             onUp();
             setTimeoutId(setTimeout(() => setAllowUpAndDown(true), 30));
           }
           // Arrow Down
         } else if (e.keyCode === 40) {
-          e.preventDefault();
-          if (allowUpAndDown) {
+          if (onDown && allowUpAndDown) {
             setAllowUpAndDown(false);
             onDown();
             setTimeoutId(setTimeout(() => setAllowUpAndDown(true), 30));
           }
           // Delete
         } else if (e.keyCode === 46) {
-          e.preventDefault();
-          onDelete();
+          if (onDelete) {
+            onDelete();
+          }
         }
       }
     }

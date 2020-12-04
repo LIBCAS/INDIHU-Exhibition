@@ -145,7 +145,7 @@ export const duplicateExpo = (name, id) => async (dispatch, getState) => {
             payload: { ...expoNew }
           });
 
-          await dispatch(getExpositions(true));
+          await dispatch(getExpositions());
 
           dispatch(showLoader(false));
           return true;

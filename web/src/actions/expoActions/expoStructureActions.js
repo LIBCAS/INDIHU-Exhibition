@@ -5,6 +5,7 @@ import { EXPO_STRUCTURE_SET } from "./../constants";
 import { saveExpo } from "./expoActions";
 import { screenTypeText, screenType } from "../../enums/screenType";
 import { animationType } from "../../enums/animationType";
+import { screenTransition } from "../../enums/screenEnums";
 
 const screenWithAnimation = [
   screenType.INTRO,
@@ -36,6 +37,10 @@ export const addScreen = (row, idx, type, aloneScreen) => async (
             : type === screenType.IMAGE_CHANGE
             ? animationType.HOVER
             : undefined,
+        transitionType:
+          type === screenType.IMAGE_CHANGE
+            ? screenTransition.ON_TIME
+            : undefined,
         answers:
           type === screenType.GAME_OPTIONS
             ? [
@@ -61,6 +66,8 @@ export const addScreen = (row, idx, type, aloneScreen) => async (
         : type === screenType.IMAGE_CHANGE
         ? animationType.HOVER
         : undefined,
+      transitionType:
+        type === screenType.IMAGE_CHANGE ? screenTransition.ON_TIME : undefined,
       answers:
         type === screenType.GAME_OPTIONS
           ? [

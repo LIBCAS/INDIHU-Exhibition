@@ -8,7 +8,13 @@ import FontIcon from "react-md/lib/FontIcons";
 
 import { getFileById } from "../../actions/fileActions";
 import { toggleInteractive } from "../../actions/expoActions/viewerActions";
-import { giveMeExpoTime, hasValue, secondsToFormatedTime } from "../../utils";
+import {
+  giveMeExpoTime,
+  hasValue,
+  secondsToFormatedTime,
+  openInNewTab,
+  getDocumentIconName,
+} from "../../utils";
 import { animationType } from "../../enums/animationType";
 
 const ViewStart = ({
@@ -17,7 +23,7 @@ const ViewStart = ({
   collapsed,
   handleCollapse,
   history,
-  getFileById
+  getFileById,
 }) => {
   const audio = viewScreen.audio ? getFileById(viewScreen.audio) : null;
   const expoTime = giveMeExpoTime(viewExpo.structure.screens);
@@ -39,7 +45,7 @@ const ViewStart = ({
               animationType.FROM_LEFT_TO_RIGHT,
             slideLeft:
               get(viewScreen, "animationType") ===
-              animationType.FROM_RIGHT_TO_LEFT
+              animationType.FROM_RIGHT_TO_LEFT,
           })}
         />
       </div>
@@ -105,8 +111,8 @@ const ViewStart = ({
             <h2>Projít si výstavu</h2>
             <p>
               Délka cca{" "}
-              {hasValue(viewScreen.expoTime)
-                ? secondsToFormatedTime(viewScreen.expoTime)
+              {viewScreen.expoTime && hasValue(viewScreen.expoTime)
+                ? secondsToFormatedTime(viewScreen.expoTime, false)
                 : expoTime}
             </p>
           </div>
@@ -121,7 +127,9 @@ const ViewStart = ({
                 </div>
               ))}
               <div className="flex-row">
-                <div className={classNames({ "half-width": audio })}>
+                <div
+                  className={classNames("full-width", { "half-width": audio })}
+                >
                   <p>Dokumenty k výstavě:</p>
                   <div className="flex-col">
                     {map(viewScreen.documents, (d, i) => (
@@ -136,47 +144,19 @@ const ViewStart = ({
                         </a>
                         <div
                           className={classNames("document", {
-                            "document-link": d.fileId || d.url
+                            "document-link": d.fileId || d.url,
                           })}
                           onClick={() => {
                             if (d.name)
                               document
                                 .getElementById(`view-start-file-link-${i}`)
                                 .click();
-                            else if (d.url)
-                              window
-                                .open(
-                                  /^(http:\/\/|https:\/\/).*$/.test(d.url)
-                                    ? d.url
-                                    : `http://${d.url}`,
-                                  "_blank"
-                                )
-                                .focus();
+                            else if (d.url) openInNewTab(d.url);
                           }}
                         >
-                          {d.name ? (
-                            <FontIcon className="icon">
-                              {/^image.*$/.test(d.type)
-                                ? "image"
-                                : /^audio.*$/.test(d.type)
-                                ? "music_note"
-                                : /^video.*$/.test(d.type)
-                                ? "movie"
-                                : "insert_drive_file"}
-                            </FontIcon>
-                          ) : (
-                            <FontIcon className="icon">
-                              {/^image.*$/.test(d.urlType)
-                                ? "image"
-                                : /^audio.*$/.test(d.urlType)
-                                ? "music_note"
-                                : /^video.*$/.test(d.urlType)
-                                ? "movie"
-                                : /^WEB$/.test(d.urlType)
-                                ? "web"
-                                : "insert_drive_file"}
-                            </FontIcon>
-                          )}
+                          <FontIcon className="icon">
+                            {getDocumentIconName(d.name ? d.type : d.urlType)}
+                          </FontIcon>
                           <p style={{ margin: 0 }}>{d.fileName}</p>
                         </div>
                       </div>
@@ -221,7 +201,7 @@ export default compose(
   connect(
     ({ expo: { viewExpo, viewScreen } }) => ({
       viewExpo,
-      viewScreen
+      viewScreen,
     }),
     { getFileById, toggleInteractive }
   ),
@@ -236,6 +216,20 @@ export default compose(
       const { viewScreen, screenFiles } = this.props;
 
       if (screenFiles["image"]) {
+        if (
+          viewScreen.animationType === animationType.WITHOUT_AND_BLUR_BACKGROUND
+        ) {
+          const backgroundNode = screenFiles["image-reserved"];
+          backgroundNode.className = "view-start-image-background";
+          backgroundNode.setAttribute(
+            "style",
+            "position: static; min-width: 100%; min-height: 100%;"
+          );
+          document
+            .getElementById("view-start-image-container")
+            .appendChild(backgroundNode);
+        }
+
         const newNode = screenFiles["image"];
 
         if (get(viewScreen, "animationType") === animationType.FROM_TOP) {
@@ -252,6 +246,11 @@ export default compose(
           get(viewScreen, "animationType") === animationType.FROM_RIGHT_TO_LEFT
         ) {
           newNode.className = "image-fullscreen animation-slideLeft";
+        } else if (
+          get(viewScreen, "animationType") ===
+          animationType.WITHOUT_AND_BLUR_BACKGROUND
+        ) {
+          newNode.className = "image-fullscreen with-blur";
         } else {
           newNode.className = "image-fullscreen";
         }
@@ -260,6 +259,6 @@ export default compose(
           .getElementById("view-start-image-container")
           .appendChild(newNode);
       }
-    }
+    },
   })
 )(ViewStart);

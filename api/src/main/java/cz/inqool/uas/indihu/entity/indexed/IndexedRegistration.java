@@ -1,7 +1,6 @@
 package cz.inqool.uas.indihu.entity.indexed;
 
-import cz.inqool.uas.index.IndexedDomainObject;
-import cz.inqool.uas.indihu.entity.domain.User;
+import cz.inqool.uas.index.IndexedDatedObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -14,7 +13,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Document(indexName = "indihu", type = "registration" )
-public class IndexedRegistration extends IndexedDomainObject{
+public class IndexedRegistration extends IndexedDatedObject {
 
     @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
     private String userdId;

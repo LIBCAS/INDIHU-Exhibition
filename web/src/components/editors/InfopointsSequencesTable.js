@@ -4,7 +4,13 @@ import { map } from "lodash";
 import classNames from "classnames";
 import { reduxForm, Field, change } from "redux-form";
 import { compose, withHandlers } from "recompose";
-import { Button, FontIcon, SelectField, Checkbox } from "react-md";
+import {
+  Button,
+  FontIcon,
+  SelectField,
+  Checkbox,
+  TextField as TextFieldMD
+} from "react-md";
 
 import TextField from "../form/TextField";
 import * as Validation from "../form/Validation";
@@ -26,6 +32,7 @@ const InfopointsSequencesTable = ({
   onDelete,
   onAdd,
   onSelect,
+  onEditTime,
   onCheckbox,
   onRowClick,
   activePoint,
@@ -45,6 +52,7 @@ const InfopointsSequencesTable = ({
         )}
         <div className="table-col">Popis</div>
         {onSelect && <div className="table-col small">Přiblížení</div>}
+        {onEditTime && <div className="table-col small">Doba přiblížení</div>}
         {onCheckbox && <div className="table-col small">Stále zobrazen</div>}
         <div className="table-col very-small" />
       </div>
@@ -114,7 +122,31 @@ const InfopointsSequencesTable = ({
                 itemValue={"value"}
                 defaultValue={item.zoom}
                 onChange={value => onSelect(i, value)}
+                style={{ margin: 0 }}
               />
+            </div>
+          )}
+          {onEditTime && (
+            <div className="table-col small">
+              <div style={{ maxWidth: 100, width: "100%" }}>
+                <div className="flex-row-nowrap flex-centered">
+                  <TextFieldMD
+                    id="infopoints-sequence-table-textfield-time"
+                    value={item.time}
+                    onChange={value => onEditTime(i, value)}
+                    type="number"
+                  />
+                  <div className="margin-left-very-small">s</div>
+                </div>
+                {item.timeError && (
+                  <div
+                    className="invalid"
+                    style={{ maxWidth: "100%", whiteSpace: "normal" }}
+                  >
+                    1 až 1000000!
+                  </div>
+                )}
+              </div>
             </div>
           )}
           {onCheckbox && (

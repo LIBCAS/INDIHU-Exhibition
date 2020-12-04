@@ -53,6 +53,17 @@ const FilesManagerMenu = ({
             show: get(dialogData, "files.length", 0) > 1
           },
           {
+            label: "Editovat",
+            children: <FontIcon>palette</FontIcon>,
+            onClick: () => {
+              closeDialog();
+              dialogData.openImageEditor();
+            },
+            show:
+              dialogData.enableImageEditor &&
+              /^image\/.*$/.test(get(dialogData, "file.type", ""))
+          },
+          {
             label: "Stáhnout",
             children: <FontIcon>get_app</FontIcon>,
             onClick: () => {
@@ -75,9 +86,11 @@ const FilesManagerMenu = ({
             },
             show: true
           }
-        ].map(button => (
-          <Button flat className="exposition-menu-button" {...button} />
-        ))}
+        ]
+          .filter(({ show }) => show)
+          .map(button => (
+            <Button flat className="exposition-menu-button" {...button} />
+          ))}
       </div>
     )}
   </Dialog>

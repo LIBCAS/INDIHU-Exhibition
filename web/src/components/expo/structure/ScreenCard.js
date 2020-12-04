@@ -9,11 +9,7 @@ import ReactTooltip from "react-tooltip";
 
 import ScreenCardMenu from "./ScreenCardMenu";
 import ScreenCardActions from "./ScreenCardActions";
-import {
-  screenTypeText,
-  screenTypeIcon,
-  screenUrl
-} from "../../../enums/screenType";
+import { screenTypeText, screenTypeIcon, screenUrl } from "../../../enums/screenType";
 
 const ScreenCard = ({
   rows,
@@ -32,9 +28,7 @@ const ScreenCard = ({
 
   const cardType = data.type !== "START" && data.type !== "FINISH";
   const position = cardType ? `${rowNum}-${colNum}` : screenUrl[data.type];
-  const editUrl = `/expo/${activeExpo.id}/screen/${
-    screenUrl[data.type]
-  }/${position}/description`;
+  const editUrl = `/expo/${activeExpo.id}/screen/${screenUrl[data.type]}/${position}/description`;
 
   return activeExpo ? (
     <div className="card-background">
@@ -47,9 +41,7 @@ const ScreenCard = ({
         })}
       >
         <i
-          className={`structure-screen-card-icon fa ${
-            screenTypeIcon[data.type]
-          }`}
+          className={`structure-screen-card-icon fa ${screenTypeIcon[data.type]}`}
           data-tip={get(screenTypeText, data.type)}
           data-for="expo-structure-screen-new-tooltip"
         />
@@ -71,17 +63,12 @@ const ScreenCard = ({
           data-tip={get(screenTypeText, data.type)}
           data-for="expo-structure-screen-new-tooltip"
         >
-          <p>
+          <p style={{ wordWrap: "break-word" }}>
             {number}
             {header}
           </p>
         </CardText>
-        <ScreenCardActions
-          rows={rows}
-          cols={cols}
-          rowNum={rowNum}
-          colNum={colNum}
-        />
+        <ScreenCardActions rows={rows} cols={cols} rowNum={rowNum} colNum={colNum} />
       </Card>
       <ReactTooltip
         type="dark"

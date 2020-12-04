@@ -30,7 +30,10 @@ const ScreenNew = ({
   position,
   style
 }) => (
-  <div style={{ cursor: "auto", ...style }}>
+  <div
+    className="structure-screen-new-menu"
+    style={{ cursor: "auto", ...style }}
+  >
     <MenuButton
       id={large ? "large" : "icon"}
       buttonChildren={large ? <CardStyle /> : "add"}

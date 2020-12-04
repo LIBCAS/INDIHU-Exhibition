@@ -6,10 +6,7 @@ import CardText from "react-md/lib/Cards/CardText";
 import { screenTypeText, screenTypeIcon } from "../../../enums/screenType";
 
 const ScreenDraggedCard = ({ rowNum, colNum, data, onClickEnabled }) => {
-  const number =
-    rowNum === null || colNum === null
-      ? ""
-      : ` ${rowNum + 1}${colNum > 0 ? `.${colNum} ` : " "}`;
+  const number = rowNum === null || colNum === null ? "" : ` ${rowNum + 1}${colNum > 0 ? `.${colNum} ` : " "}`;
   const header = data ? `${data.title || screenTypeText[data.type]}` : "";
 
   return (
@@ -21,15 +18,9 @@ const ScreenDraggedCard = ({ rowNum, colNum, data, onClickEnabled }) => {
         animate: !onClickEnabled
       })}
     >
-      {data && (
-        <i
-          className={`structure-screen-card-icon fa ${
-            screenTypeIcon[data.type]
-          }`}
-        />
-      )}
+      {data && <i className={`structure-screen-card-icon fa ${screenTypeIcon[data.type]}`} />}
       <CardText className="card-screen">
-        <p>
+        <p style={{ wordWrap: "break-word" }}>
           {number}
           {header}
         </p>

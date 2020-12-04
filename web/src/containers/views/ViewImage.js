@@ -67,6 +67,10 @@ const ViewImage = ({ viewScreen, getFileById, imageBoundingClientRect }) => {
           }}
         >
           <div
+            id="view-image-image-container-inner-background"
+            className="image-screen-inner view-image-image-container-inner-background"
+          />
+          <div
             id="view-image-image-container-inner"
             className="image-screen-inner view-image-image-container-inner"
           />
@@ -165,7 +169,21 @@ export default compose(
       } = this.props;
 
       if (viewScreen.image) {
-        const newNode = screenFiles["image"];
+        let newNode = screenFiles["image"];
+
+        if (
+          viewScreen.animationType === animationType.WITHOUT_AND_BLUR_BACKGROUND
+        ) {
+          const backgroundNode = screenFiles["image-reserved"];
+          backgroundNode.id = "view-image-image-background";
+          backgroundNode.setAttribute(
+            "style",
+            "position: static; min-width: 100%; min-height: 100%;"
+          );
+          document
+            .getElementById("view-image-image-container-inner-background")
+            .appendChild(backgroundNode);
+        }
 
         newNode.id = "view-image-image";
         newNode.setAttribute(

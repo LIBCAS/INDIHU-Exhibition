@@ -1,6 +1,6 @@
 .screen {
-  padding-left: .5em;
-  padding-right: .5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   margin-bottom: 3.8em;
   padding-bottom: 1em;
 
@@ -24,6 +24,10 @@
 
   .small-margin {
     margin: 0px 5px;
+  }
+
+  .table-with-help {
+    width: calc(100% - 2em);
   }
 
   .start {
@@ -106,7 +110,11 @@
   }
 
   &.screen-with-select-on-bottom {
-    margin-bottom: 12em;
+    padding-bottom: 20em;
+
+    &-small {
+      padding-bottom: 15em;
+    }
   }
 
   .description-container {
@@ -114,6 +122,10 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
+
+    .part {
+      max-width: calc(100% - 2em);
+    }
   }
 
   @media (min-width: $breakpoint-desktop) {
@@ -281,6 +293,21 @@
 
   .select-field {
     margin-right: 5em;
+    max-width: 100%;
+
+    &.bigger {
+      min-width: 250px;
+    }
+
+    &.big {
+      min-width: 300px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      &.big {
+        min-width: 250px;
+      }
+    }
   }
 
   .table-infopoints {

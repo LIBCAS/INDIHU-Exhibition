@@ -1,48 +1,59 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose, lifecycle, withHandlers, withState } from "recompose";
+import {
+  compose,
+  lifecycle,
+  withHandlers,
+  withState,
+  withProps,
+} from "recompose";
 import classNames from "classnames";
 import { withRouter } from "react-router-dom";
 import { forEach, find } from "lodash";
 
 import GameMenu from "../../components/views/GameMenu";
 
-import { setTimeoutId } from "../../actions/appActions";
+const animationTime = 1;
 
 const ViewGameOptions = ({
   viewScreen,
   getNextUrlPart,
-  onAnswerChoose,
-  setAnswerSelected,
-  passButton,
-  setPassButton
+  onReset,
+  onDone,
+  done,
+  setDone,
+  resultTime,
 }) => (
   <div className="game">
     <div id="game-wrap" className="game-wrap">
       <div id="game-options" className="game-options">
         <div
           className={classNames("game-options-title", {
-            fill: !find(viewScreen.answers, ({ image }) => image)
+            fill: !find(viewScreen.answers, ({ image }) => image),
           })}
         >
           <p>{viewScreen.task}</p>
         </div>
         <div
           id="game-options-bottom"
-          className={classNames("game-options-bottom cursor-pointer", {
-            fill: !find(viewScreen.answers, ({ image }) => image)
+          className={classNames("game-options-bottom", {
+            fill: !find(viewScreen.answers, ({ image }) => image),
           })}
-          onClick={() => onAnswerChoose()}
         />
       </div>
     </div>
     <GameMenu
       {...{
-        passButton,
+        doneButton: !done,
+        passButton: !done,
+        resetButton: !done,
         task: viewScreen.task,
+        resultTime,
         getNextUrlPart,
+        onDone,
+        onReset,
         onClick: () => {
-          setAnswerSelected(true);
+          setDone(true);
 
           forEach(viewScreen.answers, (answer, i) => {
             if (!answer.correct) {
@@ -56,9 +67,7 @@ const ViewGameOptions = ({
 
           document.getElementById("game-options-bottom").className =
             "game-options-bottom";
-
-          setPassButton(false);
-        }
+        },
       }}
     />
   </div>
@@ -66,24 +75,74 @@ const ViewGameOptions = ({
 
 export default compose(
   withRouter,
-  connect(
-    ({ app: { timeout }, expo: { viewScreen } }) => ({
-      timeout,
-      viewScreen
-    }),
-    { setTimeoutId }
-  ),
-  withState("passButton", "setPassButton", true),
+  connect(({ expo: { viewScreen } }) => ({
+    viewScreen,
+  })),
+  withState("done", "setDone", false),
   withState("timeouts", "setTimeouts", []),
-  withState("answerSelected", "setAnswerSelected", false),
+  withProps(({ viewScreen }) => {
+    const { resultTime } = viewScreen;
+    return {
+      resultTime:
+        (resultTime && resultTime > 0 ? resultTime : 5) + animationTime,
+    };
+  }),
+  withHandlers({
+    onReset: ({ viewScreen }) => () => {
+      forEach(viewScreen.answers, (_, i) => {
+        document.getElementById(`game-options-answer${i}`).className =
+          "game-options-answer with-hover";
+      });
+    },
+    onAnswerChoose: ({ viewScreen, done }) => (selected) => {
+      if (!done) {
+        forEach(viewScreen.answers, (_, i) => {
+          if (selected === i) {
+            document.getElementById(`game-options-answer${i}`).className =
+              "game-options-answer with-hover selected";
+          } else {
+            document.getElementById(`game-options-answer${i}`).className =
+              "game-options-answer with-hover";
+          }
+        });
+      }
+    },
+    onDone: ({ viewScreen, timeouts, setTimeouts, done, setDone }) => () => {
+      if (!done) {
+        setDone(true);
+
+        forEach(viewScreen.answers, (answer, i) => {
+          if (!answer.correct) {
+            setTimeouts([
+              ...timeouts,
+              setTimeout(() => {
+                document.getElementById(`game-options-answer${i}`).className =
+                  "game-options-answer transparent";
+              }, animationTime * 1000),
+            ]);
+
+            document.getElementById(`game-options-answer${i}`).className =
+              "game-options-answer animation-fade-out";
+          } else {
+            document.getElementById(`game-options-answer${i}`).className =
+              "game-options-answer";
+          }
+        });
+
+        document.getElementById("game-options-bottom").className =
+          "game-options-bottom";
+      }
+    },
+  }),
   lifecycle({
     componentDidMount() {
-      const { viewScreen, screenFiles } = this.props;
+      const { viewScreen, screenFiles, onAnswerChoose } = this.props;
 
       forEach(viewScreen.answers, (answer, i) => {
         const divNode = document.createElement("div");
         divNode.id = `game-options-answer${i}`;
-        divNode.className = "game-options-answer with-mark";
+        divNode.className = "game-options-answer with-hover";
+        divNode.onclick = () => onAnswerChoose(i);
 
         const answerOption = document.createElement("p");
         answerOption.className = "answer-option";
@@ -103,11 +162,11 @@ export default compose(
         const textContainer = document.createElement("div");
         textContainer.id = `game-options-answer${i}-text`;
         textContainer.className = classNames("game-options-answer-text", {
-          fill: !answer.image
+          fill: !answer.image,
         });
         const p = document.createElement("p");
         p.className = "text";
-        forEach(answer.text.split("\n"), item => {
+        forEach(answer.text.split("\n"), (item) => {
           p.appendChild(document.createTextNode(item));
           p.appendChild(document.createElement("br"));
         });
@@ -118,59 +177,8 @@ export default compose(
       });
     },
     componentWillUnmount() {
-      const { timeout, setTimeoutId, timeouts } = this.props;
-      if (timeout) {
-        clearTimeout(timeout);
-        setTimeoutId(null);
-      }
-      forEach(timeouts, t => clearTimeout(t));
-    }
-  }),
-  withHandlers({
-    onAnswerChoose: ({
-      viewScreen,
-      getNextUrlPart,
-      history,
-      setTimeoutId,
-      timeouts,
-      setTimeouts,
-      answerSelected,
-      setAnswerSelected,
-      setPassButton
-    }) => () => {
-      if (!answerSelected) {
-        setAnswerSelected(true);
-        setPassButton(false);
-
-        const animationTime = 1250;
-
-        forEach(viewScreen.answers, (answer, i) => {
-          if (!answer.correct) {
-            setTimeouts([
-              ...timeouts,
-              setTimeout(() => {
-                document.getElementById(`game-options-answer${i}`).className =
-                  "game-options-answer transparent";
-              }, animationTime)
-            ]);
-
-            document.getElementById(`game-options-answer${i}`).className +=
-              "game-options-answer animation-fade-out";
-          } else {
-            document.getElementById(`game-options-answer${i}`).className =
-              "game-options-answer";
-          }
-        });
-
-        document.getElementById("game-options-bottom").className =
-          "game-options-bottom";
-
-        setTimeoutId(
-          setTimeout(async () => {
-            if (getNextUrlPart) history.push(getNextUrlPart());
-          }, 5000 + animationTime)
-        );
-      }
-    }
+      const { timeouts } = this.props;
+      forEach(timeouts, (t) => clearTimeout(t));
+    },
   })
 )(ViewGameOptions);

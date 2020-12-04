@@ -17,6 +17,10 @@ import { hasValue } from "../../../utils";
 
 const options = [
   { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
+  {
+    label: animationTypeText.WITHOUT_AND_BLUR_BACKGROUND,
+    value: animationType.WITHOUT_AND_BLUR_BACKGROUND
+  },
   { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
   { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
   {
@@ -74,7 +78,7 @@ const Image = ({
             <div className="flex-row-nowrap flex-centered">
               <SelectField
                 id="screen-image-selectfield-animation"
-                className="select-field"
+                className="select-field big"
                 label="Animace obrázku"
                 menuItems={options}
                 itemLabel={"label"}

@@ -129,7 +129,7 @@ export const signOut = () => async dispatch => {
 };
 
 export const getCurrentUser = isSilence => async dispatch => {
-  dispatch(showLoader(!isSilence));
+  !isSilence && dispatch(showLoader(true));
   try {
     const response = await fetch("/api/user/me");
 
@@ -145,7 +145,7 @@ export const getCurrentUser = isSilence => async dispatch => {
   } catch (error) {
     console.log(error);
   }
-  dispatch(showLoader(false));
+  !isSilence && dispatch(showLoader(false));
 };
 
 export const updateCurrentUser = user => async dispatch => {

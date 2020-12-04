@@ -1,23 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  compose,
-  lifecycle,
-  withState,
-  withHandlers,
-  withProps
-} from "recompose";
+import { compose, lifecycle, withState, withHandlers, withProps } from "recompose";
 import { withRouter } from "react-router-dom";
-import { get, map, filter, isEqual, isEmpty } from "lodash";
+import { get, map, filter, isEqual, isEmpty, isString } from "lodash";
 import { Button, FontIcon } from "react-md";
+import classNames from "classnames";
 
 import { setDialog } from "../../actions/dialogActions";
-import { turnSoundOff } from "../../actions/expoActions/viewerActions";
+import { turnSoundOff, prepareReturnToViewStart } from "../../actions/expoActions/viewerActions";
 import { screenType } from "../../enums/screenType";
 import Progress from "./Progress";
+import { openInNewTab } from "../../utils";
 
 const ViewWrap = ({
-  institution,
+  organization,
+  organizationLink,
   title,
   children,
   setDialog,
@@ -28,16 +25,25 @@ const ViewWrap = ({
   showVolumeIcon,
   progress,
   showProgress,
-  chapters
+  chapters,
+  prepareReturnToViewStart
 }) => (
   <div className="viewer">
     <div className="viewer-title">
-      <div className="viewer-title-institution">
-        <span>{institution}</span>
+      <div
+        className={classNames("viewer-title-organization", {
+          link: isString(organizationLink) && !isEmpty(organizationLink)
+        })}
+        onClick={() => openInNewTab(organizationLink)}
+      >
+        <span>{organization}</span>
       </div>
       <div
         className="viewer-title-name"
-        onClick={() => history.push(`/view/${get(viewExpo, "url")}/start`)}
+        onClick={() => {
+          prepareReturnToViewStart();
+          history.push(`/view/${get(viewExpo, "url")}/start`);
+        }}
       >
         <span>{title}</span>
       </div>
@@ -82,7 +88,7 @@ export default compose(
       soundIsTurnedOff,
       preloadedFiles
     }),
-    { setDialog, turnSoundOff }
+    { setDialog, turnSoundOff, prepareReturnToViewStart }
   ),
   withState("url", "setUrl", null),
   withState("viewScreenState", "setViewScreenState", null),
@@ -98,12 +104,7 @@ export default compose(
     )
   })),
   withHandlers({
-    showProgress: ({
-      viewInteractive,
-      viewScreen,
-      expoViewer,
-      preloadedFiles
-    }) => () =>
+    showProgress: ({ viewInteractive, viewScreen, expoViewer, preloadedFiles }) => () =>
       !viewInteractive &&
       viewScreen &&
       viewScreen.type !== screenType.START &&
@@ -114,9 +115,7 @@ export default compose(
       viewScreen.type !== screenType.GAME_OPTIONS &&
       viewScreen.type !== screenType.GAME_SIZING &&
       viewScreen.type !== screenType.GAME_WIPE &&
-      (expoViewer ||
-        viewScreen.type !== screenType.VIDEO ||
-        !isNaN(get(preloadedFiles, `video.duration`))),
+      (expoViewer || viewScreen.type !== screenType.VIDEO || !isNaN(get(preloadedFiles, `video.duration`))),
     showVolumeIcon: ({ viewScreen }) => () =>
       viewScreen &&
       viewScreen.type !== screenType.START &&
@@ -155,8 +154,7 @@ export default compose(
 
       if (
         viewScreen &&
-        ((((get(viewScreen, "id") &&
-          get(viewScreenState, "id") !== get(viewScreen, "id")) ||
+        ((((get(viewScreen, "id") && get(viewScreenState, "id") !== get(viewScreen, "id")) ||
           !isEqual(viewScreen, viewScreenState) ||
           !viewScreenState) &&
           url !== location.pathname) ||
@@ -182,16 +180,8 @@ export default compose(
                 ? expoViewer
                   ? !isNaN(section) &&
                     !isNaN(screen) &&
-                    !isNaN(
-                      get(
-                        preloadedFiles,
-                        `[${section}][${screen}].video.duration`
-                      )
-                    )
-                    ? get(
-                        preloadedFiles,
-                        `[${section}][${screen}].video.duration`
-                      )
+                    !isNaN(get(preloadedFiles, `[${section}][${screen}].video.duration`))
+                    ? get(preloadedFiles, `[${section}][${screen}].video.duration`)
                     : 20
                   : !isNaN(get(preloadedFiles, `video.duration`))
                   ? get(preloadedFiles, `video.duration`)

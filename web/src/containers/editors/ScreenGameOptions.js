@@ -10,21 +10,22 @@ import Footer from "../../components/editors/Footer";
 
 import { updateScreenData } from "../../actions/expoActions";
 
-const ScreenGameOptions = props => {
+const ScreenGameOptions = (props) => {
   const { match, activeScreen, history, url } = props;
   const { position } = match.params;
+  const resultTime = activeScreen.resultTime;
   return (
     <div>
       <TabMenu
         tabs={[
           {
             label: "Název, úkol",
-            link: `${match.url}/description`
+            link: `${match.url}/description`,
           },
           {
             label: "Odpovědi",
-            link: `${match.url}/answers`
-          }
+            link: `${match.url}/answers`,
+          },
         ]}
       />
       <Route
@@ -40,6 +41,12 @@ const ScreenGameOptions = props => {
         activeScreen={activeScreen}
         rowNum={position.match(/^(\d*)/)[0]}
         colNum={position.match(/(\d*)$/)[0]}
+        noActions={
+          resultTime === 0 ||
+          (resultTime && (resultTime < 1 || resultTime > 1000000))
+        }
+        noActionTitle="Špatně zadaná doba zobrazení výsledku"
+        noActionText="Před uložením opravte dobu zobrazení výsledku!"
         history={history}
         url={url}
       />
@@ -51,7 +58,7 @@ export default compose(
   connect(
     ({ expo: { activeScreen } }) => ({ activeScreen }),
     {
-      updateScreenData
+      updateScreenData,
     }
   ),
   withRouter

@@ -27,37 +27,37 @@ const ViewGameDraw = ({
   resetButton,
   setResetButton,
   passButton,
-  setPassButton
+  setPassButton,
 }) => {
   return (
     <div className="game">
       <div
         id="view-game-find-game-wrap"
         className={classNames("game-wrap", {
-          "cursor-none": !mouseClicked
+          "cursor-none": !mouseClicked,
         })}
-        onMouseDown={e => {
+        onMouseDown={(e) => {
           setPaint(true);
           addScrawl(e.pageX, e.pageY);
         }}
-        onMouseMove={e => {
+        onMouseMove={(e) => {
           if (!mouseClicked)
             mouseActualize({
               mouseDown: true,
               mouseXPos: e.pageX,
-              mouseYPos: e.pageY
+              mouseYPos: e.pageY,
             });
           if (paint) addScrawl(e.pageX, e.pageY, true);
         }}
         onMouseUp={() => setPaint(false)}
         onMouseEnter={() =>
           mouseActualize({
-            mouseDown: true
+            mouseDown: true,
           })
         }
         onMouseLeave={() => {
           mouseActualize({
-            mouseDown: false
+            mouseDown: false,
           });
           setPaint(false);
         }}
@@ -90,7 +90,7 @@ const ViewGameDraw = ({
                   mouseYPos -
                   document
                     .getElementById("view-game-find-game-wrap")
-                    .getBoundingClientRect().top
+                    .getBoundingClientRect().top,
               }}
             />
           )}
@@ -102,13 +102,14 @@ const ViewGameDraw = ({
           resetButton,
           passButton,
           task: viewScreen.task,
+          resultTime: viewScreen.resultTime,
           getNextUrlPart,
           onClick: () => {
             mouseActualize({
               mouseClicked: true,
               mouseDown: false,
               mouseXPos: null,
-              mouseYPos: null
+              mouseYPos: null,
             });
             if (document.getElementById("view-game-find-first-image")) {
               document.getElementById("view-game-find-first-image").outerHTML =
@@ -142,7 +143,7 @@ const ViewGameDraw = ({
           onReset: () => {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             setScrawl({ x: [], y: [], drag: [] });
-          }
+          },
         }}
       />
     </div>
@@ -153,18 +154,18 @@ export default compose(
   connect(
     ({
       app: {
-        mouseInfo: { mouseClicked, mouseDown, mouseXPos, mouseYPos }
+        mouseInfo: { mouseClicked, mouseDown, mouseXPos, mouseYPos },
       },
-      expo: { viewScreen }
+      expo: { viewScreen },
     }) => ({
       mouseClicked,
       mouseDown,
       mouseXPos,
       mouseYPos,
-      viewScreen
+      viewScreen,
     }),
     {
-      mouseActualize
+      mouseActualize,
     }
   ),
   withState("doneButton", "setDoneButton", true),
@@ -178,7 +179,7 @@ export default compose(
       const actScrawl = {
         x: [...scrawl.x, x],
         y: [...scrawl.y, y],
-        drag: [...scrawl.drag, !!dragging]
+        drag: [...scrawl.drag, !!dragging],
       };
 
       setScrawl(actScrawl);
@@ -200,7 +201,7 @@ export default compose(
         ctx.closePath();
         ctx.stroke();
       }
-    }
+    },
   }),
   lifecycle({
     componentDidMount() {
@@ -209,7 +210,7 @@ export default compose(
         mouseClicked: false,
         mouseDown: false,
         mouseXPos: null,
-        mouseYPos: null
+        mouseYPos: null,
       });
 
       if (viewScreen.image1) {
@@ -237,6 +238,6 @@ export default compose(
       ctx.canvas.height = window.innerHeight - 110;
       ctx.canvas.width = window.innerWidth;
       setCtx(ctx);
-    }
+    },
   })
 )(ViewGameDraw);

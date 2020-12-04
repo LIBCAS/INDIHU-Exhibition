@@ -86,6 +86,10 @@ const ViewPhotogallery = ({
             )}
           >
             <div
+              id="view-photogallery-image-container-inner-background"
+              className="image-screen-inner view-photogallery-image-container-inner-background"
+            />
+            <div
               id="view-photogallery-image-container-inner"
               className="image-screen-inner view-photogallery-image-container-inner"
             />
@@ -115,13 +119,14 @@ const ViewPhotogallery = ({
                           document.getElementById(
                             `view-photogallery-image-infopoint-tooltip-hidden-${i}`
                           )
-                            ? `calc(${imageData.top +
-                                infopoint.top / imageData.ratio -
-                                document
-                                  .getElementById(
-                                    `view-photogallery-image-infopoint-tooltip-hidden-${i}`
-                                  )
-                                  .getBoundingClientRect().height}px - 0.5em)`
+                            ? imageData.top +
+                              infopoint.top / imageData.ratio -
+                              document
+                                .getElementById(
+                                  `view-photogallery-image-infopoint-tooltip-hidden-${i}`
+                                )
+                                .getBoundingClientRect().height -
+                              36
                             : 0,
                         left:
                           container &&
@@ -205,6 +210,27 @@ export default compose(
         const timeouts = [];
         const animationTime = 1.3;
 
+        if (
+          viewScreen.animationType ===
+            animationType.WITHOUT_AND_BLUR_BACKGROUND ||
+          viewScreen.animationType ===
+            animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND ||
+          viewScreen.animationType ===
+            animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND
+        ) {
+          const backgroundNode = screenFiles["images[0]-reserved"];
+          backgroundNode.id = "view-photogallery-image-background";
+          backgroundNode.setAttribute(
+            "style",
+            "position: static; min-width: 100%; min-height: 100%;"
+          );
+          document
+            .getElementById(
+              "view-photogallery-image-container-inner-background"
+            )
+            .appendChild(backgroundNode);
+        }
+
         const newNode = screenFiles["images[0]"];
         newNode.id = "view-photogallery-image";
         newNode.setAttribute(
@@ -241,9 +267,13 @@ export default compose(
             timeouts.push(
               setTimeout(() => {
                 setAnimationTypeState(
-                  viewScreen.animationType === animationType.FADE_IN_OUT
+                  viewScreen.animationType === animationType.FADE_IN_OUT ||
+                    viewScreen.animationType ===
+                      animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND
                     ? animationType.FADE_OUT
-                    : viewScreen.animationType === animationType.FLY_IN_OUT
+                    : viewScreen.animationType === animationType.FLY_IN_OUT ||
+                      viewScreen.animationType ===
+                        animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND
                     ? animationType.FLY_OUT
                     : animationType.WITHOUT
                 );
@@ -252,14 +282,47 @@ export default compose(
 
             timeouts.push(
               setTimeout(() => {
+                if (
+                  viewScreen.animationType ===
+                    animationType.WITHOUT_AND_BLUR_BACKGROUND ||
+                  viewScreen.animationType ===
+                    animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND ||
+                  viewScreen.animationType ===
+                    animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND
+                ) {
+                  document.getElementById(
+                    "view-photogallery-image-background"
+                  ).outerHTML = "";
+                  delete document.getElementById(
+                    "view-photogallery-image-background"
+                  );
+
+                  const backgroundNode =
+                    screenFiles[`images[${i + 1}]-reserved`];
+                  backgroundNode.id = "view-photogallery-image-background";
+                  backgroundNode.setAttribute(
+                    "style",
+                    "position: static; min-width: 100%; min-height: 100%;"
+                  );
+                  document
+                    .getElementById(
+                      "view-photogallery-image-container-inner-background"
+                    )
+                    .appendChild(backgroundNode);
+                }
+
                 document.getElementById("view-photogallery-image").outerHTML =
                   "";
                 delete document.getElementById("view-photogallery-image");
                 setActiveImageIndex(i + 1);
                 setAnimationTypeState(
-                  viewScreen.animationType === animationType.FADE_IN_OUT
+                  viewScreen.animationType === animationType.FADE_IN_OUT ||
+                    viewScreen.animationType ===
+                      animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND
                     ? animationType.FADE_IN
-                    : viewScreen.animationType === animationType.FLY_IN_OUT
+                    : viewScreen.animationType === animationType.FLY_IN_OUT ||
+                      viewScreen.animationType ===
+                        animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND
                     ? animationType.FLY_IN
                     : animationType.WITHOUT
                 );

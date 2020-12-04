@@ -11,21 +11,21 @@ import CharacterCount from "../CharacterCount";
 
 import { helpIconText } from "../../../enums/text";
 import { animationTypeViewStartEnum } from "../../../enums/animationType";
+import { giveMeExpoTime } from "../../../utils";
 
-const Description = ({
-  activeScreen,
-  updateScreenData,
-  setDialog,
-  getFileById,
-  error,
-  setError
-}) => {
+const Description = ({ activeExpo, activeScreen, updateScreenData, setDialog, getFileById, error, setError }) => {
   const image = getFileById(activeScreen.image);
   const audio = getFileById(activeScreen.audio);
 
   const setImage = image => {
     updateScreenData({ image: image.id });
   };
+
+  const expoTime = giveMeExpoTime(activeExpo.structure.screens);
+
+  const expoTimeNumber = Number(activeScreen.expoTime);
+
+  const expoTimeValue = isNaN(expoTimeNumber) ? 0 : Math.round(expoTimeNumber / 60);
 
   return (
     <div className="container container-tabMenu">
@@ -106,9 +106,7 @@ const Description = ({
                     className="icon"
                     onClick={() =>
                       setDialog("ConfirmDialog", {
-                        title: (
-                          <FontIcon className="color-black">delete</FontIcon>
-                        ),
+                        title: <FontIcon className="color-black">delete</FontIcon>,
                         text: "Opravdu chcete odstranit obrázek?",
                         onSubmit: () => updateScreenData({ image: null })
                       })
@@ -139,7 +137,7 @@ const Description = ({
             <div className="flex-row-nowrap flex-space-between flex-center">
               <SelectField
                 id="screen-start-selectfield-animation"
-                className="select-field"
+                className="select-field big"
                 label="Animace obrázku"
                 menuItems={animationTypeViewStartEnum}
                 itemLabel={"label"}
@@ -147,7 +145,6 @@ const Description = ({
                 position={"below"}
                 defaultValue={activeScreen.animationType}
                 onChange={value => updateScreenData({ animationType: value })}
-                style={{ minWidth: 200 }}
               />
               <HelpIcon
                 {...{
@@ -172,19 +169,22 @@ const Description = ({
                   <TextField
                     id="screen-start-textfield-expoTime"
                     label="Délka trvání výstavy"
-                    defaultValue={activeScreen.expoTime}
+                    defaultValue={expoTimeValue}
                     onChange={value => {
-                      if (isNaN(Number(value)) || Number(value) > 1000000000) {
-                        setError("Zadejte číslo v rozsahu 0 až 1000000000.");
+                      const numberValue = Number(value);
+                      const nan = isNaN(numberValue);
+
+                      if (nan || numberValue > 1000000) {
+                        setError("Zadejte číslo v rozsahu 0 až 1000000.");
                       } else {
                         setError(null);
                       }
 
-                      updateScreenData({ expoTime: Math.abs(value) });
+                      updateScreenData({ expoTime: !nan ? Math.abs(numberValue * 60) : value });
                     }}
                     type="number"
                   />
-                  <span className="form-input-suffix">vteřin</span>
+                  <span className="form-input-suffix">min</span>
                 </div>
                 <HelpIcon
                   {...{
@@ -198,6 +198,9 @@ const Description = ({
                   <span className="invalid">{error}</span>
                 </div>
               )}
+              <div className="margin-bottom-small">
+                Odhadovaný čas bez her: <b>{expoTime}</b>
+              </div>
             </div>
             <div className="flex-row-nowrap">
               <TextField
@@ -210,6 +213,20 @@ const Description = ({
                 {...{
                   label: helpIconText.EDITOR_START_DESCRIPTION_ORGANIZATION,
                   id: "editor-start-description-organization"
+                }}
+              />
+            </div>
+            <div className="flex-row-nowrap">
+              <TextField
+                id="screen-start-textfield-organization-link"
+                label="Odkaz na webové stránky organizace"
+                defaultValue={activeScreen.organizationLink}
+                onChange={value => updateScreenData({ organizationLink: value })}
+              />
+              <HelpIcon
+                {...{
+                  label: helpIconText.EDITOR_START_DESCRIPTION_ORGANIZATION_LINK,
+                  id: "editor-start-description-organization-link"
                 }}
               />
             </div>

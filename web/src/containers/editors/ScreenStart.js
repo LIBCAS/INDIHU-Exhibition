@@ -27,7 +27,7 @@ const Screenstart = props => {
             link: `${match.url}/authors`
           },
           {
-            label: "Dokumenty/Bibliografie",
+            label: "Dokumenty/Soubory k výstavě",
             link: `${match.url}/documents`
           }
         ]}
@@ -52,7 +52,7 @@ const Screenstart = props => {
         type="start"
         noActions={
           isNaN(Number(activeScreen.expoTime)) ||
-          Number(activeScreen.expoTime) > 1000000000
+          Number(activeScreen.expoTime) > 1000000 * 60
         }
         noActionTitle="Zadána neplatná hodnota"
         noActionText="U pole s délkou trvání výstavy byla zadána neplatná hodnota."

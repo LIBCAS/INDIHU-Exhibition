@@ -6,7 +6,7 @@ const Captcha = ({ meta: { touched, error }, changeCaptcha }) => (
   <div>
     <ReCAPTCHA
       className="g-recaptcha"
-      sitekey="6LfqvDQUAAAAACR8LVHfmAjw5TWRE-yth4ZM4No-"
+      sitekey="6Lf-G7cUAAAAANWwqBEgZD3VEX6MsR8yrWXihaGr"
       onChange={changeCaptcha}
     />
     {touched && error && <span className="invalid">{error}</span>}

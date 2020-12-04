@@ -6,7 +6,8 @@ import {
   isEmpty,
   filter as lodashFilter,
   forEach,
-  isArray
+  isArray,
+  isString,
 } from "lodash";
 
 export * from "./routing";
@@ -15,12 +16,22 @@ export * from "./routing";
  * Find if user have ROLE_ADMIN
  * @param {array} roles
  */
-export const isAdmin = roles => indexOf(roles, "ROLE_ADMIN") >= 0;
+export const isAdmin = (roles) => indexOf(roles, "ROLE_ADMIN") >= 0;
+
+export const openInNewTab = (url) =>
+  isString(url) &&
+  !isEmpty(url) &&
+  window
+    .open(
+      /^(http:\/\/|https:\/\/).*$/.test(url) ? url : `http://${url}`,
+      "_blank"
+    )
+    .focus();
 
 /**
  * Open viewer
  */
-export const openViewer = url => {
+export const openViewer = (url) => {
   const a = document.createElement("a");
   a.href = `${window.location.origin}${url}`;
   a.target = "_blank";
@@ -33,19 +44,25 @@ export const openViewer = url => {
 /**
  * Format timestamp into human eye friendly format
  */
-export const formatDate = date => format(date, "DD.MM.YYYY");
-export const formatTime = time => format(time, "DD.MM.YYYY HH:mm:ss");
+export const formatDate = (date) => format(date, "DD.MM.YYYY");
+export const formatTime = (time) => format(time, "DD.MM.YYYY HH:mm:ss");
 
-export const secondsToTime = seconds => {
+export const secondsToTime = (seconds) => {
   return {
     h: Math.floor(seconds / 3600),
     m: Math.floor((seconds % 3600) / 60),
-    s: Math.floor((seconds % 3600) % 60)
+    s: Math.floor((seconds % 3600) % 60),
   };
 };
 
-export const secondsToFormatedTime = seconds => {
+export const secondsToFormatedTime = (seconds, includeSeconds = true) => {
   const time = secondsToTime(seconds);
+
+  if (!includeSeconds) {
+    time.m = time.m + ((time.m === 0 && time.s > 0) || time.s >= 30 ? 1 : 0);
+    time.s = 0;
+  }
+
   return time.h > 0 || time.m > 0 || time.s > 0
     ? (time.h > 0 ? `${time.h} hod` : "") +
         (time.h > 0 && (time.m > 0 || time.s > 0) ? " " : "") +
@@ -58,18 +75,16 @@ export const secondsToFormatedTime = seconds => {
 /**
  * Count time of expo screens
  */
-export const giveMeExpoTime = screens => {
+export const giveMeExpoTime = (screens) => {
   let time = 0;
-  map(screens, chapter =>
-    map(chapter, screen =>
-      screen.timeAuto && !isNaN(Number(get(screen, "audio.duration")))
-        ? (time += Number(get(screen, "audio.duration")))
-        : !isNaN(Number(get(screen, "time"))) && Number(screen.time) > 0
+  map(screens, (chapter) =>
+    map(chapter, (screen) =>
+      !isNaN(Number(get(screen, "time"))) && Number(screen.time) > 0
         ? (time += Number(screen.time))
         : (time += 20)
     )
   );
-  return secondsToFormatedTime(time);
+  return secondsToFormatedTime(time, false);
 };
 
 /**
@@ -104,7 +119,7 @@ export const motionVolume = (musicPtr, from, to, propStep, propLoop) => {
 /**
  * Checks if variable has value (not undefined, not null, not empty string)
  */
-export const hasValue = value =>
+export const hasValue = (value) =>
   value !== undefined && value !== null && value !== "";
 
 /**
@@ -155,10 +170,10 @@ export const objectsEqual = (object1, object2) => {
   return true;
 };
 
-export const createFilter = filterItemsUncleared => {
+export const createFilter = (filterItemsUncleared) => {
   const filterItems = lodashFilter(
     filterItemsUncleared,
-    param =>
+    (param) =>
       hasValue(param.field) &&
       hasValue(param.operation) &&
       hasValue(param.value)
@@ -173,17 +188,17 @@ export const createFilter = filterItemsUncleared => {
       ...filterArray,
       { field: `filter[${i}].field`, value: field },
       { field: `filter[${i}].operation`, value: operation },
-      { field: `filter[${i}].value`, value }
+      { field: `filter[${i}].value`, value },
     ];
   });
 
   return filterArray;
 };
 
-export const createQuery = queryParams => {
+export const createQuery = (queryParams) => {
   const params = lodashFilter(
     queryParams,
-    param => hasValue(param.field) && hasValue(param.value)
+    (param) => hasValue(param.field) && hasValue(param.value)
   );
 
   if (!isEmpty(params)) {
@@ -215,12 +230,29 @@ export const asyncForEach = async (array, callback) => {
   return true;
 };
 
-export const isIE = () => /MSIE|Trident/.test(window.navigator.userAgent);
+export const isProduction = () => process.env.REACT_APP_PROD_VERSION === "true";
+
+export const testRegex = (regex, value) => value && regex.test(value);
+
+export const testDevice = (regex) =>
+  testRegex(regex, window.navigator.userAgent) ||
+  testRegex(regex, window.navigator.platform);
+
+export const isIE = () => testDevice(/MSIE|Trident/);
+
+export const isMobileDevice = () => isAndroid() || isIOS() || isOtherMobile();
+
+export const isAndroid = () => testDevice(/Android/);
+
+export const isIOS = () => testDevice(/iPhone|iPad|iPod/);
+
+export const isOtherMobile = () =>
+  testDevice(/webOS|BlackBerry|Opera Mini|Mobi/);
 
 /**
  * Downloads file from URL
  */
-export const downloadFileFromUrl = url => {
+export const downloadFileFromUrl = (url) => {
   const link = document.createElement("a");
   link.href = url;
   link.download = "";
@@ -228,3 +260,25 @@ export const downloadFileFromUrl = url => {
   link.click();
   document.body.removeChild(link);
 };
+
+export const blobToFile = (blob, fileName) => {
+  const date = new Date();
+  return new File([blob], fileName, {
+    type: blob.type,
+    lastModified: date.getTime(),
+    lastModifiedDate: date,
+  });
+};
+
+export const getDocumentIconName = (type) =>
+  type
+    ? /^image.*$/.test(type)
+      ? "image"
+      : /^audio.*$/.test(type)
+      ? "music_note"
+      : /^video.*$/.test(type)
+      ? "movie"
+      : type === "WEB"
+      ? "language"
+      : "insert_drive_file"
+    : "notes";

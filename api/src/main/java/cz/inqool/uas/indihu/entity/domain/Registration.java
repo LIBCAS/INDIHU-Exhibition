@@ -1,12 +1,11 @@
 package cz.inqool.uas.indihu.entity.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import cz.inqool.uas.domain.DomainObject;
+import cz.inqool.uas.domain.DatedObject;
 import cz.inqool.uas.indihu.entity.serializer.SimpleUserSerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -21,7 +20,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "in_registration")
 @NoArgsConstructor
-public class Registration extends DomainObject {
+public class Registration extends DatedObject {
 
     /**
      * user that is in registration state

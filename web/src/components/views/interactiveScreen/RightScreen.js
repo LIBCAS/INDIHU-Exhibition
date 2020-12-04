@@ -19,7 +19,6 @@ const RightScreen = ({
   interactiveScroll,
   animationActive,
   parallaxState,
-  actScale,
   scrolling,
   setScrolling,
   interactiveScrollRouting,
@@ -63,7 +62,6 @@ const RightScreen = ({
           {...{
             viewScreen,
             animationActive,
-            actScale,
             scrolling,
             setScrolling,
             interactiveScrollRouting,

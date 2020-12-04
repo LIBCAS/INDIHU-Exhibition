@@ -61,10 +61,10 @@ public class CollaboratorService {
         expositionRepository.index(exposition);
         User found = userRepository.findByEmail(userEmail);
         if (collaboratorCreateState.equals(CollaboratorCreateState.CREATED)) {
-            indihuNotificationService.notifyAddedToCollaborate(found, helperService.getCurrent(), exposition);
+            indihuNotificationService.notifyAddedToCollaborate(found.getEmail(), helperService.getCurrent(), exposition);
         }
         if (collaboratorCreateState.equals(CollaboratorCreateState.EMAIL_SENT)) {
-            indihuNotificationService.notifyAddedToCollaborateNotInSystem(userEmail, helperService.getCurrent(), exposition);
+            indihuNotificationService.notifyAddedToCollaborate(userEmail, helperService.getCurrent(), exposition);
         }
         return collaboratorCreateState;
     }

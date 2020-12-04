@@ -27,7 +27,7 @@ const Files = ({ setSort, setOrder, containerID, ...props }) => (
     />
     <div className="files-row">
       <div className="files-wrap--manager">
-        <FileManager {...props} id={containerID} />
+        <FileManager {...props} id={containerID} enableImageEditor={true} />
       </div>
       <div className="files-col">
         <div className="files-wrap--view">

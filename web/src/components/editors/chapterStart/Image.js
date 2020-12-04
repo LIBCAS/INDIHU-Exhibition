@@ -22,6 +22,10 @@ const options = [
     label: animationTypeText.WITHOUT_NO_CROP,
     value: animationType.WITHOUT_NO_CROP
   },
+  {
+    label: animationTypeText.WITHOUT_AND_BLUR_BACKGROUND,
+    value: animationType.WITHOUT_AND_BLUR_BACKGROUND
+  },
   { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
   { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
   {
@@ -69,8 +73,7 @@ const Image = ({ activeScreen, setDialog, getFileById, updateScreenData }) => {
           <div className="flex-row-nowrap flex-centered">
             <SelectField
               id="chapter-start-selectfield-animation"
-              className="select-field"
-              style={{ minWidth: 260 }}
+              className="select-field big"
               label="Animace obrázku"
               menuItems={options}
               itemLabel={"label"}

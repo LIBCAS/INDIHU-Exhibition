@@ -18,8 +18,20 @@ import { hasValue } from "../../../utils";
 
 const options = [
   { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
+  {
+    label: animationTypeText.WITHOUT_AND_BLUR_BACKGROUND,
+    value: animationType.WITHOUT_AND_BLUR_BACKGROUND
+  },
   { label: animationTypeText.FADE_IN_OUT, value: animationType.FADE_IN_OUT },
-  { label: animationTypeText.FLY_IN_OUT, value: animationType.FLY_IN_OUT }
+  {
+    label: animationTypeText.FADE_IN_OUT_AND_BLUR_BACKGROUND,
+    value: animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND
+  },
+  { label: animationTypeText.FLY_IN_OUT, value: animationType.FLY_IN_OUT },
+  {
+    label: animationTypeText.FLY_IN_OUT_AND_BLUR_BACKGROUND,
+    value: animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND
+  }
 ];
 
 const Photogallery = ({
@@ -166,7 +178,7 @@ const Photogallery = ({
                 <div className="flex-row-nowrap flex-centered">
                   <SelectField
                     id="screen-photogallery-selectfield-animation"
-                    className="select-field"
+                    className="select-field big"
                     label="Přechody obrázků"
                     menuItems={options}
                     itemLabel={"label"}

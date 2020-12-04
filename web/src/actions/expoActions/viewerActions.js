@@ -6,14 +6,18 @@ import {
   EXPO_VIEWER,
   EXPO_VIEWER_FILE_LOADED,
   EXPO_VIEWER_FILES_TOTAL,
+  EXPO_VIEWER_AUDIO_FILE_LOADED,
+  EXPO_VIEWER_AUDIO_FILES_TOTAL,
   EXPO_VIEWER_VIDEO_FILE_LOADED,
   EXPO_VIEWER_VIDEO_FILES_TOTAL,
-  EXPO_VIEWER_FILE_ERROR_ADD
+  EXPO_VIEWER_FILE_ERROR_ADD,
+  EXPO_VIEWER_FILE_ERROR_TIMEOUT_ADD
 } from "./../constants";
 import { getFileById } from "../fileActions";
 import { showLoader } from "../appActions";
 import { setDialog, closeDialog } from "../dialogActions";
-import { screenUrl } from "../../enums/screenType";
+import { screenUrl, screenType } from "../../enums/screenType";
+import { animationType } from "../../enums/animationType";
 
 export const toggleInteractive = viewInteractive => ({
   type: EXPO_VIEWER,
@@ -115,6 +119,16 @@ export const expoViewerFilesTotalUpdate = () => ({
   payload: {}
 });
 
+export const expoViewerAudioFileLoaded = () => ({
+  type: EXPO_VIEWER_AUDIO_FILE_LOADED,
+  payload: {}
+});
+
+export const expoViewerAudioFilesTotalUpdate = () => ({
+  type: EXPO_VIEWER_AUDIO_FILES_TOTAL,
+  payload: {}
+});
+
 export const expoViewerVideoFileLoaded = () => ({
   type: EXPO_VIEWER_VIDEO_FILE_LOADED,
   payload: {}
@@ -130,34 +144,77 @@ export const addNameToErrorFiles = name => ({
   payload: { name }
 });
 
+export const addNameToErrorTimeoutFiles = name => ({
+  type: EXPO_VIEWER_FILE_ERROR_TIMEOUT_ADD,
+  payload: { name }
+});
+
 const openFilesErrorDialog = () => (dispatch, getState) => {
+  const errorFiles = getState().expo.errorFiles;
+  const errorTimeoutFiles = getState().expo.errorTimeoutFiles;
   dispatch(closeDialog());
   dispatch(
     setDialog("Info", {
       title: "Chyba",
-      text: (
-        <span>
-          Došlo k chybě při načítání souborů:
-          <br />
-          {map(getState().expo.errorFiles, (file, key) => (
-            <span key={key}>
-              <br />
-              {Number(key) + 1}. <strong>{file}</strong>
-            </span>
-          ))}
-          <br />
-          <br />
-          Seznam podporovaných formátů je k dispozici v manuálu.
-        </span>
+      content: (
+        <div>
+          {!isEmpty(errorFiles) ? (
+            <div>
+              <div style={{ marginBottom: "1em" }}>
+                Došlo k chybě při načítání souborů:
+              </div>
+              {map(errorFiles, (file, key) => (
+                <div key={key}>
+                  {Number(key) + 1}. <strong>{file}</strong>
+                </div>
+              ))}
+              <div style={{ marginTop: "1em" }}>
+                Seznam podporovaných formátů je k dispozici v manuálu.
+              </div>
+            </div>
+          ) : (
+            <div />
+          )}
+          {!isEmpty(errorTimeoutFiles) ? (
+            <div style={{ marginTop: !isEmpty(errorFiles) ? "2em" : 0 }}>
+              <div style={{ marginBottom: "1em" }}>
+                Došlo k vypršení časového limitu pro načtení souborů:
+              </div>
+              {map(errorTimeoutFiles, (file, key) => (
+                <div key={key}>
+                  {Number(key) + 1}. <strong>{file}</strong>
+                </div>
+              ))}
+              <div style={{ marginTop: "1em" }}>
+                Je možné, že tyto soubory ve výstavě nebudou fungovat správně.
+                Důvodem je možná chybějící podpora pro formáty těchto souborů ve
+                Vašem zařízení nebo nedostatečná rychlost internetového
+                připojení.
+              </div>
+            </div>
+          ) : (
+            <div />
+          )}
+        </div>
       )
     })
   );
 };
 
+const AUDIO_VIDEO_TIMEOUT_SHORT = 3 * 60 * 1000;
+const AUDIO_VIDEO_TIMEOUT = 15 * 60 * 1000;
+
 /**
  * Create object with file instance
  */
-const returnMeObject = (data, fileType, attribute, dispatch, getState) => {
+const returnMeObject = (
+  data,
+  fileType,
+  attribute,
+  screen,
+  dispatch,
+  getState
+) => {
   if (data) {
     const obj = {};
     if (fileObjects[fileType] === fileObjects.audio) {
@@ -165,15 +222,53 @@ const returnMeObject = (data, fileType, attribute, dispatch, getState) => {
       audio.src = `/api/files/${data.fileId}`;
 
       if (dispatch) {
-        audio.onloadeddata = () => {
-          dispatch(expoViewerFileLoaded());
+        let checkLoadId;
+        const currentTime = new Date().getTime();
+        const checkLoad = () => {
+          if (audio.readyState === 4) {
+            checkLoadId = null;
+            dispatch(expoViewerFileLoaded());
+            dispatch(expoViewerAudioFileLoaded());
+            return;
+          }
+
+          const viewExpo = getState().expo.viewExpo;
+
+          if (
+            new Date().getTime() > currentTime + AUDIO_VIDEO_TIMEOUT_SHORT &&
+            viewExpo &&
+            ((!viewExpo.audioFilesLoaded &&
+              viewExpo.filesTotal - viewExpo.filesLoaded <=
+                viewExpo.audioFilesTotal) ||
+              viewExpo.filesTotal - viewExpo.filesLoaded <=
+                viewExpo.audioFilesTotal - viewExpo.audioFilesLoaded) &&
+            (!data.type || !data.type.match(/^audio\/mpeg$/))
+          ) {
+            checkLoadId = null;
+            dispatch(expoViewerFileLoaded());
+            dispatch(expoViewerAudioFileLoaded());
+            dispatch(addNameToErrorFiles(data.name));
+            dispatch(openFilesErrorDialog());
+          } else if (new Date().getTime() > currentTime + AUDIO_VIDEO_TIMEOUT) {
+            dispatch(expoViewerFileLoaded());
+            dispatch(expoViewerAudioFileLoaded());
+            dispatch(addNameToErrorTimeoutFiles(data.name));
+            dispatch(openFilesErrorDialog());
+          } else {
+            checkLoadId = setTimeout(checkLoad, 500);
+          }
         };
-        audio.onerror = () => {
+
+        checkLoadId = setTimeout(checkLoad, 500);
+        audio.addEventListener("error", () => {
+          clearTimeout(checkLoadId);
           dispatch(expoViewerFileLoaded());
+          dispatch(expoViewerAudioFileLoaded());
           dispatch(addNameToErrorFiles(data.name));
           dispatch(openFilesErrorDialog());
-        };
+        });
         dispatch(expoViewerFilesTotalUpdate());
+        dispatch(expoViewerAudioFilesTotalUpdate());
       }
 
       obj[attribute] = audio;
@@ -195,6 +290,37 @@ const returnMeObject = (data, fileType, attribute, dispatch, getState) => {
       }
 
       obj[attribute] = image;
+
+      if (
+        (get(screen, "animationType") ===
+          animationType.WITHOUT_AND_BLUR_BACKGROUND ||
+          get(screen, "animationType") ===
+            animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND ||
+          get(screen, "animationType") ===
+            animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND) &&
+        (get(screen, "type") === screenType.IMAGE ||
+          get(screen, "type") === screenType.PHOTOGALERY ||
+          get(screen, "type") === screenType.INTRO ||
+          get(screen, "type") === screenType.START)
+      ) {
+        const image = new Image();
+        image.src = `/api/files/${data.fileId}`;
+        image.alt = "";
+
+        if (dispatch) {
+          image.onload = () => {
+            dispatch(expoViewerFileLoaded());
+          };
+          image.onerror = () => {
+            dispatch(expoViewerFileLoaded());
+            dispatch(addNameToErrorFiles(data.name));
+            dispatch(openFilesErrorDialog());
+          };
+          dispatch(expoViewerFilesTotalUpdate());
+        }
+
+        obj[`${attribute}-reserved`] = image;
+      }
     } else if (fileObjects[fileType] === fileObjects.video) {
       const video = document.createElement("video");
 
@@ -206,6 +332,7 @@ const returnMeObject = (data, fileType, attribute, dispatch, getState) => {
 
       if (dispatch) {
         let checkLoadId;
+        const currentTime = new Date().getTime();
         const checkLoad = () => {
           if (video.readyState === 4) {
             checkLoadId = null;
@@ -217,6 +344,7 @@ const returnMeObject = (data, fileType, attribute, dispatch, getState) => {
           const viewExpo = getState().expo.viewExpo;
 
           if (
+            new Date().getTime() > currentTime + AUDIO_VIDEO_TIMEOUT_SHORT &&
             viewExpo &&
             ((!viewExpo.videoFilesLoaded &&
               viewExpo.filesTotal - viewExpo.filesLoaded <=
@@ -229,6 +357,11 @@ const returnMeObject = (data, fileType, attribute, dispatch, getState) => {
             dispatch(expoViewerFileLoaded());
             dispatch(expoViewerVideoFileLoaded());
             dispatch(addNameToErrorFiles(data.name));
+            dispatch(openFilesErrorDialog());
+          } else if (new Date().getTime() > currentTime + AUDIO_VIDEO_TIMEOUT) {
+            dispatch(expoViewerFileLoaded());
+            dispatch(expoViewerVideoFileLoaded());
+            dispatch(addNameToErrorTimeoutFiles(data.name));
             dispatch(openFilesErrorDialog());
           } else {
             checkLoadId = setTimeout(checkLoad, 500);
@@ -277,6 +410,7 @@ export const filePreloader = () => async (dispatch, getState) => {
             dispatch(getFileById(get(structure, `${screenUrl.START}.image`))),
             "image",
             "image",
+            get(structure, `${screenUrl.START}`),
             dispatch,
             getState
           )
@@ -288,6 +422,7 @@ export const filePreloader = () => async (dispatch, getState) => {
             dispatch(getFileById(get(structure, `${screenUrl.START}.image`))),
             "image",
             "image",
+            get(structure, `${screenUrl.FINISH}`),
             dispatch,
             getState
           )
@@ -310,6 +445,7 @@ export const filePreloader = () => async (dispatch, getState) => {
                   dispatch(getFileById(file)),
                   fileType,
                   `${fileType}[${i}]`,
+                  screen,
                   dispatch,
                   getState
                 )
@@ -322,6 +458,7 @@ export const filePreloader = () => async (dispatch, getState) => {
                 dispatch(getFileById(adept)),
                 fileType,
                 fileType,
+                screen,
                 dispatch,
                 getState
               )
@@ -359,7 +496,9 @@ export const screenFilePreloader = (activeScreen, section, screen) => async (
             dispatch(getFileById(structure.screens[section][0].music)),
             "music",
             "music",
-            dispatch
+            activeScreen,
+            dispatch,
+            getState
           )
         }
       : {};
@@ -375,6 +514,7 @@ export const screenFilePreloader = (activeScreen, section, screen) => async (
             dispatch(getFileById(file)),
             fileType,
             `${fileType}[${i}]`,
+            activeScreen,
             dispatch,
             getState
           )
@@ -387,6 +527,7 @@ export const screenFilePreloader = (activeScreen, section, screen) => async (
           dispatch(getFileById(adept)),
           fileType,
           fileType,
+          activeScreen,
           dispatch,
           getState
         )
@@ -419,8 +560,33 @@ export const turnSoundOff = soundIsTurnedOff => (dispatch, getState) => {
     viewScreenAudio.volume = soundIsTurnedOff ? 0 : 1;
   }
 
+  const videoElement = document.getElementById("view-video-video");
+
+  if (videoElement) {
+    videoElement.muted = soundIsTurnedOff;
+  }
+
   dispatch({
     type: EXPO_VIEWER,
     payload: { soundIsTurnedOff }
   });
+};
+
+export const prepareReturnToViewStart = () => (dispatch, getState) => {
+  const viewChapterMusic = getState().expo.viewChapterMusic;
+  const viewScreenAudio = getState().expo.viewScreenAudio;
+
+  if (viewChapterMusic) {
+    viewChapterMusic.pause();
+    viewChapterMusic.currentTime = 0;
+    dispatch(setChapterMusic(null));
+  }
+
+  if (viewScreenAudio) {
+    viewScreenAudio.pause();
+    viewScreenAudio.currentTime = 0;
+    dispatch(setScreenAudio(null));
+  }
+
+  dispatch(setLastChapter(null));
 };

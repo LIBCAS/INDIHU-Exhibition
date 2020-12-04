@@ -20,7 +20,10 @@ const ViewVideo = ({ viewScreen }) => {
 export default compose(
   withRouter,
   connect(
-    ({ expo: { viewScreen } }) => ({ viewScreen }),
+    ({ expo: { viewScreen, soundIsTurnedOff } }) => ({
+      viewScreen,
+      soundIsTurnedOff
+    }),
     null
   ),
   withState("videoCheckInterval", "setVideoCheckInterval", null),
@@ -32,26 +35,26 @@ export default compose(
       setVideoStarted,
       setStateTimeout,
       history,
-      getNextUrlPart
+      getNextUrlPart,
+      soundIsTurnedOff
     }) => () => {
-      if (
-        !videoStarted &&
-        document.getElementById("view-video-video") &&
-        document.getElementById("view-video-video").readyState === 4
-      ) {
+      const videoElement = document.getElementById("view-video-video");
+      if (!videoStarted && videoElement && videoElement.readyState === 4) {
         setVideoStarted(true);
         if (getNextUrlPart) {
           setStateTimeout(
             setTimeout(
               () => history.push(getNextUrlPart()),
-              document.getElementById("view-video-video").duration * 1000
+              videoElement.duration * 1000
             )
           );
         }
-        const promise = document.getElementById("view-video-video").play();
+
+        videoElement.muted = !!soundIsTurnedOff;
+        const promise = videoElement.play();
 
         promise.catch(_ => {
-          document.getElementById("view-video-video").controls = "true";
+          videoElement.controls = "true";
         });
       }
     }

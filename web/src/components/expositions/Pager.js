@@ -33,7 +33,7 @@ const Pager = ({ pager, setExpoPager, getExpositions, count }) => {
             position="below"
             onChange={value => {
               setExpoPager(0, value);
-              getExpositions(true);
+              getExpositions();
             }}
           />
         </div>
@@ -46,7 +46,7 @@ const Pager = ({ pager, setExpoPager, getExpositions, count }) => {
             onClick={() => {
               if (pager.page > 0) {
                 setExpoPager(pager.page - 1, pager.pageSize);
-                getExpositions(true);
+                getExpositions();
               }
             }}
             disabled={pager.page <= 0}
@@ -57,7 +57,7 @@ const Pager = ({ pager, setExpoPager, getExpositions, count }) => {
             icon
             onClick={() => {
               setExpoPager(pager.page + 1, pager.pageSize);
-              getExpositions(true);
+              getExpositions();
             }}
             disabled={(pager.page + 1) * pager.pageSize >= count}
           >

@@ -65,7 +65,7 @@ const Sequence = ({
           <div className="flex-row-nowrap flex-centered">
             <SelectField
               id="screen-zoom-in-tooltip-position"
-              className="select-field"
+              className="select-field bigger"
               label="Pozice popisu zoomu"
               menuItems={map(zoomInTooltipPosition, value => ({
                 value,
@@ -80,7 +80,6 @@ const Sequence = ({
                   tooltipPosition
                 })
               }
-              style={{ minWidth: 250 }}
             />
             <HelpIcon
               {...{
@@ -155,6 +154,20 @@ const Sequence = ({
                       i === idx ? { ...sequence, zoom: value } : sequence
                     )
                   }),
+                onEditTime: (i, value) => {
+                  const time = Number(value);
+                  updateScreenData({
+                    sequences: map(activeScreen.sequences, (sequence, idx) =>
+                      i === idx
+                        ? {
+                            ...sequence,
+                            time,
+                            timeError: isNaN(time) || time < 1 || time > 1000000
+                          }
+                        : sequence
+                    )
+                  });
+                },
                 onAdd: () =>
                   updateScreenData({
                     sequences: compact(
@@ -162,7 +175,8 @@ const Sequence = ({
                         text: "Vložte popis zoomu",
                         zoom: 2,
                         top: 17,
-                        left: 17
+                        left: 17,
+                        time: 1
                       })
                     )
                   }),

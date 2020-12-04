@@ -26,67 +26,77 @@ public class IndihuNotificationService {
     @Value("${application.url}")
     private String url;
 
-    public void notifyAddedToCollaborate(User toNotify, User byUser, Exposition exposition) {
-        String subject = "INDIHU Virtuální výstavy - Přidání ke spolupráci na přípravě výstavy";
-        String text = "Byl jste v aplikaci INDIHU Virtuální výstavy uživatelem {userName}, který je autorem výstavy {name}, přidán k spolupráci na její přípravě. Výstavu nyní naleznete ve svém seznamu výstav.";
-        text = text.replace("{userName}", byUser.getEmail());
-        text = text.replace("{name}", exposition.getTitle());
-        sendMessage(text, subject, toNotify.getEmail());
-    }
+    public void notifyAddedToCollaborate(String email, User byUser, Exposition exposition) {
+        String subject = "INDIHU Exhibition - Přidání ke spolupráci na přípravě výstavy";
+        String text = "Dobrý den,\n\n" +
+                "v aplikaci INDIHU Exhibition Vás uživatel {name} ({email}), který je autorem výstavy <strong>{exposition_name}</strong>, pozval ke spolupráci.\n\n" +
+                "Výstavu najdete ve výpisu všech Vašich výstav.\n\n" +
+                "Pokud nemáte účet, registrujte se na: {url}\n\n" +
+                "Za tým INDIHU Exhibition Vám přejeme mnoho úspěšných výstavních projektů";
 
-    public void notifyAddedToCollaborateNotInSystem(String email, User byUser, Exposition exposition) {
-        String subject = "INDIHU Virtuální výstavy - Přidání ke spolupráci na přípravě výstavy";
-        String text = "Byl jste v aplikaci INDIHU Virtuální výstavy uživatelem {userName}, který je autorem výstavy {name}, přidán k spolupráci na její přípravě. Registrovat se můžete na " + url;
-        text = text.replace("{userName}", byUser.getEmail());
-        text = text.replace("{name}", exposition.getTitle());
+        text = text.replace("{name}", byUser.getFirstName() + " " + byUser.getSurname())
+                .replace("{email}", byUser.getEmail())
+                .replace("{exposition_name}", exposition.getTitle())
+                .replace("{url}", url);
         sendMessage(text, subject, email);
     }
 
     public void notifyRemovedFromCollaboration(String toNotify, User byUser, Exposition exposition) {
-        String subject = "INDIHU Virtuální výstavy - Vyloučení ze spolupráce na přípravě výstavy";
-        String text = "Byl jste v aplikaci INDIHU Virtuální výstavy uživatelem {userName}, který je autorem výstavy {name}, odebrán ze spolupráce na její přípravě.";
+        String subject = "INDIHU Exhibition - Vyloučení ze spolupráce na přípravě výstavy";
+        String text = "Byl jste v aplikaci INDIHU Exhibition uživatelem {userName}, který je autorem výstavy {name}, odebrán ze spolupráce na její přípravě.";
         text = text.replace("{userName}", byUser.getEmail());
         text = text.replace("{name}", exposition.getTitle());
         sendMessage(text, subject, toNotify);
     }
 
     public void notifyAccepted(String toNotify) {
-        String subject = "Registrace do aplikace INDIHU Virtuální výstavy";
-        String text = "Vaše registrace do aplikace INDIHU Virtuální výstavy byla schválena administrátorem. Nyní se můžete přihlásit do aplikace.";
+        String subject = "Registrace do INDIHU Exhibiton byla schválena";
+        String text = "Dobrý den,\n" +
+                "od této chvíle můžete na adrese: {url} využívat nástroj INDIHU Exhibition k tvorbě virtuálních výstav. " +
+                "Informace o tvorbě výstav a používání editoru najdete v manuálu: https://nnis.github.io/indihu-manual/.\n" +
+                "Přejeme Vám mnoho úspěšných virtuálních projektů. Tým INDIHU\n" +
+                "\n" +
+                "Více o projektu INDIHU nalezenete na: https://indihu.cz/\n" +
+                "Mezi další produkty INDIHU patří nástroj OCR (https://ocr.indihu.cz/).";
+
+        text = text.replace("{url}", url);
         sendMessage(text, subject, toNotify);
     }
 
     public void notifyNewRegistration(Registration registration) {
-        String subject = "Registrace do aplikace INDIHU Virtuální výstavy";
-        String text = "Vaše registrace do aplikace INDIHU Virtuální výstavy byla úspěšná a nyní čeká na schválení administrátorem. O její schválení Vás budeme informovat.";
-        sendMessage(text, subject, registration.getToAccept().getEmail());
-        notifyAdmins("V aplikaci INDIHU Virtuální výstavy byla vytvořená nová registrace a čeká na schválení administrátorem: " + registration.getId(), "INDIHU Virtuální výstavy - Nová registrace ke schválení");
+        User newUser = registration.getToAccept();
+
+        String subject = "Registrace do aplikace INDIHU Exhibition";
+        String text = "Vaše registrace do aplikace INDIHU Exhibition byla úspěšná a nyní čeká na schválení administrátorem. O její schválení Vás budeme informovat.";
+        sendMessage(text, subject, newUser.getEmail());
+
+        String userInfo = String.format("%s / %s %s", newUser.getEmail(), newUser.getFirstName(), newUser.getSurname());
+        notifyAdmins("V aplikaci INDIHU Exhibition byla vytvořená nová registrace a čeká na schválení administrátorem: " + userInfo, "INDIHU Exhibition - Nová registrace ke schválení");
     }
 
     public void notifyPasswordReset(User user, String password) {
-        String subject = "Reset hesla do aplikace INDIHU Virtuální výstavy";
-        String text = "Požádali jste o reset hesla do aplikace INDIHU Virtuální výstavy. " + '\n'
-                + "Vaše prihlasovací jméno: " + user.getUserName() + '\n'
-                + "Vaše nové heslo je: " + password + '\n' +
+        String subject = "Reset hesla do aplikace INDIHU Exhibiton";
+        String text = "Požádali jste o reset hesla do aplikace INDIHU Exhibiton. Vaše přihlasovací jméno: " + user.getUserName() + '\n' +
+                "Vaše nové heslo je: " + password + '\n' +
                 "Doporučujeme toto heslo změnit v nastavení uživatelského účtu.";
         sendMessage(text, subject, user.getEmail());
     }
 
     public void notifyReactivated(String userEmail) {
-        String text = "Váš účet v aplikaci INDIHU Virtuální výstavy byl znovu aktivován poté, co byl v minulosti deaktivovaný.";
-        String subject = "Znovuaktivace účtu v aplikaci INDIHU Virtuální výstavy";
+        String text = "Váš účet v aplikaci INDIHU Exhibition byl znovu aktivován poté, co byl v minulosti deaktivovaný.";
+        String subject = "Znovuaktivace účtu v aplikaci INDIHU Exhibition";
         sendMessage(text, subject, userEmail);
     }
 
     public void notifyDeletedByAdmin(String userEmail) {
-        String text = "Váš účet v aplikaci INDIHU Virtuální výstavy byl deaktivován administrátorem.";
-        String subject = "Deaktivace účtu v aplikaci INDIHU Virtuální výstavy";
+        String text = "Váš účet v aplikaci INDIHU Exhibition byl deaktivován administrátorem.";
+        String subject = "Deaktivace účtu v aplikaci INDIHU Exhibition";
         sendMessage(text, subject, userEmail);
     }
 
     public void notifyDeleted(String userEmail) {
-        String text = "Váš účet v aplikaci INDIHU Virtuální výstavy byl deaktivován.";
-        String subject = "Deaktivace účtu v aplikaci INDIHU Virtuální výstavy";
+        String text = "Váš účet v aplikaci INDIHU Exhibition byl deaktivován.";
+        String subject = "Deaktivace účtu v aplikaci INDIHU Exhibition";
         sendMessage(text, subject, userEmail);
     }
 
@@ -113,6 +123,7 @@ public class IndihuNotificationService {
      */
     private void sendMessage(String text, String subject, String email) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("info@indihu.cz");
         message.setTo(email);
         message.setSubject(subject);
         message.setText(text);
@@ -128,6 +139,7 @@ public class IndihuNotificationService {
     private void notifyAdmins(String text, String subject) {
         List<String> adminMails = userRepository.getAdminMails();
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("info@indihu.cz");
         message.setTo(adminMails.toArray(new String[adminMails.size()]));
         message.setSubject(subject);
         message.setText(text);

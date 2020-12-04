@@ -1,32 +1,43 @@
 import React from "react";
 import classNames from "classnames";
 import { withRouter } from "react-router-dom";
-import { compose, lifecycle, withState, withHandlers } from "recompose";
+import {
+  compose,
+  lifecycle,
+  withState,
+  withHandlers,
+  withProps,
+  onlyUpdateForKeys,
+} from "recompose";
 import { connect } from "react-redux";
 import { get, escapeRegExp } from "lodash";
 
 import { animationType } from "../../enums/animationType";
+import { isMobileDevice } from "../../utils";
 
-const ViewChapter = ({ title, subTitle, viewScreen }) => {
+const endTime = 3;
+
+const ViewChapter = ({ animation }) => {
   return (
     <div className="viewer-screen">
       <div
         id="view-chapter-image-container"
         className={classNames("image-fullscreen-wrap chapter", {
-          slideUp: get(viewScreen, "animationType") === animationType.FROM_TOP,
-          slideDown:
-            get(viewScreen, "animationType") === animationType.FROM_BOTTOM,
-          slideRight:
-            get(viewScreen, "animationType") ===
-            animationType.FROM_LEFT_TO_RIGHT,
-          slideLeft:
-            get(viewScreen, "animationType") ===
-            animationType.FROM_RIGHT_TO_LEFT
+          slideUp: animation === animationType.FROM_TOP,
+          slideDown: animation === animationType.FROM_BOTTOM,
+          slideRight: animation === animationType.FROM_LEFT_TO_RIGHT,
+          slideLeft: animation === animationType.FROM_RIGHT_TO_LEFT,
         })}
       />
       <div className="title-container">
-        <p className="title-fullscreen">{title}</p>
-        <p className="subtitle-fullscreen">{subTitle}</p>
+        <p
+          id="viewer-screen-view-chapter-title"
+          className="title-fullscreen"
+        ></p>
+        <p
+          id="viewer-screen-view-chapter-subtitle"
+          className="subtitle-fullscreen"
+        ></p>
       </div>
     </div>
   );
@@ -38,8 +49,6 @@ export default compose(
     ({ expo: { viewScreen } }) => ({ viewScreen }),
     null
   ),
-  withState("title", "setTitle", ""),
-  withState("subTitle", "setSubTitle", ""),
   withState("titleTimeout", "setTitleTimeout", null),
   withState("subTitleTimeout", "setSubTitleTimeout", null),
   withHandlers({
@@ -83,45 +92,58 @@ export default compose(
       }
 
       return add;
-    }
+    },
   }),
+  withProps(({ viewScreen }) => ({
+    animation: get(viewScreen, "animationType"),
+  })),
   lifecycle({
     componentDidMount() {
       const {
         screenFiles,
         viewScreen,
-        setTitle,
-        setSubTitle,
+        animation,
         setTitleTimeout,
         setSubTitleTimeout,
-        getTypingAdd
+        getTypingAdd,
       } = this.props;
 
       if (screenFiles["image"]) {
+        if (animation === animationType.WITHOUT_AND_BLUR_BACKGROUND) {
+          const backgroundNode = screenFiles["image-reserved"];
+          backgroundNode.className = "view-chapter-image-background";
+          backgroundNode.setAttribute(
+            "style",
+            "position: static; min-width: 100%; min-height: 100%;"
+          );
+          document
+            .getElementById("view-chapter-image-container")
+            .appendChild(backgroundNode);
+        }
+
         const newNode = screenFiles["image"];
 
         newNode.className = classNames("image-fullscreen", {
           cover:
-            viewScreen.animationType === animationType.WITHOUT ||
-            viewScreen.animationType === animationType.WITHOUT_FULL_SCREEN,
-          contain: viewScreen.animationType === animationType.WITHOUT_NO_CROP,
+            animation === animationType.WITHOUT ||
+            animation === animationType.WITHOUT_FULL_SCREEN,
+          contain: animation === animationType.WITHOUT_NO_CROP,
+          "with-blur": animation === animationType.WITHOUT_AND_BLUR_BACKGROUND,
           "animation-slideDown":
-            viewScreen.animationType &&
-            viewScreen.animationType === animationType.FROM_TOP,
+            animation && animation === animationType.FROM_TOP,
           "animation-slideUp":
-            viewScreen.animationType &&
-            viewScreen.animationType === animationType.FROM_BOTTOM,
+            animation && animation === animationType.FROM_BOTTOM,
           "animation-slideRight":
-            viewScreen.animationType &&
-            viewScreen.animationType === animationType.FROM_LEFT_TO_RIGHT,
+            animation && animation === animationType.FROM_LEFT_TO_RIGHT,
           "animation-slideLeft":
-            viewScreen.animationType &&
-            viewScreen.animationType === animationType.FROM_RIGHT_TO_LEFT
+            animation && animation === animationType.FROM_RIGHT_TO_LEFT,
         });
         newNode.setAttribute(
           "style",
           `animation-duration: ${
-            viewScreen.time && viewScreen.time > 0 ? viewScreen.time : "20"
+            viewScreen.time && viewScreen.time > 0
+              ? viewScreen.time - endTime
+              : 20 - endTime
           }s`
         );
         document
@@ -129,37 +151,67 @@ export default compose(
           .appendChild(newNode);
       }
 
-      if (get(viewScreen, "title")) {
-        const titleTyping = title => {
-          const newTitle =
-            title + getTypingAdd(get(viewScreen, "title"), title);
-          setTitle(newTitle);
-          if (newTitle !== title) {
-            setTitleTimeout(setTimeout(() => titleTyping(newTitle), 100));
-          }
-        };
-
-        setTitleTimeout(setTimeout(() => titleTyping(""), 100));
-      }
-
-      if (get(viewScreen, "subTitle")) {
-        const subTitleTyping = subTitle => {
-          const newSubTitle =
-            subTitle + getTypingAdd(get(viewScreen, "subTitle"), subTitle);
-          setSubTitle(newSubTitle);
-          if (newSubTitle !== subTitle) {
-            setSubTitleTimeout(
-              setTimeout(() => subTitleTyping(newSubTitle), 100)
-            );
-          }
-        };
-
-        setSubTitleTimeout(
-          setTimeout(
-            () => subTitleTyping(""),
-            viewScreen.title.length * 100 + 1000
-          )
+      // without animation for mobile devices
+      if (isMobileDevice()) {
+        const titleEl = document.getElementById(
+          "viewer-screen-view-chapter-title"
         );
+        if (titleEl) {
+          titleEl.innerHTML = get(viewScreen, "title", "");
+        }
+        const subtitleEl = document.getElementById(
+          "viewer-screen-view-chapter-subtitle"
+        );
+        if (subtitleEl) {
+          subtitleEl.innerHTML = get(viewScreen, "subTitle", "");
+        }
+      } else {
+        const typingTime = 100;
+
+        if (get(viewScreen, "title")) {
+          const titleTyping = (title) => {
+            const newTitle =
+              title + getTypingAdd(get(viewScreen, "title"), title);
+            const element = document.getElementById(
+              "viewer-screen-view-chapter-title"
+            );
+            if (element) {
+              element.innerHTML = newTitle;
+              if (newTitle !== title) {
+                setTitleTimeout(
+                  setTimeout(() => titleTyping(newTitle), typingTime)
+                );
+              }
+            }
+          };
+
+          setTitleTimeout(setTimeout(() => titleTyping(""), typingTime));
+        }
+
+        if (get(viewScreen, "subTitle")) {
+          const subTitleTyping = (subTitle) => {
+            const newSubTitle =
+              subTitle + getTypingAdd(get(viewScreen, "subTitle"), subTitle);
+            const element = document.getElementById(
+              "viewer-screen-view-chapter-subtitle"
+            );
+            if (element) {
+              element.innerHTML = newSubTitle;
+              if (newSubTitle !== subTitle) {
+                setSubTitleTimeout(
+                  setTimeout(() => subTitleTyping(newSubTitle), typingTime)
+                );
+              }
+            }
+          };
+
+          setSubTitleTimeout(
+            setTimeout(
+              () => subTitleTyping(""),
+              viewScreen.title.replace(/\s/g, "").length * typingTime + 1000
+            )
+          );
+        }
       }
     },
     componentWillUnmount() {
@@ -167,6 +219,7 @@ export default compose(
 
       clearTimeout(titleTimeout);
       clearTimeout(subtitleTimeout);
-    }
-  })
+    },
+  }),
+  onlyUpdateForKeys(["animation"])
 )(ViewChapter);

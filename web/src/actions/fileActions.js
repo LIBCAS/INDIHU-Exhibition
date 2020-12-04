@@ -1,7 +1,18 @@
 import fetch from "../utils/fetch";
-import { map, find, findIndex, filter, forEach, isEmpty, sortBy } from "lodash";
+import {
+  map,
+  find,
+  findIndex,
+  filter,
+  forEach,
+  isEmpty,
+  sortBy,
+  compact,
+  uniq
+} from "lodash";
 import { TAB_FOLDER, TAB_FILE, EXPO_STRUCTURE_SET } from "./constants";
 import { saveExpo } from "./expoActions";
+import { screenTypeText } from "../enums/screenType";
 
 export const tabFolder = name => ({
   type: TAB_FOLDER,
@@ -57,6 +68,8 @@ export const addFile = (file, folder) => async (dispatch, getState) => {
       files: expo.structure.files
     }
   });
+
+  return true;
 };
 
 export const renameFile = (fileId, fileNameNew) => async (
@@ -276,40 +289,51 @@ export const getFileById = id => (_, getState) => {
 
 export const isFileUsed = id => (_, getState) => {
   if (!id) return false;
-  const structure = getState().expo.activeExpo.structure;
-  if (structure.start.image === id || structure.start.audio === id) return true;
-  const screens = structure.screens;
+  const activeExpo = getState().expo.activeExpo;
+  if (!activeExpo) return false;
+  const structure = activeExpo.structure;
+  const start = structure.start;
   if (
-    find(screens, chapter =>
-      find(
-        chapter,
-        s =>
-          s.audio === id ||
-          s.music === id ||
-          s.video === id ||
-          s.image === id ||
-          s.image1 === id ||
-          s.image2 === id ||
-          s.image3 === id ||
-          s.object === id ||
-          find(
-            s.images,
-            img => img === id || (!isEmpty(img) && img.id === id)
-          ) ||
-          find(s.documents, d => d.id === id)
-      )
-    )
+    start.image === id ||
+    start.audio === id ||
+    find(start.documents, d => d.id === id)
   )
-    return true;
+    return screenTypeText.START;
+  const screens = structure.screens;
+  let screen;
+  find(screens, chapter =>
+    find(chapter, s => {
+      const isUsed =
+        s.audio === id ||
+        s.music === id ||
+        s.video === id ||
+        s.image === id ||
+        s.image1 === id ||
+        s.image2 === id ||
+        s.image3 === id ||
+        s.object === id ||
+        find(s.images, img => img === id || (!isEmpty(img) && img.id === id)) ||
+        find(s.documents, d => d.id === id);
+
+      if (isUsed) {
+        screen = s;
+      }
+
+      return isUsed;
+    })
+  );
+  if (screen) return screen.title || "Neznámá obrazovka";
   return false;
 };
 
-export const isFileInFolderUsed = name => (_, getState) => {
+export const isFileInFolderUsed = name => (dispatch, getState) => {
   if (!name) return false;
-  const files = getState().expo.activeExpo.structure.files;
+  const activeExpo = getState().expo.activeExpo;
+  if (!activeExpo) return false;
+  const files = activeExpo.structure.files;
   const folder = find(files, f => f.name === name);
   if (!folder) return false;
-  return !!find(folder.files, f => isFileUsed(f.id));
+  return uniq(compact(map(folder.files, f => dispatch(isFileUsed(f.id)))));
 };
 
 export const postFile = async (file, url = "/api/files/") => {
@@ -319,6 +343,30 @@ export const postFile = async (file, url = "/api/files/") => {
     formData.append("file", file);
 
     const response = await fetch(url, {
+      method: "POST",
+      body: formData
+    });
+
+    if (response.status === 200) {
+      const file = await response.json();
+
+      return file;
+    }
+
+    return null;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const postExpoFile = async (expoId, file) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch(`/api/file/?id=${expoId}`, {
       method: "POST",
       body: formData
     });

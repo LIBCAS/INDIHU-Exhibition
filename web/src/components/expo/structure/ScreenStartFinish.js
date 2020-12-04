@@ -9,9 +9,7 @@ import ScreenCardMenu from "./ScreenCardMenu";
 import { screenType, screenTypeText } from "../../../enums/screenType";
 
 const ScreenCard = ({ activeExpo, type, history }) => {
-  const editUrl = get(activeExpo, "id")
-    ? `/expo/${activeExpo.id}/screen/${type}/description`
-    : "";
+  const editUrl = get(activeExpo, "id") ? `/expo/${activeExpo.id}/screen/${type}/description` : "";
 
   return (
     <Card
@@ -20,18 +18,12 @@ const ScreenCard = ({ activeExpo, type, history }) => {
         green: get(activeExpo.structure, `${type}.screenCompleted`)
       })}
     >
-      <ScreenCardMenu
-        type={type.toUpperCase()}
-        editUrl={editUrl}
-        viewUrl={activeExpo.url}
-      />
+      <ScreenCardMenu type={type.toUpperCase()} editUrl={editUrl} viewUrl={activeExpo.url} />
       <CardText
         className="card-screen-start-finish"
-        onClick={() =>
-          type.toUpperCase() !== screenType.FINISH && history.push(editUrl)
-        }
+        onClick={() => type.toUpperCase() !== screenType.FINISH && history.push(editUrl)}
       >
-        <p>{screenTypeText[type.toUpperCase()]}</p>
+        <p style={{ wordWrap: "break-word" }}>{screenTypeText[type.toUpperCase()]}</p>
       </CardText>
     </Card>
   );

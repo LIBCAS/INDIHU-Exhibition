@@ -115,7 +115,7 @@ const Structure = ({ activeExpo }) => {
                       ) && (
                         <ScreenNew
                           rowNum={rowNum}
-                          position="tr"
+                          position={structRow.length > 1 ? "tr" : "tl"}
                           style={{ marginRight: "1em" }}
                         />
                       )}

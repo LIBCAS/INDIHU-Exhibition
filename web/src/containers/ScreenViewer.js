@@ -149,38 +149,37 @@ const ViewScreen = compose(
     started,
     setStarted
   }) => {
-    if (prepared) {
-      if (!allFilesLoaded) {
-        return (
-          <Progress
-            {...{
-              percent: viewExpo.filesLoaded
+    if (!prepared || !allFilesLoaded) {
+      return (
+        <Progress
+          {...{
+            percent: viewExpo
+              ? viewExpo.filesLoaded
                 ? (viewExpo.filesLoaded / viewExpo.filesTotal) * 100 < 100
                   ? (viewExpo.filesLoaded / viewExpo.filesTotal) * 100
                   : 100
-                : 0,
-              text: "Obrazovka se načítá"
-            }}
-          />
-        );
-      }
-
-      if (!started) {
-        return (
-          <PlayExpo onClick={() => setStarted(true)} text="Spustit obrazovku" />
-        );
-      }
-
-      if (viewInteractive)
-        return (
-          <InteractiveScreen
-            {...{ screenViewer: true, screenFiles: preloadedFiles }}
-          />
-        );
-
-      return <Viewers sFiles={preloadedFiles} />;
+                : 0
+              : undefined,
+            text: viewExpo ? "Obrazovka se načítá" : "Obrazovka se připravuje"
+          }}
+        />
+      );
     }
-    return <div />;
+
+    if (!started) {
+      return (
+        <PlayExpo onClick={() => setStarted(true)} text="Spustit obrazovku" />
+      );
+    }
+
+    if (viewInteractive)
+      return (
+        <InteractiveScreen
+          {...{ screenViewer: true, screenFiles: preloadedFiles }}
+        />
+      );
+
+    return <Viewers sFiles={preloadedFiles} />;
   }
 );
 
@@ -324,9 +323,15 @@ export default compose(
 
       turnSoundOff(false);
 
-      if (viewChapterMusic) viewChapterMusic.pause();
+      if (viewChapterMusic) {
+        viewChapterMusic.pause();
+        viewChapterMusic.currentTime = 0;
+      }
 
-      if (viewScreenAudio) viewScreenAudio.pause();
+      if (viewScreenAudio) {
+        viewScreenAudio.pause();
+        viewScreenAudio.currentTime = 0;
+      }
 
       setChapterMusic(null);
       setScreenAudio(null);
@@ -337,7 +342,8 @@ export default compose(
     return (
       <ViewWrap
         title={activeExpo.title}
-        institution={get(activeExpo, "organization")}
+        organization={get(activeExpo, "organization")}
+        organizationLink={get(activeExpo, "structure.start.organizationLink")}
         viewInteractive={viewInteractive}
         progressEnabled={viewExpo && started}
       >

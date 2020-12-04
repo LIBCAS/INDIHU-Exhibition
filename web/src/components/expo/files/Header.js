@@ -26,7 +26,7 @@ const Header = ({
 }) => (
   <div className="flex-header">
     <div className="flex-header-inner">
-      <div className="margin-right flex flex-centered">
+      <div className="margin-right flex-row-normal flex-centered">
         <Button
           flat
           label="Nový adresář"

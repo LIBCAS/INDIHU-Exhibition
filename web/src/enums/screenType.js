@@ -15,7 +15,7 @@ export const screenType = {
   GAME_WIPE: "GAME_WIPE",
   GAME_SIZING: "GAME_SIZING",
   GAME_MOVE: "GAME_MOVE",
-  GAME_OPTIONS: "GAME_OPTIONS"
+  GAME_OPTIONS: "GAME_OPTIONS",
 };
 
 /** stránky s interaktivním módem */
@@ -34,7 +34,7 @@ export const interactiveScreenTypes = {
   GAME_WIPE: false,
   GAME_SIZING: false,
   GAME_MOVE: false,
-  GAME_OPTIONS: false
+  GAME_OPTIONS: false,
 };
 
 /** vyhladavanie v nazvoch obrazoviek */
@@ -55,7 +55,7 @@ export const screenTypeText = {
   GAME_WIPE: "Stírací los",
   GAME_SIZING: "Hádej velikost",
   GAME_MOVE: "Posuň na správne místo",
-  GAME_OPTIONS: "Výběr z možností"
+  GAME_OPTIONS: "Kvíz",
 };
 
 export const screenTypeIcon = {
@@ -75,7 +75,7 @@ export const screenTypeIcon = {
   GAME_WIPE: "fa-trophy",
   GAME_SIZING: "fa-trophy",
   GAME_MOVE: "fa-trophy",
-  GAME_OPTIONS: "fa-trophy"
+  GAME_OPTIONS: "fa-trophy",
 };
 
 /** menu pre vytvorenie novej obrazovky */
@@ -88,7 +88,7 @@ export const newScreen = {
     ["IMAGE_ZOOM", "Animace přiblížení"],
     ["PHOTOGALERY", "Fotogalerie"],
     ["IMAGE_CHANGE", "Foto před a po"],
-    ["EXTERNAL", "Obrazovka s externím obsahem"]
+    ["EXTERNAL", "Obrazovka s externím obsahem"],
   ],
   GAME: [
     ["GAME_FIND", "Najdi na obrázku"],
@@ -96,8 +96,8 @@ export const newScreen = {
     ["GAME_WIPE", "Stírací los"],
     ["GAME_SIZING", "Hádej velikost"],
     ["GAME_MOVE", "Posuň na správné místo"],
-    ["GAME_OPTIONS", "Výběr z možností"]
-  ]
+    ["GAME_OPTIONS", "Kvíz"],
+  ],
 };
 
 /** url obrazovky */
@@ -118,11 +118,48 @@ export const screenUrl = {
   GAME_WIPE: "game-wipe",
   GAME_SIZING: "game-sizing",
   GAME_MOVE: "game-move",
-  GAME_OPTIONS: "game-options"
+  GAME_OPTIONS: "game-options",
 };
 
 /** timeout nastaveny automaticky v ExpoViewer.js */
 export const automaticRouting = {
+  INTRO: true,
+  IMAGE: true,
+  VIDEO: false,
+  TEXT: true,
+  PARALLAX: true,
+  IMAGE_ZOOM: true,
+  PHOTOGALERY: true,
+  IMAGE_CHANGE: false,
+  EXTERNAL: true,
+  GAME_FIND: false,
+  GAME_DRAW: false,
+  GAME_WIPE: false,
+  GAME_SIZING: false,
+  GAME_MOVE: false,
+  GAME_OPTIONS: false,
+};
+
+export const mobileDeviceRouting = {
+  INTRO: true,
+  IMAGE: true,
+  VIDEO: true,
+  TEXT: true,
+  PARALLAX: true,
+  IMAGE_ZOOM: true,
+  PHOTOGALERY: true,
+  IMAGE_CHANGE: true,
+  EXTERNAL: true,
+  GAME_FIND: false,
+  GAME_DRAW: false,
+  GAME_WIPE: false,
+  GAME_SIZING: false,
+  GAME_MOVE: false,
+  GAME_OPTIONS: false,
+};
+
+/* audio */
+export const audioEnabled = {
   INTRO: true,
   IMAGE: true,
   VIDEO: false,
@@ -137,5 +174,24 @@ export const automaticRouting = {
   GAME_WIPE: false,
   GAME_SIZING: false,
   GAME_MOVE: false,
-  GAME_OPTIONS: false
+  GAME_OPTIONS: false,
+};
+
+/* music */
+export const musicEnabled = {
+  INTRO: true,
+  IMAGE: true,
+  VIDEO: false,
+  TEXT: true,
+  PARALLAX: true,
+  IMAGE_ZOOM: true,
+  PHOTOGALERY: true,
+  IMAGE_CHANGE: true,
+  EXTERNAL: true,
+  GAME_FIND: true,
+  GAME_DRAW: true,
+  GAME_WIPE: true,
+  GAME_SIZING: true,
+  GAME_MOVE: true,
+  GAME_OPTIONS: true,
 };

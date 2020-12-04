@@ -13,6 +13,7 @@ import cz.inqool.uas.indihu.entity.dto.ExpositionEndedDto;
 import cz.inqool.uas.indihu.entity.dto.LockedExpositionDto;
 import cz.inqool.uas.indihu.entity.enums.CollaborationType;
 import cz.inqool.uas.indihu.entity.enums.ExpositionState;
+import cz.inqool.uas.indihu.entity.enums.UserRole;
 import cz.inqool.uas.indihu.repository.ExpositionOpeningRepository;
 import cz.inqool.uas.indihu.repository.ExpositionRepository;
 import cz.inqool.uas.indihu.repository.ExpositionUrlRepository;
@@ -298,7 +299,7 @@ public class ExpositionService {
         dto.setState(exposition.getState());
         dto.setLastEdit(exposition.getUpdated());
         dto.setCanEdit((!currentlyEditing || helperService.getCurrent().getUserName().equals(exposition.getIsEditing())) && canEdit);
-        dto.setCanDelete(exposition.getAuthor().equals(helperService.getCurrent()));
+        dto.setCanDelete(helperService.getCurrent().equals(exposition.getAuthor()) || helperService.getCurrent().getRole() == UserRole.ROLE_ADMIN);
         dto.setCreated(exposition.getCreated());
         dto.setUrl(exposition.getUrl());
         return dto;
@@ -312,7 +313,7 @@ public class ExpositionService {
         //exposition
         Exposition exposition = repository.find(expositionId);
         notNull(exposition, () -> new MissingObject("Exposition", expositionId));
-        if (helperService.getCurrent().equals(exposition.getAuthor())) {
+        if (helperService.getCurrent().equals(exposition.getAuthor()) || helperService.getCurrent().getRole() == UserRole.ROLE_ADMIN) {
             List<String> collaboratorsEmails = collaboratorService.getCollaboratorsEmailsForExposition(expositionId);
             collaboratorService.removeAllCollaborators(expositionId);
             fileExpositionMapperRepository.removeAllInExposition(expositionId);

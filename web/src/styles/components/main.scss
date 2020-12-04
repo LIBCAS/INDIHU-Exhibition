@@ -57,6 +57,10 @@
   align-items: center;
 }
 
+.flex-bottom {
+  align-items: flex-end;
+}
+
 .flex-right {
   justify-content: flex-end;
 }
@@ -103,6 +107,10 @@
     &-very-small {
       margin-bottom: 0.5em;
     }
+
+    &-none {
+      margin-bottom: 0;
+    }
   }
   &-horizontal {
     margin-left: 1em;
@@ -118,6 +126,10 @@
 
     &-small {
       margin-left: 1em;
+    }
+
+    &-very-small {
+      margin-left: 0.5em;
     }
   }
   &-right {
@@ -662,6 +674,9 @@
   &-move {
     cursor: move;
   }
+  &-nw-resize {
+    cursor: nw-resize;
+  }
 }
 
 /* OTHER */
@@ -883,35 +898,72 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+    padding: 0 2em;
     border-top: 1px solid $c-grey-light;
     background-color: #ededed;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6em 1.2em;
+    height: 30px !important;
+    font-size: 14px;
+  }
+}
 
-    .inner-left {
-      display: flex;
-      flex-direction: column;
-      margin-right: 2em;
+@mixin authentication-small-screen {
+  .authentication {
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block;
+    margin-top: 4em;
+    margin-bottom: 30px;
+    min-height: min-content;
+    height: calc(100vh - 4em - 30px);
+
+    .left {
+      width: 100vw;
+      padding: 2em 1.5em 0;
+      margin: 0 auto;
+      min-height: min-content;
     }
 
-    .inner-right {
-      text-align: right;
+    .right {
+      margin: 0 auto;
+      min-height: min-content;
+      max-height: none;
+      overflow: visible;
     }
   }
 }
 
-@media (max-width: 800px) {
-  .authentication {
-    padding: 5em 0 8em 0;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+#appheader-header-auth-menu {
+  .md-list-tile {
+    height: 40px !important;
+  }
+  .md-text {
+    font-size: 0.95em;
+  }
+}
 
-    .left {
-      width: 100vw;
-      padding: 0 2em 2em;
+@media (max-width: 800px) {
+  @include authentication-small-screen;
+}
+
+@media (max-height: 500px) {
+  @include authentication-small-screen;
+}
+
+@media (max-width: $breakpoint-desktop-bigger) {
+  .authentication {
+    &-footer {
+      padding: 0 1.5em;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .authentication {
+    &-footer {
+      padding: 0 1em;
     }
   }
 }
@@ -919,6 +971,13 @@
 @media (max-width: $breakpoint-tablet) {
   .authentication {
     overflow-y: auto;
+    &-footer {
+      padding: 0 0.75em;
+
+      .text-smaller {
+        font-size: 12px;
+      }
+    }
   }
 }
 
@@ -958,8 +1017,10 @@
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s;
+    width: 150px !important;
     max-width: 150px !important;
     white-space: normal;
+    word-wrap: break-word;
 
     &::after {
       content: " ";
@@ -983,6 +1044,79 @@
 
   &.hidden-custom-tooltip {
     visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.screen-size {
+  &-desktop-bigger {
+    &-max {
+      display: none !important;
+    }
+  }
+  &-desktop {
+    &-max {
+      display: none !important;
+    }
+  }
+  &-tablet {
+    &-max {
+      display: none !important;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop-bigger) {
+  .screen-size {
+    &-desktop-bigger {
+      &-min {
+        display: none !important;
+      }
+      &-max {
+        display: block !important;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .screen-size {
+    &-desktop {
+      &-min {
+        display: none !important;
+      }
+      &-max {
+        display: block !important;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .screen-size {
+    &-tablet {
+      &-min {
+        display: none !important;
+      }
+      &-max {
+        display: block !important;
+      }
+    }
+  }
+}
+
+/* BASIC */
+
+.link {
+  color: $c-blue-primary;
+
+  &:visited,
+  &:hover {
+    color: $c-blue-primary;
   }
 }
 
@@ -1020,6 +1154,10 @@
   div[role="checkbox"] {
     padding-left: 0 !important;
   }
+}
+
+.md-snackbar {
+  z-index: 1200;
 }
 
 @media screen and (max-width: 320px) {

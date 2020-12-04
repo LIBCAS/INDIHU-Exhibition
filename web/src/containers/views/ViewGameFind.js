@@ -23,36 +23,36 @@ const ViewGameFind = ({
   resetButton,
   setResetButton,
   passButton,
-  setPassButton
+  setPassButton,
 }) => {
   return (
     <div className="game">
       <div
         id="view-game-find-game-wrap"
         className={classNames("game-wrap", {
-          "cursor-none": !mouseClicked
+          "cursor-none": !mouseClicked,
         })}
         onClick={() => {
           if (!mouseClicked) {
             mouseActualize({ mouseClicked: true, mouseDown: false });
           }
         }}
-        onMouseMove={e =>
+        onMouseMove={(e) =>
           !mouseClicked &&
           mouseActualize({
             mouseDown: true,
             mouseXPos: e.pageX,
-            mouseYPos: e.pageY
+            mouseYPos: e.pageY,
           })
         }
         onMouseEnter={() =>
           mouseActualize({
-            mouseDown: true
+            mouseDown: true,
           })
         }
         onMouseLeave={() =>
           mouseActualize({
-            mouseDown: false
+            mouseDown: false,
           })
         }
       >
@@ -82,7 +82,7 @@ const ViewGameFind = ({
                   mouseYPos -
                   document
                     .getElementById("view-game-find-game-wrap")
-                    .getBoundingClientRect().top
+                    .getBoundingClientRect().top,
               }}
             />
           )}
@@ -105,7 +105,7 @@ const ViewGameFind = ({
                   mouseYPos -
                   document
                     .getElementById("view-game-find-game-wrap")
-                    .getBoundingClientRect().top
+                    .getBoundingClientRect().top,
               }}
             />
           )}
@@ -116,11 +116,12 @@ const ViewGameFind = ({
           resetButton,
           passButton,
           task: viewScreen.task,
+          resultTime: viewScreen.resultTime,
           getNextUrlPart,
           onClick: () => {
             mouseActualize({
               mouseClicked: true,
-              mouseDown: false
+              mouseDown: false,
             });
             if (document.getElementById("view-game-find-first-image")) {
               document.getElementById("view-game-find-first-image").outerHTML =
@@ -154,9 +155,9 @@ const ViewGameFind = ({
           onReset: () => {
             mouseActualize({
               mouseClicked: false,
-              mouseDown: false
+              mouseDown: false,
             });
-          }
+          },
         }}
       />
     </div>
@@ -172,18 +173,18 @@ export default compose(
     ({
       app: {
         timeout,
-        mouseInfo: { mouseClicked, mouseDown, mouseXPos, mouseYPos }
+        mouseInfo: { mouseClicked, mouseDown, mouseXPos, mouseYPos },
       },
-      expo: { viewScreen }
+      expo: { viewScreen },
     }) => ({
       mouseClicked,
       mouseDown,
       mouseXPos,
       mouseYPos,
-      viewScreen
+      viewScreen,
     }),
     {
-      mouseActualize
+      mouseActualize,
     }
   ),
   lifecycle({
@@ -193,7 +194,7 @@ export default compose(
         mouseClicked: false,
         mouseDown: false,
         mouseXPos: null,
-        mouseYPos: null
+        mouseYPos: null,
       });
 
       if (viewScreen.image1) {
@@ -216,6 +217,6 @@ export default compose(
           .getElementById("view-game-find-game-wrap")
           .appendChild(newNode);
       }
-    }
+    },
   })
 )(ViewGameFind);
