@@ -165,7 +165,7 @@ public class UserController {
         Filter surname = new Filter("surname", FilterOperation.CONTAINS, value, null);
         Filter email = new Filter("email", FilterOperation.CONTAINS, value, null);
         Filter institution = new Filter("institution", FilterOperation.CONTAINS, value, null);
-        Filter state = new Filter("state",FilterOperation.EQ,value,null);
+        Filter state = new Filter("state", FilterOperation.EQ, value, null);
         filter.setFilter(asList(userName, firstName, surname, email, institution, state));
         return filter;
     }

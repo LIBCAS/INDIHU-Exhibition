@@ -6,14 +6,9 @@ import cz.inqool.uas.indihu.entity.domain.User;
 import cz.inqool.uas.indihu.entity.enums.UserRole;
 import cz.inqool.uas.indihu.repository.CollaboratorRepository;
 import cz.inqool.uas.indihu.security.UserDelegate;
-import cz.inqool.uas.indihu.security.jwt.IndihuJwtHandler;
-import cz.inqool.uas.security.jwt.JwtToken;
 import cz.inqool.uas.security.jwt.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

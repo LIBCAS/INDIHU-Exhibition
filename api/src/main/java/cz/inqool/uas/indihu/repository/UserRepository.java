@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class UserRepository extends IndexedDatedStore<User, QUser, IndexedUser>{
+public class UserRepository extends IndexedDatedStore<User, QUser, IndexedUser> {
     public UserRepository() {
         super(User.class, QUser.class, IndexedUser.class);
     }
@@ -33,7 +33,7 @@ public class UserRepository extends IndexedDatedStore<User, QUser, IndexedUser>{
         result.setRole(user.getRole().name());
         result.setUserName(user.getUserName());
         result.setAccepted(user.isAccepted());
-        result.setActive(user.isAccepted()&&user.getDeleted()==null);
+        result.setActive(user.isAccepted() && user.getDeleted() == null);
         result.setState(user.getState().name());
         return result;
     }
@@ -69,10 +69,10 @@ public class UserRepository extends IndexedDatedStore<User, QUser, IndexedUser>{
     /**
      * finds user by email
      */
-    public User findByEmail(String email){
+    public User findByEmail(String email) {
         QUser qUser = this.qObject();
 
-        User result =  query()
+        User result = query()
                 .select(qUser)
                 .where(qUser.email.eq(email))
                 .fetchFirst();

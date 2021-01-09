@@ -99,7 +99,7 @@ public class ExpositionController {
     @ApiOperation(value = "Locks an exposition. Required role of editor")
     @RolesAllowed("ROLE_EDITOR")
     @RequestMapping(method = POST, path = "/lock/{id}")
-    public boolean lock(@PathVariable("id") String id){
+    public boolean lock(@PathVariable("id") String id) {
         return expositionService.lock(id);
     }
 

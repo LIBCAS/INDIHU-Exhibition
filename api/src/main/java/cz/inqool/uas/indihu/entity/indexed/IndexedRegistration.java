@@ -12,7 +12,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
-@Document(indexName = "indihu", type = "registration" )
+@Document(indexName = "indihu", type = "registration")
 public class IndexedRegistration extends IndexedDatedObject {
 
     @Field(type = FieldType.String, index = FieldIndex.not_analyzed)

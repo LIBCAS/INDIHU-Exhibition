@@ -51,8 +51,8 @@ public class ExpositionOpeningController {
     }
 
     @RolesAllowed("ROLE_EDITOR")
-    @RequestMapping(method = DELETE, value= "/{id}")
-    public void delete(@PathVariable("id")String oppeningId){
+    @RequestMapping(method = DELETE, value = "/{id}")
+    public void delete(@PathVariable("id") String oppeningId) {
         service.delete(oppeningId);
     }
 

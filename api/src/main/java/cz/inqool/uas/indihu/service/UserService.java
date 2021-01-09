@@ -44,7 +44,7 @@ public class UserService {
             if (toUpdate.getRole() == null) {
                 toUpdate.setRole(withPass.getRole());
             }
-        }else {
+        } else {
             toUpdate.setRole(withPass.getRole());
         }
         toUpdate = userRepository.save(toUpdate);
@@ -93,10 +93,10 @@ public class UserService {
     /**
      * deletes user with given id
      */
-    public void deleteUser(String userId){
+    public void deleteUser(String userId) {
         User user = userRepository.find(userId);
-        notNull(user,()-> new MissingObject("User with id: ", userId));
-        if (user.getEmail() != null){
+        notNull(user, () -> new MissingObject("User with id: ", userId));
+        if (user.getEmail() != null) {
             indihuNotificationService.notifyDeletedByAdmin(user.getEmail());
         }
         user.setState(UserState.DELETED);

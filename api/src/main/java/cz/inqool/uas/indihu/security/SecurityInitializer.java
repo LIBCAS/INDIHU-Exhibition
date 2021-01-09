@@ -18,7 +18,7 @@ import static cz.inqool.uas.util.Utils.asArray;
  */
 @Slf4j
 @Configuration
-public class SecurityInitializer extends BaseSecurityInitializer{
+public class SecurityInitializer extends BaseSecurityInitializer {
 
     private AuditLogger auditLogger;
 

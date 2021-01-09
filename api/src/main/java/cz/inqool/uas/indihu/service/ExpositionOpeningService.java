@@ -25,6 +25,7 @@ public class ExpositionOpeningService {
 
     /**
      * Updates {@link ExpositionOpening}
+     *
      * @param opening {@link ExpositionOpening} to update to
      * @return updated {@link ExpositionOpening
      */
@@ -37,8 +38,9 @@ public class ExpositionOpeningService {
 
     /**
      * Creates {@link ExpositionOpening} with specified params if current user is eligible (ie. is author or have Edit permission)
+     *
      * @param expositionId id of exposition for creating an opening to
-     * @param opening {@link Instant} of exposition opening
+     * @param opening      {@link Instant} of exposition opening
      * @return {@link ExpositionOpening}
      */
     public ExpositionOpening create(String expositionId, Instant opening) {
@@ -55,6 +57,7 @@ public class ExpositionOpeningService {
 
     /**
      * Gets an {@link ExpositionOpening} for specified {@link Exposition}
+     *
      * @param expositionId id of {@link Exposition}
      * @return {@link ExpositionOpening}
      */
@@ -64,9 +67,10 @@ public class ExpositionOpeningService {
 
     /**
      * Removes opening for exposition
+     *
      * @param expositionId id of {@link Exposition}
      */
-    public void delete(String expositionId){
+    public void delete(String expositionId) {
         ExpositionOpening opening = repository.findByExposition(expositionId);
         repository.delete(opening);
     }

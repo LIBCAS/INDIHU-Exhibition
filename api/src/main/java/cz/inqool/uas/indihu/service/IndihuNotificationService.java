@@ -67,7 +67,7 @@ public class IndihuNotificationService {
         User newUser = registration.getToAccept();
 
         String subject = "Registrace do aplikace INDIHU Exhibition";
-        String text = "Vaše registrace do aplikace INDIHU Exhibition byla úspěšná a nyní čeká na schválení administrátorem. O její schválení Vás budeme informovat.";
+        String text = "Vaše registrace do aplikace INDIHU Exhibition byla úspěšná a nyní čeká na schválení administrátorem. O jejím schválení Vás budeme informovat.";
         sendMessage(text, subject, newUser.getEmail());
 
         String userInfo = String.format("%s / %s %s", newUser.getEmail(), newUser.getFirstName(), newUser.getSurname());

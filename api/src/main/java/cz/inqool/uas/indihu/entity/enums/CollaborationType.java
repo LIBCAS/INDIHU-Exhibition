@@ -13,5 +13,7 @@ public enum CollaborationType implements Labeled {
 
     private String label;
 
-    CollaborationType(String label){this.label = label;}
+    CollaborationType(String label) {
+        this.label = label;
+    }
 }

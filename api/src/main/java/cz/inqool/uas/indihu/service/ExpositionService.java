@@ -2,7 +2,10 @@ package cz.inqool.uas.indihu.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.inqool.uas.exception.MissingObject;
-import cz.inqool.uas.index.dto.*;
+import cz.inqool.uas.index.dto.Filter;
+import cz.inqool.uas.index.dto.FilterOperation;
+import cz.inqool.uas.index.dto.Params;
+import cz.inqool.uas.index.dto.Result;
 import cz.inqool.uas.indihu.entity.domain.Collaborator;
 import cz.inqool.uas.indihu.entity.domain.Exposition;
 import cz.inqool.uas.indihu.entity.domain.ExpositionUrl;
@@ -365,7 +368,7 @@ public class ExpositionService {
     @Transactional
     public boolean lock(String id) {
         Exposition exposition = repository.find(id);
-        notNull(exposition,() -> new MissingObject(Exposition.class,id));
+        notNull(exposition, () -> new MissingObject(Exposition.class, id));
         Instant lastUpdated = exposition.getUpdated();
         exposition.setIsEditing(helperService.getCurrent().getUserName());
         exposition.setUpdated(Instant.now());

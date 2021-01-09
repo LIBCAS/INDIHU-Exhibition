@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,9 @@ import static cz.inqool.uas.util.Utils.notNull;
  */
 @Service
 public class RegistrationService {
+
+    @Value("${security.ldap.enabled}")
+    private boolean ldapEnabled;
 
     private SettingsService settings;
 
@@ -97,9 +101,11 @@ public class RegistrationService {
             log.info(MARKER, "Registration: User or registration with email: " + email + " already exists in system.");
             return RegistrationStatusEnum.EMAIL_EXISTS;
         }
-        if (ldapCredentialsHandler.exists(userName)) {
-            log.info(MARKER, "Registration: User with email: " + email + " found in LDAP.");
-            return RegistrationStatusEnum.IN_LDAP;
+        if (ldapEnabled) {
+            if (ldapCredentialsHandler.exists(userName)) {
+                log.info(MARKER, "Registration: User with email: " + email + " found in LDAP.");
+                return RegistrationStatusEnum.IN_LDAP;
+            }
         }
         if (settings.isRegistrationAllowed()) {
             registration.setSecret(UUID.randomUUID().toString());
@@ -110,7 +116,7 @@ public class RegistrationService {
             log.info(MARKER, "Registration: Created registration with email: " + email);
             return RegistrationStatusEnum.CREATED;
         }
-        log.warn(MARKER, "Registration is not allowed." );
+        log.warn(MARKER, "Registration is not allowed.");
         return RegistrationStatusEnum.FORBIDDEN;
     }
 

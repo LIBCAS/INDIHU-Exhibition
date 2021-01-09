@@ -1,7 +1,6 @@
 package cz.inqool.uas.indihu.repository;
 
 import cz.inqool.uas.index.IndexedDatedStore;
-import cz.inqool.uas.index.LabeledReference;
 import cz.inqool.uas.index.dto.Params;
 import cz.inqool.uas.index.dto.Result;
 import cz.inqool.uas.indihu.entity.domain.*;
@@ -10,15 +9,9 @@ import cz.inqool.uas.indihu.entity.enums.ExpositionState;
 import cz.inqool.uas.indihu.entity.indexed.IndexedExposition;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-import static cz.inqool.uas.util.Utils.toLabeledReference;
 
 /**
  * Created by Michal on 19. 7. 2017.

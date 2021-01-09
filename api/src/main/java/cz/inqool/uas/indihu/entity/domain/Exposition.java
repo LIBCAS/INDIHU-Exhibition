@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import cz.inqool.uas.domain.DatedObject;
 import cz.inqool.uas.indihu.entity.dto.ExpoFile;
 import cz.inqool.uas.indihu.entity.enums.ExpositionState;
-import cz.inqool.uas.indihu.entity.serializer.FileExpositionMapperSimpleSerializer;
 import cz.inqool.uas.indihu.entity.serializer.SimpleUserSerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.Set;
 @Setter
 @Table(name = "in_exposition")
 @NoArgsConstructor
-public class Exposition extends DatedObject{
+public class Exposition extends DatedObject {
 
     /**
      * user account of author
@@ -65,7 +64,7 @@ public class Exposition extends DatedObject{
     private Set<ExpositionUrl> urls;
 
     //could be deleted, currently not in use
-    @OneToOne(mappedBy = "exposition",fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "exposition", fetch = FetchType.EAGER)
     private ExpositionOpening opening;
 
     /**

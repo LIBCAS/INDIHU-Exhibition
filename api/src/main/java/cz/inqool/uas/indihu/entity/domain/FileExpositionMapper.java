@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Table(name = "in_file_exposition_mapper")
-public class FileExpositionMapper extends DomainObject{
+public class FileExpositionMapper extends DomainObject {
 
     @ManyToOne
     private Exposition exposition;

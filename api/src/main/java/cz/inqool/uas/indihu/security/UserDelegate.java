@@ -28,7 +28,7 @@ public class UserDelegate implements UserDetails {
         this.user = user;
 
         authorities.add(new SimpleGrantedAuthority("ROLE_EDITOR"));
-        if (user.getRole().equals(UserRole.ROLE_ADMIN)){
+        if (user.getRole().equals(UserRole.ROLE_ADMIN)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
@@ -38,11 +38,13 @@ public class UserDelegate implements UserDetails {
 
     }
 
-    public User getUser(){
+    public User getUser() {
         return this.user;
     }
 
-    public void setUser(User user){this.user = user;}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {

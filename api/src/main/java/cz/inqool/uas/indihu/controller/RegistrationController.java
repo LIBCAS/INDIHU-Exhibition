@@ -136,7 +136,7 @@ public class RegistrationController {
     public ResponseEntity verifyEmail(@ApiParam("User registration secret")
                                       @PathVariable("secret") String secret,
                                       HttpServletResponse response) {
-        switch (service.verify(secret,response)) {
+        switch (service.verify(secret, response)) {
             case IN_QUEUED:
                 return new ResponseEntity(HttpStatus.CREATED);
             case AUTOMATIC:

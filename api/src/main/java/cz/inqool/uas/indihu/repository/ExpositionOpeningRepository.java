@@ -12,10 +12,10 @@ import org.springframework.stereotype.Repository;
 //can be deleted
 public class ExpositionOpeningRepository extends DomainStore<ExpositionOpening, QExpositionOpening> {
     public ExpositionOpeningRepository() {
-        super(ExpositionOpening.class,QExpositionOpening.class);
+        super(ExpositionOpening.class, QExpositionOpening.class);
     }
 
-    public ExpositionOpening findByExposition(String expositionId){
+    public ExpositionOpening findByExposition(String expositionId) {
         QExpositionOpening qExpositionOpening = QExpositionOpening.expositionOpening;
 
         ExpositionOpening result = query(qExpositionOpening)
@@ -26,13 +26,13 @@ public class ExpositionOpeningRepository extends DomainStore<ExpositionOpening, 
         return result;
     }
 
-    public void removeByExposition(String expositionId){
+    public void removeByExposition(String expositionId) {
         QExpositionOpening opening = this.qObject();
 
         ExpositionOpening exposition = query().select(opening)
                 .where(opening.exposition.id.eq(expositionId))
                 .fetchOne();
-        if (exposition!=null){
+        if (exposition != null) {
             delete(exposition);
         }
     }

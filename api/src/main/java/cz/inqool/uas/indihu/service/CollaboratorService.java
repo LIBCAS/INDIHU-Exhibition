@@ -165,7 +165,7 @@ public class CollaboratorService {
         Collaborator collaborator = collaboratorRepository.findExpositionCollaborator(helperService.getCurrent().getId(), expositionId);
         if (collaborator != null) {
             collaboratorRepository.delete(collaborator);
-            log.info(MARKER, "Collaborator "+collaborator.getUserEmail()+" removed himself from exposition with id:" + expositionId);
+            log.info(MARKER, "Collaborator " + collaborator.getUserEmail() + " removed himself from exposition with id:" + expositionId);
 
             expositionRepository.index(expositionRepository.find(expositionId));
         }
@@ -212,6 +212,7 @@ public class CollaboratorService {
 
     /**
      * Method that says if currently logged in user can view an exposition
+     *
      * @param expositionId
      * @return
      */
@@ -253,6 +254,7 @@ public class CollaboratorService {
 
     /**
      * Returns emails list of collaborators for given exposition
+     *
      * @param expositionId id of exposition
      */
     public List<String> getCollaboratorsEmailsForExposition(String expositionId) {

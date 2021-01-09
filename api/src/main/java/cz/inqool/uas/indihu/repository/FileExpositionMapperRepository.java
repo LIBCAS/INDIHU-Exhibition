@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Repository
-public class FileExpositionMapperRepository extends DomainStore<FileExpositionMapper,QFileExpositionMapper> {
+public class FileExpositionMapperRepository extends DomainStore<FileExpositionMapper, QFileExpositionMapper> {
 
     private FileRepository fileRepository;
 
@@ -24,7 +24,7 @@ public class FileExpositionMapperRepository extends DomainStore<FileExpositionMa
     /**
      * returns all files for exposition
      */
-    public List<FileExpositionMapper> getForExposition(String expositionId){
+    public List<FileExpositionMapper> getForExposition(String expositionId) {
         QFileExpositionMapper qFileExpositionMapper = this.qObject();
         List<FileExpositionMapper> result = query()
                 .select(qFileExpositionMapper)
@@ -37,7 +37,7 @@ public class FileExpositionMapperRepository extends DomainStore<FileExpositionMa
     /**
      * deletes all files for exposition
      */
-    public void removeAllInExposition(String expositionId){
+    public void removeAllInExposition(String expositionId) {
         QFileExpositionMapper mapper = this.qObject();
 
         List<FileExpositionMapper> mappers = query()
@@ -47,7 +47,7 @@ public class FileExpositionMapperRepository extends DomainStore<FileExpositionMa
         detachAll();
         Iterator<FileExpositionMapper> mapperIterator = mappers.iterator();
         FileExpositionMapper fileExpositionMapper;
-        while (mapperIterator.hasNext()){
+        while (mapperIterator.hasNext()) {
             fileExpositionMapper = mapperIterator.next();
             fileRepository.del(fileExpositionMapper.getFile());
             delete(fileExpositionMapper);
