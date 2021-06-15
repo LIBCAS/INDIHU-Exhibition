@@ -50,7 +50,7 @@
         <tika-parsers.version>1.25</tika-parsers.version>
         <jjwt.version>0.9.1</jjwt.version>
         <jempbox.version>1.8.12</jempbox.version>
-        <pdfbox.version>2.0.22</pdfbox.version>
+        <pdfbox.version>2.0.24</pdfbox.version>
         <javax.version>1</javax.version>
         <velocity.version>1.7</velocity.version>
         <passay.version>1.2.0</passay.version>
