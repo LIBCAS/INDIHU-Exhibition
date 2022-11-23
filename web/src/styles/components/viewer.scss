@@ -1,3 +1,5 @@
+@use "../variables.scss" as vars;
+
 /* MIXINS */
 
 @mixin textBorder {
@@ -24,10 +26,24 @@
 
 $viewer-title-height: 1.8em;
 .viewer {
+  position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   font-size: 1.2em;
+  background-color: vars.$c-background;
+
+  ::-webkit-scrollbar {
+    background: none;
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: vars.$c-muted-200;
+    width: 6px;
+    border-radius: 15px;
+  }
+
   &-progress-bar {
     width: 50px;
     height: 100%;
@@ -140,8 +156,6 @@ $viewer-title-height: 1.8em;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border: solid 0.8em $c-black;
-    background-color: $c-black;
     position: relative;
     &-menu {
       position: fixed;
@@ -472,11 +486,25 @@ $viewer-title-height: 1.8em;
     }
   }
   &-start {
-    &-menu {
+    &-wrapper {
       position: fixed;
       bottom: 0;
       z-index: 999;
       width: 100vw;
+      display: flex;
+      flex-direction: column;
+    }
+    &-play-mode {
+      align-self: flex-start;
+      margin: 0 1rem 0 1rem;
+      background-color: $c-white;
+      padding: 0.5rem;
+      padding-right: 2rem;
+      @media screen and (max-width: 500px) {
+        width: calc(100% - 2rem);
+      }
+    }
+    &-menu {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
@@ -1353,8 +1381,7 @@ $viewer-title-height: 1.8em;
   flex-direction: column;
   border: solid 0.8em $c-black;
   &-wrap {
-    margin-top: 1em;
-    height: calc(100% - 4em);
+    height: calc(100% - 3em);
     width: 100%;
     background-color: $c-black;
     display: flex;
@@ -1455,7 +1482,7 @@ $viewer-title-height: 1.8em;
       }
     }
     &-resize {
-      background-image: url("../assets/img/placeholder-resize.png");
+      background-image: url("../../assets/img/placeholder-resize.png");
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
@@ -1929,7 +1956,6 @@ $viewer-title-height: 1.8em;
   }
   &-images-container {
     position: absolute;
-    top: 1em;
     left: 0.8em;
     width: calc(100% - 1.6em);
     height: calc(100% - 1em);

@@ -1,0 +1,33 @@
+{
+  "start": "Zobrazit obrazovku",
+  "no-title": "Obrazovka bez názvu",
+  "no-text": "Obrazovka neobsahuje žádný text",
+  "chapters": "Kapitoly",
+
+  "game": {
+    "solution": "Správné řešení",
+    "controls": {
+      "finished": "Hotovo",
+      "play-again": "Zahrát znovu"
+    }
+  },
+
+  "game-find": {
+    "task": "Najdi na obrázku"
+  },
+  "game-draw": {
+    "task": "Dokresli obrázek"
+  },
+  "game-erase": {
+    "task": "Vymaž obrázek"
+  },
+  "game-sizing": {
+    "task": "Uhodni správnou velikost"
+  },
+  "game-move": {
+    "task": "Posuň na správné místo"
+  },
+  "game-quiz": {
+    "task": "Vyber správné možnosti"
+  }
+}

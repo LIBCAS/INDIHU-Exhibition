@@ -1,0 +1,20 @@
+{
+  "start": "Start exposition",
+  "approximately": "Approx.",
+  "no-name": "Exposition without name",
+  "no-authors": "Exposition has no author information",
+  "no-files": "Exposition has no files",
+  "no-screens": "Exposition has no screens",
+  "authors-and-documents": "Authors and documents of exposition",
+  "chapters": "Exposition chapters",
+  "more-info": "More information",
+  "less-info": "Less information",
+  "worksheet": "Worksheet",
+  "files": "Exposition files",
+  "info": "Information about exposition",
+  "replay": "Replay",
+  "share": "Share",
+  "share-expo": "Share exposition",
+  "authors": "Authors of exposition",
+  "copy-link": "Copy link to exposition"
+}

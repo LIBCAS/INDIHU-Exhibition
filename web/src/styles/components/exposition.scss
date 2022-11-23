@@ -91,6 +91,7 @@ $height-card-new: $height-actions + $height-card-text;
     max-height: 100vh;
     margin-top: -5em;
     padding-top: 5em;
+    padding-bottom: 60px;
   }
 
   &-inner {

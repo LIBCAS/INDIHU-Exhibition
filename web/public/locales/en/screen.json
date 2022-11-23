@@ -1,0 +1,33 @@
+{
+  "start": "View screen",
+  "no-title": "Screen without name",
+  "no-text": "Screen doesn't contain any text",
+  "chapters": "Chapters",
+
+  "game": {
+    "solution": "The solution",
+    "controls": {
+      "finished": "Finished",
+      "play-again": "Play again"
+    }
+  },
+
+  "game-find": {
+    "task": "Find on the image"
+  },
+  "game-draw": {
+    "task": "Draw on the image"
+  },
+  "game-erase": {
+    "task": "Erase the image"
+  },
+  "game-sizing": {
+    "task": "Guess the right size"
+  },
+  "game-move": {
+    "task": "Move to the correct position"
+  },
+  "game-quiz": {
+    "task": "Select the correct options"
+  }
+}

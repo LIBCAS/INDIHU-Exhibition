@@ -1,51 +1,57 @@
-import React from "react";
 import { compose, withHandlers, lifecycle } from "recompose";
 import { withRouter } from "react-router-dom";
 import { Prompt } from "react-router";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import ReactTooltip from "react-tooltip";
-import * as dialogActions from "../../actions/dialogActions";
 
-import Loader from "../Loader";
-import ConfirmDialog from "./ConfirmDialog";
-import DeleteAccount from "./DeleteAccount";
-import ExpoDelete from "./ExpoDelete";
-import ExpoDuplicate from "./ExpoDuplicate";
-import ExpoExport from "./ExpoExport";
-import ExpoNew from "./ExpoNew";
-import ExpoRename from "./ExpoRename";
-import ExpoShare from "./ExpoShare";
-import ExpoShareChangeOwner from "./ExpoShareChangeOwner";
-import ExpoShareRemoveCollaborator from "./ExpoShareRemoveCollaborator";
-import ExpositionMenu from "./ExpositionMenu";
-import ExpoState from "./ExpoState";
-import FileDelete from "./FileDelete";
-import FileDeleteFolder from "./FileDeleteFolder";
-import FileMove from "./FileMove";
-import FileNewFolder from "./FileNewFolder";
-import FileRename from "./FileRename";
-import FileRenameFolder from "./FileRenameFolder";
-import FilesManagerMenu from "./FilesManagerMenu";
-import ImageEditorSave from "./ImageEditorSave";
-import Info from "./Info";
-import PasswordReset from "./PasswordReset";
-import ScreenAuthorsAdd from "./ScreenAuthorsAdd";
-import ScreenAuthorsChange from "./ScreenAuthorsChange";
-import ScreenDelete from "./ScreenDelete";
-import ScreenDocumentChange from "./ScreenDocumentChange";
-import ScreenDocumentChoose from "./ScreenDocumentChoose";
-import ScreenDuplicate from "./ScreenDuplicate";
-import ScreenFileChoose from "./ScreenFileChoose";
-import ScreenDocumentNew from "./ScreenDocumentNew";
-import ScreenLink from "./ScreenLink";
-import ScreenMove from "./ScreenMove";
-import UserAccept from "./UserAccept";
-import UserDelete from "./UserDelete";
-import UserReactivate from "./UserReactivate";
-import ViewWrapChapters from "./ViewWrapChapters";
+import * as dialogActions from "../../actions/dialog-actions";
+import { setImageEditor } from "../../actions/app-actions";
+import Loader from "../loader";
+import ConfirmDialog from "./confirm-dialog";
+import DeleteAccount from "./delete-account";
+import ExpoDelete from "./expo-delete";
+import ExpoDuplicate from "./expo-duplicate";
+import ExpoExport from "./expo-export";
+import ExpoNew from "./expo-new";
+import ExpoRename from "./expo-rename";
+import ExpoShare from "./expo-share";
+import ExpoShareChangeOwner from "./expo-share-change-owner";
+import ExpoShareRemoveCollaborator from "./expo-share-remove-collaborator";
+import ExpositionMenu from "./exposition-menu";
+import ExpoState from "./expo-state";
+import FileDelete from "./file-delete";
+import FileDeleteFolder from "./file-delete-folder";
+import FileMove from "./file-move";
+import FileNewFolder from "./file-new-folder";
+import FileRename from "./file-rename";
+import FileRenameFolder from "./file-rename-folder";
+import FilesManagerMenu from "./files-manager-menu";
+import ImageEditorSave from "./image-editor-save";
+import Info from "./info";
+import PasswordReset from "./password-reset";
+import ScreenAuthorsAdd from "./screen-authors-add";
+import ScreenAuthorsChange from "./screen-authors-change";
+import ScreenDelete from "./screen-delete";
+import ScreenDocumentChange from "./screen-document-change";
+import ScreenDocumentChoose from "./screen-document-choose";
+import ScreenDuplicate from "./screen-duplicate";
+import ScreenFileChoose from "./screen-file-choose";
+import ScreenDocumentNew from "./screen-document-new";
+import ScreenLink from "./screen-link";
+import ScreenMove from "./screen-move";
+import UserAccept from "./user-accept";
+import UserDelete from "./user-delete";
+import UserReactivate from "./user-reactivate";
+import ViewWrapChapters from "./view-wrap-chapters";
+import ImageEditor from "../image-editor";
+import { ChaptersDialog } from "./chapters-dialog/chapters-dialog";
+import { FilesDialog } from "./files-dialog/files-dialog";
+import { ExpoInfoDialog } from "./expo-info-dialog/expo-info-dialog";
+import { ShareExpoDialog } from "./share-expo-dialog/share-expo-dialog";
+import { FinishInfoDialog } from "./finish-info-dialog/finish-info-dialog";
 
-export { default as WarningDialog } from "./WarningDialog";
+export { default as WarningDialog } from "./warning-dialog";
 
 const Dialogs = ({
   setDialog,
@@ -55,6 +61,7 @@ const Dialogs = ({
   history,
   loader,
   activeScreenEdited,
+  imageEditor,
 }) => {
   const dialogProps = {
     setDialog,
@@ -77,6 +84,11 @@ const Dialogs = ({
         className="help-icon-react-tooltip"
       />
       {loader && <Loader />}
+      <FinishInfoDialog {...dialogProps} />
+      <ShareExpoDialog {...dialogProps} />
+      <ExpoInfoDialog {...dialogProps} />
+      <FilesDialog {...dialogProps} />
+      <ChaptersDialog {...dialogProps} />
       <ConfirmDialog {...dialogProps} />
       <DeleteAccount {...dialogProps} />
       <ExpoDelete {...dialogProps} />
@@ -115,6 +127,7 @@ const Dialogs = ({
       <UserDelete {...dialogProps} />
       <UserReactivate {...dialogProps} />
       <ViewWrapChapters {...dialogProps} />
+      {imageEditor && <ImageEditor {...imageEditor} />}
     </div>
   );
 };
@@ -124,27 +137,31 @@ export default compose(
   connect(
     ({
       dialog: { dialogs, data },
-      app: { loader },
+      app: { loader, imageEditor },
       expo: { activeScreenEdited },
     }) => ({
       dialogs,
       data,
       loader,
+      imageEditor,
       activeScreenEdited,
     }),
     {
       ...dialogActions,
+      setImageEditor,
     }
   ),
   withHandlers({
-    manageKeyAction: ({ dialogs, closeDialog }) => (e) => {
-      if (e.keyCode === 27 && !isEmpty(dialogs)) {
-        closeDialog();
-      }
-    },
+    manageKeyAction:
+      ({ dialogs, closeDialog }) =>
+      (e) => {
+        if (e.keyCode === 27 && !isEmpty(dialogs)) {
+          closeDialog();
+        }
+      },
   }),
   lifecycle({
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       const { manageKeyAction } = this.props;
 
       document.addEventListener("keydown", manageKeyAction);

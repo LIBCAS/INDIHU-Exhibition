@@ -3,10 +3,13 @@ import {
   screenType,
   interactiveScreenTypes,
   screenUrl,
-  mobileDeviceRouting
-} from "../enums/screenType";
+  mobileDeviceRouting,
+} from "../enums/screen-type";
 import { isMobileDevice } from "../utils";
 
+/**
+ * Checks if screen can be shown on mobile device
+ */
 const screenForMobileDeviceCheck = (
   next,
   sectionIndex,
@@ -165,9 +168,9 @@ export const viewerRouter = (name, viewExpo, section, screen, next) => {
       : screen > 0
       ? `/view/${name}/${section}/${parseInt(screen, 10) - 1}`
       : section > 0 && screens[parseInt(section, 10) - 1].length
-      ? `/view/${name}/${parseInt(section, 10) - 1}/${screens[
-          parseInt(section, 10) - 1
-        ].length - 1}`
+      ? `/view/${name}/${parseInt(section, 10) - 1}/${
+          screens[parseInt(section, 10) - 1].length - 1
+        }`
       : `/view/${name}/start`;
   }
 };

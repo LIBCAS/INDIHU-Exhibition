@@ -1,10 +1,9 @@
-import React from "react";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 
-import StateOptions from "../../form/StateOptions";
-import URLChange from "./URLChange";
-import ClosedExpo from "./ClosedExpo";
+import StateOptions from "../../form/state-options";
+import URLChange from "./url-change";
+import ClosedExpo from "./closed-expo";
 
 const Settings = ({ activeExpo }) => (
   <div className="container container-tabMenu">
@@ -14,7 +13,7 @@ const Settings = ({ activeExpo }) => (
         <StateOptions />
       </div>
       <div className="settings-url">
-        <p className="title">URL výstavy</p>
+        <p className="title">Url výstavy</p>
         {activeExpo && activeExpo.url && (
           <URLChange initialValues={{ url: activeExpo.url }} />
         )}

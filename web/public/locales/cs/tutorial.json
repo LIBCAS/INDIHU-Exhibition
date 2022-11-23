@@ -1,0 +1,35 @@
+{
+  "next": "Další",
+  "skip": "Přeskočit prohlídku",
+  "finish": "Dokončit",
+
+  "overlay": {
+    "info": {
+      "label": "Informace",
+      "text": "Kliknutím zobrazíte podrobnější informace k obrazovce a její text."
+    },
+    "navigation": {
+      "label": "Navigace",
+      "text": "Navigační tlačítka umožňují volný pohyb po výstavě. Tlačítkem na pravé straně obrazovky se pohybujete směrem dopředu a tlačítkem na levé straně obrazovky postupujete zpět."
+    },
+    "chapters": {
+      "label": "Kapitoly",
+      "text": "Tlačítko otevře menu s veškerými kapitolami a obrazovkami výstavy. Na jednotlivé obrazovky je možné přejít následným kliknutím."
+    },
+    "audio": {
+      "label": "Zvuk",
+      "text": "Tlačítkem lze ovládat nastavení zvuku."
+    },
+    "play": {
+      "label": "Přehrávání",
+      "text": "Výstavu je možné pozastavit. Stejným tlačítkem lze poté přehrávání obnovit."
+    }
+  },
+
+  "screenChange": {
+    "dragThumb": {
+      "label": "Táhlo",
+      "text": "Posunutím odhalíte obrázek v pozadí."
+    }
+  }
+}

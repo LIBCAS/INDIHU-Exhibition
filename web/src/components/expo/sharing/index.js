@@ -1,11 +1,10 @@
-import React from "react";
 import { connect } from "react-redux";
 import { get } from "lodash";
 import Button from "react-md/lib/Buttons/Button";
 
-import Table from "./Table";
+import Table from "./table";
 
-import { setDialog } from "../../../actions/dialogActions";
+import { setDialog } from "../../../actions/dialog-actions";
 
 const Sharing = ({ activeExpo, setDialog, user }) => {
   const { id, author, collaborators } = activeExpo;
@@ -33,7 +32,6 @@ const Sharing = ({ activeExpo, setDialog, user }) => {
   );
 };
 
-export default connect(
-  ({ user: { info } }) => ({ user: info }),
-  { setDialog }
-)(Sharing);
+export default connect(({ user: { info } }) => ({ user: info }), { setDialog })(
+  Sharing
+);

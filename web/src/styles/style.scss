@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   min-height: 10vh;
   height: 100vh;
@@ -7,14 +11,17 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: "Raleway";
   -webkit-font-smoothing: antialiased;
   min-height: 10vh;
   height: 100vh;
   max-height: 100vh;
 }
 
-@import "./fonts.scss";
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+}
 
 /* COLORS */
 
@@ -32,6 +39,7 @@ $c-error: #ea5d5d;
 $c-positive: #e4f1e4;
 $c-maroon: #85144b;
 $c-red: #ff4136;
+$c-warning: #ffa136;
 
 /* BREAKPOINTS */
 
@@ -65,9 +73,10 @@ $md-colors-warn-md: false;
 @import "components/scrollbar.scss";
 @import "components/viewer.scss";
 @import "components/image-editor.scss";
+@import "components/infopoint.scss";
 
 *:not(i) {
-  font-family: "Raleway";
+  font-family: "Work Sans";
 }
 
 .__react_component_tooltip {

@@ -143,7 +143,10 @@ export const objectsEqual = (object1, object2) => {
   }
 
   for (let property in object1) {
-    if (object1.hasOwnProperty(property) !== object2.hasOwnProperty(property)) {
+    if (
+      Object.prototype.hasOwnProperty.call(object1, property) !==
+      Object.prototype.hasOwnProperty.call(object2, property)
+    ) {
       return false;
     }
 

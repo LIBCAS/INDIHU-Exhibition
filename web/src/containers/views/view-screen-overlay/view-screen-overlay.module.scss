@@ -1,0 +1,29 @@
+.leftNav {
+  grid-area: left-nav;
+}
+
+.rightNav {
+  grid-area: right-nav;
+}
+
+.info {
+  grid-area: info;
+}
+
+.actions {
+  grid-area: actions;
+}
+
+.progressBar {
+  grid-area: progress-bar;
+}
+
+.overlay {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3fr 1fr 3fr 15px;
+  grid-template-areas:
+    ". ."
+    "left-nav right-nav"
+    "info actions"
+    "progress-bar progress-bar";
+}

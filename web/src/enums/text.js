@@ -1,3 +1,6 @@
+/**
+ * Text for help icon tooltips
+ */
 export const helpIconText = {
   EDITOR_DOCUMENTS:
     "Dokumenty a soubory k výstavě, které budou zobrazeny na úvodní a závěrečné obrazovce.",

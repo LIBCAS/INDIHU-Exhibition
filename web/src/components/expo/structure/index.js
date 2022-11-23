@@ -1,15 +1,14 @@
-import React from "react";
 import classNames from "classnames";
 import { map, get, isEmpty } from "lodash";
 import ReactTooltip from "react-tooltip";
 
-import Draggable from "./Draggable";
-import ScreenCard from "./ScreenCard";
-import ScreenNew from "./ScreenNew";
-import ScreenDraggedCardTargetLocation from "./ScreenDraggedCardTargetLocation";
-import ScreenStartFinish from "./ScreenStartFinish";
+import Draggable from "./draggable";
+import ScreenCard from "./screen-card";
+import ScreenNew from "./screen-new";
+import ScreenDraggedCardTargetLocation from "./screen-dragged-card-target-location";
+import ScreenStartFinish from "./screen-start-finish";
 
-import { screenType } from "../../../enums/screenType";
+import { screenType } from "../../../enums/screen-type";
 
 const Structure = ({ activeExpo }) => {
   const screens = get(activeExpo, "structure.screens");
@@ -84,7 +83,7 @@ const Structure = ({ activeExpo }) => {
                             !structRow[0].aloneScreen) && (
                             <div
                               className={classNames("row-line", {
-                                last: structRow.length === colNum + 1
+                                last: structRow.length === colNum + 1,
                               })}
                             />
                           )}

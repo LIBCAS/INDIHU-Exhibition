@@ -23,7 +23,7 @@ export const getObjectFitSize = (
     width: targetWidth,
     height: targetHeight,
     x: (containerWidth - targetWidth) / 2,
-    y: (containerHeight - targetHeight) / 2
+    y: (containerHeight - targetHeight) / 2,
   };
 };
 
