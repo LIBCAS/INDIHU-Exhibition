@@ -27,8 +27,8 @@ const FileUploader = ({
             uploadProps={{
               accept:
                 accept ||
-                "video/mp4,audio/mp3,image/jpeg,image/png,application/*,text/*",
-              multiple: true
+                "video/mp4,audio/mp3,image/jpeg,image/png,application/*,application/pdf,text/*",
+              multiple: true,
             }}
           >
             {children}
@@ -55,7 +55,7 @@ const FileUploader = ({
 export default compose(
   defaultProps({
     onLoadingStart: noop,
-    onLoadingEnd: noop
+    onLoadingEnd: noop,
   }),
   withState("fileError", "setFileError", null),
   withState("isLoading", "setIsLoading", false),
@@ -66,9 +66,9 @@ export default compose(
       onComplete,
       url,
       setProgress,
-      setIsLoading
-    }) => async files => {
-      const filesArray = map(files, file => file);
+      setIsLoading,
+    }) => async (files) => {
+      const filesArray = map(files, (file) => file);
 
       if (find(files, ({ size }) => size > MAX_FILE_SIZE)) {
         setFileError("Maximální velikost souboru je 250MB.");
@@ -94,9 +94,7 @@ export default compose(
             return true;
           } else {
             setFileError(
-              `Nahrávání souboru ${
-                file.name
-              } selhalo. Seznam podporovaných formátů je k dispozici v manuálu.`
+              `Nahrávání souboru ${file.name} selhalo. Seznam podporovaných formátů je k dispozici v manuálu.`
             );
             return false;
           }
@@ -112,6 +110,6 @@ export default compose(
       }
 
       setProgress(0);
-    }
+    },
   })
 )(FileUploader);
