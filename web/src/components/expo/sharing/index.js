@@ -14,7 +14,7 @@ const Sharing = ({ activeExpo, setDialog, user }) => {
   return (
     <div>
       {activeExpo && (
-        <div className="container container-tabMenu sharing">
+        <div className="sharing">
           <p>Sdíleno s uživateli</p>
           <Table {...{ collaborators, author, isAuthor }} />
           <br />

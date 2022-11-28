@@ -73,6 +73,11 @@ const AppHeader = ({
             : get(activeExpo, "title", "INDIHU Exhibition")
           : get(activeExpo, "title", "INDIHU Exhibition")}
       </h2>
+      {(expoStyle || (screenStyle && activeScreen)) && (
+        <p className="toolbar-button nonclickable">
+          stav: {expoStateText[activeExpo.state]}
+        </p>
+      )}
       {authStyle && (
         <a
           className="toolbar-button toolbar-button-link screen-size-desktop-bigger-min"
@@ -161,9 +166,16 @@ const AppHeader = ({
     {!authStyle && (
       <div className="toolbar-right toolbar-flex">
         {(expoStyle || (screenStyle && activeScreen)) && (
-          <p className="toolbar-button nonclickable">
-            stav: {expoStateText[activeExpo.state]}
-          </p>
+          <a
+            href="https://nnis.github.io/indihu-manual/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="toolbar-button"
+            style={{ textDecoration: "none" }}
+          >
+            <i className="fa fa-fw fa-info" />
+            Manuál
+          </a>
         )}
         {!expoStyle && !screenStyle && admin && (
           <p
