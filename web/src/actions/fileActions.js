@@ -290,7 +290,11 @@ export const getFileById = id => (_, getState) => {
 export const isFileUsed = id => (_, getState) => {
   if (!id) return false;
   const activeExpo = getState().expo.activeExpo;
-  if (!activeExpo) return false;
+  if (
+    !activeExpo ||
+    (typeof activeExpo === "object" && Object.keys(activeExpo).length === 0)
+  )
+    return false;
   const structure = activeExpo.structure;
   const start = structure.start;
   if (

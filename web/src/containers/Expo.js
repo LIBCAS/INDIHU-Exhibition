@@ -10,7 +10,6 @@ import TabMenu from "../components/TabMenu";
 import Structure from "../components/expo/structure";
 import Files from "../components/expo/files";
 import Settings from "../components/expo/settings";
-import Sharing from "../components/expo/sharing";
 import Editor from "./ExpoEditor";
 
 import { loadExpo } from "../actions/expoActions";
@@ -36,8 +35,7 @@ const Expo = props => {
               link: `/expo/${activeExpo.id}/structure`
             },
             { label: "Soubory", link: `/expo/${activeExpo.id}/files` },
-            { label: "Nastavení", link: `/expo/${activeExpo.id}/settings` },
-            { label: "Sdílení", link: `/expo/${activeExpo.id}/sharing` }
+            { label: "Nastavení", link: `/expo/${activeExpo.id}/settings` }
           ]}
         />
       )}
@@ -49,10 +47,6 @@ const Expo = props => {
       <Route
         path={`${match.url}/settings`}
         render={() => <Settings {...props} />}
-      />
-      <Route
-        path={`${match.url}/sharing`}
-        render={() => <Sharing {...props} />}
       />
       <Route
         path={`${match.url}/screen`}

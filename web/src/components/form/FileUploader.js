@@ -25,9 +25,7 @@ const FileUploader = ({
           <UploadField
             onFiles={handleFiles}
             uploadProps={{
-              accept:
-                accept ||
-                "video/mp4,audio/mp3,image/jpeg,image/png,application/*,text/*",
+              accept: accept || "image/*,video/*,audio/*,.pdf,.doc,.docx",
               multiple: true
             }}
           >
@@ -94,9 +92,7 @@ export default compose(
             return true;
           } else {
             setFileError(
-              `Nahrávání souboru ${
-                file.name
-              } selhalo. Seznam podporovaných formátů je k dispozici v manuálu.`
+              `Nahrávání souboru ${file.name} selhalo. Seznam podporovaných formátů je k dispozici v manuálu.`
             );
             return false;
           }
