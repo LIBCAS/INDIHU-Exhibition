@@ -13,10 +13,10 @@
   },
 
   "game-find": {
-    "task": "Find on the image"
+    "task": "Find in the image"
   },
   "game-draw": {
-    "task": "Draw on the image"
+    "task": "Draw in the image"
   },
   "game-erase": {
     "task": "Erase the image"
@@ -28,6 +28,6 @@
     "task": "Move to the correct position"
   },
   "game-quiz": {
-    "task": "Select the correct options"
+    "task": "Select the correct option(s)"
   }
 }
