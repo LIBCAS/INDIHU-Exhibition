@@ -21,6 +21,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
     <div className="container container-tabMenu">
       <div className="screen">
         <div className="description-container">
+          {/* First column */}
           <div className="part margin-bottom margin-horizontal">
             <div className="flex-row-nowrap">
               <TextField
@@ -61,6 +62,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 className="checkbox-shift-left-by-padding"
               />
             </div>
+
             <div className="row">
               <SelectField
                 id="chapter-start-selectfield-textPosition.horizontal"
@@ -107,7 +109,45 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 }
               />
             </div>
+
+            <div className="row">
+              <SelectField
+                id="chapter-start-selectield-textColor"
+                className="select-field big"
+                label="Barva textu"
+                menuItems={[
+                  { value: "light", label: "Světlá" },
+                  { value: "dark", label: "Tmavá" },
+                ]}
+                itemLabel={"label"}
+                itemValue={"value"}
+                position={"below"}
+                defaultValue={activeScreen.introTextTheme}
+                onChange={(value) =>
+                  updateScreenData({ introTextTheme: value })
+                }
+              />
+
+              <SelectField
+                id="chapter-start-selectfield-textHaloEffect"
+                className="select-field big"
+                label="Efekt textu"
+                menuItems={[
+                  { value: "on", label: "Zapnuto" },
+                  { value: "off", label: "Vypnuto" },
+                ]}
+                itemLabel={"label"}
+                itemValue={"value"}
+                position={"below"}
+                defaultValue={activeScreen.isIntroTextHaloEffectOn}
+                onChange={(value) =>
+                  updateScreenData({ isIntroTextHaloEffectOn: value })
+                }
+              />
+            </div>
           </div>
+
+          {/* Second column */}
           <div className="part margin-bottom margin-horizontal">
             <AudioMusic
               {...{

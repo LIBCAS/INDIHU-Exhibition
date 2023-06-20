@@ -97,6 +97,11 @@
   height: 100%;
 }
 
+/* BORDERS and SHADOWS */
+.soft-black-border {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
 /* MARGIN */
 
 .margin {
@@ -541,6 +546,102 @@
   flex-direction: column;
   padding: 0.5em 1em;
 
+  /* For documents table! */
+  &-row-new {
+    min-height: 3em;
+    display: flex;
+    flex-direction: row;
+    //flex-wrap: nowrap;
+    gap: 8px;
+    //padding: 0.2em;
+    border-bottom: 1px solid #ececec;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #ececec;
+    }
+
+    &.header {
+      color: $c-grey;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    &.active {
+      background-color: #ececec;
+    }
+
+    .table-cell {
+      line-height: 2em;
+      padding: 4px;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      overflow: hidden;
+      white-space: wrap;
+    }
+
+    .table-cell-first_5 {
+      @extend .table-cell;
+      min-width: 60px;
+      width: 10%;
+    }
+
+    .table-cell-second_5 {
+      @extend .table-cell;
+      width: 20%;
+    }
+
+    .table-cell-third_5 {
+      @extend .table-cell;
+      width: 40%;
+    }
+
+    .table-cell-fourth_5 {
+      @extend .table-cell;
+      width: 20%;
+    }
+
+    .table-cell-fifth_5 {
+      @extend .table-cell;
+      min-width: 60px;
+      width: 10%;
+    }
+
+    /* */
+    .table-cell-first_6 {
+      @extend .table-cell;
+      min-width: 60px;
+      width: 10%;
+    }
+
+    .table-cell-second_6 {
+      @extend .table-cell;
+      width: 20%;
+    }
+
+    .table-cell-third_6 {
+      @extend .table-cell;
+      width: 40%;
+    }
+
+    .table-cell-fourth_6 {
+      @extend .table-cell;
+      width: 20%;
+    }
+
+    .table-cell-fifth_6 {
+      @extend .table-cell;
+      min-width: 60px;
+      width: 10%;
+    }
+
+    .table-cell-sixth_6 {
+      @extend .table-cell;
+    }
+  }
+
   &-row {
     position: relative;
     min-height: 3em;
@@ -604,6 +705,43 @@
 
 @media (max-width: $breakpoint-tablet) {
   .table {
+    padding: 0.5em 0em;
+    gap: 16px;
+
+    &-row-new {
+      flex-direction: column;
+      gap: 8px;
+      border-bottom: 4px solid #ececec;
+
+      &.header {
+        display: none;
+      }
+
+      .table-cell {
+        overflow: auto;
+      }
+
+      .table-cell-first_5 {
+        width: 100%;
+      }
+
+      .table-cell-second_5 {
+        width: 100%;
+      }
+
+      .table-cell-third_5 {
+        width: 100%;
+      }
+
+      .table-cell-fourth_5 {
+        width: 100%;
+      }
+
+      .table-cell-fifth_5 {
+        width: 100%;
+      }
+    }
+
     &-row {
       height: auto;
       flex-wrap: wrap;

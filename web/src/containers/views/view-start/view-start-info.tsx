@@ -1,21 +1,23 @@
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+
 import { animated, useSpring, useTransition } from "react-spring";
+import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "components/button/button";
 import { Divider } from "components/divider/divider";
+import { Icon } from "components/icon/icon";
+
 import { setDialog } from "actions/dialog-actions";
 import { giveMeExpoTime, secondsToFormatedTime } from "utils";
+import { breakpoints } from "hooks/media-query-hook/breakpoints";
+
 import { AppDispatch, AppState } from "store/store";
 import { DialogType } from "components/dialogs/dialog-types";
-import { Icon } from "components/icon/icon";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { ViewExpo } from "reducers/expo-reducer";
 import { StartScreen } from "models";
-
-import { useTranslation } from "react-i18next";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo as ViewExpo,
@@ -32,8 +34,9 @@ export const ViewStartInfo = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { viewExpo, viewScreen } = useSelector(stateSelector);
+
   const isSmall = useMediaQuery(breakpoints.down("lg"));
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   const { rotateX } = useSpring({
     rotateX: isOpen ? "180deg" : "0deg",
@@ -78,6 +81,7 @@ export const ViewStartInfo = ({
 
   return (
     <div className="flex flex-col h-full">
+      {/* 1)  Title and more/less information */}
       <div className="flex justify-between items-center">
         <span className="text-xl sm:text-2xl md:text-3xl mb-2 font-bold">
           {viewScreen.title ?? t("no-name")}
@@ -96,7 +100,11 @@ export const ViewStartInfo = ({
           {!isSmall && isOpen ? t("less-info") : t("more-info")}
         </Button>
       </div>
+
+      {/* 2) Subtitle */}
       <span className="mb-2">{viewScreen.subTitle}</span>
+
+      {/* 2.5) If display is bigger than "lg" && Panel is toggled, then point 1,2) stays and render also Divider + Info lines */}
       {transition(
         ({ opacity }, isOpen) =>
           isOpen &&
@@ -120,6 +128,8 @@ export const ViewStartInfo = ({
             </animated.div>
           )
       )}
+
+      {/* 3) Schedule time + Chapters Button if display is bigger than "lg" */}
       <div className="flex items-center mt-auto justify-between">
         <div className="flex items-center">
           <Icon name="schedule" color="primary" />
@@ -127,6 +137,7 @@ export const ViewStartInfo = ({
             {t("approximately")} {expoTime}
           </span>
         </div>
+
         {!isSmall && (
           <Button
             iconAfter={<Icon color="primary" name="layers" />}

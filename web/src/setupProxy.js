@@ -5,7 +5,8 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://exhibition-test.indihu.cz/",
+      //target: "https://indihu.inqool.cz/", // DEV server
+      target: "https://exhibition-test.indihu.cz/", // TEST server
       secure: false,
       changeOrigin: true,
     })

@@ -16,7 +16,7 @@ export const asTutorialSteps = <TKey extends string = string>(
   steps: TutorialStep<TKey>[]
 ) => steps;
 
-type RefCallback = (ref: HTMLElement | null) => void;
+export type RefCallback = (ref: HTMLElement | null) => void;
 
 export const useTutorial = <TKey extends string>(
   key: keyof TutorialStoreType,
@@ -66,6 +66,11 @@ export const useTutorial = <TKey extends string>(
     setStore((prev) => ({ ...prev, [key]: false }));
   }, [key, setStore, steps.length]);
 
+  const escapeTutorial = useCallback(() => {
+    setStepIndex(steps.length);
+    setStore((prev) => ({ ...prev, [key]: true }));
+  }, [key, setStore, steps.length]);
+
   const TutorialTooltip = useMemo(
     () =>
       step && (
@@ -106,7 +111,8 @@ export const useTutorial = <TKey extends string>(
       step,
       store,
       TutorialTooltip,
+      escapeTutorial,
     }),
-    [TutorialTooltip, bind, step, store]
+    [TutorialTooltip, bind, step, store, escapeTutorial]
   );
 };

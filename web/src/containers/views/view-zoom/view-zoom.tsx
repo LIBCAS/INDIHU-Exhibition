@@ -8,7 +8,7 @@ import { AppState } from "store/store";
 import { calculateObjectFit } from "utils/object-fit";
 import useElementSize from "hooks/element-size-hook";
 
-import { ScreenProps } from "../types";
+import { ScreenProps } from "models";
 
 const delayTime = 2000;
 
@@ -18,14 +18,14 @@ const stateSelector = createSelector(
   (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
 );
 
-export const ViewZoom = ({ screenFiles }: ScreenProps) => {
+export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, viewProgress } = useSelector(stateSelector);
   const [ref, containerSize] = useElementSize();
   const animations = viewScreen.sequences;
   const [animation, setAnimation] = useState<
     typeof animations[number] | undefined
   >(undefined);
-  const { image } = screenFiles;
+  const { image } = screenPreloadedFiles;
 
   const { height, width } = useMemo(
     () =>

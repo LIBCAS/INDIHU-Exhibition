@@ -6,7 +6,7 @@ import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 import Button from "react-md/lib/Buttons/Button";
 import FontIcon from "react-md/lib/FontIcons";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import HelpIcon from "../help-icon";
 import InfopointIcon from "../infopoint-icon";
@@ -49,20 +49,26 @@ const Image = ({
   setDialog,
 }) => {
   return (
+    // Flex row with two items, whole box and just help icon
     <div className="flex-row-nowrap">
+      {/* Flex col with three items: title, image card and settings panel */}
       <div
         className={classNames("flex-col card-image-container", {
           img: !!image,
           "img-none": !image,
         })}
       >
+        {/* 1.) Title */}
         <div>{title}</div>
+
+        {/* 2.) Card */}
         <Card
           className={classNames("card-image", {
             img: !!image,
             "img-none": !image,
           })}
         >
+          {/* 2a) Card with image */}
           {image && (
             <div
               id="screen-image-infopoints"
@@ -172,6 +178,7 @@ const Image = ({
                   draggable="false"
                 />
               )}
+
               {/* INFOPOINTS */}
               {(infopoints ||
                 sequences ||
@@ -222,7 +229,7 @@ const Image = ({
                               "infopoint-pulse 2s infinite",
                           }}
                           onMouseDown={(e) => {
-                            ReactTooltip.hide();
+                            //ReactTooltip.hide();
                             const boundary = document
                               .getElementById(`screen-image-infopoint-${i}`)
                               .getBoundingClientRect();
@@ -272,19 +279,22 @@ const Image = ({
                                   }
                             );
                           }}
-                          data-tip={item.text}
+                          data-tooltip-id="photogallery-image-tooltip"
+                          data-tooltip-content={item.text}
                         />
                         <ReactTooltip
+                          id="photogallery-image-tooltip"
                           className="infopoint-tooltip"
-                          type="dark"
-                          effect="solid"
+                          variant="dark"
+                          float={false}
                         />
                       </div>
                     )
                 )}
             </div>
           )}
-          {/* NO IMAGE */}
+
+          {/* 2b) Card without image, NO IMAGE */}
           {!image && (
             <CardText className="flex-col flex-centered full-height">
               <FontIcon className="card-image-icon-placeholder">image</FontIcon>
@@ -294,7 +304,8 @@ const Image = ({
             </CardText>
           )}
         </Card>
-        {/* SETTINGS */}
+
+        {/* 3.) SETTINGS, below the card */}
         {image && (
           <div className="flex-row flex-space-between">
             <div>
@@ -346,6 +357,7 @@ const Image = ({
           </div>
         )}
       </div>
+
       <HelpIcon
         {...{ label: helpIconLabel || helpIconText.EDITOR_IMAGE, id }}
       />

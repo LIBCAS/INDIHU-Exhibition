@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Button, FontIcon } from "react-md";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import Filter from "./filter";
 
@@ -37,22 +37,22 @@ const Header = ({
       <Button
         icon
         onClick={async () => {
-          ReactTooltip.hide();
+          //ReactTooltip.hide();
           changeExpositionsViewType(!cardsList);
           showLoader(true);
           await getExpositions();
           showLoader(false);
         }}
-        data-tip={cardsList ? "Seznam" : "Mřížka"}
-        data-for="expositions-filter-react-tooltip-order"
+        data-tooltip-content={cardsList ? "Seznam" : "Mřížka"}
+        data-tooltip-id="expositions-filter-react-tooltip-order"
       >
         {cardsList ? "view_list" : "view_module"}
       </Button>
       <ReactTooltip
         id="expositions-filter-react-tooltip-order"
         className="infopoint-tooltip"
-        type="dark"
-        effect="solid"
+        variant="dark"
+        float={false}
         place="bottom"
       />
     </div>

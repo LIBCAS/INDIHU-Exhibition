@@ -1,42 +1,50 @@
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { compose, withProps } from "recompose";
+import { connect } from "react-redux";
+import { withKeyShortcuts } from "../hoc"; // ! HOC - High Order Component, enhancing this component
+
+// Components
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 import CardActions from "react-md/lib/Cards/CardActions";
 import MDButton from "react-md/lib/Buttons/Button";
-
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
+// Utils
+import classNames from "classnames";
+import PropTypes from "prop-types";
+
+// Actions
 import { closeDialog } from "../../actions/dialog-actions";
-import { withKeyShortcuts } from "../hoc";
+
+// - - - - - - - -
 
 const DialogWrap = ({
   name,
-  active,
   title,
-  closeDialog,
+  submitLabel,
   handleSubmit,
   onClose,
-  submitLabel,
-  children,
+  style, // nowhere used
   className,
-  noStornoButton,
-  noSubmitButton,
-  noDialogMenu,
-  noToolbar,
   big,
   large,
-  style,
+  noDialogMenu,
+  noStornoButton,
+  noSubmitButton,
+  noToolbar,
+  // noOverflowScrollOnClose  missing
+  children,
+  ...otherProps
 }) => {
-  if (name === active) {
+  const { activeName, closeDialog } = otherProps; // connect HOC
+
+  if (name === activeName) {
     document.body.style.overflow = "hidden";
   }
 
   return (
-    <div className={classNames({ hidden: name !== active })}>
+    <div className={classNames({ hidden: name !== activeName })}>
       <div className="dialog-background" />
       <Card
         raise
@@ -46,6 +54,7 @@ const DialogWrap = ({
           large,
         })}
       >
+        {/* Title */}
         {!noToolbar && (
           <div className="dialog-title-row">
             <CardText className="dialog-title">{title}</CardText>
@@ -58,6 +67,8 @@ const DialogWrap = ({
             />
           </div>
         )}
+
+        {/* Section with content */}
         <CardText
           className={classNames("dialog-content", {
             "no-margin-bottom": noDialogMenu,
@@ -66,6 +77,8 @@ const DialogWrap = ({
         >
           {children}
         </CardText>
+
+        {/* Footer of dialog with buttons */}
         {!noDialogMenu && (
           <CardActions className="dialog-menu">
             {!noStornoButton && (
@@ -101,7 +114,7 @@ const DialogWrap = ({
 
 DialogWrap.propTypes = {
   name: PropTypes.string,
-  active: PropTypes.string,
+  activeName: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   closeDialog: PropTypes.func,
   handleSubmit: PropTypes.func,
@@ -110,12 +123,12 @@ DialogWrap.propTypes = {
 };
 
 export default compose(
-  connect(({ dialog: { name } }) => ({ active: name }), {
+  connect(({ dialog: { name } }) => ({ activeName: name }), {
     closeDialog,
   }),
-  withProps(({ name, active, noDialogMenu, noSubmitButton }) => ({
+  withProps(({ name, activeName, noDialogMenu, noSubmitButton }) => ({
     onEnterButtonId:
-      !noDialogMenu && !noSubmitButton && name === active
+      !noDialogMenu && !noSubmitButton && name === activeName
         ? `dialog-submit-button-${name}`
         : undefined,
   })),

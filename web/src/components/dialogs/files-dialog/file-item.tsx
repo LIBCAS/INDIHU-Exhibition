@@ -1,17 +1,28 @@
 import { useCallback } from "react";
-import { Button } from "components/button/button";
 
-import { Document } from "models";
+import cx from "classnames";
+
+import { Button } from "components/button/button";
+import { Icon } from "components/icon/icon";
+
 import { getDocumentIconName } from "utils";
 import { downloadFile } from "utils/download-file";
 
-import { Icon } from "components/icon/icon";
+import { Document } from "models";
 
 interface Props {
   file: Document;
+  isFromFinishFileDialog?: boolean;
+  isSubItem?: boolean; // for padding
 }
 
-export const FileItem = ({ file }: Props) => {
+export const FileItem = ({
+  file,
+  isFromFinishFileDialog,
+  isSubItem,
+}: Props) => {
+  // fileName is name given by the user from the TextField
+  // name (original when uploading) and fileId exist if file is file (not URL or odkaz)
   const handleDownload = useCallback(() => {
     if (!("name" in file)) {
       return;
@@ -21,7 +32,15 @@ export const FileItem = ({ file }: Props) => {
   }, [file]);
 
   return (
-    <div className="flex items-center gap-4 border-b p-2 border-b-black border-opacity-10">
+    <div
+      className={cx(
+        "flex items-center gap-4 p-2 border-b border-b-black border-opacity-10",
+        {
+          "w-11/12": isFromFinishFileDialog,
+          "ml-12": isSubItem,
+        }
+      )}
+    >
       <Icon
         className="text-muted"
         name={getDocumentIconName(

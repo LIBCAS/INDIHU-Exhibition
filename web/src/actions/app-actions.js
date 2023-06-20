@@ -11,11 +11,13 @@ import {
   IMAGE_EDITOR,
 } from "./constants";
 
+// loader: boolean value
 export const showLoader = (loader) => ({
   type: APP,
   payload: { loader },
 });
 
+// state: string value, like "PREPARE" | "OPENED" | "ENDED" | "FOLDER_javascript"
 export const changeRadioState = (state) => ({
   type: RADIO_STATE_CHANGE,
   payload: {
@@ -32,11 +34,13 @@ export const changeSwitchState = (state) => ({
 
 export const resetForm = (form) => reset(form);
 
+// Used in image.js
 export const mouseActualize = (mouseInfo) => ({
   type: MOUSE_ACTUALIZE,
   payload: mouseInfo,
 });
 
+// Used in image.js
 export const zoomActualize = (zoom) => ({
   type: ZOOM_ACTUALIZE,
   payload: {

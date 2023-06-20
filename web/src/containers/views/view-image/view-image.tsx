@@ -1,20 +1,18 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import Tooltip from "react-tooltip";
+
+import { useSpring, animated } from "react-spring";
+import useElementSize from "hooks/element-size-hook";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+
+import { getViewImageAnimation } from "./view-image-animation";
+import { calculateObjectFit } from "utils/object-fit";
+import { getScreenTime } from "utils/screen";
 
 import { AppState } from "store/store";
 import { ImageScreen } from "models";
-
-import { ScreenProps } from "../types";
-
-import { getScreenTime } from "utils/screen";
-import { useSpring, animated } from "react-spring";
-import { getViewImageAnimation } from "./view-image-animation";
-import useElementSize from "hooks/element-size-hook";
-import { calculateObjectFit } from "utils/object-fit";
-import { Infopoint } from "components/infopoint/infopoint";
-import { useInfopointTooltip } from "components/infopoint/infopoint-tooltip-hook";
+import { ScreenProps } from "models";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ImageScreen,
@@ -22,17 +20,19 @@ const stateSelector = createSelector(
   (viewScreen, shouldIncrement) => ({ viewScreen, shouldIncrement })
 );
 
-export const ViewImage = ({ screenFiles }: ScreenProps) => {
+export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, shouldIncrement } = useSelector(stateSelector);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [wrapperRef, parentSize] = useElementSize();
-  const { image } = screenFiles;
 
-  const { renderTooltip, showTooltip } = useInfopointTooltip();
-  const duration = useMemo(
-    () => getScreenTime(viewScreen, { unit: "ms" }),
-    [viewScreen]
-  );
+  const { image } = screenPreloadedFiles;
+
+  /* Wrapper is the whole <div> of this screen */
+  /* Container is <div> without tooltip */
+  const [wrapperRef, parentSize] = useElementSize();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // - - - -
+
+  //const imageOrigData = viewScreen.imageOrigData ?? { width: 0, height: 0 };
 
   const { height, top, left } = useMemo(
     () =>
@@ -49,6 +49,15 @@ export const ViewImage = ({ screenFiles }: ScreenProps) => {
     [height, viewScreen.imageOrigData?.height]
   );
 
+  // - - - -
+
+  /* Duration of the screen */
+  const duration = useMemo(
+    () => getScreenTime(viewScreen, { unit: "ms" }),
+    [viewScreen]
+  );
+
+  /* From viewScreen.animationType of the Image */
   const animation = useMemo(
     () => getViewImageAnimation(viewScreen.animationType),
     [viewScreen.animationType]
@@ -62,12 +71,42 @@ export const ViewImage = ({ screenFiles }: ScreenProps) => {
     pause: !shouldIncrement,
   });
 
+  // - - - -
+
+  const {
+    infopointOpenStatusMap,
+    setInfopointOpenStatusMap,
+    closeInfopoints,
+    SquareInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  // Event handler on key down press
+  const onKeyDownAction = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints();
+      }
+    },
+    [closeInfopoints]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", onKeyDownAction);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDownAction);
+    };
+  }, [onKeyDownAction]);
+
+  // - - - -
+
   return (
     <>
       <div ref={wrapperRef} className="h-full w-full overflow-hidden">
         <animated.div
           className="h-full w-full flex items-center justify-center relative"
-          style={{ translateX, translateY }}
+          style={{ translateX: translateX, translateY: translateY }}
         >
           <animated.div
             ref={containerRef}
@@ -83,38 +122,40 @@ export const ViewImage = ({ screenFiles }: ScreenProps) => {
               )}
             {image && (
               <img
-                className="absolue top-0 left-0 h-full w-full object-contain"
+                className="absolute top-0 left-0 h-full w-full object-contain"
                 src={image}
+                onClick={() => closeInfopoints()}
               />
             )}
-            {viewScreen.infopoints?.map((infopoint, index) => (
-              <Infopoint
-                key={index}
-                data-tip={infopoint.text}
-                data-for="view-image-infopoint-tooltip"
-                data-event="click focus"
-                className="absolute z-10"
+            {viewScreen.infopoints?.map((infopoint, infopointIndex) => (
+              <SquareInfopoint
+                key={`infopoint-tooltip-${infopointIndex}`}
+                id={`infopoint-tooltip-${infopointIndex}`}
+                content={infopoint.text ?? "Neuvedeno"}
+                top={top + infopoint.top * ratio}
+                left={left + infopoint.left * ratio}
+                // we need to scale the infopoint back down to normal size
                 style={{
-                  top: top + infopoint.top * ratio,
-                  left: left + infopoint.left * ratio,
-                  // we need to scale the infopoint back down to normal size
                   transform: `translate(-50%, -50%) scale(${1 / scale.get()})`,
                 }}
               />
             ))}
           </animated.div>
 
-          {showTooltip && (
-            <Tooltip
-              clickable
-              getContent={renderTooltip}
-              globalEventOff="click"
-              effect="solid"
-              type="light"
-              id="view-image-infopoint-tooltip"
-              className="bg-white shadow-md text-black"
-            />
-          )}
+          {/* Render one Tooltip as infopoint component for each previously rendered square, 1: 1 */}
+          {/* Infopoint Tooltip which is alwaysVisible has different behaviour than infopoint which is not!*/}
+          {viewScreen.infopoints?.map((infopoint, infopointIndex) => {
+            return (
+              <TooltipInfoPoint
+                key={`infopoint-tooltip-${infopointIndex}`}
+                id={`infopoint-tooltip-${infopointIndex}`}
+                isAlwaysVisible={infopoint.alwaysVisible}
+                infopointOpenStatusMap={infopointOpenStatusMap}
+                setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                primaryKey={infopointIndex.toString()}
+              />
+            );
+          })}
         </animated.div>
       </div>
     </>

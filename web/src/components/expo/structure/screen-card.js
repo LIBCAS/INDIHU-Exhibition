@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 import { get } from "lodash";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import ScreenCardMenu from "./screen-card-menu";
 import ScreenCardActions from "./screen-card-actions";
@@ -49,8 +49,8 @@ const ScreenCard = ({
           className={`structure-screen-card-icon fa ${
             screenTypeIcon[data.type]
           }`}
-          data-tip={get(screenTypeText, data.type)}
-          data-for="expo-structure-screen-new-tooltip"
+          data-tooltip-content={get(screenTypeText, data.type)}
+          data-tooltip-id="expo-structure-screen-new-tooltip"
         />
         <ScreenCardMenu
           name={header}
@@ -67,8 +67,8 @@ const ScreenCard = ({
         <CardText
           className="card-screen"
           onClick={() => onClickEnabled && history.push(editUrl)}
-          data-tip={get(screenTypeText, data.type)}
-          data-for="expo-structure-screen-new-tooltip"
+          data-tooltip-content={get(screenTypeText, data.type)}
+          data-tooltip-id="expo-structure-screen-new-tooltip"
         >
           <p style={{ wordWrap: "break-word" }}>
             {number}
@@ -83,8 +83,8 @@ const ScreenCard = ({
         />
       </Card>
       <ReactTooltip
-        type="dark"
-        effect="solid"
+        variant="dark"
+        float={false}
         id={`screen-card-${rowNum}-${colNum}-tooltip`}
         className="help-icon-react-tooltip"
       />

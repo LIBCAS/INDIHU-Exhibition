@@ -1,14 +1,16 @@
 import { useMemo } from "react";
-import { IntroScreen } from "models";
 import { useSelector } from "react-redux";
-import { useSpring, animated } from "react-spring";
 import { createSelector } from "reselect";
+
+import { useSpring, animated } from "react-spring";
+
+import { IntroScreen } from "models";
 import { AppState } from "store/store";
+import { ScreenProps } from "models";
+
+import { getViewImageAnimation } from "../view-image/view-image-animation";
 import { getScreenTime } from "utils/screen";
 import cx from "classnames";
-
-import { ScreenProps } from "../types";
-import { getViewImageAnimation } from "../view-image/view-image-animation";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as IntroScreen,
@@ -16,10 +18,24 @@ const stateSelector = createSelector(
   (viewScreen, shouldIncrement) => ({ viewScreen, shouldIncrement })
 );
 
-export const ViewChapter = ({ screenFiles }: ScreenProps) => {
+export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, shouldIncrement } = useSelector(stateSelector);
-  const { image } = screenFiles;
+  const { image } = screenPreloadedFiles;
   const { title, subTitle, animateText } = viewScreen;
+
+  const shadowColor = useMemo(() => {
+    const textColor = viewScreen.introTextTheme ?? "light";
+    const isTextEffectOn = viewScreen.isIntroTextHaloEffectOn ?? "off";
+    if (isTextEffectOn === "off") {
+      return null;
+    }
+    // TextEffect is ON here!
+    if (textColor === "light") {
+      return "black";
+    }
+    // TextColor is dark.. so return opposite white color of shadow
+    return "white";
+  }, [viewScreen.introTextTheme, viewScreen.isIntroTextHaloEffectOn]);
 
   const animation = useMemo(
     () => getViewImageAnimation(viewScreen.animationType),
@@ -73,24 +89,40 @@ export const ViewChapter = ({ screenFiles }: ScreenProps) => {
           style={animateText ? { y, opacity } : {}}
         >
           <h1
-            className={cx(
-              "shdow-md text-white m-0 font-bold text-4xl md:text-6xl",
-              {
-                "text-center": horizontal === "CENTER",
-                "text-right": horizontal === "RIGHT",
-              }
-            )}
+            className={cx("m-0 font-bold text-4xl md:text-7xl", {
+              "text-center": horizontal === "CENTER",
+              "text-right": horizontal === "RIGHT",
+              "text-slate-200":
+                viewScreen.introTextTheme === "light" ||
+                !viewScreen.introTextTheme,
+              "text-neutral-800": viewScreen.introTextTheme === "dark",
+            })}
+            style={
+              shadowColor
+                ? {
+                    textShadow: `3px 3px 3px ${shadowColor}`,
+                  }
+                : undefined
+            }
           >
             {title}
           </h1>
           <h2
-            className={cx(
-              "shdow-md text-white m-0 text-2xl md:text-3xl font-semibold",
-              {
-                "text-center": horizontal === "CENTER",
-                "text-right": horizontal === "RIGHT",
-              }
-            )}
+            className={cx("text-white m-0 text-2xl md:text-3xl font-semibold", {
+              "text-center": horizontal === "CENTER",
+              "text-right": horizontal === "RIGHT",
+              "text-slate-200":
+                viewScreen.introTextTheme === "light" ||
+                !viewScreen.introTextTheme,
+              "text-neutral-800": viewScreen.introTextTheme === "dark",
+            })}
+            style={
+              shadowColor
+                ? {
+                    textShadow: `3px 3px 3px ${shadowColor}`,
+                  }
+                : undefined
+            }
           >
             {subTitle}
           </h2>

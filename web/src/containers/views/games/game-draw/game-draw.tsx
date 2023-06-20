@@ -7,7 +7,7 @@ import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { Icon } from "components/icon/icon";
 
-import { ScreenProps } from "containers/views/types";
+import { ScreenProps } from "models";
 import { AppState } from "store/store";
 import { GameDrawScreen } from "models";
 
@@ -22,7 +22,7 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameDraw = ({ screenFiles, toolbarRef }: ScreenProps) => {
+export const GameDraw = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -106,14 +106,14 @@ export const GameDraw = ({ screenFiles, toolbarRef }: ScreenProps) => {
           <animated.img
             style={{ opacity }}
             className="h-full w-full absolute object-contain"
-            src={screenFiles.image1}
+            src={screenPreloadedFiles.image1}
             alt="drawing background"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="h-full w-full absolute object-contain"
-            src={screenFiles.image2}
+            src={screenPreloadedFiles.image2}
             alt="solution"
           />
         )

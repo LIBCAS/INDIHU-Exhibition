@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { AppState } from "store/store";
 
-import { ScreenProps } from "containers/views/types";
+import { ScreenProps } from "models";
 import useElementSize from "hooks/element-size-hook";
 import { GameMoveScreen } from "models";
 
@@ -18,7 +18,7 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameMove = ({ screenFiles, toolbarRef }: ScreenProps) => {
+export const GameMove = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [ref, { width, height }] = useElementSize();
@@ -71,14 +71,14 @@ export const GameMove = ({ screenFiles, toolbarRef }: ScreenProps) => {
         finished ? (
           <animated.img
             className="w-full h-full absolute object-contain"
-            src={screenFiles.image2}
+            src={screenPreloadedFiles.image2}
             style={{ opacity }}
           />
         ) : (
           <>
             <animated.img
               className="w-full h-full absolute object-contain"
-              src={screenFiles.image1}
+              src={screenPreloadedFiles.image1}
               style={{ opacity }}
             />
             <animated.div
@@ -88,7 +88,7 @@ export const GameMove = ({ screenFiles, toolbarRef }: ScreenProps) => {
               ref={dragRef}
             >
               <img
-                src={screenFiles.object}
+                src={screenPreloadedFiles.object}
                 draggable={false}
                 alt="drag content"
               />

@@ -1,10 +1,50 @@
-import { ZoomInTooltipPosition } from "containers/views/types";
+import { RefObject } from "react";
+
+// Enums
+import { screenType } from "enums/screen-type";
+import { zoomInTooltipPosition } from "enums/screen-enums";
 import { animationType } from "enums/animation-type";
 import { horizontalPosition, verticalPosition } from "enums/screen-enums";
-import { screenType } from "enums/screen-type";
 
+// Models
 import { Document } from "./document";
 import { Infopoint } from "./infopoint";
+import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
+
+// - - - - -
+
+export type ScreenProps = {
+  screenPreloadedFiles: ScreenPreloadedFiles;
+  toolbarRef: RefObject<HTMLDivElement>;
+  chapterMusicRef: RefObject<HTMLAudioElement>;
+};
+
+export type ScreenCoordinates = [number, number] | "start" | "finish";
+
+export type ScreenWithOnlyTypeTitleDocuments = {
+  type: keyof typeof screenType;
+  title: string | undefined;
+  documents?: Document[] | undefined;
+};
+
+// - - - - -
+
+/* Smaller helper types which are part of some of the screens below */
+export type ImageOrigData = {
+  width: number;
+  height: number;
+};
+
+type Collaborator = {
+  role: string;
+  text: string;
+};
+
+export type AnimationType = typeof animationType[keyof typeof animationType];
+export type ZoomInTooltipPosition =
+  typeof zoomInTooltipPosition[keyof typeof zoomInTooltipPosition];
+
+// - - - - -
 
 export type Screen =
   | StartScreen
@@ -25,16 +65,6 @@ export type Screen =
   | GameMoveScreen
   | GameQuizScreen;
 
-export type ImageOrigData = {
-  width: number;
-  height: number;
-};
-
-type Collaborator = {
-  role: string;
-  text: string;
-};
-
 export type StartScreen = {
   id: string;
   type: typeof screenType.START;
@@ -43,11 +73,11 @@ export type StartScreen = {
   perex: string;
   image?: string;
   imageOrigData: ImageOrigData;
-  animationType: keyof typeof animationType;
+  animationType: AnimationType;
   expoTime: number;
   audio: string;
   collaborators: Collaborator[];
-  documents: Document[];
+  documents?: Document[];
   screenCompleted: boolean;
 };
 
@@ -69,13 +99,15 @@ export type IntroScreen = {
     horizontal?: keyof typeof horizontalPosition;
     vertical?: keyof typeof verticalPosition;
   };
-  animationType: keyof typeof animationType;
+  animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
   music: string;
-  documents: Document[];
+  documents?: Document[];
   screenCompleted: boolean;
+  introTextTheme?: "light" | "dark";
+  isIntroTextHaloEffectOn?: "on" | "off";
 };
 
 export type ImageScreen = {
@@ -85,12 +117,12 @@ export type ImageScreen = {
   text?: string;
   image?: string;
   imageOrigData?: ImageOrigData;
-  animationType: keyof typeof animationType;
+  animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
   infopoints?: Infopoint[];
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
@@ -103,7 +135,7 @@ export type VideoScreen = {
   title?: string;
   text?: string;
   video?: string;
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
@@ -119,7 +151,7 @@ export type TextScreen = {
   audio?: string;
   time: number;
   timeAuto: boolean;
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
@@ -136,11 +168,11 @@ export type PhotogaleryScreen = {
     imageOrigData: ImageOrigData;
     infopoints: Infopoint[];
   }[];
-  animationType: keyof typeof animationType;
+  animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
@@ -153,11 +185,11 @@ export type ParallaxScreeen = {
   title?: string;
   text?: string;
   images?: string[];
-  animationType: keyof typeof animationType;
+  animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
@@ -182,7 +214,7 @@ export type ZoomScreen = {
   audio?: string;
   time: number;
   timeAuto: boolean;
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
@@ -198,15 +230,21 @@ export type ImageChangeScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  animationType: keyof typeof animationType;
+  animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
-  documents: [];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  rodPosition?: "0" | "0.25" | "0.5" | "0.75" | "1";
+  gradualTransitionBeginPosition?:
+    | "VERTICAL_TOP_TO_BOTTOM"
+    | "VERTICAL_BOTTOM_TO_TOP"
+    | "HORIZONTAL_LEFT_TO_RIGHT"
+    | "HORIZONTAL_RIGHT_TO_LEFT";
 };
 
 export type ExternalScreen = {
@@ -218,7 +256,7 @@ export type ExternalScreen = {
   audio?: string;
   time: number;
   timeAuto: boolean;
-  documents: Document[];
+  documents?: Document[];
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;

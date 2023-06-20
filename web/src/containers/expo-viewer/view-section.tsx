@@ -1,8 +1,5 @@
-import { setViewProgress } from "actions/expoActions/viewer-actions";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
-import { AppDispatch } from "store/store";
 
 import { screenUrl } from "../../enums/screen-type";
 import { NewViewScreen } from "./view-screen";
@@ -18,7 +15,6 @@ export const ViewSection = ({
   handleScreen,
   setViewScreenIsLoaded,
 }: Props) => {
-  const dispatch = useDispatch<AppDispatch>();
   const { params } = useRouteMatch<{ section: string }>();
   const section = params.section;
 
@@ -31,10 +27,6 @@ export const ViewSection = ({
 
     handleScreenOnMount();
   }, [handleScreen, section]);
-
-  useEffect(() => {
-    dispatch(setViewProgress({ shouldIncrement: true }));
-  }, [dispatch]);
 
   return (
     <NewViewScreen

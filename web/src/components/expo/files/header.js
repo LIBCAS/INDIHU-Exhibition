@@ -1,7 +1,7 @@
 import Button from "react-md/lib/Buttons/Button";
 import { forEach } from "lodash";
 import SelectField from "react-md/lib/SelectFields";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import { compose, withHandlers, withState } from "recompose";
 import { connect } from "react-redux";
@@ -62,24 +62,24 @@ const Header = ({
           defaultValue={sort}
           position="below"
           onChange={(value) => setSort(value)}
-          data-tip="Řazení"
-          data-for="react-tooltip-expo-files-header"
+          data-tooltip-content="Řazení"
+          data-tooltip-id="react-tooltip-expo-files-header"
         />
         <Button
           icon
           onClick={() => {
-            ReactTooltip.hide();
+            //ReactTooltip.hide();
             setOrder(order === "ASC" ? "DESC" : "ASC");
           }}
-          data-tip={order === "ASC" ? "Sestupně" : "Vzestupně"}
-          data-for="react-tooltip-expo-files-header"
+          data-tooltip-content={order === "ASC" ? "Sestupně" : "Vzestupně"}
+          data-tooltip-id="react-tooltip-expo-files-header"
           className="margin-left-small"
         >
           {order === "ASC" ? "arrow_downward" : "arrow_upward"}
         </Button>
         <ReactTooltip
-          type="dark"
-          effect="solid"
+          variant="dark"
+          float={false}
           id="react-tooltip-expo-files-header"
           className="help-icon-react-tooltip"
         />

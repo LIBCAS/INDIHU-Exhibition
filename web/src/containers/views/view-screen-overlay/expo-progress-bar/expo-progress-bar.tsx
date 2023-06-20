@@ -1,22 +1,23 @@
-import { useScreenChapters } from "components/dialogs/chapters-dialog/screen-chapters-hook";
-import { ScreenChapters } from "components/dialogs/chapters-dialog/types";
-import { useSectionScreen } from "containers/views/hooks/section-screen-hook";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { animated, useSpring } from "react-spring";
 import { createSelector } from "reselect";
-import Tooltip from "react-tooltip";
+
+import { animated, useSpring } from "react-spring";
+import { useScreenChapters } from "components/dialogs/chapters-dialog/screen-chapters-hook";
+import { useExpoProgressBarTooltip } from "./expo-progress-bar-tooltip-hook";
+
+import { Tooltip } from "react-tooltip";
+import { NavLink, useParams } from "react-router-dom";
 
 import { AppState } from "store/store";
-
+import { ScreenChapters } from "components/dialogs/chapters-dialog/types";
 import { ScreenPoint } from "./types";
-import { useExpoProgressBarTooltip } from "./expo-progress-bar-tooltip-hook";
-import { NavLink } from "react-router-dom";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo?.viewExpo?.structure?.screens,
   ({ expo }: AppState) => expo?.viewExpo?.url,
-  (screens, url) => ({ screens, url })
+  ({ expo }: AppState) => expo.viewExpo?.structure.start,
+  (screens, url, start) => ({ screens, url, start })
 );
 
 const flattenScreensRecursively = (
@@ -37,18 +38,29 @@ const flattenScreensRecursively = (
 };
 
 export const ExpoProgressBar = () => {
-  const { screens, url } = useSelector(stateSelector);
-  const screenChapters = useScreenChapters(screens);
-  const { section = 0, screen = 0 } = useSectionScreen();
+  const { screens, url, start } = useSelector(stateSelector);
+  const { section: UrlSection, screen: UrlScreen } = useParams<{
+    section: string;
+    screen: string;
+  }>();
+  let screenChapters = useScreenChapters(screens);
+
+  const startScreenChapter = {
+    ...start,
+    sectionIndex: "start",
+    screenIndex: undefined,
+  } as ScreenChapters;
+
+  screenChapters = [startScreenChapter, ...(screenChapters ?? [])];
 
   // TODO: components rerenders really often, figure out why
 
   const screenPoints = useMemo(
     () =>
       screenChapters?.reduce<ScreenPoint[]>(
-        (acc, screenChapter) => [
+        (acc, currentScreenChapter) => [
           ...acc,
-          ...flattenScreensRecursively(screenChapter),
+          ...flattenScreensRecursively(currentScreenChapter),
         ],
         []
       ) ?? [],
@@ -57,21 +69,24 @@ export const ExpoProgressBar = () => {
 
   const { renderTooltip } = useExpoProgressBarTooltip(screenPoints);
 
-  const currentScreenIndex = useMemo(() => {
-    const totalFromPreviousSections =
-      screenChapters?.reduce(
-        (acc, screenChapter, index) =>
-          index < section
-            ? acc + (screenChapter?.subScreens?.length ?? 0) + 1
-            : acc,
-        0
-      ) ?? 0;
+  // currentScreenIndex and maxScreenIndex used for width in %
+  const maxScreenIndex = useMemo(() => screenPoints.length + 1, [screenPoints]);
 
-    return totalFromPreviousSections + (screen !== undefined ? screen + 1 : 0);
-  }, [screen, screenChapters, section]);
+  let currentScreenIndex = 0;
+  if (UrlSection === "start") {
+    currentScreenIndex = 1;
+  } else {
+    currentScreenIndex =
+      screenPoints.findIndex(
+        (screenPoint: ScreenPoint) =>
+          screenPoint.sectionIndex.toString() === UrlSection &&
+          screenPoint.screenIndex?.toString() === UrlScreen
+      ) + 1;
+  }
 
+  // For filling purpose
   const { width } = useSpring({
-    width: `${(currentScreenIndex / (screenPoints.length + 1)) * 100}%`,
+    width: `${(currentScreenIndex / maxScreenIndex) * 100}%`,
   });
 
   return (
@@ -82,16 +97,26 @@ export const ExpoProgressBar = () => {
             className="flex h-full items-center justify-end flex-1"
             key={`${sectionIndex}-${screenIndex}`}
           >
-            {type === "INTRO" ? (
+            {type === "START" ? (
+              <NavLink
+                className="h-2.5 w-2.5 bg-black z-10 hover:cursor-pointer translate-x-1/2 rounded-sm"
+                to={`/view/${url}/start`}
+                // Add the Tooltip with the Image!
+                data-tooltip-content={index.toString()}
+                data-tooltip-id="progress-bar-screen-preview-tooltip"
+              />
+            ) : type === "INTRO" ? (
               <NavLink
                 to={`/view/${url}/${sectionIndex}/${screenIndex}`}
-                data-tip={index}
-                data-for="progress-bar-screen-preview-tooltip"
+                data-tooltip-content={index.toString()}
+                data-tooltip-id="progress-bar-screen-preview-tooltip"
                 className="h-2.5 w-2.5 bg-black z-10 hover:cursor-pointer translate-x-1/2 rounded-sm"
               />
             ) : (
               <NavLink
                 to={`/view/${url}/${sectionIndex}/${screenIndex}`}
+                data-tooltip-content={index.toString()}
+                data-tooltip-id="progress-bar-screen-preview-tooltip"
                 className="h-full w-1.5 bg-black bg-opacity-25 z-10 translate-x-1/2"
               />
             )}
@@ -108,14 +133,14 @@ export const ExpoProgressBar = () => {
         />
       </div>
 
+      {/* Tooltip on hover for chapters with image */}
       <Tooltip
-        effect="solid"
-        type="light"
-        delayHide={500}
         id="progress-bar-screen-preview-tooltip"
+        float={false}
+        variant="light"
+        delayHide={500}
         className="!pointer-events-auto !opacity-100 !rounded-none shadow-md"
-        getContent={renderTooltip}
-        offset={{ top: 10 }}
+        render={({ content }) => renderTooltip(content ?? "neuvedeno")}
       />
     </>
   );

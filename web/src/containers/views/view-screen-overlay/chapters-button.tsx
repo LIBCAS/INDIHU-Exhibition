@@ -1,20 +1,24 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { animated, useSpring } from "react-spring";
 import { createSelector } from "reselect";
+
+import { animated, useSpring } from "react-spring";
+import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useSectionScreen } from "../hooks/section-screen-hook";
+import { useScreenChapters } from "components/dialogs/chapters-dialog/screen-chapters-hook";
 
 import { Icon } from "components/icon/icon";
 import { Button } from "components/button/button";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
-import { useScreenChapters } from "components/dialogs/chapters-dialog/screen-chapters-hook";
-import { AppDispatch, AppState } from "store/store";
 import { ScreenItem } from "components/dialogs/chapters-dialog/screen-item";
 import { DialogType } from "components/dialogs/dialog-types";
-import { setDialog } from "actions/dialog-actions";
 
-import { useSectionScreen } from "../hooks/section-screen-hook";
-import { useTranslation } from "react-i18next";
+import { breakpoints } from "hooks/media-query-hook/breakpoints";
+import { AppDispatch, AppState } from "store/store";
+
+import { setDialog } from "actions/dialog-actions";
+import { parseUrlSection, parseUrlScreen } from "../utils";
 
 type Props = {
   maxHeight?: number;
@@ -26,12 +30,20 @@ const stateSelector = createSelector(
 );
 
 export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const sectionScreen = useSectionScreen();
   const { viewExpo } = useSelector(stateSelector);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { section, screen } = useParams<{
+    section: string;
+    screen: string;
+  }>();
+
+  const sectionScreen = useSectionScreen();
+  const screenChapters = useScreenChapters(viewExpo?.structure?.screens);
+
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
-  const screenChapters = useScreenChapters(viewExpo?.structure?.screens);
+
   const { t } = useTranslation("screen");
 
   const isMediumScreen = useMediaQuery(breakpoints.down("lg"));
@@ -57,6 +69,11 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
     buttonOpacity: isOpen ? 0 : 1,
   });
 
+  //
+  const parsedUrlSection = parseUrlSection(section);
+  const parsedUrlScreen = parseUrlScreen(screen);
+
+  /* Open and Close the Chapters panel */
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
   const openChaptersDialog = useCallback(
@@ -85,6 +102,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
 
   return (
     <animated.div style={{ height, width }} className="bg-white">
+      {/* Opened Chapters */}
       <animated.div
         style={{
           opacity: screenOpacity,
@@ -99,6 +117,23 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
           <Button iconBefore={<Icon name="close" />} onClick={toggle} />
         </div>
         <div className="overflow-y-auto grow">
+          {/* First special START SCREEN! */}
+          {viewExpo && (
+            <ScreenItem
+              // key="start-screen"
+              screen={{
+                ...viewExpo.structure.start,
+                sectionIndex: "start",
+                screenIndex: undefined,
+                subScreens: undefined,
+              }}
+              viewExpoUrl={viewExpo.url}
+              onClick={toggle}
+              isSubScreen={false}
+              highlight={{ section: parsedUrlSection, screen: parsedUrlScreen }}
+            />
+          )}
+          {/* Then others INTRO chapters screen with their subscreens! */}
           {screenChapters?.map((screen) => (
             <ScreenItem
               key={`${screen.sectionIndex}-${screen.screenIndex}`}
@@ -111,6 +146,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
         </div>
       </animated.div>
 
+      {/* Closed Chapters */}
       <animated.div
         ref={buttonRef}
         style={{

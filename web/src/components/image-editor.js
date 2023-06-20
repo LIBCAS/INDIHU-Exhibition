@@ -5,7 +5,7 @@ import { compose, defaultProps, withState, lifecycle } from "recompose";
 import { noop, isEmpty, get, find, isString } from "lodash";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import MenuButton from "react-md/lib/Menus/MenuButton";
 import ListItem from "react-md/lib/Lists/ListItem";
 import { Button, FontIcon, Card, Divider } from "react-md";
@@ -41,8 +41,8 @@ const menuItem = (
         label={label}
         buttonChildren={icon}
         position="tr"
-        data-tip={tooltip}
-        data-for={TOOLTIP_ID}
+        data-tooltip-content={tooltip}
+        data-tooltip-id={TOOLTIP_ID}
         className={`button ${className}`}
       >
         {menuItems.map(({ label, value }) => (
@@ -58,8 +58,8 @@ const menuItem = (
     <Button
       key={`${tooltip}-${key}`}
       icon
-      data-tip={tooltip}
-      data-for={TOOLTIP_ID}
+      data-tooltip-content={tooltip}
+      data-tooltip-id={TOOLTIP_ID}
       className={`button ${className}`}
       {...item}
     >
@@ -426,8 +426,8 @@ class ImageEditor extends Component {
                 <h4 className="margin-left-small margin-bottom-none">Menu</h4>
                 <Button
                   icon
-                  data-tip="Zavřít menu"
-                  data-for={TOOLTIP_ID}
+                  data-tooltip-content="Zavřít menu"
+                  data-tooltip-id={TOOLTIP_ID}
                   onClick={() => setMenuOpen(false)}
                 >
                   close
@@ -455,8 +455,8 @@ class ImageEditor extends Component {
         <ReactTooltip
           key={`${guides}-${aspectRatio}-${isCrop}-${menuOpen}-${loading}`}
           id={TOOLTIP_ID}
-          type="dark"
-          effect="solid"
+          variant="dark"
+          float={false}
         />
       </div>
     );

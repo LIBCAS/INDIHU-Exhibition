@@ -1,7 +1,7 @@
 import { Screen } from "models/screen";
 
 export type ScreenChapters = Screen & {
-  sectionIndex: number;
-  screenIndex: number;
+  sectionIndex: number | "start" | "finish";
+  screenIndex?: number;
   subScreens?: ScreenChapters[];
 };

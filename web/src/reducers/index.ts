@@ -1,13 +1,14 @@
 import { combineReducers } from "redux";
 
-import { reducer as form, FormStateMap } from "redux-form";
+// Reducers and their types, if are defined
+import { reducer as formReducer, FormStateMap } from "redux-form";
+import appReducer, { AppReducerState } from "./app-reducer";
+import userReducer from "./user-reducer";
+import dialogReducer, { DialogReducerState } from "./dialog-reducer";
 
-import app, { AppReducerState } from "./app-reducer";
-import user from "./user-reducer";
-import dialog, { DialogReducerState } from "./dialog-reducer";
-import expo, { ExpoReducerState } from "./expo-reducer";
-import file from "./file-reducer";
-import admin from "./admin-reducer";
+import expoReducer, { ExpoReducerState } from "./expo-reducer";
+import fileReducer from "./file-reducer";
+import adminReducer from "./admin-reducer";
 
 type RootReducerType = {
   form: FormStateMap;
@@ -20,11 +21,11 @@ type RootReducerType = {
 };
 
 export default combineReducers<RootReducerType>({
-  form,
-  app,
-  user,
-  dialog,
-  expo,
-  file,
-  admin,
+  form: formReducer,
+  app: appReducer,
+  user: userReducer,
+  dialog: dialogReducer,
+  expo: expoReducer,
+  file: fileReducer,
+  admin: adminReducer,
 });

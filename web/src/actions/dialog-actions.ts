@@ -1,11 +1,11 @@
 import { DIALOG_SET, DIALOG_CLOSE, DIALOG_DATA_ADD } from "./constants";
 
-import { DialogDataType, DialogType } from "components/dialogs/dialog-types";
+import { DialogDataProps, DialogType } from "components/dialogs/dialog-types";
 import { Dispatch } from "redux";
 
 export const setDialog = <T extends DialogType>(
   name: T,
-  data: DialogDataType<T>
+  data: DialogDataProps<T>
 ) => ({
   type: DIALOG_SET,
   payload: {
@@ -24,7 +24,7 @@ export const closeDialog = () => async (dispatch: Dispatch<unknown>) => {
 
 export const addDialogData = <T extends DialogType>(
   name: T,
-  data: Partial<DialogDataType<T>>
+  data: Partial<DialogDataProps<T>>
 ) => ({
   type: DIALOG_DATA_ADD,
   payload: { name, data },

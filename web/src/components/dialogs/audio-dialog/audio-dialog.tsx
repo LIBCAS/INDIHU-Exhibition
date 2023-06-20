@@ -1,0 +1,174 @@
+import { useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { createSelector } from "reselect";
+
+import Dialog from "../dialog-wrap-typed";
+import { DialogType, DialogProps } from "../dialog-types";
+
+// Components
+import { Button } from "components/button/button";
+import { Icon } from "components/icon/icon";
+import { Divider } from "components/divider/divider";
+import { Slider } from "@mui/material";
+
+// Actions
+import {
+  setExpoVolumes,
+  muteVolumes,
+  unmuteVolumes,
+} from "actions/expoActions/viewer-actions";
+
+// Models
+import { AppState, AppDispatch } from "store/store";
+import { Volumes } from "models";
+
+// - - - - - - -
+
+const stateSelector = createSelector(
+  ({ expo }: AppState) => expo.expoVolumes,
+  (expoVolumes) => ({
+    expoVolumes,
+  })
+);
+
+// - - - - - - -
+
+// Type meaning of "empty object"
+export type AudioDialogDataProps = Record<string, never>;
+
+export const AudioDialog = (_props: DialogProps<DialogType.AudioDialog>) => {
+  const { expoVolumes } = useSelector(stateSelector);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const speechVolume = useMemo(() => expoVolumes.speechVolume, [expoVolumes]);
+  const musicVolume = useMemo(() => expoVolumes.musicVolume, [expoVolumes]);
+
+  return (
+    <Dialog
+      name={DialogType.AudioDialog}
+      title={<span className="text-2xl font-bold">Nastavení zvuku</span>}
+      noDialogMenu
+    >
+      <div className="flex flex-col gap-5">
+        {/* First slider */}
+        <AudioSlider volumeKey="speechVolume" volumeObj={speechVolume} />
+        {/* Second slider */}
+        <AudioSlider volumeKey="musicVolume" volumeObj={musicVolume} />
+      </div>
+
+      <div className="mt-4">
+        <Divider type="horizontal" />
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-between mt-6">
+        <Button
+          type="outlined"
+          color="secondary"
+          big
+          onClick={() => dispatch(muteVolumes(expoVolumes))}
+        >
+          Stlumit vše
+        </Button>
+        <Button
+          type="contained"
+          color="secondary"
+          big
+          onClick={() => dispatch(unmuteVolumes(expoVolumes))}
+        >
+          Zesílit vše
+        </Button>
+      </div>
+    </Dialog>
+  );
+};
+
+// - - - - - - -
+
+const getIconname = (
+  volumeKey: "speechVolume" | "musicVolume",
+  actualVolume: number
+) => {
+  if (volumeKey === "speechVolume") {
+    return actualVolume === 0 ? "voice_over_off" : "record_voice_over";
+  }
+  return actualVolume === 0 ? "music_off" : "music_note";
+};
+
+interface AudioSliderProps {
+  volumeKey: "speechVolume" | "musicVolume";
+  volumeObj: Volumes;
+}
+
+const AudioSlider = ({ volumeKey, volumeObj }: AudioSliderProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const iconName = getIconname(volumeKey, volumeObj.actualVolume);
+
+  return (
+    <div className="flex items-center gap-5">
+      <Button
+        onClick={() => {
+          const newPreviousVolume =
+            volumeObj.actualVolume === 0 ? 0 : volumeObj.actualVolume;
+          const newActualVolume =
+            volumeObj.actualVolume === 0 ? volumeObj.previousVolume : 0;
+
+          dispatch(
+            setExpoVolumes({
+              [volumeKey]: {
+                previousVolume: newPreviousVolume,
+                actualVolume: newActualVolume,
+              },
+            })
+          );
+        }}
+      >
+        <Icon name={iconName} useMaterialUiIcon style={{ fontSize: "26px" }} />
+      </Button>
+
+      <Slider
+        min={0}
+        max={100}
+        step={1}
+        size="medium"
+        // Making the slider not circle but square
+        sx={{
+          color: "black",
+          "& .MuiSlider-thumb": {
+            borderRadius: "1px",
+            "&:hover, &.Mui-focusVisible": {
+              boxShadow: `0px 0px 0px 8px rgba(0, 0, 0, 0.16)`, // ${alpha(theme.palette.success.main, 0.16)}
+            },
+            "&.Mui-active": {
+              boxShadow: `0px 0px 0px 14px rgba(0, 0, 0, 0.16)`, //${alpha(theme.palette.success.main, 0.16)}
+            },
+          },
+        }}
+        value={volumeObj.actualVolume}
+        onChange={(_event: Event, newValue: number | number[]) => {
+          dispatch(
+            setExpoVolumes({
+              [volumeKey]: {
+                previousVolume: volumeObj.previousVolume,
+                actualVolume: newValue as number,
+              },
+            })
+          );
+        }}
+        onChangeCommitted={(event: any, newValue: number | number[]) => {
+          dispatch(
+            setExpoVolumes({
+              [volumeKey]: {
+                previousVolume: volumeObj.actualVolume,
+                actualVolume: newValue as number,
+              },
+            })
+          );
+        }}
+      />
+
+      <div className="text-2xl font-bold">{volumeObj.actualVolume}</div>
+    </div>
+  );
+};

@@ -10,7 +10,7 @@ import { Icon } from "components/icon/icon";
 import { ScreenChapters } from "./types";
 
 export type ScreenHighlight = {
-  section?: number;
+  section?: number | "start" | "finish";
   screen?: number;
 };
 
@@ -51,8 +51,13 @@ export const ScreenItem = ({
     ]
   );
 
+  const currentScreenItemNavLink = `/view/${viewExpoUrl}/${
+    screen.sectionIndex
+  }${screen.screenIndex !== undefined ? `/${screen.screenIndex}` : ""}`;
+
   return (
     <>
+      {/*1. Icon for the chapter or subscreen OR nothing for the START screen */}
       <div
         className={cx(
           "flex items-center gap-2 border-b border-b-black border-opacity-10 p-2",
@@ -60,7 +65,9 @@ export const ScreenItem = ({
           shouldHighlight && "text-primary"
         )}
       >
-        {isChapter ? (
+        {screen.type === "START" ? (
+          <Icon name="first_page" />
+        ) : isChapter ? (
           <Button noPadding onClick={handleToggle}>
             <animated.div style={{ rotate }}>
               <Icon
@@ -75,18 +82,24 @@ export const ScreenItem = ({
             className={shouldHighlight ? "text-primary" : "text-muted-400"}
           />
         )}
+
+        {/* After icon.. title of the chapter or subscreen as a link */}
         <NavLink
           className={cx(
             "text-black no-underline",
             shouldHighlight ? "font-bold" : "font-medium"
           )}
           onClick={onClick}
-          to={`/view/${viewExpoUrl}/${screen.sectionIndex}/${screen.screenIndex}`}
+          to={currentScreenItemNavLink}
         >
-          {screen.title ??
-            `Nepojmenovaná ${isChapter ? "kapitola" : "obrazovka"}`}
+          {screen.type === "START"
+            ? "Úvodní obrazovka"
+            : screen.title ??
+              `Nepojmenovaná ${isChapter ? "kapitola" : "obrazovka"}`}
         </NavLink>
       </div>
+
+      {/* 2. If the current ScreenItem is chapter and not the subscreen.. generate chapter's subscreen as a collapse */}
       {isChapter && (
         <Collapse isOpen={isOpen}>
           {screen.subScreens?.map((screen) => (

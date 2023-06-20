@@ -1,18 +1,22 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+
+import { useTranslation } from "react-i18next";
 import { animated, useSpring, useTransition } from "react-spring";
 
+// Components
 import { Button } from "components/button/button";
 import { Divider } from "components/divider/divider";
 import { LabeledItem } from "components/labeled-item/labeled-item";
+import { Icon } from "components/icon/icon";
+
+import { setDialog } from "actions/dialog-actions";
+import { isWorksheetFile } from "../utils";
+
 import { DialogType } from "components/dialogs/dialog-types";
 import { AppDispatch, AppState } from "store/store";
-import { setDialog } from "actions/dialog-actions";
-import { Icon } from "components/icon/icon";
 import { StartScreen } from "models";
-
-import { useTranslation } from "react-i18next";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as StartScreen,
@@ -27,7 +31,7 @@ export const ViewStartDetail = ({
 }) => {
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   const { rotateX } = useSpring({
     rotateX: isOpen ? "180deg" : "0deg",
@@ -35,12 +39,29 @@ export const ViewStartDetail = ({
 
   const collaborators = viewScreen.collaborators ?? [];
 
+  const startDocuments = viewScreen.documents;
+
+  const startExpoFiles = startDocuments?.filter(
+    (currFile) => !isWorksheetFile(currFile)
+  );
+  const startWorksheetFiles = startDocuments?.filter((currFile) =>
+    isWorksheetFile(currFile)
+  );
+
   const openFilesDialog = useCallback(
     () =>
       dispatch(
         setDialog(DialogType.FilesDialog, {
           files: viewScreen.documents,
         })
+      ),
+    [dispatch, viewScreen.documents]
+  );
+
+  const openWorksheetsDialog = useCallback(
+    () =>
+      dispatch(
+        setDialog(DialogType.WorksheetsDialog, { files: viewScreen.documents })
       ),
     [dispatch, viewScreen.documents]
   );
@@ -87,20 +108,22 @@ export const ViewStartDetail = ({
           )
       )}
       <div className="flex justify-end items-center mt-auto gap-2">
-        <Button
-          iconBefore={<Icon name="description" color="primary" />}
-          onClick={() => {
-            /* TODO */
-          }}
-        >
-          {t("worksheet")}
-        </Button>
-        <Button
-          iconBefore={<Icon name="folder" color="primary" />}
-          onClick={openFilesDialog}
-        >
-          {t("files")}
-        </Button>
+        {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
+          <Button
+            iconBefore={<Icon name="description" color="primary" />}
+            onClick={openWorksheetsDialog}
+          >
+            {t("worksheet")}
+          </Button>
+        )}
+        {startExpoFiles && startExpoFiles.length !== 0 && (
+          <Button
+            iconBefore={<Icon name="folder" color="primary" />}
+            onClick={openFilesDialog}
+          >
+            {t("files")}
+          </Button>
+        )}
       </div>
     </div>
   );

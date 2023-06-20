@@ -1,7 +1,7 @@
 .screen {
   padding-left: 0.5em;
   padding-right: 0.5em;
-  margin-bottom: 3.8em;
+  //margin-bottom: 3.8em;
   padding-bottom: 2em;
 
   .screen-two-cols {
@@ -348,7 +348,7 @@
 }
 
 .fixed-bottom-footer {
-  position: fixed;
+  position: sticky;
   bottom: 0;
   left: 0;
   z-index: 1000;

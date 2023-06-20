@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { Prompt } from "react-router";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import * as dialogActions from "../../actions/dialog-actions";
 import { setImageEditor } from "../../actions/app-actions";
@@ -37,6 +37,7 @@ import ScreenDocumentChange from "./screen-document-change";
 import ScreenDocumentChoose from "./screen-document-choose";
 import ScreenDuplicate from "./screen-duplicate";
 import ScreenFileChoose from "./screen-file-choose";
+import ScreenInfopoint from "./screen-infopoint";
 import ScreenDocumentNew from "./screen-document-new";
 import ScreenLink from "./screen-link";
 import ScreenMove from "./screen-move";
@@ -47,9 +48,14 @@ import ViewWrapChapters from "./view-wrap-chapters";
 import ImageEditor from "../image-editor";
 import { ChaptersDialog } from "./chapters-dialog/chapters-dialog";
 import { FilesDialog } from "./files-dialog/files-dialog";
+import { WorksheetsDialog } from "./worksheets-dialog/worksheets-dialog";
 import { ExpoInfoDialog } from "./expo-info-dialog/expo-info-dialog";
 import { ShareExpoDialog } from "./share-expo-dialog/share-expo-dialog";
 import { FinishInfoDialog } from "./finish-info-dialog/finish-info-dialog";
+import { FinishAllFilesDialog } from "./finish-all-files-dialog/finish-all-files-dialog";
+import { AudioDialog } from "./audio-dialog/audio-dialog";
+import { RatingDialog } from "./rating-dialog/rating-dialog";
+import { SettingsDialog } from "./settings-dialog/settings-dialog";
 
 export { default as WarningDialog } from "./warning-dialog";
 
@@ -77,18 +83,23 @@ const Dialogs = ({
         message="Provedené úpravy obrazovky nebyly uloženy. Opravdu chcete opustit stránku?"
       />
       <ReactTooltip
-        type="dark"
-        effect="solid"
+        variant="dark"
+        float={false}
         id="react-tooltip-for-help-icon-in-dialog"
         place="right"
         className="help-icon-react-tooltip"
       />
       {loader && <Loader />}
       <FinishInfoDialog {...dialogProps} />
+      <FinishAllFilesDialog {...dialogProps} />
       <ShareExpoDialog {...dialogProps} />
       <ExpoInfoDialog {...dialogProps} />
       <FilesDialog {...dialogProps} />
+      <WorksheetsDialog {...dialogProps} />
       <ChaptersDialog {...dialogProps} />
+      <AudioDialog {...dialogProps} />
+      <RatingDialog {...dialogProps} />
+      <SettingsDialog {...dialogProps} />
       <ConfirmDialog {...dialogProps} />
       <DeleteAccount {...dialogProps} />
       <ExpoDelete {...dialogProps} />
@@ -121,6 +132,7 @@ const Dialogs = ({
       <ScreenDocumentNew {...dialogProps} />
       <ScreenDuplicate {...dialogProps} />
       <ScreenFileChoose {...dialogProps} />
+      <ScreenInfopoint {...dialogProps} />
       <ScreenLink {...dialogProps} />
       <ScreenMove {...dialogProps} />
       <UserAccept {...dialogProps} />

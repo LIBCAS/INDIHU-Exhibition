@@ -7,10 +7,11 @@ import { AppDispatch } from "store/store";
 import { setDialog } from "actions/dialog-actions";
 
 import { DialogProps, DialogType } from "../dialog-types";
-import Dialog from "../dialog-wrap";
+//import Dialog from "../dialog-wrap";
+import Dialog from "../dialog-wrap-typed";
 import { useTranslation } from "react-i18next";
 
-export type ExpoInfoDialogData = {
+export type ExpoInfoDialogDataProps = {
   viewExpo: any;
   viewScreen: any;
 };
@@ -21,7 +22,7 @@ export const ExpoInfoDialog = ({
 }: DialogProps<DialogType.ExpoInfoDialog>) => {
   const { viewExpo, viewScreen } = dialogData ?? {};
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   const expoPerexLines = useMemo(
     () =>
@@ -53,9 +54,13 @@ export const ExpoInfoDialog = ({
     [dispatch, viewScreen?.documents]
   );
 
-  const openWorkingListDialog = useCallback(() => {
-    // TODO
-  }, []);
+  const openWorkingListDialog = useCallback(
+    () =>
+      dispatch(
+        setDialog(DialogType.WorksheetsDialog, { files: viewScreen?.documents })
+      ),
+    [dispatch, viewScreen?.documents]
+  );
 
   return (
     <Dialog

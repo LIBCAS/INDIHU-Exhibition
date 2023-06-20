@@ -1,7 +1,14 @@
 import { map, filter, find, concat } from "lodash";
 import { Reducer } from "redux";
 
-import { Exposition, FinishScreen, Folder, Screen, StartScreen } from "models";
+import {
+  Exposition,
+  FinishScreen,
+  Folder,
+  Screen,
+  StartScreen,
+  Volumes,
+} from "models";
 
 import * as c from "../actions/constants";
 
@@ -51,6 +58,7 @@ export type ExpoReducerState = {
   viewProgress: {
     timeElapsed: number;
     totalTime: number;
+    rewindToTime: number | null;
     shouldIncrement: boolean;
     shouldRedirect: boolean;
     showProgressBar: boolean;
@@ -61,7 +69,6 @@ export type ExpoReducerState = {
   viewInteractiveData: any;
   viewChapterMusic: any;
   viewScreenAudio: any;
-  viewLastChapter: any;
   preloadedFiles: any;
   errorFiles: any[];
   errorTimeoutFiles: any[];
@@ -69,6 +76,12 @@ export type ExpoReducerState = {
     startAuthorsFilter: { sort: string; order: string; search: string };
   };
   soundIsTurnedOff: boolean;
+  expoVolumes: { speechVolume: Volumes; musicVolume: Volumes }; // volumes are numbers in range <0, 100>
+  tooltipInfo: {
+    tooltipContent: string | null;
+    videoDuration: number | null;
+    imageUrlsFromPhotogallery: string[] | null;
+  };
 };
 
 const initialState = {
@@ -91,6 +104,7 @@ const initialState = {
   viewProgress: {
     timeElapsed: 0,
     totalTime: 20,
+    rewindToTime: null,
     shouldIncrement: false,
     shouldRedirect: false,
     showProgressBar: false,
@@ -101,7 +115,6 @@ const initialState = {
   viewInteractiveData: null,
   viewChapterMusic: null,
   viewScreenAudio: null,
-  viewLastChapter: null,
   preloadedFiles: [],
   errorFiles: [],
   errorTimeoutFiles: [],
@@ -109,6 +122,15 @@ const initialState = {
     startAuthorsFilter: { sort: "TITLE", order: "ASC", search: "" },
   },
   soundIsTurnedOff: false,
+  expoVolumes: {
+    speechVolume: { previousVolume: 0, actualVolume: 100 },
+    musicVolume: { previousVolume: 0, actualVolume: 20 },
+  },
+  tooltipInfo: {
+    tooltipContent: null,
+    videoDuration: null,
+    imageUrlsFromPhotogallery: null,
+  },
 };
 
 const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
@@ -448,6 +470,24 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
         ...state,
         viewProgress: {
           ...state.viewProgress,
+          ...action.payload,
+        },
+      };
+    }
+    case c.EXPO_TOOLTIP_INFO_UPDATE: {
+      return {
+        ...state,
+        tooltipInfo: {
+          ...state.tooltipInfo,
+          ...action.payload,
+        },
+      };
+    }
+    case c.EXPO_VOLUMES_UPDATE: {
+      return {
+        ...state,
+        expoVolumes: {
+          ...state.expoVolumes,
           ...action.payload,
         },
       };

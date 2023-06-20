@@ -11,7 +11,7 @@ import cx from "classnames";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 
-import { ScreenProps } from "containers/views/types";
+import { ScreenProps } from "models";
 import { calculateObjectFit } from "utils/object-fit";
 import useElementSize from "hooks/element-size-hook";
 import { useTranslation } from "react-i18next";
@@ -26,7 +26,10 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameErase = ({ screenFiles, toolbarRef }: ScreenProps) => {
+export const GameErase = ({
+  screenPreloadedFiles,
+  toolbarRef,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -52,13 +55,13 @@ export const GameErase = ({ screenFiles, toolbarRef }: ScreenProps) => {
     ctx.globalCompositeOperation = "source-over";
     ctx.fillRect(0, 0, ref.current?.width ?? 0, ref.current?.height ?? 0);
     const imageElement = document.createElement("img");
-    imageElement.src = screenFiles.image1 ?? "";
+    imageElement.src = screenPreloadedFiles.image1 ?? "";
     imageElement.onload = () => {
       ctx.globalCompositeOperation = "source-over";
       ctx.drawImage(imageElement, left, top, width, height);
       ctx.globalCompositeOperation = "destination-out";
     };
-  }, [ctx, height, left, screenFiles.image1, top, width]);
+  }, [ctx, height, left, screenPreloadedFiles.image1, top, width]);
 
   const clearCanvas = useCallback(() => {
     if (!ctx) {
@@ -123,7 +126,7 @@ export const GameErase = ({ screenFiles, toolbarRef }: ScreenProps) => {
     <div className="w-full h-full relative" ref={containerRef}>
       <img
         className="w-full h-full absolute object-contain"
-        src={screenFiles.image2}
+        src={screenPreloadedFiles.image2}
         alt="solution"
       />
 

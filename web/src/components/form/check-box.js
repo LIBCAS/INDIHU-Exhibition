@@ -34,9 +34,11 @@ const CheckBox = ({
   return (
     <div>
       {customLabel ? (
-        <div className="flex-row flex-center">
+        <div
+          style={{ display: "flex", marginTop: "24px", alignItems: "center" }}
+        >
           {checkbox}
-          {customLabel}
+          <div>{customLabel}</div>
         </div>
       ) : (
         customLabel

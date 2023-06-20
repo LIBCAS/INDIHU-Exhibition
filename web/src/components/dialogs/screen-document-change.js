@@ -26,6 +26,8 @@ const ScreenDocumentChange = ({
   changeDocumentType,
   file,
   data,
+  activeScreen,
+  change,
 }) => (
   <Dialog
     title="Upravit dokument"
@@ -99,20 +101,47 @@ const ScreenDocumentChange = ({
           />
         </div>
       )}
+
+      {/* If File radio is selected */}
       {documentType === documentOpts[2].value && (
-        <div className="flex-col">
-          <TextFieldMD
-            componentId="screen-document-change-textfield-name"
-            value={get(file, "name", get(data, "name"))}
-            label="Soubor"
-            disabled
-          />
-          <Button
-            flat
-            label="Vybrat"
-            onClick={() => setDialog("ScreenDocumentChoose")}
-          />
-        </div>
+        <>
+          <div className="flex-col">
+            <TextFieldMD
+              componentId="screen-document-change-textfield-name"
+              value={get(file, "name", get(data, "name"))}
+              label="Soubor"
+              disabled
+            />
+            <Button
+              flat
+              label="Vybrat"
+              onClick={() =>
+                setDialog("ScreenDocumentChoose", {
+                  onChoose: (file) => change("name", get(file, "name")),
+                })
+              }
+            />
+          </div>
+
+          {activeScreen?.type === "START" && (
+            <Field
+              component={SelectField}
+              componentId="screen-document-change-selectfield-documentFileType"
+              name="documentFileType"
+              label="Typ vybraného souboru"
+              menuItems={[
+                { value: "exhibitionFile", label: "Soubor k výstavě" },
+                { value: "worksheet", label: "Pracovní list" },
+              ]}
+              validate={[Validation.required]}
+              onChange={(e, value) =>
+                addDialogData("ScreenDocumentChange", {
+                  documentFileType: value,
+                })
+              }
+            />
+          )}
+        </>
       )}
     </form>
   </Dialog>
@@ -120,12 +149,19 @@ const ScreenDocumentChange = ({
 
 export default compose(
   connect(
-    ({ app: { switchState }, dialog: { data, name }, file: { file } }) => ({
+    ({
+      app: { switchState },
+      dialog: { data, name },
+      file: { file },
+      expo: { activeScreen },
+    }) => ({
       switchState,
+      // data.documentFileType can be undefined.. this selectfield is new
       initialValues: file ? { ...file, ...data } : data,
       file,
       data,
       dialogName: name,
+      activeScreen,
     }),
     { tabFolder, changeSwitchState, changeScreenDocument }
   ),
@@ -166,11 +202,15 @@ export default compose(
             fileName: "Nebyla provedena žádná úprava!",
           });
         }
+
+        const whatToSpread = file !== null ? file : formData;
+
         if (
           changeScreenDocument(
             documentType === documentOpts[2].value
               ? {
-                  ...file,
+                  ...whatToSpread,
+                  documentFileType: formData.documentFileType,
                   fileName: formData.fileName,
                 }
               : documentType === documentOpts[1].value

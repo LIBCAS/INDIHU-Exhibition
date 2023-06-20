@@ -1,14 +1,56 @@
-import { ReactNode } from "react";
+import { ReactNode, createContext, useContext } from "react";
 
-import { FilePreloaderContext } from "./file-preloader-context";
-import { useFilePreloaderContext } from "./file-preloader-hook";
+import { useFilePreloaderContextValue } from "./file-preloader-hook";
 
-type FilePreloaderProps = {
-  children?: ReactNode;
+// - - - - - - - -
+
+// Represents object with preloaded files for one current screen
+// e.g if current screen is 'Slideshow', then preloaded files are 'audio' and 'images'
+// e.g if current screen is 'ImageChange', then preloaded files are 'image1' and 'image2'
+export type ScreenPreloadedFiles = {
+  images?: (string | undefined)[];
+  image?: string;
+  music?: string;
+  video?: string;
+  audio?: string;
+  image1?: string;
+  image2?: string;
+  image3?: string;
+  object?: string;
+  answers?: { image?: string }[];
 };
 
-export const FilePreloaderProvider = ({ children }: FilePreloaderProps) => {
-  const filePreloaderContext = useFilePreloaderContext();
+// Represents object of all screens which currently have preloaded files
+// Current screen is always preloaded + next screen and previous screen
+// If some screen is already preloaded, next time preloading will be ignored
+// object looks like { [`${section},${screen}`]: ScreenFiles }
+// { [`${section},${screen}`]: { image: "blob:...", music: "blob...", ... } }
+export type FilesCache = {
+  [Key in string]?: ScreenPreloadedFiles;
+};
+
+export type FilePreloaderContextType = {
+  fileCache: FilesCache;
+  screenPreloadedFiles?: ScreenPreloadedFiles;
+  isLoading: boolean;
+};
+
+const FilePreloaderContext = createContext<FilePreloaderContextType>(
+  undefined as never
+);
+
+// - - - - - - - -
+
+type FilePreloaderProviderProps = {
+  children: ReactNode;
+};
+
+export const FilePreloaderProvider = ({
+  children,
+}: FilePreloaderProviderProps) => {
+  // Global state with preloaded current + previous and next screen
+  // Automatically listening to screen changes, when screen changes, preload its current + previous and next screen
+  const filePreloaderContext = useFilePreloaderContextValue();
 
   return (
     <FilePreloaderContext.Provider value={filePreloaderContext}>
@@ -16,3 +58,7 @@ export const FilePreloaderProvider = ({ children }: FilePreloaderProps) => {
     </FilePreloaderContext.Provider>
   );
 };
+
+// - - - - - - -
+
+export const useFilePreloader = () => useContext(FilePreloaderContext);

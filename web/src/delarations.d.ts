@@ -5,3 +5,6 @@ declare module "*.module.scss" {
 
 declare module "*.png";
 declare module "react-md/*";
+
+// Just to enable import in Typescript from react-md of version 1
+declare module "react-md";

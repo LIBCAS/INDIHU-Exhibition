@@ -23,7 +23,7 @@ const ScreenPhotogallery = (props) => {
             link: `${match.url}/description`,
           },
           {
-            label: "Fotogalerie",
+            label: "Slideshow",
             link: `${match.url}/photogalery`,
           },
           {

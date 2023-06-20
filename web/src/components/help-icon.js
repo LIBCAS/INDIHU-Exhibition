@@ -1,18 +1,19 @@
 import { compose, defaultProps, withProps } from "recompose";
 import { FontIcon } from "react-md";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const HelpIcon = ({ label, dataFor, place, id }) => (
   <div className="help-icon">
-    <FontIcon data-tip={label} data-for={dataFor}>
+    <FontIcon data-tooltip-content={label} data-tooltip-id={dataFor}>
       help
     </FontIcon>
     <ReactTooltip
-      type="dark"
-      effect="solid"
       id={id}
+      variant="dark"
+      float={false}
       place={place}
       className="help-icon-react-tooltip"
+      style={{ zIndex: 10000 }}
     />
   </div>
 );

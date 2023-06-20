@@ -3,6 +3,7 @@ import { compose, withHandlers } from "recompose";
 import { reduxForm, Field } from "redux-form";
 
 import Dialog from "./dialog-wrap";
+
 import TextField from "../form/text-field";
 import SelectField from "../form/select-field";
 import CheckBox from "../form/check-box";
@@ -15,37 +16,39 @@ const options = [
   { label: "Pro čtení a zápis", value: "EDIT" },
 ];
 
-const ExpoShare = ({ handleSubmit, change }) => (
-  <Dialog
-    title="Sdílet s"
-    name="ExpoShare"
-    handleSubmit={handleSubmit}
-    submitLabel="Sdílet"
-  >
-    <Field
-      name="option"
-      component={SelectField}
-      componentId="expo-share-selectfield-choose-type"
-      menuItems={options}
-      placeholder="Vyberte typ"
-      validate={[Validation.required]}
-    />
-    <Field
-      component={TextField}
-      componentId="expo-share-textfield-name"
-      label="E-mail uživatele"
-      name="name"
-      validate={[Validation.required, Validation.email]}
-    />
-    <Field
-      component={CheckBox}
-      componentId="expo-share-checkbox-invite"
-      name="invite"
-      label="Pokud uživatel neexistuje, odeslat e-mailovou pozvánku"
-      change={change}
-    />
-  </Dialog>
-);
+const ExpoShare = ({ handleSubmit, change }) => {
+  return (
+    <Dialog
+      title="Sdílet s"
+      name="ExpoShare"
+      handleSubmit={handleSubmit}
+      submitLabel="Sdílet"
+    >
+      <Field
+        name="option"
+        component={SelectField}
+        componentId="expo-share-selectfield-choose-type"
+        menuItems={options}
+        placeholder="Vyberte typ"
+        validate={[Validation.required]}
+      />
+      <Field
+        component={TextField}
+        componentId="expo-share-textfield-name"
+        label="E-mail uživatele"
+        name="name"
+        validate={[Validation.required, Validation.email]}
+      />
+      <Field
+        component={CheckBox}
+        componentId="expo-share-checkbox-invite"
+        name="invite"
+        customLabel="Pokud užívatel neexistuje, odeslat e-mailovou pozvánku" // Pokud uživatel neexistuje, odeslat e-mailovou pozvánku
+        change={change}
+      />
+    </Dialog>
+  );
+};
 
 export default compose(
   connect(({ dialog: { data } }) => ({ data }), null),
@@ -53,6 +56,9 @@ export default compose(
     onSubmit:
       (dialog) =>
       async (formData, dispatch, { data }) => {
+        // formData is object as { option, name, invite } clicked by user from the form
+        // data is object send within setDialog as { activeExpo.id, activeExpo.author }
+
         const response = await dispatch(
           addCollaborators(
             formData.name,
@@ -61,6 +67,7 @@ export default compose(
             data.id
           )
         );
+
         if (response === 200) {
           dialog.closeDialog();
           dialog.setDialog("Info", {

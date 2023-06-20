@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Snackbar from "react-md/lib/Snackbars";
 import CopyToClipboard from "react-copy-to-clipboard";
-import Tooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 
 import { Icon } from "components/icon/icon";
 import { useBoolean } from "hooks/boolean-hook";
@@ -24,15 +24,18 @@ export const CopyClipboardBox = ({
     [open]
   );
 
-  useEffect(() => {
-    Tooltip.rebuild();
-  }, [tooltipText]);
+  // useEffect(() => {
+  //   Tooltip.rebuild();
+  // }, [tooltipText]);
 
   return (
     <>
       <div className="flex items-center justify-between gap-2 p-2 bg-muted-200">
         <span>{text}</span>
-        <div data-tip={tooltipText} data-for="copy-clipboard-box-tooltip">
+        <div
+          data-tooltip-content={tooltipText}
+          data-tooltip-id="copy-clipboard-box-tooltip"
+        >
           <CopyToClipboard
             text={text}
             onCopy={() => {
@@ -47,10 +50,10 @@ export const CopyClipboardBox = ({
 
       {tooltipText && (
         <Tooltip
-          place="left"
-          type="dark"
-          effect="solid"
           id="copy-clipboard-box-tooltip"
+          place="left"
+          variant="dark"
+          float={false}
           className="!pointer-events-auto !opacity-100 !rounded-none shadow-md"
         />
       )}

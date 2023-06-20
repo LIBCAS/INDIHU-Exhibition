@@ -1,10 +1,15 @@
 import { get } from "lodash";
 
-import { FileLookupMap } from "containers/views/hooks/files-hook";
+// Models
 import { Screen } from "models";
+import { FileLookupMap } from "containers/views/hooks/files-hook";
+import { ScreenPreloadedFiles } from "./file-preloader-provider";
 
-import { ScreenFileResolverMap, ScreenFiles } from "./file-preloader-types";
+// - - - - - - -
 
+// gets file.id and map like { [file.id]: File }
+// retrieve the File from map, fetch the BE endpoint /api/files/file.fileId
+// response from BE will be .blob and create "blob:http://..."
 const retrieveFileUrl = async (
   id: string | undefined,
   fileLookupMap: FileLookupMap
@@ -22,6 +27,24 @@ const retrieveFileUrl = async (
     // Noop
     console.error(err);
   }
+};
+
+// - - - - - - - -
+
+type ScreenPreloadedFilesInput = Omit<ScreenPreloadedFiles, "images"> & {
+  images: (string | { id: string } | undefined)[];
+};
+
+type ScreenFileResolver<TProps = unknown, TReturn = unknown> = (
+  props: TProps,
+  fileLookupMap: FileLookupMap
+) => Promise<TReturn>;
+
+type ScreenFileResolverMap = {
+  [Key in keyof ScreenPreloadedFiles]: ScreenFileResolver<
+    ScreenPreloadedFilesInput[Key],
+    ScreenPreloadedFiles[Key]
+  >;
 };
 
 const screenFileResolver: ScreenFileResolverMap = {
@@ -50,24 +73,31 @@ const screenFileResolver: ScreenFileResolverMap = {
     ),
 };
 
+// - - - - - - - -
+
 type ScreenPromiseArray = Promise<{
   key: string;
-  value: ScreenFiles[keyof ScreenFiles];
+  value: ScreenPreloadedFiles[keyof ScreenPreloadedFiles];
 }>[];
 
+// input is some Screen object and fileLookupMap
+// go through all defined 'keys' (like image, audio, music, images, ...) in Screen object
+// each Screen[key] like Screen.image, Screen.audio has a value as file.id
+// use retrieveFileUrl(file.id, fileLookupMap) -> 'blob:http//'
 export const extractFiles = async (
   screen: Screen | undefined,
   fileLookupMap: FileLookupMap
-): Promise<ScreenFiles> => {
+): Promise<ScreenPreloadedFiles> => {
   if (!screen) return Promise.resolve({});
 
   const promises = await Promise.all(
     Object.entries(screenFileResolver).reduce<ScreenPromiseArray>(
       (acc, [key, resolver]) => {
-        const value = get(screen, key);
-        if (!value) return acc;
+        const idOfFile = get(screen, key); // file.id, but not file.fileId!!
+        if (!idOfFile) return acc;
 
-        const promise = resolver(value, fileLookupMap).then((files) => ({
+        // can be one file, but in case of 'images' or 'answers'.. multiple files
+        const promise = resolver(idOfFile, fileLookupMap).then((files) => ({
           key,
           value: files,
         }));
@@ -80,9 +110,11 @@ export const extractFiles = async (
 
   return promises.reduce(
     (acc, { key, value }) => ({ ...acc, [key]: value }),
-    {} as ScreenFiles
+    {} as ScreenPreloadedFiles
   );
 };
+
+// - - - - - - - -
 
 export const clearObjectUrls = (
   item: object | object[] | string | string[]

@@ -1,6 +1,11 @@
 import { useLocalStorage } from "hooks/use-local-storage";
 import { createContext, ReactNode, useContext } from "react";
 
+export type TutorialStoreType = {
+  overlay: boolean;
+  screenChange: boolean;
+};
+
 type TutorialContextType = readonly [
   store: TutorialStoreType,
   setStore: (
@@ -14,16 +19,13 @@ const TutorialStoreContext = createContext<TutorialContextType>(
 
 export const useTutorialStore = () => useContext(TutorialStoreContext);
 
-export type TutorialStoreType = {
-  overlay: boolean;
-  screenChange: boolean;
+// - - -
+
+type TutorialStoreProviderProps = {
+  children: ReactNode
 };
 
-export const TutorialStoreProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const TutorialStoreProvider = ({ children }: TutorialStoreProviderProps) => {
   const store = useLocalStorage<TutorialStoreType>("tutorial", {
     overlay: true,
     screenChange: true,

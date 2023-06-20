@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import { MouseEvent, useCallback, useState } from "react";
 import { animated, useTransition } from "react-spring";
-import { ScreenProps } from "containers/views/types";
+import { ScreenProps } from "models";
 import cx from "classnames";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -19,7 +19,7 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameFind = ({ screenFiles, toolbarRef }: ScreenProps) => {
+export const GameFind = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [pin, setPin] = useState<{ x: number; y: number }>();
@@ -68,14 +68,14 @@ export const GameFind = ({ screenFiles, toolbarRef }: ScreenProps) => {
               [classes.pinningCursor]: !pin,
             })}
             onClick={pinImage}
-            src={screenFiles.image1}
+            src={screenPreloadedFiles.image1}
             alt="find game background"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="w-full h-full absolute object-contain"
-            src={screenFiles.image2}
+            src={screenPreloadedFiles.image2}
             alt="solution"
           />
         )

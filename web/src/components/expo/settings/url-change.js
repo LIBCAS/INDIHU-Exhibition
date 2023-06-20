@@ -15,25 +15,39 @@ const validURL = (value) =>
     ? "*URL může obsahovat jenom znaky abecedy, čísla a pomlčku"
     : undefined;
 
-const URLChange = ({ handleSubmit, resetForm }) => (
-  <div>
-    <form onSubmit={handleSubmit}>
-      <div className="row">
-        <p className="url">{`${window.location.origin}/view/`}</p>
-        <Field
-          component={TextField}
-          componentId="expo-url-change-textfield-url"
-          validate={[Validation.required, validURL]}
-          name="url"
-        />
-      </div>
-      <div className="buttons">
-        <Button raised label="Storno" onClick={() => resetForm("URLChange")} />
-        <Button raised label="Aktualizovat" type="submit" />
-      </div>
-    </form>
-  </div>
-);
+const URLChange = ({ handleSubmit, resetForm, initialValues }) => {
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <p className="url">{`${window.location.origin}/view/`}</p>
+          <Field
+            component={TextField}
+            componentId="expo-url-change-textfield-url"
+            validate={[Validation.required, validURL]}
+            name="url"
+          />
+        </div>
+        <div className="buttons">
+          <Button
+            raised
+            label="Kopírovat URL"
+            onClick={() => {
+              const urlToCopy = `${window.location.origin}/view/${initialValues.url}`;
+              navigator.clipboard.writeText(urlToCopy);
+            }}
+          />
+          <Button
+            raised
+            label="Storno"
+            onClick={() => resetForm("URLChange")}
+          />
+          <Button raised label="Aktualizovat" type="submit" />
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default compose(
   connect(null, { resetForm, checkExpoURL, setDialog }),

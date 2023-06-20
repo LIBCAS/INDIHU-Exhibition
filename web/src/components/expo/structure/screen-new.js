@@ -6,7 +6,7 @@ import ListItem from "react-md/lib/Lists/ListItem";
 import Subheader from "react-md/lib/Subheaders";
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
-import ReactTooltip from "react-tooltip";
+//import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import * as expoActions from "../../../actions/expoActions";
 import { screenCategories, screenType } from "../../../enums/screen-type";
@@ -53,14 +53,17 @@ const ScreenNew = ({
             className="add-menu-item"
             primaryText="Úvod do kapitoly"
             onClick={() => addScreen(rowNum, 0, screenType.INTRO, section)}
-            data-tip={get(helpIconText, "EXPO_STRUCTURE_SCREEN_NEW_INTRO")}
-            data-for="expo-structure-screen-new-tooltip"
-            onMouseEnter={() =>
-              ReactTooltip.show(
-                document.getElementById("expo-structure-screen-new-intro")
-              )
-            }
-            onMouseLeave={() => ReactTooltip.hide()}
+            data-tooltip-content={get(
+              helpIconText,
+              "EXPO_STRUCTURE_SCREEN_NEW_INTRO"
+            )}
+            data-tooltip-id="expo-structure-screen-new-tooltip"
+            // onMouseEnter={() =>
+            //   ReactTooltip.show(
+            //     document.getElementById("expo-structure-screen-new-intro")
+            //   )
+            // }
+            // onMouseLeave={() => ReactTooltip.hide()}
           />
         </div>
       )}
@@ -80,14 +83,17 @@ const ScreenNew = ({
                 style={{ marginBottom: 3 }}
                 primaryText={name}
                 onClick={() => addScreen(rowNum, colNum, id, section)}
-                data-tip={get(helpIconText, `EXPO_STRUCTURE_SCREEN_NEW_${id}`)}
-                data-for="expo-structure-screen-new-tooltip"
-                onMouseEnter={() =>
-                  ReactTooltip.show(
-                    document.getElementById(`expo-structure-screen-new-${id}`)
-                  )
-                }
-                onMouseLeave={() => ReactTooltip.hide()}
+                data-tooltip-content={get(
+                  helpIconText,
+                  `EXPO_STRUCTURE_SCREEN_NEW_${id}`
+                )}
+                data-tooltip-id="expo-structure-screen-new-tooltip"
+                // onMouseEnter={() =>
+                //   ReactTooltip.show(
+                //     document.getElementById(`expo-structure-screen-new-${id}`)
+                //   )
+                // }
+                // onMouseLeave={() => ReactTooltip.hide()}
               />
             ))}
           </div>

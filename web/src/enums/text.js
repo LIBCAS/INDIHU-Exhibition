@@ -98,7 +98,7 @@ export const helpIconText = {
   EDITOR_PARALLAX_IMAGE_TOP:
     "Nejvrchnější vrstva obrázku. Představuje nejbližší objekty vůči divákovi. Je animována nejrychleji.",
   EDITOR_PHOTOGALLERY_ANIMATION: "Typ přechodu mezi jednotlivými obrázky.",
-  EDITOR_PHOTOGALLERY_IMAGE: "Vybraný obrázek ve fotogalerii.",
+  EDITOR_PHOTOGALLERY_IMAGE: "Vybraný obrázek ve slideshow.",
   EDITOR_START_AUTHORS:
     "Položka tiráže. Obvykle osoba a její role v projektu nebo jiný doprovodný text.",
   EDITOR_START_DESCRIPTION_ANIMATION:

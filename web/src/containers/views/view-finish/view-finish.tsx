@@ -1,65 +1,110 @@
-import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useMemo } from "react";
+import { createSelector } from "reselect";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
-import { Icon } from "components/icon/icon";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+// Custom hooks
 import { breakpoints } from "hooks/media-query-hook/breakpoints";
-import { setChapterMusic } from "actions/expoActions/viewer-actions";
-import { AppDispatch, AppState } from "store/store";
+import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+
+// Components
+import { Icon } from "components/icon/icon";
+import { ViewFinishInfo } from "./view-finish-info"; // authors panel
+import { ViewFinishButton } from "./view-finish-button"; // squared button with the icon in the middle
+
+// Actions
 import { setDialog } from "actions/dialog-actions";
+import { setChapterMusic } from "actions/expoActions/viewer-actions";
+
+// Models
+import { AppDispatch, AppState } from "store/store";
+import { Screen, ScreenWithOnlyTypeTitleDocuments } from "models";
+import { ScreenProps } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
 
-import { ViewFinishButton } from "./view-finish-button";
-import { ScreenProps } from "../types";
-import { ViewFinishInfo } from "./view-finish-info";
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
-  ({ expo }: AppState) => expo.viewChapterMusic,
-  (viewExpo, viewChapterMusic) => ({ viewExpo, viewChapterMusic })
+  (viewExpo) => ({ viewExpo })
 );
 
 export const ViewFinish = ({
-  screenFiles,
+  screenPreloadedFiles,
+  chapterMusicRef,
 }: Omit<ScreenProps, "toolbarRef">) => {
-  const { viewExpo, viewChapterMusic } = useSelector(stateSelector);
+  const { viewExpo } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+
   const { push } = useHistory();
   const isSM = useMediaQuery(breakpoints.down("md"));
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   const { url } = viewExpo ?? {};
-  const { image } = screenFiles;
+  const { image } = screenPreloadedFiles;
+
+  // - - - - - - - -
+
+  // Preparing structure of files for FilesDialog
+  // Array of .documents only for 'START' type of screen
+  const structureStartFiles = useMemo(
+    () => viewExpo?.structure.start.documents,
+    [viewExpo?.structure.start.documents]
+  );
+
+  // 2D array like [ [chapter0 documents], [chapter1 documents], ... ]
+  const structureScreenFiles = useMemo(() => {
+    const structureScreenFiles:
+      | ScreenWithOnlyTypeTitleDocuments[][]
+      | undefined = viewExpo?.structure.screens.map(
+      (actChapterScreens: Screen[]) => {
+        const returnedArr = actChapterScreens.map((actScreen: Screen) => {
+          const obj = {
+            title: actScreen.title,
+            type: actScreen.type,
+          };
+
+          if ("documents" in actScreen) {
+            return {
+              ...obj,
+              documents: actScreen.documents,
+            };
+          }
+          return obj;
+        });
+
+        return returnedArr;
+      }
+    );
+
+    return structureScreenFiles;
+  }, [viewExpo?.structure.screens]);
+
+  // - - - - - - - -
 
   useEffect(() => {
-    if (!viewChapterMusic) {
+    if (!chapterMusicRef.current) {
       return;
     }
-    viewChapterMusic.pause();
-    viewChapterMusic.currentTime = 0;
+    chapterMusicRef.current.pause();
+    chapterMusicRef.current.currentTime = 0;
     dispatch(setChapterMusic(null));
-  }, [dispatch, viewChapterMusic]);
+  }, [dispatch, chapterMusicRef]);
 
   const viewStart = useMemo(
     () => viewExpo?.structure.start,
     [viewExpo?.structure.start]
   );
 
-  const replay = useCallback(() => push(`/view/${url}/start`), [push, url]);
+  // On mount, when viewFinish screen is loaded, immediately open rating dialog
+  useEffect(() => {
+    dispatch(setDialog(DialogType.RatingDialog, {}));
+  }, [dispatch]);
 
-  const openFilesDialog = useCallback(
-    () =>
-      dispatch(
-        setDialog(DialogType.FilesDialog, {
-          files: viewStart?.documents,
-        })
-      ),
-    [dispatch, viewStart?.documents]
-  );
+  // - - - - - - - - -
 
+  // 1) Clicking on first share icon will open the share dialog
   const openShareDialog = useCallback(
     () =>
       dispatch(
@@ -70,6 +115,25 @@ export const ViewFinish = ({
     [dispatch, url]
   );
 
+  // 2) Clicking on second files of exposition will open the files dialog
+  const openFilesDialog = useCallback(() => {
+    if (!structureStartFiles || !structureScreenFiles) {
+      return;
+    }
+
+    dispatch(
+      setDialog(DialogType.FinishAllFilesDialog, {
+        startFiles: structureStartFiles,
+        screensFiles: structureScreenFiles,
+      })
+    );
+  }, [dispatch, structureScreenFiles, structureStartFiles]);
+
+  // 3) Clicking on third replay icon will redirect the user back to the start screen
+  const replay = useCallback(() => push(`/view/${url}/start`), [push, url]);
+
+  // 4) Clicking on fourth info icon will open the FinishInfoDialog
+  // This icon button is visible only on small screens
   const openFinishInfoDialog = useCallback(
     () =>
       dispatch(
@@ -81,8 +145,11 @@ export const ViewFinish = ({
     [dispatch, viewExpo, viewStart]
   );
 
+  // - - - - - - - -
+
   return (
     <>
+      {/* Image on small screen */}
       {isSM && image && (
         <img
           src={image}
@@ -92,6 +159,7 @@ export const ViewFinish = ({
       )}
 
       <div className="w-full h-full flex absolute">
+        {/* 1) Image and four icons inside (last icon is only on small screens) */}
         <div className="h-full grow relative">
           {!isSM && image && (
             <img
@@ -130,6 +198,7 @@ export const ViewFinish = ({
           </div>
         </div>
 
+        {/* 2) Side authors panel */}
         <div className="h-full bg-white p-8 shadow-md hidden md:block md:w-[400px]">
           <ViewFinishInfo viewExpo={viewExpo} viewStart={viewStart} />
         </div>

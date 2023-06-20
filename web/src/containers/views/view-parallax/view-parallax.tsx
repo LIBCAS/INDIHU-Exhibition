@@ -8,7 +8,7 @@ import { ParallaxScreeen } from "models";
 import { getScreenTime } from "utils/screen";
 import useElementSize from "hooks/element-size-hook";
 
-import { ScreenProps } from "../types";
+import { ScreenProps } from "models";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ParallaxScreeen,
@@ -16,11 +16,11 @@ const stateSelector = createSelector(
   (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
 );
 
-export const ViewParallax = ({ screenFiles }: ScreenProps) => {
+export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
   const [ref, { height, width }] = useElementSize();
   const { viewScreen, viewProgress } = useSelector(stateSelector);
   const { images } = viewScreen;
-  const rootImg = screenFiles.images?.[0];
+  const rootImg = screenPreloadedFiles.images?.[0];
 
   const animationType = viewScreen.animationType;
 
@@ -85,7 +85,7 @@ export const ViewParallax = ({ screenFiles }: ScreenProps) => {
               translateY: horizontal ? undefined : translateOffset,
               translateX: horizontal ? translateOffset : undefined,
             }}
-            src={screenFiles.images?.[index]}
+            src={screenPreloadedFiles.images?.[index]}
           />
         );
       })}

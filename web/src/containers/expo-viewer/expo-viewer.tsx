@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { createSelector } from "reselect";
-import { get } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { Helmet } from "react-helmet";
+import { createSelector } from "reselect";
 import {
   Route,
   useHistory,
@@ -10,17 +8,25 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 
-import { AppDispatch, AppState } from "store/store";
+import { Helmet } from "react-helmet";
+
+import ViewWrap from "components/views/view-wrap";
+import { FilePreloaderProvider } from "context/file-preloader/file-preloader-provider";
+import { DrawerPanelProvider } from "context/drawer-panel-preloader/drawer-panel-provider";
+import { ViewSection } from "./view-section";
+
+import { ViewLoading } from "containers/views/view-loading/view-loading";
+
+import { get } from "lodash";
 import {
   loadExposition,
   loadScreen,
   turnSoundOff,
 } from "actions/expoActions/viewer-actions";
-import ViewWrap from "components/views/view-wrap";
-import { FilePreloaderProvider } from "context/file-preloader/file-preloader-provider";
-import { ViewLoading } from "containers/views/view-loading/view-loading";
 
-import { ViewSection } from "./view-section";
+import { AppDispatch, AppState } from "store/store";
+
+// - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
@@ -34,15 +40,21 @@ const stateSelector = createSelector(
 );
 
 export const ExpoViewer = () => {
+  // Redux hooks
+  const { viewExpo, viewInteractive } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+  // Router, routing hooks
   const match = useRouteMatch<{ name: string }>();
   const history = useHistory();
   const location = useLocation();
-  const { viewExpo, viewInteractive } = useSelector(stateSelector);
+  // Default react hooks
   const [loadedAt, setLoadedAt] = useState<number>();
-  const [viewScreenIsLoaded, setViewScreenIsLoaded] = useState(false);
+  const [viewScreenIsLoaded, setViewScreenIsLoaded] = useState<boolean>(false);
 
+  // HandleMount!
   const handleMount = useCallback(async () => {
+    // GET at /api/exposition/u/:url==ReactNewExhibition2023, after fetch dispatch into viewExpo redux
+    // Replacing http://localhost:3000/view/ReactNewExhibition2023-02-18T152236836Z/start to http://localhost:3000/view/ReactNewExhibition2023/start
     const viewExpo = await dispatch(loadExposition(match.params.name));
 
     if (viewExpo && match.url.replace(/^\/view\//, "") !== viewExpo.url) {
@@ -68,6 +80,7 @@ export const ExpoViewer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, history]);
 
+  //
   useEffect(() => {
     handleMount();
 
@@ -76,6 +89,10 @@ export const ExpoViewer = () => {
     };
   }, [handleMount]);
 
+  // handleScreen(section, screen), dispatch into viewScreen redux by looking into viewExpo
+  // returns viewScreen which was set to the redux store or false
+  //->> section: "start" | "finish" | number
+  //->> screen: number
   const handleScreen = useCallback(
     async ({ section, screen }) => {
       const viewScreen = await dispatch(loadScreen(section, screen));
@@ -113,11 +130,13 @@ export const ExpoViewer = () => {
         path={`${match.path}/:section/:screen?`}
         render={() => (
           <FilePreloaderProvider>
-            <ViewSection
-              name={match.params.name}
-              handleScreen={handleScreen}
-              setViewScreenIsLoaded={setViewScreenIsLoaded}
-            />
+            <DrawerPanelProvider>
+              <ViewSection
+                name={match.params.name}
+                handleScreen={handleScreen}
+                setViewScreenIsLoaded={setViewScreenIsLoaded}
+              />
+            </DrawerPanelProvider>
           </FilePreloaderProvider>
         )}
       />

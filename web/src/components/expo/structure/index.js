@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { map, get, isEmpty } from "lodash";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import Draggable from "./draggable";
 import ScreenCard from "./screen-card";
@@ -135,8 +135,8 @@ const Structure = ({ activeExpo }) => {
               ))}
 
               <ReactTooltip
-                type="dark"
-                effect="solid"
+                variant="dark"
+                float={false}
                 id="expo-structure-screen-new-tooltip"
                 place="left"
                 className="help-icon-react-tooltip"

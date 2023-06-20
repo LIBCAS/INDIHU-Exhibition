@@ -23,6 +23,10 @@
     "play": {
       "label": "Přehrávání",
       "text": "Výstavu je možné pozastavit. Stejným tlačítkem lze poté přehrávání obnovit."
+    },
+    "progressbar": {
+      "label": "Přetáčení",
+      "text": "V případě obrazovky s videem nebo slideshow je také možné pomocí tohoto proužku přetáčet postup aktuální obrazovky."
     }
   },
 

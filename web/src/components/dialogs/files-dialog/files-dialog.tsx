@@ -1,33 +1,41 @@
-import { Document } from "models";
 import { useTranslation } from "react-i18next";
 
-import { DialogProps, DialogType } from "../dialog-types";
-import Dialog from "../dialog-wrap";
+// Components
+import Dialog from "../dialog-wrap-typed";
 import { FileItem } from "./file-item";
 
-export type FilesDialogData = {
+// Models
+import { Document } from "models";
+import { DialogProps, DialogType } from "../dialog-types";
+import { isWorksheetFile } from "containers/views/utils";
+
+export type FilesDialogDataProps = {
   files?: Document[];
 };
 
 export const FilesDialog = ({
   dialogData,
 }: DialogProps<DialogType.FilesDialog>) => {
-  const files = dialogData?.files ?? [];
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
+
+  const allFiles = dialogData?.files ?? [];
+  const expoFiles = allFiles.filter(
+    (currFile: Document) => !isWorksheetFile(currFile)
+  );
 
   return (
     <Dialog
       big
       title={
         <span className="text-2xl font-bold">{`${t("files")} (${
-          files.length
+          expoFiles.length
         })`}</span>
       }
       name={DialogType.FilesDialog}
       noDialogMenu
     >
-      {!files.length && t("no-files")}
-      {files.map((file, index) => (
+      {!expoFiles.length && t("no-files")}
+      {expoFiles.map((file, index) => (
         <FileItem key={index} file={file} />
       ))}
     </Dialog>

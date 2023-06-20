@@ -2,9 +2,16 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-import { AppDispatch, AppState } from "store/store";
-import { useFilePreloader } from "context/file-preloader/file-preloader-context";
-import { setViewProgress } from "actions/expoActions/viewer-actions";
+import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
+
+import { TutorialStoreProvider } from "components/tutorial/tutorial-store";
+import { ViewScreenOverlay } from "./view-screen-overlay/view-screen-overlay";
+
+import { ViewLoading } from "./view-loading/view-loading";
+import ViewError from "./view-error";
+
+import { ViewStart } from "./view-start/view-start";
+import { ViewFinish } from "./view-finish/view-finish";
 
 import { ViewChapter } from "./view-chapter/view-chapter";
 import { ViewImage } from "./view-image/view-image";
@@ -21,14 +28,14 @@ import { GameErase } from "./games/game-erase/game-erase";
 import { GameSizing } from "./games/game-sizing/game-sizing";
 import { GameMove } from "./games/game-move/game-move";
 import { GameQuiz } from "./games/game-quiz/game-quiz";
-import ViewError from "./view-error";
+
+import { AppDispatch, AppState } from "store/store";
 import { screenType } from "../../enums/screen-type";
-import { ViewScreenOverlay } from "./view-screen-overlay/view-screen-overlay";
-import { ViewLoading } from "./view-loading/view-loading";
-import { ViewStart } from "./view-start/view-start";
-import { ViewFinish } from "./view-finish/view-finish";
-import { ScreenProps } from "./types";
-import { TutorialStoreProvider } from "components/tutorial/tutorial-store";
+import { ScreenProps } from "models";
+
+import { setViewProgress } from "actions/expoActions/viewer-actions";
+
+// - - - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen,
@@ -76,31 +83,42 @@ const resolveScreenComponent = (
   }
 };
 
-type Props = {
+// - - - - - - - -
+
+type ViewersProps = {
   isScreenLoading: boolean;
+  screenPreloadedFiles: ScreenPreloadedFiles | undefined;
+  chapterMusicRef: React.RefObject<HTMLAudioElement>;
 };
 
-export const Viewers = ({ isScreenLoading }: Props) => {
+export const Viewers = ({
+  isScreenLoading,
+  screenPreloadedFiles,
+  chapterMusicRef,
+}: ViewersProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
-  const { screenFiles } = useFilePreloader();
 
+  /* Set the viewProgress.screenFilesLoading to true if screenPreloadedFiles === undefined, thus not loaded yet! */
   useEffect(() => {
-    dispatch(setViewProgress({ screenFilesLoading: !screenFiles }));
-  }, [dispatch, screenFiles]);
+    dispatch(setViewProgress({ screenFilesLoading: !screenPreloadedFiles }));
+  }, [dispatch, screenPreloadedFiles]);
 
-  const ScreenComponent = useMemo(
-    () =>
-      isScreenLoading || !viewScreen
-        ? () => <></>
-        : resolveScreenComponent(viewScreen.type),
-    [isScreenLoading, viewScreen]
-  );
+  /* isScreenLoading is state from ViewScreen, set to true after ViewScreen is mounted! */
+  /* if ViewScreen was not fully loaded or viewScreen from redux is not retrieved.. return empty FC */
+  /* Otherwise.. set to the ScreenComponent the component or the appropriate Screen Type! */
+  const ScreenComponent = useMemo(() => {
+    if (isScreenLoading || !viewScreen) {
+      const emptyFC: React.FC = () => <></>;
+      return emptyFC;
+    }
+    return resolveScreenComponent(viewScreen.type);
+  }, [isScreenLoading, viewScreen]);
 
-  const hiddenOverlay = useMemo(
-    () => viewScreen?.type === "START" || viewScreen?.type === "FINISH",
-    [viewScreen?.type]
-  );
+  /* For start and finish type of screens, do not show to overlay */
+  const isOverlayHidden = useMemo(() => {
+    return viewScreen?.type === "START" || viewScreen?.type === "FINISH";
+  }, [viewScreen?.type]);
 
   if (!ScreenComponent) {
     return <ViewError />;
@@ -108,14 +126,18 @@ export const Viewers = ({ isScreenLoading }: Props) => {
 
   return (
     <TutorialStoreProvider>
-      <ViewScreenOverlay hidden={hiddenOverlay}>
+      <ViewScreenOverlay
+        isOverlayHidden={isOverlayHidden}
+        chapterMusicRef={chapterMusicRef}
+      >
         {(toolbarRef) =>
-          !screenFiles || isScreenLoading || !viewScreen ? (
+          !screenPreloadedFiles || isScreenLoading || !viewScreen ? (
             <ViewLoading />
           ) : (
             <ScreenComponent
-              screenFiles={screenFiles}
+              screenPreloadedFiles={screenPreloadedFiles}
               toolbarRef={toolbarRef}
+              chapterMusicRef={chapterMusicRef}
             />
           )
         }

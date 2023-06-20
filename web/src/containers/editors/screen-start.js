@@ -41,7 +41,7 @@ const Screenstart = (props) => {
       />
       <Route
         path={`${match.url}/documents`}
-        render={() => <Documents {...props} />}
+        render={() => <Documents {...props} isStartScreen={true} />}
       />
       <Footer
         activeExpo={props.activeExpo}

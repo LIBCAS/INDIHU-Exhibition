@@ -47,7 +47,7 @@ export const screenTypeText = {
   TEXT: "Obrazovka s textem",
   PARALLAX: "Parallax",
   IMAGE_ZOOM: "Animace přiblížení",
-  PHOTOGALERY: "Fotogalerie",
+  PHOTOGALERY: "Slideshow",
   IMAGE_CHANGE: "Foto před a po",
   EXTERNAL: "Obrazovka s externím obsahem",
   GAME_FIND: "Najdi na obrázku",
@@ -95,7 +95,7 @@ export const screenCategories = [
     categoryId: "INTERACTIVE_SCREEN",
     categoryName: "Interaktivní obrazovka",
     screens: [
-      { id: "PHOTOGALERY", name: "Fotogalerie" },
+      { id: "PHOTOGALERY", name: "Slideshow" },
       { id: "IMAGE_CHANGE", name: "Foto před a po" },
       { id: "EXTERNAL", name: "Obrazovka s externím obsahem" },
     ],
@@ -146,12 +146,12 @@ export const automaticRouting = {
   PHOTOGALERY: true,
   IMAGE_CHANGE: true,
   EXTERNAL: true,
-  GAME_FIND: false,
-  GAME_DRAW: false,
-  GAME_WIPE: false,
-  GAME_SIZING: false,
-  GAME_MOVE: false,
-  GAME_OPTIONS: false,
+  GAME_FIND: true,
+  GAME_DRAW: true,
+  GAME_WIPE: true,
+  GAME_SIZING: true,
+  GAME_MOVE: true,
+  GAME_OPTIONS: true,
 };
 
 // Screen is not shown in mobile device if false
@@ -175,6 +175,8 @@ export const mobileDeviceRouting = {
 
 /* audio */
 export const audioEnabled = {
+  START: false,
+  FINISH: false,
   INTRO: true,
   IMAGE: true,
   VIDEO: false,
@@ -194,9 +196,11 @@ export const audioEnabled = {
 
 /* music */
 export const musicEnabled = {
+  START: false,
+  FINISH: false,
   INTRO: true,
   IMAGE: true,
-  VIDEO: false,
+  VIDEO: true,
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,

@@ -1,6 +1,6 @@
 import { animationType } from "enums/animation-type";
 
-import { AnimationType } from "../types";
+import { AnimationType } from "models";
 
 export const resolvePhotogalleryAnimation = (type: AnimationType) => {
   return type === animationType.FLY_IN_OUT ||
@@ -17,6 +17,9 @@ export const resolvePhotogalleryAnimation = (type: AnimationType) => {
         leave: {
           translateX: "-100vw",
           opacity: 0,
+        },
+        config: {
+          duration: 1000,
         },
       }
     : type === animationType.FADE_IN_OUT ||

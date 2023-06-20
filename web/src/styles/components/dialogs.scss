@@ -62,12 +62,14 @@
     border-bottom: 1px solid vars.$c-black-100;
   }
   &-title {
+    flex: 1; // take all available space
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     padding: 0;
   }
   &-menu {
+    // TODO
     position: sticky;
     bottom: -2px;
     right: 0;
@@ -86,6 +88,14 @@
   &.warning {
     z-index: 1000001;
   }
+}
+
+.screen-document-new-url-selectfield ul {
+  position: static;
+}
+
+.screen-document-new-file-selectfield ul {
+  position: static;
 }
 
 @media (max-width: $breakpoint-tablet) {

@@ -5,7 +5,7 @@ import { createSelector } from "reselect";
 import { useDrag } from "@use-gesture/react";
 import { useSelector } from "react-redux";
 
-import { ScreenProps } from "containers/views/types";
+import { ScreenProps } from "models";
 import { GameSizingScreen } from "models";
 import { AppState } from "store/store";
 import { useTranslation } from "react-i18next";
@@ -19,7 +19,10 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameSizing = ({ screenFiles, toolbarRef }: ScreenProps) => {
+export const GameSizing = ({
+  screenPreloadedFiles,
+  toolbarRef,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [ref, containerSize] = useElementSize();
@@ -95,7 +98,7 @@ export const GameSizing = ({ screenFiles, toolbarRef }: ScreenProps) => {
       <div className="flex-grow m-4 flex justify-center items-center relative">
         <img
           className="w-full h-full absolute object-contain"
-          src={screenFiles.image1}
+          src={screenPreloadedFiles.image1}
         />
       </div>
       <div
@@ -106,7 +109,7 @@ export const GameSizing = ({ screenFiles, toolbarRef }: ScreenProps) => {
           finished ? (
             <animated.img
               className="w-full h-full absolute object-contain"
-              src={screenFiles.image3}
+              src={screenPreloadedFiles.image3}
               style={{ opacity }}
             />
           ) : (
@@ -115,7 +118,7 @@ export const GameSizing = ({ screenFiles, toolbarRef }: ScreenProps) => {
               style={{ opacity }}
             >
               <animated.img
-                src={screenFiles.image2}
+                src={screenPreloadedFiles.image2}
                 style={{ height, width }}
               />
               <img

@@ -6,15 +6,15 @@
   "overlay": {
     "info": {
       "label": "Information",
-      "text": "By clicking the button you can view additional information about a screen and its text."
+      "text": "By clicking this button you can view additional information about the screen and its text."
     },
     "navigation": {
-      "label": "Navigace",
-      "text": "Navigational buttons allow you to move freely through an exposition. The button on the right side of the screen moves you forward and the button on the left side of the screen moves you backwards."
+      "label": "Navigation",
+      "text": "Navigation buttons allow you to move freely through the exhibition. The button on the right side of the screen moves you forward and the button on the left takes you backwards."
     },
     "chapters": {
       "label": "Chapters",
-      "text": "Button opens a menu with all chapters and screens of an exposition. You can than navigate to individual screens by clicking."
+      "text": "This button opens a menu with all chapters and screens of the exhibition. You can then freely navigate to individual screens by clicking on them."
     },
     "audio": {
       "label": "Audio",
@@ -22,7 +22,11 @@
     },
     "play": {
       "label": "Playback",
-      "text": "Exposition can be paused. By using the same button you can then resume the exposition."
+      "text": "Exhibition can be paused. By using the same button you can then resume the exposition."
+    },
+    "progressbar": {
+      "label": "Rewind",
+      "text": "In the case of a screen with a video or photo gallery, it is also possible to use this bar to rewind the progress of the current screen."
     }
   },
 

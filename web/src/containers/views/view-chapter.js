@@ -96,7 +96,7 @@ export default compose(
   lifecycle({
     componentDidMount() {
       const {
-        screenFiles,
+        screenPreloadedFiles,
         viewScreen,
         animation,
         setTitleTimeout,
@@ -104,10 +104,10 @@ export default compose(
         getTypingAdd,
       } = this.props;
 
-      if (screenFiles["image"]) {
+      if (screenPreloadedFiles["image"]) {
         if (animation === animationType.WITHOUT_AND_BLUR_BACKGROUND) {
           const backgroundNode = document.createElement("img");
-          backgroundNode.src = screenFiles["image"];
+          backgroundNode.src = screenPreloadedFiles["image"];
           backgroundNode.className = "view-chapter-image-background";
           backgroundNode.setAttribute(
             "style",
@@ -119,7 +119,7 @@ export default compose(
         }
 
         const newNode = document.createElement("img");
-        newNode.src = screenFiles["image"];
+        newNode.src = screenPreloadedFiles["image"];
 
         newNode.className = classNames("image-fullscreen", {
           cover:

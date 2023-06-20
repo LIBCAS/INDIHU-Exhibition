@@ -1,10 +1,10 @@
 import { createStore, compose, applyMiddleware, AnyAction, Store } from "redux";
 import thunk, { ThunkDispatch } from "redux-thunk";
 
-import reducers from "../reducers";
+import combinedReducer from "../reducers";
 
 // properly type reducers to get actual types for app state instead of any
-export type AppState = ReturnType<typeof reducers>;
+export type AppState = ReturnType<typeof combinedReducer>;
 export type AppDispatch = ThunkDispatch<AppState, void, AnyAction>;
 export type AppStore = Store<AppState> & { dispatch: AppDispatch };
 
@@ -23,7 +23,7 @@ export default function configureStore(initialState = {}): AppStore {
     applyMiddleware(...middlewares)
   )(createStore);
 
-  const store = finalCreateStore(reducers, initialState);
+  const store = finalCreateStore(combinedReducer, initialState);
 
   return store;
 }

@@ -5,7 +5,7 @@ import SelectField from "react-md/lib/SelectFields";
 import TextField from "react-md/lib/TextFields";
 import FontIcon from "react-md/lib/FontIcons";
 import Button from "react-md/lib/Buttons/Button";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import {
   setExpoFilter,
@@ -74,7 +74,7 @@ const Filter = ({
         <Button
           icon
           onClick={async () => {
-            ReactTooltip.hide();
+            //ReactTooltip.hide();
             setExpoFilter(
               filter.filter,
               filter.sort,
@@ -84,14 +84,18 @@ const Filter = ({
             const expositions = await getExpositions();
             getExpositions(get(expositions, "count"));
           }}
-          data-tip={filter.order === "ASC" ? "Sestupně" : "Vzestupně"}
+          data-tooltip-id="filter-tooltip"
+          data-tooltip-content={
+            filter.order === "ASC" ? "Sestupně" : "Vzestupně"
+          }
         >
           {filter.order === "ASC" ? "arrow_downward" : "arrow_upward"}
         </Button>
         <ReactTooltip
+          id="filter-tooltip"
           className="infopoint-tooltip"
-          type="dark"
-          effect="solid"
+          variant="dark"
+          float={false}
           place="bottom"
         />
       </div>

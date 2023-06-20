@@ -1,6 +1,5 @@
 import { useFiles } from "containers/views/hooks/files-hook";
-import { useCallback, useEffect, useMemo } from "react";
-import Tooltip from "react-tooltip";
+import { useCallback, useMemo } from "react";
 
 import { ScreenPoint } from "./types";
 
@@ -18,12 +17,36 @@ export const useExpoProgressBarTooltip = (screenPoints: ScreenPoint[]) => {
         return errorMessage;
       }
 
-      const image = "image" in screenPoint ? screenPoint.image : undefined;
+      // Check either for the key "image" or "images"
+      // "images" are for example for PARALLAX or PHOTOGALLERY but difference structures
+      // "image1", "image2" are used for IMAGE_CHANGE
+      let image: string | undefined = undefined;
+      if ("image" in screenPoint) {
+        image = screenPoint.image;
+      } else if ("image1" in screenPoint) {
+        image = screenPoint.image1;
+      } else if (screenPoint.type === "PARALLAX") {
+        image =
+          screenPoint.images?.length && screenPoint.images.length > 0
+            ? screenPoint.images[0]
+            : undefined;
+      } else if (screenPoint.type === "PHOTOGALERY") {
+        image =
+          screenPoint.images?.length && screenPoint.images.length > 0
+            ? screenPoint.images[0].id
+            : undefined;
+      } else {
+        image = undefined;
+      }
+
+      // const image = "image" in screenPoint ? screenPoint.image : undefined;
 
       return (
         <div className="flex flex-col items-center gap-2">
           <span className="text-lg font-semibold whitespace-nowrap">
-            {screenPoint.title}
+            {screenPoint.type === "START"
+              ? "Úvodní obrazovka"
+              : screenPoint.title}
           </span>
           <ProgressBarImage imageId={image} />
         </div>
@@ -42,11 +65,11 @@ type ProgressBarImageProps = {
 const ProgressBarImage = ({ imageId }: ProgressBarImageProps) => {
   const fileLookupMap = useFiles();
 
-  useEffect(() => {
-    const interval = setInterval(() => Tooltip.rebuild(), 1000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => Tooltip.rebuild(), 1000);
 
-    return () => clearInterval(interval);
-  });
+  //   return () => clearInterval(interval);
+  // });
 
   if (!imageId) {
     return <></>;

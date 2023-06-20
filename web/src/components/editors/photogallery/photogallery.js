@@ -1,22 +1,29 @@
-import { connect } from "react-redux";
-import { map, filter, find, isEmpty, compact, concat, get } from "lodash";
 import { compose, withState } from "recompose";
-import { SelectField } from "react-md";
+import { connect } from "react-redux";
 
-import InfopointsSequencesTable from "../infopoints-sequences-table";
+// Components
+import { SelectField } from "react-md";
 import Carousel from "../carousel";
 import Image from "../image";
 import HelpIcon from "../../help-icon";
+import InfopointsTable from "../InfopointsTable";
 
+// Actions
 import { setDialog } from "../../../actions/dialog-actions";
 import { getFileById } from "../../../actions/file-actions";
 import { updateScreenData } from "../../../actions/expoActions";
+
+// Utils
+import { map, filter, find, isEmpty } from "lodash";
+
+// Models
 import {
   animationType,
   animationTypeText,
 } from "../../../enums/animation-type";
 import { helpIconText } from "../../../enums/text";
-import { hasValue } from "../../../utils";
+
+// - - -
 
 const options = [
   { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
@@ -39,12 +46,12 @@ const options = [
 const Photogallery = ({
   activeScreen,
   updateScreenData,
+  getFileById,
   activeImageIndex,
   setActiveImageIndex,
-  getFileById,
-  setActivePoint,
   activePoint,
 }) => {
+  // null OR image object like in activeScreen.images[index]
   const image =
     activeImageIndex !== -1 &&
     find(
@@ -72,6 +79,7 @@ const Photogallery = ({
   return (
     <div className="container container-tabMenu">
       <div className="screen">
+        {/* 1. Carousel Container + its actions */}
         <Carousel
           {...{
             images: activeScreen.images,
@@ -138,9 +146,12 @@ const Photogallery = ({
             },
           }}
         />
+
+        {/* 2. Clicked image from gallery administration and settings */}
         {activeImageIndex !== -1 && (
           <div className="screen-image">
             <div className="screen-two-cols">
+              {/* a) Left column: image panel */}
               <div className="flex-row-nowrap one-image-row">
                 <Image
                   {...{
@@ -176,6 +187,8 @@ const Photogallery = ({
                   }}
                 />
               </div>
+
+              {/* b) Right column: infopoint panel + animation setting */}
               <div className="flex-col half-width-min">
                 <div className="flex-row-nowrap flex-centered">
                   <SelectField
@@ -200,173 +213,71 @@ const Photogallery = ({
                     }}
                   />
                 </div>
+
                 {image && (
-                  <InfopointsSequencesTable
-                    {...{
-                      label: "Infopointy",
-                      imgIdx: activeImageIndex,
-                      infopoints:
-                        activeScreen.images[activeImageIndex].infopoints,
-                      activePoint,
-                      onRowClick: (i) =>
-                        setActivePoint(activePoint === i ? null : i),
-                      onSubmit: (text) =>
-                        updateScreenData({
-                          images: map(activeScreen.images, (image, i) =>
-                            i === activeImageIndex
-                              ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    (infopoint) =>
-                                      infopoint.edit
-                                        ? { ...infopoint, text, edit: false }
-                                        : infopoint
-                                  ),
-                                }
-                              : image
-                          ),
-                        }),
-                      onClear: () =>
-                        updateScreenData({
-                          images: map(activeScreen.images, (image, j) =>
-                            j === activeImageIndex
-                              ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    (infopoint) => {
-                                      return {
-                                        ...infopoint,
-                                        edit: false,
-                                      };
-                                    }
-                                  ),
-                                }
-                              : image
-                          ),
-                        }),
-                      onEdit: (i) =>
-                        updateScreenData({
-                          images: map(activeScreen.images, (image, j) =>
-                            j === activeImageIndex
-                              ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    (infopoint, idx) =>
-                                      i === idx
-                                        ? {
-                                            ...infopoint,
-                                            edit: true,
-                                          }
-                                        : {
-                                            ...infopoint,
-                                            edit: false,
-                                          }
-                                  ),
-                                }
-                              : image
-                          ),
-                        }),
-                      onCheckbox: (chb, value) =>
-                        updateScreenData({
-                          images: map(activeScreen.images, (image, i) =>
-                            i === activeImageIndex
-                              ? {
-                                  ...image,
-                                  infopoints: map(
-                                    image.infopoints,
-                                    (infopoint, idx) =>
-                                      chb === idx
-                                        ? {
-                                            ...infopoint,
-                                            alwaysVisible: value,
-                                          }
-                                        : infopoint
-                                  ),
-                                }
-                              : image
-                          ),
-                        }),
-                      onDelete: (i) =>
-                        updateScreenData({
-                          images: map(activeScreen.images, (image, j) =>
-                            j === activeImageIndex
-                              ? {
-                                  ...image,
-                                  infopoints: filter(
-                                    image.infopoints,
-                                    (inf, idx) => i !== idx
-                                  ),
-                                }
-                              : image
-                          ),
-                        }),
-                      onAdd: () =>
-                        updateScreenData({
-                          images: map(activeScreen.images, (image, i) =>
-                            i === activeImageIndex
-                              ? {
-                                  ...image,
-                                  infopoints: compact(
-                                    concat(image.infopoints, {
-                                      text: "Vložte popis infopointu",
-                                      top: 17,
-                                      left: 17,
-                                      alwaysVisible: false,
-                                    })
-                                  ),
-                                }
-                              : image
-                          ),
-                        }),
-                      initialValues: {
-                        text:
-                          !hasValue(
-                            get(
-                              find(
-                                get(
-                                  find(
-                                    activeScreen.images,
-                                    (_, i) => i === activeImageIndex
-                                  ),
-                                  "infopoints"
+                  <InfopointsTable
+                    infopoints={
+                      activeScreen.images[activeImageIndex].infopoints
+                    }
+                    onInfopointAdd={(dialogFormData) =>
+                      updateScreenData({
+                        images: map(activeScreen.images, (image, imageIndex) =>
+                          imageIndex === activeImageIndex
+                            ? {
+                                ...image,
+                                infopoints: [
+                                  ...image.infopoints,
+                                  // Add new infopoint object
+                                  {
+                                    ...dialogFormData,
+                                    top: 17,
+                                    left: 17,
+                                  },
+                                ],
+                              }
+                            : image
+                        ),
+                      })
+                    }
+                    onInfopointEdit={(infopointIndexToEdit, dialogFormData) =>
+                      updateScreenData({
+                        images: map(activeScreen.images, (image, imageIndex) =>
+                          imageIndex === activeImageIndex
+                            ? {
+                                ...image,
+                                infopoints: map(
+                                  image.infopoints,
+                                  (currentInfopoint, i) =>
+                                    infopointIndexToEdit === i
+                                      ? {
+                                          ...currentInfopoint,
+                                          ...dialogFormData,
+                                        }
+                                      : {
+                                          ...currentInfopoint,
+                                        }
                                 ),
-                                (infopoint) => infopoint.edit
-                              ),
-                              "text"
-                            )
-                          ) ||
-                          get(
-                            find(
-                              get(
-                                find(
-                                  activeScreen.images,
-                                  (_, i) => i === activeImageIndex
+                              }
+                            : image
+                        ),
+                      })
+                    }
+                    onInfopointDelete={(infopointIndexToDelete) =>
+                      updateScreenData({
+                        images: map(activeScreen.images, (image, imageIndex) =>
+                          imageIndex === activeImageIndex
+                            ? {
+                                ...image,
+                                infopoints: filter(
+                                  image.infopoints,
+                                  (_currentInfopoint, i) =>
+                                    infopointIndexToDelete !== i
                                 ),
-                                "infopoints"
-                              ),
-                              (infopoint) => infopoint.edit
-                            ),
-                            "text"
-                          ) === "Vložte popis infopointu"
-                            ? ""
-                            : get(
-                                find(
-                                  get(
-                                    find(
-                                      activeScreen.images,
-                                      (_, i) => i === activeImageIndex
-                                    ),
-                                    "infopoints"
-                                  ),
-                                  (infopoint) => infopoint.edit
-                                ),
-                                "text"
-                              ),
-                      },
-                    }}
+                              }
+                            : image
+                        ),
+                      })
+                    }
                   />
                 )}
               </div>

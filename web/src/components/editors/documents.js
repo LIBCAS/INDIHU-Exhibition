@@ -23,28 +23,51 @@ const Documents = ({
   tabFolder,
   changeSwitchState,
   swapScreenDocuments,
-}) => (
-  <div className="container container-tabMenu">
-    <div className="screen">
-      <div className="flex-row-nowrap">
-        <div className="table-with-help">
+  isStartScreen,
+}) => {
+  return (
+    <div className="container container-tabMenu">
+      <div className="screen">
+        <div className="flex-row-nowrap">
           <div className="table margin-bottom">
-            <div className="table-row header">
+            {/* Table header */}
+            <div className="table-row-new header">
               {get(activeScreen, "documents.length", 0) > 1 && (
-                <div className="table-col" />
+                <div className="table-cell-first_5" />
               )}
-              <div className="table-col">Název</div>
-              <div className="table-col">Soubor/URL</div>
-              <div className="table-col">Typ</div>
-              <div className="table-col" />
+              <div className="table-cell-second_5">Název</div>
+              <div className="table-cell-third_5">Soubor/URL</div>
+              <div className="table-cell-fourth_5">Typ</div>
+              <div className="table-cell-fifth_5" />
             </div>
+
+            {/* Table rows */}
             {map(get(activeScreen, "documents"), (item, i) => {
               const type = get(item, "type", get(item, "urlType", ""));
 
+              const documentTypeString = type.match(/^image/)
+                ? fileTypeText.IMAGE
+                : type.match(/^audio/)
+                ? fileTypeText.AUDIO
+                : type.match(/^video/)
+                ? fileTypeText.VIDEO
+                : type.match(/^application\/pdf/)
+                ? fileTypeText.PDF
+                : type.match(/^WEB/)
+                ? fileTypeText.WEB
+                : type;
+
+              const documentFileTypeString =
+                item.documentFileType === "worksheet"
+                  ? "Pracovní list"
+                  : item.documentFileType === "exhibitionFile"
+                  ? "Soubor k výstavě"
+                  : "";
+
               return (
-                <div className="table-row" key={i}>
+                <div className="table-row-new" key={i}>
                   {get(get(activeScreen, "documents"), "length", 0) > 1 && (
-                    <div className="table-col">
+                    <div className="table-cell-first_5">
                       <FontIcon
                         onClick={() => swapScreenDocuments(i - 1, i)}
                         style={{
@@ -68,22 +91,25 @@ const Documents = ({
                       </FontIcon>
                     </div>
                   )}
-                  <div className="table-col">{item.fileName}</div>
-                  <div className="table-col">{item.name || item.url}</div>
-                  <div className="table-col">
-                    {type.match(/^image/)
-                      ? fileTypeText.IMAGE
-                      : type.match(/^audio/)
-                      ? fileTypeText.AUDIO
-                      : type.match(/^video/)
-                      ? fileTypeText.VIDEO
-                      : type.match(/^application\/pdf/)
-                      ? fileTypeText.PDF
-                      : type.match(/^WEB/)
-                      ? fileTypeText.WEB
-                      : type}
+
+                  <div className="table-cell-second_5">{item.fileName}</div>
+                  <div className="table-cell-third_5">
+                    {item.name || item.url}
                   </div>
-                  <div className="table-col flex-right">
+                  <div className="table-cell-fourth_5">
+                    {documentTypeString}
+                    {isStartScreen && (
+                      <>
+                        <br />
+                        {documentFileTypeString}
+                      </>
+                    )}
+                  </div>
+
+                  <div
+                    className="table-cell-fifth_5 flex-right"
+                    style={{ width: "10%", minWidth: "60px" }}
+                  >
                     <FontIcon
                       onClick={() => {
                         tabFolder(null);
@@ -113,23 +139,26 @@ const Documents = ({
               );
             })}
           </div>
+
+          <HelpIcon {...{ label: helpIconText.EDITOR_DOCUMENTS }} />
         </div>
-        <HelpIcon {...{ label: helpIconText.EDITOR_DOCUMENTS }} />
+
+        {/* Add (+) button below the table */}
+        <Button
+          icon
+          onClick={() => {
+            tabFolder(null);
+            changeSwitchState(true);
+            setDialog("ScreenDocumentNew");
+          }}
+          className="color-black"
+        >
+          add
+        </Button>
       </div>
-      <Button
-        icon
-        onClick={() => {
-          tabFolder(null);
-          changeSwitchState(true);
-          setDialog("ScreenDocumentNew");
-        }}
-        className="color-black"
-      >
-        add
-      </Button>
     </div>
-  </div>
-);
+  );
+};
 
 export default connect(null, {
   setDialog,

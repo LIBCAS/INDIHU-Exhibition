@@ -12,6 +12,8 @@ import {
   EXPO_VIEWER_FILE_ERROR_ADD,
   EXPO_VIEWER_FILE_ERROR_TIMEOUT_ADD,
   EXPO_VIEW_PROGRESS_UPDATE,
+  EXPO_TOOLTIP_INFO_UPDATE,
+  EXPO_VOLUMES_UPDATE,
 } from "../constants";
 import { getFileById } from "../file-actions";
 import { showLoader } from "../app-actions";
@@ -20,16 +22,19 @@ import { screenUrl, screenType } from "../../enums/screen-type";
 import { animationType } from "../../enums/animation-type";
 import { tickTime } from "constants/view-screen-progress";
 
+// Currently nowhere used!! but would set viewInteractive
 export const toggleInteractive = (viewInteractive) => ({
   type: EXPO_VIEWER,
   payload: { viewInteractive },
 });
 
+// Currently nowhere used!! but would set viewInteractiveData
 export const setViewInteractiveData = (viewInteractiveData) => ({
   type: EXPO_VIEWER,
   payload: { viewInteractiveData },
 });
 
+// Load into viewExpo!! Used in expo-viewer.tsx!
 export const loadExposition = (url) => async (dispatch) => {
   try {
     const response = await fetch(`/api/exposition/u/${url}`);
@@ -54,6 +59,7 @@ export const loadExposition = (url) => async (dispatch) => {
   }
 };
 
+// Load into viewScreen!
 export const loadScreen = (section, screen) => async (dispatch, getState) => {
   const expo = getState().expo.viewExpo;
   if (!expo || !expo.structure || (screen && !expo.structure.screens))
@@ -85,20 +91,21 @@ export const loadScreen = (section, screen) => async (dispatch, getState) => {
   return false;
 };
 
-export const setChapterMusic = (viewChapterMusic) => ({
-  type: EXPO_VIEWER,
-  payload: { viewChapterMusic },
-});
+// Setting the viewChapterMusic
+export const setChapterMusic = (viewChapterMusic) => {
+  return {
+    type: EXPO_VIEWER,
+    payload: { viewChapterMusic },
+  };
+};
 
-export const setScreenAudio = (viewScreenAudio) => ({
-  type: EXPO_VIEWER,
-  payload: { viewScreenAudio },
-});
-
-export const setLastChapter = (viewLastChapter) => ({
-  type: EXPO_VIEWER,
-  payload: { viewLastChapter },
-});
+// Settings the viewScreenAudio
+export const setScreenAudio = (viewScreenAudio) => {
+  return {
+    type: EXPO_VIEWER,
+    payload: { viewScreenAudio },
+  };
+};
 
 export const setViewExpo = (viewExpo) => ({
   type: EXPO_VIEWER,
@@ -395,8 +402,9 @@ const returnMeObject = (
 };
 
 /**
- * Create structure of file instances to be preloaded
+ * Create structure of file instances to be preloaded (probably for the whole expo!)
  */
+// Looks like this function is used NOWHERE
 export const filePreloader = () => async (dispatch, getState) => {
   dispatch(showLoader(true));
   const expo = getState().expo.viewExpo;
@@ -475,6 +483,7 @@ export const filePreloader = () => async (dispatch, getState) => {
       });
     });
 
+    // 1.) Dispatch
     dispatch({
       type: EXPO_VIEWER,
       payload: {
@@ -488,6 +497,7 @@ export const filePreloader = () => async (dispatch, getState) => {
 /**
  * Create object of file instances of one choosen screen
  */
+// Looks like this function is used NOWHERE
 export const screenFilePreloader =
   (activeScreen, section, screen) => async (dispatch, getState) => {
     dispatch(showLoader(true));
@@ -540,6 +550,7 @@ export const screenFilePreloader =
       }
     });
 
+    // 2.) Dispatch
     dispatch({
       type: EXPO_VIEWER,
       payload: {
@@ -585,6 +596,7 @@ export const turnSoundOff = (soundIsTurnedOff) => (dispatch, getState) => {
 /**
  * Needed actions before redirect to start of expo viewer
  */
+// NOWHERE USED!
 export const prepareReturnToViewStart = () => (dispatch, getState) => {
   const viewChapterMusic = getState().expo.viewChapterMusic;
   const viewScreenAudio = getState().expo.viewScreenAudio;
@@ -600,8 +612,6 @@ export const prepareReturnToViewStart = () => (dispatch, getState) => {
     viewScreenAudio.currentTime = 0;
     dispatch(setScreenAudio(null));
   }
-
-  dispatch(setLastChapter(null));
 };
 
 /**
@@ -633,4 +643,80 @@ export const tickProgress = () => (dispatch, getState) => {
     type: EXPO_VIEW_PROGRESS_UPDATE,
     payload: newValues,
   });
+};
+
+export const setTooltipInfo = (values) => (dispatch) => {
+  dispatch({
+    type: EXPO_TOOLTIP_INFO_UPDATE,
+    payload: values,
+  });
+};
+
+export const setExpoVolumes = (volumeObj) => (dispatch) => {
+  dispatch({
+    type: EXPO_VOLUMES_UPDATE,
+    payload: volumeObj,
+  });
+};
+
+export const muteVolumes = (expoVolumes) => (dispatch) => {
+  const speechVolume = expoVolumes.speechVolume;
+  const musicVolume = expoVolumes.musicVolume;
+
+  // if not already muted
+  if (speechVolume.actualVolume !== 0) {
+    dispatch(
+      setExpoVolumes({
+        speechVolume: {
+          previousVolume: speechVolume.actualVolume,
+          actualVolume: 0,
+        },
+      })
+    );
+  }
+
+  // if not already muted
+  if (musicVolume.actualVolume !== 0) {
+    dispatch(
+      setExpoVolumes({
+        musicVolume: {
+          previousVolume: musicVolume.actualVolume,
+          actualVolume: 0,
+        },
+      })
+    );
+  }
+};
+
+export const unmuteVolumes = (expoVolumes) => (dispatch) => {
+  const speechVolume = expoVolumes.speechVolume;
+  const musicVolume = expoVolumes.musicVolume;
+
+  if (
+    speechVolume.previousVolume !== 0 &&
+    speechVolume.previousVolume > speechVolume.actualVolume
+  ) {
+    dispatch(
+      setExpoVolumes({
+        speechVolume: {
+          previousVolume: speechVolume.previousVolume,
+          actualVolume: speechVolume.previousVolume,
+        },
+      })
+    );
+  }
+
+  if (
+    musicVolume.previousVolume !== 0 &&
+    musicVolume.previousVolume > musicVolume.actualVolume
+  ) {
+    dispatch(
+      setExpoVolumes({
+        musicVolume: {
+          previousVolume: musicVolume.previousVolume,
+          actualVolume: musicVolume.previousVolume,
+        },
+      })
+    );
+  }
 };

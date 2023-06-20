@@ -13,9 +13,9 @@ import {
 import { CopyClipboardBox } from "components/copy-clipboard-box/copy-clipboard-box";
 
 import { DialogProps, DialogType } from "../dialog-types";
-import Dialog from "../dialog-wrap";
+import Dialog from "../dialog-wrap-typed";
 
-export type ShareExpoDialogData = {
+export type ShareExpoDialogDataProps = {
   url: string;
 };
 
@@ -24,7 +24,7 @@ export const ShareExpoDialog = ({
   closeDialog,
 }: DialogProps<DialogType.ShareExpoDialog>) => {
   const { url } = dialogData ?? { url: "" };
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   return (
     <Dialog

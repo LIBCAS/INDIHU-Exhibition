@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { Screen } from "models/screen";
 
 import { DialogProps, DialogType } from "../dialog-types";
-import Dialog from "../dialog-wrap";
+import Dialog from "../dialog-wrap-typed";
 import { ScreenHighlight, ScreenItem } from "./screen-item";
 import { useScreenChapters } from "./screen-chapters-hook";
 
-export type ChaptersDialogData = {
+export type ChaptersDialogDataProps = {
   screens?: Screen[][];
   viewExpoUrl?: string;
   hightlight?: ScreenHighlight;
@@ -21,7 +21,7 @@ export const ChaptersDialog = ({
 }: DialogProps<DialogType.ChaptersDialog>) => {
   const screenChapters = useScreenChapters(dialogData?.screens);
   const { onClick } = dialogData ?? {};
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   const handleClick = useCallback(() => {
     closeDialog();

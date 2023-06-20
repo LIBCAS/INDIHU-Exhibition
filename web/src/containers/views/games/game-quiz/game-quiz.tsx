@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import cx from "classnames";
 
-import { ScreenProps } from "containers/views/types";
+import { ScreenProps } from "models";
 import { GameQuizScreen } from "models";
 import { AppState } from "store/store";
 
@@ -16,7 +16,7 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameQuiz = ({ screenFiles, toolbarRef }: ScreenProps) => {
+export const GameQuiz = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [marked, setMarked] = useState<number>();
@@ -50,7 +50,7 @@ export const GameQuiz = ({ screenFiles, toolbarRef }: ScreenProps) => {
             onClick={() => setMarked(index)}
           >
             <img
-              src={screenFiles.answers?.[index]?.image}
+              src={screenPreloadedFiles.answers?.[index]?.image}
               className="flex-1 w-full object-contain"
               draggable={false}
             />

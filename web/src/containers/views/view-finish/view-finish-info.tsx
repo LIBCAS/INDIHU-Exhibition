@@ -15,7 +15,7 @@ export const ViewFinishInfo = ({
   viewStart,
 }: ViewFinishInfoProps) => {
   const collaborators = viewStart?.collaborators ?? [];
-  const { t } = useTranslation("exposition");
+  const { t } = useTranslation("exhibition");
 
   return (
     <div>

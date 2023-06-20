@@ -1,18 +1,8 @@
-import { find } from "lodash";
 import * as uuid from "uuid/v4";
 
 import { EXPO_STRUCTURE_SET } from "../constants";
 import { saveExpo } from "./expo-actions";
 import { screenTypeText, screenType } from "../../enums/screen-type";
-import { animationType } from "../../enums/animation-type";
-import { screenTransition } from "../../enums/screen-enums";
-
-const screenWithAnimation = [
-  screenType.INTRO,
-  screenType.IMAGE,
-  screenType.PHOTOGALERY,
-  screenType.PARALLAX,
-];
 
 /** EXPO STRUCTURE */
 export const addScreen =
@@ -28,17 +18,6 @@ export const addScreen =
           type,
           title,
           aloneScreen: type === screenType.INTRO ? undefined : aloneScreen,
-          animationType:
-            type === screenType.INTRO ||
-            find(screenWithAnimation, (s) => s === type)
-              ? animationType.WITHOUT
-              : type === screenType.IMAGE_CHANGE
-              ? animationType.HORIZONTAL
-              : undefined,
-          transitionType:
-            type === screenType.IMAGE_CHANGE
-              ? screenTransition.ON_TIME
-              : undefined,
           answers:
             type === screenType.GAME_OPTIONS
               ? [
@@ -59,15 +38,6 @@ export const addScreen =
         id: uuid(),
         type,
         title,
-        animationType: find(screenWithAnimation, (s) => s === type)
-          ? animationType.WITHOUT
-          : type === screenType.IMAGE_CHANGE
-          ? animationType.HORIZONTAL
-          : undefined,
-        transitionType:
-          type === screenType.IMAGE_CHANGE
-            ? screenTransition.ON_TIME
-            : undefined,
         answers:
           type === screenType.GAME_OPTIONS
             ? [
