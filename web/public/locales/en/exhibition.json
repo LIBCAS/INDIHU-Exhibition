@@ -4,7 +4,7 @@
   "no-name": "Exhibition has no name",
   "no-authors": "Exhibition has no author information",
   "no-files": "Exhibition has no files",
-  "no-worksheets": "Exposition has no worksheets",
+  "no-worksheets": "Exhibition has no worksheets",
   "no-screens": "Exhibition has no screens",
   "authors-and-documents": "Authors and documents of exhibition",
   "chapters": "Exhibition chapters",
@@ -14,12 +14,12 @@
   "files": "Exhibition files",
   "all-files": "All available files",
   "screen-files": "Files to individual screens",
-  "worksheets": "Exposition worksheets",
+  "worksheets": "Exhibition worksheets",
   "info": "Information about exhibition",
   "replay": "Replay",
   "share": "Share",
   "share-expo": "Share exhibition",
   "authors": "Authors of exhibition",
   "copy-link": "Copy link to exhibition",
-  "no-screen-files": "Exposition screens do not contain any files"
+  "no-screen-files": "Exhibition screens do not contain any files"
 }
