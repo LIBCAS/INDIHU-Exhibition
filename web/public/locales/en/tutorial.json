@@ -10,7 +10,7 @@
     },
     "navigation": {
       "label": "Navigation",
-      "text": "The arrows on each sides of the screen move you either forward (right) or backward (left)."
+      "text": "The arrows on each sides of the screen move you either forward (right) or backward (left) in the exhibition."
     },
     "chapters": {
       "label": "Chapters",
@@ -22,7 +22,7 @@
     },
     "play": {
       "label": "Playback",
-      "text": "Exhibition can be paused by clicking this button or by pressing the space bar. The exhibition can then be resumed by the same button or by pressing enter."
+      "text": "Pause the exhibition by either clicking this button or by pressing the space bar. Resume the exhibition by the same button or by pressing enter."
     },
     "progressbar": {
       "label": "Rewind",
