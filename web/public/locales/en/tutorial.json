@@ -1,4 +1,4 @@
-{
+ing{
   "next": "Next",
   "skip": "Skip tutorial",
   "finish": "Finish",
@@ -6,34 +6,34 @@
   "overlay": {
     "info": {
       "label": "Information",
-      "text": "By clicking this button you can view additional information about the screen and its text."
+      "text": "CLick to view additional information about the screen and its text."
     },
     "navigation": {
       "label": "Navigation",
-      "text": "Navigation buttons allow you to move freely through the exhibition. The button on the right side of the screen moves you forward and the button on the left takes you backwards."
+      "text": "The arrows on each sides of the screen move you either forward (right) or backward (left). 
     },
     "chapters": {
       "label": "Chapters",
-      "text": "This button opens a menu with all chapters and screens of the exhibition. You can then freely navigate to individual screens by clicking on them."
+      "text": "Click to view a list with all chapters and screens of the exhibition. Navigate to individual screens by clicking them."
     },
     "audio": {
       "label": "Audio",
-      "text": "This button allows you to control audio."
+      "text": "This button allows you to control audio settings."
     },
     "play": {
       "label": "Playback",
-      "text": "Exhibition can be paused. By using the same button you can then resume the exposition."
+      "text": "Exhibition can be paused by clicking this button or by pressing the space bar. The exhibition can then be resumed by the same button or by pressing enter."
     },
     "progressbar": {
       "label": "Rewind",
-      "text": "In the case of a screen with a video or photo gallery, it is also possible to use this bar to rewind the progress of the current screen."
+      "text": "Some types of screens (such as video or photo gallery ones) have a special bar to help you fast forward in the current screen."
     }
   },
 
   "screenChange": {
     "dragThumb": {
       "label": "Drag thumb",
-      "text": "You can reveal the underlying image by dragging."
+      "text": "Drag to reveal the background image."
     }
   }
 }
