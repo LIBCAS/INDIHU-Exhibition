@@ -10,7 +10,7 @@
     },
     "navigation": {
       "label": "Navigace",
-      "text": "Navigační tlačítka umožňují volný pohyb po výstavě. Tlačítkem na pravé straně obrazovky se pohybujete směrem dopředu a tlačítkem na levé straně obrazovky postupujete zpět."
+      "text": "Navigační tlačítka umožňují volný pohyb po výstavě. Tlačítkem na pravé straně obrazovky se pohybujete směrem dopředu a tlačítkem na levé straně obrazovky se vracíte ve výstavě zpět."
     },
     "chapters": {
       "label": "Kapitoly",
@@ -22,11 +22,11 @@
     },
     "play": {
       "label": "Přehrávání",
-      "text": "Výstavu je možné pozastavit. Stejným tlačítkem lze poté přehrávání obnovit."
+      "text": "Výstavu je možné pozastavit tímto tlačítkem anebo mezerníkem. Opětovným stisknutím tlačítka nebo stisknutím enteru na klávesnici se pak přehrávání obnoví."
     },
     "progressbar": {
       "label": "Přetáčení",
-      "text": "V případě obrazovky s videem nebo slideshow je také možné pomocí tohoto proužku přetáčet postup aktuální obrazovky."
+      "text": "V případě obrazovky s videem nebo slideshow je také možné pomocí tohoto proužku přetáčet aktuální obrazovku."
     }
   },
 
