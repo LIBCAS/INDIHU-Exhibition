@@ -1,11 +1,11 @@
 {
   "start": "Spustit výstavu",
   "approximately": "Cca",
-  "no-name": "Expozice bez názvu",
-  "no-authors": "Expozice nemá žádné informace o autorech",
-  "no-files": "Expozice neobsahuje žádné soubory",
-  "no-worksheets": "Expozice neobsahuje žádné pracovní listy",
-  "no-screens": "Expozice neobsahuje žádné obrazovky",
+  "no-name": "Výstava bez názvu",
+  "no-authors": "Výstava nemá žádné informace o autorech",
+  "no-files": "Výstava neobsahuje žádné soubory",
+  "no-worksheets": "Výstava neobsahuje žádné pracovní listy",
+  "no-screens": "Výstava neobsahuje žádné obrazovky",
   "authors-and-documents": "Autoři a dokumenty k výstavě",
   "chapters": "Kapitoly výstavy",
   "more-info": "Více informací",
@@ -21,5 +21,5 @@
   "share-expo": "Sdílejte výstavu",
   "authors": "Autoři výstavy",
   "copy-link": "Zkopírovat odkaz na výstavu",
-  "no-screen-files": "Obrazovky expozice neobsahují žádné soubory"
+  "no-screen-files": "Obrazovky výstavy neobsahují žádné soubory"
 }

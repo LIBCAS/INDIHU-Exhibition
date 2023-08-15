@@ -1,11 +1,11 @@
 {
   "start": "View screen",
-  "no-title": "Screen without name",
+  "no-title": "Untitled screen",
   "no-text": "Screen doesn't contain any text",
   "chapters": "Chapters",
 
   "game": {
-    "solution": "The solution",
+    "solution": "The correct solution",
     "controls": {
       "finished": "Finished",
       "play-again": "Play again"
