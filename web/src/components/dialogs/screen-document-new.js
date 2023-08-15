@@ -6,9 +6,9 @@ import Button from "react-md/lib/Buttons/Button";
 import Radio from "react-md/lib/SelectionControls/Radio";
 
 import Dialog from "./dialog-wrap";
-import TextField from "../form/text-field";
-import SelectField from "../form/select-field";
-import * as Validation from "../form/validation";
+import TextField from "../form/redux-form/text-field";
+import SelectField from "../form/redux-form/select-field";
+import * as Validation from "../form/redux-form/validation";
 
 import { addScreenDocument } from "../../actions/expoActions";
 import { tabFolder } from "../../actions/file-actions";

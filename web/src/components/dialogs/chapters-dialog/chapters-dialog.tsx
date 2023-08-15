@@ -1,12 +1,16 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useScreenChapters } from "hooks/view-hooks/screen-chapters-hook";
+
+import Dialog from "../dialog-wrap-typed";
+import { DialogProps, DialogType } from "../dialog-types";
+
+import { ScreenItem } from "./screen-item";
 
 import { Screen } from "models/screen";
+import { ScreenHighlight } from "models/screen";
 
-import { DialogProps, DialogType } from "../dialog-types";
-import Dialog from "../dialog-wrap-typed";
-import { ScreenHighlight, ScreenItem } from "./screen-item";
-import { useScreenChapters } from "./screen-chapters-hook";
+// - -
 
 export type ChaptersDialogDataProps = {
   screens?: Screen[][];
@@ -19,9 +23,10 @@ export const ChaptersDialog = ({
   dialogData,
   closeDialog,
 }: DialogProps<DialogType.ChaptersDialog>) => {
-  const screenChapters = useScreenChapters(dialogData?.screens);
-  const { onClick } = dialogData ?? {};
   const { t } = useTranslation("exhibition");
+  const { screens, viewExpoUrl, hightlight, onClick } = dialogData ?? {};
+
+  const screenChapters = useScreenChapters(screens);
 
   const handleClick = useCallback(() => {
     closeDialog();
@@ -36,13 +41,14 @@ export const ChaptersDialog = ({
       noDialogMenu
     >
       {screenChapters?.length === 0 && <span>{t("no-screens")}</span>}
-      {screenChapters?.map((screen) => (
+      {screenChapters?.map((screenChapter) => (
         <ScreenItem
-          key={`${screen.sectionIndex}-${screen.screenIndex}`}
-          screen={screen}
-          viewExpoUrl={dialogData?.viewExpoUrl}
+          key={`${screenChapter.sectionIndex}-${screenChapter.screenIndex}`}
+          screen={screenChapter}
+          viewExpoUrl={viewExpoUrl}
           onClick={handleClick}
-          highlight={dialogData?.hightlight}
+          highlight={hightlight}
+          usedInDialog
         />
       ))}
     </Dialog>

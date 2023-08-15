@@ -27,6 +27,10 @@
     "progressbar": {
       "label": "Přetáčení",
       "text": "V případě obrazovky s videem nebo slideshow je také možné pomocí tohoto proužku přetáčet postup aktuální obrazovky."
+    },
+    "keyboard": {
+      "label": "Klávesové ovládání",
+      "text": "Výstavu lze ovládat i pomocí klávesnice. \nStisknutím 'M' lze ztlumit všechny zvukové stopy. \nStisknutím mezerníku lze pozastavovat výstavu. \nStisknutím ESC lze zavřít všechny interaktivní prvky zobrazené na obrazovce. \nStisknutím šipek dopředu, resp. dozadu je možné se posouvat po výstavě. \nStisknutím Enter je také možné výstavu i spustit."
     }
   },
 

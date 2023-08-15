@@ -13,7 +13,12 @@ import { getFileById } from "../../actions/file-actions";
 
 import { helpIconText } from "../../enums/text";
 
-const Description = ({ activeScreen, updateScreenData, getFileById }) => {
+const Description = ({
+  activeScreen,
+  updateScreenData,
+  getFileById,
+  sumOfPhotosTimes,
+}) => {
   const audio = getFileById(activeScreen.audio);
   const music = getFileById(activeScreen.music);
 
@@ -30,10 +35,8 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 onChange={(value) => updateScreenData({ title: value })}
               />
               <HelpIcon
-                {...{
-                  label: helpIconText.EDITOR_DESCRIPTION_TITLE,
-                  id: "editor-description-title",
-                }}
+                label={helpIconText.EDITOR_DESCRIPTION_TITLE}
+                id="editor-description-title"
               />
             </div>
             <div className="flex-row-nowrap">
@@ -45,13 +48,11 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 rows={5}
               />
               <HelpIcon
-                {...{
-                  label: helpIconText.EDITOR_DESCRIPTION_TEXT,
-                  id: "editor-description-text",
-                }}
+                label={helpIconText.EDITOR_DESCRIPTION_TEXT}
+                id="editor-description-text"
               />
             </div>
-            <CharacterCount {...{ text: activeScreen.text }} />
+            <CharacterCount text={activeScreen.text} />
           </div>
           <div className="part margin-bottom margin-horizontal">
             <AudioMusic
@@ -63,7 +64,9 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 id: "editor-description-audio",
               }}
             />
-            <Time {...{ audio, activeScreen, updateScreenData }} />
+            <Time
+              {...{ audio, activeScreen, updateScreenData, sumOfPhotosTimes }}
+            />
             <Music
               {...{
                 aloneScreen: activeScreen.aloneScreen,

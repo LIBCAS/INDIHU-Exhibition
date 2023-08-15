@@ -13,13 +13,12 @@ type CalculateObjectFitProps = {
 
 export const calculateObjectFit = ({
   type = "contain",
-  parent, // { width, height } of the entire screen
-  child, // {width, height } of the imageOrigData
+  parent,
+  child,
 }: CalculateObjectFitProps) => {
   const parentRatio = parent.width / parent.height;
   const childRatio = child.width / child.height;
 
-  // Now parent width.. but in the end it will be width and height of the 'object-fit: contain' image!
   let width = parent.width;
   let height = parent.height;
 

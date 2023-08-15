@@ -48,7 +48,6 @@ export const ViewVideo = ({ screenPreloadedFiles }: ScreenProps) => {
     video.controls = false;
     video.currentTime = 0;
     video.volume = expoVolumes.speechVolume.actualVolume / 100;
-    //video.muted = expoVolumes.speechVolume.actualVolume === 0;
 
     if (shouldIncrement) {
       video.play();
@@ -105,7 +104,7 @@ export const ViewVideo = ({ screenPreloadedFiles }: ScreenProps) => {
     }
 
     const video = videoRef.current;
-    if (!video) {
+    if (!video || isNaN(video.duration)) {
       return;
     }
 
@@ -118,6 +117,7 @@ export const ViewVideo = ({ screenPreloadedFiles }: ScreenProps) => {
     const newVideoCurrentTimeFormatted = parseFloat(
       newVideoCurrentTime.toFixed(1)
     );
+
     video.currentTime = newVideoCurrentTimeFormatted;
 
     return () => dispatch(setViewProgress({ rewindToTime: null }));

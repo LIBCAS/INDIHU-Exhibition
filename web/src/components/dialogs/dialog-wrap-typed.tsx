@@ -132,6 +132,7 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
                   if (onClose) {
                     onClose();
                   }
+                  closeThisDialog();
                 }}
               />
             )}

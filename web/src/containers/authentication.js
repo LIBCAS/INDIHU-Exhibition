@@ -6,10 +6,10 @@ import { connect } from "react-redux";
 import AppHeader from "../components/app-header";
 import ComponentLoader from "../components/component-loader";
 import Button from "react-md/lib/Buttons/Button";
-import Captcha from "../components/form/captcha";
-import TextField from "../components/form/text-field";
-import CheckBox from "../components/form/check-box";
-import * as Validation from "../components/form/validation";
+import Captcha from "../components/form/redux-form/captcha";
+import TextField from "../components/form/redux-form/text-field";
+import CheckBox from "../components/form/redux-form/check-box";
+import * as Validation from "../components/form/redux-form/validation";
 import { setDialog, closeDialog } from "../actions/dialog-actions";
 import {
   availableRegistration,

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { isEmpty, forEach, get } from "lodash";
 
 import Dialog from "./dialog-wrap";
-import SelectField from "../form/select-field";
+import SelectField from "../form/redux-form/select-field";
 
 import { getActiveUsers } from "../../actions/user-actions";
 import { changeOwner, loadExpo } from "../../actions/expoActions";

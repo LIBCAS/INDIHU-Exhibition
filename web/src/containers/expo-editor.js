@@ -2,23 +2,24 @@ import { withRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose, lifecycle } from "recompose";
 
-import ScreenStart from "./editors/screen-start";
-import ScreenChapterStart from "./editors/screen-chapter-start";
-import ScreenImage from "./editors/screen-image";
-import ScreenGameFind from "./editors/screen-game-find";
-import ScreenVideo from "./editors/screen-video";
-import ScreenZoomIn from "./editors/screen-zoom-in";
-import ScreenPhotogallery from "./editors/screen-photogallery";
-import ScreenParallax from "./editors/screen-parallax";
-import ScreenText from "./editors/screen-text";
-import ScreenGameDraw from "./editors/screen-game-draw";
-import ScreenGameWipe from "./editors/screen-game-wipe";
-import ScreenImageChange from "./editors/screen-image-change";
-import ScreenGameSizing from "./editors/screen-game-sizing";
-import ScreenGameMove from "./editors/screen-game-move";
-import ScreenGameOptions from "./editors/screen-game-options";
-import ScreenExternal from "./editors/screen-external";
-import ScreenFinish from "./editors/screen-finish";
+import ScreenStart from "./editors/screen-start/screen-start";
+import ScreenChapterStart from "./editors/screen-chapter-start/screen-chapter-start";
+import ScreenImage from "./editors/screen-image/screen-image";
+import ScreenGameFind from "./editors/screen-game-find/screen-game-find";
+import ScreenVideo from "./editors/screen-video/screen-video";
+import ScreenZoomIn from "./editors/screen-zoom-in/screen-zoom-in";
+import ScreenSlideshow from "./editors/screen-slideshow/screen-slideshow";
+import ScreenPhotogallery from "./editors/screen-photogallery/screen-photogallery-new";
+import ScreenParallax from "./editors/screen-parallax/screen-parallax";
+import ScreenText from "./editors/screen-text/screen-text";
+import ScreenGameDraw from "./editors/screen-game-draw/screen-game-draw";
+import ScreenGameWipe from "./editors/screen-game-wipe/screen-game-wipe";
+import ScreenImageChange from "./editors/screen-image-change/screen-image-change";
+import ScreenGameSizing from "./editors/screen-game-sizing/screen-game-sizing";
+import ScreenGameMove from "./editors/screen-game-move/screen-game-move";
+import ScreenGameOptions from "./editors/screen-game-options/screen-game-options";
+import ScreenExternal from "./editors/screen-external/screen-external";
+import ScreenFinish from "./editors/screen-finish/screen-finish";
 
 import {
   loadScreen,
@@ -63,7 +64,11 @@ const ExpoEditor = (props) => {
             render={() => <ScreenZoomIn {...props} />}
           />
           <Route
-            path={`${match.url}/${screenUrl.PHOTOGALERY}/:position`}
+            path={`${match.url}/${screenUrl.SLIDESHOW}/:position`}
+            render={() => <ScreenSlideshow {...props} />}
+          />
+          <Route
+            path={`${match.url}/${screenUrl.PHOTOGALLERY_NEW}/:position`}
             render={() => <ScreenPhotogallery {...props} />}
           />
           <Route

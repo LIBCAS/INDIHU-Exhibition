@@ -33,10 +33,8 @@ const Description = ({
                 onChange={(value) => updateScreenData({ title: value })}
               />
               <HelpIcon
-                {...{
-                  label: helpIconText.EDITOR_GAME_TITLE,
-                  id: "editor-game-title",
-                }}
+                label={helpIconText.EDITOR_GAME_TITLE}
+                id="editor-game-title"
               />
             </div>
             <div className="flex-row-nowrap">
@@ -46,12 +44,7 @@ const Description = ({
                 defaultValue={activeScreen.task}
                 onChange={(value) => updateScreenData({ task: value })}
               />
-              <HelpIcon
-                {...{
-                  label: taskHelpIconLabel,
-                  id: "editor-game-task",
-                }}
-              />
+              <HelpIcon label={taskHelpIconLabel} id="editor-game-task" />
             </div>
           </div>
           <div className="part margin-bottom margin-horizontal">
@@ -87,10 +80,8 @@ const Description = ({
                 )}
               </div>
               <HelpIcon
-                {...{
-                  label: helpIconText.EDITOR_GAME_RESULT_TIME,
-                  id: "editor-game-result-time",
-                }}
+                label={helpIconText.EDITOR_GAME_RESULT_TIME}
+                id="editor-game-result-time"
               />
             </div>
             <Music

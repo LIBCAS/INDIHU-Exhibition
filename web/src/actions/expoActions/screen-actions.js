@@ -29,14 +29,14 @@ export const loadScreen = (url) => async (dispatch, getState) => {
   if (!structure) setTimeout(() => dispatch(loadScreen(url)), 2000);
   else {
     const type =
-      /.+\/screen\/.+\/.+\/(description|authors|documents|image|images|video|sequence|photogalery|parallax|text|answers|externalData)/.test(
+      /.+\/screen\/.+\/.+\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData)/.test(
         url
       )
         ? url.match(
-            /.+\/screen\/.+\/(.+)\/(description|authors|documents|image|images|video|sequence|photogalery|parallax|text|answers|externalData)/
+            /.+\/screen\/.+\/(.+)\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData)/
           )[1]
         : url.match(
-            /.+\/screen\/(.+)\/(description|authors|documents|image|images|video|sequence|photogalery|parallax|text|answers|externalData)/
+            /.+\/screen\/(.+)\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData)/
           )[1];
 
     const sfType =
@@ -58,7 +58,7 @@ export const saveScreen =
   (activeScreen, rowNum, colNum) => async (dispatch, getState) => {
     await dispatch(showLoader(true));
 
-    if (activeScreen.type === screenType.PHOTOGALERY) {
+    if (activeScreen.type === screenType.SLIDESHOW) {
       activeScreen = {
         ...activeScreen,
         images: filter(

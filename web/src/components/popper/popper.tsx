@@ -1,10 +1,17 @@
-import { useState, ReactNode } from "react";
-import { Options } from "@popperjs/core";
-import { usePopper } from "react-popper";
-import cx from "classnames";
+import { useState, ReactNode, useEffect } from "react";
+
+// Custom hooks
 import { useOnClickOutside } from "hooks/use-on-click-outside";
 
+// Utils
+import cx from "classnames";
+
+// Popper
+import { usePopper } from "react-popper";
+import { Options } from "@popperjs/core";
 import classes from "./popper.module.scss";
+
+// - - - - - - - -
 
 export const Popper = <TAnchor extends HTMLElement | null>({
   anchor,
@@ -13,6 +20,8 @@ export const Popper = <TAnchor extends HTMLElement | null>({
   placement,
   open = false,
   onClickOutside,
+  rebuildListener,
+  rebuildListener2,
 }: {
   anchor: TAnchor;
   arrow?: boolean;
@@ -20,12 +29,14 @@ export const Popper = <TAnchor extends HTMLElement | null>({
   children: ReactNode;
   open?: boolean;
   onClickOutside?: () => void;
+  rebuildListener?: any;
+  rebuildListener2?: any;
 }) => {
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(anchor, popperElement, {
+  const { styles, attributes, update } = usePopper(anchor, popperElement, {
     modifiers: [
       { name: "arrow", options: { element: arrowElement } },
       { name: "offset", options: { offset: [0, 8] } },
@@ -38,6 +49,12 @@ export const Popper = <TAnchor extends HTMLElement | null>({
 
     onClickOutside?.();
   });
+
+  useEffect(() => {
+    if (update) {
+      update();
+    }
+  }, [rebuildListener, rebuildListener2, update]);
 
   if (!open) return null;
 

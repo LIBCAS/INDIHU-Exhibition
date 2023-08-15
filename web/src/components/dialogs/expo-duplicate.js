@@ -4,8 +4,8 @@ import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
 import Dialog from "./dialog-wrap";
-import TextField from "../form/text-field";
-import * as Validation from "../form/validation";
+import TextField from "../form/redux-form/text-field";
+import * as Validation from "../form/redux-form/validation";
 import { duplicateExpo } from "../../actions/expoActions";
 
 const ExpoDuplicate = ({ handleSubmit }) => (

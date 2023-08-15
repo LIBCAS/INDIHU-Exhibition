@@ -2,14 +2,15 @@ import { Dispatch, SetStateAction } from "react";
 import { Tooltip } from "react-tooltip";
 import { renderInfopointBody } from "./renderInfopointBody";
 import { InfopointStatusObject } from "./parseScreenMaps";
+import { Infopoint } from "models";
 
 type TooltipInfoPointProps = {
   id: string;
+  infopoint: Infopoint;
   infopointOpenStatusMap: Record<string, InfopointStatusObject>;
   setInfopointOpenStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
   >;
-  isAlwaysVisible: boolean;
   primaryKey: string;
   secondaryKey?: string;
   canBeOpen?: boolean;
@@ -21,10 +22,6 @@ const TooltipInfoPoint = (props: TooltipInfoPointProps) => {
       ? `${props.primaryKey}`
       : `${props.primaryKey}-${props.secondaryKey}`;
 
-  if (props.isAlwaysVisible) {
-    return <AlwaysVisibleTooltipInfopoint {...props} keyMap={keyMap} />;
-  }
-
   return <BasicTooltipInfopoint {...props} keyMap={keyMap} />;
 };
 
@@ -34,6 +31,7 @@ export default TooltipInfoPoint;
 
 interface Props {
   id: string;
+  infopoint: Infopoint;
   infopointOpenStatusMap: Record<string, InfopointStatusObject>;
   setInfopointOpenStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
@@ -42,34 +40,9 @@ interface Props {
   canBeOpen?: boolean;
 }
 
-const AlwaysVisibleTooltipInfopoint = ({
-  id,
-  infopointOpenStatusMap,
-  keyMap,
-  canBeOpen = true,
-}: Props) => {
-  return (
-    <Tooltip
-      id={id}
-      className="!pointer-events-auto !opacity-100 !rounded-none shadow-md shadow-neutral-600"
-      variant="light"
-      clickable
-      openOnClick
-      render={({ content }) =>
-        renderInfopointBody({
-          text: content ?? "neuvedeno",
-          isAlwaysVisible: true,
-        })
-      }
-      isOpen={infopointOpenStatusMap[keyMap].isOpen && canBeOpen}
-    />
-  );
-};
-
-// - - - -
-
 const BasicTooltipInfopoint = ({
   id,
+  infopoint,
   infopointOpenStatusMap,
   setInfopointOpenStatusMap,
   keyMap,
@@ -78,11 +51,12 @@ const BasicTooltipInfopoint = ({
   return (
     <Tooltip
       id={id}
-      className="!pointer-events-auto !opacity-100 !rounded-none shadow-md shadow-neutral-600"
+      className="!pointer-events-auto !opacity-100 !rounded-none shadow-md shadow-neutral-600 border-solid border-[1px] border-black"
+      classNameArrow="border-b-[1px] border-b-solid border-b-black border-r-[1px] border-r-solid border-r-black"
       variant="light"
       clickable
       openOnClick
-      render={({ content }) => {
+      render={() => {
         const closeThisInfopoint = () => {
           setInfopointOpenStatusMap((prevMap) => ({
             ...prevMap,
@@ -91,8 +65,7 @@ const BasicTooltipInfopoint = ({
         };
 
         return renderInfopointBody({
-          text: content ?? "neuvedeno",
-          isAlwaysVisible: false,
+          infopoint: infopoint,
           onClose: closeThisInfopoint,
         });
       }}
@@ -101,7 +74,7 @@ const BasicTooltipInfopoint = ({
         if (isOpen) {
           setInfopointOpenStatusMap((prevMap) => ({
             ...prevMap,
-            [keyMap]: { ...prevMap[keyMap], isOpen: true },
+            [keyMap]: { ...prevMap[keyMap], isOpen: !prevMap[keyMap].isOpen },
           }));
         }
       }}

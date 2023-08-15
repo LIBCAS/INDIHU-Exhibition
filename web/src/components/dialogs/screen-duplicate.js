@@ -4,7 +4,7 @@ import { reduxForm, Field, formValueSelector } from "redux-form";
 import { compose, withHandlers } from "recompose";
 import { forEach, get } from "lodash";
 
-import SelectField from "../form/select-field";
+import SelectField from "../form/redux-form/select-field";
 
 import { duplicateScreen, duplicateChapter } from "../../actions/expoActions";
 

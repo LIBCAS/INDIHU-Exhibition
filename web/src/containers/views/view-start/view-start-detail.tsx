@@ -4,6 +4,7 @@ import { createSelector } from "reselect";
 
 import { useTranslation } from "react-i18next";
 import { animated, useSpring, useTransition } from "react-spring";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import { Button } from "components/button/button";
@@ -11,12 +12,17 @@ import { Divider } from "components/divider/divider";
 import { LabeledItem } from "components/labeled-item/labeled-item";
 import { Icon } from "components/icon/icon";
 
-import { setDialog } from "actions/dialog-actions";
-import { isWorksheetFile } from "../utils";
-
+// Models
 import { DialogType } from "components/dialogs/dialog-types";
 import { AppDispatch, AppState } from "store/store";
 import { StartScreen } from "models";
+
+// Utils and actions
+import { setDialog } from "actions/dialog-actions";
+import { isWorksheetFile } from "../../../utils/view-utils";
+import cx from "classnames";
+
+// - - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as StartScreen,
@@ -32,6 +38,8 @@ export const ViewStartDetail = ({
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("exhibition");
+
+  const { fgTheming } = useExpoDesignData();
 
   const { rotateX } = useSpring({
     rotateX: isOpen ? "180deg" : "0deg",
@@ -73,16 +81,23 @@ export const ViewStartDetail = ({
   });
 
   return (
-    <div className="flex flex-col h-full">
+    <div
+      className={cx("flex flex-col h-full", {
+        ...fgTheming,
+      })}
+    >
       <div className="flex justify-between items-center">
         <span className="text-2xl text-bold">{t("authors-and-documents")}</span>
         <Button
           iconAfter={
             <animated.div style={{ rotateX }}>
-              <Icon name="expand_less" color="primary" />
+              <Icon name="expand_less" color="expoTheme" />
             </animated.div>
           }
-          onClick={toggle}
+          onClick={(e) => {
+            e.stopPropagation(); // // this button is inside Paper which has the same onClick
+            toggle();
+          }}
         >
           {isOpen ? t("less-info") : t("more-info")}
         </Button>
@@ -110,16 +125,22 @@ export const ViewStartDetail = ({
       <div className="flex justify-end items-center mt-auto gap-2">
         {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
           <Button
-            iconBefore={<Icon name="description" color="primary" />}
-            onClick={openWorksheetsDialog}
+            iconBefore={<Icon name="description" color="expoTheme" />}
+            onClick={(e) => {
+              e.stopPropagation();
+              openWorksheetsDialog();
+            }}
           >
             {t("worksheet")}
           </Button>
         )}
         {startExpoFiles && startExpoFiles.length !== 0 && (
           <Button
-            iconBefore={<Icon name="folder" color="primary" />}
-            onClick={openFilesDialog}
+            iconBefore={<Icon name="folder" color="expoTheme" />}
+            onClick={(e) => {
+              e.stopPropagation();
+              openFilesDialog();
+            }}
           >
             {t("files")}
           </Button>

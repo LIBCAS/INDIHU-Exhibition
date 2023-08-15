@@ -6,8 +6,9 @@ import { animated, useSpring } from "react-spring";
 import { useGesture } from "@use-gesture/react";
 
 import useElementSize from "hooks/element-size-hook";
-import { asTutorialSteps, useTutorial } from "components/tutorial/use-tutorial";
-import { useTranslation } from "react-i18next";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useTutorialStore } from "context/tutorial-provider/tutorial-provider";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 import { Icon } from "components/icon/icon";
 
@@ -17,6 +18,8 @@ import { ScreenProps } from "models";
 
 import cx from "classnames";
 import { getScreenTime } from "utils/screen";
+import { calculateObjectFit } from "utils/object-fit";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // - - -
 
@@ -26,38 +29,85 @@ const stateSelector = createSelector(
   (viewScreen, shouldIncrement) => ({ viewScreen, shouldIncrement })
 );
 
-const useTutorialSteps = () => {
-  const { t } = useTranslation("tutorial");
-
-  return useMemo(
-    () =>
-      asTutorialSteps([
-        {
-          key: "dragThumb",
-          label: t("screenChange.dragThumb.label"),
-          text: t("screenChange.dragThumb.text"),
-        },
-      ]),
-    [t]
-  );
-};
-
 // - - -
 
 export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, shouldIncrement } = useSelector(stateSelector);
   const { image1, image2 } = screenPreloadedFiles;
 
-  // Tutorial 'screenChange' as "infotour" for this screen
-  const tutorialSteps = useTutorialSteps();
-  const {
-    bind: bindTutorial,
-    store,
-    TutorialTooltip,
-  } = useTutorial("screenChange", tutorialSteps);
-
   // Hook up with reference to screen container div, provide its current width and height
-  const [screenContainerRef, { height, width }] = useElementSize();
+  const [screenContainerRef, screenContainerSize] = useElementSize();
+
+  const { expoDesignData } = useExpoDesignData();
+
+  // - - -
+
+  // Infopoints
+  const { image1OrigData, image2OrigData } = useMemo(() => {
+    const image1OrigData = viewScreen.image1OrigData ?? { width: 0, height: 0 };
+    const image2OrigData = viewScreen.image2OrigData ?? { width: 0, height: 0 };
+    return { image1OrigData, image2OrigData };
+  }, [viewScreen.image1OrigData, viewScreen.image2OrigData]);
+
+  const {
+    width: firstContainedImageWidth,
+    height: firstContainedImageHeight,
+    left: fromContainerToFirstImageLeft,
+    top: fromContainerToFirstImageTop,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        parent: screenContainerSize,
+        child: image1OrigData,
+        type: "contain",
+      }),
+    [screenContainerSize, image1OrigData]
+  );
+
+  const {
+    width: secondContainedImageWidth,
+    height: secondContainedImageHeight,
+    left: fromContainerToSecondImageLeft,
+    top: fromContainerToSecondImageTop,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        parent: screenContainerSize,
+        child: image2OrigData,
+        type: "contain",
+      }),
+    [screenContainerSize, image2OrigData]
+  );
+
+  // - - -
+
+  const {
+    infopointOpenStatusMap,
+    setInfopointOpenStatusMap,
+    closeInfopoints,
+    ScreenAnchorInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  // - - -
+
+  const onKeyDownAction = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints(viewScreen)();
+      }
+    },
+    [closeInfopoints, viewScreen]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDownAction);
+    return () => {
+      document.removeEventListener("keydown", onKeyDownAction);
+    };
+  }, [onKeyDownAction]);
+
+  // - - -
 
   // Time after which the screen will go the next screen, set up in the administration panel for this screen
   const time = useMemo(() => getScreenTime(viewScreen), [viewScreen]);
@@ -74,7 +124,26 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   const isGradualPositionVertical =
     gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
     gradualPosition === "VERTICAL_BOTTOM_TO_TOP" ||
-    gradualPosition === undefined;
+    gradualPosition === undefined; // undefined means here VERTICAL_TOP_TO_BOTTOM
+
+  // - - -
+
+  // Tutorial 'screenChange' as "infotour" for this screen
+  const { store } = useTutorialStore();
+  const {
+    bind: bindTutorial,
+    TutorialTooltip,
+    isTutorialOpen,
+  } = useTutorial(
+    "screenChange",
+    animation !== "GRADUAL_TRANSITION" &&
+      animation !== "FADE_IN_OUT_TWO_IMAGES" &&
+      store.overlay.isCompleted
+  );
+
+  // - - -
+
+  const [currentRodPosition, setCurrentRodPosition] = useState({ x: 0, y: 0 });
 
   const [{ x, y }, api] = useSpring(
     () => ({
@@ -84,21 +153,36 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
         animation === "GRADUAL_TRANSITION"
           ? 0
           : rodPosition === undefined
-          ? width * 0.5
-          : width * parseFloat(rodPosition),
+          ? screenContainerSize.width * 0.5
+          : screenContainerSize.width * parseFloat(rodPosition),
       y:
         animation === "GRADUAL_TRANSITION"
           ? 0
           : rodPosition === undefined
-          ? height * 0.5
-          : height * parseFloat(rodPosition),
+          ? screenContainerSize.height * 0.5
+          : screenContainerSize.height * parseFloat(rodPosition),
       config: {
         mass: 1,
         tension: 350,
         friction: 10,
       },
+      onChange: (changedValues) => {
+        const newValues = changedValues.value;
+        if (animation === "HORIZONTAL") {
+          setCurrentRodPosition((prev) => ({ ...prev, y: newValues.y }));
+        }
+        if (animation === "VERTICAL") {
+          setCurrentRodPosition((prev) => ({ ...prev, x: newValues.x }));
+        }
+        if (animation === "GRADUAL_TRANSITION" && isGradualPositionVertical) {
+          setCurrentRodPosition((prev) => ({ ...prev, y: newValues.y }));
+        }
+        if (animation === "GRADUAL_TRANSITION" && !isGradualPositionVertical) {
+          setCurrentRodPosition((prev) => ({ ...prev, x: newValues.x }));
+        }
+      },
     }),
-    [width, height, rodPosition, animation]
+    [screenContainerSize, rodPosition, animation]
   );
 
   // Used for 'FADE_IN_OUT_TWO_IMAGES' animation
@@ -173,11 +257,21 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
         api.start({ x, y, immediate: true });
       },
       onDragEnd: ({ offset: [x, y] }) => {
-        const boundY = height * (15 / 100);
-        const newY = y < boundY ? 0 : y > height - boundY ? height - 17 : y;
+        const boundY = screenContainerSize.height * (5 / 100);
+        const newY =
+          y < boundY
+            ? 0
+            : y > screenContainerSize.height - boundY
+            ? screenContainerSize.height - 17
+            : y;
 
-        const boundX = width * (15 / 100);
-        const newX = x < boundX ? 0 : x > width - boundX ? width : x;
+        const boundX = screenContainerSize.width * (5 / 100);
+        const newX =
+          x < boundX
+            ? 0
+            : x > screenContainerSize.width - boundX
+            ? screenContainerSize.width
+            : x;
 
         api.start({ y: newY, x: newX });
       },
@@ -187,9 +281,9 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
         from: () => [x.get(), y.get()],
         bounds: {
           left: 0,
-          right: width,
+          right: screenContainerSize.width,
           top: 0,
-          bottom: height,
+          bottom: screenContainerSize.height,
         },
       },
     }
@@ -205,25 +299,25 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       ? gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
         gradualPosition === undefined
         ? 0
-        : height
+        : screenContainerSize.height
       : undefined;
 
     const toY = isGradualPositionVertical
       ? gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
         gradualPosition === undefined
-        ? height
+        ? screenContainerSize.height
         : 0
       : undefined;
 
     const fromX = !isGradualPositionVertical
       ? gradualPosition === "HORIZONTAL_LEFT_TO_RIGHT"
         ? 0
-        : width
+        : screenContainerSize.width
       : undefined;
 
     const toX = !isGradualPositionVertical
       ? gradualPosition === "HORIZONTAL_LEFT_TO_RIGHT"
-        ? width
+        ? screenContainerSize.width
         : 0
       : undefined;
 
@@ -237,8 +331,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   }, [
     animation,
     api,
-    width,
-    height,
+    screenContainerSize,
     time,
     gradualPosition,
     isGradualPositionVertical,
@@ -282,33 +375,39 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       ref={screenContainerRef}
       className="w-full h-full flex items-center justify-center relative"
     >
-      {/* 1. First image */}
+      {/* 1. First image (before) */}
       {image1 && (
         <animated.img
           src={image1}
-          className="w-full h-full absolute object-contain"
+          className={cx(
+            "w-full h-full absolute object-contain",
+            isTutorialOpen && "bg-black opacity-40"
+          )}
           alt="background"
           style={
             animation === "FADE_IN_OUT_TWO_IMAGES"
               ? { opacity: opacitySpring.opacity.to((opac) => opac) }
               : undefined
           }
+          onClick={() => closeInfopoints(viewScreen)()}
         />
       )}
 
       {/* 2. Div with clipPath */}
       <animated.div
         className="w-full h-full absolute bg-background"
-        style={
-          animation === "FADE_IN_OUT_TWO_IMAGES"
-            ? { clipPath: "inset(100% 100%)" }
-            : animation === "GRADUAL_TRANSITION"
-            ? { clipPath: clipPathGradual }
-            : { clipPath: clipPath }
-        }
+        style={{
+          backgroundColor: expoDesignData?.backgroundColor,
+          clipPath:
+            animation === "FADE_IN_OUT_TWO_IMAGES"
+              ? "inset(100% 100%)"
+              : animation === "GRADUAL_TRANSITION"
+              ? clipPathGradual
+              : clipPath,
+        }}
       />
 
-      {/* 3. Second image */}
+      {/* 3. Second image (after) */}
       {image2 && (
         <animated.img
           style={
@@ -319,12 +418,169 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
               : { clipPath: clipPath }
           }
           src={image2}
-          className="w-full h-full absolute object-contain"
+          className={cx(
+            "w-full h-full absolute object-contain",
+            isTutorialOpen && "bg-black opacity-40"
+          )}
           alt="foreground"
+          onClick={() => closeInfopoints(viewScreen)()}
         />
       )}
 
-      {/* 4. Current position of 'tahlo' */}
+      {/* 4. Infopoints Anchors - currently not for one type of animation ("prolnuti") */}
+      {animation !== "FADE_IN_OUT_TWO_IMAGES" &&
+        viewScreen.image1Infopoints?.map((infopoint, infopointIndex) => {
+          // Percentage when choosing the infopoints in administrative (BEFORE image)
+          const origLeftPercentage =
+            infopoint.left / (image1OrigData.width / 100);
+          const origTopPercentage =
+            infopoint.top / (image1OrigData.height / 100);
+
+          const leftPosition =
+            fromContainerToFirstImageLeft +
+            (firstContainedImageWidth / 100) * origLeftPercentage;
+          const topPosition =
+            fromContainerToFirstImageTop +
+            (firstContainedImageHeight / 100) * origTopPercentage;
+
+          // Dynamic infopoints feature!
+          let isDisplayed = true;
+          if (
+            animation === "HORIZONTAL" &&
+            currentRodPosition.y < topPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (animation === "VERTICAL" && currentRodPosition.x < leftPosition) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            (gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
+              gradualPosition === undefined) &&
+            currentRodPosition.y < topPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            gradualPosition === "VERTICAL_BOTTOM_TO_TOP" &&
+            currentRodPosition.y < topPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            gradualPosition === "HORIZONTAL_LEFT_TO_RIGHT" &&
+            currentRodPosition.x < leftPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            gradualPosition === "HORIZONTAL_RIGHT_TO_LEFT" &&
+            currentRodPosition.x < leftPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (!isDisplayed) {
+            return null;
+          }
+
+          // Render the anchor infopoints
+          return (
+            <ScreenAnchorInfopoint
+              key={`infopoint-tooltip-${0}-${infopointIndex}`}
+              id={`infopoint-tooltip-${0}-${infopointIndex}`}
+              top={topPosition}
+              left={leftPosition}
+              infopoint={infopoint}
+            />
+          );
+        })}
+
+      {animation !== "FADE_IN_OUT_TWO_IMAGES" &&
+        viewScreen.image2Infopoints?.map((infopoint, infopointIndex) => {
+          // Percentage when choosing the infopoints in administrative (AFTER image)
+          const origLeftPercentage =
+            infopoint.left / (image2OrigData.width / 100);
+          const origTopPercentage =
+            infopoint.top / (image2OrigData.height / 100);
+
+          const leftPosition =
+            fromContainerToSecondImageLeft +
+            (secondContainedImageWidth / 100) * origLeftPercentage;
+          const topPosition =
+            fromContainerToSecondImageTop +
+            (secondContainedImageHeight / 100) * origTopPercentage;
+
+          // Dynamic infopoints feature!
+          let isDisplayed = true;
+          if (
+            animation === "HORIZONTAL" &&
+            currentRodPosition.y > topPosition
+          ) {
+            isDisplayed = false;
+          }
+          if (animation === "VERTICAL" && currentRodPosition.x > leftPosition) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            (gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
+              gradualPosition === undefined) &&
+            currentRodPosition.y > topPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            gradualPosition === "VERTICAL_BOTTOM_TO_TOP" &&
+            currentRodPosition.y > topPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            gradualPosition === "HORIZONTAL_LEFT_TO_RIGHT" &&
+            currentRodPosition.x > leftPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (
+            animation === "GRADUAL_TRANSITION" &&
+            gradualPosition === "HORIZONTAL_RIGHT_TO_LEFT" &&
+            currentRodPosition.x > leftPosition
+          ) {
+            isDisplayed = false;
+          }
+
+          if (!isDisplayed) {
+            return null;
+          }
+
+          return (
+            <ScreenAnchorInfopoint
+              key={`infopoint-tooltip-${1}-${infopointIndex}`}
+              id={`infopoint-tooltip-${1}-${infopointIndex}`}
+              top={topPosition}
+              left={leftPosition}
+              infopoint={infopoint}
+            />
+          );
+        })}
+
+      {/* 5. Current position of 'tahlo' */}
       <animated.div
         style={
           animation === "FADE_IN_OUT_TWO_IMAGES"
@@ -334,7 +590,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
             : dragHandleStyle
         }
         className={cx(
-          "absolute flex items-center touch-none",
+          "absolute flex items-center touch-none pointer-events-none",
           isVertical && "left-0 h-full flex-col",
           !isVertical && "top-0 w-full"
         )}
@@ -353,7 +609,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
             {...bind()}
             {...bindTutorial("dragThumb")}
             className={cx(
-              "touch-none px-2 py-1 border-2 border-white bg-primary flex hover:cursor-pointer items-center gap-1",
+              "pointer-events-auto touch-none px-2 py-1 border-2 border-white bg-primary flex hover:cursor-pointer items-center gap-1",
               !isVertical && "flex-col"
             )}
           >
@@ -377,9 +633,36 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
         />
       </animated.div>
 
-      {/* 5. Last relative div containing the tutorial for 'Tahlo' */}
+      {/* 6. Infopoints Tooltips */}
+      {animation !== "FADE_IN_OUT_TWO_IMAGES" &&
+        Object.keys(infopointOpenStatusMap).map((mapKey) => {
+          const [primaryKey, secondaryKey] = mapKey.split("-").map(Number);
+          const infopoint =
+            primaryKey === 0
+              ? viewScreen.image1Infopoints?.[secondaryKey]
+              : viewScreen.image2Infopoints?.[secondaryKey];
+
+          if (!infopoint) {
+            return null;
+          }
+
+          return (
+            <TooltipInfoPoint
+              key={`infopoint-tooltip-${mapKey}`}
+              id={`infopoint-tooltip-${mapKey}`}
+              infopoint={infopoint}
+              infopointOpenStatusMap={infopointOpenStatusMap}
+              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              primaryKey={primaryKey.toString()}
+              secondaryKey={secondaryKey.toString()}
+              // canBeOpen // optional
+            />
+          );
+        })}
+
+      {/* 7. Last relative div containing the tutorial for 'Tahlo' */}
       <animated.div style={isVertical ? { x } : { y }} className="relative">
-        {!store.overlay && TutorialTooltip}
+        {TutorialTooltip}
       </animated.div>
     </div>
   );

@@ -6,32 +6,32 @@ import { NewViewScreen } from "./view-screen";
 
 interface Props {
   name: string;
-  handleScreen: ({ section, screen }: any) => Promise<any>;
+  handleViewScreen: ({ section, screen }: any) => Promise<any>;
   setViewScreenIsLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ViewSection = ({
   name,
-  handleScreen,
+  handleViewScreen,
   setViewScreenIsLoaded,
 }: Props) => {
   const { params } = useRouteMatch<{ section: string }>();
   const section = params.section;
 
   useEffect(() => {
-    const handleScreenOnMount = async () => {
+    const handleViewScreenOnMount = async () => {
       if (section === screenUrl.START || section === screenUrl.FINISH) {
-        await handleScreen({ section });
+        await handleViewScreen({ section });
       }
     };
 
-    handleScreenOnMount();
-  }, [handleScreen, section]);
+    handleViewScreenOnMount();
+  }, [handleViewScreen, section]);
 
   return (
     <NewViewScreen
       name={name}
-      handleScreen={handleScreen}
+      handleViewScreen={handleViewScreen}
       setViewScreenIsLoaded={setViewScreenIsLoaded}
     />
   );

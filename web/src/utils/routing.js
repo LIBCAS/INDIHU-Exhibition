@@ -1,9 +1,8 @@
 import { find, findIndex, forEach, get } from "lodash";
 import {
   screenType,
-  interactiveScreenTypes,
-  screenUrl,
   mobileDeviceRouting,
+  mapScreenTypeValuesToKeys,
 } from "../enums/screen-type";
 import { isMobileDevice } from "../utils";
 
@@ -26,7 +25,7 @@ const screenForMobileDeviceCheck = (
       (currentSectionIndex < sectionIndex ||
         (currentSectionIndex === sectionIndex &&
           currentScreenIndex < screenIndex)))) &&
-  mobileDeviceRouting[currentScreen.type];
+  mobileDeviceRouting[mapScreenTypeValuesToKeys[currentScreen.type]];
 
 // přeskočit hry pro mobilní zařízení
 const getScreenTypeForMobileDevice = (
@@ -172,45 +171,5 @@ export const viewerRouter = (name, viewExpo, section, screen, next) => {
           screens[parseInt(section, 10) - 1].length - 1
         }`
       : `/view/${name}/start`;
-  }
-};
-
-export const interactiveRouter = (viewExpo, section, screen, next) => {
-  const screens = viewExpo.structure.screens;
-  if (next) {
-    // hladaj dalsiu screen v aktualnej section ktora je typu interactive
-    for (
-      let i = parseInt(screen, 10) + 1;
-      i < screens[parseInt(section, 10)].length;
-      i++
-    ) {
-      if (interactiveScreenTypes[screens[parseInt(section, 10)][i].type])
-        return { section, screen: i };
-    }
-
-    // pre kazdu dalsiu section
-    for (let i = parseInt(section, 10) + 1; i < screens.length; i++) {
-      // hladaj v section screen typu interactive
-      for (let j = 0; j < screens[i].length; j++) {
-        if (interactiveScreenTypes[screens[i][j].type])
-          return { section: i, screen: j };
-      }
-    }
-
-    return { section: screenUrl.FINISH };
-  } else {
-    for (let i = parseInt(screen, 10) - 1; i >= 0; i--) {
-      if (interactiveScreenTypes[screens[parseInt(section, 10)][i].type])
-        return { section, screen: i };
-    }
-
-    for (let i = parseInt(section, 10) - 1; i >= 0; i--) {
-      for (let j = screens[i].length - 1; j >= 0; j--) {
-        if (interactiveScreenTypes[screens[i][j].type])
-          return { section: i, screen: j };
-      }
-    }
-
-    return { section: screenUrl.START };
   }
 };

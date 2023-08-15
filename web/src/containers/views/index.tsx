@@ -4,7 +4,8 @@ import { createSelector } from "reselect";
 
 import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
 
-import { TutorialStoreProvider } from "components/tutorial/tutorial-store";
+import { TutorialProvider } from "context/tutorial-provider/tutorial-provider";
+
 import { ViewScreenOverlay } from "./view-screen-overlay/view-screen-overlay";
 
 import { ViewLoading } from "./view-loading/view-loading";
@@ -19,6 +20,7 @@ import { ViewVideo } from "./view-video/view-video";
 import ViewText from "./view-text";
 import { ViewParallax } from "./view-parallax/view-parallax";
 import { ViewZoom } from "./view-zoom/view-zoom";
+import { ViewSlideshow } from "./view-slideshow/view-slideshow";
 import { ViewPhotogallery } from "./view-photogallery/view-photogallery";
 import { ViewImageChange } from "./view-image-change/view-image-change";
 import ViewExternal from "./view-external";
@@ -43,7 +45,7 @@ const stateSelector = createSelector(
 );
 
 const resolveScreenComponent = (
-  type: keyof typeof screenType
+  type: typeof screenType[keyof typeof screenType]
 ): React.FC<ScreenProps> | undefined => {
   switch (type) {
     case screenType.START:
@@ -62,7 +64,9 @@ const resolveScreenComponent = (
       return ViewParallax;
     case screenType.IMAGE_ZOOM:
       return ViewZoom;
-    case screenType.PHOTOGALERY:
+    case screenType.SLIDESHOW:
+      return ViewSlideshow;
+    case screenType.PHOTOGALLERY_NEW:
       return ViewPhotogallery;
     case screenType.IMAGE_CHANGE:
       return ViewImageChange;
@@ -88,13 +92,17 @@ const resolveScreenComponent = (
 type ViewersProps = {
   isScreenLoading: boolean;
   screenPreloadedFiles: ScreenPreloadedFiles | undefined;
+  isMusicLoading: boolean;
   chapterMusicRef: React.RefObject<HTMLAudioElement>;
+  audioRef: React.RefObject<HTMLAudioElement>;
 };
 
 export const Viewers = ({
   isScreenLoading,
   screenPreloadedFiles,
+  isMusicLoading,
   chapterMusicRef,
+  audioRef,
 }: ViewersProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
@@ -109,8 +117,7 @@ export const Viewers = ({
   /* Otherwise.. set to the ScreenComponent the component or the appropriate Screen Type! */
   const ScreenComponent = useMemo(() => {
     if (isScreenLoading || !viewScreen) {
-      const emptyFC: React.FC = () => <></>;
-      return emptyFC;
+      return null;
     }
     return resolveScreenComponent(viewScreen.type);
   }, [isScreenLoading, viewScreen]);
@@ -120,18 +127,20 @@ export const Viewers = ({
     return viewScreen?.type === "START" || viewScreen?.type === "FINISH";
   }, [viewScreen?.type]);
 
-  if (!ScreenComponent) {
+  // Means that setting the redux store.expo.viewScreen failed, e.g because of invalid section, screen params
+  if (!ScreenComponent || !viewScreen) {
     return <ViewError />;
   }
 
   return (
-    <TutorialStoreProvider>
+    <TutorialProvider>
       <ViewScreenOverlay
         isOverlayHidden={isOverlayHidden}
         chapterMusicRef={chapterMusicRef}
+        audioRef={audioRef}
       >
         {(toolbarRef) =>
-          !screenPreloadedFiles || isScreenLoading || !viewScreen ? (
+          !screenPreloadedFiles || isScreenLoading || isMusicLoading ? (
             <ViewLoading />
           ) : (
             <ScreenComponent
@@ -142,6 +151,6 @@ export const Viewers = ({
           )
         }
       </ViewScreenOverlay>
-    </TutorialStoreProvider>
+    </TutorialProvider>
   );
 };

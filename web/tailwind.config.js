@@ -16,6 +16,21 @@ module.exports = {
         danger: "#e0293e",
         "disabled-dark": "rgba(0, 0, 0, 0.26)",
         "disabled-light": "rgba(0, 0, 0, 0.12)",
+
+        gray: "#6c757d", // figma -- gray text for infopoints, tags gray background when dark mode, SAME as muted
+        // THEME
+        "dark-mode-b": "#202326", // figma - dark mode background black color..
+        "light-mode-b": "#ffffff", // light mode white background when light theme is on
+        "dark-mode-f": "#ffffff", // white text when on dark background
+        "light-mode-f": "#000000", // classic black text on white background
+      },
+      zIndex: {
+        45: 45,
+        100: 100,
+      },
+      screens: {
+        // Backward compatibility for old expo administration screens
+        desktop: "801px",
       },
     },
   },

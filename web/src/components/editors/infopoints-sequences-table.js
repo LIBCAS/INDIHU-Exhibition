@@ -11,7 +11,7 @@ import {
   TextField as TextFieldMD,
 } from "react-md";
 
-import TextField from "../form/text-field";
+import TextField from "../form/redux-form/text-field";
 
 import { getFileById } from "../../actions/file-actions";
 import { updateScreenData } from "../../actions/expoActions";

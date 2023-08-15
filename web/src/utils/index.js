@@ -272,16 +272,3 @@ export const blobToFile = (blob, fileName) => {
     lastModifiedDate: date,
   });
 };
-
-export const getDocumentIconName = (type) =>
-  type
-    ? /^image.*$/.test(type)
-      ? "image"
-      : /^audio.*$/.test(type)
-      ? "music_note"
-      : /^video.*$/.test(type)
-      ? "movie"
-      : type === "WEB"
-      ? "language"
-      : "insert_drive_file"
-    : "notes";

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-interface Size {
+export interface Size {
   width: number;
   height: number;
 }

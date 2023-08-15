@@ -1,17 +1,21 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { animated, useSpring } from "react-spring";
-import { useScreenChapters } from "components/dialogs/chapters-dialog/screen-chapters-hook";
+import { useHistory, useParams } from "react-router-dom";
+
+// Custom hooks
+import { useScreenChapters } from "hooks/view-hooks/screen-chapters-hook";
 import { useExpoProgressBarTooltip } from "./expo-progress-bar-tooltip-hook";
 
+// Components
 import { Tooltip } from "react-tooltip";
-import { NavLink, useParams } from "react-router-dom";
 
+// Models
 import { AppState } from "store/store";
-import { ScreenChapters } from "components/dialogs/chapters-dialog/types";
-import { ScreenPoint } from "./types";
+import { ScreenChapters, ScreenPoint } from "models";
+
+// - - - - - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo?.viewExpo?.structure?.screens,
@@ -37,12 +41,25 @@ const flattenScreensRecursively = (
   return [screen, ...flattenedSubScreens];
 };
 
-export const ExpoProgressBar = () => {
+// - - - - - - - - - -
+
+interface ExpoProgressBarProps {
+  isProgressbarHovered: boolean;
+}
+
+export const ExpoProgressBar = ({
+  isProgressbarHovered,
+}: ExpoProgressBarProps) => {
   const { screens, url, start } = useSelector(stateSelector);
-  const { section: UrlSection, screen: UrlScreen } = useParams<{
+  const { section: urlSection, screen: urlScreen } = useParams<{
     section: string;
     screen: string;
   }>();
+  const { push } = useHistory();
+
+  // - - -
+
+  // Array of ScreenChapters, one item represents INTRO chapter screen with additional sectionIndex, screenIndex + subScreens
   let screenChapters = useScreenChapters(screens);
 
   const startScreenChapter = {
@@ -53,8 +70,12 @@ export const ExpoProgressBar = () => {
 
   screenChapters = [startScreenChapter, ...(screenChapters ?? [])];
 
+  // - - -
+
   // TODO: components rerenders really often, figure out why
 
+  // Array of ScreenPoint, where one ScreenPoint for each screen, not just INTRO screen, with additional sectionIndex, screenIndex, without subScreens
+  // Used for dots which are displayed in the bottom progressbar
   const screenPoints = useMemo(
     () =>
       screenChapters?.reduce<ScreenPoint[]>(
@@ -67,57 +88,70 @@ export const ExpoProgressBar = () => {
     [screenChapters]
   );
 
+  // - - -
+
   const { renderTooltip } = useExpoProgressBarTooltip(screenPoints);
 
-  // currentScreenIndex and maxScreenIndex used for width in %
+  // maxScreenIndex currentScreenIndex and  used for width in %
   const maxScreenIndex = useMemo(() => screenPoints.length + 1, [screenPoints]);
 
   let currentScreenIndex = 0;
-  if (UrlSection === "start") {
+  if (urlSection === "start") {
     currentScreenIndex = 1;
   } else {
     currentScreenIndex =
       screenPoints.findIndex(
         (screenPoint: ScreenPoint) =>
-          screenPoint.sectionIndex.toString() === UrlSection &&
-          screenPoint.screenIndex?.toString() === UrlScreen
+          screenPoint.sectionIndex.toString() === urlSection &&
+          screenPoint.screenIndex?.toString() === urlScreen
       ) + 1;
   }
 
-  // For filling purpose
+  // For animation of the filling of the progressbar
   const { width } = useSpring({
     width: `${(currentScreenIndex / maxScreenIndex) * 100}%`,
   });
 
+  // Animation of hovered progessbar, squares are being larger
+  const { edge } = useSpring({
+    edge: isProgressbarHovered ? "0.65rem" : "0.5rem",
+  });
+
   return (
     <>
-      <div className="w-full h-full flex justify-evenly border-t-2 border-t-muted bg-white bg-opacity-40 items-center relative">
+      <div className="w-full h-full flex justify-evenly items-center bg-muted-400 border-t-4 border-t-muted relative">
         {screenPoints.map(({ sectionIndex, screenIndex, type }, index) => (
           <div
             className="flex h-full items-center justify-end flex-1"
             key={`${sectionIndex}-${screenIndex}`}
           >
+            {/* One black square for start screen, then black square for each INTRO screen and for each other screen the gray line */}
             {type === "START" ? (
-              <NavLink
-                className="h-2.5 w-2.5 bg-black z-10 hover:cursor-pointer translate-x-1/2 rounded-sm"
-                to={`/view/${url}/start`}
-                // Add the Tooltip with the Image!
+              <animated.div
+                className="w-2 h-2 bg-black z-10 hover:cursor-pointer hover:bg-primary translate-x-1/2 rounded-sm"
                 data-tooltip-content={index.toString()}
                 data-tooltip-id="progress-bar-screen-preview-tooltip"
+                style={{ width: edge, height: edge }}
+                onClick={() => push(`/view/${url}/start`)}
               />
             ) : type === "INTRO" ? (
-              <NavLink
-                to={`/view/${url}/${sectionIndex}/${screenIndex}`}
+              <animated.div
+                className="bg-black z-10 hover:cursor-pointer hover:bg-primary translate-x-1/2 rounded-sm"
                 data-tooltip-content={index.toString()}
                 data-tooltip-id="progress-bar-screen-preview-tooltip"
-                className="h-2.5 w-2.5 bg-black z-10 hover:cursor-pointer translate-x-1/2 rounded-sm"
+                style={{ width: edge, height: edge }}
+                onClick={() =>
+                  push(`/view/${url}/${sectionIndex}/${screenIndex}`)
+                }
               />
             ) : (
-              <NavLink
-                to={`/view/${url}/${sectionIndex}/${screenIndex}`}
+              <div
+                className="h-full w-1.5 bg-black bg-opacity-25 hover:bg-primary hover:bg-opacity-100 z-10 translate-x-1/2 hover:cursor-pointer"
                 data-tooltip-content={index.toString()}
                 data-tooltip-id="progress-bar-screen-preview-tooltip"
-                className="h-full w-1.5 bg-black bg-opacity-25 z-10 translate-x-1/2"
+                onClick={() =>
+                  push(`/view/${url}/${sectionIndex}/${screenIndex}`)
+                }
               />
             )}
           </div>
@@ -138,8 +172,11 @@ export const ExpoProgressBar = () => {
         id="progress-bar-screen-preview-tooltip"
         float={false}
         variant="light"
+        place="top"
         delayHide={500}
-        className="!pointer-events-auto !opacity-100 !rounded-none shadow-md"
+        className="!pointer-events-auto !opacity-100 !rounded-none border-solid border-[1px] border-black"
+        classNameArrow="border-b-[1px] border-b-solid border-b-black border-r-[1px] border-r-solid border-r-black"
+        // content here in render is index.toString() sent by data-tooltip-content
         render={({ content }) => renderTooltip(content ?? "neuvedeno")}
       />
     </>

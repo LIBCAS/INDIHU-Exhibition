@@ -12,6 +12,8 @@ import { RatingDialogDataProps } from "./rating-dialog/rating-dialog";
 import { AudioDialogDataProps } from "./audio-dialog/audio-dialog";
 import { SettingsDialogDataProps } from "./settings-dialog/settings-dialog";
 
+import { File as IndihuFile } from "models";
+
 // All possible dialog names (important when calling setDialog action)
 export enum DialogType {
   ChaptersDialog = "ChaptersDialog",
@@ -24,7 +26,42 @@ export enum DialogType {
   RatingDialog = "RatingDialog",
   AudioDialog = "AudioDialog",
   SettingsDialog = "SettingsDialog",
+  // Others
+  ScreenFileChoose = "ScreenFileChoose",
+  ConfirmDialog = "ConfirmDialog",
+  InfoDialog = "Info",
+  FileNewFolder = "FileNewFolder",
+  FileRenameFolder = "FileRenameFolder",
+  FileDeleteFolder = "FileDeleteFolder",
+  FilesManagerMenu = "FilesManagerMenu",
 }
+
+type ScreenFileChooseDialogDataProps = {
+  onChoose: (file: IndihuFile) => void;
+  typeMatch?: RegExp;
+  accept?: string;
+  className?: string;
+  style?: React.CSSProperties;
+};
+
+type ConfirmDialogDataProps = {
+  title?: React.ReactNode | string;
+  text?: string;
+  onSubmit: () => void;
+};
+
+type InfoDialogDataProps = {
+  title?: string;
+  content?: React.ReactNode; // either content or text as body
+  text?: string;
+  noStornoButton?: boolean;
+};
+
+type FileNewFolderDataProps = Record<string, never>;
+type FileRenameFolderDataProps = { name: any };
+type FileDeleteFolderDataProps = { name: any };
+
+type FilesManagerMenuDataProps = Record<string, any>;
 
 // Each dialog has built-in DialogProps: setDialog, closeDialog, dialogData, addDialogData
 // Each dialog has its own custom DialogDataProps --> type definition for dialog.dialogData
@@ -50,14 +87,30 @@ export type DialogDataProps<T extends DialogType> =
     ? AudioDialogDataProps
     : T extends DialogType.SettingsDialog
     ? SettingsDialogDataProps
+    : T extends DialogType.ScreenFileChoose
+    ? ScreenFileChooseDialogDataProps
+    : T extends DialogType.ConfirmDialog
+    ? ConfirmDialogDataProps
+    : T extends DialogType.InfoDialog
+    ? InfoDialogDataProps
+    : T extends DialogType.FileNewFolder
+    ? FileNewFolderDataProps
+    : T extends DialogType.FileRenameFolder
+    ? FileRenameFolderDataProps
+    : T extends DialogType.FileDeleteFolder
+    ? FileDeleteFolderDataProps
+    : T extends DialogType.FilesManagerMenu
+    ? FilesManagerMenuDataProps
     : never;
 
 export type DialogProps<T extends DialogType> = {
-  setDialog: () => void;
+  setDialog: () => void; // Typing here
   closeDialog: () => void;
+  name: string; // One of the name of all the dialogs..
   dialogData: DialogDataProps<T> | null;
   addDialogData: <T extends DialogType>(
     name: T,
     data: Partial<DialogDataProps<T>>
   ) => void;
+  dialogs: { name: string; data: any }[];
 };

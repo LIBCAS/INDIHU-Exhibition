@@ -11,6 +11,8 @@ import "./styles/style.scss";
 
 const store = configureStore();
 
+export const dispatch = store.dispatch;
+
 render(<App store={store} />, document.getElementById("root"));
 
 registerServiceWorker();

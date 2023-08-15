@@ -4,8 +4,8 @@ import { reduxForm, Field, formValueSelector } from "redux-form";
 import { compose, withHandlers } from "recompose";
 import { forEach, get, find, findIndex } from "lodash";
 
-import SelectField from "../form/select-field";
-import CheckBox from "../form/check-box";
+import SelectField from "../form/redux-form/select-field";
+import CheckBox from "../form/redux-form/check-box";
 
 import {
   moveScreen,

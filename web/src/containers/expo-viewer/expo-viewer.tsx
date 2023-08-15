@@ -10,52 +10,95 @@ import {
 
 import { Helmet } from "react-helmet";
 
-import ViewWrap from "components/views/view-wrap";
+import ViewWrap from "./view-wrap";
 import { FilePreloaderProvider } from "context/file-preloader/file-preloader-provider";
-import { DrawerPanelProvider } from "context/drawer-panel-preloader/drawer-panel-provider";
+import { DrawerPanelProvider } from "context/drawer-panel-provider/drawer-panel-provider";
 import { ViewSection } from "./view-section";
 
 import { ViewLoading } from "containers/views/view-loading/view-loading";
 
 import { get } from "lodash";
-import {
-  loadExposition,
-  loadScreen,
-  turnSoundOff,
-} from "actions/expoActions/viewer-actions";
+import { loadExposition, loadScreen } from "actions/expoActions/viewer-actions";
 
 import { AppDispatch, AppState } from "store/store";
+import ViewNotPublic from "containers/views/view-not-public";
+import ViewPrepared from "containers/views/view-prepared";
+import ViewEnded from "containers/views/view-ended";
+import { CollaboratorObj } from "models";
+import { GlassMagnifierConfigProvider } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 // - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
-  ({ expo }: AppState) => expo.viewInteractive,
-  (viewExpo, viewScreen, viewInteractive) => ({
+  ({ user }: AppState) => user.userName,
+  (viewExpo, viewScreen, userName) => ({
     viewExpo,
     viewScreen,
-    viewInteractive,
+    userName,
   })
 );
 
+// takes currently logged in userName and array of all collaborators (people with whom the expo is shared with) + author of the expo itself
+// if currently logged in user with its userName has access to this exposition (either collaborator or author), then do not show error or prepared screen
+const amExpoCreator = (
+  userName: string, // logged in user
+  authorUsername?: string,
+  collaborators?: CollaboratorObj[]
+): boolean => {
+  if (authorUsername === userName) {
+    return true;
+  }
+
+  if (!collaborators || collaborators.length === 0) {
+    return false;
+  }
+
+  let isCollaborator = false;
+  for (let i = 0; i < collaborators.length; i++) {
+    const currCollaborator = collaborators[i];
+    if (currCollaborator?.collaborator?.username === userName) {
+      isCollaborator = true;
+    }
+  }
+
+  return isCollaborator;
+};
+
+// - - -
+
 export const ExpoViewer = () => {
   // Redux hooks
-  const { viewExpo, viewInteractive } = useSelector(stateSelector);
+  const { viewExpo, userName } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+
   // Router, routing hooks
   const match = useRouteMatch<{ name: string }>();
   const history = useHistory();
   const location = useLocation();
+
   // Default react hooks
-  const [loadedAt, setLoadedAt] = useState<number>();
+  const [viewExpoLoadedAt, setViewExpoLoadedAt] = useState<number | null>(null);
   const [viewScreenIsLoaded, setViewScreenIsLoaded] = useState<boolean>(false);
 
-  // HandleMount!
-  const handleMount = useCallback(async () => {
-    // GET at /api/exposition/u/:url==ReactNewExhibition2023, after fetch dispatch into viewExpo redux
-    // Replacing http://localhost:3000/view/ReactNewExhibition2023-02-18T152236836Z/start to http://localhost:3000/view/ReactNewExhibition2023/start
-    const viewExpo = await dispatch(loadExposition(match.params.name));
+  // Function responsible for:
+  // 1. Fetching the /api/exposition/u/{expoNameUrl}, retrieving back viewExpo body OR true OR false
+  // In case when the the expo is in PREPARE or ENDED state and i do not have access (e.g log out user), the response is true if status code is 200, otherwise false
+  // In case when the expo body is retrieved, it will set it into redux store.expo.viewExpo
+  // 2. Replacing URL, e.g from /view/ReactNewExhibition2023-02-18T152236836Z/start to /view/ReactNewExhibition2023/start
+  const handleViewExpoMount = useCallback(async () => {
+    const viewExpo = await dispatch(loadExposition(match.params.name)); // can be viewExpo object, true if 200 code or false
+
+    // When logged out user accessing ENDED or PREPARE exposition, url is not present
+    // Prevent changing the url to /view/undefined/{section}/{screen}
+    if (
+      (viewExpo.state === "ENDED" || viewExpo.state === "PREPARE") &&
+      !viewExpo.url
+    ) {
+      setViewExpoLoadedAt(new Date().getTime());
+      return;
+    }
 
     if (viewExpo && match.url.replace(/^\/view\//, "") !== viewExpo.url) {
       const newUrl = location.pathname.replace(
@@ -76,24 +119,19 @@ export const ExpoViewer = () => {
       history.replace(`${match.url.replace(/\/$/g, "")}/start`);
     }
 
-    setLoadedAt(new Date().getTime());
+    setViewExpoLoadedAt(new Date().getTime());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, history]);
 
-  //
+  // On mount, call the handleViewExpoMount and on unmount
   useEffect(() => {
-    handleMount();
+    handleViewExpoMount();
+  }, [handleViewExpoMount]);
 
-    return () => {
-      turnSoundOff(false);
-    };
-  }, [handleMount]);
-
-  // handleScreen(section, screen), dispatch into viewScreen redux by looking into viewExpo
-  // returns viewScreen which was set to the redux store or false
-  //->> section: "start" | "finish" | number
-  //->> screen: number
-  const handleScreen = useCallback(
+  // Function which requires that viewExpo has already been mounted and set in redux store
+  // Based on viewExpo and input section and screen args, it will set the redux store.expo.viewScreen
+  // section can be "start" | "finish" | number, screen is just a number
+  const handleViewScreen = useCallback(
     async ({ section, screen }) => {
       const viewScreen = await dispatch(loadScreen(section, screen));
 
@@ -106,9 +144,39 @@ export const ExpoViewer = () => {
     [dispatch, history, match.url]
   );
 
-  if (!loadedAt && viewExpo) return <ViewLoading />;
+  // viewExpo and viewExpoLoadedAt initialized both with falsy values, first viewExpo should be set and then loadedAt
+  if ((!viewExpo && !viewExpoLoadedAt) || (viewExpo && !viewExpoLoadedAt)) {
+    return <ViewLoading />;
+  }
 
-  if (!viewExpo) return <ViewLoading />;
+  // Invalid URL - viewExpo null
+  if (viewExpoLoadedAt && !viewExpo) {
+    return <ViewNotPublic />;
+  }
+
+  if (!viewExpo) {
+    return <ViewLoading />;
+  }
+
+  const hasAccess = amExpoCreator(
+    userName as string,
+    viewExpo?.author?.username,
+    viewExpo?.collaborators
+  );
+
+  if (viewExpo.state === "ENDED" && !hasAccess) {
+    return (
+      <ViewEnded
+        closedCaption={viewExpo.closedCaption}
+        closedPicture={viewExpo.closedPicture}
+        closedUrl={viewExpo.closedUrl}
+      />
+    );
+  }
+
+  if (viewExpo.state === "PREPARE" && !hasAccess) {
+    return <ViewPrepared />;
+  }
 
   return (
     <ViewWrap
@@ -116,7 +184,6 @@ export const ExpoViewer = () => {
       organization={get(viewExpo, "organization")}
       organizationLink={get(viewExpo, "structure.start.organizationLink")}
       expoViewer={true}
-      viewInteractive={viewInteractive}
       progressEnabled={viewScreenIsLoaded}
     >
       <Helmet>
@@ -131,11 +198,13 @@ export const ExpoViewer = () => {
         render={() => (
           <FilePreloaderProvider>
             <DrawerPanelProvider>
-              <ViewSection
-                name={match.params.name}
-                handleScreen={handleScreen}
-                setViewScreenIsLoaded={setViewScreenIsLoaded}
-              />
+              <GlassMagnifierConfigProvider>
+                <ViewSection
+                  name={match.params.name}
+                  handleViewScreen={handleViewScreen}
+                  setViewScreenIsLoaded={setViewScreenIsLoaded}
+                />
+              </GlassMagnifierConfigProvider>
             </DrawerPanelProvider>
           </FilePreloaderProvider>
         )}

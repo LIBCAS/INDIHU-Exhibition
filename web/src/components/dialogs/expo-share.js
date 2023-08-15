@@ -4,10 +4,10 @@ import { reduxForm, Field } from "redux-form";
 
 import Dialog from "./dialog-wrap";
 
-import TextField from "../form/text-field";
-import SelectField from "../form/select-field";
-import CheckBox from "../form/check-box";
-import * as Validation from "../form/validation";
+import TextField from "../form/redux-form/text-field";
+import SelectField from "../form/redux-form/select-field";
+import CheckBox from "../form/redux-form/check-box";
+import * as Validation from "../form/redux-form/validation";
 
 import { addCollaborators } from "../../actions/expoActions";
 

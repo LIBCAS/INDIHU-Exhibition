@@ -27,6 +27,10 @@
     "progressbar": {
       "label": "Rewind",
       "text": "In the case of a screen with a video or photo gallery, it is also possible to use this bar to rewind the progress of the current screen."
+    },
+    "keyboard": {
+      "label": "Keyboard control",
+      "text": "The exhibition can also be controlled using the keyboard. \nPress 'M' to mute all audio tracks. \nBy pressing the space bar, it is possible to pause the exhibition. \nBy pressing ESC it is possible to close all interactive elements displayed on the screen. \nBy pressing the arrows forward or it is possible to scroll back through the exhibition. \nIt is also possible to start the exhibition by pressing Enter."
     }
   },
 

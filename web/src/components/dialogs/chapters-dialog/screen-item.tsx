@@ -1,36 +1,39 @@
 import { useCallback, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { animated, useSpring } from "react-spring";
-import cx from "classnames";
 
+import { animated, useSpring } from "react-spring";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
+import { NavLink } from "react-router-dom";
 import { Collapse } from "components/collapse/collapse";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { ScreenChapters } from "./types";
+import { ScreenChapters, ScreenHighlight } from "models";
+import cx from "classnames";
 
-export type ScreenHighlight = {
-  section?: number | "start" | "finish";
-  screen?: number;
-};
+// - -
 
 interface ScreenItemProps {
   screen: ScreenChapters;
+  onClick: () => void;
   viewExpoUrl?: string;
   isSubScreen?: boolean;
-  onClick: () => void;
   highlight?: ScreenHighlight;
+  usedInDialog?: boolean;
 }
 
 export const ScreenItem = ({
   screen,
-  isSubScreen = false,
-  viewExpoUrl,
   onClick,
+  viewExpoUrl,
+  isSubScreen = false,
   highlight,
+  usedInDialog = false,
 }: ScreenItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const isChapter = !!screen.subScreens;
+
+  const { fgThemingIf } = useExpoDesignData();
 
   const { rotate } = useSpring({
     rotate: isOpen ? "90deg" : "0deg",
@@ -72,14 +75,15 @@ export const ScreenItem = ({
             <animated.div style={{ rotate }}>
               <Icon
                 name="chevron_right"
-                color={shouldHighlight ? "primary" : undefined}
+                color={shouldHighlight ? "expoTheme" : undefined}
               />
             </animated.div>
           </Button>
         ) : (
           <Icon
             name="arrow_right"
-            className={shouldHighlight ? "text-primary" : "text-muted-400"}
+            color={shouldHighlight ? "expoTheme" : "muted-400"}
+            //className={shouldHighlight ? "text-primary" : "text-muted-400"}
           />
         )}
 
@@ -87,7 +91,11 @@ export const ScreenItem = ({
         <NavLink
           className={cx(
             "text-black no-underline",
-            shouldHighlight ? "font-bold" : "font-medium"
+            shouldHighlight ? "font-bold" : "font-medium",
+            {
+              // NOTE: for now, dialogs are white, do not color in dialog.. keep always black
+              ...fgThemingIf(!usedInDialog),
+            }
           )}
           onClick={onClick}
           to={currentScreenItemNavLink}

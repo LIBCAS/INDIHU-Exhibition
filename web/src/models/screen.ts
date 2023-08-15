@@ -22,10 +22,23 @@ export type ScreenProps = {
 export type ScreenCoordinates = [number, number] | "start" | "finish";
 
 export type ScreenWithOnlyTypeTitleDocuments = {
-  type: keyof typeof screenType;
+  type: typeof screenType[keyof typeof screenType];
   title: string | undefined;
   documents?: Document[] | undefined;
 };
+
+export type ScreenHighlight = {
+  section?: number | "start" | "finish";
+  screen?: number;
+};
+
+export type ScreenChapters = Screen & {
+  sectionIndex: number | "start" | "finish";
+  screenIndex?: number;
+  subScreens?: ScreenChapters[];
+};
+
+export type ScreenPoint = Exclude<ScreenChapters, "subScreens">;
 
 // - - - - -
 
@@ -44,6 +57,17 @@ export type AnimationType = typeof animationType[keyof typeof animationType];
 export type ZoomInTooltipPosition =
   typeof zoomInTooltipPosition[keyof typeof zoomInTooltipPosition];
 
+export type SlideshowImages = {
+  id: string;
+  imageOrigData: ImageOrigData;
+  infopoints: Infopoint[];
+  time?: number;
+  active?: boolean;
+}[];
+
+export type ParallaxImages = string[];
+export type PhotogalleryImages = { id: string; active?: boolean }[];
+
 // - - - - -
 
 export type Screen =
@@ -53,7 +77,8 @@ export type Screen =
   | ImageScreen
   | VideoScreen
   | TextScreen
-  | PhotogaleryScreen
+  | SlideshowScreen
+  | PhotogalleryScreen
   | ParallaxScreeen
   | ZoomScreen
   | ImageChangeScreen
@@ -158,20 +183,17 @@ export type TextScreen = {
   screenCompleted: boolean;
 };
 
-export type PhotogaleryScreen = {
+export type SlideshowScreen = {
   id: string;
-  type: typeof screenType.PHOTOGALERY;
+  type: typeof screenType.SLIDESHOW;
   title?: string;
   text?: string;
-  images?: {
-    id: string;
-    imageOrigData: ImageOrigData;
-    infopoints: Infopoint[];
-  }[];
+  images?: SlideshowImages;
   animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
+  timePhotosManual?: boolean;
   documents?: Document[];
   aloneScreen: boolean;
   music?: string;
@@ -179,12 +201,26 @@ export type PhotogaleryScreen = {
   screenCompleted: boolean;
 };
 
+export type PhotogalleryScreen = {
+  id: string;
+  type: typeof screenType.PHOTOGALLERY_NEW;
+  title: string;
+  aloneScreen: boolean;
+  //
+  text?: string;
+  audio?: string; // id of the audio file
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
+  documents?: Document[];
+  images?: PhotogalleryImages;
+};
+
 export type ParallaxScreeen = {
   id: string;
   type: typeof screenType.PARALLAX;
   title?: string;
   text?: string;
-  images?: string[];
+  images?: ParallaxImages;
   animationType: AnimationType;
   audio?: string;
   time: number;
@@ -226,11 +262,6 @@ export type ImageChangeScreen = {
   type: typeof screenType.IMAGE_CHANGE;
   title?: string;
   text?: string;
-  image1?: string;
-  image2?: string;
-  image1OrigData?: ImageOrigData;
-  image2OrigData?: ImageOrigData;
-  animationType: AnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
@@ -239,12 +270,23 @@ export type ImageChangeScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  image1?: string;
+  image2?: string;
+  image1OrigData?: ImageOrigData;
+  image2OrigData?: ImageOrigData;
+  animationType:
+    | "HORIZONTAL"
+    | "VERTICAL"
+    | "GRADUAL_TRANSITION"
+    | "FADE_IN_OUT_TWO_IMAGES";
   rodPosition?: "0" | "0.25" | "0.5" | "0.75" | "1";
   gradualTransitionBeginPosition?:
     | "VERTICAL_TOP_TO_BOTTOM"
     | "VERTICAL_BOTTOM_TO_TOP"
     | "HORIZONTAL_LEFT_TO_RIGHT"
     | "HORIZONTAL_RIGHT_TO_LEFT";
+  image1Infopoints?: Infopoint[];
+  image2Infopoints?: Infopoint[];
 };
 
 export type ExternalScreen = {

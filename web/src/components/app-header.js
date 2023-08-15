@@ -9,7 +9,10 @@ import ListItem from "react-md/lib/Lists/ListItem";
 
 import { signOut } from "../actions/user-actions";
 import { expoStateText } from "../enums/expo-state";
-import { screenTypeText } from "../enums/screen-type";
+import {
+  mapScreenTypeValuesToKeys,
+  screenTypeText,
+} from "../enums/screen-type";
 import { isAdmin, openInNewTab } from "../utils";
 
 const mdStyles =
@@ -68,7 +71,7 @@ const AppHeader = ({
           ? "INDIHU Exhibition"
           : screenStyle && activeScreen
           ? activeScreen.type
-            ? screenTypeText[activeScreen.type]
+            ? screenTypeText[mapScreenTypeValuesToKeys[activeScreen.type]]
             : get(activeExpo, "title", "INDIHU Exhibition")
           : get(activeExpo, "title", "INDIHU Exhibition")}
       </h2>
