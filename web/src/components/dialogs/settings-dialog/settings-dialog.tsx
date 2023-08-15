@@ -3,6 +3,10 @@ import { useState } from "react";
 import Dialog from "../dialog-wrap-typed";
 import { DialogProps, DialogType } from "../dialog-types";
 
+// Language stuff
+import { changeLanguage, LanguageKey, languageKeys } from "i18n";
+// import { Theme } from "models";
+
 import {
   FormControl,
   Select,
@@ -14,34 +18,38 @@ import {
 // list of countries: // https://github.com/madebybowtie/FlagKit/blob/master/Assets/Flags.md
 import Flag from "react-flagkit";
 
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
+// import LightModeIcon from "@mui/icons-material/LightMode";
+// import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 // - - - - - - - -
 
-type Languages = "CZ" | "GB";
-type Theme = "dark" | "light";
-
-const getLanguageText = (language: Languages) => {
-  if (language === "CZ") {
+const getLanguageText = (language: LanguageKey) => {
+  if (language === "cs") {
     return "Česky";
   }
   return "Anglicky";
 };
 
-const getThemeText = (theme: Theme) => {
-  if (theme === "dark") {
-    return "Tmavý";
+const getLanguageFlagIcon = (language: LanguageKey) => {
+  if (language === "cs") {
+    return "CZ";
   }
-  return "Svetlý";
+  return "GB";
 };
 
-const getThemeIcon = (theme: Theme) => {
-  if (theme === "dark") {
-    return <DarkModeIcon sx={{ fontSize: "20px" }} />;
-  }
-  return <LightModeIcon sx={{ fontSize: "20px" }} />;
-};
+// const getThemeText = (theme: Theme) => {
+//   if (theme === "DARK") {
+//     return "Tmavý";
+//   }
+//   return "Svetlý";
+// };
+
+// const getThemeIcon = (theme: Theme) => {
+//   if (theme === "DARK") {
+//     return <DarkModeIcon sx={{ fontSize: "20px" }} />;
+//   }
+//   return <LightModeIcon sx={{ fontSize: "20px" }} />;
+// };
 
 // - - - - - - - -
 
@@ -51,8 +59,8 @@ export type SettingsDialogDataProps = Record<string, never>;
 export const SettingsDialog = (
   _props: DialogProps<DialogType.SettingsDialog>
 ) => {
-  const [language, setLanguage] = useState<Languages>("CZ");
-  const [theme, setTheme] = useState<Theme>("light");
+  const [language, setLanguage] = useState<LanguageKey>("cs");
+  // const [theme, setTheme] = useState<Theme>("LIGHT");
 
   return (
     <Dialog
@@ -70,9 +78,10 @@ export const SettingsDialog = (
               variant="outlined"
               id="select-language"
               value={language}
-              onChange={(event: SelectChangeEvent<Languages>) => {
-                const newLanguageValue = event.target.value as Languages;
+              onChange={(event: SelectChangeEvent<LanguageKey>) => {
+                const newLanguageValue = event.target.value as LanguageKey;
                 setLanguage(newLanguageValue);
+                changeLanguage(newLanguageValue);
               }}
               sx={{
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
@@ -81,11 +90,14 @@ export const SettingsDialog = (
                 },
               }}
             >
-              {["CZ", "GB"].map((language) => (
-                <MenuItem key={language} value={language}>
+              {languageKeys.map((languageKey) => (
+                <MenuItem key={languageKey} value={languageKey}>
                   <Box sx={{ display: "flex", gap: 2 }}>
-                    <Flag country={language} size={25} />
-                    <span>{getLanguageText(language as Languages)}</span>
+                    <Flag
+                      country={getLanguageFlagIcon(languageKey)}
+                      size={25}
+                    />
+                    <span>{getLanguageText(languageKey as LanguageKey)}</span>
                   </Box>
                 </MenuItem>
               ))}
@@ -94,7 +106,7 @@ export const SettingsDialog = (
         </div>
 
         {/* 2. Theme option */}
-        <div className="flex flex-row justify-between items-center">
+        {/* <div className="flex flex-row justify-between items-center">
           <div className="text-xl font-medium w-1/2">Výber motívu</div>
           <FormControl size="medium" sx={{ width: "50%" }}>
             <Select
@@ -123,7 +135,7 @@ export const SettingsDialog = (
               ))}
             </Select>
           </FormControl>
-        </div>
+        </div> */}
       </div>
     </Dialog>
   );

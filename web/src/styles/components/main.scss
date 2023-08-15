@@ -74,6 +74,32 @@
   justify-content: space-between;
 }
 
+/* SCROLLBAR - always rendered, but hidden with visibility */
+.expo-scrollbar {
+  overflow: auto;
+}
+
+.expo-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.expo-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.expo-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ced4da;
+  visibility: hidden;
+}
+
+.expo-scrollbar:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+// .expo-scrollbar:hover {
+//   overflow: auto;
+// }
+
 /* WIDTH */
 
 .full-width {
@@ -576,7 +602,7 @@
       line-height: 2em;
       padding: 4px;
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: center;
       overflow: hidden;
       white-space: wrap;

@@ -1,14 +1,18 @@
 import { useCallback } from "react";
 
-import cx from "classnames";
-
+// Components
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { getDocumentIconName } from "utils";
-import { downloadFile } from "utils/download-file";
-
+// Models
 import { Document } from "models";
+
+// Utils
+import { getDocumentIconName } from "utils/screen";
+import { downloadFile } from "utils/download-file";
+import cx from "classnames";
+
+// - - - - - - - -
 
 interface Props {
   file: Document;
@@ -21,13 +25,11 @@ export const FileItem = ({
   isFromFinishFileDialog,
   isSubItem,
 }: Props) => {
-  // fileName is name given by the user from the TextField
-  // name (original when uploading) and fileId exist if file is file (not URL or odkaz)
+  // Document as File, not UrlDocument or EmptyLinkDocument, fileName is supplied by the user when creating the file document
   const handleDownload = useCallback(() => {
-    if (!("name" in file)) {
+    if (!("fileId" in file && "name" in file)) {
       return;
     }
-
     downloadFile(`/api/files/${file.fileId}`, file.name);
   }, [file]);
 
@@ -53,10 +55,12 @@ export const FileItem = ({
       />
       {"name" in file ? (
         <span>{file.fileName}</span>
-      ) : (
+      ) : "url" in file ? (
         <a href={file.url} target="_blank" rel="noopener noreferrer">
           {file.fileName}
         </a>
+      ) : (
+        <span>{file.fileName}</span>
       )}
       {"name" in file && (
         <Button onClick={handleDownload} className="ml-auto">

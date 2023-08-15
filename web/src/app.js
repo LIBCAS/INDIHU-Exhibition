@@ -14,12 +14,12 @@ import AuthController from "./components/auth-controller";
 import Dialogs, { WarningDialog } from "./components/dialogs";
 import Authentication from "./containers/authentication";
 import Verify from "./containers/verify";
-import Expositions from "./containers/expositions";
-import Expo from "./containers/expo";
+import Expositions from "./containers/expositions/expositions";
+import Expo from "./containers/expo-administration/expo";
 import { ExpoViewer } from "./containers/expo-viewer/expo-viewer";
-import Profile from "./containers/profile";
-import Users from "./containers/users";
-import Admin from "./containers/admin";
+import Profile from "./containers/profile/profile";
+import Users from "./containers/users/users";
+import Admin from "./containers/admin/admin";
 
 import { isAdmin, isIE, isIOS, isProduction } from "./utils";
 import * as storage from "./utils/storage";

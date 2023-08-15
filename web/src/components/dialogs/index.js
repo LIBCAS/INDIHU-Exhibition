@@ -37,7 +37,6 @@ import ScreenDocumentChange from "./screen-document-change";
 import ScreenDocumentChoose from "./screen-document-choose";
 import ScreenDuplicate from "./screen-duplicate";
 import ScreenFileChoose from "./screen-file-choose";
-import ScreenInfopoint from "./screen-infopoint";
 import ScreenDocumentNew from "./screen-document-new";
 import ScreenLink from "./screen-link";
 import ScreenMove from "./screen-move";
@@ -63,6 +62,8 @@ const Dialogs = ({
   setDialog,
   closeDialog,
   addDialogData,
+  dialogs,
+  name,
   data,
   history,
   loader,
@@ -73,9 +74,12 @@ const Dialogs = ({
     setDialog,
     closeDialog,
     addDialogData,
+    dialogs,
+    dialogName: name,
     dialogData: data,
     history,
   };
+
   return (
     <div>
       <Prompt
@@ -100,6 +104,7 @@ const Dialogs = ({
       <AudioDialog {...dialogProps} />
       <RatingDialog {...dialogProps} />
       <SettingsDialog {...dialogProps} />
+
       <ConfirmDialog {...dialogProps} />
       <DeleteAccount {...dialogProps} />
       <ExpoDelete {...dialogProps} />
@@ -132,7 +137,6 @@ const Dialogs = ({
       <ScreenDocumentNew {...dialogProps} />
       <ScreenDuplicate {...dialogProps} />
       <ScreenFileChoose {...dialogProps} />
-      <ScreenInfopoint {...dialogProps} />
       <ScreenLink {...dialogProps} />
       <ScreenMove {...dialogProps} />
       <UserAccept {...dialogProps} />
@@ -148,11 +152,12 @@ export default compose(
   withRouter,
   connect(
     ({
-      dialog: { dialogs, data },
+      dialog: { dialogs, name, data },
       app: { loader, imageEditor },
       expo: { activeScreenEdited },
     }) => ({
       dialogs,
+      name,
       data,
       loader,
       imageEditor,

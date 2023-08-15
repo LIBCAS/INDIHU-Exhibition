@@ -2,8 +2,8 @@ import { compose, withHandlers } from "recompose";
 import { reduxForm, Field } from "redux-form";
 
 import Dialog from "./dialog-wrap";
-import TextField from "../form/text-field";
-import * as Validation from "../form/validation";
+import TextField from "../form/redux-form/text-field";
+import * as Validation from "../form/redux-form/validation";
 import { passwordReset } from "../../actions/user-actions";
 
 const PasswordReset = ({ handleSubmit }) => (

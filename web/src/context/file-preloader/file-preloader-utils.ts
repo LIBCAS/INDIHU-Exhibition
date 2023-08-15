@@ -2,7 +2,7 @@ import { get } from "lodash";
 
 // Models
 import { Screen } from "models";
-import { FileLookupMap } from "containers/views/hooks/files-hook";
+import { FileLookupMap } from "hooks/view-hooks/files-hook";
 import { ScreenPreloadedFiles } from "./file-preloader-provider";
 
 // - - - - - - -
@@ -10,7 +10,7 @@ import { ScreenPreloadedFiles } from "./file-preloader-provider";
 // gets file.id and map like { [file.id]: File }
 // retrieve the File from map, fetch the BE endpoint /api/files/file.fileId
 // response from BE will be .blob and create "blob:http://..."
-const retrieveFileUrl = async (
+export const retrieveFileUrl = async (
   id: string | undefined,
   fileLookupMap: FileLookupMap
 ) => {
@@ -53,7 +53,7 @@ const screenFileResolver: ScreenFileResolverMap = {
   image1: retrieveFileUrl,
   image2: retrieveFileUrl,
   image3: retrieveFileUrl,
-  music: retrieveFileUrl,
+  //music: retrieveFileUrl,
   object: retrieveFileUrl,
   video: retrieveFileUrl,
   images: async (images, fileLookupMap) =>
@@ -81,7 +81,7 @@ type ScreenPromiseArray = Promise<{
 }>[];
 
 // input is some Screen object and fileLookupMap
-// go through all defined 'keys' (like image, audio, music, images, ...) in Screen object
+// go through all defined 'keys' (like image, audio images, ...) in Screen object
 // each Screen[key] like Screen.image, Screen.audio has a value as file.id
 // use retrieveFileUrl(file.id, fileLookupMap) -> 'blob:http//'
 export const extractFiles = async (

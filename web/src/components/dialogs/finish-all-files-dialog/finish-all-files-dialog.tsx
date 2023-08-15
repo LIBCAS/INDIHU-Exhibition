@@ -14,7 +14,10 @@ import { Collapse } from "components/collapse/collapse";
 // Models
 import { Document, ScreenWithOnlyTypeTitleDocuments } from "models";
 import { DialogProps, DialogType } from "../dialog-types";
-import { isWorksheetFile } from "containers/views/utils";
+
+import { isWorksheetFile } from "utils/view-utils";
+
+// - - - - -
 
 export type FinishAllFilesDialogDataProps = {
   startFiles: Document[]; // from viewExpo.structure.start.documents
@@ -38,9 +41,12 @@ export const FinishAllFilesDialog = ({
 
   const screenFilesFlattedFiltered = screensFiles
     ?.flat()
-    .filter((screenFile: ScreenWithOnlyTypeTitleDocuments) => {
-      return "documents" in screenFile;
-    });
+    .filter(
+      (screenFile: ScreenWithOnlyTypeTitleDocuments) =>
+        "documents" in screenFile &&
+        screenFile.documents &&
+        screenFile.documents.length > 0
+    );
 
   return (
     <Dialog

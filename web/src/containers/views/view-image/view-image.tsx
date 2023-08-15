@@ -77,7 +77,7 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
     infopointOpenStatusMap,
     setInfopointOpenStatusMap,
     closeInfopoints,
-    SquareInfopoint,
+    ScreenAnchorInfopoint,
     TooltipInfoPoint,
   } = useTooltipInfopoint(viewScreen);
 
@@ -85,17 +85,17 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   const onKeyDownAction = useCallback(
     (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeInfopoints();
+        closeInfopoints(viewScreen)();
       }
     },
-    [closeInfopoints]
+    [closeInfopoints, viewScreen]
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", onKeyDownAction);
+    document.addEventListener("keydown", onKeyDownAction);
 
     return () => {
-      window.removeEventListener("keydown", onKeyDownAction);
+      document.removeEventListener("keydown", onKeyDownAction);
     };
   }, [onKeyDownAction]);
 
@@ -124,16 +124,16 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
               <img
                 className="absolute top-0 left-0 h-full w-full object-contain"
                 src={image}
-                onClick={() => closeInfopoints()}
+                onClick={() => closeInfopoints(viewScreen)()}
               />
             )}
             {viewScreen.infopoints?.map((infopoint, infopointIndex) => (
-              <SquareInfopoint
+              <ScreenAnchorInfopoint
                 key={`infopoint-tooltip-${infopointIndex}`}
                 id={`infopoint-tooltip-${infopointIndex}`}
-                content={infopoint.text ?? "Neuvedeno"}
                 top={top + infopoint.top * ratio}
                 left={left + infopoint.left * ratio}
+                infopoint={infopoint}
                 // we need to scale the infopoint back down to normal size
                 style={{
                   transform: `translate(-50%, -50%) scale(${1 / scale.get()})`,
@@ -149,7 +149,7 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
               <TooltipInfoPoint
                 key={`infopoint-tooltip-${infopointIndex}`}
                 id={`infopoint-tooltip-${infopointIndex}`}
-                isAlwaysVisible={infopoint.alwaysVisible}
+                infopoint={infopoint}
                 infopointOpenStatusMap={infopointOpenStatusMap}
                 setInfopointOpenStatusMap={setInfopointOpenStatusMap}
                 primaryKey={infopointIndex.toString()}

@@ -11,6 +11,8 @@ import { Icon } from "components/icon/icon";
 import { Divider } from "components/divider/divider";
 import { Slider } from "@mui/material";
 
+import { Tooltip } from "react-tooltip";
+
 // Actions
 import {
   setExpoVolumes,
@@ -33,15 +35,23 @@ const stateSelector = createSelector(
 
 // - - - - - - -
 
-// Type meaning of "empty object"
-export type AudioDialogDataProps = Record<string, never>;
+export type AudioDialogDataProps = {
+  hasSpeechVolume: boolean;
+  hasMusicVolume: boolean;
+  isVideoPresent: boolean;
+};
 
-export const AudioDialog = (_props: DialogProps<DialogType.AudioDialog>) => {
+export const AudioDialog = (props: DialogProps<DialogType.AudioDialog>) => {
+  const { dialogData } = props;
   const { expoVolumes } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
   const speechVolume = useMemo(() => expoVolumes.speechVolume, [expoVolumes]);
   const musicVolume = useMemo(() => expoVolumes.musicVolume, [expoVolumes]);
+
+  if (!dialogData) {
+    return null;
+  }
 
   return (
     <Dialog
@@ -51,9 +61,21 @@ export const AudioDialog = (_props: DialogProps<DialogType.AudioDialog>) => {
     >
       <div className="flex flex-col gap-5">
         {/* First slider */}
-        <AudioSlider volumeKey="speechVolume" volumeObj={speechVolume} />
+        {(dialogData.hasSpeechVolume || dialogData.isVideoPresent) && (
+          <AudioSlider
+            volumeKey="speechVolume"
+            volumeObj={speechVolume}
+            tooltipContent={"Zvuková stopa mluvené řeči"}
+          />
+        )}
         {/* Second slider */}
-        <AudioSlider volumeKey="musicVolume" volumeObj={musicVolume} />
+        {dialogData.hasMusicVolume && (
+          <AudioSlider
+            volumeKey="musicVolume"
+            volumeObj={musicVolume}
+            tooltipContent={"Zvuková stopa podkresové hudby"}
+          />
+        )}
       </div>
 
       <div className="mt-4">
@@ -68,7 +90,7 @@ export const AudioDialog = (_props: DialogProps<DialogType.AudioDialog>) => {
           big
           onClick={() => dispatch(muteVolumes(expoVolumes))}
         >
-          Stlumit vše
+          Ztlumit vše
         </Button>
         <Button
           type="contained"
@@ -98,9 +120,14 @@ const getIconname = (
 interface AudioSliderProps {
   volumeKey: "speechVolume" | "musicVolume";
   volumeObj: Volumes;
+  tooltipContent?: string;
 }
 
-const AudioSlider = ({ volumeKey, volumeObj }: AudioSliderProps) => {
+const AudioSlider = ({
+  volumeKey,
+  volumeObj,
+  tooltipContent,
+}: AudioSliderProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const iconName = getIconname(volumeKey, volumeObj.actualVolume);
@@ -124,7 +151,16 @@ const AudioSlider = ({ volumeKey, volumeObj }: AudioSliderProps) => {
           );
         }}
       >
-        <Icon name={iconName} useMaterialUiIcon style={{ fontSize: "26px" }} />
+        <div
+          data-tooltip-id={`tooltip-${volumeKey}`}
+          data-tooltip-content={tooltipContent}
+        >
+          <Icon
+            name={iconName}
+            useMaterialUiIcon
+            style={{ fontSize: "26px" }}
+          />
+        </div>
       </Button>
 
       <Slider
@@ -169,6 +205,7 @@ const AudioSlider = ({ volumeKey, volumeObj }: AudioSliderProps) => {
       />
 
       <div className="text-2xl font-bold">{volumeObj.actualVolume}</div>
+      <Tooltip id={`tooltip-${volumeKey}`} />
     </div>
   );
 };

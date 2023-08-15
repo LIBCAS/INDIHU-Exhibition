@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext } from "react";
 
-import { useFilePreloaderContextValue } from "./file-preloader-hook";
+import { useFilePreloaderScreens } from "./file-preloader-screens-hook";
+import { useFilePreloaderMusic } from "./file-preloader-music-hook";
 
 // - - - - - - - -
 
@@ -10,7 +11,7 @@ import { useFilePreloaderContextValue } from "./file-preloader-hook";
 export type ScreenPreloadedFiles = {
   images?: (string | undefined)[];
   image?: string;
-  music?: string;
+  //music?: string;
   video?: string;
   audio?: string;
   image1?: string;
@@ -29,11 +30,22 @@ export type FilesCache = {
   [Key in string]?: ScreenPreloadedFiles;
 };
 
-export type FilePreloaderContextType = {
+export type ScreenPreloads = {
   fileCache: FilesCache;
   screenPreloadedFiles?: ScreenPreloadedFiles;
   isLoading: boolean;
 };
+
+// Represent cache of preloaded chapter musics, separatly
+// number key as index of chapter
+export type ChapterMusicCache = Record<number, string | undefined>;
+
+type MusicPreloads = {
+  chapterMusicCache: ChapterMusicCache;
+  isMusicLoading: boolean;
+};
+
+export type FilePreloaderContextType = ScreenPreloads & MusicPreloads;
 
 const FilePreloaderContext = createContext<FilePreloaderContextType>(
   undefined as never
@@ -50,10 +62,19 @@ export const FilePreloaderProvider = ({
 }: FilePreloaderProviderProps) => {
   // Global state with preloaded current + previous and next screen
   // Automatically listening to screen changes, when screen changes, preload its current + previous and next screen
-  const filePreloaderContext = useFilePreloaderContextValue();
+  const screenPreloads = useFilePreloaderScreens();
+  const musicPreloads = useFilePreloaderMusic();
+
+  const filePreloaderValue: FilePreloaderContextType = {
+    fileCache: screenPreloads.fileCache,
+    screenPreloadedFiles: screenPreloads.screenPreloadedFiles,
+    isLoading: screenPreloads.isLoading,
+    chapterMusicCache: musicPreloads.chapterMusicCache,
+    isMusicLoading: musicPreloads.isMusicLoading,
+  };
 
   return (
-    <FilePreloaderContext.Provider value={filePreloaderContext}>
+    <FilePreloaderContext.Provider value={filePreloaderValue}>
       {children}
     </FilePreloaderContext.Provider>
   );

@@ -8,7 +8,7 @@ import { FileItem } from "../files-dialog/file-item"; // from FilesDialog
 import { Document } from "models";
 import { DialogProps, DialogType } from "../dialog-types";
 
-import { isWorksheetFile } from "containers/views/utils";
+import { isWorksheetFile } from "utils/view-utils";
 
 export type WorksheetsDialogDataProps = {
   files?: Document[];

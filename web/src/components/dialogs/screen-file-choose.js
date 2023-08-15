@@ -4,12 +4,15 @@ import { compose, withHandlers, withState, withProps } from "recompose";
 import { get } from "lodash";
 
 import Dialog from "./dialog-wrap";
-import Header from "../expo/files/header";
-import FileManager from "../expo/files/file-manager";
-import FileMeta from "../expo/files/file-meta";
-import FileView from "../expo/files/file-view";
+import Header from "../../containers/expo-administration/expo-files/header";
+import FileManager from "../../containers/expo-administration/expo-files/file-manager";
+import FileMeta from "../../containers/expo-administration/expo-files/file-meta";
+import FileView from "../../containers/expo-administration/expo-files/file-view";
 import * as fileActions from "../../actions/file-actions";
-import { keyShortcutsEnhancer, sortFilterFiles } from "../expo/files/utils";
+import {
+  keyShortcutsEnhancer,
+  sortFilterFiles,
+} from "../../containers/expo-administration/expo-files/utils";
 
 const ScreenFileChoose = ({
   handleSubmit,
@@ -30,6 +33,7 @@ const ScreenFileChoose = ({
   const onClose = () => {
     tabFolder(null);
   };
+
   return (
     <Dialog
       title="Vybrat soubor"
@@ -38,6 +42,7 @@ const ScreenFileChoose = ({
       handleSubmit={handleSubmit}
       onClose={onClose}
       className="large"
+      style={dialogData?.style ?? undefined}
     >
       <Header
         onFileAdd={() => setKeyState(!keyState)}

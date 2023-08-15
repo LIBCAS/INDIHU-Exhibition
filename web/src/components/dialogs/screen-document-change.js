@@ -7,9 +7,9 @@ import Radio from "react-md/lib/SelectionControls/Radio";
 import TextFieldMD from "react-md/lib/TextFields";
 
 import Dialog from "./dialog-wrap";
-import TextField from "../form/text-field";
-import SelectField from "../form/select-field";
-import * as Validation from "../form/validation";
+import TextField from "../form/redux-form/text-field";
+import SelectField from "../form/redux-form/select-field";
+import * as Validation from "../form/redux-form/validation";
 
 import { changeScreenDocument } from "../../actions/expoActions";
 import { changeSwitchState } from "../../actions/app-actions";
@@ -77,7 +77,7 @@ const ScreenDocumentChange = ({
       />
 
       {documentType === documentOpts[1].value && (
-        <div>
+        <div className="screen-document-change-url-selectfield">
           <Field
             component={TextField}
             componentId="screen-document-change-textfield-url"
@@ -124,22 +124,24 @@ const ScreenDocumentChange = ({
           </div>
 
           {activeScreen?.type === "START" && (
-            <Field
-              component={SelectField}
-              componentId="screen-document-change-selectfield-documentFileType"
-              name="documentFileType"
-              label="Typ vybraného souboru"
-              menuItems={[
-                { value: "exhibitionFile", label: "Soubor k výstavě" },
-                { value: "worksheet", label: "Pracovní list" },
-              ]}
-              validate={[Validation.required]}
-              onChange={(e, value) =>
-                addDialogData("ScreenDocumentChange", {
-                  documentFileType: value,
-                })
-              }
-            />
+            <div className="screen-document-change-file-selectfield">
+              <Field
+                component={SelectField}
+                componentId="screen-document-change-selectfield-documentFileType"
+                name="documentFileType"
+                label="Typ vybraného souboru"
+                menuItems={[
+                  { value: "exhibitionFile", label: "Soubor k výstavě" },
+                  { value: "worksheet", label: "Pracovní list" },
+                ]}
+                validate={[Validation.required]}
+                onChange={(e, value) =>
+                  addDialogData("ScreenDocumentChange", {
+                    documentFileType: value,
+                  })
+                }
+              />
+            </div>
           )}
         </>
       )}

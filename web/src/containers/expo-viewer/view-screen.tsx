@@ -12,31 +12,31 @@ import { useRouteMatch } from "react-router-dom";
 
 // Custom Hooks
 import { useFilePreloader } from "context/file-preloader/file-preloader-provider";
-import { useQuery } from "hooks/use-query";
-import { useExpoNavigation } from "../views/hooks/expo-navigation-hook";
+import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 
 // Components
 import { Viewers } from "../views";
 
 // Actions and utils
 import { setViewProgress } from "actions/expoActions/viewer-actions";
+import { noop } from "lodash";
 
 // Types and Enums
 import { AppState } from "store/store";
 import {
   audioEnabled,
   automaticRouting,
+  mapScreenTypeValuesToKeys,
   musicEnabled,
 } from "enums/screen-type";
-import { noop } from "lodash";
+
+// - - - - - - - -
 
 const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
   ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
   ({ expo }: AppState) => expo.expoVolumes,
-  (viewExpo, viewScreen, shouldIncrement, expoVolumes) => ({
-    viewExpo,
+  (viewScreen, shouldIncrement, expoVolumes) => ({
     viewScreen,
     shouldIncrement,
     expoVolumes,
@@ -45,12 +45,12 @@ const stateSelector = createSelector(
 
 interface NewViewScreenProps {
   name: string;
-  handleScreen: ({ section, screen }: any) => Promise<any>;
+  handleViewScreen: ({ section, screen }: any) => Promise<any>;
   setViewScreenIsLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const NewViewScreen = ({
-  handleScreen,
+  handleViewScreen,
   setViewScreenIsLoaded,
 }: NewViewScreenProps) => {
   const { viewScreen, shouldIncrement, expoVolumes } =
@@ -60,9 +60,8 @@ export const NewViewScreen = ({
   const { params } = useRouteMatch<{ section: string; screen: string }>();
   const { screen, section } = params;
 
-  const query = useQuery();
-
-  const { screenPreloadedFiles } = useFilePreloader();
+  const { screenPreloadedFiles, chapterMusicCache, isMusicLoading } =
+    useFilePreloader();
 
   const [isScreenLoading, setIsScreenLoading] = useState<boolean>(true);
 
@@ -78,22 +77,29 @@ export const NewViewScreen = ({
     [screenPreloadedFiles]
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const musicSrc = useMemo(() => screenPreloadedFiles?.music, [section]);
   const [musicSrc, setMusicSrc] = useState<string | null>(null);
   const musicRef = useRef<HTMLAudioElement>(null);
 
-  const previousSection = useRef<string>("");
-  const previousMusicSrc = useRef<string | null>(null);
+  const isMusicDisabled = useMemo(() => {
+    if (!viewScreen) {
+      return false;
+    }
+    const mutedScreenByAdmin =
+      "muteChapterMusic" in viewScreen && viewScreen.muteChapterMusic;
+    const mutedScreenAlways =
+      !musicEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
+
+    return mutedScreenByAdmin || mutedScreenAlways;
+  }, [viewScreen]);
 
   // - -
 
   const handleMount = useCallback(async () => {
     setIsScreenLoading(true);
-    await handleScreen({ section, screen });
+    await handleViewScreen({ section, screen });
     setViewScreenIsLoaded(true);
     setIsScreenLoading(false);
-  }, [handleScreen, screen, section, setViewScreenIsLoaded]);
+  }, [handleViewScreen, screen, section, setViewScreenIsLoaded]);
 
   /* 1.) Mount this NewViewScreen in ViewScreen.tsx */
   useEffect(() => {
@@ -101,8 +107,7 @@ export const NewViewScreen = ({
   }, [handleMount]);
 
   // 2.) According to the viewScreen.type ("INTRO", "START", ... ) set appropriate viewProgress.shouldRedirect
-  // shouldRedirect is false only for START and FINISH screens (GAME screen are true after upgrade)
-  // shouldRedirect is also false if ?preview=true query is present in URL
+  // shouldRedirect is false only for START and FINISH + PHOTOGALLERY screens (GAME screen are true after upgrade)
   // This shouldRedirect is then used in the wrappering ScreenAutoNavigator component below, at the bottom of this file
   useEffect(() => {
     if (!viewScreen?.type) {
@@ -110,37 +115,35 @@ export const NewViewScreen = ({
     }
 
     const shouldRedirect =
-      !query.get("preview") &&
-      !!automaticRouting[viewScreen.type as keyof typeof automaticRouting];
+      !!automaticRouting[mapScreenTypeValuesToKeys[viewScreen.type]];
+
     dispatch(setViewProgress({ shouldRedirect }));
-  }, [dispatch, query, viewScreen?.type]);
+  }, [dispatch, viewScreen?.type]);
 
   // - - -
 
-  /* Effect which stores the section of the previous screen into ref variable */
+  /* Effect responsible for handling new setting new musicSrc, e.g when new section with our without music */
   useEffect(() => {
-    return () => {
-      previousSection.current = section;
-    };
-  }, [section]);
-
-  /* Effect which actualizes the musicSrc when the current screen has the chapter music set! */
-  useEffect(() => {
-    if (!screenPreloadedFiles?.music) {
+    if (section === "start" || section === "finish") {
+      setMusicSrc(null);
+      return;
+    }
+    const parsedSection = parseInt(section);
+    if (isNaN(parsedSection)) {
+      setMusicSrc(null);
       return;
     }
 
-    setMusicSrc(screenPreloadedFiles.music);
-  }, [screenPreloadedFiles]);
+    if (!(parsedSection in chapterMusicCache)) {
+      setMusicSrc(null);
+      return;
+    }
 
-  /* Effect which stores the music of previous section into ref variable */
-  useEffect(() => {
-    return () => {
-      previousMusicSrc.current = musicSrc;
-    };
-  }, [musicSrc]);
+    const musicBlobSrc = chapterMusicCache[parsedSection];
+    setMusicSrc(musicBlobSrc ?? null);
+  }, [section, chapterMusicCache]);
 
-  /* Effect which handles automatic playing of new music OR pausing if current screen does not support music playing */
+  /* Effect reacting on previous effect when musicSrc has changed, handles automatic playing of new musicSrc  */
   useEffect(() => {
     if (!musicRef.current) {
       return;
@@ -157,18 +160,10 @@ export const NewViewScreen = ({
 
   /* Effect which pauses the playing chapter music if current screen does not support music playing */
   useEffect(() => {
-    if (!viewScreen) {
-      return;
-    }
-
-    const isMusicDisabled =
-      ("muteChapterMusic" in viewScreen && viewScreen.muteChapterMusic) ||
-      !musicEnabled[viewScreen.type as keyof typeof musicEnabled];
-
     if (isMusicDisabled && musicRef.current) {
       musicRef.current.pause();
     }
-  }, [viewScreen]);
+  }, [isMusicDisabled]);
 
   /* Effect which handles automatic playing of current screen audio + when going to new screen.. pause and rewind old audio */
   useEffect(() => {
@@ -177,7 +172,7 @@ export const NewViewScreen = ({
     }
     // E.g not to play the audio verze vystavy on the start screen!
     const isAudioDisabled =
-      !audioEnabled[viewScreen.type as keyof typeof audioEnabled];
+      !audioEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
 
     if (isAudioDisabled) {
       return;
@@ -185,6 +180,7 @@ export const NewViewScreen = ({
 
     const audio = audioRef.current;
     if (shouldIncrement) {
+      audio.volume = expoVolumes.speechVolume.actualVolume / 100;
       audio.play().catch((_error) => noop);
     }
 
@@ -211,9 +207,10 @@ export const NewViewScreen = ({
   useEffect(() => {
     if (musicRef.current) {
       const music = musicRef.current;
-      if (shouldIncrement) {
+      if (shouldIncrement && !isMusicDisabled) {
         music.play();
-      } else {
+      }
+      if (!shouldIncrement && !isMusicDisabled) {
         music.pause();
       }
     }
@@ -226,26 +223,8 @@ export const NewViewScreen = ({
         audio.pause();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldIncrement]);
-
-  // If came back to the start screen.. or came back to the previous section.. stop playing music of the section
-  // Setting the musicSrc to null will not render the second <audio> and the musicRef.current === null
-  useEffect(() => {
-    if (section === "start" || section === "finish") {
-      setMusicSrc(null);
-      return;
-    }
-
-    const previousSectionParsed = parseInt(previousSection.current);
-    const sectionParsed = parseInt(section);
-    if (isNaN(previousSectionParsed) || isNaN(sectionParsed)) {
-      return;
-    }
-    // Moving backwards
-    if (previousSectionParsed > sectionParsed) {
-      setMusicSrc(null);
-    }
-  }, [section]);
 
   // - -
 
@@ -257,7 +236,9 @@ export const NewViewScreen = ({
       <Viewers
         isScreenLoading={isScreenLoading}
         screenPreloadedFiles={screenPreloadedFiles}
+        isMusicLoading={isMusicLoading}
         chapterMusicRef={musicRef}
+        audioRef={audioRef}
       />
     </ScreenAutoNavigator>
   );

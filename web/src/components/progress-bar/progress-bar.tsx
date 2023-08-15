@@ -13,6 +13,11 @@ import { Tooltip } from "react-tooltip";
 import { AppState } from "store/store";
 import { tickTime } from "constants/view-screen-progress";
 
+import { getCumulativeSum, getScreenPhotoIndex } from "utils/screen";
+import { screenType } from "enums/screen-type";
+
+// - - - - - - - -
+
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewProgress,
   ({ expo }: AppState) => expo.viewScreen,
@@ -30,6 +35,8 @@ type Props = {
   percentage: number;
 };
 
+// - - - - - - - -
+
 export const ProgressBar = ({
   height = 10,
   color = "primary",
@@ -38,35 +45,75 @@ export const ProgressBar = ({
   const { viewProgress, viewScreen, tooltipInfo } = useSelector(stateSelector);
   const dispatch = useDispatch();
 
+  // Ref to the progressbar container and rectangle information about this container!
+  const wholeProgBarRef = useRef<HTMLDivElement>(null);
+  const progBarRect: DOMRect | undefined =
+    wholeProgBarRef.current?.getBoundingClientRect();
+
   // progBarRect on info side panel is useRef.. on actualization when opened does not cause rerender, breaks the functioanlity of progress bar
   const [rerender, setRerender] = useState<boolean>(false);
 
+  // State which captures on every mouse move, how far in % the mouse is from the left begining of the progressbar
   const [percentageOnMouseMove, setPercentageOnMouseMove] = useState<
     number | null
   >(null);
 
-  const wholeProgBarRef = useRef<HTMLDivElement>(null);
+  // - - - - -
 
-  const progBarRect: DOMRect | undefined =
-    wholeProgBarRef.current?.getBoundingClientRect();
+  // Required only for SLIDESHOW type of viewScreen
+  const photosPercentages = useMemo(() => {
+    if (
+      !viewScreen ||
+      viewScreen.type !== screenType.SLIDESHOW ||
+      !viewScreen.images ||
+      viewScreen.images.length === 0 ||
+      !viewScreen.time
+    ) {
+      return null;
+    }
 
-  // 1.)
+    if (!viewScreen.timePhotosManual) {
+      const evenlyDividedTimes = Array(viewScreen.images.length).fill(
+        100 / viewScreen.images.length
+      ) as number[];
+
+      const cumulativePercentages = getCumulativeSum(evenlyDividedTimes);
+      return cumulativePercentages;
+    }
+
+    // timePhotosManual
+    const photosTimes = viewScreen.images.reduce<number[]>(
+      (acc, currItem) => [...acc, currItem.time ? currItem.time * 1000 : 5000],
+      []
+    );
+
+    const totalTime = photosTimes.reduce((acc, currItem) => acc + currItem, 0);
+
+    const cumulative = getCumulativeSum(photosTimes);
+
+    const photosPercentages = cumulative.map(
+      (currItem) => (currItem / totalTime) * 100
+    );
+
+    return photosPercentages;
+  }, [viewScreen]);
+
+  // 1. Handler called when clicked on the progressbar, but only on SLIDESHOW and VIDEO screens
   const onProgressBarClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (!progBarRect) {
-      return;
-    }
-    if (!viewScreen) {
+    if (!viewScreen || !progBarRect) {
       return;
     }
 
-    if (viewScreen.type !== "VIDEO" && viewScreen.type !== "PHOTOGALERY") {
+    if (
+      viewScreen.type !== "VIDEO" &&
+      viewScreen.type !== screenType.SLIDESHOW
+    ) {
       return;
     }
 
     const percent = ((e.clientX - progBarRect.left) / progBarRect.width) * 100;
-
     if (percent > 100 || percent < 0) {
       setRerender(!rerender);
     }
@@ -78,7 +125,7 @@ export const ProgressBar = ({
     dispatch(setViewProgress({ rewindToTime: timeElapsedRounded }));
   };
 
-  // 2.)
+  // 2. Handler called everytime the mouse was moved over the progressbar (in order to display tooltips)
   const onMouseMoveHandler = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -92,11 +139,12 @@ export const ProgressBar = ({
     setPercentageOnMouseMove(percent);
   };
 
-  // 3.)
+  // 3. Handler called when the mouse leaved the progressbar (in order to not display tooltips anymore)
   const onMouseLeaveHandler = () => {
     setPercentageOnMouseMove(null);
   };
 
+  //
   const clampedPercentage = useMemo(
     () => clamp(percentage, 0, 100),
     [percentage]
@@ -128,18 +176,16 @@ export const ProgressBar = ({
         )}
       />
 
-      {viewScreen?.type === "VIDEO" && (
+      {viewScreen?.type === screenType.VIDEO && (
         <Tooltip
           id="progress-bar-tooltip"
           float
           variant="light"
           render={() => {
-            if (!tooltipInfo.videoDuration) {
+            if (!tooltipInfo.videoDuration || !percentageOnMouseMove) {
               return <></>;
             }
-            if (!percentageOnMouseMove) {
-              return <></>;
-            }
+
             const durationValueSeconds =
               (tooltipInfo.videoDuration / 100) * percentageOnMouseMove;
             const durationValueSecondsRounded: number = parseFloat(
@@ -159,29 +205,34 @@ export const ProgressBar = ({
         />
       )}
 
-      {viewScreen?.type === "PHOTOGALERY" && (
+      {viewScreen?.type === screenType.SLIDESHOW && (
         <Tooltip
           id="progress-bar-tooltip"
           float
           variant="light"
           render={() => {
             if (
+              !tooltipInfo.imageUrlsFromSlideshow ||
               !percentageOnMouseMove ||
-              !tooltipInfo.imageUrlsFromPhotogallery
+              !photosPercentages
             ) {
               return <></>;
             }
-            const images = tooltipInfo.imageUrlsFromPhotogallery;
-            const onePart = 100 / images.length;
+            const images = tooltipInfo.imageUrlsFromSlideshow;
 
-            const currentImageIndex = Math.floor(
-              percentageOnMouseMove / onePart
+            const photoIndex = getScreenPhotoIndex(
+              percentageOnMouseMove,
+              photosPercentages
             );
+
+            if (photoIndex === null) {
+              return <></>;
+            }
 
             return (
               <img
                 className="w-44 h-24 object-cover"
-                src={images[currentImageIndex]}
+                src={images[photoIndex]}
                 alt="Nahled obrazku zo slideshow"
               />
             );

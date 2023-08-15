@@ -1,45 +1,11 @@
 import { map, filter, find, concat } from "lodash";
 import { Reducer } from "redux";
-
-import {
-  Exposition,
-  FinishScreen,
-  Folder,
-  Screen,
-  StartScreen,
-  Volumes,
-} from "models";
-
 import * as c from "../actions/constants";
 
-export type ViewExpo = {
-  state: string;
-  author: {
-    id: string;
-    firstName: string;
-    surname: string;
-    username: string;
-    institution: string;
-    email: string;
-  };
-  title: string;
-  url: string;
-  structure: {
-    start: StartScreen;
-    finish: FinishScreen;
-    screens: Screen[][];
-    files: Folder[];
-  };
-  filesTotal: number;
-  audioFilesTotal: number;
-  videoFilesTotal: number;
-  filesLoaded: number;
-  audioFilesLoaded: number;
-  videoFilesLoaded: number;
-};
+import { ExpositionItem, Screen, Volumes, ViewExpo } from "models";
 
 export type ExpoReducerState = {
-  expositions: { items: Exposition[]; count: number };
+  expositions: { items: ExpositionItem[]; count: number };
   activeExpo: Record<string, any>;
   activeScreen: Record<string, any>;
   activeScreenEdited: boolean;
@@ -61,26 +27,20 @@ export type ExpoReducerState = {
     rewindToTime: number | null;
     shouldIncrement: boolean;
     shouldRedirect: boolean;
-    showProgressBar: boolean;
     screenFilesLoading: boolean;
   };
   viewScreen: Screen | null;
-  viewInteractive: boolean;
-  viewInteractiveData: any;
-  viewChapterMusic: any;
-  viewScreenAudio: any;
-  preloadedFiles: any;
-  errorFiles: any[];
-  errorTimeoutFiles: any[];
   expoEditor: {
     startAuthorsFilter: { sort: string; order: string; search: string };
   };
-  soundIsTurnedOff: boolean;
   expoVolumes: { speechVolume: Volumes; musicVolume: Volumes }; // volumes are numbers in range <0, 100>
   tooltipInfo: {
     tooltipContent: string | null;
     videoDuration: number | null;
-    imageUrlsFromPhotogallery: string[] | null;
+    imageUrlsFromSlideshow: string[] | null;
+  };
+  screensInfo: {
+    isPhotogalleryLightboxOpened: boolean;
   };
 };
 
@@ -107,21 +67,12 @@ const initialState = {
     rewindToTime: null,
     shouldIncrement: false,
     shouldRedirect: false,
-    showProgressBar: false,
     screenFilesLoading: false,
   },
   viewScreen: null,
-  viewInteractive: false,
-  viewInteractiveData: null,
-  viewChapterMusic: null,
-  viewScreenAudio: null,
-  preloadedFiles: [],
-  errorFiles: [],
-  errorTimeoutFiles: [],
   expoEditor: {
     startAuthorsFilter: { sort: "TITLE", order: "ASC", search: "" },
   },
-  soundIsTurnedOff: false,
   expoVolumes: {
     speechVolume: { previousVolume: 0, actualVolume: 100 },
     musicVolume: { previousVolume: 0, actualVolume: 20 },
@@ -129,7 +80,10 @@ const initialState = {
   tooltipInfo: {
     tooltipContent: null,
     videoDuration: null,
-    imageUrlsFromPhotogallery: null,
+    imageUrlsFromSlideshow: null,
+  },
+  screensInfo: {
+    isPhotogalleryLightboxOpened: false,
   },
 };
 
@@ -388,76 +342,6 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
-    case c.EXPO_VIEWER_FILES_TOTAL:
-      return {
-        ...state,
-        viewExpo: {
-          ...state.viewExpo,
-          filesTotal: state.viewExpo?.filesTotal
-            ? state.viewExpo.filesTotal + 1
-            : 1,
-        },
-      };
-    case c.EXPO_VIEWER_FILE_LOADED:
-      return {
-        ...state,
-        viewExpo: {
-          ...state.viewExpo,
-          filesLoaded: state.viewExpo?.filesLoaded
-            ? state.viewExpo.filesLoaded + 1
-            : 1,
-        },
-      };
-    case c.EXPO_VIEWER_AUDIO_FILES_TOTAL:
-      return {
-        ...state,
-        viewExpo: {
-          ...state.viewExpo,
-          audioFilesTotal: state.viewExpo?.audioFilesTotal
-            ? state.viewExpo.audioFilesTotal + 1
-            : 1,
-        },
-      };
-    case c.EXPO_VIEWER_AUDIO_FILE_LOADED:
-      return {
-        ...state,
-        viewExpo: {
-          ...state.viewExpo,
-          audioFilesLoaded: state.viewExpo?.audioFilesLoaded
-            ? state.viewExpo.audioFilesLoaded + 1
-            : 1,
-        },
-      };
-    case c.EXPO_VIEWER_VIDEO_FILES_TOTAL:
-      return {
-        ...state,
-        viewExpo: {
-          ...state.viewExpo,
-          videoFilesTotal: state.viewExpo?.videoFilesTotal
-            ? state.viewExpo.videoFilesTotal + 1
-            : 1,
-        },
-      };
-    case c.EXPO_VIEWER_VIDEO_FILE_LOADED:
-      return {
-        ...state,
-        viewExpo: {
-          ...state.viewExpo,
-          videoFilesLoaded: state.viewExpo?.videoFilesLoaded
-            ? state.viewExpo.videoFilesLoaded + 1
-            : 1,
-        },
-      };
-    case c.EXPO_VIEWER_FILE_ERROR_ADD:
-      return {
-        ...state,
-        errorFiles: [...state.errorFiles, action.payload.name],
-      };
-    case c.EXPO_VIEWER_FILE_ERROR_TIMEOUT_ADD:
-      return {
-        ...state,
-        errorTimeoutFiles: [...state.errorTimeoutFiles, action.payload.name],
-      };
     case c.EXPO_EDITOR_UPDATE:
       return {
         ...state,
@@ -488,6 +372,15 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
         ...state,
         expoVolumes: {
           ...state.expoVolumes,
+          ...action.payload,
+        },
+      };
+    }
+    case c.EXPO_SCREENS_INFO_UPDATE: {
+      return {
+        ...state,
+        screensInfo: {
+          ...state.screensInfo,
           ...action.payload,
         },
       };

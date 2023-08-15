@@ -3,16 +3,21 @@ import { useDispatch } from "react-redux";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
+import TagsList from "components/tags-list/TagsList";
 import { AppDispatch } from "store/store";
 import { setDialog } from "actions/dialog-actions";
+
+import { ViewExpo } from "models";
 
 import { DialogProps, DialogType } from "../dialog-types";
 //import Dialog from "../dialog-wrap";
 import Dialog from "../dialog-wrap-typed";
 import { useTranslation } from "react-i18next";
 
+// - - - - - - - - -
+
 export type ExpoInfoDialogDataProps = {
-  viewExpo: any;
+  viewExpo: ViewExpo;
   viewScreen: any;
 };
 
@@ -62,6 +67,8 @@ export const ExpoInfoDialog = ({
     [dispatch, viewScreen?.documents]
   );
 
+  const tags = useMemo(() => viewExpo?.tags, [viewExpo?.tags]);
+
   return (
     <Dialog
       big
@@ -72,9 +79,11 @@ export const ExpoInfoDialog = ({
       <div className="pb-5 border-b border-b-black border-opacity-10">
         {expoPerexLines}
       </div>
-      <div className="mt-5 flex justify-between items-center">
-        {/* TODO: show tags when supported */}
-        <div />
+      <div className="mt-5 flex justify-between items-center gap-6">
+        {/* Tags */}
+        {tags && <TagsList tags={tags} />}
+
+        {/* Dialog opening buttons */}
         <div className="flex items-center gap-2">
           <Button color="primary" onClick={openChaptersDialog}>
             <Icon color="white" name="layers" />

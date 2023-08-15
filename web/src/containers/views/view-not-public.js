@@ -1,9 +1,8 @@
 const ViewNotPublic = () => (
   <div className="viewer-screen">
-    <p className="title-centered">
+    <p className="title-centered" style={{ color: "black" }}>
       <span className="smile">:(</span>
-      Výstava není ve stavu &quot;Zveřejněná&quot; nebo zadaná URL adresa
-      výstavy neexistuje.
+      Zadaná URL adresa výstavy neexistuje.
     </p>
   </div>
 );

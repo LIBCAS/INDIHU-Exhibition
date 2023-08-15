@@ -1,5 +1,6 @@
 type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
+/* https://tailwindcss.com/docs/responsive-design */
 const getBreakpointSize = (breakpoint: Breakpoint) =>
   breakpoint === "xs"
     ? 0

@@ -31,6 +31,8 @@ const Image = ({
   infopoints,
   sequences,
   images,
+  image1Infopoints,
+  image2Infopoints,
   mouseDown,
   mouseXPos,
   mouseYPos,
@@ -71,7 +73,11 @@ const Image = ({
           {/* 2a) Card with image */}
           {image && (
             <div
-              id="screen-image-infopoints"
+              id={
+                image2Infopoints
+                  ? `screen-image-infopoints-second`
+                  : "screen-image-infopoints"
+              }
               className="image-infopoints-container"
               draggable="false"
               style={{ cursor: "move", position: "absolute", ...dragStyle }}
@@ -93,7 +99,14 @@ const Image = ({
                     top: `${dragProps[1] - (dragProps[3] - e.pageY)}px`,
                   });
                 }
-                if ((infopoints || sequences || images) && mouseDown)
+                if (
+                  (infopoints ||
+                    sequences ||
+                    images ||
+                    image1Infopoints ||
+                    image2Infopoints) &&
+                  mouseDown
+                )
                   mouseActualize({
                     mouseDown: true,
                     mouseXPos: e.pageX,
@@ -103,9 +116,19 @@ const Image = ({
               onMouseUp={(e) => {
                 setDragProps([0, 0, null, null, false]);
 
-                if (infopoints || sequences || images) {
+                if (
+                  infopoints ||
+                  sequences ||
+                  images ||
+                  image1Infopoints ||
+                  image2Infopoints
+                ) {
                   const boundary = document
-                    .getElementById("screen-image-infopoints")
+                    .getElementById(
+                      image2Infopoints
+                        ? `screen-image-infopoints-second`
+                        : "screen-image-infopoints"
+                    )
                     .getBoundingClientRect();
                   updateScreenData(
                     infopoints || sequences
@@ -125,6 +148,31 @@ const Image = ({
                                   move: false,
                                 }
                               : item
+                          )
+                        )
+                      : image1Infopoints || image2Infopoints
+                      ? set(
+                          {},
+                          image1Infopoints
+                            ? "image1Infopoints"
+                            : "image2Infopoints",
+                          map(
+                            image1Infopoints
+                              ? image1Infopoints
+                              : image2Infopoints,
+                            (infopoint) =>
+                              infopoint.move
+                                ? {
+                                    ...infopoint,
+                                    left:
+                                      (e.pageX - boundary.left + correlationX) /
+                                      zoom,
+                                    top:
+                                      (e.pageY - boundary.top + correlationY) /
+                                      zoom,
+                                    move: false,
+                                  }
+                                : infopoint
                           )
                         )
                       : {
@@ -173,7 +221,9 @@ const Image = ({
               ) : (
                 <img
                   src={`/api/files/${image.fileId}`}
-                  onLoad={({ target }) => initVariables(target)}
+                  onLoad={({ target }) => {
+                    initVariables(target);
+                  }}
                   alt="img"
                   draggable="false"
                 />
@@ -182,15 +232,25 @@ const Image = ({
               {/* INFOPOINTS */}
               {(infopoints ||
                 sequences ||
+                image1Infopoints ||
+                image2Infopoints ||
                 (images &&
                   !isEmpty(find(images, (img) => img.active)) &&
                   find(images, (img) => img.active).infopoints)) &&
-                document.getElementById("screen-image-infopoints") &&
+                document.getElementById(
+                  image2Infopoints
+                    ? `screen-image-infopoints-second`
+                    : "screen-image-infopoints"
+                ) &&
                 map(
                   infopoints
                     ? infopoints
                     : sequences
                     ? sequences
+                    : image1Infopoints
+                    ? image1Infopoints
+                    : image2Infopoints
+                    ? image2Infopoints
                     : find(images, (img) => img.active).infopoints,
                   (item, i) =>
                     item.move ? (
@@ -202,14 +262,22 @@ const Image = ({
                           left:
                             mouseXPos -
                             document
-                              .getElementById("screen-image-infopoints")
+                              .getElementById(
+                                image2Infopoints
+                                  ? `screen-image-infopoints-second`
+                                  : "screen-image-infopoints"
+                              )
                               .getBoundingClientRect().left +
                             correlationX -
                             infopointWidth / 2,
                           top:
                             mouseYPos -
                             document
-                              .getElementById("screen-image-infopoints")
+                              .getElementById(
+                                image2Infopoints
+                                  ? `screen-image-infopoints-second`
+                                  : "screen-image-infopoints"
+                              )
                               .getBoundingClientRect().top +
                             correlationY -
                             infopointWidth / 2,
@@ -218,7 +286,11 @@ const Image = ({
                     ) : (
                       <div key={i}>
                         <InfopointIcon
-                          id={`screen-image-infopoint-${i}`}
+                          id={
+                            image2Infopoints
+                              ? `screen-image-infopoint-1-${i}`
+                              : `screen-image-infopoint-${i}`
+                          }
                           className="infopoint-icon"
                           style={{
                             position: "absolute",
@@ -229,10 +301,14 @@ const Image = ({
                               "infopoint-pulse 2s infinite",
                           }}
                           onMouseDown={(e) => {
-                            //ReactTooltip.hide();
                             const boundary = document
-                              .getElementById(`screen-image-infopoint-${i}`)
+                              .getElementById(
+                                image2Infopoints
+                                  ? `screen-image-infopoint-1-${i}`
+                                  : `screen-image-infopoint-${i}`
+                              )
                               .getBoundingClientRect();
+
                             mouseActualize({
                               mouseDown: true,
                               mouseXPos: e.pageX,
@@ -251,6 +327,22 @@ const Image = ({
                                       infopoints ? infopoints : sequences,
                                       (infopoint, idx) =>
                                         i === idx
+                                          ? { ...infopoint, move: true }
+                                          : infopoint
+                                    )
+                                  )
+                                : image1Infopoints || image2Infopoints
+                                ? set(
+                                    {},
+                                    image1Infopoints
+                                      ? "image1Infopoints"
+                                      : "image2Infopoints",
+                                    map(
+                                      image1Infopoints
+                                        ? image1Infopoints
+                                        : image2Infopoints,
+                                      (infopoint, infopointIndex) =>
+                                        infopointIndex === i
                                           ? { ...infopoint, move: true }
                                           : infopoint
                                     )
@@ -279,11 +371,31 @@ const Image = ({
                                   }
                             );
                           }}
-                          data-tooltip-id="photogallery-image-tooltip"
+                          data-tooltip-id={
+                            infopoints
+                              ? "infopoints-tooltip"
+                              : sequences
+                              ? "sequences-tooltip"
+                              : image1Infopoints
+                              ? "image1Infopoints-tooltip"
+                              : image2Infopoints
+                              ? "image2Infopoints-tooltip"
+                              : "slideshow-tooltip"
+                          }
                           data-tooltip-content={item.text}
                         />
                         <ReactTooltip
-                          id="photogallery-image-tooltip"
+                          id={
+                            infopoints
+                              ? "infopoints-tooltip"
+                              : sequences
+                              ? "sequences-tooltip"
+                              : image1Infopoints
+                              ? "image1Infopoints-tooltip"
+                              : image2Infopoints
+                              ? "image2Infopoints-tooltip"
+                              : "slideshow-tooltip"
+                          }
                           className="infopoint-tooltip"
                           variant="dark"
                           float={false}
@@ -358,9 +470,7 @@ const Image = ({
         )}
       </div>
 
-      <HelpIcon
-        {...{ label: helpIconLabel || helpIconText.EDITOR_IMAGE, id }}
-      />
+      <HelpIcon label={helpIconLabel || helpIconText.EDITOR_IMAGE} id={id} />
     </div>
   );
 };
@@ -428,16 +538,23 @@ export default compose(
       (img) => {
         const cardWidth = 450;
         const cardHeight = 350;
+
         const imgWidth = img.width;
         const imgHeight = img.height;
 
         setImageWidth(imgWidth);
         setImageHeight(imgHeight);
-        if (onLoad) onLoad(imgWidth, imgHeight);
+
+        if (onLoad) {
+          onLoad(imgWidth, imgHeight);
+        }
 
         let zoom;
-        if (imgWidth > imgHeight) zoom = cardWidth / imgWidth;
-        else zoom = cardHeight / imgHeight;
+        if (imgWidth > imgHeight) {
+          zoom = cardWidth / imgWidth;
+        } else {
+          zoom = cardHeight / imgHeight;
+        }
 
         setDefaultZoom(zoom);
         zoomActualize(zoom);

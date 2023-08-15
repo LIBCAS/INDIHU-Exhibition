@@ -1,7 +1,7 @@
 import { StartScreen } from "models/screen";
 
 import { ViewFinishInfo } from "containers/views/view-finish/view-finish-info";
-import { ViewExpo } from "reducers/expo-reducer";
+import { ViewExpo } from "models";
 
 import { DialogProps, DialogType } from "../dialog-types";
 import Dialog from "../dialog-wrap-typed";

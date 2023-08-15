@@ -7,7 +7,8 @@ export const screenType = {
   TEXT: "TEXT",
   PARALLAX: "PARALLAX",
   IMAGE_ZOOM: "IMAGE_ZOOM",
-  PHOTOGALERY: "PHOTOGALERY",
+  SLIDESHOW: "PHOTOGALERY", // this needs to remain for backward compatibility (.structure stored in DB)
+  PHOTOGALLERY_NEW: "PHOTOGALLERY_NEW",
   IMAGE_CHANGE: "IMAGE_CHANGE",
   EXTERNAL: "EXTERNAL",
   GAME_FIND: "GAME_FIND",
@@ -18,24 +19,28 @@ export const screenType = {
   GAME_OPTIONS: "GAME_OPTIONS",
 } as const;
 
-/** stránky s interaktivním módem */
-export const interactiveScreenTypes = {
-  INTRO: true,
-  IMAGE: true,
-  VIDEO: true,
-  TEXT: true,
-  PARALLAX: true,
-  IMAGE_ZOOM: true,
-  PHOTOGALERY: true,
-  IMAGE_CHANGE: true,
-  EXTERNAL: true,
-  GAME_FIND: false,
-  GAME_DRAW: false,
-  GAME_WIPE: false,
-  GAME_SIZING: false,
-  GAME_MOVE: false,
-  GAME_OPTIONS: false,
-};
+/** required since there is need for mapping in case photogalery back to slideshow */
+export const mapScreenTypeValuesToKeys = {
+  START: "START",
+  FINISH: "FINISH",
+  INTRO: "INTRO",
+  IMAGE: "IMAGE",
+  VIDEO: "VIDEO",
+  TEXT: "TEXT",
+  PARALLAX: "PARALLAX",
+  IMAGE_ZOOM: "IMAGE_ZOOM",
+  PHOTOGALERY: "SLIDESHOW", // backward compatibility
+  SLIDESHOW: "SLIDESHOW",
+  PHOTOGALLERY_NEW: "PHOTOGALLERY_NEW",
+  IMAGE_CHANGE: "IMAGE_CHANGE",
+  EXTERNAL: "EXTERNAL",
+  GAME_FIND: "GAME_FIND",
+  GAME_DRAW: "GAME_DRAW",
+  GAME_WIPE: "GAME_WIPE",
+  GAME_SIZING: "GAME_SIZING",
+  GAME_MOVE: "GAME_MOVE",
+  GAME_OPTIONS: "GAME_OPTIONS",
+} as const;
 
 /** vyhladavanie v nazvoch obrazoviek */
 export const screenTypeText = {
@@ -47,7 +52,8 @@ export const screenTypeText = {
   TEXT: "Obrazovka s textem",
   PARALLAX: "Parallax",
   IMAGE_ZOOM: "Animace přiblížení",
-  PHOTOGALERY: "Slideshow",
+  SLIDESHOW: "Slideshow",
+  PHOTOGALLERY_NEW: "Fotogalerie",
   IMAGE_CHANGE: "Foto před a po",
   EXTERNAL: "Obrazovka s externím obsahem",
   GAME_FIND: "Najdi na obrázku",
@@ -67,7 +73,8 @@ export const screenTypeIcon = {
   TEXT: "fa-align-right",
   PARALLAX: "fa-picture-o",
   IMAGE_ZOOM: "fa-picture-o",
-  PHOTOGALERY: "fa-picture-o",
+  SLIDESHOW: "fa-picture-o",
+  PHOTOGALLERY_NEW: "fa-picture-o",
   IMAGE_CHANGE: "fa-picture-o",
   EXTERNAL: "fa-external-link",
   GAME_FIND: "fa-trophy",
@@ -95,7 +102,8 @@ export const screenCategories = [
     categoryId: "INTERACTIVE_SCREEN",
     categoryName: "Interaktivní obrazovka",
     screens: [
-      { id: "PHOTOGALERY", name: "Slideshow" },
+      { id: "SLIDESHOW", name: "Slideshow" },
+      { id: "PHOTOGALLERY_NEW", name: "Fotogalerie" },
       { id: "IMAGE_CHANGE", name: "Foto před a po" },
       { id: "EXTERNAL", name: "Obrazovka s externím obsahem" },
     ],
@@ -124,7 +132,8 @@ export const screenUrl = {
   TEXT: "text",
   PARALLAX: "parallax",
   IMAGE_ZOOM: "image-zoom",
-  PHOTOGALERY: "photogalery",
+  SLIDESHOW: "slideshow",
+  PHOTOGALLERY_NEW: "photogallery",
   IMAGE_CHANGE: "image-change",
   EXTERNAL: "external",
   GAME_FIND: "game-find",
@@ -137,13 +146,16 @@ export const screenUrl = {
 
 /** timeout nastaveny automaticky v ExpoViewer.js */
 export const automaticRouting = {
+  START: false,
+  FINISH: false,
   INTRO: true,
   IMAGE: true,
   VIDEO: true,
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
-  PHOTOGALERY: true,
+  SLIDESHOW: true,
+  PHOTOGALLERY_NEW: true,
   IMAGE_CHANGE: true,
   EXTERNAL: true,
   GAME_FIND: true,
@@ -156,13 +168,16 @@ export const automaticRouting = {
 
 // Screen is not shown in mobile device if false
 export const mobileDeviceRouting = {
+  START: false,
+  FINISH: false,
   INTRO: true,
   IMAGE: true,
   VIDEO: true,
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
-  PHOTOGALERY: true,
+  SLIDESHOW: true,
+  PHOTOGALLERY_NEW: true,
   IMAGE_CHANGE: true,
   EXTERNAL: true,
   GAME_FIND: false,
@@ -183,7 +198,8 @@ export const audioEnabled = {
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
-  PHOTOGALERY: true,
+  SLIDESHOW: true,
+  PHOTOGALLERY_NEW: true,
   IMAGE_CHANGE: true,
   EXTERNAL: true,
   GAME_FIND: false,
@@ -204,7 +220,8 @@ export const musicEnabled = {
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
-  PHOTOGALERY: true,
+  SLIDESHOW: true,
+  PHOTOGALLERY_NEW: true,
   IMAGE_CHANGE: true,
   EXTERNAL: true,
   GAME_FIND: true,
@@ -213,4 +230,26 @@ export const musicEnabled = {
   GAME_SIZING: true,
   GAME_MOVE: true,
   GAME_OPTIONS: true,
+};
+
+/* whether the current screen supports glass magnifier */
+export const glassMagnifierEnabled = {
+  START: false,
+  FINISH: false,
+  INTRO: true,
+  IMAGE: false,
+  VIDEO: false,
+  TEXT: false,
+  PARALLAX: false,
+  IMAGE_ZOOM: false,
+  SLIDESHOW: false,
+  PHOTOGALLERY_NEW: false,
+  IMAGE_CHANGE: false,
+  EXTERNAL: false,
+  GAME_FIND: false,
+  GAME_DRAW: false,
+  GAME_WIPE: false,
+  GAME_SIZING: false,
+  GAME_MOVE: false,
+  GAME_OPTIONS: false,
 };

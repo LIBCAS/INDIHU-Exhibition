@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { createSelector } from "reselect";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocalStorage } from "hooks/use-local-storage";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -15,20 +16,21 @@ import { ViewFinishButton } from "./view-finish-button"; // squared button with 
 
 // Actions
 import { setDialog } from "actions/dialog-actions";
-import { setChapterMusic } from "actions/expoActions/viewer-actions";
 
 // Models
 import { AppDispatch, AppState } from "store/store";
-import { Screen, ScreenWithOnlyTypeTitleDocuments } from "models";
+import { Screen, ScreenWithOnlyTypeTitleDocuments, ExpoRates } from "models";
 import { ScreenProps } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
 
-// - - - - - -
+// - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
   (viewExpo) => ({ viewExpo })
 );
+
+// - -
 
 export const ViewFinish = ({
   screenPreloadedFiles,
@@ -37,8 +39,13 @@ export const ViewFinish = ({
   const { viewExpo } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
+  const [expoRates, setExpoRates] = useLocalStorage<ExpoRates>(
+    `isExpoRated`,
+    {}
+  );
+
   const { push } = useHistory();
-  const isSM = useMediaQuery(breakpoints.down("md"));
+  const isSmall = useMediaQuery(breakpoints.down("md"));
   const { t } = useTranslation("exhibition");
 
   const { url } = viewExpo ?? {};
@@ -89,7 +96,6 @@ export const ViewFinish = ({
     }
     chapterMusicRef.current.pause();
     chapterMusicRef.current.currentTime = 0;
-    dispatch(setChapterMusic(null));
   }, [dispatch, chapterMusicRef]);
 
   const viewStart = useMemo(
@@ -97,10 +103,20 @@ export const ViewFinish = ({
     [viewExpo?.structure.start]
   );
 
-  // On mount, when viewFinish screen is loaded, immediately open rating dialog
+  // - -
+
+  // On mount, when viewFinish screen is loaded, open Rating dialog if not previously rated (saved into Local storage)
   useEffect(() => {
-    dispatch(setDialog(DialogType.RatingDialog, {}));
-  }, [dispatch]);
+    if (!!viewExpo?.id && !expoRates[viewExpo.id]) {
+      dispatch(
+        setDialog(DialogType.RatingDialog, {
+          setExpoRates: setExpoRates,
+          expoId: viewExpo.id,
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, viewExpo, expoRates]);
 
   // - - - - - - - - -
 
@@ -150,7 +166,7 @@ export const ViewFinish = ({
   return (
     <>
       {/* Image on small screen */}
-      {isSM && image && (
+      {isSmall && image && (
         <img
           src={image}
           className="w-full h-full absolute object-contain"
@@ -161,7 +177,7 @@ export const ViewFinish = ({
       <div className="w-full h-full flex absolute">
         {/* 1) Image and four icons inside (last icon is only on small screens) */}
         <div className="h-full grow relative">
-          {!isSM && image && (
+          {!isSmall && image && (
             <img
               src={image}
               className="w-full h-full absolute object-contain"
@@ -187,7 +203,7 @@ export const ViewFinish = ({
                 icon={<Icon color="white" name="replay" />}
                 onClick={replay}
               />
-              {isSM && (
+              {isSmall && (
                 <ViewFinishButton
                   label={t("info")}
                   icon={<Icon color="white" name="info" />}

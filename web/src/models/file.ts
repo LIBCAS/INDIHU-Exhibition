@@ -9,6 +9,11 @@ export type File = {
   fileName?: string; // for links
   duration?: number; // for video and audio files
   documentFileType?: "worksheet" | "exhibitionFile";
+  contentType?: string;
+  width?: number;
+  height?: number;
+  content?: any;
+  show?: boolean;
 };
 
 export type Folder = {

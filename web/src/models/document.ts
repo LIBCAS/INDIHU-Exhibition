@@ -1,9 +1,15 @@
 import { File } from "models/file";
 
-type ExpoDocument = {
+type EmptyLinkDocument = {
   fileName: string;
-  url: string;
-  urlType: string;
 };
 
-export type Document = ExpoDocument | File;
+type UrlDocument = {
+  fileName: string;
+  url: string;
+  urlType: "audio/*" | "image/*" | "video/*" | "application/pdf" | "WEB";
+};
+
+type FileDocument = File;
+
+export type Document = EmptyLinkDocument | UrlDocument | FileDocument;

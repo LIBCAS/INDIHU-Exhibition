@@ -146,9 +146,9 @@ const text = {
 ##### Obrazovka fotogalerie
 
 ```js
-const photogalery = {
+const slideshow = {
   id: "string",
-  type: "PHOTOGALERY",
+  type: "PHOTOGALERY",  // old backward compatibility
   title: "screen title",
   text: "screen text",
   images: [

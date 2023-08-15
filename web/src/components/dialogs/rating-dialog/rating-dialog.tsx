@@ -5,6 +5,7 @@ import {
   ChangeEvent,
   useMemo,
 } from "react";
+import { useDispatch } from "react-redux";
 
 import Dialog from "../dialog-wrap-typed";
 import { DialogType, DialogProps } from "../dialog-types";
@@ -14,15 +15,32 @@ import { Rating, FormControlLabel, Checkbox, TextField } from "@mui/material";
 import { Icon } from "components/icon/icon";
 import SquareIcon from "@mui/icons-material/Square";
 
+// Models
+import { AppDispatch } from "store/store";
+import { ExpoRates } from "models";
+
 // Utils
 import cx from "classnames";
+import { submitRate } from "./submit-rate";
+import { setDialog } from "actions/dialog-actions";
 
 // - - - - - - - -
 
 // Type meaning of "empty object"
-export type RatingDialogDataProps = Record<string, never>;
+export type RatingDialogDataProps = {
+  setExpoRates: (
+    value: ExpoRates | ((prevValue: ExpoRates) => ExpoRates)
+  ) => void;
+  expoId: string;
+};
 
-export const RatingDialog = (_props: DialogProps<DialogType.RatingDialog>) => {
+export const RatingDialog = ({
+  dialogData,
+  closeDialog,
+}: DialogProps<DialogType.RatingDialog>) => {
+  const { setExpoRates, expoId } = dialogData ?? {};
+  const dispatch = useDispatch<AppDispatch>();
+
   const [ratingValue, setRatingValue] = useState<number | null>(null);
   const [textValue, setTextValue] = useState<string>("");
   const [isTopicChecked, setIsTopicChecked] = useState<boolean>(false);
@@ -39,9 +57,13 @@ export const RatingDialog = (_props: DialogProps<DialogType.RatingDialog>) => {
     return counter;
   }, [isGameChecked, isMediaChecked, isTextChecked, isTopicChecked]);
 
-  const onSubmit = () => {
-    const formData = {
-      rating: ratingValue ?? undefined,
+  const onSubmit = async () => {
+    if (!expoId || !ratingValue) {
+      return;
+    }
+
+    const rateFormData = {
+      rating: ratingValue,
       text: textValue,
       preferences: {
         topic: isTopicChecked,
@@ -50,7 +72,25 @@ export const RatingDialog = (_props: DialogProps<DialogType.RatingDialog>) => {
         game: isGameChecked,
       },
     };
-    console.log("formData: ", formData);
+
+    // Submit
+    const isSuccess = await submitRate(rateFormData, expoId);
+    if (!isSuccess) {
+      dispatch(
+        setDialog(DialogType.InfoDialog, {
+          title: "Hodnotenie selhalo!",
+          text: "Odoslanie vásho hodnotenia zlyhalo.",
+        })
+      );
+      return;
+    }
+
+    // After successful submit, close Rating dialog
+    closeDialog();
+    // Mark this exposition as marked, do not show this rating dialog again
+    if (setExpoRates && expoId) {
+      setExpoRates((prev) => ({ ...prev, [expoId]: true }));
+    }
   };
 
   return (

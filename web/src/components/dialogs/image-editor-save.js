@@ -5,8 +5,8 @@ import { reduxForm, Field } from "redux-form";
 import { Card, Button } from "react-md";
 
 import Dialog from "./dialog-wrap";
-import TextField from "../form/text-field";
-import * as Validation from "../form/validation";
+import TextField from "../form/redux-form/text-field";
+import * as Validation from "../form/redux-form/validation";
 import { postExpoFile, addFile } from "../../actions/file-actions";
 import { blobToFile } from "../../utils";
 import { withKeyShortcuts } from "../hoc";

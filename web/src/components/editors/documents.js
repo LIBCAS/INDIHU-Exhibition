@@ -18,12 +18,12 @@ import { fileTypeText } from "../../enums/file-type";
 
 const Documents = ({
   activeScreen,
+  isStartScreen,
   setDialog,
   removeScreenDocument,
   tabFolder,
   changeSwitchState,
   swapScreenDocuments,
-  isStartScreen,
 }) => {
   return (
     <div className="container container-tabMenu">
@@ -140,7 +140,7 @@ const Documents = ({
             })}
           </div>
 
-          <HelpIcon {...{ label: helpIconText.EDITOR_DOCUMENTS }} />
+          <HelpIcon label={helpIconText.EDITOR_DOCUMENTS} />
         </div>
 
         {/* Add (+) button below the table */}

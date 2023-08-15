@@ -1,269 +1,228 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-import { animated, useTransition } from "react-spring";
-import { useCountdown } from "hooks/countdown-hook";
+import { useSpring, animated } from "react-spring";
 import useElementSize from "hooks/element-size-hook";
-import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
-import {
-  setViewProgress,
-  setTooltipInfo,
-} from "actions/expoActions/viewer-actions";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-import { getScreenTime } from "utils/screen";
-import { calculateObjectFit } from "utils/object-fit";
-import { resolvePhotogalleryAnimation } from "./view-photogallery-animation";
+// Components
+import { Grid } from "@mui/material";
+import ImageItem from "./ImageItem";
+import { Button } from "components/button/button";
+import { Icon } from "components/icon/icon";
 
+// Models
 import { AppState } from "store/store";
-import { PhotogaleryScreen } from "models";
-import { ScreenProps } from "models";
+import { AppDispatch } from "store/store";
+import { PhotogalleryScreen, ScreenProps } from "models";
 
-// - - - -
+// Utils
+import cx from "classnames";
+import { setScreensInfo } from "actions/expoActions/viewer-actions";
+import classes from "./gallery-overlay.module.scss";
+
+// - -
 
 const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewScreen as PhotogaleryScreen,
-  ({ expo }: AppState) => expo.viewProgress,
-  (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
+  ({ expo }: AppState) => expo.viewScreen as PhotogalleryScreen,
+  (viewScreen) => ({ viewScreen })
 );
 
+// - -
+
 export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
-  const { viewScreen, viewProgress } = useSelector(stateSelector);
-  const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { viewScreen } = useSelector(stateSelector);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { images = [] } = screenPreloadedFiles; // from all screenPreloadedFiles just take screenPreloadedFiles.images (all photos as blob:)
+  const { images } = screenPreloadedFiles;
 
-  const [photoIndex, setPhotoIndex] = useState(0); // order of the current photo from photogallery
-  const [containerRef, containerSize] = useElementSize(); // reference to whole screen container, its { weight, height }
-
-  const [isAnimationRunning, setIsAnimationRunning] = useState<boolean>(false); // photos transition animation
-
-  // - - -
-
-  // Orig data - width and height from the administrative, when choosing infopoints locations
-  const imageOrigData = useMemo(() => {
-    const origData = viewScreen.images?.[photoIndex]?.imageOrigData;
-    if (!origData) {
-      return { width: 0, height: 0 };
-    }
-    return origData;
-  }, [photoIndex, viewScreen.images]);
-
-  // Previously { width, height, left, top }
-  // This width and height should be the width and height of the current 'contained' image
-  const { width: imageWidth, height: imageHeight } = useMemo(
-    () =>
-      calculateObjectFit({
-        parent: containerSize,
-        child: viewScreen.images?.[photoIndex]?.imageOrigData ?? {
-          height: 0,
-          width: 0,
-        },
-      }),
-    [containerSize, photoIndex, viewScreen.images]
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null
   );
 
-  // How many pixels to skip from the top ('contained' image in the middle vertically)
-  const fromTopHeight = (containerSize.height - imageHeight) / 2;
-  const fromLeftWidth = (containerSize.width - imageWidth) / 2;
+  const [imgContainerRef, imgContainerSize] = useElementSize();
 
-  const time = useMemo(() => getScreenTime(viewScreen), [viewScreen]);
+  // -- Style of grid based on number of total photos --
+  const isLessPhotos = images ? images.length <= 8 : true;
 
-  // - - - -
+  // -- Lightbox stuff --
+  const isLightBoxOpened = useMemo(
+    () => selectedImageIndex !== null,
+    [selectedImageIndex]
+  );
 
-  const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
-    closeInfopoints,
-    SquareInfopoint,
-    TooltipInfoPoint,
-  } = useTooltipInfopoint(viewScreen);
-
-  // - - - -
-
-  const [photosTimesArr, setPhotosTimesArr] = useState<number[]>(() => {
-    return Array(images.length).fill(time / images.length);
+  const opacityAnimation = useSpring({
+    opacity: isLightBoxOpened ? 1 : 0,
   });
 
-  // One countdown for each photo in photogallery.. after finished, setIndex to next photo
-  const { reset } = useCountdown(photosTimesArr[photoIndex], {
-    paused: !viewProgress.shouldIncrement,
-    onFinish: () => {
-      setPhotoIndex((prev) => (prev + 1) % (viewScreen.images?.length ?? 1));
-      reset();
+  const openLightBox = useCallback(
+    (selectedImageIndex: number) => {
+      dispatch(setScreensInfo({ isPhotogalleryLightboxOpened: true }));
+      setSelectedImageIndex(selectedImageIndex);
     },
-  });
-
-  const type = viewScreen.animationType;
-  const animation = useMemo(() => resolvePhotogalleryAnimation(type), [type]);
-
-  const transitionProps = useMemo(
-    () => ({ ...animation, paused: !viewProgress.shouldIncrement }),
-    [animation, viewProgress.shouldIncrement]
+    [dispatch]
   );
 
-  const transition = useTransition(photoIndex, {
-    ...transitionProps,
-    onStart: () => setIsAnimationRunning(true),
-    onRest: () => setIsAnimationRunning(false),
-  });
-
-  const isBluredBackground = useMemo(
-    () =>
-      type === "FLY_IN_OUT_AND_BLUR_BACKGROUND" ||
-      type === "FADE_IN_OUT_AND_BLUR_BACKGROUND" ||
-      type === "WITHOUT_AND_BLUR_BACKGROUND",
-    [type]
-  );
-
-  // Event handler on key down press
-  const onKeyDownAction = useCallback(
-    (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeInfopoints();
-      }
-    },
-    [closeInfopoints]
-  );
-
-  // - - - -
-
-  useEffect(() => {
-    window.addEventListener("keydown", onKeyDownAction);
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDownAction);
-    };
-  }, [onKeyDownAction]);
-
-  // Act on rewindToTime change, timeline for this photogallery screen
-  useEffect(() => {
-    if (!viewScreen.images?.length || !viewProgress.rewindToTime) {
-      return;
-    }
-
-    // Initialize
-    const timeForOnePhoto: number = time / viewScreen.images?.length;
-    let imageCountPast = 0;
-    let actualImageLeftTime = 0;
-
-    // Calculate the index of current image (according to the rewindedTime) + time left for current image index
-    let timePast = viewProgress.rewindToTime;
-    while (timePast >= timeForOnePhoto) {
-      imageCountPast = imageCountPast + 1;
-      timePast = timePast - timeForOnePhoto;
-    }
-    actualImageLeftTime = timeForOnePhoto - timePast;
-
-    // Create an array for times for all image indeces
-    const arrPhotoSize = Array(viewScreen.images.length).fill(-1);
-    const photoIndexTimesArr = arrPhotoSize.map(
-      (actItem: number, arrIndex: number) => {
-        if (arrIndex < imageCountPast) {
-          return 0;
-        } else if (arrIndex == imageCountPast) {
-          return actualImageLeftTime;
-        } else {
-          return timeForOnePhoto;
-        }
-      }
-    );
-
-    setPhotoIndex(imageCountPast);
-    setPhotosTimesArr(photoIndexTimesArr);
-    dispatch(setViewProgress({ timeElapsed: viewProgress.rewindToTime }));
-
-    return () => {
-      dispatch(setViewProgress({ rewindToTime: null }));
-    };
-  }, [viewProgress.rewindToTime, dispatch, viewScreen.images?.length, time]);
-
-  // Set store.expo.tooltipInfo.imageUrlFromPhotogallery
-  useEffect(() => {
-    dispatch(setTooltipInfo({ imageUrlsFromPhotogallery: images }));
-  }, [photoIndex, images, dispatch]);
-
-  // Clear store.expo.tooltipInfo.imageUrlFromPhotogallery after clicking to the next screen
-  useEffect(() => {
-    return () => {
-      dispatch(setTooltipInfo({ imageUrlsFromPhotogallery: null }));
-    };
+  const closeLightBox = useCallback(() => {
+    dispatch(setScreensInfo({ isPhotogalleryLightboxOpened: false }));
+    setSelectedImageIndex(null);
   }, [dispatch]);
 
+  const prevPhoto = useCallback(() => {
+    if (selectedImageIndex === 0 || selectedImageIndex === null) {
+      return;
+    }
+    setSelectedImageIndex((prev) => (prev !== null ? prev - 1 : prev));
+  }, [selectedImageIndex]);
+
+  const nextPhoto = useCallback(() => {
+    if (
+      !images ||
+      selectedImageIndex === images.length - 1 ||
+      selectedImageIndex === null
+    ) {
+      return;
+    }
+    setSelectedImageIndex((prev) => (prev !== null ? prev + 1 : prev));
+  }, [images, selectedImageIndex]);
+
+  // -- Key Press handler --
+  const onKeydownAction = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isLightBoxOpened) {
+        closeLightBox();
+      }
+      if (event.key === "ArrowRight" && isLightBoxOpened) {
+        nextPhoto();
+      }
+      if (event.key === "ArrowLeft" && isLightBoxOpened) {
+        prevPhoto();
+      }
+    },
+    [closeLightBox, isLightBoxOpened, nextPhoto, prevPhoto]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => {
+      document.removeEventListener("keydown", onKeydownAction);
+    };
+  }, [onKeydownAction]);
+
   return (
-    <>
+    <div className="w-full h-full relative">
+      {/* Gallery always rendered */}
       <div
-        className="w-full h-full flex items-center justify-center relative"
-        ref={containerRef}
+        className="w-full h-full py-[5%] px-[7.5%]"
+        style={{
+          backgroundColor: isLightBoxOpened ? "black" : undefined,
+          opacity: isLightBoxOpened ? 0.1 : undefined,
+        }}
       >
-        {transition(({ translateX, opacity }, photoIndex) => (
-          <animated.div
-            className="w-full h-full absolute"
-            style={{ translateX, opacity }}
-          >
-            {isBluredBackground && images[photoIndex] && (
-              <img
-                className="absolute blur-md w-full h-full object-cover"
-                src={images[photoIndex]}
-                alt={`blurred background photo number ${photoIndex}`}
-              />
-            )}
-            {images[photoIndex] && (
-              <img
-                className="absolute w-full h-full object-contain"
-                src={images[photoIndex]}
-                alt={`photo number ${photoIndex}`}
-                onClick={() => closeInfopoints()}
-              />
-            )}
-            {viewScreen.images?.[photoIndex]?.infopoints?.map(
-              (infopoint, infopointIndex) => {
-                // Percentage when choosing the infopoints in administrative
-                const origTopPercentage =
-                  infopoint.top / (imageOrigData.height / 100);
-                const origLeftPercentage =
-                  infopoint.left / (imageOrigData.width / 100);
-
-                const topPosition =
-                  fromTopHeight + (imageHeight / 100) * origTopPercentage;
-                const leftPosition =
-                  fromLeftWidth + (imageWidth / 100) * origLeftPercentage;
-
-                // Render the small 'primary' colored shaking squares
-                return (
-                  <SquareInfopoint
-                    key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                    id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                    content={infopoint.text ?? "Neuvedeno"}
-                    top={topPosition}
-                    left={leftPosition}
-                  />
-                );
-              }
-            )}
-          </animated.div>
-        ))}
+        <Grid
+          container
+          spacing={{ xs: 3, sm: 3, lg: 3 }}
+          className="w-full h-full overflow-y-auto expo-scrollbar"
+          sx={{ overflowX: "hidden", paddingRight: 3 }}
+        >
+          {images?.map((imageBlobSrc, imageIndex) => (
+            <ImageItem
+              key={imageIndex}
+              imageUrl={imageBlobSrc}
+              imageIndex={imageIndex}
+              openLightBox={openLightBox}
+              isLessPhotos={isLessPhotos}
+            />
+          ))}
+        </Grid>
       </div>
 
-      {/* Render one Tooltip as infopoint component for each previously rendered square, 1: 1 */}
-      {/* Infopoint Tooltip which is alwaysVisible has different behaviour than infopoint which is not!*/}
-      {viewScreen.images?.[photoIndex]?.infopoints?.map(
-        (infopoint, infopointIndex) => {
-          return (
-            <TooltipInfoPoint
-              key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-              id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-              isAlwaysVisible={infopoint.alwaysVisible}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
-              primaryKey={photoIndex.toString()}
-              secondaryKey={infopointIndex.toString()}
-              canBeOpen={!isAnimationRunning}
-            />
-          );
-        }
+      {/* Lightbox which is opened on some image click */}
+      {images && selectedImageIndex !== null && isLightBoxOpened && (
+        <animated.div style={opacityAnimation}>
+          <div
+            key={selectedImageIndex}
+            className="absolute top-0 left-0 w-full h-full px-[7%] py-[4.5%]"
+          >
+            <div className="w-full h-full flex">
+              <div
+                ref={imgContainerRef}
+                style={{ width: "calc(100% - 32px)", height: "100%" }}
+                className="flex justify-center items-center"
+              >
+                <TransformWrapper disablePadding>
+                  <TransformComponent
+                    wrapperStyle={{
+                      maxWidth: `${imgContainerSize.width}px`,
+                      maxHeight: `${imgContainerSize.height}px`,
+                    }}
+                    contentStyle={{
+                      maxWidth: `${imgContainerSize.width}px`,
+                      maxHeight: `${imgContainerSize.height}px`,
+                    }}
+                  >
+                    <img
+                      src={images[selectedImageIndex]}
+                      alt="lightbox-image"
+                      style={{
+                        maxWidth: `${imgContainerSize.width}px`,
+                        maxHeight: `${imgContainerSize.height}px`,
+                      }}
+                    />
+                  </TransformComponent>
+                </TransformWrapper>
+              </div>
+
+              <div className="w-[32px] self-start flex justify-center items-center">
+                <Button noPadding>
+                  <Icon
+                    color="white"
+                    useMaterialUiIcon
+                    name="close"
+                    onClick={closeLightBox}
+                    style={{ fontSize: "24px" }}
+                  />
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Arrows */}
+          <div
+            className={cx(
+              classes.overlay,
+              "hidden sm:grid fixed left-0 top-0 w-full h-full pointer-events-none"
+            )}
+          >
+            <div className={cx(classes.leftNav)}>
+              <div className="w-full h-full flex items-center">
+                <Button
+                  color="white"
+                  className="rounded-full pointer-events-auto"
+                  onClick={prevPhoto}
+                >
+                  <Icon name="chevron_left" />
+                </Button>
+              </div>
+            </div>
+            <div className={cx(classes.rightNav)}>
+              <div className="w-full h-full flex items-center justify-end">
+                <Button
+                  color="white"
+                  className="rounded-full pointer-events-auto"
+                  onClick={nextPhoto}
+                >
+                  <Icon name="chevron_right" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </animated.div>
       )}
-    </>
+    </div>
   );
 };

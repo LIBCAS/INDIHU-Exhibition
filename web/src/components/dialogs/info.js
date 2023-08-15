@@ -15,6 +15,7 @@ const Info = ({ handleSubmit, data }) => (
     noToolbar={get(data, "noToolbar")}
     big={get(data, "big")}
     large={get(data, "large")}
+    noStornoButton={get(data, "noStornoButton")}
   >
     {get(data, "content") ? data.content : <p>{get(data, "text", "")}</p>}
   </Dialog>
