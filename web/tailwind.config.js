@@ -18,6 +18,7 @@ module.exports = {
         "disabled-light": "rgba(0, 0, 0, 0.12)",
 
         gray: "#6c757d", // figma -- gray text for infopoints, tags gray background when dark mode, SAME as muted
+        "light-gray": "#e9ecef",
         // THEME
         "dark-mode-b": "#202326", // figma - dark mode background black color..
         "light-mode-b": "#ffffff", // light mode white background when light theme is on

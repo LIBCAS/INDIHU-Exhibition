@@ -1,0 +1,164 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "store/store";
+
+import TextField from "react-md/lib/TextFields";
+import HelpIcon from "components/help-icon";
+import CharacterCount from "./character-count";
+
+import { updateScreenData } from "actions/expoActions";
+import { helpIconText } from "enums/text";
+
+// - -
+
+type TitleTextFieldProps = { titleValue: string };
+
+export const TitleTextField = ({ titleValue }: TitleTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <div className="flex-row-nowrap">
+      <TextField
+        id="editor-description-textfield-title"
+        label="Název"
+        defaultValue={titleValue}
+        onChange={(newTitle: string) =>
+          dispatch(updateScreenData({ title: newTitle }))
+        }
+      />
+      <HelpIcon
+        label={helpIconText.EDITOR_DESCRIPTION_TITLE}
+        id="editor-description-title"
+      />
+    </div>
+  );
+};
+
+// - -
+
+type TextTextFieldProps = { textValue: string };
+
+export const TextTextField = ({ textValue }: TextTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <>
+      <div className="flex-row-nowrap">
+        <TextField
+          id="editor-description-textfield-text"
+          label="Text k tématu"
+          rows={5}
+          defaultValue={textValue}
+          onChange={(newText: string) =>
+            dispatch(updateScreenData({ text: newText }))
+          }
+        />
+        <HelpIcon
+          label={helpIconText.EDITOR_DESCRIPTION_TEXT}
+          id="editor-description-text"
+        />
+      </div>
+
+      <CharacterCount text={textValue} />
+    </>
+  );
+};
+
+// - -
+
+type GameTitleTextFieldProps = { gameTitleValue: string };
+
+export const GameTitleTextField = ({
+  gameTitleValue,
+}: GameTitleTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <div className="flex-row-nowrap">
+      <TextField
+        id="game-textfield-name"
+        label="Název"
+        defaultValue={gameTitleValue}
+        onChange={(newTitle: string) =>
+          dispatch(updateScreenData({ title: newTitle }))
+        }
+      />
+      <HelpIcon label={helpIconText.EDITOR_GAME_TITLE} id="editor-game-title" />
+    </div>
+  );
+};
+
+// - -
+
+type GameTaskTextFieldProps = { taskValue: string; taskHelpIconLabel: string };
+
+export const GameTaskTextField = ({
+  taskValue,
+  taskHelpIconLabel,
+}: GameTaskTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <div className="flex-row-nowrap">
+      <TextField
+        id="game-textfield-task"
+        label="Úkol minihry"
+        defaultValue={taskValue}
+        onChange={(newTask: string) =>
+          dispatch(updateScreenData({ task: newTask }))
+        }
+      />
+      <HelpIcon label={taskHelpIconLabel} id="editor-game-task" />
+    </div>
+  );
+};
+
+// - -
+
+type GameResultTimeTextFieldProps = { resultTimeValue: number };
+
+export const GameResultTimeTextField = ({
+  resultTimeValue,
+}: GameResultTimeTextFieldProps) => {
+  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <div className="flex-row-nowrap">
+      <div className="full-width">
+        <div className="form-input form-input-with-suffix">
+          <TextField
+            id="game-textfield-result-time"
+            label="Doba zobrazení výsledku"
+            type="number"
+            defaultValue={resultTimeValue}
+            onChange={(newResultTimeValue: number) => {
+              const numberValue = Number(newResultTimeValue);
+              const ok =
+                !numberValue ||
+                isNaN(numberValue) ||
+                numberValue < 1 ||
+                numberValue > 1000000;
+              setError(ok ? "Zadejte číslo v rozsahu 1 až 1000000." : null);
+              dispatch(
+                updateScreenData({
+                  resultTime: numberValue,
+                })
+              );
+            }}
+          />
+          <span className="form-input-suffix">vteřin</span>
+        </div>
+        {error && (
+          <div>
+            <span className="invalid">{error}</span>
+          </div>
+        )}
+      </div>
+      <HelpIcon
+        label={helpIconText.EDITOR_GAME_RESULT_TIME}
+        id="editor-game-result-time"
+      />
+    </div>
+  );
+};

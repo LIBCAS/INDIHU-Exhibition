@@ -1,23 +1,23 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+
 import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import { screenType } from "enums/screen-type";
 
+import { AppDispatch } from "store/store";
 import { File as IndihuFile, Screen } from "models";
 
+import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+
 type TimeProps = {
-  audio?: IndihuFile;
+  audio?: IndihuFile | null;
   activeScreen: Screen; // one of the many screens
-  updateScreenData: any;
-  sumOfPhotosTimes?: number;
+  sumOfPhotosTimes?: number | null;
 };
 
-const Time = ({
-  audio,
-  activeScreen,
-  updateScreenData,
-  sumOfPhotosTimes,
-}: TimeProps) => {
+const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string | null>(null);
 
   return (
@@ -48,7 +48,7 @@ const Time = ({
                 setError(null);
               }
 
-              updateScreenData({ time: Math.abs(newTime) });
+              dispatch(updateScreenData({ time: Math.abs(newTime) }));
             }}
             type="number"
           />
@@ -56,22 +56,22 @@ const Time = ({
         </div>
 
         {/* Manual time checkbox */}
-        {activeScreen?.type === screenType.SLIDESHOW && sumOfPhotosTimes && (
-          <Checkbox
-            id="editor-image-checkbox-time-photos-manual"
-            name="simple-checkboxes"
-            label="Manuálne každej fotke nastaviť čas"
-            disabled={activeScreen.timeAuto}
-            checked={activeScreen.timePhotosManual}
-            value={activeScreen.timePhotosManual}
-            onChange={(newTimePhotosManual: boolean) => {
-              updateScreenData({ timePhotosManual: newTimePhotosManual });
-              if (newTimePhotosManual && sumOfPhotosTimes) {
-                updateScreenData({ time: sumOfPhotosTimes });
-              }
-            }}
-          />
-        )}
+        {activeScreen?.type === screenType.SLIDESHOW &&
+          sumOfPhotosTimes !== undefined && (
+            <Checkbox
+              id="editor-image-checkbox-time-photos-manual"
+              name="simple-checkboxes"
+              label="Manuálne každej fotke nastaviť čas"
+              disabled={activeScreen.timeAuto}
+              checked={activeScreen.timePhotosManual}
+              value={activeScreen.timePhotosManual}
+              onChange={(newTimePhotosManual: boolean) => {
+                dispatch(
+                  updateScreenData({ timePhotosManual: newTimePhotosManual })
+                );
+              }}
+            />
+          )}
 
         {/* Automatic checkbox */}
         {!audio ||
@@ -100,11 +100,13 @@ const Time = ({
                 activeScreen.timePhotosManual)
             }
             onChange={(newTimeAuto: boolean) => {
-              updateScreenData({ timeAuto: newTimeAuto });
+              dispatch(updateScreenData({ timeAuto: newTimeAuto }));
               if (newTimeAuto && audio && audio.duration) {
-                updateScreenData({
-                  time: audio.duration + 2,
-                });
+                dispatch(
+                  updateScreenData({
+                    time: audio.duration + 2,
+                  })
+                );
               }
             }}
           />

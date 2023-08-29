@@ -61,9 +61,9 @@ const InfopointsTable = ({
   };
 
   return (
-    <div className="table-infopoints half-width-min">
+    <div className="mt-4 min-w-[50%]">
       <div>{title ?? "Infopointy"}</div>
-      <div className="table margin-bottom-small">
+      <div className="w-full flex flex-col px-4 py-2 mb-4">
         {/* Table header */}
         <div className="table-row header">
           <div className="table-col small">Popis</div>
@@ -86,7 +86,7 @@ const InfopointsTable = ({
               <Checkbox
                 id={`checkbox-infopoint-${infopointIndex}`}
                 name="checkbox-infopoint"
-                checked={infopoint.alwaysVisible}
+                checked={infopoint.alwaysVisible ?? false}
                 disabled
               />
             </div>

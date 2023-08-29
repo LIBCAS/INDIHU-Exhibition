@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 
@@ -495,13 +495,23 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
 
           // Render the anchor infopoints
           return (
-            <ScreenAnchorInfopoint
-              key={`infopoint-tooltip-${0}-${infopointIndex}`}
-              id={`infopoint-tooltip-${0}-${infopointIndex}`}
-              top={topPosition}
-              left={leftPosition}
-              infopoint={infopoint}
-            />
+            <React.Fragment key={`infopoint-tooltip-${0}-${infopointIndex}`}>
+              <ScreenAnchorInfopoint
+                id={`infopoint-tooltip-${0}-${infopointIndex}`}
+                top={topPosition}
+                left={leftPosition}
+                infopoint={infopoint}
+              />
+              <TooltipInfoPoint
+                id={`infopoint-tooltip-${0}-${infopointIndex}`}
+                infopoint={infopoint}
+                infopointOpenStatusMap={infopointOpenStatusMap}
+                setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                primaryKey="0"
+                secondaryKey={infopointIndex.toString()}
+                // canBeOpen // optional
+              />
+            </React.Fragment>
           );
         })}
 
@@ -570,13 +580,23 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           }
 
           return (
-            <ScreenAnchorInfopoint
-              key={`infopoint-tooltip-${1}-${infopointIndex}`}
-              id={`infopoint-tooltip-${1}-${infopointIndex}`}
-              top={topPosition}
-              left={leftPosition}
-              infopoint={infopoint}
-            />
+            <React.Fragment key={`infopoint-tooltip-${1}-${infopointIndex}`}>
+              <ScreenAnchorInfopoint
+                id={`infopoint-tooltip-${1}-${infopointIndex}`}
+                top={topPosition}
+                left={leftPosition}
+                infopoint={infopoint}
+              />
+              <TooltipInfoPoint
+                id={`infopoint-tooltip-${1}-${infopointIndex}`}
+                infopoint={infopoint}
+                infopointOpenStatusMap={infopointOpenStatusMap}
+                setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                primaryKey="1"
+                secondaryKey={infopointIndex.toString()}
+                // canBeOpen // optional
+              />
+            </React.Fragment>
           );
         })}
 
@@ -633,34 +653,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
         />
       </animated.div>
 
-      {/* 6. Infopoints Tooltips */}
-      {animation !== "FADE_IN_OUT_TWO_IMAGES" &&
-        Object.keys(infopointOpenStatusMap).map((mapKey) => {
-          const [primaryKey, secondaryKey] = mapKey.split("-").map(Number);
-          const infopoint =
-            primaryKey === 0
-              ? viewScreen.image1Infopoints?.[secondaryKey]
-              : viewScreen.image2Infopoints?.[secondaryKey];
-
-          if (!infopoint) {
-            return null;
-          }
-
-          return (
-            <TooltipInfoPoint
-              key={`infopoint-tooltip-${mapKey}`}
-              id={`infopoint-tooltip-${mapKey}`}
-              infopoint={infopoint}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
-              primaryKey={primaryKey.toString()}
-              secondaryKey={secondaryKey.toString()}
-              // canBeOpen // optional
-            />
-          );
-        })}
-
-      {/* 7. Last relative div containing the tutorial for 'Tahlo' */}
+      {/* 6. Last relative div containing the tutorial for 'Tahlo' */}
       <animated.div style={isVertical ? { x } : { y }} className="relative">
         {TutorialTooltip}
       </animated.div>

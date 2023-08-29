@@ -12,13 +12,17 @@ interface ViewEndedProps {
 
 const ViewEnded = (props: ViewEndedProps) => {
   const [closedPictureUrl, setClosedPictureUrl] = useState<string | null>(null);
-  const fileLookupMap = useFiles();
+  const fileLookupMap = useFiles(); // empty because sometimes i do not receive structure from BE!!
 
   useEffect(() => {
     if (!props.closedPicture) {
       return;
     }
-    const fileId = fileLookupMap[props.closedPicture].fileId;
+
+    const fileId = fileLookupMap[props.closedPicture]?.fileId; // can be undefined
+    if (!fileId) {
+      return;
+    }
     const url = `/api/files/${fileId}`;
     setClosedPictureUrl(url);
     // eslint-disable-next-line react-hooks/exhaustive-deps

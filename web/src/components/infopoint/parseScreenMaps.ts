@@ -1,4 +1,9 @@
-import { ImageScreen, SlideshowScreen, ImageChangeScreen } from "models";
+import {
+  ImageScreen,
+  SlideshowScreen,
+  ImageChangeScreen,
+  GameQuizScreen,
+} from "models";
 
 export type InfopointStatusObject = {
   isOpen: boolean;
@@ -22,6 +27,30 @@ export const parseSlideshowScreenMap = (viewScreen: SlideshowScreen) => {
       );
 
       return { ...acc, ...reducedImage };
+    },
+    {}
+  );
+
+  return infopointsMap as Record<string, InfopointStatusObject>;
+};
+
+export const parseGameQuizScreenMap = (viewScreen: GameQuizScreen) => {
+  const infopointsMap = viewScreen.answers?.reduce(
+    (acc, currAnswer, currAnswerIndex) => {
+      const reducedAnswer = currAnswer.infopoints?.reduce(
+        (innerAcc, currInfopoint, currInfopointIndex) => {
+          return {
+            ...innerAcc,
+            [`${currAnswerIndex}-${currInfopointIndex}`]: {
+              isOpen: currInfopoint.alwaysVisible,
+              isAlwaysVisible: currInfopoint.alwaysVisible,
+            },
+          };
+        },
+        {}
+      );
+
+      return { ...acc, ...reducedAnswer };
     },
     {}
   );

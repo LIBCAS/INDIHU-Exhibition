@@ -12,7 +12,7 @@ import { RatingDialogDataProps } from "./rating-dialog/rating-dialog";
 import { AudioDialogDataProps } from "./audio-dialog/audio-dialog";
 import { SettingsDialogDataProps } from "./settings-dialog/settings-dialog";
 
-import { File as IndihuFile } from "models";
+import { File as IndihuFile, Document } from "models";
 
 // All possible dialog names (important when calling setDialog action)
 export enum DialogType {
@@ -34,6 +34,8 @@ export enum DialogType {
   FileRenameFolder = "FileRenameFolder",
   FileDeleteFolder = "FileDeleteFolder",
   FilesManagerMenu = "FilesManagerMenu",
+  ScreenDocumentNew = "ScreenDocumentNew",
+  ScreenDocumentChange = "ScreenDocumentChange",
 }
 
 type ScreenFileChooseDialogDataProps = {
@@ -47,7 +49,7 @@ type ScreenFileChooseDialogDataProps = {
 type ConfirmDialogDataProps = {
   title?: React.ReactNode | string;
   text?: string;
-  onSubmit: () => void;
+  onSubmit: (() => void) | (() => Promise<void>);
 };
 
 type InfoDialogDataProps = {
@@ -62,6 +64,9 @@ type FileRenameFolderDataProps = { name: any };
 type FileDeleteFolderDataProps = { name: any };
 
 type FilesManagerMenuDataProps = Record<string, any>;
+
+type ScreenDocumentNewDataProps = Record<string, never>;
+type ScreenDocumentChangeDataProps = Document;
 
 // Each dialog has built-in DialogProps: setDialog, closeDialog, dialogData, addDialogData
 // Each dialog has its own custom DialogDataProps --> type definition for dialog.dialogData
@@ -101,6 +106,10 @@ export type DialogDataProps<T extends DialogType> =
     ? FileDeleteFolderDataProps
     : T extends DialogType.FilesManagerMenu
     ? FilesManagerMenuDataProps
+    : T extends DialogType.ScreenDocumentNew
+    ? ScreenDocumentNewDataProps
+    : T extends DialogType.ScreenDocumentChange
+    ? ScreenDocumentChangeDataProps
     : never;
 
 export type DialogProps<T extends DialogType> = {

@@ -10,8 +10,8 @@ import { AppDispatch } from "store/store";
 
 // Utils
 import cx from "classnames";
-import { getFileById } from "../../actions/file-actions";
-import { setDialog } from "../../actions/dialog-actions";
+import { getFileById } from "actions/file-actions-typed";
+import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 import { isEmpty } from "lodash";
 

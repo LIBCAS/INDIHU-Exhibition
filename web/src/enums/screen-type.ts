@@ -7,7 +7,7 @@ export const screenType = {
   TEXT: "TEXT",
   PARALLAX: "PARALLAX",
   IMAGE_ZOOM: "IMAGE_ZOOM",
-  SLIDESHOW: "PHOTOGALERY", // this needs to remain for backward compatibility (.structure stored in DB)
+  SLIDESHOW: "PHOTOGALERY", // 'PHOTOGALERY' key is used for screen called slideshow, because previosly, there were no second photogallery screen
   PHOTOGALLERY_NEW: "PHOTOGALLERY_NEW",
   IMAGE_CHANGE: "IMAGE_CHANGE",
   EXTERNAL: "EXTERNAL",
@@ -29,8 +29,10 @@ export const mapScreenTypeValuesToKeys = {
   TEXT: "TEXT",
   PARALLAX: "PARALLAX",
   IMAGE_ZOOM: "IMAGE_ZOOM",
-  PHOTOGALERY: "SLIDESHOW", // backward compatibility
+
+  PHOTOGALERY: "SLIDESHOW", // map 'PHOTOGALERY' | 'SLIDESHOW' to only SLIDESHOW key
   SLIDESHOW: "SLIDESHOW",
+
   PHOTOGALLERY_NEW: "PHOTOGALLERY_NEW",
   IMAGE_CHANGE: "IMAGE_CHANGE",
   EXTERNAL: "EXTERNAL",
@@ -102,7 +104,7 @@ export const screenCategories = [
     categoryId: "INTERACTIVE_SCREEN",
     categoryName: "Interaktivní obrazovka",
     screens: [
-      { id: "SLIDESHOW", name: "Slideshow" },
+      { id: "PHOTOGALERY", name: "Slideshow" },
       { id: "PHOTOGALLERY_NEW", name: "Fotogalerie" },
       { id: "IMAGE_CHANGE", name: "Foto před a po" },
       { id: "EXTERNAL", name: "Obrazovka s externím obsahem" },

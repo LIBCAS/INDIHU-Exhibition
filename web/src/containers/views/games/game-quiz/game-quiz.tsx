@@ -1,15 +1,17 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useMemo, useEffect } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import cx from "classnames";
-
-import { ScreenProps } from "models";
-import { GameQuizScreen } from "models";
-import { AppState } from "store/store";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 import { GameToolbar } from "../game-toolbar";
+import ImageTextAnswer from "./ImageTextAnswer";
+
+import { AppState } from "store/store";
+import { ScreenProps, GameQuizScreen } from "models";
+
+// - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameQuizScreen,
@@ -18,45 +20,84 @@ const stateSelector = createSelector(
 
 export const GameQuiz = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const [finished, setFinished] = useState(false);
-  const [marked, setMarked] = useState<number>();
   const { t } = useTranslation("screen");
 
+  const {
+    infopointOpenStatusMap,
+    setInfopointOpenStatusMap,
+    closeInfopoints: closeAllInfopoints,
+  } = useTooltipInfopoint(viewScreen);
+
+  const isMultipleChoice = useMemo(
+    () => viewScreen.answersType === "MULTIPLE_CHOICE",
+    [viewScreen.answersType]
+  );
+
+  const quizType = viewScreen.quizType ?? "TEXT_IMAGES";
+
+  const [isFinished, setIsFinished] = useState<boolean>(false); // true after done button clicked
+  const [markedAnswers, setMarkedAnswers] = useState<boolean[]>(() => {
+    const answersLength = viewScreen.answers.length; // should be max 8
+    return Array(answersLength).fill(false);
+  });
+
   const onFinish = useCallback(() => {
-    setFinished(true);
+    setIsFinished(true);
   }, []);
 
   const onReset = useCallback(() => {
-    setFinished(false);
-    setMarked(undefined);
+    setIsFinished(false);
+    setMarkedAnswers((prevMarks) => prevMarks.map(() => false));
   }, []);
 
+  // - -
+
+  const onKeydownAction = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeAllInfopoints(viewScreen)();
+      }
+    },
+    [closeAllInfopoints, viewScreen]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", onKeydownAction);
+    return () => {
+      window.removeEventListener("keydown", onKeydownAction);
+    };
+  }, [onKeydownAction]);
+
+  // - -
+
   return (
-    <div className="flex flex-col h-full w-full justify-center items-center p-4 md:p-8 lg:p-16">
-      <span className="text-white font-bold text-2xl mb-8">
-        {viewScreen.task}
+    <div className="w-full h-full flex flex-col justify-center items-center gap-10 p-4 md:p-8 lg:p-16 xl:p-20">
+      <span className="text-white font-bold text-3xl text-center mt-16">
+        {viewScreen.task ?? "Neuvedeno"}
       </span>
-      <div className="flex flex-wrap gap-4 items-center pb-16">
-        {viewScreen.answers?.map(({ text, correct }, index) => (
-          <div
-            key={index}
-            className={cx(
-              "h-full border-2 flex-1 flex flex-col justify-center items-center rounded bg-opacity-10 hover:cursor-pointer px-2",
-              !finished && marked !== index && "border-transparent",
-              marked === index && "border-primary bg-primary",
-              finished && correct && "border-success bg-success",
-              finished && !correct && "border-danger bg-danger"
-            )}
-            onClick={() => setMarked(index)}
-          >
-            <img
-              src={screenPreloadedFiles.answers?.[index]?.image}
-              className="flex-1 w-full object-contain"
-              draggable={false}
+
+      {/* Answers */}
+      {/* mb-32 for convinience, pt-4 for icon badges (top right cornet) */}
+      <div className="w-full flex flex-wrap justify-evenly items-center gap-8 overflow-auto expo-scrollbar pb-32 pt-4">
+        {viewScreen.answers.map((answer, answerIndex) => {
+          return (
+            <ImageTextAnswer
+              key={answerIndex}
+              answer={answer}
+              answerIndex={answerIndex}
+              preloadedImgSrc={
+                screenPreloadedFiles.answers?.[answerIndex]?.image ?? ""
+              }
+              isFinished={isFinished}
+              isMultipleChoice={isMultipleChoice}
+              markedAnswers={markedAnswers}
+              quizType={quizType}
+              setMarkedAnswers={setMarkedAnswers}
+              infopointOpenStatusMap={infopointOpenStatusMap}
+              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
             />
-            <span className="block text-center text-white mt-2">{text}</span>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {toolbarRef.current &&
@@ -65,7 +106,7 @@ export const GameQuiz = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
             text={t("game-quiz.task")}
             onFinish={onFinish}
             onReset={onReset}
-            finished={finished}
+            finished={isFinished}
             screen={viewScreen}
           />,
           toolbarRef.current

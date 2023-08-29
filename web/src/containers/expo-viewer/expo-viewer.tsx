@@ -7,32 +7,31 @@ import {
   useLocation,
   useRouteMatch,
 } from "react-router-dom";
-
 import { Helmet } from "react-helmet";
 
-import ViewWrap from "./view-wrap";
 import { FilePreloaderProvider } from "context/file-preloader/file-preloader-provider";
 import { DrawerPanelProvider } from "context/drawer-panel-provider/drawer-panel-provider";
-import { ViewSection } from "./view-section";
+import { GlassMagnifierConfigProvider } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
+import ViewWrap from "./view-wrap";
+import { ViewSection } from "./view-section";
 import { ViewLoading } from "containers/views/view-loading/view-loading";
+import ViewInvalidUrl from "containers/views/view-invalid-url";
+import ViewPrepared from "containers/views/view-prepared";
+import ViewEnded from "containers/views/view-ended";
+
+import { AppDispatch, AppState } from "store/store";
+import { CollaboratorObj } from "models";
 
 import { get } from "lodash";
 import { loadExposition, loadScreen } from "actions/expoActions/viewer-actions";
-
-import { AppDispatch, AppState } from "store/store";
-import ViewNotPublic from "containers/views/view-not-public";
-import ViewPrepared from "containers/views/view-prepared";
-import ViewEnded from "containers/views/view-ended";
-import { CollaboratorObj } from "models";
-import { GlassMagnifierConfigProvider } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 // - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
-  ({ user }: AppState) => user.userName,
+  ({ user }: AppState) => user.userName as string | null,
   (viewExpo, viewScreen, userName) => ({
     viewExpo,
     viewScreen,
@@ -43,10 +42,14 @@ const stateSelector = createSelector(
 // takes currently logged in userName and array of all collaborators (people with whom the expo is shared with) + author of the expo itself
 // if currently logged in user with its userName has access to this exposition (either collaborator or author), then do not show error or prepared screen
 const amExpoCreator = (
-  userName: string, // logged in user
+  userName: string | null, // user, logged in or logged out, if logged out, immediately cannot be creator
   authorUsername?: string,
   collaborators?: CollaboratorObj[]
 ): boolean => {
+  if (!userName) {
+    return false;
+  }
+
   if (authorUsername === userName) {
     return true;
   }
@@ -69,49 +72,71 @@ const amExpoCreator = (
 // - - -
 
 export const ExpoViewer = () => {
-  // Redux hooks
   const { viewExpo, userName } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
-  // Router, routing hooks
   const match = useRouteMatch<{ name: string }>();
   const history = useHistory();
   const location = useLocation();
 
-  // Default react hooks
   const [viewExpoLoadedAt, setViewExpoLoadedAt] = useState<number | null>(null);
   const [viewScreenIsLoaded, setViewScreenIsLoaded] = useState<boolean>(false);
 
   // Function responsible for:
-  // 1. Fetching the /api/exposition/u/{expoNameUrl}, retrieving back viewExpo body OR true OR false
-  // In case when the the expo is in PREPARE or ENDED state and i do not have access (e.g log out user), the response is true if status code is 200, otherwise false
-  // In case when the expo body is retrieved, it will set it into redux store.expo.viewExpo
-  // 2. Replacing URL, e.g from /view/ReactNewExhibition2023-02-18T152236836Z/start to /view/ReactNewExhibition2023/start
+  // 1. Fetching the /api/exposition/u/{expoNameUrl}, retrieving back viewExpo body and setting it to the redux store.expo.viewExpo
+  // Fetched viewExpo body can be also empty (in redux stays null)
+  // Functions returns viewExpo body if not empty, true if viewExpo body is empty and status code === 200, false if empty body and error status code
+  // 2. Responsible also for replacing URLs
+  // First use case  -> /view/ReactNewExhibition2023-02-18T152236836Z TO /view/ReactNewExhibition (custom url set in settings)
+  // Second use case -> /view/ReactNewExhibition TO /view/ReactNewExhibition/start  (appending start route)
   const handleViewExpoMount = useCallback(async () => {
-    const viewExpo = await dispatch(loadExposition(match.params.name)); // can be viewExpo object, true if 200 code or false
+    const wExpo = await dispatch(loadExposition(match.params.name)); // can be viewExpo object, true if 200 code or false
 
-    // When logged out user accessing ENDED or PREPARE exposition, url is not present
-    // Prevent changing the url to /view/undefined/{section}/{screen}
-    if (
-      (viewExpo.state === "ENDED" || viewExpo.state === "PREPARE") &&
-      !viewExpo.url
-    ) {
+    // Response was empty body, true if 200 status code, otherwise false
+    // As response was empty, nothing was set to redux store.viewExpo (is currently null)
+    // Use case when invalid url was supplied
+    if (wExpo === true || wExpo === false) {
       setViewExpoLoadedAt(new Date().getTime());
       return;
     }
 
-    if (viewExpo && match.url.replace(/^\/view\//, "") !== viewExpo.url) {
+    const isExpoNotOpened =
+      wExpo.state === "ENDED" || wExpo.state === "PREPARE";
+
+    // Use case when user is logged out and exposition is not null, but not in opened state
+    if (!userName && isExpoNotOpened) {
+      setViewExpoLoadedAt(new Date().getTime());
+      return;
+    }
+
+    // Use case when user is logged in, exposition is not null, but not in opened state and user does not have access to the expo
+    const userHasAccess = amExpoCreator(
+      userName,
+      wExpo?.author?.username,
+      wExpo?.collaborators
+    );
+    if (userName && isExpoNotOpened && !userHasAccess) {
+      setViewExpoLoadedAt(new Date().getTime());
+      return;
+    }
+
+    // REPLACING URLS
+    // Either go from /view/ReactNewExhibition2023-02-18T152236836Z TO /view/ReactNewExhibition AND TO /view/ReactNewExhibition/start
+    // OR directly from /view/ReactNewExhibition TO /view/ReactNewExhibition/start
+    // HOWEVER /view/ReactNewExhibition2023-02-18T152236836Z/start CAN also be valid!! if custom url in settings was not set!!
+    // (custom default url which was set is in fetched wExpo.url, if custom url was not set.. it contains the default url with dates)
+    const matchUrlWithoutView = match.url.replace(/^\/view\//, "");
+    if (wExpo && matchUrlWithoutView !== wExpo.url) {
       const newUrl = location.pathname.replace(
         new RegExp(
           `^${match.url.replace(/([.*+?^=!:${}()|[\]/\\])/g, "\\$1")}`,
           "g"
         ),
-        `/view/${viewExpo.url}`
+        `/view/${wExpo.url}`
       );
 
       history.replace(
-        newUrl === `/view/${viewExpo.url}` ||
-          newUrl === `/view/${viewExpo.url}/`
+        newUrl === `/view/${wExpo.url}` || newUrl === `/view/${wExpo.url}/`
           ? `${newUrl.replace(/\/$/g, "")}/start`
           : newUrl
       );
@@ -129,7 +154,7 @@ export const ExpoViewer = () => {
   }, [handleViewExpoMount]);
 
   // Function which requires that viewExpo has already been mounted and set in redux store
-  // Based on viewExpo and input section and screen args, it will set the redux store.expo.viewScreen
+  // Based on viewExpo and input section and screen args, it will set the redux store.expo.viewScreen (from viewExpo.structure)
   // section can be "start" | "finish" | number, screen is just a number
   const handleViewScreen = useCallback(
     async ({ section, screen }) => {
@@ -151,20 +176,20 @@ export const ExpoViewer = () => {
 
   // Invalid URL - viewExpo null
   if (viewExpoLoadedAt && !viewExpo) {
-    return <ViewNotPublic />;
+    return <ViewInvalidUrl />;
   }
 
   if (!viewExpo) {
     return <ViewLoading />;
   }
 
-  const hasAccess = amExpoCreator(
-    userName as string,
+  const userHasAccess = amExpoCreator(
+    userName,
     viewExpo?.author?.username,
     viewExpo?.collaborators
   );
 
-  if (viewExpo.state === "ENDED" && !hasAccess) {
+  if (viewExpo.state === "ENDED" && !userHasAccess) {
     return (
       <ViewEnded
         closedCaption={viewExpo.closedCaption}
@@ -174,10 +199,13 @@ export const ExpoViewer = () => {
     );
   }
 
-  if (viewExpo.state === "PREPARE" && !hasAccess) {
+  if (viewExpo.state === "PREPARE" && !userHasAccess) {
     return <ViewPrepared />;
   }
 
+  // Exposition which was successfully fetched and is not null
+  // Exposition which is in OPENED state
+  // Exposition which is in PREPARE or ENDED state, but user has access to it (author or collaborator)
   return (
     <ViewWrap
       title={get(viewExpo, "title")}

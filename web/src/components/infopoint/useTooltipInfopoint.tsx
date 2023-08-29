@@ -9,10 +9,16 @@ import {
   parseImageScreenMap,
   parseSlideshowScreenMap,
   parseImageChangeScreenMap,
+  parseGameQuizScreenMap,
 } from "./parseScreenMaps";
 
 // Models
-import { ImageScreen, SlideshowScreen, ImageChangeScreen } from "models";
+import {
+  ImageScreen,
+  SlideshowScreen,
+  ImageChangeScreen,
+  GameQuizScreen,
+} from "models";
 import { screenType } from "enums/screen-type";
 
 // - - - - -
@@ -20,7 +26,8 @@ import { screenType } from "enums/screen-type";
 type InfopointSupportedScreens =
   | ImageScreen
   | SlideshowScreen
-  | ImageChangeScreen;
+  | ImageChangeScreen
+  | GameQuizScreen;
 
 /**
  * 1. Import this hook into screen where you want to use Infopoints
@@ -50,6 +57,9 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
   // isAlwaysVisible is the mark for each infopoint, set in the slideshow administration
   const [infopointOpenStatusMap, setInfopointOpenStatusMap] = useState(() => {
+    if (viewScreen.type === screenType.GAME_OPTIONS) {
+      return parseGameQuizScreenMap(viewScreen);
+    }
     if (viewScreen.type === screenType.SLIDESHOW) {
       return parseSlideshowScreenMap(viewScreen);
     }
@@ -95,6 +105,7 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
   // Function which will close infopoints
   // Called e.g on ESC press + clicking on the image as outside any infopoint
   // Typescript method overloading
+  function closeInfopoints(screen: GameQuizScreen): () => void;
   function closeInfopoints(screen: ImageScreen): () => void;
   function closeInfopoints(screen: ImageChangeScreen): () => void;
   function closeInfopoints(

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "store/store";
 
@@ -8,18 +7,17 @@ import Button from "react-md/lib/Buttons/Button";
 
 import HelpIcon from "../help-icon";
 
-import { setDialog } from "../../actions/dialog-actions";
-
-import { helpIconText } from "../../enums/text";
-
 import { File as IndihuFile } from "models";
+
 import { DialogType } from "components/dialogs/dialog-types";
+import { setDialog } from "../../actions/dialog-actions";
+import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { helpIconText } from "../../enums/text";
 
 type AudioMusicProps = {
   isAudio: boolean; // whether music or audio is supplied
-  audio?: IndihuFile;
-  music?: IndihuFile;
-  updateScreenData: Function;
+  audio?: IndihuFile | null;
+  music?: IndihuFile | null;
   id: string;
   helpIconTitle: string;
   textFieldLabel?: string;
@@ -29,7 +27,6 @@ const AudioMusic = ({
   isAudio,
   audio,
   music,
-  updateScreenData,
   textFieldLabel,
   id,
   helpIconTitle,
@@ -63,8 +60,10 @@ const AudioMusic = ({
                   }?`,
                   onSubmit: () =>
                     isAudio
-                      ? updateScreenData({ audio: null, timeAuto: undefined })
-                      : updateScreenData({ music: null }),
+                      ? dispatch(
+                          updateScreenData({ audio: null, timeAuto: undefined })
+                        )
+                      : dispatch(updateScreenData({ music: null })),
                 })
               )
             }
@@ -81,12 +80,14 @@ const AudioMusic = ({
               setDialog(DialogType.ScreenFileChoose, {
                 onChoose: isAudio
                   ? (audio) =>
-                      updateScreenData({
-                        audio: audio.id,
-                        timeAuto: !!audio.duration,
-                        time: audio.duration ? audio.duration + 2 : 0,
-                      })
-                  : (music) => updateScreenData({ music: music.id }),
+                      dispatch(
+                        updateScreenData({
+                          audio: audio.id,
+                          timeAuto: !!audio.duration,
+                          time: audio.duration ? audio.duration + 2 : 0,
+                        })
+                      )
+                  : (music) => dispatch(updateScreenData({ music: music.id })),
                 typeMatch: new RegExp(/^audio\/.*$/),
                 accept: "audio/*",
               })

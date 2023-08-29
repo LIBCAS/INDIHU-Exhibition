@@ -13,11 +13,10 @@ import ViewError from "./view-error";
 
 import { ViewStart } from "./view-start/view-start";
 import { ViewFinish } from "./view-finish/view-finish";
-
 import { ViewChapter } from "./view-chapter/view-chapter";
 import { ViewImage } from "./view-image/view-image";
 import { ViewVideo } from "./view-video/view-video";
-import ViewText from "./view-text";
+import { ViewText } from "./view-text/view-text";
 import { ViewParallax } from "./view-parallax/view-parallax";
 import { ViewZoom } from "./view-zoom/view-zoom";
 import { ViewSlideshow } from "./view-slideshow/view-slideshow";
@@ -119,6 +118,7 @@ export const Viewers = ({
     if (isScreenLoading || !viewScreen) {
       return null;
     }
+
     return resolveScreenComponent(viewScreen.type);
   }, [isScreenLoading, viewScreen]);
 

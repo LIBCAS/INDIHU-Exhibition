@@ -21,9 +21,6 @@ import { ThemeFormData } from "./models";
 
 interface ExpoThemeProps {
   activeExpo: ActiveExpo;
-  history: unknown;
-  location: unknown;
-  match: unknown;
 }
 
 // - - - - - - -

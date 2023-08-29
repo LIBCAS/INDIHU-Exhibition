@@ -35,3 +35,17 @@ export const horizontalPosition = {
   CENTER: "CENTER",
   RIGHT: "RIGHT",
 } as const;
+
+/**
+ * Game screen enums
+ */
+export const gameQuizAnswersType = {
+  SIMPLE_CHOICE: "SIMPLE_CHOICE",
+  MULTIPLE_CHOICE: "MULTIPLE_CHOICE",
+} as const;
+
+export const gameQuizType = {
+  ONLY_TEXT: "ONLY_TEXT",
+  ONLY_IMAGES: "ONLY_IMAGES",
+  TEXT_IMAGES: "TEXT_IMAGES",
+} as const;

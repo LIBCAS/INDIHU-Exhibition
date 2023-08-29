@@ -21,7 +21,20 @@ export const loadExposition = (url) => async (dispatch) => {
       const viewExpo = await JSON.parse(body);
 
       if (viewExpo.state === "ENDED" || viewExpo.state === "PREPARE") {
-        dispatch({ type: EXPO_VIEWER, payload: { viewExpo: viewExpo } });
+        if ("structure" in viewExpo) {
+          dispatch({
+            type: EXPO_VIEWER,
+            payload: {
+              viewExpo: {
+                ...viewExpo,
+                structure: JSON.parse(viewExpo.structure),
+              },
+            },
+          });
+        } else {
+          dispatch({ type: EXPO_VIEWER, payload: { viewExpo: viewExpo } });
+        }
+
         return viewExpo;
       }
 
@@ -42,7 +55,6 @@ export const loadExposition = (url) => async (dispatch) => {
 
     return response.status === 200;
   } catch (error) {
-    console.error("Failed error: ", error);
     return false;
   }
 };
@@ -50,8 +62,9 @@ export const loadExposition = (url) => async (dispatch) => {
 // Load into viewScreen!
 export const loadScreen = (section, screen) => async (dispatch, getState) => {
   const expo = getState().expo.viewExpo;
-  if (!expo || !expo.structure || (screen && !expo.structure.screens))
+  if (!expo || !expo.structure || (screen && !expo.structure.screens)) {
     return false;
+  }
 
   const viewScreen =
     screen !== undefined

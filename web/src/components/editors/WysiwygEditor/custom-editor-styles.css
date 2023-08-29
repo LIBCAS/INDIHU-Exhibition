@@ -1,0 +1,55 @@
+/* Custom bug fix */
+.ql-editor strong {
+  font-weight: bold;
+}
+
+.ql-editor em {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+.ql-editor u {
+  text-decoration: underline;
+  font-weight: inherit;
+}
+
+/* Custom styles */
+.ql-editor {
+  min-height: 140px;
+  /* font-size: 16px; */
+}
+
+.ql-editor.preview {
+  min-height: auto;
+  padding: 0;
+}
+
+.ql-editor.preview.scroll-padding-right {
+  padding-right: 12px;
+}
+
+.ql-editor.preview.sm-font-size {
+  font-size: 14px;
+}
+
+.ql-editor.preview.xl-font-size {
+  font-size: 20px;
+}
+
+.ql-editor.preview.white-font {
+  color: white;
+}
+
+.ql-editor.preview.black-font {
+  color: black;
+}
+
+.ql-editor.preview * {
+  font-size: inherit;
+  color: inherit;
+}
+
+.ql-editor.preview a {
+  color: #06c;
+  text-decoration: underline;
+}

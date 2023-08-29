@@ -4,12 +4,18 @@ import { RefObject } from "react";
 import { screenType } from "enums/screen-type";
 import { zoomInTooltipPosition } from "enums/screen-enums";
 import { animationType } from "enums/animation-type";
-import { horizontalPosition, verticalPosition } from "enums/screen-enums";
+import {
+  horizontalPosition,
+  verticalPosition,
+  gameQuizAnswersType,
+  gameQuizType,
+} from "enums/screen-enums";
 
 // Models
 import { Document } from "./document";
 import { Infopoint } from "./infopoint";
 import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
+import { ActiveExpo } from "./exposition";
 
 // - - - - -
 
@@ -17,6 +23,18 @@ export type ScreenProps = {
   screenPreloadedFiles: ScreenPreloadedFiles;
   toolbarRef: RefObject<HTMLDivElement>;
   chapterMusicRef: RefObject<HTMLAudioElement>;
+};
+
+export type ScreenEditorProps = {
+  activeExpo: ActiveExpo;
+  activeScreen: Screen;
+  url: string;
+};
+
+export type ConcreteScreenEditorProps<S> = {
+  [Key in keyof ScreenEditorProps]: Key extends "activeScreen"
+    ? S
+    : ScreenEditorProps[Key];
 };
 
 export type ScreenCoordinates = [number, number] | "start" | "finish";
@@ -67,6 +85,27 @@ export type SlideshowImages = {
 
 export type ParallaxImages = string[];
 export type PhotogalleryImages = { id: string; active?: boolean }[];
+
+export type Sequence = {
+  text: string;
+  time: number;
+  zoom: number;
+  left: number;
+  top: number;
+  edit?: boolean; // whether being currently edited
+  move?: boolean; // whether its infopoint being currently moved
+  timeError?: boolean;
+};
+
+export type GameQuizAnswersType = keyof typeof gameQuizAnswersType;
+export type GameQuizType = keyof typeof gameQuizType;
+export type GameQuizAnswer = {
+  correct: boolean;
+  text: string;
+  image: string | null; // imageId or null if image was not loaded
+  imageOrigData?: ImageOrigData; // optional if image was not loaded yet
+  infopoints?: Infopoint[];
+};
 
 // - - - - -
 
@@ -172,15 +211,15 @@ export type TextScreen = {
   type: typeof screenType.TEXT;
   title?: string;
   text?: string;
-  mainText: string;
   audio?: string;
   time: number;
   timeAuto: boolean;
+  muteChapterMusic: boolean;
+  screenCompleted: boolean;
+  mainText: string;
   documents?: Document[];
   aloneScreen: boolean;
   music?: string;
-  muteChapterMusic: boolean;
-  screenCompleted: boolean;
 };
 
 export type SlideshowScreen = {
@@ -239,13 +278,7 @@ export type ZoomScreen = {
   text?: string;
   image?: string;
   imageOrigData?: { width: number; height: number };
-  sequences: {
-    text: string;
-    time?: number;
-    zoom: number;
-    top: number;
-    left: number;
-  }[];
+  sequences: Sequence[];
   tooltipPosition: ZoomInTooltipPosition;
   audio?: string;
   time: number;
@@ -274,7 +307,7 @@ export type ImageChangeScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  animationType:
+  animationType?:
     | "HORIZONTAL"
     | "VERTICAL"
     | "GRADUAL_TRANSITION"
@@ -319,6 +352,7 @@ export type GameFindScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  resultTime?: number;
 };
 
 export type GameDrawScreen = {
@@ -335,6 +369,7 @@ export type GameDrawScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  resultTime?: number;
 };
 
 export type GameWipeScreen = {
@@ -350,6 +385,7 @@ export type GameWipeScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  resultTime?: number;
 };
 
 export type GameSizingScreen = {
@@ -367,6 +403,7 @@ export type GameSizingScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  resultTime?: number;
 };
 
 export type GameMoveScreen = {
@@ -384,23 +421,21 @@ export type GameMoveScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  resultTime?: number;
 };
 
 export type GameQuizScreen = {
   id: string;
   type: typeof screenType.GAME_OPTIONS;
   title?: string;
-  task: string;
+  task?: string;
   image?: string;
   imageOrigData?: ImageOrigData;
-  answers?: {
-    correct: boolean;
-    text: string;
-    image: string;
-    imageOrigData: ImageOrigData;
-  }[];
+  answers: GameQuizAnswer[];
   aloneScreen: boolean;
   music?: string;
-  muteChapterMusic: boolean;
-  screenCompleted: boolean;
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
+  answersType?: GameQuizAnswersType;
+  quizType?: GameQuizType;
 };

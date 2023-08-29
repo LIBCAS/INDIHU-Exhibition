@@ -62,6 +62,9 @@ const CircleAnchorInfopoint = ({
         borderRadius: "50%",
         ...otherProps.style,
       }}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
       <div
         className="absolute bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -110,6 +113,9 @@ const IconAnchorInfopoint = ({
         transform: "translate(-50%, -50%)",
         ...otherProps.style,
       }}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
       <img
         src={`/api/files/${infopoint.iconFile.fileId}`}
@@ -152,6 +158,9 @@ const SquareAnchorInfopoint = ({
         left: left,
         transform: "translate(-50%, -50%)",
         ...otherProps.style,
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
       }}
     >
       <animated.div

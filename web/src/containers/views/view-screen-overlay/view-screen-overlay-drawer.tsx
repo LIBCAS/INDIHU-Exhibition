@@ -13,6 +13,7 @@ import { useOnClickOutside } from "hooks/use-on-click-outside";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { ProgressBar } from "components/progress-bar/progress-bar";
+import WysiwygPreview from "components/editors/WysiwygEditor/WysiwygPreview";
 
 // Models
 import { AppState } from "store/store";
@@ -105,12 +106,16 @@ export const ViewScreenOverlayDrawer = ({
           <span className="text-4xl font-bold py-4">
             {viewScreen?.title ?? t("no-title")}
           </span>
-          {screenText && <div className="overflow-y-auto">{screenText}</div>}
+          {screenText && (
+            <div className="overflow-y-auto">
+              <WysiwygPreview htmlMarkup={screenText} scrollbar />
+            </div>
+          )}
         </div>
 
         {/* Fourth flexbox with current screen documents */}
         <div className="flex flex-col px-8 py-4 md:px-16 md:py-8 h-1/3">
-          <div className="h-[95%] overflow-y-auto">
+          <div className="h-[95%] overflow-y-auto pr-3 expo-scrollbar">
             {viewScreen &&
               "documents" in viewScreen &&
               viewScreen.documents &&

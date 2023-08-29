@@ -1,6 +1,5 @@
 import { screenType } from "enums/screen-type";
-import { Screen } from "models";
-import { Document } from "models";
+import { Screen, Document } from "models";
 
 const gameScreens = [
   screenType.GAME_DRAW,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "reselect";
+import { useDispatch } from "react-redux";
 
 // Components
 import StateOptions from "../../../components/form/redux-form/state-options";
@@ -10,7 +9,8 @@ import TagsSelect from "./TagsSelect";
 import { Button } from "react-md";
 
 // Models
-import { AppDispatch, AppState } from "store/store";
+import { AppDispatch } from "store/store";
+import { ActiveExpo } from "models";
 import { TagValues } from "./tags-options";
 
 // Utils and actions
@@ -19,15 +19,11 @@ import { updateExpo } from "actions/expoActions";
 
 // - - - - - - - -
 
-const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.activeExpo,
-  (activeExpo) => ({ activeExpo })
-);
+type SettingsProps = {
+  activeExpo: ActiveExpo;
+};
 
-// - - - - - - - -
-
-const Settings = () => {
-  const { activeExpo } = useSelector(stateSelector);
+const Settings = ({ activeExpo }: SettingsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [tags, setTags] = useState<TagValues[]>(() => {
     return activeExpo?.tags ?? [];

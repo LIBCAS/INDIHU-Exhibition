@@ -36,6 +36,7 @@
     "react-i18next": "^11.18.6",
     "react-md": "1.0.17",
     "react-popper": "^2.3.0",
+    "react-quill": "^2.0.0",
     "react-redux": "7.1.0",
     "react-router-dom": "5.2.0",
     "react-router-redux": "4.0.8",
