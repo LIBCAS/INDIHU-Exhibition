@@ -162,11 +162,8 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
               alt="logo-image"
               className="absolute"
               style={{
-                width: containedBgImageWidth / 4,
                 opacity:
-                  expoDesignData.logoType === "WATERMARK" ? 0.4 : undefined,
-                // left: `calc(${fromContainerToBgImageLeft}px + (${containedBgImageWidth}px / 12) )`,
-                // top: `calc(${fromContainerToBgImageTop}px + (${containedBgImageHeight}px / 12) )`,
+                  expoDesignData.logoType === "WATERMARK" ? 0.5 : undefined,
                 ...logoPositionStyles,
               }}
             />

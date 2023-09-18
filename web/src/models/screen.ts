@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { MutableRefObject, RefObject } from "react";
 
 // Enums
 import { screenType } from "enums/screen-type";
@@ -21,7 +21,8 @@ import { ActiveExpo } from "./exposition";
 
 export type ScreenProps = {
   screenPreloadedFiles: ScreenPreloadedFiles;
-  toolbarRef: RefObject<HTMLDivElement>;
+  infoPanelRef: RefObject<HTMLDivElement>;
+  actionsPanelRef: MutableRefObject<HTMLDivElement | null>;
   chapterMusicRef: RefObject<HTMLAudioElement>;
 };
 
@@ -84,7 +85,12 @@ export type SlideshowImages = {
 }[];
 
 export type ParallaxImages = string[];
-export type PhotogalleryImages = { id: string; active?: boolean }[];
+export type PhotogalleryImages = {
+  id: string;
+  active?: boolean;
+  photoTitle?: string;
+  photoDescription?: string;
+}[];
 
 export type Sequence = {
   text: string;

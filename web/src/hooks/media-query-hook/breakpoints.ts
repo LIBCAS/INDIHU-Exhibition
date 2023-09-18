@@ -7,15 +7,19 @@ const getBreakpointSize = (breakpoint: Breakpoint) =>
     : breakpoint === "sm"
     ? 640
     : breakpoint === "md"
-    ? 767
+    ? 768
     : breakpoint === "lg"
     ? 1024
     : breakpoint === "xl"
     ? 1280
     : 1536;
 
-const resolveBreakpoint = (up: boolean, breakpoint: Breakpoint) =>
-  `(${up ? "min" : "max"}-width: ${getBreakpointSize(breakpoint)}px)`;
+const resolveBreakpoint = (up: boolean, breakpoint: Breakpoint) => {
+  const widthPart = up ? "min-width" : "max-width";
+  const px = getBreakpointSize(breakpoint);
+  const pixelPart = up ? px : px - 1;
+  return `(${widthPart}: ${pixelPart}px)`;
+};
 
 const up = (breakpoint: Breakpoint) => resolveBreakpoint(true, breakpoint);
 const down = (breakpoint: Breakpoint) => resolveBreakpoint(false, breakpoint);

@@ -11,14 +11,19 @@ import { ScreenProps } from "models";
 import useElementSize from "hooks/element-size-hook";
 import { GameMoveScreen } from "models";
 
-import { GameToolbar } from "../game-toolbar";
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameMoveScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameMove = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
+export const GameMove = ({
+  screenPreloadedFiles,
+  infoPanelRef,
+  actionsPanelRef,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [ref, { width, height }] = useElementSize();
@@ -97,16 +102,24 @@ export const GameMove = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
         )
       )}
 
-      {toolbarRef.current &&
+      {infoPanelRef.current &&
         ReactDOM.createPortal(
-          <GameToolbar
+          <GameInfoPanel
+            gameScreen={viewScreen}
+            isGameFinished={finished}
             text={t("game-move.task")}
-            onFinish={onFinish}
-            onReset={onReset}
-            finished={finished}
-            screen={viewScreen}
           />,
-          toolbarRef.current
+          infoPanelRef.current
+        )}
+
+      {actionsPanelRef.current &&
+        ReactDOM.createPortal(
+          <GameActionsPanel
+            isGameFinished={finished}
+            onGameFinish={onFinish}
+            onGameReset={onReset}
+          />,
+          actionsPanelRef.current
         )}
     </div>
   );

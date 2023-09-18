@@ -1,16 +1,8 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { parseUrlSection, parseUrlScreen } from "utils";
 
-const parseIndex = (indexString?: string) => {
-  if (!indexString) {
-    return undefined;
-  }
-
-  const index = parseInt(indexString);
-  return isNaN(index) ? undefined : index;
-};
-
-export const useSectionScreen = () => {
+export const useSectionScreenParams = () => {
   const { section, screen } = useParams<{
     section: string;
     screen: string;
@@ -18,8 +10,8 @@ export const useSectionScreen = () => {
 
   return useMemo(
     () => ({
-      section: parseIndex(section),
-      screen: parseIndex(screen),
+      section: parseUrlSection(section),
+      screen: parseUrlScreen(screen),
     }),
     [screen, section]
   );

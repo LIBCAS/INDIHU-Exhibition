@@ -9,8 +9,8 @@ import { IntroScreen } from "models";
 import { AppState } from "store/store";
 import { ScreenProps } from "models";
 
-// import { getViewImageAnimation } from "../view-image/view-image-animation";
-// import { getScreenTime } from "utils/screen";
+import { getViewImageAnimation } from "../view-image/view-image-animation";
+import { getScreenTime } from "utils/screen";
 import cx from "classnames";
 
 // - - - - - - - -
@@ -23,15 +23,27 @@ const stateSelector = createSelector(
 
 export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, shouldIncrement } = useSelector(stateSelector);
+  const { title, subTitle, animateText } = viewScreen;
   const { image } = screenPreloadedFiles;
 
-  const { title, subTitle, animateText } = viewScreen;
+  const { horizontal = "CENTER", vertical = "CENTER" } =
+    viewScreen?.textPosition ?? {};
+
+  const animation = useMemo(
+    () => getViewImageAnimation(viewScreen.animationType),
+    [viewScreen.animationType]
+  );
+
+  const duration = useMemo(
+    () => getScreenTime(viewScreen, { unit: "ms" }),
+    [viewScreen]
+  );
 
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const containedImgRef = useRef<HTMLImageElement | null>(null);
   const { GlassMagnifier } = useGlassMagnifier(
-    imageContainerRef,
-    containedImgRef
+    imageContainerRef.current,
+    containedImgRef.current
   );
 
   const shadowColor = useMemo(() => {
@@ -48,24 +60,21 @@ export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
     return "white";
   }, [viewScreen.introTextTheme, viewScreen.isIntroTextHaloEffectOn]);
 
-  // const animation = useMemo(
-  //   () => getViewImageAnimation(viewScreen.animationType),
-  //   [viewScreen.animationType]
-  // );
+  // - - Animation springs - -
+  // image animation
+  const { scale, translateX, translateY } = useSpring({
+    ...animation,
+    config: {
+      duration,
+    },
+    pause: !shouldIncrement,
+    onChange: (changedValues) => {
+      console.log("changedValues: ", changedValues.value);
+      return;
+    },
+  });
 
-  // const duration = useMemo(
-  //   () => getScreenTime(viewScreen, { unit: "ms" }),
-  //   [viewScreen]
-  // );
-
-  // const { scale, translateX, translateY } = useSpring({
-  //   ...animation,
-  //   config: {
-  //     duration,
-  //   },
-  //   pause: !shouldIncrement,
-  // });
-
+  // text animation
   const { y, opacity } = useSpring({
     from: { y: -30, opacity: 0 },
     to: { y: 0, opacity: 1 },
@@ -73,15 +82,12 @@ export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
     pause: !shouldIncrement,
   });
 
-  const { horizontal: horizontal = "CENTER", vertical: vertical = "CENTER" } =
-    viewScreen?.textPosition ?? {};
-
   return (
     <div className="w-full h-full" ref={imageContainerRef}>
       {image && (
         <animated.img
           className="w-full h-full object-contain"
-          //style={{ scale, translateX, translateY }}
+          style={{ scale, translateX, translateY }}
           src={image}
           alt="background"
           ref={containedImgRef}

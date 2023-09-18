@@ -5,6 +5,7 @@ import { Tooltip } from "react-tooltip";
 
 import { Icon } from "components/icon/icon";
 import { useBoolean } from "hooks/boolean-hook";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 type CopyClipboardBoxProps = {
   text: string;
@@ -18,23 +19,23 @@ export const CopyClipboardBox = ({
   onCopy,
 }: CopyClipboardBoxProps) => {
   const [open, { setTrue, setFalse }] = useBoolean(false);
+  const { isLightMode, palette } = useExpoDesignData();
 
   const toasts = useMemo(
     () => (open ? [{ text: "Odkaz zkopírován" }] : undefined),
     [open]
   );
 
-  // useEffect(() => {
-  //   Tooltip.rebuild();
-  // }, [tooltipText]);
-
   return (
     <>
-      <div className="flex items-center justify-between gap-2 p-2 bg-muted-200">
-        <span>{text}</span>
+      <div className="flex items-center justify-between gap-2 p-2 bg-medium-gray">
+        <span style={{ color: isLightMode ? undefined : palette["black"] }}>
+          {text}
+        </span>
         <div
           data-tooltip-content={tooltipText}
           data-tooltip-id="copy-clipboard-box-tooltip"
+          style={{ color: isLightMode ? undefined : palette["black"] }}
         >
           <CopyToClipboard
             text={text}

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 // Custom hooks
-import { useSectionScreen } from "hooks/view-hooks/section-screen-hook";
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 import { useFiles } from "hooks/view-hooks/files-hook";
 import { useQuery } from "hooks/use-query";
 import { useUpdateEffect } from "hooks/update-effect-hook";
@@ -36,11 +36,10 @@ const createCacheKey = (coordinates: ScreenCoordinates) =>
 
 export const useFilePreloaderScreens = (): ScreenPreloads => {
   const { viewExpo } = useSelector(stateSelector);
-  const { section: currentSectionString, name: expoName } = useParams<{
-    section: string;
+  const { name: expoName } = useParams<{
     name: string;
   }>();
-  const { section, screen } = useSectionScreen();
+  const { section, screen } = useSectionScreenParams();
   const query = useQuery();
   const fileLookupMap = useFiles();
 
@@ -58,11 +57,15 @@ export const useFilePreloaderScreens = (): ScreenPreloads => {
   // 1.) current section + screen as tuple -- [number, number]
   const current = useMemo<ScreenCoordinates>(() => {
     if (section === undefined || screen === undefined) {
-      return currentSectionString === "finish" ? "finish" : "start";
+      // !!
+      return "start";
+    }
+    if (section === "start" || section === "finish") {
+      return section;
     }
 
     return [section, screen];
-  }, [screen, section, currentSectionString]);
+  }, [screen, section]);
 
   // 2.) previous and next section + screen as tuple -- [number, number]
   const [previous, next] = useMemo<

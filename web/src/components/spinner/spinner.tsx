@@ -1,10 +1,12 @@
 import { useSpring, animated } from "react-spring";
+import cx from "classnames";
 
 type SpinnerProps = {
   scale: 1 | 2 | 3 | 4;
+  className?: string;
 };
 
-export const Spinner = ({ scale = 1 }: SpinnerProps) => {
+export const Spinner = ({ scale = 1, className }: SpinnerProps) => {
   const { rotate } = useSpring({
     from: {
       rotate: 0,
@@ -22,7 +24,10 @@ export const Spinner = ({ scale = 1 }: SpinnerProps) => {
 
   return (
     <animated.div
-      className="h-14 w-14 border-4 border-x-primary border-t-primary border-b-transparent rounded-full"
+      className={cx(
+        "h-14 w-14 border-4 border-x-primary border-t-primary border-b-transparent rounded-full",
+        className
+      )}
       style={{ transform: `scale(${scale})`, rotate }}
     />
   );

@@ -1,18 +1,18 @@
-import "babel-polyfill";
 import { render } from "react-dom";
-import "normalize.css";
+import { AppProviders } from "app-providers";
 
-import "i18n";
 import configureStore from "store/store";
-
 import registerServiceWorker from "./registerServiceWorker";
-import { App } from "./app";
+
+import "babel-polyfill";
+import "i18n";
+import "normalize.css";
 import "./styles/style.scss";
 
+// - -
 const store = configureStore();
-
 export const dispatch = store.dispatch;
 
-render(<App store={store} />, document.getElementById("root"));
+render(<AppProviders store={store} />, document.getElementById("root"));
 
 registerServiceWorker();

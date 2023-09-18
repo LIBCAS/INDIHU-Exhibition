@@ -1,28 +1,19 @@
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "store/store";
-
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-
-import { setDialog } from "actions/dialog-actions";
-import { DialogType } from "components/dialogs/dialog-types";
 
 import cx from "classnames";
 
 // - -
 
 type SettingsButtonProps = {
+  openSettingsDialog: () => void;
   isAnyTutorialOpened: boolean;
 };
 
-const SettingsButton = ({ isAnyTutorialOpened }: SettingsButtonProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const openSettingsDialog = useCallback(() => {
-    dispatch(setDialog(DialogType.SettingsDialog, {}));
-  }, [dispatch]);
-
+const SettingsButton = ({
+  openSettingsDialog,
+  isAnyTutorialOpened,
+}: SettingsButtonProps) => {
   return (
     <div
       className={cx(

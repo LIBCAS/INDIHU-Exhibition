@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
-import { GameToolbar } from "../game-toolbar";
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
 import ImageTextAnswer from "./ImageTextAnswer";
 
 import { AppState } from "store/store";
@@ -18,7 +19,11 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameQuiz = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
+export const GameQuiz = ({
+  screenPreloadedFiles,
+  infoPanelRef,
+  actionsPanelRef,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("screen");
 
@@ -100,16 +105,24 @@ export const GameQuiz = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
         })}
       </div>
 
-      {toolbarRef.current &&
+      {infoPanelRef.current &&
         ReactDOM.createPortal(
-          <GameToolbar
+          <GameInfoPanel
+            gameScreen={viewScreen}
+            isGameFinished={isFinished}
             text={t("game-quiz.task")}
-            onFinish={onFinish}
-            onReset={onReset}
-            finished={isFinished}
-            screen={viewScreen}
           />,
-          toolbarRef.current
+          infoPanelRef.current
+        )}
+
+      {actionsPanelRef.current &&
+        ReactDOM.createPortal(
+          <GameActionsPanel
+            isGameFinished={isFinished}
+            onGameFinish={onFinish}
+            onGameReset={onReset}
+          />,
+          actionsPanelRef.current
         )}
     </div>
   );

@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 
 import { animated, useSpring } from "react-spring";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import { setViewProgress } from "actions/expoActions/viewer-actions";
 import { clamp } from "lodash";
-import cx from "classnames";
 
 import { Tooltip } from "react-tooltip";
 
@@ -30,20 +30,30 @@ const stateSelector = createSelector(
 );
 
 type Props = {
-  height?: number;
-  color?: "white" | "primary" | "secondary";
   percentage: number;
+  height?: number;
+  color?: "white" | "primary";
 };
 
 // - - - - - - - -
 
-export const ProgressBar = ({
-  height = 10,
-  color = "primary",
-  percentage,
-}: Props) => {
+export const ProgressBar = ({ height = 10, color, percentage }: Props) => {
   const { viewProgress, viewScreen, tooltipInfo } = useSelector(stateSelector);
   const dispatch = useDispatch();
+
+  const { expoDesignData, palette } = useExpoDesignData();
+
+  const progressBarColor = useMemo(() => {
+    if (color) {
+      return color;
+    }
+    const iconsColor = expoDesignData?.iconsColor;
+    if (!iconsColor) {
+      return palette.primary;
+    }
+    return iconsColor;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expoDesignData?.iconsColor]);
 
   // Ref to the progressbar container and rectangle information about this container!
   const wholeProgBarRef = useRef<HTMLDivElement>(null);
@@ -159,7 +169,7 @@ export const ProgressBar = ({
     <div
       ref={wholeProgBarRef}
       style={{ minHeight: height }}
-      className="w-full bg-muted-200 hover:cursor-pointer"
+      className="w-full bg-medium-gray hover:cursor-pointer"
       onClick={onProgressBarClick}
       onMouseMove={onMouseMoveHandler}
       onMouseLeave={onMouseLeaveHandler}
@@ -167,13 +177,12 @@ export const ProgressBar = ({
       data-tooltip-id="progress-bar-tooltip"
     >
       <animated.div
-        style={{ ...style, minHeight: height }}
-        className={cx(
-          "h-full",
-          color === "primary" && "bg-primary",
-          color === "white" && "bg-white",
-          color === "secondary" && "bg-primary"
-        )}
+        style={{
+          ...style,
+          minHeight: height,
+          backgroundColor: progressBarColor,
+        }}
+        className="h-full"
       />
 
       {viewScreen?.type === screenType.VIDEO && (

@@ -12,14 +12,19 @@ import { GameFindScreen } from "models";
 
 import pinIcon from "assets/img/pin.png";
 import classes from "./game-find.module.scss";
-import { GameToolbar } from "../game-toolbar";
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameFind = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
+export const GameFind = ({
+  screenPreloadedFiles,
+  infoPanelRef,
+  actionsPanelRef,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [pin, setPin] = useState<{ x: number; y: number }>();
@@ -100,16 +105,24 @@ export const GameFind = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
           )
       )}
 
-      {toolbarRef.current &&
+      {infoPanelRef.current &&
         ReactDOM.createPortal(
-          <GameToolbar
+          <GameInfoPanel
+            gameScreen={viewScreen}
             text={t("game-find.task")}
-            onFinish={onFinish}
-            onReset={onReset}
-            finished={finished}
-            screen={viewScreen}
+            isGameFinished={finished}
           />,
-          toolbarRef.current
+          infoPanelRef.current
+        )}
+
+      {actionsPanelRef.current &&
+        ReactDOM.createPortal(
+          <GameActionsPanel
+            isGameFinished={finished}
+            onGameFinish={onFinish}
+            onGameReset={onReset}
+          />,
+          actionsPanelRef.current
         )}
     </div>
   );

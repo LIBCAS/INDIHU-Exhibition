@@ -5,7 +5,7 @@ import Button from "react-md/lib/Buttons/Button";
 import FontIcon from "react-md/lib/FontIcons";
 import Divider from "react-md/lib/Dividers";
 
-import AppHeader from "../../components/app-header";
+import AppHeader from "components/app-header";
 import Header from "./header";
 import UserInfoChange from "./user-info-change";
 import PasswordChange from "./password-change";

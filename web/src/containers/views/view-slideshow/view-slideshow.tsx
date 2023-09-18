@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
@@ -19,6 +19,7 @@ import { resolveSlideshowAnimation } from "./view-slideshow-animation";
 import { AppState } from "store/store";
 import { SlideshowScreen } from "models";
 import { ScreenProps } from "models";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
 
 // - - - -
 
@@ -42,7 +43,10 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - -
 
   // Container here is parent, { width, height } in pixels of the whole available screen container
-  const [containerRef, containerSize] = useElementSize();
+  const [containerRef, containerSize, containerEl] = useElementSize();
+  const [photoImgEl, setPhotoImgEl] = useState<HTMLImageElement | null>(null);
+
+  const { GlassMagnifier } = useGlassMagnifier(containerEl, photoImgEl);
 
   // ImageOrigData here is child, { width, height } in pixels of the image from administration, infopoints are placed based on these coords
   const imageOrigData = useMemo(() => {
@@ -271,12 +275,15 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
                 alt={`blurred background photo number ${photoIndex}`}
               />
             )}
+
             {images[photoIndex] && (
               <img
+                id="photo-image"
                 className="absolute w-full h-full object-contain"
                 src={images[photoIndex]}
                 alt={`photo number ${photoIndex}`}
                 onClick={() => closeInfopoints(viewScreen)(photoIndex)}
+                onLoad={(e) => setPhotoImgEl(e.currentTarget)}
               />
             )}
 
@@ -304,14 +311,28 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
                   }
 
                   // Render the small 'primary' colored shaking squares or circles
+                  // Render one Tooltip for each anchor
                   return (
-                    <ScreenAnchorInfopoint
+                    <Fragment
                       key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                      id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                      top={topPosition}
-                      left={leftPosition}
-                      infopoint={infopoint}
-                    />
+                    >
+                      <ScreenAnchorInfopoint
+                        id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
+                        top={topPosition}
+                        left={leftPosition}
+                        infopoint={infopoint}
+                      />
+                      <TooltipInfoPoint
+                        key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
+                        id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
+                        infopoint={infopoint}
+                        infopointOpenStatusMap={infopointOpenStatusMap}
+                        setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                        primaryKey={photoIndex.toString()}
+                        secondaryKey={infopointIndex.toString()}
+                        canBeOpen={!isAnimationRunning}
+                      />
+                    </Fragment>
                   );
                 }
               )}
@@ -319,25 +340,10 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
         ))}
       </div>
 
-      {/* Render one Tooltip as infopoint component for each previously rendered square, 1: 1 */}
-      {/* Infopoint Tooltip which is alwaysVisible has different behaviour than infopoint which is not!*/}
-      {!isAnimationRunning &&
-        viewScreen.images?.[photoIndex]?.infopoints?.map(
-          (infopoint, infopointIndex) => {
-            return (
-              <TooltipInfoPoint
-                key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                infopoint={infopoint}
-                infopointOpenStatusMap={infopointOpenStatusMap}
-                setInfopointOpenStatusMap={setInfopointOpenStatusMap}
-                primaryKey={photoIndex.toString()}
-                secondaryKey={infopointIndex.toString()}
-                canBeOpen={!isAnimationRunning}
-              />
-            );
-          }
-        )}
+      {images[photoIndex] && (
+        // React Tooltip has z-index by default set to 10
+        <GlassMagnifier lensContainerStyle={{ zIndex: 11 }} />
+      )}
     </>
   );
 };

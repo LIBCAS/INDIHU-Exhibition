@@ -176,5 +176,5 @@ export const ViewScreenOverlayDrawer = ({
 
 const ExpoTimeProgress = () => {
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
-  return <ProgressBar height={10} color="white" percentage={percentage} />;
+  return <ProgressBar height={10} percentage={percentage} />;
 };

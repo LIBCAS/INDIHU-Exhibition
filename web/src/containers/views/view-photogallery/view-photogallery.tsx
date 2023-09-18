@@ -1,12 +1,9 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
-import useElementSize from "hooks/element-size-hook";
-
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 // Components
 import { Grid } from "@mui/material";
@@ -22,7 +19,9 @@ import { PhotogalleryScreen, ScreenProps } from "models";
 // Utils
 import cx from "classnames";
 import { setScreensInfo } from "actions/expoActions/viewer-actions";
+import { closeDialog } from "actions/dialog-actions";
 import classes from "./gallery-overlay.module.scss";
+import LightBox from "./Lightbox";
 
 // - -
 
@@ -34,7 +33,6 @@ const stateSelector = createSelector(
 // - -
 
 export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -44,18 +42,23 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     null
   );
 
-  const [imgContainerRef, imgContainerSize] = useElementSize();
+  const timeoutRef = useRef<NodeJS.Timeout>();
+  const [isActivity, setIsActivity] = useState<boolean>(false);
+
+  const overlayOpacityAnimation = useSpring({
+    opacity: isActivity ? 1 : 0,
+  });
 
   // -- Style of grid based on number of total photos --
-  const isLessPhotos = images ? images.length <= 8 : true;
+  const isLessPhotos = images ? images.length <= 6 : true;
 
-  // -- Lightbox stuff --
+  // 2. Lightbox stuff
   const isLightBoxOpened = useMemo(
     () => selectedImageIndex !== null,
     [selectedImageIndex]
   );
 
-  const opacityAnimation = useSpring({
+  const lightboxOpacityAnimation = useSpring({
     opacity: isLightBoxOpened ? 1 : 0,
   });
 
@@ -77,7 +80,8 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       return;
     }
     setSelectedImageIndex((prev) => (prev !== null ? prev - 1 : prev));
-  }, [selectedImageIndex]);
+    dispatch(closeDialog()); // close any photo description dialog if its open
+  }, [selectedImageIndex, dispatch]);
 
   const nextPhoto = useCallback(() => {
     if (
@@ -88,9 +92,10 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       return;
     }
     setSelectedImageIndex((prev) => (prev !== null ? prev + 1 : prev));
-  }, [images, selectedImageIndex]);
+    dispatch(closeDialog()); // close any photo description dialog if its open
+  }, [images, selectedImageIndex, dispatch]);
 
-  // -- Key Press handler --
+  // 3. Key press and mouse handlers
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape" && isLightBoxOpened) {
@@ -106,12 +111,26 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     [closeLightBox, isLightBoxOpened, nextPhoto, prevPhoto]
   );
 
+  const onMouseAction = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setIsActivity(true);
+    const timeout = setTimeout(() => setIsActivity(false), 4000);
+    timeoutRef.current = timeout;
+  }, []);
+
   useEffect(() => {
     document.addEventListener("keydown", onKeydownAction);
+    document.addEventListener("mousemove", onMouseAction);
+    document.addEventListener("mousedown", onMouseAction);
     return () => {
       document.removeEventListener("keydown", onKeydownAction);
+      document.removeEventListener("mousemove", onMouseAction);
+      document.removeEventListener("mousedown", onMouseAction);
     };
-  }, [onKeydownAction]);
+  }, [onKeydownAction, onMouseAction]);
 
   return (
     <div className="w-full h-full relative">
@@ -142,87 +161,57 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       </div>
 
       {/* Lightbox which is opened on some image click */}
-      {images && selectedImageIndex !== null && isLightBoxOpened && (
-        <animated.div style={opacityAnimation}>
-          <div
-            key={selectedImageIndex}
-            className="absolute top-0 left-0 w-full h-full px-[7%] py-[4.5%]"
-          >
-            <div className="w-full h-full flex">
-              <div
-                ref={imgContainerRef}
-                style={{ width: "calc(100% - 32px)", height: "100%" }}
-                className="flex justify-center items-center"
-              >
-                <TransformWrapper disablePadding>
-                  <TransformComponent
-                    wrapperStyle={{
-                      maxWidth: `${imgContainerSize.width}px`,
-                      maxHeight: `${imgContainerSize.height}px`,
-                    }}
-                    contentStyle={{
-                      maxWidth: `${imgContainerSize.width}px`,
-                      maxHeight: `${imgContainerSize.height}px`,
-                    }}
+      {images &&
+        viewScreen.images &&
+        selectedImageIndex !== null &&
+        isLightBoxOpened && (
+          <animated.div style={lightboxOpacityAnimation}>
+            <div
+              key={selectedImageIndex}
+              className="absolute top-0 left-0 w-full h-full px-[7%] py-[4.5%]"
+            >
+              <LightBox
+                key={`lightbox-image-${selectedImageIndex}`}
+                currPhotoSrc={images[selectedImageIndex]}
+                currPhotoObj={viewScreen.images[selectedImageIndex]}
+                closeLightBox={closeLightBox}
+                overlayOpacityAnimation={overlayOpacityAnimation}
+              />
+            </div>
+
+            {/* Arrows */}
+            <animated.div
+              className={cx(
+                classes.overlay,
+                "hidden sm:grid fixed left-0 top-0 w-full h-full pointer-events-none"
+              )}
+              style={{ opacity: overlayOpacityAnimation.opacity }}
+            >
+              <div className={cx(classes.leftNav)}>
+                <div className="w-full h-full flex items-center">
+                  <Button
+                    color="expoTheme"
+                    className="rounded-full pointer-events-auto"
+                    onClick={prevPhoto}
                   >
-                    <img
-                      src={images[selectedImageIndex]}
-                      alt="lightbox-image"
-                      style={{
-                        maxWidth: `${imgContainerSize.width}px`,
-                        maxHeight: `${imgContainerSize.height}px`,
-                      }}
-                    />
-                  </TransformComponent>
-                </TransformWrapper>
+                    <Icon name="chevron_left" />
+                  </Button>
+                </div>
               </div>
-
-              <div className="w-[32px] self-start flex justify-center items-center">
-                <Button noPadding>
-                  <Icon
-                    color="white"
-                    useMaterialUiIcon
-                    name="close"
-                    onClick={closeLightBox}
-                    style={{ fontSize: "24px" }}
-                  />
-                </Button>
+              <div className={cx(classes.rightNav)}>
+                <div className="w-full h-full flex items-center justify-end">
+                  <Button
+                    color="expoTheme"
+                    className="rounded-full pointer-events-auto"
+                    onClick={nextPhoto}
+                  >
+                    <Icon name="chevron_right" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Arrows */}
-          <div
-            className={cx(
-              classes.overlay,
-              "hidden sm:grid fixed left-0 top-0 w-full h-full pointer-events-none"
-            )}
-          >
-            <div className={cx(classes.leftNav)}>
-              <div className="w-full h-full flex items-center">
-                <Button
-                  color="white"
-                  className="rounded-full pointer-events-auto"
-                  onClick={prevPhoto}
-                >
-                  <Icon name="chevron_left" />
-                </Button>
-              </div>
-            </div>
-            <div className={cx(classes.rightNav)}>
-              <div className="w-full h-full flex items-center justify-end">
-                <Button
-                  color="white"
-                  className="rounded-full pointer-events-auto"
-                  onClick={nextPhoto}
-                >
-                  <Icon name="chevron_right" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </animated.div>
-      )}
+            </animated.div>
+          </animated.div>
+        )}
     </div>
   );
 };

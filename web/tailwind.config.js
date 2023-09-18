@@ -6,24 +6,31 @@ module.exports = {
       colors: {
         primary: "#d2a473",
         secondary: "#1c3970",
-        background: "#393d41",
-        muted: "#6c757d",
-        "muted-400": "#a6acb3",
-        "muted-200": "#ced4da",
-        "muted-100": "#dee4e9",
         blue: "#2298ee",
         success: "#35c07d",
+        warning: "#ffb347",
         danger: "#e0293e",
+
+        // figma colors, muted-400 kept from previous usages
+        white: "#ffffff",
+        "light-gray": "#e9ecef",
+        "medium-gray": "#ced4da",
+        "muted-400": "#a6acb3",
+        gray: "#6c757d", // e.g gray text for infopoints, background for tags in dark mode
+        "dark-gray": "#343a40",
+        black: "#121416",
+
+        background: "#393d41",
+
+        // Theme (colors from figma)
+        "dark-mode-b": "#202326", // background color in dark mode
+        "light-mode-b": "#ffffff", // background color in light mode (white)
+        "dark-mode-f": "#ffffff", // text (foreground) color in dark mode (white text on dark background)
+        "light-mode-f": "#121416", // text (foreground) color in light mode (black text on light background)
+
+        // others
         "disabled-dark": "rgba(0, 0, 0, 0.26)",
         "disabled-light": "rgba(0, 0, 0, 0.12)",
-
-        gray: "#6c757d", // figma -- gray text for infopoints, tags gray background when dark mode, SAME as muted
-        "light-gray": "#e9ecef",
-        // THEME
-        "dark-mode-b": "#202326", // figma - dark mode background black color..
-        "light-mode-b": "#ffffff", // light mode white background when light theme is on
-        "dark-mode-f": "#ffffff", // white text when on dark background
-        "light-mode-f": "#000000", // classic black text on white background
       },
       zIndex: {
         45: 45,

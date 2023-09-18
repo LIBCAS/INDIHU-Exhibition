@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import Dialog from "../dialog-wrap-typed";
 import { DialogType, DialogProps } from "../dialog-types";
@@ -130,6 +131,8 @@ const AudioSlider = ({
 }: AudioSliderProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const { isLightMode } = useExpoDesignData();
+
   const iconName = getIconname(volumeKey, volumeObj.actualVolume);
 
   return (
@@ -170,14 +173,18 @@ const AudioSlider = ({
         size="medium"
         // Making the slider not circle but square
         sx={{
-          color: "black",
+          color: isLightMode ? "black" : "white",
           "& .MuiSlider-thumb": {
             borderRadius: "1px",
             "&:hover, &.Mui-focusVisible": {
-              boxShadow: `0px 0px 0px 8px rgba(0, 0, 0, 0.16)`, // ${alpha(theme.palette.success.main, 0.16)}
+              boxShadow: isLightMode
+                ? `0px 0px 0px 8px rgba(0, 0, 0, 0.16)`
+                : `0px 0px 0px 8px rgba(255, 255, 255, 0.16)`, // ${alpha(theme.palette.success.main, 0.16)}
             },
             "&.Mui-active": {
-              boxShadow: `0px 0px 0px 14px rgba(0, 0, 0, 0.16)`, //${alpha(theme.palette.success.main, 0.16)}
+              boxShadow: isLightMode
+                ? `0px 0px 0px 14px rgba(0, 0, 0, 0.16)`
+                : `0px 0px 0px 14px rgba(255, 255, 255, 0.16)`, //${alpha(theme.palette.success.main, 0.16)}
             },
           },
         }}

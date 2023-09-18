@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { map, get, debounce } from "lodash";
 
-import AppHeader from "../../components/app-header";
+import AppHeader from "components/app-header";
 import Header from "./header";
 import ExpoCard from "./expo-card";
 import ExpoNewCard from "./expo-new-card";

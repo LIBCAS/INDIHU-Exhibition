@@ -12,10 +12,9 @@ import TabMenu from "components/tab-menu";
 import Structure from "./expo-structure";
 import Files from "./expo-files";
 import Settings from "./expo-settings";
-import Sharing from "./expo-sharing";
+import ExpoSharing from "./expo-sharing/expo-sharing";
 import ExpoTheme from "./expo-theme/expo-theme";
 import Editor from "./expo-editor/ExpoEditor";
-// import Editor from "./expo-editor";
 
 import { ActiveExpo } from "models";
 import { AppState } from "store/store";
@@ -95,7 +94,7 @@ const Expo = () => {
       />
       <Route
         path={`${match.url}/sharing`}
-        render={() => <Sharing activeExpo={activeExpo} />}
+        render={() => <ExpoSharing activeExpo={activeExpo} />}
       />
       <Route
         path={`${match.url}/theme`}

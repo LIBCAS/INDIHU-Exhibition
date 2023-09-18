@@ -5,13 +5,13 @@ import { useDispatch } from "react-redux";
 import StateOptions from "../../../components/form/redux-form/state-options";
 import URLChange from "./url-change";
 import ClosedExpo from "./closed-expo";
-import TagsSelect from "./TagsSelect";
+import TagsSelect from "./tags/TagsSelect";
 import { Button } from "react-md";
 
 // Models
 import { AppDispatch } from "store/store";
 import { ActiveExpo } from "models";
-import { TagValues } from "./tags-options";
+import { TagValues } from "./tags/tags-options";
 
 // Utils and actions
 import { isEmpty } from "lodash";
@@ -35,7 +35,6 @@ const Settings = ({ activeExpo }: SettingsProps) => {
     if (isEmpty(activeExpo)) {
       return;
     }
-
     if (activeExpo?.tags && activeExpo.tags.length > 0) {
       setTags(activeExpo.tags);
     }
@@ -51,7 +50,6 @@ const Settings = ({ activeExpo }: SettingsProps) => {
       console.error("Failed to save the tags");
       setTagsErrorMsg("Tagy se nepodařilo uložit");
     }
-
     if (resp) {
       setTagsErrorMsg("");
     }

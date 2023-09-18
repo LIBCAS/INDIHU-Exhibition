@@ -8,6 +8,7 @@ import {
 
 import { createSelector } from "reselect";
 import { useSelector, useDispatch } from "react-redux";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import Card from "react-md/lib/Cards/Card";
@@ -24,7 +25,7 @@ import { AppDispatch, AppState } from "store/store";
 import { closeDialog } from "actions/dialog-actions";
 
 // Utils
-import classNames from "classnames";
+import cx from "classnames";
 
 // - - - - - - - -
 
@@ -72,6 +73,8 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
   const { activeName } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
+  const { isLightMode } = useExpoDesignData();
+
   const closeThisDialog = useCallback(
     () => dispatch(closeDialog()),
     [dispatch]
@@ -82,19 +85,29 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
   }
 
   return (
-    <div className={classNames({ hidden: name !== activeName })}>
+    <div className={cx({ hidden: name !== activeName })}>
       <div className="dialog-background" />
       <Card
         raise
         style={style}
-        className={classNames(`dialog ${className ? className : ""}`, {
+        className={cx(`dialog`, {
           big,
           large,
+          "!bg-light-mode-b !text-light-mode-f": isLightMode,
+          "!bg-dark-mode-b !text-dark-mode-f": !isLightMode,
+          className,
         })}
       >
         {/* 1.) Toolbar with the title and close button */}
         {!noToolbar && (
-          <div className="dialog-title-row">
+          <div
+            className="dialog-title-row"
+            style={{
+              borderBottomColor: isLightMode
+                ? undefined
+                : "rgba(255, 255, 255, 0.15)",
+            }}
+          >
             <CardText className="dialog-title">{title}</CardText>
             <Button
               iconAfter={<Icon name="close" />}
@@ -110,7 +123,7 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
 
         {/* 2.) Dialog Custom Body, section with content */}
         <CardText
-          className={classNames("dialog-content", {
+          className={cx("dialog-content", {
             "no-margin-bottom": noDialogMenu,
             "padding-big": noToolbar && noDialogMenu,
           })}

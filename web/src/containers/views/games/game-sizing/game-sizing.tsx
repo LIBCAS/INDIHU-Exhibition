@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import useElementSize from "hooks/element-size-hook";
 
 import expand from "../../../../assets/img/expand.png";
-import { GameToolbar } from "../game-toolbar";
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameSizingScreen,
@@ -21,7 +22,8 @@ const stateSelector = createSelector(
 
 export const GameSizing = ({
   screenPreloadedFiles,
-  toolbarRef,
+  infoPanelRef,
+  actionsPanelRef,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
@@ -133,16 +135,24 @@ export const GameSizing = ({
         )}
       </div>
 
-      {toolbarRef.current &&
+      {infoPanelRef.current &&
         ReactDOM.createPortal(
-          <GameToolbar
+          <GameInfoPanel
+            gameScreen={viewScreen}
+            isGameFinished={finished}
             text={t("game-sizing.task")}
-            onFinish={onFinish}
-            onReset={onReset}
-            finished={finished}
-            screen={viewScreen}
           />,
-          toolbarRef.current
+          infoPanelRef.current
+        )}
+
+      {actionsPanelRef.current &&
+        ReactDOM.createPortal(
+          <GameActionsPanel
+            isGameFinished={finished}
+            onGameFinish={onFinish}
+            onGameReset={onReset}
+          />,
+          actionsPanelRef.current
         )}
     </div>
   );

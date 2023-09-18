@@ -1,10 +1,4 @@
-import {
-  useState,
-  useMemo,
-  MutableRefObject,
-  useEffect,
-  useCallback,
-} from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { calculatePositions } from "./calculate-positions";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 import GlassMagnifier from "./GlassMagnifier";
@@ -15,8 +9,8 @@ type Position = {
 };
 
 export const useGlassMagnifier = (
-  imageContainerRef: MutableRefObject<HTMLDivElement | null>,
-  containedImgRef: MutableRefObject<HTMLImageElement | null>
+  imageContainerEl: HTMLDivElement | null,
+  containedImageEl: HTMLImageElement | null
 ) => {
   const { isGlassMagnifierEnabled, glassMagnifierPxSize } =
     useGlassMagnifierConfig();
@@ -38,19 +32,6 @@ export const useGlassMagnifier = (
     width: 0,
     height: 0,
   });
-
-  //
-  const imageContainerEl = useMemo(
-    () => imageContainerRef.current,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [imageContainerRef.current]
-  );
-
-  const containedImageEl = useMemo(
-    () => containedImgRef.current,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [containedImgRef.current]
-  );
 
   const containedImgSrc = useMemo(
     () => containedImageEl?.src,
@@ -128,13 +109,23 @@ export const useGlassMagnifier = (
 
   // Glass Magnifier component with current cursor positions
   // Adding this component into viewScreen will render "lens" at the current cursor position
-  const CalculatedGlassMagnifier = () => {
+  type CalculatedGlassMagnifierProps = {
+    lensContainerStyle?: React.CSSProperties;
+    lensStyle?: React.CSSProperties;
+  };
+
+  const CalculatedGlassMagnifier = ({
+    lensContainerStyle,
+    lensStyle,
+  }: CalculatedGlassMagnifierProps) => {
     return (
       <GlassMagnifier
         cursorPosition={cursorPosition}
         targetPosition={targetPosition}
         containedImgSrc={containedImgSrc}
         containedImgSize={containedImgSize}
+        lensContainerStyle={lensContainerStyle}
+        lensStyle={lensStyle}
       />
     );
   };

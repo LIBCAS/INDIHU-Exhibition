@@ -1,6 +1,6 @@
 import { Screen, StartScreen, FinishScreen } from "./screen";
 import { Folder } from "./file";
-import { TagValues } from "containers/expo-administration/expo-settings/tags-options";
+import { TagValues } from "containers/expo-administration/expo-settings/tags/tags-options";
 import { ThemeFormDataProcessed } from "containers/expo-administration/expo-theme/models";
 
 export type ExpositionState = "PREPARE" | "OPENED" | "ENDED";
@@ -16,7 +16,7 @@ export type AuthorObj = {
 
 export type CollaboratorObj = {
   collaborationType: "READ_ONLY" | "EDIT";
-  collaborator: AuthorObj;
+  collaborator?: AuthorObj; // could missing, e.g when collaborator added through email invitation
   id: string;
   since: string;
   userEmail: string;

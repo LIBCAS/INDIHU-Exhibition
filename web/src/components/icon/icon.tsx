@@ -11,12 +11,13 @@ interface IconProps {
   name: string; // name either for FontIcon from 'react-md' or Icon from 'material-ui'
   useMaterialUiIcon?: boolean;
   color?:
-    | "default"
+    | "expoThemeMode"
+    | "expoThemeIcons"
     | "primary"
     | "secondary"
     | "white"
     | "muted-400"
-    | "expoTheme";
+    | "inheritFromParents";
   onClick?: () => void;
   noCenterPlace?: boolean; // by default, icon should be inside some container and centered
   className?: string;
@@ -26,30 +27,34 @@ interface IconProps {
 export const Icon = ({
   name,
   useMaterialUiIcon = false,
-  color = "default",
+  color = "inheritFromParents",
   className,
   style,
   onClick,
   noCenterPlace = false,
 }: IconProps) => {
-  const { expoDesignData } = useExpoDesignData();
+  const { expoDesignData, fgThemingIf } = useExpoDesignData();
 
   const themeEnabledIconsColor =
-    color === "expoTheme" && expoDesignData?.iconsColor
+    color === "expoThemeIcons" && expoDesignData?.iconsColor
       ? expoDesignData.iconsColor
       : undefined;
 
   return (
     <div
-      className={cx({
-        "grid place-items-center": !noCenterPlace,
-        "text-primary": color === "primary" || color === "expoTheme",
-        "text-white": color === "white",
-        "text-secondary": color === "secondary",
-        "text-muted-400": color === "muted-400",
-        "hover:cursor-pointer": !!onClick,
-        className,
-      })}
+      className={cx(
+        {
+          "grid place-items-center": !noCenterPlace,
+          // Apply black icons on light mode, white icons on dark mode if expoThemeMode color is set
+          ...fgThemingIf(color === "expoThemeMode"),
+          "text-primary": color === "expoThemeIcons" || color === "primary",
+          "text-white": color === "white",
+          "text-secondary": color === "secondary",
+          "text-muted-400": color === "muted-400",
+          "hover:cursor-pointer": !!onClick,
+        },
+        className
+      )}
       style={{
         color: themeEnabledIconsColor,
       }}

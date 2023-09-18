@@ -27,7 +27,7 @@ const stateSelector = createSelector(
 );
 
 type InfoPanelProps = {
-  toolbarRef: RefObject<HTMLDivElement>;
+  infoPanelRef: RefObject<HTMLDivElement>;
   openDrawer: () => void;
   keyKey: number;
   bind: (stepKey: string) => { ref: RefCallback };
@@ -37,7 +37,7 @@ type InfoPanelProps = {
 };
 
 const InfoPanel = ({
-  toolbarRef,
+  infoPanelRef,
   openDrawer,
   keyKey,
   bind,
@@ -66,9 +66,10 @@ const InfoPanel = ({
     <div
       className={cx(
         classes.info, // info in the grid
-        "flex h-full items-end p-3 gap-2 justify-start"
+        // hidden sm:flex
+        "flex h-full justify-start items-end p-3 gap-2"
       )}
-      ref={toolbarRef}
+      ref={infoPanelRef}
     >
       {!amIGameScreen && (
         <div
@@ -92,9 +93,8 @@ const InfoPanel = ({
             >
               <ProgressBar
                 key={`${viewScreen?.id}-${keyKey}`}
-                height={isVideoOrSlideshowScreen ? 10 : 6}
                 percentage={percentage}
-                color={isVideoOrSlideshowScreen ? "secondary" : "primary"}
+                height={isVideoOrSlideshowScreen ? 10 : 6}
               />
             </div>
 

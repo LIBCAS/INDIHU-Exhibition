@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 // Reducers and their types, if are defined
 import { reducer as formReducer, FormStateMap } from "redux-form";
 import appReducer, { AppReducerState } from "./app-reducer";
-import userReducer from "./user-reducer";
+import userReducer, { UserReducerState } from "./user-reducer";
 import dialogReducer, { DialogReducerState } from "./dialog-reducer";
 
 import expoReducer, { ExpoReducerState } from "./expo-reducer";
@@ -13,7 +13,7 @@ import adminReducer from "./admin-reducer";
 type RootReducerType = {
   form: FormStateMap;
   app: AppReducerState;
-  user: any;
+  user: UserReducerState;
   dialog: DialogReducerState;
   expo: ExpoReducerState;
   file: any;

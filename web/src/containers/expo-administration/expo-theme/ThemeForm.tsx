@@ -13,12 +13,12 @@ import Button from "react-md/lib/Buttons/Button";
 // Utils
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import { handleImportedFile } from "./utils";
 
 // Models
-import { ThemeFormData, ThemeFormDataProcessed } from "./models";
+import { ThemeFormData } from "./models";
 import { ActiveExpo } from "models";
 import { AppDispatch } from "store/store";
-import { isFileInActiveExpoStructureFiles, saveExpoDesignData } from "./utils";
 
 // - - - - - - - -
 
@@ -37,85 +37,14 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
       return;
     }
 
-    const handleImportedFile = async () => {
-      const fileReader = new FileReader();
-      fileReader.onload = async (event) => {
-        try {
-          const content = event.target?.result;
-          if (content) {
-            const parsedFormData = JSON.parse(
-              content as string
-            ) as ThemeFormDataProcessed;
-
-            // 1.
-            const logoFile = parsedFormData.logoFile;
-            const iconFile = parsedFormData.defaultInfopointIconFile;
-            const shouldUpdateLogoFile =
-              !!logoFile &&
-              !isFileInActiveExpoStructureFiles(activeExpo, logoFile);
-            const shouldUpdateIconFile =
-              !!iconFile &&
-              !isFileInActiveExpoStructureFiles(activeExpo, iconFile);
-
-            const resp = await saveExpoDesignData(
-              parsedFormData,
-              activeExpo.id,
-              shouldUpdateLogoFile,
-              shouldUpdateIconFile
-            );
-            if (!resp) {
-              throw new Error();
-            }
-
-            // 2. Set the form!
-            Object.entries(parsedFormData).forEach(([formKeyName, value]) => {
-              if (formKeyName === "logoFile") {
-                formik.setFieldValue("logoFile", logoFile);
-                formik.setFieldValue("logoFileName", logoFile?.name ?? "");
-              } else if (formKeyName === "defaultInfopointIconFile") {
-                formik.setFieldValue("defaultInfopointIconFile", iconFile);
-                formik.setFieldValue(
-                  "defaultInfopointIconFileName",
-                  iconFile?.name ?? ""
-                );
-              } else {
-                formik.setFieldValue(formKeyName, value);
-              }
-            });
-          }
-        } catch (error) {
-          const errMsg = error instanceof Error ? error.message : "";
-
-          dispatch(
-            setDialog(DialogType.InfoDialog, {
-              title: "Import se nezdaril!",
-              content: (
-                <div>
-                  <p className="font-bold">
-                    Neplatný formát importovaného souboru.
-                  </p>
-                  {errMsg && <p className="mt-2 italic">{`'${errMsg}'`}</p>}
-                </div>
-              ),
-              noStornoButton: true,
-            })
-          );
-        } finally {
-          setImportedFile(null);
-        }
-      };
-
-      fileReader.readAsText(importedFile);
-    };
-
-    handleImportedFile();
+    handleImportedFile(activeExpo, formik, importedFile, setImportedFile);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [importedFile]);
 
   useEffect(() => {
     if (
       formik.values.theme === "LIGHT" &&
-      formik.values.tagsColor === "#6c787d"
+      formik.values.tagsColor === "#6c757d"
     ) {
       formik.setFieldValue("tagsColor", "#000000");
     }
@@ -230,7 +159,6 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
                       formik.setFieldValue("logoFileName", file.name);
                       formik.setFieldValue("logoFile", file);
                     },
-                    // TODO - maybe better typeMatch and accept
                     typeMatch: new RegExp(/^image\/.*$/),
                     accept: "image/*",
                     style: { zIndex: 10002 },
@@ -284,7 +212,7 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
           <div className="flex flex-col">
             <ReactMdTextField
               name="defaultInfopointIconFileName"
-              label="Soubor loga/vodoznaku"
+              label="Soubor ikony infopointu"
               disabled
             />
 
@@ -301,7 +229,6 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
                       );
                       formik.setFieldValue("defaultInfopointIconFile", file);
                     },
-                    // TODO - maybe better typeMatch and accept
                     typeMatch: new RegExp(/^image\/.*$/),
                     accept: "image/*",
                     style: { zIndex: 10002 },

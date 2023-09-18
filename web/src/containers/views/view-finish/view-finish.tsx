@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 // Custom hooks
 import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import { Icon } from "components/icon/icon";
@@ -23,6 +24,8 @@ import { Screen, ScreenWithOnlyTypeTitleDocuments, ExpoRates } from "models";
 import { ScreenProps } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
 
+import cx from "classnames";
+
 // - -
 
 const stateSelector = createSelector(
@@ -35,7 +38,7 @@ const stateSelector = createSelector(
 export const ViewFinish = ({
   screenPreloadedFiles,
   chapterMusicRef,
-}: Omit<ScreenProps, "toolbarRef">) => {
+}: Omit<ScreenProps, "infoPanelRef">) => {
   const { viewExpo } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -47,6 +50,8 @@ export const ViewFinish = ({
   const { push } = useHistory();
   const isSmall = useMediaQuery(breakpoints.down("md"));
   const { t } = useTranslation("exhibition");
+
+  const { bgFgTheming } = useExpoDesignData();
 
   const { url } = viewExpo ?? {};
   const { image } = screenPreloadedFiles;
@@ -215,7 +220,12 @@ export const ViewFinish = ({
         </div>
 
         {/* 2) Side authors panel */}
-        <div className="h-full bg-white p-8 shadow-md hidden md:block md:w-[400px]">
+        <div
+          className={cx(
+            "h-full bg-white p-8 shadow-md hidden md:block md:w-[400px]",
+            bgFgTheming
+          )}
+        >
           <ViewFinishInfo viewExpo={viewExpo} viewStart={viewStart} />
         </div>
       </div>

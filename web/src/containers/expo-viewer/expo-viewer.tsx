@@ -10,8 +10,6 @@ import {
 import { Helmet } from "react-helmet";
 
 import { FilePreloaderProvider } from "context/file-preloader/file-preloader-provider";
-import { DrawerPanelProvider } from "context/drawer-panel-provider/drawer-panel-provider";
-import { GlassMagnifierConfigProvider } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 import ViewWrap from "./view-wrap";
 import { ViewSection } from "./view-section";
@@ -21,58 +19,33 @@ import ViewPrepared from "containers/views/view-prepared";
 import ViewEnded from "containers/views/view-ended";
 
 import { AppDispatch, AppState } from "store/store";
-import { CollaboratorObj } from "models";
 
 import { get } from "lodash";
 import { loadExposition, loadScreen } from "actions/expoActions/viewer-actions";
+import { haveAccessToExpo } from "utils";
+
+// import react-tooltip custom designs
+import "./tooltip-style.scss";
 
 // - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
-  ({ user }: AppState) => user.userName as string | null,
-  (viewExpo, viewScreen, userName) => ({
+  ({ user }: AppState) => user.userName,
+  ({ user }: AppState) => user.role,
+  (viewExpo, viewScreen, userName, role) => ({
     viewExpo,
     viewScreen,
     userName,
+    role,
   })
 );
-
-// takes currently logged in userName and array of all collaborators (people with whom the expo is shared with) + author of the expo itself
-// if currently logged in user with its userName has access to this exposition (either collaborator or author), then do not show error or prepared screen
-const amExpoCreator = (
-  userName: string | null, // user, logged in or logged out, if logged out, immediately cannot be creator
-  authorUsername?: string,
-  collaborators?: CollaboratorObj[]
-): boolean => {
-  if (!userName) {
-    return false;
-  }
-
-  if (authorUsername === userName) {
-    return true;
-  }
-
-  if (!collaborators || collaborators.length === 0) {
-    return false;
-  }
-
-  let isCollaborator = false;
-  for (let i = 0; i < collaborators.length; i++) {
-    const currCollaborator = collaborators[i];
-    if (currCollaborator?.collaborator?.username === userName) {
-      isCollaborator = true;
-    }
-  }
-
-  return isCollaborator;
-};
 
 // - - -
 
 export const ExpoViewer = () => {
-  const { viewExpo, userName } = useSelector(stateSelector);
+  const { viewExpo, userName, role } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
   const match = useRouteMatch<{ name: string }>();
@@ -110,7 +83,8 @@ export const ExpoViewer = () => {
     }
 
     // Use case when user is logged in, exposition is not null, but not in opened state and user does not have access to the expo
-    const userHasAccess = amExpoCreator(
+    const userHasAccess = haveAccessToExpo(
+      role,
       userName,
       wExpo?.author?.username,
       wExpo?.collaborators
@@ -183,7 +157,8 @@ export const ExpoViewer = () => {
     return <ViewLoading />;
   }
 
-  const userHasAccess = amExpoCreator(
+  const userHasAccess = haveAccessToExpo(
+    role,
     userName,
     viewExpo?.author?.username,
     viewExpo?.collaborators
@@ -225,15 +200,11 @@ export const ExpoViewer = () => {
         path={`${match.path}/:section/:screen?`}
         render={() => (
           <FilePreloaderProvider>
-            <DrawerPanelProvider>
-              <GlassMagnifierConfigProvider>
-                <ViewSection
-                  name={match.params.name}
-                  handleViewScreen={handleViewScreen}
-                  setViewScreenIsLoaded={setViewScreenIsLoaded}
-                />
-              </GlassMagnifierConfigProvider>
-            </DrawerPanelProvider>
+            <ViewSection
+              name={match.params.name}
+              handleViewScreen={handleViewScreen}
+              setViewScreenIsLoaded={setViewScreenIsLoaded}
+            />
           </FilePreloaderProvider>
         )}
       />

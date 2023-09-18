@@ -9,7 +9,7 @@ import { Document } from "models";
 
 // Utils
 import { getDocumentIconName } from "utils/screen";
-import { downloadFile } from "utils/download-file";
+import { downloadFile } from "utils";
 import cx from "classnames";
 
 // - - - - - - - -
@@ -44,7 +44,7 @@ export const FileItem = ({
       )}
     >
       <Icon
-        className="text-muted"
+        className="text-gray"
         name={getDocumentIconName(
           "name" in file
             ? file.type

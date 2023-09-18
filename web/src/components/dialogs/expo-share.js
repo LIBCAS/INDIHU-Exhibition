@@ -57,14 +57,14 @@ export default compose(
       (dialog) =>
       async (formData, dispatch, { data }) => {
         // formData is object as { option, name, invite } clicked by user from the form
-        // data is object send within setDialog as { activeExpo.id, activeExpo.author }
+        // data (dialogData) is object send within setDialog as { activeExpo.id, activeExpo.author }
 
         const response = await dispatch(
           addCollaborators(
             formData.name,
             formData.option,
             !!formData.invite,
-            data.id
+            data.expoId
           )
         );
 

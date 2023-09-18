@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 // Components
 import Carousel from "components/editors/carousel";
 import Image from "components/editors/image";
+import TextField from "react-md/lib/TextFields";
 
 // Models
 import { ScreenEditorPhotogalleryProps } from "./screen-photogallery-new";
@@ -14,6 +15,7 @@ import { File as IndihuFile } from "models";
 import { isEmpty } from "lodash";
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
 import { getFileById } from "actions/file-actions";
+import HelpIcon from "components/help-icon";
 
 const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
   const { activeScreen } = props;
@@ -135,6 +137,12 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
             }
           }}
           onDelete={(i) => {
+            if (activeImageIndex === i) {
+              if (activeImageIndex >= 1) {
+                setActiveImageIndex(activeImageIndex - 1);
+              }
+              // if 0, keep at 0
+            }
             if (activeScreen.images) {
               dispatch(
                 updateScreenData({
@@ -149,32 +157,90 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
 
         {/* Clicked image from carousel, also counts for new image for uploading */}
         {activeScreen.images && activeImageIndex !== -1 && (
-          <div className="screen-image">
-            <div className="screen-two-cols">
-              {/* Left panel */}
-              <div className="flex-row-nowrap one-image-row">
-                <Image
-                  key={`image-${activeImageIndex}`}
-                  title="Obrázek"
-                  image={activeImageFile}
-                  setImage={setActiveImageFile}
-                  onDelete={() => {
-                    if (!activeScreen.images) {
-                      return;
-                    }
+          <div
+            key={`photo-settings-${activeImageIndex}`}
+            className="mt-8 w-full flex flex-col items-center gap-4 lg:flex-row lg:justify-center lg:items-start lg:gap-8"
+          >
+            {/* Left panel */}
+            <div>
+              <Image
+                key={`image-${activeImageIndex}`}
+                title="Obrázek"
+                image={activeImageFile}
+                setImage={setActiveImageFile}
+                onDelete={() => {
+                  if (!activeScreen.images) {
+                    return;
+                  }
+                  dispatch(
+                    updateScreenData({
+                      images: activeScreen.images.map(
+                        (currImage, currImageIndex) =>
+                          currImageIndex === activeImageIndex ? {} : currImage
+                      ),
+                    })
+                  );
+                }}
+                updateScreenData={updateScreenData}
+                id="editor-photogallery-image"
+                helpIconLabel="Test helpIconLabel"
+                images={activeScreen.images}
+              />
+            </div>
+
+            {/* Right description + title */}
+            <div className="flex flex-col justify-start gap-4">
+              <div className="mt-8 min-w-[450px] flex gap-1">
+                <TextField
+                  id={`photogallery-screen-photo-${activeImageIndex}-title`}
+                  label="Photo title"
+                  defaultValue={
+                    activeScreen.images[activeImageIndex]?.photoTitle ?? ""
+                  }
+                  onChange={(newPhotoTitle: string) =>
                     dispatch(
                       updateScreenData({
-                        images: activeScreen.images.map(
-                          (currImage, currImageIndex) =>
-                            currImageIndex === activeImageIndex ? {} : currImage
+                        images: activeScreen.images?.map((img, imgIndex) =>
+                          imgIndex === activeImageIndex
+                            ? { ...img, photoTitle: newPhotoTitle }
+                            : img
                         ),
                       })
-                    );
-                  }}
-                  updateScreenData={updateScreenData}
-                  id="editor-photogallery-image"
-                  helpIconLabel="Test helpIconLabel"
-                  images={activeScreen.images}
+                    )
+                  }
+                />
+
+                <HelpIcon
+                  id={`photogallery-screen-photo-${activeImageIndex}-title-help`}
+                  label="Test label"
+                />
+              </div>
+
+              <div className="min-w-[450px] flex gap-1">
+                <TextField
+                  id={`photogallery-screen-photo-${activeImageIndex}-description`}
+                  label="Photo description"
+                  rows={5}
+                  defaultValue={
+                    activeScreen.images[activeImageIndex]?.photoDescription ??
+                    ""
+                  }
+                  onChange={(newPhotoDescription: string) =>
+                    dispatch(
+                      updateScreenData({
+                        images: activeScreen.images?.map((img, imgIndex) =>
+                          imgIndex === activeImageIndex
+                            ? { ...img, photoDescription: newPhotoDescription }
+                            : img
+                        ),
+                      })
+                    )
+                  }
+                />
+
+                <HelpIcon
+                  id={`photogallery-screen-photo-${activeImageIndex}-title-description`}
+                  label="Test label"
                 />
               </div>
             </div>

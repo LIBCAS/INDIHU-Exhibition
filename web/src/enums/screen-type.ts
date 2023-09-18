@@ -239,12 +239,12 @@ export const glassMagnifierEnabled = {
   START: false,
   FINISH: false,
   INTRO: true,
-  IMAGE: false,
+  IMAGE: true,
   VIDEO: false,
   TEXT: false,
   PARALLAX: false,
   IMAGE_ZOOM: false,
-  SLIDESHOW: false,
+  SLIDESHOW: true,
   PHOTOGALLERY_NEW: false,
   IMAGE_CHANGE: false,
   EXTERNAL: false,
@@ -255,3 +255,13 @@ export const glassMagnifierEnabled = {
   GAME_MOVE: false,
   GAME_OPTIONS: false,
 };
+
+/* list of game screens */
+export const gameScreens = [
+  screenType.GAME_DRAW,
+  screenType.GAME_FIND,
+  screenType.GAME_MOVE,
+  screenType.GAME_OPTIONS,
+  screenType.GAME_SIZING,
+  screenType.GAME_WIPE,
+];

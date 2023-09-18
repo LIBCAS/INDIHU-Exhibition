@@ -12,7 +12,7 @@ export const LabeledItem: FC<Props> = ({
 }) => {
   return (
     <div className="py-2 text-lg">
-      <span className="text-muted mr-3">
+      <span className="text-gray mr-3">
         {label.trim()}
         {delimiter}
       </span>

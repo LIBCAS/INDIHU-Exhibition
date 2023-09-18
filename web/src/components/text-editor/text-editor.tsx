@@ -70,7 +70,7 @@ export const TextEditor = () => {
               <ContentEditable className="relative outline-none" />
             }
             placeholder={
-              <p className="absolute top-0 left-0 text-muted">
+              <p className="absolute top-0 left-0 text-gray">
                 Enter some text...
               </p>
             }

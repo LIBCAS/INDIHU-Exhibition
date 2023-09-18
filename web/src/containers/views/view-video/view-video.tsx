@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
+import { useUpdateEffect } from "hooks/update-effect-hook";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
@@ -13,7 +15,6 @@ import {
 import { AppDispatch, AppState } from "store/store";
 
 import { ScreenProps } from "models";
-import { useUpdateEffect } from "hooks/update-effect-hook";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
@@ -28,10 +29,14 @@ const stateSelector = createSelector(
   })
 );
 
+// - -
+
 export const ViewVideo = ({ screenPreloadedFiles }: ScreenProps) => {
   const { shouldIncrement, totalTime, rewindToTime, expoVolumes } =
     useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+
+  const { expoDesignData, palette } = useExpoDesignData();
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -143,7 +148,6 @@ export const ViewVideo = ({ screenPreloadedFiles }: ScreenProps) => {
 
           {/* Icon in the middle */}
           <animated.div
-            className="hover:cursor-pointer"
             onClick={onClick}
             style={{
               position: "absolute",
@@ -167,7 +171,7 @@ export const ViewVideo = ({ screenPreloadedFiles }: ScreenProps) => {
           >
             <FontIcon
               style={{
-                color: "#d2a473",
+                color: expoDesignData?.iconsColor ?? palette.primary,
                 fontSize: "60px",
               }}
             >

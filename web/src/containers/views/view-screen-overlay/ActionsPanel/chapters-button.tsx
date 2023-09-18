@@ -6,7 +6,7 @@ import { animated, useSpring } from "react-spring";
 import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useSectionScreen } from "hooks/view-hooks/section-screen-hook";
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 import { useScreenChapters } from "hooks/view-hooks/screen-chapters-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
@@ -19,7 +19,7 @@ import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { AppDispatch, AppState } from "store/store";
 
 import { setDialog } from "actions/dialog-actions";
-import { parseUrlSection, parseUrlScreen } from "../../../../utils/view-utils";
+import { parseUrlSection, parseUrlScreen } from "utils";
 import cx from "classnames";
 
 type Props = {
@@ -42,7 +42,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
     screen: string;
   }>();
 
-  const sectionScreen = useSectionScreen();
+  const sectionScreen = useSectionScreenParams();
   const screenChapters = useScreenChapters(viewExpo?.structure?.screens);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +95,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
   if (isSmallScreen) {
     return (
       <Button
-        iconBefore={<Icon color="expoTheme" name="layers" />}
+        iconBefore={<Icon color="expoThemeIcons" name="layers" />}
         color="expoTheme"
         onClick={openChaptersDialog}
       >
@@ -165,7 +165,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
         }}
       >
         <Button
-          iconBefore={<Icon color="expoTheme" name="layers" />}
+          iconBefore={<Icon color="expoThemeIcons" name="layers" />}
           color="expoTheme"
           onClick={toggle}
         >

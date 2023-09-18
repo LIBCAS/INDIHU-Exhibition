@@ -11,8 +11,11 @@ import { RatingDialogDataProps } from "./rating-dialog/rating-dialog";
 // Control panel
 import { AudioDialogDataProps } from "./audio-dialog/audio-dialog";
 import { SettingsDialogDataProps } from "./settings-dialog/settings-dialog";
+import { GlassMagnifierDialogDataProps } from "./glass-magnifier-dialog/glass-magnifier-dialog";
+// General
+import { InformationDialogDataProps } from "./information-dialog/information-dialog";
 
-import { File as IndihuFile, Document } from "models";
+import { File as IndihuFile, Document, AuthorObj } from "models";
 
 // All possible dialog names (important when calling setDialog action)
 export enum DialogType {
@@ -26,6 +29,8 @@ export enum DialogType {
   RatingDialog = "RatingDialog",
   AudioDialog = "AudioDialog",
   SettingsDialog = "SettingsDialog",
+  GlassMagnifierDialog = "GlassMagnifierDialog",
+  InformationDialog = "InformationDialog", // newer version of InfoDialog ("Info")
   // Others
   ScreenFileChoose = "ScreenFileChoose",
   ConfirmDialog = "ConfirmDialog",
@@ -36,6 +41,9 @@ export enum DialogType {
   FilesManagerMenu = "FilesManagerMenu",
   ScreenDocumentNew = "ScreenDocumentNew",
   ScreenDocumentChange = "ScreenDocumentChange",
+  ExpoShare = "ExpoShare",
+  ExpoShareChangeOwner = "ExpoShareChangeOwner",
+  ExpoShareRemoveCollaborator = "ExpoShareRemoveCollaborator",
 }
 
 type ScreenFileChooseDialogDataProps = {
@@ -68,6 +76,13 @@ type FilesManagerMenuDataProps = Record<string, any>;
 type ScreenDocumentNewDataProps = Record<string, never>;
 type ScreenDocumentChangeDataProps = Document;
 
+type ExpoShareDataProps = { expoId: string; author: AuthorObj };
+type ExpoShareChangeOwnerDataProps = Record<string, never>;
+type ExpoShareRemoveCollaboratorDataProps = {
+  id: string;
+  name: string | null | undefined;
+};
+
 // Each dialog has built-in DialogProps: setDialog, closeDialog, dialogData, addDialogData
 // Each dialog has its own custom DialogDataProps --> type definition for dialog.dialogData
 // custom DialogDataProps - those who are supplied when setDialog(DialogType.Name, { ...dialogData })
@@ -92,6 +107,10 @@ export type DialogDataProps<T extends DialogType> =
     ? AudioDialogDataProps
     : T extends DialogType.SettingsDialog
     ? SettingsDialogDataProps
+    : T extends DialogType.GlassMagnifierDialog
+    ? GlassMagnifierDialogDataProps
+    : T extends DialogType.InformationDialog
+    ? InformationDialogDataProps
     : T extends DialogType.ScreenFileChoose
     ? ScreenFileChooseDialogDataProps
     : T extends DialogType.ConfirmDialog
@@ -110,6 +129,12 @@ export type DialogDataProps<T extends DialogType> =
     ? ScreenDocumentNewDataProps
     : T extends DialogType.ScreenDocumentChange
     ? ScreenDocumentChangeDataProps
+    : T extends DialogType.ExpoShare
+    ? ExpoShareDataProps
+    : T extends DialogType.ExpoShareChangeOwner
+    ? ExpoShareChangeOwnerDataProps
+    : T extends DialogType.ExpoShareRemoveCollaborator
+    ? ExpoShareRemoveCollaboratorDataProps
     : never;
 
 export type DialogProps<T extends DialogType> = {

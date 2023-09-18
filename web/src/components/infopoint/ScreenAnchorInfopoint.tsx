@@ -49,7 +49,7 @@ const CircleAnchorInfopoint = ({
     <div
       data-tooltip-id={id}
       className={cx(
-        "absolute border-2 border-solid border-white hover:cursor-pointer",
+        "absolute border-2 border-solid border-white hover:cursor-pointer z-0",
         otherProps.className
       )}
       style={{
@@ -104,7 +104,7 @@ const IconAnchorInfopoint = ({
     <div
       {...otherProps}
       data-tooltip-id={id}
-      className={cx("absolute cursor-pointer", otherProps.className)}
+      className={cx("absolute cursor-pointer z-0", otherProps.className)}
       style={{
         width: `${infopoint.pxSize ?? 24}px`,
         height: `${infopoint.pxSize ?? 24}px`,
@@ -150,7 +150,7 @@ const SquareAnchorInfopoint = ({
     <div
       {...otherProps}
       data-tooltip-id={id}
-      className={cx("absolute", otherProps.className)}
+      className={cx("absolute z-0", otherProps.className)}
       style={{
         width: `${infopoint.pxSize ?? 24}px`,
         height: `${infopoint.pxSize ?? 24}px`,

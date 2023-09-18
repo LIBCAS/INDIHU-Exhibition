@@ -7,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 // Custom hooks
 import { useScreenChapters } from "hooks/view-hooks/screen-chapters-hook";
 import { useExpoProgressBarTooltip } from "./expo-progress-bar-tooltip-hook";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import { Tooltip } from "react-tooltip";
@@ -14,6 +15,9 @@ import { Tooltip } from "react-tooltip";
 // Models
 import { AppState } from "store/store";
 import { ScreenChapters, ScreenPoint } from "models";
+
+import cx from "classnames";
+import { getTooltipArrowBorderClassName } from "utils/view-utils";
 
 // - - - - - - - - - -
 
@@ -56,6 +60,8 @@ export const ExpoProgressBar = ({
     screen: string;
   }>();
   const { push } = useHistory();
+
+  const { isLightMode } = useExpoDesignData();
 
   // - - -
 
@@ -119,7 +125,7 @@ export const ExpoProgressBar = ({
 
   return (
     <>
-      <div className="w-full h-full flex justify-evenly items-center bg-muted-400 border-t-4 border-t-muted relative">
+      <div className="w-full h-full flex justify-evenly items-center bg-muted-400 border-t-4 border-t-gray relative">
         {screenPoints.map(({ sectionIndex, screenIndex, type }, index) => (
           <div
             className="flex h-full items-center justify-end flex-1"
@@ -171,11 +177,20 @@ export const ExpoProgressBar = ({
       <Tooltip
         id="progress-bar-screen-preview-tooltip"
         float={false}
-        variant="light"
+        variant={isLightMode ? "light" : "dark"}
         place="top"
         delayHide={500}
-        className="!pointer-events-auto !opacity-100 !rounded-none border-solid border-[1px] border-black"
-        classNameArrow="border-b-[1px] border-b-solid border-b-black border-r-[1px] border-r-solid border-r-black"
+        className={cx(
+          "!pointer-events-auto !opacity-100 !rounded-none border-solid border-[1px] ",
+          {
+            "border-black": isLightMode,
+            "border-white": !isLightMode,
+          }
+        )}
+        classNameArrow={getTooltipArrowBorderClassName({
+          isLightMode: isLightMode,
+          placement: "top",
+        })}
         // content here in render is index.toString() sent by data-tooltip-content
         render={({ content }) => renderTooltip(content ?? "neuvedeno")}
       />

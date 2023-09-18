@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useTutorialStore } from "./tutorial-provider";
 
-import { useSectionScreen } from "hooks/view-hooks/section-screen-hook";
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 
 // Components
 import { Popper } from "components/popper/popper";
@@ -75,7 +75,7 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
   );
 
   //
-  const { section, screen } = useSectionScreen();
+  const { section, screen } = useSectionScreenParams();
 
   // Information about current step object, its anchor, etc ..
   // currStepObj is one step from array of steps, but if index is equal to length or bigger, then it will be undefined
@@ -176,14 +176,14 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
               <span className="text-2xl font-semibold inline-block mb-2">
                 {currStepObj.label}
               </span>
-              <span className="text-muted">
+              <span className="text-gray">
                 {currStepIndex + 1} z {steps.length}
               </span>
             </div>
-            <p>{currStepObj.text}</p>
+            <p className="text-inherit">{currStepObj.text}</p>
             <div className="flex items-center justify-between gap-2">
               <Button
-                color="white"
+                color="expoTheme"
                 iconBefore={<Icon color="primary" name="skip_next" />}
                 onClick={skipTutorial}
               >

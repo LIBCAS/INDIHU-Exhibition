@@ -7,6 +7,8 @@ import {
   PropsWithChildren,
 } from "react";
 
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
 // Components
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
@@ -44,6 +46,7 @@ type DialogWrapProps = {
   noDialogMenu?: boolean;
   noStornoButton?: boolean;
   noSubmitButton?: boolean;
+  applyTheming?: boolean;
 };
 
 const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
@@ -63,8 +66,11 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
   noDialogMenu,
   noStornoButton,
   noSubmitButton,
+  applyTheming,
   children,
 }) => {
+  const { isLightMode } = useExpoDesignData();
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -110,9 +116,12 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
       <Card
         raise
         style={style}
-        className={cx("dialog", className, {
+        className={cx("dialog", {
           big,
           large,
+          "!bg-light-mode-b !text-light-mode-f": applyTheming && isLightMode,
+          "!bg-dark-mode-b !text-dark-mode-f": applyTheming && !isLightMode,
+          className,
         })}
       >
         {/* 1.) Toolbar with title and close button */}

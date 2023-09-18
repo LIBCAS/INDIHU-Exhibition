@@ -152,6 +152,7 @@ const ImageContainer = ({
 
   const [initImgSize, setInitImgSize] = useState<Size | null>(null);
   const [imgSize, setImgSize] = useState<Size | null>(null);
+
   const imageRef = useRef<HTMLImageElement | null>(null);
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -179,6 +180,50 @@ const ImageContainer = ({
       zoomY: imgSize.height / initImgSize.height || 1,
     };
   }, [initImgSize, imgSize]);
+
+  // Handler used in both infopoint icon and underlying image mouse move events
+  const onMouseMoveHandler = (e: any) => {
+    const imageContainerEl = imageContainerRef.current;
+    const imageEl = imageRef.current;
+    if (
+      infopointIndexMouseDown === null ||
+      !imageContainerEl ||
+      !imageEl ||
+      onInfopointMove === undefined
+    ) {
+      return;
+    }
+
+    const imageElRect = imageEl.getBoundingClientRect();
+
+    // const scrollLeft = imageContainerEl.scrollLeft;
+    // const scrollTop = imageContainerEl.scrollTop;
+    // Scroll is somehow by imageRect added (- values)
+    const leftFromImage = e.clientX - imageElRect.left;
+    const topFromImage = e.clientY - imageElRect.top;
+
+    const unZoomedLeftFromImage = leftFromImage / zoomX;
+    const unZoomedTopFromImage = topFromImage / zoomY;
+
+    onInfopointMove(
+      infopointIndexMouseDown,
+      unZoomedLeftFromImage,
+      unZoomedTopFromImage
+    );
+  };
+
+  //
+  const releaseInfopointIcon = useCallback(
+    () => setInfopointIndexMouseDown(null),
+    []
+  );
+
+  useEffect(() => {
+    document.addEventListener("mouseup", releaseInfopointIcon);
+    return () => document.removeEventListener("mouseup", releaseInfopointIcon);
+  }, [releaseInfopointIcon]);
+
+  // - -
 
   if (!image) {
     return (
@@ -222,35 +267,7 @@ const ImageContainer = ({
               height: imageElRect.height,
             });
           }}
-          onMouseMove={(e) => {
-            const imageContainerEl = imageContainerRef.current;
-            const imageEl = imageRef.current;
-            if (
-              infopointIndexMouseDown === null ||
-              !imageContainerEl ||
-              !imageEl ||
-              onInfopointMove === undefined
-            ) {
-              return;
-            }
-
-            const imageElRect = imageEl.getBoundingClientRect();
-
-            // const scrollLeft = imageContainerEl.scrollLeft;
-            // const scrollTop = imageContainerEl.scrollTop;
-            // Scroll is somehow by imageRect added (- values)
-            const leftFromImage = e.clientX - imageElRect.left;
-            const topFromImage = e.clientY - imageElRect.top;
-
-            const unZoomedLeftFromImage = leftFromImage / zoomX;
-            const unZoomedTopFromImage = topFromImage / zoomY;
-
-            onInfopointMove(
-              infopointIndexMouseDown,
-              unZoomedLeftFromImage,
-              unZoomedTopFromImage
-            );
-          }}
+          onMouseMove={onMouseMoveHandler}
         />
 
         {/* Render infopoints on top of the image */}
@@ -262,6 +279,8 @@ const ImageContainer = ({
           return (
             <React.Fragment key={`infopoint-${infopointIndex}`}>
               <FontIcon
+                // Since has onMouseMoveHandler, so the Tooltip will react to position changes
+                key={`infopoint-${infopointIndex}-${infopoint.left}-${infopoint.top}`}
                 id={
                   infopointTooltipId
                     ? `${infopointTooltipId}-${infopointIndex}`
@@ -276,13 +295,20 @@ const ImageContainer = ({
                   top: infopoint.top * zoomY - infopointSize / 2,
                 }}
                 onMouseDown={() => setInfopointIndexMouseDown(infopointIndex)}
-                onMouseUp={() => setInfopointIndexMouseDown(null)}
+                onMouseUp={releaseInfopointIcon}
+                onMouseMove={onMouseMoveHandler}
                 data-tooltip-id={
                   infopointTooltipId
                     ? `${infopointTooltipId}-${infopointIndex}`
                     : `screen-image-infopoint-${infopointIndex}`
                 }
-                data-tooltip-content={infopoint.text ?? ""}
+                data-tooltip-content={
+                  infopoint.bodyContentType === "IMAGE"
+                    ? infopoint.imageFile?.name ?? "Neuveden název obrázku"
+                    : infopoint.bodyContentType === "VIDEO"
+                    ? infopoint.videoFile?.name ?? "Neuveden název videa"
+                    : infopoint.text ?? "Neuvedeno"
+                }
               >
                 help
               </FontIcon>
@@ -293,7 +319,7 @@ const ImageContainer = ({
                     ? `${infopointTooltipId}-${infopointIndex}`
                     : `screen-image-infopoint-${infopointIndex}`
                 }
-                className="infopoint-tooltip"
+                className="!bg-[#3366cc] !max-w-[150px] whitespace-nowrap overflow-hidden text-ellipsis" // infopoint-tooltip
                 variant="dark"
                 float={false}
               />

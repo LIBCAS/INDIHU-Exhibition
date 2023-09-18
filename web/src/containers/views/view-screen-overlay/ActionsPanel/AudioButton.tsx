@@ -1,31 +1,15 @@
-import { useMemo, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
-
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { AppState } from "store/store";
-import { AppDispatch } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import cx from "classnames";
-import { setDialog } from "actions/dialog-actions";
-import { DialogType } from "components/dialogs/dialog-types";
-
-// - -
-
-const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewScreen,
-  ({ expo }: AppState) => expo.expoVolumes,
-  (viewScreen, expoVolumes) => ({ viewScreen, expoVolumes })
-);
 
 type AudioButtonProps = {
-  isScreenAudioPresent: boolean;
-  isChapterMusicPresent: boolean;
+  hasAudio: boolean;
+  isAudioMuted: boolean;
+  openAudioDialog: () => void;
   bind: (stepKey: string) => { ref: RefCallback };
   isTutorialOpen: boolean;
   isAnyTutorialOpened: boolean;
@@ -33,39 +17,14 @@ type AudioButtonProps = {
 };
 
 const AudioButton = ({
-  isScreenAudioPresent,
-  isChapterMusicPresent,
+  hasAudio,
+  isAudioMuted,
+  openAudioDialog,
   bind,
   isTutorialOpen,
   isAnyTutorialOpened,
   step,
 }: AudioButtonProps) => {
-  const { viewScreen, expoVolumes } = useSelector(stateSelector);
-  const dispatch = useDispatch<AppDispatch>();
-
-  const hasAudio =
-    (viewScreen && "audio" in viewScreen && viewScreen.audio) ||
-    isChapterMusicPresent ||
-    (viewScreen && "video" in viewScreen && viewScreen.video);
-
-  const isAudioMuted = useMemo(
-    () =>
-      expoVolumes.speechVolume.actualVolume === 0 &&
-      expoVolumes.musicVolume.actualVolume === 0,
-    [expoVolumes]
-  );
-
-  const openAudioDialog = useCallback(() => {
-    dispatch(
-      setDialog(DialogType.AudioDialog, {
-        hasSpeechVolume: isScreenAudioPresent,
-        hasMusicVolume: isChapterMusicPresent,
-        isVideoPresent:
-          (viewScreen && "video" in viewScreen && !!viewScreen.video) ?? false,
-      })
-    );
-  }, [dispatch, isChapterMusicPresent, isScreenAudioPresent, viewScreen]);
-
   return (
     <>
       {hasAudio && (

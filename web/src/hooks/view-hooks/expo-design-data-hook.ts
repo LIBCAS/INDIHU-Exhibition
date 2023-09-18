@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { AppState } from "store/store";
+import { palette } from "palette";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo?.expositionDesignData,
@@ -60,5 +61,6 @@ export const useExpoDesignData = () => {
     bgThemingIf,
     fgThemingIf,
     bfFgThemingIf,
+    palette,
   };
 };

@@ -4,7 +4,7 @@ import { useSpring, animated } from "react-spring";
 import ReactQuill from "react-quill";
 
 import "react-quill/dist/quill.snow.css";
-import "./custom-editor-styles.css";
+import "./custom-editor-styles.scss";
 
 import CharacterCount from "../character-count";
 import HelpIcon from "components/help-icon";
@@ -14,8 +14,10 @@ import { getTextFromHtml } from "./getTextFromHtml";
 
 // - -
 
+// https://quilljs.com/docs/modules/toolbar/
 const modules = {
   toolbar: [
+    [{ size: ["small", "", "large"] }], // possible to add 'huge'
     // [{ header: "1" }, { header: "2" }, { font: [] }],
     ["bold", "italic", "underline", "strike"],
     // [{ color: [] }, { background: [] }],
@@ -28,6 +30,20 @@ const modules = {
     ["clean"],
   ],
 };
+
+// https://quilljs.com/docs/formats/
+const formats = [
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "script",
+  "align",
+  "list",
+  // "bullet",
+  "link",
+];
 
 // --
 
@@ -98,6 +114,7 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
               onBlur={() => setIsEditorFocused(false)}
               //className, style applies to whole quill box containg toolbar + container
               modules={modules}
+              formats={formats}
             />
 
             <animated.hr

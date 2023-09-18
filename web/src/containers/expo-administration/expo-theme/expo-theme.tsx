@@ -10,7 +10,7 @@ import {
   defaultInitialValues,
   saveExpoDesignData,
 } from "./utils";
-import { downloadFile } from "utils/download-file";
+import { downloadFile } from "utils";
 import { isEmpty } from "lodash";
 
 // Models
@@ -33,6 +33,7 @@ const ExpoTheme = (props: ExpoThemeProps) => {
   }
 
   const expoId = activeExpo.id;
+  const expoTitle = activeExpo.title;
   const expoDesignData = activeExpo.expositionDesignData;
 
   return (
@@ -71,7 +72,7 @@ const ExpoTheme = (props: ExpoThemeProps) => {
               <ThemeForm formik={formik} activeExpo={activeExpo} />
             </div>
           </div>
-          <Footer formik={formik} />
+          <Footer formik={formik} expoTitle={expoTitle} />
         </>
       )}
     </Formik>
@@ -81,10 +82,11 @@ const ExpoTheme = (props: ExpoThemeProps) => {
 // - - - - - -
 
 interface FooterProps {
-  formik: FormikProps<any>;
+  formik: FormikProps<ThemeFormData>;
+  expoTitle: string;
 }
 
-const Footer = ({ formik }: FooterProps) => {
+const Footer = ({ formik, expoTitle }: FooterProps) => {
   const importThemeFile = () => {
     const element = document.querySelector("#input-import-file");
     const inputElement = element as HTMLInputElement | null;
@@ -95,7 +97,10 @@ const Footer = ({ formik }: FooterProps) => {
     const processedData = createThemeProcessedFormData(formik.values);
     const stringifiedValues = JSON.stringify(processedData);
     const blob = new Blob([stringifiedValues], { type: "application/json" });
-    downloadFile(blob, "expo-design-export.json");
+    const fileName = expoTitle
+      ? `${expoTitle}-export.json`
+      : "expo-design-export.json";
+    downloadFile(blob, fileName);
   };
 
   const resetDesignSettings = () => {

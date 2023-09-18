@@ -6,6 +6,7 @@ import {
   useMemo,
 } from "react";
 import { useDispatch } from "react-redux";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import Dialog from "../dialog-wrap-typed";
 import { DialogType, DialogProps } from "../dialog-types";
@@ -23,6 +24,7 @@ import { ExpoRates } from "models";
 import cx from "classnames";
 import { submitRate } from "./submit-rate";
 import { setDialog } from "actions/dialog-actions";
+import { palette } from "palette";
 
 // - - - - - - - -
 
@@ -40,6 +42,7 @@ export const RatingDialog = ({
 }: DialogProps<DialogType.RatingDialog>) => {
   const { setExpoRates, expoId } = dialogData ?? {};
   const dispatch = useDispatch<AppDispatch>();
+  const { isLightMode, palette } = useExpoDesignData();
 
   const [ratingValue, setRatingValue] = useState<number | null>(null);
   const [textValue, setTextValue] = useState<string>("");
@@ -160,12 +163,23 @@ export const RatingDialog = ({
               "& .MuiInputBase-root": {
                 borderRadius: "0px",
                 padding: "16px 16px",
-                backgroundColor: "#E9ECEF",
-                "&.Mui-focused": {},
+                backgroundColor: isLightMode
+                  ? palette["light-gray"]
+                  : palette["medium-gray"],
+
+                "&.Mui-focused": {
+                  backgroundColor: isLightMode
+                    ? palette["light-gray"]
+                    : palette["medium-gray"],
+                },
+
                 "&:hover": {
-                  backgroundColor: "#E9ECEF",
+                  backgroundColor: isLightMode
+                    ? palette["light-gray"]
+                    : palette["medium-gray"],
                 },
               },
+
               "& .MuiInputBase-inputMultiline": {
                 fontSize: "16px",
               },
@@ -200,6 +214,8 @@ interface RatingInputProps {
 }
 
 const RatingInput = ({ ratingValue, setRatingValue }: RatingInputProps) => {
+  const { isLightMode } = useExpoDesignData();
+
   return (
     <Rating
       //name
@@ -212,6 +228,9 @@ const RatingInput = ({ ratingValue, setRatingValue }: RatingInputProps) => {
       sx={{
         fontSize: "42px",
         color: "#FFB347",
+        "& .MuiRating-iconEmpty": {
+          color: isLightMode ? undefined : palette["white"],
+        },
       }}
     />
   );
@@ -232,6 +251,8 @@ const CheckBox = ({
   setIsChecked,
   disabled,
 }: CheckBoxProps) => {
+  const { isLightMode, palette } = useExpoDesignData();
+
   return (
     <FormControlLabel
       label={label}
@@ -248,6 +269,7 @@ const CheckBox = ({
       sx={{
         "& .MuiSvgIcon-root": {
           fontSize: "22px",
+          color: isLightMode ? undefined : palette["white"],
         },
 
         "& .Mui-checked": {
@@ -255,8 +277,17 @@ const CheckBox = ({
             color: "#d2a473",
             fontSize: "22px",
             padding: "4px",
-            border: "1px solid #d2a473",
+            border: `1px solid ${palette.primary}`,
             borderRadius: "5%",
+          },
+        },
+
+        "& .MuiTypography-root.Mui-disabled": {
+          color: isLightMode ? undefined : palette["gray"],
+        },
+        "& .MuiButtonBase-root.MuiCheckbox-root.Mui-disabled": {
+          "& .MuiSvgIcon-root": {
+            color: isLightMode ? undefined : palette["gray"],
           },
         },
       }}
@@ -272,11 +303,16 @@ interface SendButtonProps {
 }
 
 const SendButton = ({ disabled, onClick }: SendButtonProps) => {
+  const { isLightMode } = useExpoDesignData();
+
   return (
     <button
       className={cx(
         "p-4 bg-black text-white font-bold text-xl flex items-center gap-4",
-        disabled && "text-disabled-dark bg-disabled-light"
+        {
+          "!text-disabled-dark !bg-disabled-light": disabled && isLightMode,
+          "!text-gray !bg-dark-gray": disabled && !isLightMode,
+        }
       )}
       disabled={disabled}
       onClick={onClick}

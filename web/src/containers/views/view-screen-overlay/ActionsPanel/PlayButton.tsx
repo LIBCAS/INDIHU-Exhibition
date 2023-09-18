@@ -1,10 +1,5 @@
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
-
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-
-import { AppState } from "store/store";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
@@ -13,12 +8,8 @@ import cx from "classnames";
 
 // - -
 
-const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
-  (shouldIncrement) => ({ shouldIncrement })
-);
-
 type PlayButtonProps = {
+  shouldIncrement: boolean;
   play: () => void;
   pause: () => void;
   bind: (stepKey: string) => { ref: RefCallback };
@@ -28,6 +19,7 @@ type PlayButtonProps = {
 };
 
 const PlayButton = ({
+  shouldIncrement,
   play,
   pause,
   bind,
@@ -35,8 +27,6 @@ const PlayButton = ({
   isAnyTutorialOpened,
   step,
 }: PlayButtonProps) => {
-  const { shouldIncrement } = useSelector(stateSelector);
-
   return (
     <div
       {...bind("play")}

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { useFiles } from "hooks/view-hooks/files-hook";
-import { useSectionScreenParams } from "hooks/view-hooks/section-screen-params-hook";
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 
 import { clearObjectUrls, retrieveFileUrl } from "./file-preloader-utils";
 

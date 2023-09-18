@@ -91,7 +91,7 @@ export const ViewStartDetail = ({
         <Button
           iconAfter={
             <animated.div style={{ rotateX }}>
-              <Icon name="expand_less" color="expoTheme" />
+              <Icon name="expand_less" color="expoThemeIcons" />
             </animated.div>
           }
           onClick={(e) => {
@@ -125,7 +125,7 @@ export const ViewStartDetail = ({
       <div className="flex justify-end items-center mt-auto gap-2">
         {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
           <Button
-            iconBefore={<Icon name="description" color="expoTheme" />}
+            iconBefore={<Icon name="description" color="expoThemeIcons" />}
             onClick={(e) => {
               e.stopPropagation();
               openWorksheetsDialog();
@@ -136,7 +136,7 @@ export const ViewStartDetail = ({
         )}
         {startExpoFiles && startExpoFiles.length !== 0 && (
           <Button
-            iconBefore={<Icon name="folder" color="expoTheme" />}
+            iconBefore={<Icon name="folder" color="expoThemeIcons" />}
             onClick={(e) => {
               e.stopPropagation();
               openFilesDialog();

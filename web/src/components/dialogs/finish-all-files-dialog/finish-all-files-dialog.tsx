@@ -16,6 +16,9 @@ import { Document, ScreenWithOnlyTypeTitleDocuments } from "models";
 import { DialogProps, DialogType } from "../dialog-types";
 
 import { isWorksheetFile } from "utils/view-utils";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
+import cx from "classnames";
 
 // - - - - -
 
@@ -28,6 +31,7 @@ export const FinishAllFilesDialog = ({
   dialogData,
 }: DialogProps<DialogType.FinishAllFilesDialog>) => {
   const { t } = useTranslation("exhibition");
+  const { isLightMode } = useExpoDesignData();
 
   const { startFiles, screensFiles } = dialogData ?? {}; // if not loaded yet
 
@@ -58,7 +62,14 @@ export const FinishAllFilesDialog = ({
       <div className="flex flex-col gap-6">
         {/* Worksheets */}
         <div>
-          <h1 className="text-xl underline">{t("worksheets")}</h1>
+          <h1
+            className={cx("text-xl underline", {
+              "text-gray": isLightMode,
+              "text-dark-mode-f": !isLightMode,
+            })}
+          >
+            {t("worksheets")}
+          </h1>
           {(!worksheetFiles || worksheetFiles.length === 0) && (
             <span>{t("no-worksheets")}</span>
           )}
@@ -69,7 +80,14 @@ export const FinishAllFilesDialog = ({
 
         {/* ExpoFiles */}
         <div>
-          <h1 className="text-xl underline">{t("files")}</h1>
+          <h1
+            className={cx("text-xl underline", {
+              "text-gray": isLightMode,
+              "text-dark-mode-f": !isLightMode,
+            })}
+          >
+            {t("files")}
+          </h1>
           {(!expoFiles || expoFiles.length === 0) && (
             <span>{t("no-files")}</span>
           )}
@@ -80,7 +98,14 @@ export const FinishAllFilesDialog = ({
 
         {/* ScreensFiles */}
         <div>
-          <h1 className="text-xl underline">{t("screen-files")}</h1>
+          <h1
+            className={cx("text-xl underline", {
+              "text-gray": isLightMode,
+              "text-dark-mode-f": !isLightMode,
+            })}
+          >
+            {t("screen-files")}
+          </h1>
           {(!screenFilesFlattedFiltered ||
             screenFilesFlattedFiltered.length === 0) && (
             <span>{t("no-screen-files")}</span>
@@ -122,7 +147,7 @@ const ScreenDocuments = ({ screenInfo }: ScreenDocumentsProps) => {
       </div>
 
       {screenInfo.documents && screenInfo.documents.length !== 0 && (
-        <Collapse isOpen={areDocumentsOpened}>
+        <Collapse isOpen={areDocumentsOpened} className="overflow-hidden">
           {screenInfo.documents.map((doc: Document, index: number) => (
             <FileItem key={index} file={doc} isFromFinishFileDialog isSubItem />
           ))}

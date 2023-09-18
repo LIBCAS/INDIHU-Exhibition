@@ -3,7 +3,7 @@ import { compose, lifecycle, withState } from "recompose";
 
 import { getAdminSettings } from "../../actions/admin-actions";
 
-import AppHeader from "../../components/app-header";
+import AppHeader from "components/app-header";
 import Header from "./header";
 import Settings from "./settings";
 import SettingsForm from "./settings-form";

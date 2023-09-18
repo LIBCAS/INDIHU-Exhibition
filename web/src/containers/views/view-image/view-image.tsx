@@ -1,4 +1,10 @@
-import { useMemo, useRef, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
@@ -13,6 +19,7 @@ import { getScreenTime } from "utils/screen";
 import { AppState } from "store/store";
 import { ImageScreen } from "models";
 import { ScreenProps } from "models";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ImageScreen,
@@ -22,17 +29,22 @@ const stateSelector = createSelector(
 
 export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, shouldIncrement } = useSelector(stateSelector);
-
   const { image } = screenPreloadedFiles;
 
   /* Wrapper is the whole <div> of this screen */
   /* Container is <div> without tooltip */
   const [wrapperRef, parentSize] = useElementSize();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [containedImgEl, setContainedImgEl] = useState<HTMLImageElement | null>(
+    null
+  );
+
+  const { GlassMagnifier } = useGlassMagnifier(
+    containerRef.current,
+    containedImgEl
+  );
 
   // - - - -
-
-  //const imageOrigData = viewScreen.imageOrigData ?? { width: 0, height: 0 };
 
   const { height, top, left } = useMemo(
     () =>
@@ -102,34 +114,36 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - - -
 
   return (
-    <>
-      <div ref={wrapperRef} className="h-full w-full overflow-hidden">
+    <div ref={wrapperRef} className="h-full w-full overflow-hidden">
+      <animated.div
+        className="h-full w-full flex items-center justify-center relative"
+        style={{ translateX: translateX, translateY: translateY }}
+      >
         <animated.div
-          className="h-full w-full flex items-center justify-center relative"
-          style={{ translateX: translateX, translateY: translateY }}
+          ref={containerRef}
+          className="h-full w-full"
+          style={{ scale }}
         >
-          <animated.div
-            ref={containerRef}
-            className="h-full w-full"
-            style={{ scale }}
-          >
-            {viewScreen.animationType === "WITHOUT_AND_BLUR_BACKGROUND" &&
-              image && (
-                <img
-                  className="absolute top-0 left-0 h-full w-full object-cover blur-md"
-                  src={image}
-                />
-              )}
-            {image && (
+          {viewScreen.animationType === "WITHOUT_AND_BLUR_BACKGROUND" &&
+            image && (
               <img
-                className="absolute top-0 left-0 h-full w-full object-contain"
+                className="absolute top-0 left-0 h-full w-full object-cover blur-md"
                 src={image}
-                onClick={() => closeInfopoints(viewScreen)()}
               />
             )}
-            {viewScreen.infopoints?.map((infopoint, infopointIndex) => (
+
+          {image && (
+            <img
+              className="absolute top-0 left-0 h-full w-full object-contain"
+              onLoad={(e) => setContainedImgEl(e.currentTarget)}
+              src={image}
+              onClick={() => closeInfopoints(viewScreen)()}
+            />
+          )}
+
+          {viewScreen.infopoints?.map((infopoint, infopointIndex) => (
+            <React.Fragment key={`infopoint-tooltip-${infopointIndex}`}>
               <ScreenAnchorInfopoint
-                key={`infopoint-tooltip-${infopointIndex}`}
                 id={`infopoint-tooltip-${infopointIndex}`}
                 top={top + infopoint.top * ratio}
                 left={left + infopoint.left * ratio}
@@ -139,13 +153,6 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
                   transform: `translate(-50%, -50%) scale(${1 / scale.get()})`,
                 }}
               />
-            ))}
-          </animated.div>
-
-          {/* Render one Tooltip as infopoint component for each previously rendered square, 1: 1 */}
-          {/* Infopoint Tooltip which is alwaysVisible has different behaviour than infopoint which is not!*/}
-          {viewScreen.infopoints?.map((infopoint, infopointIndex) => {
-            return (
               <TooltipInfoPoint
                 key={`infopoint-tooltip-${infopointIndex}`}
                 id={`infopoint-tooltip-${infopointIndex}`}
@@ -154,10 +161,12 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
                 setInfopointOpenStatusMap={setInfopointOpenStatusMap}
                 primaryKey={infopointIndex.toString()}
               />
-            );
-          })}
+            </React.Fragment>
+          ))}
+
+          {image && <GlassMagnifier lensContainerStyle={{ zIndex: 11 }} />}
         </animated.div>
-      </div>
-    </>
+      </animated.div>
+    </div>
   );
 };

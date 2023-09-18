@@ -12,17 +12,22 @@ import { AppState } from "store/store";
 import { GameDrawScreen } from "models";
 
 import classes from "./game-draw.module.scss";
-import { GameToolbar } from "../game-toolbar";
+import { GameInfoPanel } from "../GameInfoPanel";
 import { Button } from "components/button/button";
 import { useBoolean } from "hooks/boolean-hook";
 import { Popper } from "components/popper/popper";
+import { GameActionsPanel } from "../GameActionsPanel";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-export const GameDraw = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
+export const GameDraw = ({
+  screenPreloadedFiles,
+  infoPanelRef,
+  actionsPanelRef,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -148,18 +153,26 @@ export const GameDraw = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
         />
       </Popper>
 
-      {toolbarRef.current &&
+      {infoPanelRef.current &&
         ReactDOM.createPortal(
-          <GameToolbar
+          <GameInfoPanel
+            gameScreen={viewScreen}
+            isGameFinished={finished}
             text={t("game-draw.task")}
-            onFinish={onFinish}
-            onReset={onReset}
-            finished={finished}
-            screen={viewScreen}
-            actions={[
+          />,
+          infoPanelRef.current
+        )}
+
+      {actionsPanelRef.current &&
+        ReactDOM.createPortal(
+          <GameActionsPanel
+            isGameFinished={finished}
+            onGameFinish={onFinish}
+            onGameReset={onReset}
+            gameActions={[
               <Button
                 key="color-picker-button"
-                color="white"
+                color="expoTheme"
                 className="relative"
               >
                 <Icon name="palette" />
@@ -170,21 +183,25 @@ export const GameDraw = ({ screenPreloadedFiles, toolbarRef }: ScreenProps) => {
                   onChange={(e) => setColor(e.target.value)}
                 />
               </Button>,
+
               <Button
                 ref={(ref) => setAnchor(ref)}
                 key="thickness-button"
-                color="white"
+                color="expoTheme"
                 className="relative"
                 onClick={toggleThicknessPopover}
-              >
-                <Icon name="line_weight" />
-              </Button>,
-              <Button key="tool-button" color="white" onClick={toggleTool}>
-                <Icon name={erasing ? "draw" : "healing"} />
-              </Button>,
+                iconBefore={<Icon name="line_weight" />}
+              />,
+
+              <Button
+                key="tool-button"
+                color="expoTheme"
+                onClick={toggleTool}
+                iconBefore={<Icon name={erasing ? "draw" : "healing"} />}
+              />,
             ]}
           />,
-          toolbarRef.current
+          actionsPanelRef.current
         )}
     </div>
   );

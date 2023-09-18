@@ -3,7 +3,7 @@ import { compose, lifecycle, withHandlers, withState } from "recompose";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import AppHeader from "../components/app-header";
+import AppHeader from "components/app-header";
 import ComponentLoader from "../components/component-loader";
 import Button from "react-md/lib/Buttons/Button";
 import Captcha from "../components/form/redux-form/captcha";
@@ -19,6 +19,9 @@ import {
 import { resetForm } from "../actions/app-actions";
 import Footer from "./footer";
 
+/**
+ * Path component at paths "/" and "/register"
+ */
 const Authentication = ({
   handleSubmit,
   setDialog,
@@ -29,163 +32,168 @@ const Authentication = ({
   captchaKey,
   handleInfo,
   handleGDPR,
-}) => (
-  <div className="authentication-container">
-    <AppHeader
-      authStyle
-      isSignIn={!!isSignIn}
-      handleInfo={handleInfo}
-      handleGDPR={handleGDPR}
-    />
-    <div className="authentication">
-      <div className="left">
-        <h1>Kreativní nástroj pro tvorbu virtuálních výstav</h1>
-        <p>
-          Vytvářejte působivé online prezentace na libovolná témata, která budou
-          návštěvníkům dostupná na webu. INDIHU Exhibition umožňuje vtáhnout
-          návštěvníka do děje a tvořit obsahově bohaté prezentace. Kombinujte
-          obrázky, texty, fotogalerie, videa, mapy s dalšími možnostmi. Zařaďte
-          do výstavy i drobné interaktivní hry.
-        </p>
-      </div>
-      <div className="right">
-        {!loader && (regAvailable || isSignIn) ? (
-          <div>
-            <h3 style={{ marginTop: "1em" }}>
-              <strong>
-                {isSignIn ? "Přihlášení" : "Začněte vytvářet výstavy"}
-              </strong>
-            </h3>
-            {!isSignIn && <p>Nástroj je zcela zdarma</p>}
-          </div>
-        ) : (
-          <div />
-        )}
-        {loader ? (
-          <div className="full-width flex-col flex-centered margin-top-small">
-            <ComponentLoader />
-            <h4 className="margin-top">Načítá se registrační formulář.</h4>
-          </div>
-        ) : isSignIn ? (
-          <form onSubmit={handleSubmit}>
-            <Field
-              component={TextField}
-              componentId="authentification-textfield-name"
-              name="name"
-              label="Užívatelské jméno/e-mail"
-              validate={[Validation.required]}
-            />
-            <Field
-              component={TextField}
-              componentId="authentification-textfield-password"
-              name="password"
-              type="password"
-              label="Heslo"
-              validate={[Validation.required]}
-            />
-            <div className="authentication-buttons">
-              <Button
-                raised
-                primary
-                label="Přihlásit"
-                type="submit"
-                className="authentication-button"
-              />
-              <Button
-                flat
-                label="Resetovat heslo"
-                onClick={() => setDialog("PasswordReset")}
-                className="authentication-button margin-left-small"
-              />
+}) => {
+  return (
+    <div className="authentication-container">
+      <AppHeader
+        authStyle
+        isSignIn={!!isSignIn}
+        handleInfo={handleInfo}
+        handleGDPR={handleGDPR}
+      />
+      <div className="authentication">
+        <div className="left">
+          <h1>Kreativní nástroj pro tvorbu virtuálních výstav</h1>
+          <p>
+            Vytvářejte působivé online prezentace na libovolná témata, která
+            budou návštěvníkům dostupná na webu. INDIHU Exhibition umožňuje
+            vtáhnout návštěvníka do děje a tvořit obsahově bohaté prezentace.
+            Kombinujte obrázky, texty, fotogalerie, videa, mapy s dalšími
+            možnostmi. Zařaďte do výstavy i drobné interaktivní hry.
+          </p>
+        </div>
+        <div className="right">
+          {!loader && (regAvailable || isSignIn) ? (
+            <div>
+              <h3 style={{ marginTop: "1em" }}>
+                <strong>
+                  {isSignIn ? "Přihlášení" : "Začněte vytvářet výstavy"}
+                </strong>
+              </h3>
+              {!isSignIn && <p>Nástroj je zcela zdarma</p>}
             </div>
-          </form>
-        ) : regAvailable ? (
-          <form onSubmit={handleSubmit}>
-            <Field
-              component={TextField}
-              componentId="registration-textfield-firstname"
-              name="firstName"
-              label="Jméno"
-              validate={[Validation.required]}
-            />
-            <Field
-              component={TextField}
-              componentId="registration-textfield-surname"
-              name="surname"
-              label="Příjmení"
-              validate={[Validation.required]}
-            />
-            <Field
-              component={TextField}
-              componentId="registration-textfield-institution"
-              name="institution"
-              label="Instituce"
-              validate={[Validation.required]}
-            />
-            <Field
-              component={TextField}
-              componentId="registration-textfield-email"
-              name="email"
-              label="E-mail"
-              validate={[Validation.required, Validation.email]}
-            />
-            <Field
-              component={TextField}
-              componentId="registration-textfield-password"
-              name="password"
-              type="password"
-              label="Heslo (min 5 znaků)"
-              validate={[Validation.required, Validation.password]}
-            />
-            <div className="flex-row flex-center">
-              <Field
-                component={CheckBox}
-                componentId="registration-checkbox-accepted"
-                name="accepted"
-                type="accepted"
-                validate={[Validation.required]}
-                customLabel={
-                  <div>
-                    Souhlasím s{" "}
-                    <span
-                      style={{ textDecoration: "underline", cursor: "pointer" }}
-                      onClick={handleInfo}
-                    >
-                      podmínkami užití
-                    </span>
-                  </div>
-                }
-              />
+          ) : (
+            <div />
+          )}
+          {loader ? (
+            <div className="full-width flex-col flex-centered margin-top-small">
+              <ComponentLoader />
+              <h4 className="margin-top">Načítá se registrační formulář.</h4>
             </div>
-            <div className="flex-row flex-centered margin-top-very-small margin-bottom-small">
+          ) : isSignIn ? (
+            <form onSubmit={handleSubmit}>
               <Field
-                key={captchaKey}
-                component={Captcha}
-                name="captcha"
-                changeValue={change}
+                component={TextField}
+                componentId="authentification-textfield-name"
+                name="name"
+                label="Užívatelské jméno/e-mail"
                 validate={[Validation.required]}
               />
-            </div>
-            <div className="authentication-buttons">
-              <Button
-                raised
-                primary
-                label="Registrovat"
-                type="submit"
-                className="authentication-button"
+              <Field
+                component={TextField}
+                componentId="authentification-textfield-password"
+                name="password"
+                type="password"
+                label="Heslo"
+                validate={[Validation.required]}
               />
-            </div>
-          </form>
-        ) : (
-          <h4 className="text-center margin-none">
-            <strong>Registrace nejsou v současné době povoleny.</strong>
-          </h4>
-        )}
+              <div className="authentication-buttons">
+                <Button
+                  raised
+                  primary
+                  label="Přihlásit"
+                  type="submit"
+                  className="authentication-button"
+                />
+                <Button
+                  flat
+                  label="Resetovat heslo"
+                  onClick={() => setDialog("PasswordReset")}
+                  className="authentication-button margin-left-small"
+                />
+              </div>
+            </form>
+          ) : regAvailable ? (
+            <form onSubmit={handleSubmit}>
+              <Field
+                component={TextField}
+                componentId="registration-textfield-firstname"
+                name="firstName"
+                label="Jméno"
+                validate={[Validation.required]}
+              />
+              <Field
+                component={TextField}
+                componentId="registration-textfield-surname"
+                name="surname"
+                label="Příjmení"
+                validate={[Validation.required]}
+              />
+              <Field
+                component={TextField}
+                componentId="registration-textfield-institution"
+                name="institution"
+                label="Instituce"
+                validate={[Validation.required]}
+              />
+              <Field
+                component={TextField}
+                componentId="registration-textfield-email"
+                name="email"
+                label="E-mail"
+                validate={[Validation.required, Validation.email]}
+              />
+              <Field
+                component={TextField}
+                componentId="registration-textfield-password"
+                name="password"
+                type="password"
+                label="Heslo (min 5 znaků)"
+                validate={[Validation.required, Validation.password]}
+              />
+              <div className="flex-row flex-center">
+                <Field
+                  component={CheckBox}
+                  componentId="registration-checkbox-accepted"
+                  name="accepted"
+                  type="accepted"
+                  validate={[Validation.required]}
+                  customLabel={
+                    <div>
+                      Souhlasím s{" "}
+                      <span
+                        style={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                        onClick={handleInfo}
+                      >
+                        podmínkami užití
+                      </span>
+                    </div>
+                  }
+                />
+              </div>
+              <div className="flex-row flex-centered margin-top-very-small margin-bottom-small">
+                <Field
+                  key={captchaKey}
+                  component={Captcha}
+                  name="captcha"
+                  changeValue={change}
+                  validate={[Validation.required]}
+                />
+              </div>
+              <div className="authentication-buttons">
+                <Button
+                  raised
+                  primary
+                  label="Registrovat"
+                  type="submit"
+                  className="authentication-button"
+                />
+              </div>
+            </form>
+          ) : (
+            <h4 className="text-center margin-none">
+              <strong>Registrace nejsou v současné době povoleny.</strong>
+            </h4>
+          )}
+        </div>
       </div>
+      <Footer />
     </div>
-    <Footer />
-  </div>
-);
+  );
+};
 
 export default compose(
   withRouter,

@@ -14,6 +14,8 @@ type GlassMagnifierProps = {
   cursorPosition: Position;
   targetPosition: Position;
   containedImgSrc: string | undefined;
+  lensContainerStyle?: React.CSSProperties;
+  lensStyle?: React.CSSProperties;
 };
 
 const GlassMagnifier = ({
@@ -21,6 +23,8 @@ const GlassMagnifier = ({
   cursorPosition,
   targetPosition,
   containedImgSrc,
+  lensContainerStyle,
+  lensStyle,
 }: GlassMagnifierProps) => {
   const {
     isGlassMagnifierEnabled,
@@ -51,6 +55,7 @@ const GlassMagnifier = ({
         overflow: "hidden",
         backgroundColor: expoDesignData?.backgroundColor,
         pointerEvents: "none", // to allow mouse interactions to pass through the magnifier
+        ...lensContainerStyle,
       }}
     >
       <div
@@ -64,6 +69,7 @@ const GlassMagnifier = ({
           backgroundRepeat: "no-repeat",
           transform: `scale(${scaleZoomSize})`,
           transformOrigin: "center",
+          ...lensStyle,
         }}
       />
     </div>

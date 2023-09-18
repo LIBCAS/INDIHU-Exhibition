@@ -2,17 +2,22 @@ import {
   useState,
   useEffect,
   useRef,
+  useMemo,
   useCallback,
   ReactNode,
+  MutableRefObject,
   RefObject,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+
 import { animated, useSpring } from "react-spring";
+
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useIsAnyTutorialOpened } from "context/tutorial-provider/tutorial-provider";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
+import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 // Components
 import { ExpoProgressBar } from "./expo-progress-bar/expo-progress-bar";
@@ -36,7 +41,6 @@ import { AppDispatch, AppState } from "store/store";
 import cx from "classnames";
 import classes from "./view-screen-overlay.module.scss";
 import { isGameScreen } from "../../../utils/view-utils";
-import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 // - - - - - -
 
@@ -56,17 +60,18 @@ const statesSelector = createSelector(
 // - - - - - -
 
 type ViewScreenOverlayProps = {
-  isOverlayHidden: boolean;
   chapterMusicRef: React.RefObject<HTMLAudioElement>;
   audioRef: React.RefObject<HTMLAudioElement>;
   children:
     | ReactNode
-    | ((toolbarRef: RefObject<HTMLDivElement>) => JSX.Element);
+    | ((
+        infoPanelRef: RefObject<HTMLDivElement>,
+        actionsPanelRef: MutableRefObject<HTMLDivElement | null>
+      ) => JSX.Element);
 };
 
 export const ViewScreenOverlay = ({
   children,
-  isOverlayHidden,
   chapterMusicRef,
   audioRef,
 }: ViewScreenOverlayProps) => {
@@ -78,6 +83,12 @@ export const ViewScreenOverlay = ({
   } = useSelector(statesSelector);
   const dispatch = useDispatch<AppDispatch>();
 
+  // Memos
+  // For start and finish screens only, do not show the overlay
+  const isOverlayHidden = useMemo(() => {
+    return viewScreen?.type === "START" || viewScreen?.type === "FINISH";
+  }, [viewScreen?.type]);
+
   // States
   const [unactive, setUnactive] = useState<boolean>(true); // automatically inactive after 4s without mouse movement
   const [wasMouseMovement, setWasMouseMovement] = useState<boolean>(false); // for game screens, if was mouse movement, stop redirection to next screen
@@ -86,7 +97,8 @@ export const ViewScreenOverlay = ({
 
   // Refs
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const toolbarRef = useRef<HTMLDivElement>(null); // info, left down panel
+  const infoPanelRef = useRef<HTMLDivElement>(null); // info, left down panel
+  const actionsPanelRef = useRef<HTMLDivElement | null>(null); // actions, right down panel
   const forwardButtonRef = useRef<HTMLDivElement>(null);
 
   // Custom hooks
@@ -138,25 +150,6 @@ export const ViewScreenOverlay = ({
     dispatch(setViewProgress({ shouldIncrement: true }));
     navigateForward();
   }, [dispatch, navigateForward]);
-
-  // After 4 seconds of mouse inactivity, set the True initialized unActive state to false
-  const onMouseAction = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    setUnactive(false);
-
-    const timeout = setTimeout(() => setUnactive(true), 4000);
-    timeoutRef.current = timeout;
-
-    return () => {
-      if (timeoutRef.current) {
-        return;
-      }
-      clearTimeout(timeoutRef.current);
-    };
-  }, []);
 
   // - - -
   // EFFECTS
@@ -222,6 +215,24 @@ export const ViewScreenOverlay = ({
     ]
   );
 
+  // After 4 seconds of mouse inactivity, set the True initialized unActive state to false
+  const onMouseAction = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setUnactive(false);
+    const timeout = setTimeout(() => setUnactive(true), 4000);
+    timeoutRef.current = timeout;
+
+    return () => {
+      if (timeoutRef.current) {
+        return;
+      }
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
   /* Add and remove event listeners (basically on mount and unmount) */
   useEffect(() => {
     window.addEventListener("keydown", onKeydownAction);
@@ -241,10 +252,12 @@ export const ViewScreenOverlay = ({
   // Render just the screen itself without the Overlay div
   if (isOverlayHidden) {
     // First Div next to the <audio> element!
-    // Children is here ScreenComponent without overlay (START or FINISH) which will retrieve the toolbarRef!
+    // Children is here ScreenComponent without overlay (START or FINISH) which will retrieve the infoPanelRef!
     return (
       <div className="w-full h-full overflow-hidden" key={key}>
-        {children instanceof Function ? children(toolbarRef) : children}
+        {children instanceof Function
+          ? children(infoPanelRef, actionsPanelRef)
+          : children}
       </div>
     );
   }
@@ -258,7 +271,9 @@ export const ViewScreenOverlay = ({
         onMouseDown={() => setWasMouseMovement(true)}
         onMouseMove={() => setWasMouseMovement(true)}
       >
-        {children instanceof Function ? children(toolbarRef) : children}
+        {children instanceof Function
+          ? children(infoPanelRef, actionsPanelRef)
+          : children}
       </div>
 
       {/* 2. Second div next to the <audio> element(s), first part of overlay, over ScreenComponent, but under drawer (z-index 40) */}
@@ -275,7 +290,7 @@ export const ViewScreenOverlay = ({
       >
         {/* 2a) Info panel - left down corner, can open the Drawer */}
         <InfoPanel
-          toolbarRef={toolbarRef}
+          infoPanelRef={infoPanelRef}
           openDrawer={openDrawer}
           keyKey={key}
           bind={bind}
@@ -286,10 +301,14 @@ export const ViewScreenOverlay = ({
 
         {/* 2b) Actions panel - right down corner, action buttons */}
         <ActionsPanel
+          actionsPanelRef={actionsPanelRef}
           isScreenAudioPresent={audioRef.current !== null}
           isChapterMusicPresent={chapterMusicRef.current !== null}
+          openDrawer={openDrawer}
           play={play}
           pause={pause}
+          navigateBack={navigateBack}
+          navigateForward={navigateForward}
           bind={bind}
           isTutorialOpen={isTutorialOpen}
           isAnyTutorialOpened={isAnyTutorialOpened}

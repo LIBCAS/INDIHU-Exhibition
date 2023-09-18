@@ -55,6 +55,8 @@ import { FinishAllFilesDialog } from "./finish-all-files-dialog/finish-all-files
 import { AudioDialog } from "./audio-dialog/audio-dialog";
 import { RatingDialog } from "./rating-dialog/rating-dialog";
 import { SettingsDialog } from "./settings-dialog/settings-dialog";
+import { InformationDialog } from "./information-dialog/information-dialog";
+import { GlassMagnifierDialog } from "./glass-magnifier-dialog/glass-magnifier-dialog";
 
 export { default as WarningDialog } from "./warning-dialog";
 
@@ -104,6 +106,8 @@ const Dialogs = ({
       <AudioDialog {...dialogProps} />
       <RatingDialog {...dialogProps} />
       <SettingsDialog {...dialogProps} />
+      <InformationDialog {...dialogProps} />
+      <GlassMagnifierDialog {...dialogProps} />
 
       <ConfirmDialog {...dialogProps} />
       <DeleteAccount {...dialogProps} />

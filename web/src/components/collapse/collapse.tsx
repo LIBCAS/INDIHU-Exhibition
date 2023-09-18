@@ -5,12 +5,14 @@ import cx from "classnames";
 interface Props {
   isOpen: boolean;
   allowScroll?: boolean;
+  className?: string;
 }
 
 export const Collapse: FC<Props> = ({
   isOpen,
   children,
   allowScroll = false,
+  className,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [elementHeight, setElementHeight] = useState(0);
@@ -39,7 +41,10 @@ export const Collapse: FC<Props> = ({
 
   return (
     <animated.div
-      className={cx(allowScroll ? "overflow-y-auto" : "overflow-y-hidden")}
+      className={cx(
+        allowScroll ? "overflow-y-auto" : "overflow-y-hidden",
+        className
+      )}
       style={{
         height,
         opacity,

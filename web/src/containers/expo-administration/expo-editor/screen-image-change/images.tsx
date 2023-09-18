@@ -60,6 +60,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
         </div>
 
         <div className="w-full flex flex-col justify-start items-center gap-12 xl:flex-row xl:justify-around xl:items-start xl:gap-8">
+          {/* BEFORE */}
           <div className="flex flex-col gap-4">
             <ImageBox
               title="Obrázek před"
@@ -98,6 +99,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   })
                 );
               }}
+              infopointTooltipId={"image-before-infopoint"}
             />
 
             <InfopointsTable
@@ -137,6 +139,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
           </div>
 
+          {/* AFTER */}
           <div className="flex flex-col gap-4">
             <ImageBox
               title="Obrázek po"
@@ -175,6 +178,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   })
                 );
               }}
+              infopointTooltipId={"image-after-infopoint"}
             />
 
             <InfopointsTable

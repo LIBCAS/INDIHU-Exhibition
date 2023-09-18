@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
@@ -12,7 +13,6 @@ import { ViewExpo } from "models";
 import { DialogProps, DialogType } from "../dialog-types";
 //import Dialog from "../dialog-wrap";
 import Dialog from "../dialog-wrap-typed";
-import { useTranslation } from "react-i18next";
 
 // - - - - - - - - -
 

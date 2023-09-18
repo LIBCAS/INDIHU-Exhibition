@@ -47,14 +47,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled}
         onClick={onClick}
         className={cx(
-          "border-0 flex items-center gap-2 font-semibold whitespace-nowrap",
+          "border-0 flex justify-center items-center gap-2 font-semibold whitespace-nowrap",
           noPadding ? "p-0" : "px-2 py-1",
           {
             "text-lg font-bold px-4 py-2": big, // these paddings will overwrite the above one
             "hover:cursor-pointer": !disabled,
             "shadow-md": shadow,
-            // "Default" color (e.g when not set any color)
             "hover:brightness-90": color !== "default",
+            // "Default" color (e.g when not set any color)
             "hover:bg-black hover:bg-opacity-10":
               color === "default" && isLightMode,
             "hover:bg-white hover:bg-opacity-10":

@@ -68,6 +68,62 @@ const AnswerItem = ({
         id={`accordion-${currAnswerIndex}`}
       >
         <div className="w-full flex justify-between items-center">
+          <div className="flex flex-col">
+            <Button
+              className={currAnswerIndex === 0 ? "invisible" : undefined}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (currAnswerIndex === 0) {
+                  return;
+                }
+
+                const prevAnswerIndex = currAnswerIndex - 1;
+                dispatch(
+                  updateScreenData({
+                    answers: activeScreen.answers.map((ans, idx) =>
+                      idx === prevAnswerIndex
+                        ? activeScreen.answers[currAnswerIndex]
+                        : idx === currAnswerIndex
+                        ? activeScreen.answers[prevAnswerIndex]
+                        : ans
+                    ),
+                  })
+                );
+              }}
+            >
+              <Icon useMaterialUiIcon name="keyboard_arrow_up" />
+            </Button>
+
+            <Button
+              className={
+                currAnswerIndex === activeScreen.answers.length - 1
+                  ? "invisible"
+                  : undefined
+              }
+              onClick={(e) => {
+                e.stopPropagation();
+                if (currAnswerIndex === activeScreen.answers.length - 1) {
+                  return;
+                }
+
+                const nextAnswerIndex = currAnswerIndex + 1;
+                dispatch(
+                  updateScreenData({
+                    answers: activeScreen.answers.map((ans, idx) =>
+                      idx === currAnswerIndex
+                        ? activeScreen.answers[nextAnswerIndex]
+                        : idx === nextAnswerIndex
+                        ? activeScreen.answers[currAnswerIndex]
+                        : ans
+                    ),
+                  })
+                );
+              }}
+            >
+              <Icon useMaterialUiIcon name="keyboard_arrow_down" />
+            </Button>
+          </div>
+
           <div className="w-full flex justify-center items-center">
             <h2
               className={cx("text-center mb-0", {
@@ -78,6 +134,7 @@ const AnswerItem = ({
               {titles[currAnswerIndex]}
             </h2>
           </div>
+
           <div className="flex items-center gap-6">
             <div className="flex items-center">
               {activeScreen.answersType === "MULTIPLE_CHOICE" ? (

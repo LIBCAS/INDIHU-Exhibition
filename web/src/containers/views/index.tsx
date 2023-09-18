@@ -122,11 +122,6 @@ export const Viewers = ({
     return resolveScreenComponent(viewScreen.type);
   }, [isScreenLoading, viewScreen]);
 
-  /* For start and finish type of screens, do not show to overlay */
-  const isOverlayHidden = useMemo(() => {
-    return viewScreen?.type === "START" || viewScreen?.type === "FINISH";
-  }, [viewScreen?.type]);
-
   // Means that setting the redux store.expo.viewScreen failed, e.g because of invalid section, screen params
   if (!ScreenComponent || !viewScreen) {
     return <ViewError />;
@@ -134,18 +129,15 @@ export const Viewers = ({
 
   return (
     <TutorialProvider>
-      <ViewScreenOverlay
-        isOverlayHidden={isOverlayHidden}
-        chapterMusicRef={chapterMusicRef}
-        audioRef={audioRef}
-      >
-        {(toolbarRef) =>
+      <ViewScreenOverlay chapterMusicRef={chapterMusicRef} audioRef={audioRef}>
+        {(infoPanelRef, actionsPanelRef) =>
           !screenPreloadedFiles || isScreenLoading || isMusicLoading ? (
             <ViewLoading />
           ) : (
             <ScreenComponent
               screenPreloadedFiles={screenPreloadedFiles}
-              toolbarRef={toolbarRef}
+              infoPanelRef={infoPanelRef}
+              actionsPanelRef={actionsPanelRef}
               chapterMusicRef={chapterMusicRef}
             />
           )

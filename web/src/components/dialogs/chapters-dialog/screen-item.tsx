@@ -28,12 +28,11 @@ export const ScreenItem = ({
   viewExpoUrl,
   isSubScreen = false,
   highlight,
-  usedInDialog = false,
 }: ScreenItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const isChapter = !!screen.subScreens;
 
-  const { fgThemingIf } = useExpoDesignData();
+  const { fgTheming } = useExpoDesignData();
 
   const { rotate } = useSpring({
     rotate: isOpen ? "90deg" : "0deg",
@@ -75,14 +74,14 @@ export const ScreenItem = ({
             <animated.div style={{ rotate }}>
               <Icon
                 name="chevron_right"
-                color={shouldHighlight ? "expoTheme" : undefined}
+                color={shouldHighlight ? "expoThemeIcons" : undefined}
               />
             </animated.div>
           </Button>
         ) : (
           <Icon
             name="arrow_right"
-            color={shouldHighlight ? "expoTheme" : "muted-400"}
+            color={shouldHighlight ? "expoThemeIcons" : "muted-400"}
             //className={shouldHighlight ? "text-primary" : "text-muted-400"}
           />
         )}
@@ -93,8 +92,7 @@ export const ScreenItem = ({
             "text-black no-underline",
             shouldHighlight ? "font-bold" : "font-medium",
             {
-              // NOTE: for now, dialogs are white, do not color in dialog.. keep always black
-              ...fgThemingIf(!usedInDialog),
+              ...fgTheming,
             }
           )}
           onClick={onClick}

@@ -16,7 +16,7 @@ import { Icon } from "components/icon/icon";
 import { AppDispatch, AppState } from "store/store";
 import { DialogType } from "components/dialogs/dialog-types";
 import { ViewExpo, StartScreen } from "models";
-import { TagValues } from "containers/expo-administration/expo-settings/tags-options";
+import { TagValues } from "containers/expo-administration/expo-settings/tags/tags-options";
 
 // Actions and utils
 import { setDialog } from "actions/dialog-actions";
@@ -108,7 +108,7 @@ export const ViewStartInfo = ({
             iconAfter={
               <animated.div style={{ rotateX }}>
                 <Icon
-                  color="expoTheme"
+                  color="expoThemeIcons"
                   name={isSmall ? "chevron_right" : "expand_less"}
                 />
               </animated.div>
@@ -145,7 +145,7 @@ export const ViewStartInfo = ({
               >
                 <Divider />
                 <div className="flex-grow basis-0">
-                  <div className="text-gray-600 pt-6 pb-3">
+                  <div className="pt-6 pb-3">
                     {expoPerexLines.map((line, i) => (
                       <span key={i}>
                         {line}
@@ -163,7 +163,7 @@ export const ViewStartInfo = ({
       {/* B) Schedule time + Chapters Button if display is bigger than "lg" */}
       <div className="flex items-center mt-auto justify-between">
         <div className="flex items-center">
-          <Icon name="schedule" color="expoTheme" />
+          <Icon name="schedule" color="expoThemeIcons" />
           <span className="ml-2">
             {t("approximately")} {expoTime}
           </span>
@@ -171,7 +171,7 @@ export const ViewStartInfo = ({
 
         {!isSmall && (
           <Button
-            iconAfter={<Icon color="expoTheme" name="layers" />}
+            iconAfter={<Icon color="expoThemeIcons" name="layers" />}
             onClick={(e) => {
               e.stopPropagation();
               openChaptersDialog();

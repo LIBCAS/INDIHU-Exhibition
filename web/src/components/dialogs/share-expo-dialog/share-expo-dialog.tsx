@@ -39,28 +39,28 @@ export const ShareExpoDialog = ({
           className="!w-24 flex flex-col items-center"
         >
           <FacebookIcon size={45} />
-          <p>Facebook</p>
+          <p className="text-inherit">Facebook</p>
         </FacebookShareButton>
         <WhatsappShareButton
           url={url}
           className="!w-24 flex flex-col items-center"
         >
           <WhatsappIcon size={45} />
-          <p>Whatsapp</p>
+          <p className="text-inherit">Whatsapp</p>
         </WhatsappShareButton>
         <TwitterShareButton
           url={url}
           className="!w-24 flex flex-col items-center"
         >
           <TwitterIcon size={45} />
-          <p>Twitter</p>
+          <p className="text-inherit">Twitter</p>
         </TwitterShareButton>
         <EmailShareButton
           url={url}
           className="!w-24 flex flex-col items-center"
         >
           <EmailIcon size={45} />
-          <p>Email</p>
+          <p className="text-inherit">Email</p>
         </EmailShareButton>
       </div>
 

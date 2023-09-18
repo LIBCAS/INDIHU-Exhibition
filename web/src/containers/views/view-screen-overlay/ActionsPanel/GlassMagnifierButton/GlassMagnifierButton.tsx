@@ -1,35 +1,24 @@
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import { Tooltip } from "react-tooltip";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import GlassMagnifierSettingsTooltip from "./GlassMagnifierSettingsTooltip";
-
-import { AppState } from "store/store";
+import GlassMagnifierSettings from "./GlassMagnifierSettings";
 
 import cx from "classnames";
-import {
-  glassMagnifierEnabled,
-  mapScreenTypeValuesToKeys,
-} from "enums/screen-type";
 
-// - -
+type GlassMagnifierButtonProps = {
+  hasGlassMagnifier: boolean;
+};
 
-const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewScreen,
-  (viewScreen) => ({ viewScreen })
-);
-
-const GlassMagnifierButton = () => {
-  const { viewScreen } = useSelector(stateSelector);
+const GlassMagnifierButton = ({
+  hasGlassMagnifier,
+}: GlassMagnifierButtonProps) => {
   const { isGlassMagnifierEnabled, setIsGlassMagnifierEnabled } =
     useGlassMagnifierConfig();
 
-  const hasGlassMagnifier =
-    !!viewScreen &&
-    glassMagnifierEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
+  const { isLightMode } = useExpoDesignData();
 
   return (
     <>
@@ -52,9 +41,9 @@ const GlassMagnifierButton = () => {
           <Tooltip
             id="glass-magnifier-button-tooltip"
             className="p-0"
-            variant="light"
+            variant={isLightMode ? "light" : "dark"}
             clickable
-            render={() => <GlassMagnifierSettingsTooltip />}
+            render={() => <GlassMagnifierSettings />}
           />
         </div>
       )}

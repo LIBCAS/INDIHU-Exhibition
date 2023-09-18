@@ -1,8 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { Tooltip } from "react-tooltip";
-import { renderInfopointBody } from "./renderInfopointBody";
+
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import InfopointBody from "./InfopointBody";
+
 import { InfopointStatusObject } from "./parseScreenMaps";
 import { Infopoint } from "models";
+
+import cx from "classnames";
+import { getTooltipArrowBorderClassName } from "utils/view-utils";
 
 type TooltipInfoPointProps = {
   id: string;
@@ -48,12 +54,37 @@ const BasicTooltipInfopoint = ({
   keyMap,
   canBeOpen = true,
 }: Props) => {
+  const { isLightMode } = useExpoDesignData();
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false); // infopoints's video if video type
+
+  const currTooltipEl = document.querySelector<HTMLDivElement>(`#${id}`);
+  const currTooltipPlacement = currTooltipEl?.classList.contains(
+    "react-tooltip__place-top"
+  )
+    ? "top"
+    : currTooltipEl?.classList.contains("react-tooltip__place-left")
+    ? "left"
+    : currTooltipEl?.classList.contains("react-tooltip__place-bottom")
+    ? "bottom"
+    : currTooltipEl?.classList.contains("react-tooltip__place-right")
+    ? "right"
+    : undefined;
+
   return (
     <Tooltip
       id={id}
-      className="!pointer-events-auto !opacity-100 !rounded-none shadow-md shadow-neutral-600 border-solid border-[1px] border-black"
-      classNameArrow="border-b-[1px] border-b-solid border-b-black border-r-[1px] border-r-solid border-r-black"
-      variant="light"
+      className={cx(
+        "!pointer-events-auto !opacity-100 !rounded-none shadow-md shadow-neutral-600 border-solid border-[1px] z-10",
+        {
+          "border-black": isLightMode,
+          "border-white": !isLightMode,
+        }
+      )}
+      classNameArrow={getTooltipArrowBorderClassName({
+        isLightMode: isLightMode,
+        placement: currTooltipPlacement,
+      })}
+      variant={isLightMode ? "light" : "dark"}
       clickable
       openOnClick
       render={() => {
@@ -64,9 +95,11 @@ const BasicTooltipInfopoint = ({
           }));
         };
 
-        return renderInfopointBody({
-          infopoint: infopoint,
+        return InfopointBody({
+          infopoint,
           onClose: closeThisInfopoint,
+          isVideoLoaded,
+          setIsVideoLoaded,
         });
       }}
       isOpen={infopointOpenStatusMap[keyMap].isOpen && canBeOpen}
@@ -78,6 +111,7 @@ const BasicTooltipInfopoint = ({
           }));
         }
       }}
+      afterHide={() => setIsVideoLoaded(false)}
     />
   );
 };
