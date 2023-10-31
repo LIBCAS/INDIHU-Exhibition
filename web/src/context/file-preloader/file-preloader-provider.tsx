@@ -19,6 +19,7 @@ export type ScreenPreloadedFiles = {
   image3?: string;
   object?: string;
   answers?: { image?: string }[];
+  links?: { image?: string }[];
 };
 
 // Represents object of all screens which currently have preloaded files

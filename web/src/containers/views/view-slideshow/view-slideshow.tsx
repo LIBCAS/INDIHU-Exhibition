@@ -6,6 +6,10 @@ import { animated, useTransition } from "react-spring";
 import { useCountdown } from "hooks/countdown-hook";
 import useElementSize from "hooks/element-size-hook";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
+
+import { AppState } from "store/store";
+import { ScreenProps, SlideshowScreen } from "models";
 
 import {
   setViewProgress,
@@ -15,11 +19,7 @@ import {
 import { getScreenTime } from "utils/screen";
 import { calculateObjectFit } from "utils/object-fit";
 import { resolveSlideshowAnimation } from "./view-slideshow-animation";
-
-import { AppState } from "store/store";
-import { SlideshowScreen } from "models";
-import { ScreenProps } from "models";
-import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
+import { isInfopointOutsideOrigImage } from "utils/view-utils";
 
 // - - - -
 
@@ -290,6 +290,19 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
             {!isAnimationRunning &&
               viewScreen.images?.[photoIndex]?.infopoints?.map(
                 (infopoint, infopointIndex) => {
+                  if (
+                    isInfopointOutsideOrigImage({
+                      infopointPosition: {
+                        left: infopoint.left,
+                        top: infopoint.top,
+                      },
+                      imageOrigData:
+                        viewScreen.images?.[photoIndex]?.imageOrigData,
+                    })
+                  ) {
+                    return null;
+                  }
+
                   // Percentage when choosing the infopoints in administrative
                   const origTopPercentage =
                     infopoint.top / (imageOrigData.height / 100);

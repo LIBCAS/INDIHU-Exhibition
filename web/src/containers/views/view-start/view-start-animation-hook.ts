@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import { UseSpringProps } from "react-spring";
 
-import { animationType } from "enums/animation-type";
-
-type AnimationType = typeof animationType[keyof typeof animationType];
+import { ScreenStartAnimationEnum } from "enums/administration-screens";
+import { ScreenStartAnimationType } from "models";
 
 const baseProps: UseSpringProps = {
   delay: 500,
@@ -12,12 +11,14 @@ const baseProps: UseSpringProps = {
   },
 };
 
+// - -
+
 export const useViewStartAnimation = (
-  animationType?: AnimationType
+  animationType?: ScreenStartAnimationType
 ): UseSpringProps => {
   const animationProps = useMemo(
     () =>
-      animationType === "FROM_TOP"
+      animationType === ScreenStartAnimationEnum.FROM_TOP
         ? {
             from: {
               transform: "translateY(-100%)",
@@ -27,7 +28,7 @@ export const useViewStartAnimation = (
             },
             ...baseProps,
           }
-        : animationType === "FROM_BOTTOM"
+        : animationType === ScreenStartAnimationEnum.FROM_BOTTOM
         ? {
             from: {
               transform: "translateY(100%)",
@@ -37,7 +38,7 @@ export const useViewStartAnimation = (
             },
             ...baseProps,
           }
-        : animationType === "FROM_LEFT_TO_RIGHT"
+        : animationType === ScreenStartAnimationEnum.FROM_LEFT_TO_RIGHT
         ? {
             from: {
               transform: "translateX(-100%)",
@@ -47,7 +48,7 @@ export const useViewStartAnimation = (
             },
             ...baseProps,
           }
-        : animationType === "FROM_RIGHT_TO_LEFT"
+        : animationType === ScreenStartAnimationEnum.FROM_RIGHT_TO_LEFT
         ? {
             from: {
               transform: "translateX(100%)",

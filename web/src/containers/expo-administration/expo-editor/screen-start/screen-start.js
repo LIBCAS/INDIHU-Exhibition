@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { withRouter, Route } from "react-router-dom";
@@ -11,6 +12,7 @@ import Footer from "components/editors/footer";
 import { updateScreenData } from "actions/expoActions";
 
 const Screenstart = (props) => {
+  const { t } = useTranslation("expo-editor");
   const { match, activeScreen, history, url } = props;
 
   return (
@@ -18,15 +20,15 @@ const Screenstart = (props) => {
       <TabMenu
         tabs={[
           {
-            label: "Název, popis, audio",
+            label: t("tabs.descTab"),
             link: `${match.url}/description`,
           },
           {
-            label: "Tiráž",
+            label: t("tabs.imprintTab"),
             link: `${match.url}/authors`,
           },
           {
-            label: "Dokumenty/Soubory k výstavě",
+            label: t("tabs.startScreenDocumentsTab"),
             link: `${match.url}/documents`,
           },
         ]}

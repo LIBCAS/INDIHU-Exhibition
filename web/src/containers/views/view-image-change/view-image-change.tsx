@@ -9,6 +9,7 @@ import useElementSize from "hooks/element-size-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useTutorialStore } from "context/tutorial-provider/tutorial-provider";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 import { Icon } from "components/icon/icon";
 
@@ -19,11 +20,11 @@ import { ScreenProps } from "models";
 import cx from "classnames";
 import { getScreenTime } from "utils/screen";
 import { calculateObjectFit } from "utils/object-fit";
-import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+import { isInfopointOutsideOrigImage } from "utils/view-utils";
 import {
-  shouldShowAfterImageInfopoint,
   shouldShowBeforeImageInfopoint,
-} from "utils/view-utils";
+  shouldShowAfterImageInfopoint,
+} from "./shouldShowDynamicInfopoint";
 
 // - - -
 
@@ -448,6 +449,15 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       {/* 4. Infopoints Anchors - currently for all types of animation */}
       {/* 4a) Before image infopoints */}
       {viewScreen.image1Infopoints?.map((infopoint, infopointIndex) => {
+        if (
+          isInfopointOutsideOrigImage({
+            infopointPosition: { left: infopoint.left, top: infopoint.top },
+            imageOrigData: viewScreen.image1OrigData,
+          })
+        ) {
+          return null;
+        }
+
         // Percentage when choosing the infopoints in administrative (BEFORE image)
         const origLeftPercentage =
           infopoint.left / (image1OrigData.width / 100);
@@ -500,6 +510,15 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* 4b) After image infopoints */}
       {viewScreen.image2Infopoints?.map((infopoint, infopointIndex) => {
+        if (
+          isInfopointOutsideOrigImage({
+            infopointPosition: { left: infopoint.left, top: infopoint.top },
+            imageOrigData: viewScreen.image2OrigData,
+          })
+        ) {
+          return null;
+        }
+
         // Percentage when choosing the infopoints in administrative (AFTER image)
         const origLeftPercentage =
           infopoint.left / (image2OrigData.width / 100);

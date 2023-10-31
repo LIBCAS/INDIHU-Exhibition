@@ -5,6 +5,33 @@ import { ThemeFormDataProcessed } from "containers/expo-administration/expo-them
 
 export type ExpositionState = "PREPARE" | "OPENED" | "ENDED";
 
+export type ExpositionsObj = { items: ExpositionItem[]; count: number };
+
+export type ExpositionFilter =
+  | "ALL"
+  | "AUTHORSHIP"
+  | "READ_ONLY"
+  | "READ_WRITE";
+export type ExpositionSort =
+  | "title"
+  | "state"
+  | "created"
+  | "updated"
+  | "isEditing";
+export type ExpositionOrder = "ASC" | "DESC";
+
+export type ExpositionFilterObj = {
+  filter: ExpositionFilter;
+  sort: ExpositionSort;
+  order: ExpositionOrder;
+  search: string;
+};
+
+export type ExpositionPagerObj = {
+  page: number;
+  pageSize: number;
+};
+
 export type AuthorObj = {
   id: string;
   firstName: string;
@@ -31,6 +58,27 @@ export type ExpoStructure = {
 
 export type ExpositionDesignDataObj = ThemeFormDataProcessed;
 export type Theme = ExpositionDesignDataObj["theme"];
+
+export type ExpositionRatingObj = {
+  id: string;
+  ratingCount: number; // number of people who have rated the exposition
+  average: number; // average 'star' rating
+  gameCount: number; // number of checkboxes clicked
+  mediaCount: number;
+  textCount: number;
+  topicCount: number;
+};
+
+// Text field from rating dialog
+export type MessageObj = {
+  id: string;
+  created: string;
+  updated: string;
+  rating: number; // number of stars in this message
+  text?: string; // undefined if user did not write anything to the textfield
+};
+
+// - -
 
 export type ViewExpo = {
   id: string;
@@ -69,7 +117,12 @@ export type ActiveExpo = {
   updated: string;
   url: string;
   urls: { id: string; url: string }[];
+  closedUrl?: string; // closed stuff set in administration, in settings where the state is being also set
+  closedPicture?: string;
+  closedCaption?: string;
   expositionDesignData?: ExpositionDesignDataObj;
+  expositionRating?: ExpositionRatingObj;
+  messages?: MessageObj[];
 };
 
 export type ExpositionItem = {
@@ -82,7 +135,10 @@ export type ExpositionItem = {
   lastEdit: string;
   created: string;
   isEditing: string;
-  state: string;
+  state: ExpositionState;
+  authorUsername: string;
+  rating?: number; // avg rating, undefined if no rating yet
+  ratingCount?: number;
 };
 
 export type ExpoRates = Record<ViewExpo["id"], boolean>;

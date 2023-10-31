@@ -53,7 +53,6 @@ const screenFileResolver: ScreenFileResolverMap = {
   image1: retrieveFileUrl,
   image2: retrieveFileUrl,
   image3: retrieveFileUrl,
-  //music: retrieveFileUrl,
   object: retrieveFileUrl,
   video: retrieveFileUrl,
   images: async (images, fileLookupMap) =>
@@ -69,6 +68,12 @@ const screenFileResolver: ScreenFileResolverMap = {
     Promise.all(
       answers?.map(async (answer) => ({
         image: await retrieveFileUrl(answer.image, fileLookupMap),
+      })) ?? []
+    ),
+  links: async (links, fileLookupMap) =>
+    Promise.all(
+      links?.map(async (link) => ({
+        image: await retrieveFileUrl(link.image, fileLookupMap),
       })) ?? []
     ),
 };

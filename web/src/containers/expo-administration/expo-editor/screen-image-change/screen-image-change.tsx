@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useRouteMatch, useHistory } from "react-router-dom";
 
 import { Route } from "react-router-dom";
@@ -20,6 +21,7 @@ export type ScreenEditorImageChangeProps =
   ConcreteScreenEditorProps<ImageChangeScreen>;
 
 const ScreenImageChange = (props: ScreenEditorProps) => {
+  const { t } = useTranslation("expo-editor");
   const match = useRouteMatch<{ position: string }>();
   const history = useHistory();
 
@@ -31,15 +33,15 @@ const ScreenImageChange = (props: ScreenEditorProps) => {
       <TabMenu
         tabs={[
           {
-            label: "Název, text, audio",
+            label: t("tabs.descTab3"),
             link: `${match.url}/description`,
           },
           {
-            label: "Obrázky",
+            label: t("tabs.imagesTab"),
             link: `${match.url}/images`,
           },
           {
-            label: "Dokumenty",
+            label: t("tabs.documentsTab"),
             link: `${match.url}/documents`,
           },
         ]}

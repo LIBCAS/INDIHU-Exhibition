@@ -1,50 +1,40 @@
+import { useTranslation } from "react-i18next";
 import { useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 
 import { SelectField, TextField } from "react-md";
 import Carousel from "components/editors/carousel";
 import HelpIcon from "components/help-icon";
+import ImageBox from "components/editors/ImageBox";
 import InfopointsTable from "components/editors/InfopointsTable";
+
+import Time from "components/editors/time";
 
 import { SlideshowScreen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
-import { helpIconText } from "enums/text";
-import { animationType, animationTypeText } from "enums/animation-type";
 import { isEmpty } from "lodash";
-import ImageBox from "components/editors/ImageBox";
-
-// - -
-
-const options = [
-  { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
-  {
-    label: animationTypeText.WITHOUT_AND_BLUR_BACKGROUND,
-    value: animationType.WITHOUT_AND_BLUR_BACKGROUND,
-  },
-  { label: animationTypeText.FADE_IN_OUT, value: animationType.FADE_IN_OUT },
-  {
-    label: animationTypeText.FADE_IN_OUT_AND_BLUR_BACKGROUND,
-    value: animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND,
-  },
-  { label: animationTypeText.FLY_IN_OUT, value: animationType.FLY_IN_OUT },
-  {
-    label: animationTypeText.FLY_IN_OUT_AND_BLUR_BACKGROUND,
-    value: animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND,
-  },
-];
+import { SlideshowScreenAnimationEnum } from "enums/administration-screens";
 
 // - -
 
 type SlideshowProps = {
   activeScreen: SlideshowScreen;
+  sumOfPhotosTimes?: number | null; // in case of slideshow description
 };
 
-const Slideshow = ({ activeScreen }: SlideshowProps) => {
+const Slideshow = ({ activeScreen, sumOfPhotosTimes }: SlideshowProps) => {
+  const { t } = useTranslation("expo-editor");
+
   const [activeImageIndex, setActiveImageIndex] = useState<number>(-1);
   const dispatch = useDispatch<AppDispatch>();
+
+  const audioFile =
+    "audio" in activeScreen && activeScreen.audio
+      ? dispatch(getFileById(activeScreen.audio))
+      : null;
 
   const activeImageFile = useMemo(() => {
     const activeImageObj = activeScreen.images?.find(
@@ -177,9 +167,19 @@ const Slideshow = ({ activeScreen }: SlideshowProps) => {
           }}
         />
 
+        <div className="mt-2 mb-2 mx-[2.5%] flex justify-start max-w-[600px]">
+          <Time
+            audio={audioFile}
+            activeScreen={activeScreen}
+            sumOfPhotosTimes={sumOfPhotosTimes}
+          />
+        </div>
+
         {activeImageIndex !== -1 && (
           <div className="screen-image">
-            <AnimationSelectField activeScreen={activeScreen} />
+            <div className="flex flex-col gap-2 mt-2 mb-4">
+              <AnimationSelectField activeScreen={activeScreen} />
+            </div>
 
             {/* Two cols */}
             <div className="screen-two-cols">
@@ -187,7 +187,7 @@ const Slideshow = ({ activeScreen }: SlideshowProps) => {
               <div className="flex-row-nowrap one-image-row">
                 <ImageBox
                   key={`image-${activeImageIndex}`}
-                  title="Obrázek"
+                  title={t("descFields.slideshowScreen.imageBoxTitle")}
                   image={activeImageFile}
                   setImage={setActiveImageFile}
                   onDelete={() => {
@@ -210,7 +210,9 @@ const Slideshow = ({ activeScreen }: SlideshowProps) => {
                       })
                     );
                   }}
-                  helpIconLabel={helpIconText.EDITOR_SLIDESHOW_IMAGE}
+                  helpIconLabel={t(
+                    "descFields.slideshowScreen.imageBoxTooltip"
+                  )}
                   helpIconId="editor-slideshow-image"
                   // Infopoints support
                   infopoints={
@@ -260,7 +262,7 @@ const Slideshow = ({ activeScreen }: SlideshowProps) => {
                     infopoints={
                       activeScreen.images?.[activeImageIndex]?.infopoints ?? []
                     }
-                    onInfopointAdd={async (dialogFormData) => {
+                    onInfopointAdd={(dialogFormData) => {
                       if (!activeScreen.images) {
                         return;
                       }
@@ -281,10 +283,7 @@ const Slideshow = ({ activeScreen }: SlideshowProps) => {
                         })
                       );
                     }}
-                    onInfopointEdit={async (
-                      infopointIndexToEdit,
-                      dialogFormData
-                    ) => {
+                    onInfopointEdit={(infopointIndexToEdit, dialogFormData) => {
                       if (!activeScreen.images) {
                         return;
                       }
@@ -344,35 +343,64 @@ export default Slideshow;
 type AnimationSelectFieldProps = { activeScreen: SlideshowScreen };
 
 const AnimationSelectField = ({ activeScreen }: AnimationSelectFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="w-full flex justify-center mt-2 mb-4">
-      <div className="w-[95%] flex justify-start">
-        <SelectField
-          id="screen-slideshow-selectfield-animation"
-          className="select-field big"
-          style={{ marginRight: 0, marginTop: 0 }}
-          label="Přechody obrázků"
-          menuItems={options}
-          itemLabel={"label"}
-          itemValue={"value"}
-          position={"below"}
-          defaultValue={activeScreen.animationType}
-          onChange={(value: any) => {
-            dispatch(
-              updateScreenData({
-                animationType: value,
-              })
-            );
-          }}
+    <div className="mx-[2.5%] flex justify-start">
+      <SelectField
+        id="screen-slideshow-selectfield-animation"
+        className="min-w-[300px]"
+        label={t("descFields.slideshowScreen.imageTransitionLabel")}
+        menuItems={[
+          {
+            label: t("descFields.slideshowScreen.imageTransitionWithout"),
+            value: SlideshowScreenAnimationEnum.WITHOUT,
+          },
+          {
+            label: t(
+              "descFields.slideshowScreen.imageTransitionWithoutAndBlurBackground"
+            ),
+            value: SlideshowScreenAnimationEnum.WITHOUT_AND_BLUR_BACKGROUND,
+          },
+          {
+            label: t("descFields.slideshowScreen.imageTransitionFadeInOut"),
+            value: SlideshowScreenAnimationEnum.FADE_IN_OUT,
+          },
+          {
+            label: t(
+              "descFields.slideshowScreen.imageTransitionFadeInOutAndBlurBackground"
+            ),
+            value: SlideshowScreenAnimationEnum.FADE_IN_OUT_AND_BLUR_BACKGROUND,
+          },
+          {
+            label: t("descFields.slideshowScreen.imageTransitionFlyInOut"),
+            value: SlideshowScreenAnimationEnum.FLY_IN_OUT,
+          },
+          {
+            label: t(
+              "descFields.slideshowScreen.imageTransitionFlyInOutAndBlurBackground"
+            ),
+            value: SlideshowScreenAnimationEnum.FLY_IN_OUT_AND_BLUR_BACKGROUND,
+          },
+        ]}
+        itemLabel={"label"}
+        itemValue={"value"}
+        position={"below"}
+        defaultValue={activeScreen.animationType}
+        onChange={(value: any) => {
+          dispatch(
+            updateScreenData({
+              animationType: value,
+            })
+          );
+        }}
+      />
+      <div className="self-center">
+        <HelpIcon
+          label={t("descFields.slideshowScreen.imageTransitionTooltip")}
+          id="editor-slideshow-animation"
         />
-        <div className="self-center">
-          <HelpIcon
-            label={helpIconText.EDITOR_SLIDESHOW_ANIMATION}
-            id="editor-slideshow-animation"
-          />
-        </div>
       </div>
     </div>
   );
@@ -391,6 +419,7 @@ const PhotoTimeTextField = ({
   activeImageIndex,
   defaultValue,
 }: PhotoTimeTextFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -398,7 +427,9 @@ const PhotoTimeTextField = ({
       className="flex flex-col"
       key={`photo-time-textfield-${activeImageIndex}`}
     >
-      <div className="mt-6">Doba zobrazení aktuálního snímku</div>
+      <div className="mt-6">
+        {t("descFields.slideshowScreen.actualImageTime")}
+      </div>
 
       <div className="flex">
         <TextField
@@ -426,7 +457,7 @@ const PhotoTimeTextField = ({
         />
         <div className="self-center">
           <HelpIcon
-            label="Po uplynutí této doby aktuální snímek přejde na snímek následující, resp. na další obrazovku v případě, že aktuální snímek je poslední v pořadí"
+            label={t("descFields.slideshowScreen.actualImageTimeTooltip")}
             id="screen-slideshow-time"
             place="right"
           />

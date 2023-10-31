@@ -9,6 +9,7 @@ import { showLoader } from "../app-actions";
 import { saveExpo, getExpositions } from "./expo-actions";
 import { structPrototype } from "../../enums/struct-prototype";
 
+// Create new expo
 export const newExpo = (name) => async (dispatch) => {
   dispatch(showLoader(true));
   try {

@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
+
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 import OverlayDialog from "components/dialogs/overlay-dialog/overlay-dialog";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 // - -
 
 type ExpandActionsButtonProps = {
   openEditorScreenUrl: () => void;
   isEditorAccess: boolean;
-  openGlassMagnifierDialog: () => void;
-  hasGlassMagnifier: boolean;
   openSettingsDialog: () => void;
-  openAudioDialog: () => void;
+  hasGlassMagnifier: boolean;
+  openGlassMagnifierDialog: () => void;
   hasAudio: boolean;
   isAudioMuted: boolean;
+  openAudioDialog: () => void;
   openChaptersDialog: () => void;
   play: () => void;
   pause: () => void;
@@ -26,27 +28,28 @@ type ExpandActionsButtonProps = {
 const ExpandActionsButton = ({
   openEditorScreenUrl,
   isEditorAccess,
-  openGlassMagnifierDialog,
-  hasGlassMagnifier,
   openSettingsDialog,
-  openAudioDialog,
+  hasGlassMagnifier,
+  openGlassMagnifierDialog,
   hasAudio,
   isAudioMuted,
+  openAudioDialog,
   openChaptersDialog,
   play,
   pause,
   navigateBack,
   navigateForward,
 }: ExpandActionsButtonProps) => {
-  const [isOverlayDialogOpen, setIsOverlayDialogOpen] = useState(false); // to persist global state (redux or react api)
-
-  const openOverlayDialog = () => setIsOverlayDialogOpen(true);
-  const closeOverlayDialog = () => setIsOverlayDialogOpen(false);
+  const { openNewTopDialog, closeTopDialog, isOverlayDialogOpen } =
+    useDialogRef();
 
   return (
     <>
       <div className="pointer-events-auto">
-        <Button color="expoTheme" onClick={openOverlayDialog}>
+        <Button
+          color="expoTheme"
+          onClick={() => openNewTopDialog(DialogRefType.OverlayDialog)}
+        >
           <Icon name="more_vert" />
         </Button>
       </div>
@@ -55,15 +58,15 @@ const ExpandActionsButton = ({
         <DialogPortal
           component={
             <OverlayDialog
-              closeThisDialog={closeOverlayDialog}
+              closeThisDialog={closeTopDialog}
               openEditorScreenUrl={openEditorScreenUrl}
               isEditorAccess={isEditorAccess}
-              openGlassMagnifierDialog={openGlassMagnifierDialog}
-              hasGlassMagnifier={hasGlassMagnifier}
               openSettingsDialog={openSettingsDialog}
-              openAudioDialog={openAudioDialog}
+              hasGlassMagnifier={hasGlassMagnifier}
+              openGlassMagnifierDialog={openGlassMagnifierDialog}
               hasAudio={hasAudio}
               isAudioMuted={isAudioMuted}
+              openAudioDialog={openAudioDialog}
               openChaptersDialog={openChaptersDialog}
               play={play}
               pause={pause}

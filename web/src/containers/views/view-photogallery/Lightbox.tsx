@@ -1,18 +1,21 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import useElementSize, { Size } from "hooks/element-size-hook";
+import { useState, useCallback } from "react";
 import { animated, SpringValue } from "react-spring";
+
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+import DialogPortal from "context/dialog-ref-provider/DialogPortal";
+
+import useElementSize from "hooks/element-size-hook";
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
+import { BasicTooltip } from "components/tooltip/tooltip";
 
-import { AppDispatch } from "store/store";
-import { PhotogalleryImages } from "models";
+import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
-import { setDialog } from "actions/dialog-actions";
-import { DialogType } from "components/dialogs/dialog-types";
+import { Size, PhotogalleryImages } from "models";
 
 // - -
 
@@ -111,80 +114,121 @@ const Toolbar = ({
   overlayOpacityAnimation,
   currPhotoObj,
 }: ToolbarProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { openNewTopDialog, closeTopDialog, isInformationDialogOpen } =
+    useDialogRef();
+
+  const openInformationDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.InformationDialog),
+    [openNewTopDialog]
+  );
+
   return (
-    <animated.div
-      className="flex justify-between items-center"
-      style={{ opacity: overlayOpacityAnimation.opacity }}
-    >
-      <div className="flex gap-1">
-        <Button noPadding>
-          <Icon
-            name="zoom_in"
-            useMaterialUiIcon
-            color="white"
-            onClick={zoomInside}
-            style={{ fontSize: "24px" }}
-          />
-        </Button>
-
-        <Button noPadding>
-          <Icon
-            name="search"
-            useMaterialUiIcon
-            color="white"
-            onClick={reset}
-            style={{ fontSize: "24px" }}
-          />
-        </Button>
-
-        <Button noPadding>
-          <Icon
-            name="zoom_out"
-            useMaterialUiIcon
-            color="white"
-            onClick={zoomOutside}
-            style={{ fontSize: "24px" }}
-          />
-        </Button>
-
-        {currPhotoObj.photoDescription && (
-          <Button noPadding>
-            <Icon
-              name="article"
-              useMaterialUiIcon
-              color="white"
-              onClick={() => {
-                dispatch(
-                  setDialog(DialogType.InformationDialog, {
-                    title: (
-                      <span className="text-2xl font-bold">
-                        {currPhotoObj.photoTitle ?? ""}
-                      </span>
-                    ),
-                    content: currPhotoObj.photoDescription,
-                    big: true,
-                  })
-                );
-              }}
-              style={{ fontSize: "24px" }}
+    <>
+      <animated.div
+        className="flex justify-between items-center"
+        style={{ opacity: overlayOpacityAnimation.opacity }}
+      >
+        <div className="flex gap-1">
+          <div data-tooltip-id="photogallery-zoom-in-button-tooltip">
+            <Button noPadding>
+              <Icon
+                name="zoom_in"
+                useMaterialUiIcon
+                color="white"
+                onClick={zoomInside}
+                style={{ fontSize: "24px" }}
+              />
+            </Button>
+            <BasicTooltip
+              id="photogallery-zoom-in-button-tooltip"
+              content="Přiblížit"
             />
-          </Button>
-        )}
-      </div>
+          </div>
 
-      <div>
-        <Button noPadding>
-          <Icon
-            color="white"
-            useMaterialUiIcon
-            name="close"
-            onClick={closeLightBox}
-            style={{ fontSize: "24px" }}
-          />
-        </Button>
-      </div>
-    </animated.div>
+          <div data-tooltip-id="photogallery-zoom-reset-button-tooltip">
+            <Button noPadding>
+              <Icon
+                name="search"
+                useMaterialUiIcon
+                color="white"
+                onClick={reset}
+                style={{ fontSize: "24px" }}
+              />
+            </Button>
+            <BasicTooltip
+              id="photogallery-zoom-reset-button-tooltip"
+              content="Resetovat přiblížení"
+            />
+          </div>
+
+          <div data-tooltip-id="photogallery-zoom-out-button-tooltip">
+            <Button noPadding>
+              <Icon
+                name="zoom_out"
+                useMaterialUiIcon
+                color="white"
+                onClick={zoomOutside}
+                style={{ fontSize: "24px" }}
+              />
+            </Button>
+            <BasicTooltip
+              id="photogallery-zoom-out-button-tooltip"
+              content="Oddálit"
+            />
+          </div>
+
+          {currPhotoObj.photoDescription && (
+            <div data-tooltip-id="photogallery-photo-description-button-tooltip">
+              <Button noPadding>
+                <Icon
+                  name="article"
+                  useMaterialUiIcon
+                  color="white"
+                  onClick={openInformationDialog}
+                  style={{ fontSize: "24px" }}
+                />
+              </Button>
+              <BasicTooltip
+                id="photogallery-photo-description-button-tooltip"
+                content="Otevřít popis fotografie"
+              />
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div data-tooltip-id="photogallery-close">
+            <Button noPadding>
+              <Icon
+                color="white"
+                useMaterialUiIcon
+                name="close"
+                onClick={closeLightBox}
+                style={{ fontSize: "24px" }}
+              />
+            </Button>
+            <BasicTooltip id="photogallery-close" content="Zavřít" />
+          </div>
+        </div>
+      </animated.div>
+
+      {isInformationDialogOpen && (
+        <DialogPortal
+          component={
+            <InformationDialog
+              closeThisDialog={closeTopDialog}
+              title={
+                <span className="text-2xl font-bold">
+                  {currPhotoObj.photoTitle ?? ""}
+                </span>
+              }
+              content={currPhotoObj.photoDescription}
+              big={true}
+            />
+          }
+        />
+      )}
+    </>
   );
 };
 

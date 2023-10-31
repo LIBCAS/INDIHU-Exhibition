@@ -7,28 +7,38 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { createSelector } from "reselect";
 
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
-import Button from "react-md/lib/Buttons/Button";
+import ReactMdButton from "react-md/lib/Buttons/Button";
 import FontIcon from "react-md/lib/FontIcons";
 import HelpIcon from "components/help-icon";
+import { Icon } from "components/icon/icon";
 
 import { Tooltip } from "react-tooltip";
 
-import { AppDispatch } from "store/store";
-import { File as IndihuFile, Infopoint } from "models";
+import { AppDispatch, AppState } from "store/store";
+import { File as IndihuFile, Infopoint, Sequence, Size } from "models";
 
 import { setDialog } from "actions/dialog-actions";
-import { showLoader } from "actions/app-actions";
+import { showLoader, setImageEditor } from "actions/app-actions";
 import cx from "classnames";
 
 import { helpIconText } from "enums/text";
 import { dispatch } from "index";
 import { DialogType } from "components/dialogs/dialog-types";
+import { useTranslation } from "react-i18next";
 
 const infopointSize = 34;
+
+// - -
+
+const stateSelector = createSelector(
+  ({ expo }: AppState) => expo.activeExpo.id,
+  (expoId) => ({ expoId })
+);
 
 // - -
 
@@ -49,7 +59,7 @@ type ImageBoxProps = {
     newLeftPosition: number,
     newTopPosition: number
   ) => void;
-  infopoints?: Infopoint[];
+  infopoints?: Infopoint[] | Sequence[];
   infopointTooltipId?: string;
 
   activePoint?: any;
@@ -86,9 +96,9 @@ const ImageBox = ({
   }, [dispatch, setImage]);
 
   return (
-    <div className="flex flex-row" style={{ flexWrap: "nowrap" }}>
+    <div className="flex">
       <div
-        className={cx("flex flex-col card-image-container", {
+        className={cx("flex flex-col", {
           img: !!image,
           "img-none": !image,
         })}
@@ -125,8 +135,6 @@ export default ImageBox;
 
 // - - -
 
-type Size = { width: number; height: number };
-
 type ImageContainerProps = {
   image: ImageBoxProps["image"];
   onLoad: ImageBoxProps["onLoad"];
@@ -146,6 +154,7 @@ const ImageContainer = ({
   onInfopointMove,
   infopointTooltipId,
 }: ImageContainerProps) => {
+  const { t } = useTranslation("expo-editor");
   const [infopointIndexMouseDown, setInfopointIndexMouseDown] = useState<
     number | null
   >(null);
@@ -231,7 +240,11 @@ const ImageContainer = ({
         <CardText className="h-full flex flex-col items-center justify-center">
           <FontIcon style={{ fontSize: "18em" }}>image</FontIcon>
           <div className="flex items-center justify-center">
-            <Button raised label="Vybrat" onClick={() => changeImage()} />
+            <ReactMdButton
+              raised
+              label={t("imageBox.emptySelectLabel")}
+              onClick={() => changeImage()}
+            />
           </div>
         </CardText>
       </Card>
@@ -303,7 +316,9 @@ const ImageContainer = ({
                     : `screen-image-infopoint-${infopointIndex}`
                 }
                 data-tooltip-content={
-                  infopoint.bodyContentType === "IMAGE"
+                  "zoom" in infopoint
+                    ? infopoint.text // in this case sequence.. otherwise always infopoint
+                    : infopoint.bodyContentType === "IMAGE"
                     ? infopoint.imageFile?.name ?? "Neuveden název obrázku"
                     : infopoint.bodyContentType === "VIDEO"
                     ? infopoint.videoFile?.name ?? "Neuveden název videa"
@@ -346,57 +361,92 @@ const SettingsPanel = ({
   changeImage,
   setCurrZoom,
 }: SettingsPanelProps) => {
+  const { expoId } = useSelector(stateSelector);
+  const { t } = useTranslation("expo-editor");
+
   if (!image) {
     return null;
   }
 
   return (
-    <div className="w-full flex flex-wrap justify-between">
+    <div className="mt-1 w-full flex flex-wrap justify-between">
       {/* Left side with zooming icons */}
-      <div>
-        <FontIcon
-          className="p-1 inline-block cursor-pointer"
+      <div className="flex gap-1">
+        <Icon
+          useMaterialUiIcon
+          name="zoom_in"
+          style={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             setCurrZoom((prevZoom) => prevZoom + 0.2);
           }}
-        >
-          zoom_in
-        </FontIcon>
+          tooltipId="zoom-in-icon-button"
+          tooltipText={t("imageBox.zoomInTooltip")}
+          tooltipVariant="dark"
+        />
 
-        <FontIcon
-          className="p-1 inline-block cursor-pointer"
+        <Icon
+          useMaterialUiIcon
+          name="search"
+          style={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             setCurrZoom(1);
           }}
-        >
-          search
-        </FontIcon>
+          tooltipId="reset-zoom-icon-button"
+          tooltipText={t("imageBox.zoomResetTooltip")}
+          tooltipVariant="dark"
+        />
 
-        <FontIcon
-          className="p-1 inline-block cursor-pointer"
+        <Icon
+          useMaterialUiIcon
+          name="zoom_out"
+          style={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             setCurrZoom((prevZoom) =>
               prevZoom <= 1 ? prevZoom : prevZoom - 0.2
             );
           }}
-        >
-          zoom_out
-        </FontIcon>
+          tooltipId="zoom-out-icon-button"
+          tooltipText={t("imageBox.zoomOutTooltip")}
+          tooltipVariant="dark"
+        />
       </div>
 
       {/* Right side with edit and delete icon */}
-      <div>
-        <FontIcon
-          className="p-1 inline-block cursor-pointer"
+      <div className="flex gap-1">
+        <Icon
+          useMaterialUiIcon
+          name="folder"
+          style={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             changeImage();
           }}
-        >
-          mode_edit
-        </FontIcon>
+          tooltipId="explorer-icon-button"
+          tooltipText={t("imageBox.openFileExplorerTooltip")}
+          tooltipVariant="dark"
+        />
 
-        <FontIcon
-          className="p-1 inline-block cursor-pointer"
+        <Icon
+          useMaterialUiIcon
+          name="palette"
+          style={{ fontSize: "24px", opacity: 0.6 }}
+          onClick={() => {
+            const imageEditorObj = {
+              expoId: expoId,
+              onClose: undefined,
+              src: `/api/files/${image.fileId}`,
+              type: image.type,
+            };
+            dispatch(setImageEditor(imageEditorObj));
+          }}
+          tooltipId="image-editor-icon-button"
+          tooltipText={t("imageBox.openImageEditorTooltip")}
+          tooltipVariant="dark"
+        />
+
+        <Icon
+          useMaterialUiIcon
+          name="delete"
+          style={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             dispatch(
               setDialog(DialogType.ConfirmDialog, {
@@ -406,9 +456,10 @@ const SettingsPanel = ({
               })
             );
           }}
-        >
-          delete
-        </FontIcon>
+          tooltipId="delete-icon-button"
+          tooltipText={t("imageBox.deleteImageFromBox")}
+          tooltipVariant="dark"
+        />
       </div>
     </div>
   );

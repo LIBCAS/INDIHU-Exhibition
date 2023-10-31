@@ -10,6 +10,8 @@ import {
 import { Helmet } from "react-helmet";
 
 import { FilePreloaderProvider } from "context/file-preloader/file-preloader-provider";
+import { DrawerPanelProvider } from "context/drawer-panel-provider/drawer-panel-provider";
+import { GlassMagnifierConfigProvider } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 import ViewWrap from "./view-wrap";
 import { ViewSection } from "./view-section";
@@ -200,11 +202,15 @@ export const ExpoViewer = () => {
         path={`${match.path}/:section/:screen?`}
         render={() => (
           <FilePreloaderProvider>
-            <ViewSection
-              name={match.params.name}
-              handleViewScreen={handleViewScreen}
-              setViewScreenIsLoaded={setViewScreenIsLoaded}
-            />
+            <DrawerPanelProvider>
+              <GlassMagnifierConfigProvider>
+                <ViewSection
+                  name={match.params.name}
+                  handleViewScreen={handleViewScreen}
+                  setViewScreenIsLoaded={setViewScreenIsLoaded}
+                />
+              </GlassMagnifierConfigProvider>
+            </DrawerPanelProvider>
           </FilePreloaderProvider>
         )}
       />

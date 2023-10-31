@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import SelectField from "react-md/lib/SelectFields";
 import ImageBox from "components/editors/ImageBox";
@@ -10,17 +11,18 @@ import { ImageChangeScreen, File as IndihuFile } from "models";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
-import { helpIconText } from "enums/text";
 import {
-  animationOptions,
-  rodPositionOptions,
-  gradualTransitionBeginPositionOptions,
-} from "./enums";
-import { animationType } from "enums/animation-type";
+  ImageChangeAnimationEnum,
+  ImageChangeGradualTransitionBeginPositionEnum,
+  ImageChangeRodPositionEnum,
+} from "enums/administration-screens";
+
+// - -
 
 type ImagesProps = { activeScreen: ImageChangeScreen };
 
 const Images = ({ activeScreen }: ImagesProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
   // const isSmall = useMediaQuery(breakpoints.down("md"));
 
@@ -63,7 +65,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
           {/* BEFORE */}
           <div className="flex flex-col gap-4">
             <ImageBox
-              title="Obrázek před"
+              title={t("descFields.imageChangeScreen.imageBeforeLabel")}
               image={image1File}
               setImage={setImage1File}
               onDelete={() => {
@@ -76,7 +78,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   updateScreenData({ image1OrigData: { width, height } })
                 );
               }}
-              helpIconLabel={helpIconText.EDITOR_IMAGE_CHANGE_IMAGE_BEFORE}
+              helpIconLabel={t(
+                "descFields.imageChangeScreen.imageBeforeTooltip"
+              )}
               helpIconId="editor-image-change-image-before"
               infopoints={activeScreen.image1Infopoints ?? []}
               onInfopointMove={(
@@ -103,9 +107,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
 
             <InfopointsTable
-              title="Infopointy před"
+              title={t("descFields.imageChangeScreen.infopointsBeforeTitle")}
               infopoints={activeScreen.image1Infopoints ?? []}
-              onInfopointAdd={async (dialogFormData) => {
+              onInfopointAdd={(dialogFormData) => {
                 dispatch(
                   updateScreenData({
                     image1Infopoints: [
@@ -115,7 +119,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   })
                 );
               }}
-              onInfopointEdit={async (infopointIndexToEdit, dialogFormData) => {
+              onInfopointEdit={(infopointIndexToEdit, dialogFormData) => {
                 dispatch(
                   updateScreenData({
                     image1Infopoints: activeScreen.image1Infopoints?.map(
@@ -142,7 +146,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
           {/* AFTER */}
           <div className="flex flex-col gap-4">
             <ImageBox
-              title="Obrázek po"
+              title={t("descFields.imageChangeScreen.imageAfterLabel")}
               image={image2File}
               setImage={setImage2File}
               onDelete={() => {
@@ -155,7 +159,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   updateScreenData({ image2OrigData: { width, height } })
                 );
               }}
-              helpIconLabel={helpIconText.EDITOR_IMAGE_CHANGE_IMAGE_AFTER}
+              helpIconLabel={t(
+                "descFields.imageChangeScreen.imageAfterTooltip"
+              )}
               helpIconId="editor-image-change-image-after"
               infopoints={activeScreen.image2Infopoints ?? []}
               onInfopointMove={(
@@ -182,9 +188,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
 
             <InfopointsTable
-              title="Infopointy po"
+              title={t("descFields.imageChangeScreen.infopointsAfterTitle")}
               infopoints={activeScreen.image2Infopoints ?? []}
-              onInfopointAdd={async (dialogFormData) => {
+              onInfopointAdd={(dialogFormData) => {
                 dispatch(
                   updateScreenData({
                     image2Infopoints: [
@@ -194,7 +200,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   })
                 );
               }}
-              onInfopointEdit={async (infopointIndexToEdit, dialogFormData) => {
+              onInfopointEdit={(infopointIndexToEdit, dialogFormData) => {
                 dispatch(
                   updateScreenData({
                     image2Infopoints: activeScreen.image2Infopoints?.map(
@@ -234,25 +240,47 @@ type AnimationSelectFieldProps = {
 const AnimationSelectField = ({
   animationTypeValue,
 }: AnimationSelectFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="flex">
       <SelectField
         id="screen-image-change-selectfield-animation"
-        label="Způsob přechodu mezi obrázky"
-        menuItems={animationOptions}
+        label={t("descFields.imageChangeScreen.animationTypeLabel")}
+        menuItems={[
+          {
+            label: t(
+              "descFields.imageChangeScreen.animationHorizontalRodOption"
+            ),
+            value: ImageChangeAnimationEnum.HORIZONTAL,
+          },
+          {
+            label: t("descFields.imageChangeScreen.animationVerticalRodOption"),
+            value: ImageChangeAnimationEnum.VERTICAL,
+          },
+          {
+            label: t("descFields.imageChangeScreen.animationGradualOption"),
+            value: ImageChangeAnimationEnum.GRADUAL_TRANSITION,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.animationFadeInOutTwoImagesOption"
+            ),
+            value: ImageChangeAnimationEnum.FADE_IN_OUT_TWO_IMAGES,
+          },
+        ]}
         itemLabel="label"
         itemValue="value"
         position="below"
-        defaultValue={animationTypeValue ?? animationType.VERTICAL}
+        defaultValue={animationTypeValue ?? ImageChangeAnimationEnum.VERTICAL}
         onChange={(newValue: ImageChangeScreen["animationType"]) => {
           dispatch(updateScreenData({ animationType: newValue }));
         }}
         style={{ width: "290px" }}
       />
       <HelpIcon
-        label={helpIconText.EDITOR_IMAGE_CHANGE_ANIMATION}
+        label={t("descFields.imageChangeScreen.animationTypeTooltip")}
         id="editor-image-change-animation"
       />
     </div>
@@ -268,14 +296,46 @@ type RodPositionSelectFieldProps = {
 const RodPositionSelectField = ({
   rodPositionValue,
 }: RodPositionSelectFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="flex">
       <SelectField
         id="screen-image-change-selectfield-rodPosition"
-        label="Počáteční pozice táhla na obrazovce"
-        menuItems={rodPositionOptions}
+        label={t("descFields.imageChangeScreen.initialRodPositionLabel")}
+        menuItems={[
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialRodPositionStartOption"
+            ),
+            value: ImageChangeRodPositionEnum.ZERO,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialRodPositionQuarterOption"
+            ),
+            value: ImageChangeRodPositionEnum.QUARTER_ONE,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialRodPositionHalfOption"
+            ),
+            value: ImageChangeRodPositionEnum.HALF_ONE,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialRodPositionThreeQuarterOption"
+            ),
+            value: ImageChangeRodPositionEnum.THREE_QUARTER_ONE,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialRodPositionEndOption"
+            ),
+            value: ImageChangeRodPositionEnum.ONE,
+          },
+        ]}
         itemLabel="label"
         itemValue="value"
         position="below"
@@ -286,7 +346,7 @@ const RodPositionSelectField = ({
         style={{ width: "290px" }}
       />
       <HelpIcon
-        label="Zvolte jednu z pěti možností, kde bude táhlo iniciálně na obrazovce umístěno (vzhledem k předchozí volbě)."
+        label={t("descFields.imageChangeScreen.initialRodPositionTooltip")}
         id="editor-image-change-rodPosition"
       />
     </div>
@@ -302,14 +362,46 @@ type GradualTransitionSelectFieldProps = {
 const GradualTransitionSelectField = ({
   gradualTransitionBeginPositionValue,
 }: GradualTransitionSelectFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="flex">
       <SelectField
         id="screen-image-change-selectfield-gradualTransitionBeginPosition"
-        label="Počáteční pozice pozvolného přechodu"
-        menuItems={gradualTransitionBeginPositionOptions}
+        label={t(
+          "descFields.imageChangeScreen.initialGradualTransitionPositionLabel"
+        )}
+        menuItems={[
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialGradualPositionTopToBottom"
+            ),
+            value:
+              ImageChangeGradualTransitionBeginPositionEnum.VERTICAL_TOP_TO_BOTTOM,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialGradualPositionBottomToTop"
+            ),
+            value:
+              ImageChangeGradualTransitionBeginPositionEnum.VERTICAL_BOTTOM_TO_TOP,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialGradualPositionLeftToRight"
+            ),
+            value:
+              ImageChangeGradualTransitionBeginPositionEnum.HORIZONTAL_LEFT_TO_RIGHT,
+          },
+          {
+            label: t(
+              "descFields.imageChangeScreen.initialGradualPositionRightToLeft"
+            ),
+            value:
+              ImageChangeGradualTransitionBeginPositionEnum.HORIZONTAL_RIGHT_TO_LEFT,
+          },
+        ]}
         itemLabel="label"
         itemValue="value"
         position="below"
@@ -326,7 +418,9 @@ const GradualTransitionSelectField = ({
         style={{ width: "290px" }}
       />
       <HelpIcon
-        label="Zvolte jednu ze tří možností odkud začne pozvolný přechod."
+        label={t(
+          "descFields.imageChangeScreen.initialGradualTransitionPositionTooltip"
+        )}
         id="editor-image-change-gradualTransitionBeginPosition"
       />
     </div>

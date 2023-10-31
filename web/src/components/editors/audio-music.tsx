@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "store/store";
 
@@ -32,6 +33,7 @@ const AudioMusic = ({
   helpIconTitle,
 }: AudioMusicProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor");
 
   return (
     <div className="row flex-centered">
@@ -41,8 +43,8 @@ const AudioMusic = ({
           textFieldLabel
             ? textFieldLabel
             : isAudio
-            ? "Zvuková stopa obrazovky"
-            : "Zvuková stopa kapitoly"
+            ? t("descFields.audioScreenTrack")
+            : t("descFields.audioChapterTrack")
         }
         value={audio ? audio.name : music ? music.name : ""}
         disabled
@@ -74,7 +76,7 @@ const AudioMusic = ({
 
         <Button
           raised
-          label="vybrat"
+          label={t("descFields.audioSelectLabel")}
           onClick={() =>
             dispatch(
               setDialog(DialogType.ScreenFileChoose, {

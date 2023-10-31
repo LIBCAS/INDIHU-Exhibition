@@ -11,15 +11,16 @@ import { createSelector } from "reselect";
 import { useSpring, animated } from "react-spring";
 import useElementSize from "hooks/element-size-hook";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
 
 import { getViewImageAnimation } from "./view-image-animation";
 import { calculateObjectFit } from "utils/object-fit";
 import { getScreenTime } from "utils/screen";
+import { isInfopointOutsideOrigImage } from "utils/view-utils";
 
 import { AppState } from "store/store";
 import { ImageScreen } from "models";
 import { ScreenProps } from "models";
-import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ImageScreen,
@@ -46,7 +47,11 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - -
 
-  const { height, top, left } = useMemo(
+  const {
+    height: containedImageHeight,
+    left: fromLeft,
+    top: fromTop,
+  } = useMemo(
     () =>
       calculateObjectFit({
         type: "contain",
@@ -57,8 +62,8 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   );
 
   const ratio = useMemo(
-    () => height / (viewScreen.imageOrigData?.height ?? 1),
-    [height, viewScreen.imageOrigData?.height]
+    () => containedImageHeight / (viewScreen.imageOrigData?.height ?? 1),
+    [containedImageHeight, viewScreen.imageOrigData?.height]
   );
 
   // - - - -
@@ -141,28 +146,41 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
             />
           )}
 
-          {viewScreen.infopoints?.map((infopoint, infopointIndex) => (
-            <React.Fragment key={`infopoint-tooltip-${infopointIndex}`}>
-              <ScreenAnchorInfopoint
-                id={`infopoint-tooltip-${infopointIndex}`}
-                top={top + infopoint.top * ratio}
-                left={left + infopoint.left * ratio}
-                infopoint={infopoint}
-                // we need to scale the infopoint back down to normal size
-                style={{
-                  transform: `translate(-50%, -50%) scale(${1 / scale.get()})`,
-                }}
-              />
-              <TooltipInfoPoint
-                key={`infopoint-tooltip-${infopointIndex}`}
-                id={`infopoint-tooltip-${infopointIndex}`}
-                infopoint={infopoint}
-                infopointOpenStatusMap={infopointOpenStatusMap}
-                setInfopointOpenStatusMap={setInfopointOpenStatusMap}
-                primaryKey={infopointIndex.toString()}
-              />
-            </React.Fragment>
-          ))}
+          {viewScreen.infopoints?.map((infopoint, infopointIndex) => {
+            if (
+              isInfopointOutsideOrigImage({
+                infopointPosition: { left: infopoint.left, top: infopoint.top },
+                imageOrigData: viewScreen.imageOrigData,
+              })
+            ) {
+              return null;
+            }
+
+            return (
+              <React.Fragment key={`infopoint-tooltip-${infopointIndex}`}>
+                <ScreenAnchorInfopoint
+                  id={`infopoint-tooltip-${infopointIndex}`}
+                  top={fromTop + infopoint.top * ratio}
+                  left={fromLeft + infopoint.left * ratio}
+                  infopoint={infopoint}
+                  // we need to scale the infopoint back down to normal size
+                  style={{
+                    transform: `translate(-50%, -50%) scale(${
+                      1 / scale.get()
+                    })`,
+                  }}
+                />
+                <TooltipInfoPoint
+                  key={`infopoint-tooltip-${infopointIndex}`}
+                  id={`infopoint-tooltip-${infopointIndex}`}
+                  infopoint={infopoint}
+                  infopointOpenStatusMap={infopointOpenStatusMap}
+                  setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                  primaryKey={infopointIndex.toString()}
+                />
+              </React.Fragment>
+            );
+          })}
 
           {image && <GlassMagnifier lensContainerStyle={{ zIndex: 11 }} />}
         </animated.div>

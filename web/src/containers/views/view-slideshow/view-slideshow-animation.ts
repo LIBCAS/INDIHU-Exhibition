@@ -1,10 +1,13 @@
-import { animationType } from "enums/animation-type";
+import { SlideshowScreenAnimationType } from "models";
+import { SlideshowScreenAnimationEnum } from "enums/administration-screens";
 
-import { AnimationType } from "models";
+// - -
 
-export const resolveSlideshowAnimation = (type: AnimationType) => {
-  return type === animationType.FLY_IN_OUT ||
-    type === animationType.FLY_IN_OUT_AND_BLUR_BACKGROUND
+export const resolveSlideshowAnimation = (
+  type: SlideshowScreenAnimationType
+) => {
+  return type === SlideshowScreenAnimationEnum.FLY_IN_OUT ||
+    type === SlideshowScreenAnimationEnum.FLY_IN_OUT_AND_BLUR_BACKGROUND
     ? {
         from: {
           translateX: "100vw",
@@ -22,8 +25,8 @@ export const resolveSlideshowAnimation = (type: AnimationType) => {
           duration: 1000,
         },
       }
-    : type === animationType.FADE_IN_OUT ||
-      type === animationType.FADE_IN_OUT_AND_BLUR_BACKGROUND
+    : type === SlideshowScreenAnimationEnum.FADE_IN_OUT ||
+      type === SlideshowScreenAnimationEnum.FADE_IN_OUT_AND_BLUR_BACKGROUND
     ? {
         from: {
           translateX: 0,

@@ -1,19 +1,21 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import WysiwygEditor from "components/editors/WysiwygEditor/WysiwygEditor";
-// import { TextEditor } from "components/text-editor/text-editor";
 
 import { AppDispatch } from "store/store";
 import { TextScreen } from "models";
 
 import { updateScreenData } from "actions/expoActions";
-import { helpIconText } from "enums/text";
+
+// - -
 
 type TextProps = {
   activeScreen: TextScreen;
 };
 
 const Text = ({ activeScreen }: TextProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -25,10 +27,8 @@ const Text = ({ activeScreen }: TextProps) => {
           onChange={(newContent: string) => {
             dispatch(updateScreenData({ mainText: newContent }));
           }}
-          label="Text"
-          helpIconText={helpIconText.EDITOR_TEXT_TEXT}
-          //id="screen-start-textfield-maintext"
-          //maxLength={300}
+          label={t("descFields.textScreen.textLabel")}
+          helpIconText={t("descFields.textScreen.textTooltip")}
         />
       </div>
     </div>

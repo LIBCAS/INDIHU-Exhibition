@@ -1,9 +1,10 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
 // - -
-export const languageKeys = ["cs", "en"] as const;
+export const languageKeys = ["cs", "en"] as const; // as given by "react-i18next"
 export type LanguageKey = typeof languageKeys[number];
 // - -
 
@@ -13,20 +14,14 @@ const backend = new Backend({
 
 i18n
   .use(backend)
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    lng: "cs",
+    debug: false,
     fallbackLng: "cs",
     interpolation: {
       escapeValue: false,
     },
   });
-
-// - -
-
-export const changeLanguage = async (languageKey: LanguageKey) => {
-  const tFunction = await i18n.changeLanguage(languageKey);
-  return tFunction;
-};
 
 export default i18n;

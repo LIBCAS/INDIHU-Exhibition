@@ -16,40 +16,42 @@ const FileUploader = ({
   progress,
   isLoading,
   ...rest
-}) => (
-  <Uploader uploadOnSelection {...rest}>
-    {({ error }) => (
-      <div className="fileUploader">
-        <div className="fileUploader-inner">
-          <UploadField
-            onFiles={handleFiles}
-            uploadProps={{
-              accept:
-                accept ||
-                "video/mp4,audio/mp3,image/jpeg,image/png,application/*,text/*",
-              multiple: true,
-            }}
-          >
-            {children}
-          </UploadField>
-          {isLoading && !(error || fileError) ? (
-            <CircularProgress className="circular-progress" />
+}) => {
+  return (
+    <Uploader uploadOnSelection {...rest}>
+      {({ error }) => (
+        <div className="fileUploader">
+          <div className="fileUploader-inner">
+            <UploadField
+              onFiles={handleFiles}
+              uploadProps={{
+                accept:
+                  accept ||
+                  "video/mp4,audio/mp3,image/jpeg,image/png,application/*,text/*",
+                multiple: true,
+              }}
+            >
+              {children}
+            </UploadField>
+            {isLoading && !(error || fileError) ? (
+              <CircularProgress className="circular-progress" />
+            ) : (
+              <div />
+            )}
+          </div>
+          {progress && !(error || fileError) ? (
+            <progress className="progress" max="100" value={progress} />
           ) : (
             <div />
           )}
+          {(error || fileError) && (
+            <div className="invalid">{fileError || "Nahrávání selhalo."}</div>
+          )}
         </div>
-        {progress && !(error || fileError) ? (
-          <progress className="progress" max="100" value={progress} />
-        ) : (
-          <div />
-        )}
-        {(error || fileError) && (
-          <div className="invalid">{fileError || "Nahrávání selhalo."}</div>
-        )}
-      </div>
-    )}
-  </Uploader>
-);
+      )}
+    </Uploader>
+  );
+};
 
 export default compose(
   defaultProps({

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { get, isEmpty, filter as lodashFilter, forEach, isArray } from "lodash";
+import { get, isEmpty, isArray } from "lodash";
 import { Screen, CollaboratorObj } from "models";
 export * from "./routing";
 
@@ -269,53 +269,54 @@ export const objectsEqual = (object1: any, object2: any) => {
   return true;
 };
 
-export const createFilter = (filterItemsUncleared: any) => {
-  const filterItems = lodashFilter(
-    filterItemsUncleared,
+// - - - - - -
+
+type QueryParam = { field: string; value: any };
+
+export const createQuery = (queryParams: QueryParam[]) => {
+  const filteredQueryParams = queryParams.filter(
+    (qp) => hasValue(qp.field) && hasValue(qp.value)
+  );
+
+  if (isEmpty(filteredQueryParams)) {
+    return "";
+  }
+
+  const paramPairs = filteredQueryParams.map(
+    (queryParam) => `${queryParam.field}=${queryParam.value}`
+  );
+  const queryString = "?" + paramPairs.join("&");
+  return queryString;
+};
+
+// - - - - - -
+
+type QueryFilterParam = { field: string; operation: string; value: any };
+
+export const createFilter = (filterItemsUncleared: QueryFilterParam[]) => {
+  const filteredItems = filterItemsUncleared.filter(
     (param) =>
       hasValue(param.field) &&
       hasValue(param.operation) &&
       hasValue(param.value)
   );
 
-  let filterArray: any[] = [];
+  // in the end looks like [{field: 'filter[0].field', value: 'title'}, {field: 'filter[0].operation', value: 'CONTAINS'}, {field: 'filter[0].value', value: 'something'}]
+  let filterArray: QueryParam[] = [];
 
-  forEach(filterItems, (item, i) => {
-    const { field, operation, value } = item;
-
+  filteredItems.forEach((item, idx) => {
     filterArray = [
       ...filterArray,
-      { field: `filter[${i}].field`, value: field },
-      { field: `filter[${i}].operation`, value: operation },
-      { field: `filter[${i}].value`, value },
+      { field: `filter[${idx}].field`, value: item.field },
+      { field: `filter[${idx}].operation`, value: item.operation },
+      { field: `filter[${idx}].value`, value: item.value },
     ];
   });
 
   return filterArray;
 };
 
-export const createQuery = (queryParams: any) => {
-  const params = lodashFilter(
-    queryParams,
-    (param) => hasValue(param.field) && hasValue(param.value)
-  );
-
-  if (!isEmpty(params)) {
-    let s = "?";
-
-    forEach(params, (param, i) => {
-      s += `${param.field}=${param.value}`;
-
-      if (i + 1 < params.length) {
-        s += "&";
-      }
-    });
-
-    return s;
-  }
-
-  return "";
-};
+// - - - - - -
 
 export const asyncForEach = async (array: any, callback: any) => {
   if (isArray(array)) {

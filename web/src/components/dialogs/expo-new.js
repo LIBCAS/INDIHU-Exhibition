@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { compose, withHandlers } from "recompose";
 import { reduxForm, Field } from "redux-form";
 
@@ -6,24 +8,28 @@ import TextField from "../form/redux-form/text-field";
 import * as Validation from "../form/redux-form/validation";
 import { newExpo } from "../../actions/expoActions";
 
-const ExpoNew = ({ handleSubmit }) => (
-  <Dialog
-    title="Nová výstava"
-    name="ExpoNew"
-    handleSubmit={handleSubmit}
-    submitLabel="Vytvořit"
-  >
-    <form onSubmit={handleSubmit}>
-      <Field
-        component={TextField}
-        componentId="expo-new-textfield-name"
-        name="name"
-        label="Název výstavy"
-        validate={[Validation.required]}
-      />
-    </form>
-  </Dialog>
-);
+const ExpoNew = ({ handleSubmit }) => {
+  const { t } = useTranslation("exhibitions-page");
+
+  return (
+    <Dialog
+      title={t("dialog.newExpoTitle")}
+      name="ExpoNew"
+      handleSubmit={handleSubmit}
+      submitLabel={t("dialog.submitLabel")}
+    >
+      <form onSubmit={handleSubmit}>
+        <Field
+          component={TextField}
+          componentId="expo-new-textfield-name"
+          name="name"
+          label={t("dialog.newExpoLabel")}
+          validate={[Validation.required]}
+        />
+      </form>
+    </Dialog>
+  );
+};
 
 export default compose(
   withHandlers({

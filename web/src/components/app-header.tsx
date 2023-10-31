@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import MenuButton from "react-md/lib/Menus/MenuButton";
 import ListItem from "react-md/lib/Lists/ListItem";
@@ -10,13 +11,13 @@ import FontIcon from "react-md/lib/FontIcons";
 import { AppDispatch, AppState } from "store/store";
 import { ActiveExpo, Screen } from "models";
 
-import { expoStateText } from "enums/expo-state";
-import { screenTypeText, mapScreenTypeValuesToKeys } from "enums/screen-type";
+import { mapScreenTypeValuesToKeys } from "enums/screen-type";
 
 import { signOut } from "actions/user-actions";
 import { isAdmin, openInNewTab } from "utils";
 import { get } from "lodash";
 import cx from "classnames";
+import { LanguageSelect } from "./form/mui";
 
 const mdStyles =
   "md-paper md-paper--2 md-background--primary md-toolbar--text-white md-toolbar--discrete md-toolbar--fixed";
@@ -63,6 +64,7 @@ const AppHeader = ({
 }: AppHeaderProps) => {
   const { activeExpo, activeScreen, role } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation(["app-header", "expo"]);
 
   const history = useHistory();
   const match = useRouteMatch();
@@ -109,9 +111,24 @@ const AppHeader = ({
           {authStyle || expositionsStyle || adminStyle || profileStyle
             ? "INDIHU Exhibition"
             : screenStyle && activeScreen && activeScreen.type
-            ? screenTypeText[mapScreenTypeValuesToKeys[activeScreen.type]]
+            ? t(
+                `structure.screenLabels.${mapScreenTypeValuesToKeys[
+                  activeScreen.type
+                ].toLowerCase()}`,
+                { ns: "expo" }
+              )
             : activeExpo.title || "INDIHU Exhibition"}
         </h2>
+
+        {(expoStyle || (screenStyle && activeScreen)) && (
+          <p
+            className="toolbar-button nonclickable"
+            style={{ marginLeft: "24px" }}
+          >
+            {t("logged.expositionState")}{" "}
+            {t(`expoState.${activeExpo.state.toLowerCase()}`, { ns: "expo" })}{" "}
+          </p>
+        )}
 
         {authStyle && handleInfo && (
           <button
@@ -119,7 +136,7 @@ const AppHeader = ({
             style={{ marginLeft: 32 }}
             onClick={() => handleInfo()}
           >
-            Podmínky použití
+            {t("logout.conditionsOfUse")}
           </button>
         )}
 
@@ -129,7 +146,7 @@ const AppHeader = ({
             style={{ marginLeft: 32 }}
             onClick={() => handleGDPR()}
           >
-            Zásady práce s osobními údaji
+            {t("logout.personalData")}
           </button>
         )}
 
@@ -140,7 +157,7 @@ const AppHeader = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Projekt INDIHU
+            {t("logout.projectIndihu")}
           </a>
         )}
 
@@ -151,7 +168,7 @@ const AppHeader = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Manuál
+            {t("manual")}
           </a>
         )}
       </div>
@@ -165,7 +182,7 @@ const AppHeader = ({
               history.push(isSignIn ? "/register" : "/");
             }}
           >
-            {isSignIn ? "Registrace" : "Přihlášení"}
+            {isSignIn ? t("logout.registration") : t("logout.login")}
           </p>
 
           {/* on small screens */}
@@ -207,11 +224,7 @@ const AppHeader = ({
       {/* Right part when logged in inside */}
       {!authStyle && (
         <div className="toolbar-right toolbar-flex">
-          {(expoStyle || (screenStyle && activeScreen)) && (
-            <p className="toolbar-button nonclickable">
-              stav: {expoStateText[activeExpo.state]}
-            </p>
-          )}
+          <LanguageSelect isSmallerVariant isAppHeader />
 
           {!expoStyle && !screenStyle && admin && (
             <p
@@ -222,7 +235,7 @@ const AppHeader = ({
                 history.push("/administration");
               }}
             >
-              Nastavení
+              {t("logged.settings")}
             </p>
           )}
 
@@ -235,7 +248,7 @@ const AppHeader = ({
                 history.push("/users");
               }}
             >
-              Uživatelé
+              {t("logged.users")}
             </p>
           )}
 
@@ -246,20 +259,18 @@ const AppHeader = ({
               })}
               onClick={() => history.push("/exhibitions")}
             >
-              Výstavy
+              {t("logged.exhibitions")}
             </p>
           )}
 
-          {!expoStyle && !screenStyle && (
-            <p
-              className={"toolbar-button"}
-              onClick={() =>
-                openInNewTab("https://nnis.github.io/indihu-manual/")
-              }
-            >
-              Manuál
-            </p>
-          )}
+          <p
+            className={"toolbar-button"}
+            onClick={() =>
+              openInNewTab("https://nnis.github.io/indihu-manual/")
+            }
+          >
+            {t("manual")}
+          </p>
 
           <p
             className={cx("toolbar-button", {
@@ -268,7 +279,7 @@ const AppHeader = ({
             onClick={() => history.push("/profile")}
           >
             <i className="fa fa-fw fa-user" />
-            Správa účtu
+            {t("logged.accountManagement")}
           </p>
 
           <p
@@ -279,7 +290,7 @@ const AppHeader = ({
             }}
           >
             <i className="fa fa-fw fa-sign-out" />
-            Odhlásit
+            {t("logged.logout")}
           </p>
 
           <MenuButton

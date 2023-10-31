@@ -56,14 +56,15 @@ export const useFilePreloaderScreens = (): ScreenPreloads => {
 
   // 1.) current section + screen as tuple -- [number, number]
   const current = useMemo<ScreenCoordinates>(() => {
-    if (section === undefined || screen === undefined) {
-      // !!
+    if (section === undefined) {
       return "start";
     }
     if (section === "start" || section === "finish") {
       return section;
     }
-
+    if (screen === undefined) {
+      return "start";
+    }
     return [section, screen];
   }, [screen, section]);
 

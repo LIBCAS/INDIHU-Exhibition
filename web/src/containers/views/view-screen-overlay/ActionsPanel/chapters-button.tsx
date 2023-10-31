@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { animated, useSpring } from "react-spring";
@@ -13,14 +13,17 @@ import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { Icon } from "components/icon/icon";
 import { Button } from "components/button/button";
 import { ScreenItem } from "components/dialogs/chapters-dialog/screen-item";
-import { DialogType } from "components/dialogs/dialog-types";
 
 import { breakpoints } from "hooks/media-query-hook/breakpoints";
-import { AppDispatch, AppState } from "store/store";
+import { AppState } from "store/store";
 
-import { setDialog } from "actions/dialog-actions";
 import { parseUrlSection, parseUrlScreen } from "utils";
 import cx from "classnames";
+
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+
+// - -
 
 type Props = {
   maxHeight?: number;
@@ -33,7 +36,8 @@ const stateSelector = createSelector(
 
 export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
   const { viewExpo } = useSelector(stateSelector);
-  const dispatch = useDispatch<AppDispatch>();
+
+  const { openNewTopDialog } = useDialogRef();
 
   const { bgFgTheming } = useExpoDesignData();
 
@@ -80,17 +84,9 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
   /* Open and Close the Chapters panel */
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  const openChaptersDialog = useCallback(
-    () =>
-      dispatch(
-        setDialog(DialogType.ChaptersDialog, {
-          screens: viewExpo?.structure?.screens,
-          viewExpoUrl: viewExpo?.url,
-          hightlight: sectionScreen,
-        })
-      ),
-    [dispatch, sectionScreen, viewExpo?.structure?.screens, viewExpo?.url]
-  );
+  const openChaptersDialog = useCallback(() => {
+    openNewTopDialog(DialogRefType.ChaptersDialog);
+  }, [openNewTopDialog]);
 
   if (isSmallScreen) {
     return (
@@ -139,7 +135,10 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
               viewExpoUrl={viewExpo.url}
               onClick={toggle}
               isSubScreen={false}
-              highlight={{ section: parsedUrlSection, screen: parsedUrlScreen }}
+              highlight={{
+                section: parsedUrlSection,
+                screen: parsedUrlScreen,
+              }}
             />
           )}
           {/* Then others INTRO chapters screen with their subscreens! */}

@@ -23,11 +23,14 @@ import { GameWipeScreen } from "models";
 import cx from "classnames";
 import classes from "./game-erase.module.scss";
 import { calculateObjectFit } from "utils/object-fit";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameWipeScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+const LINE_WIDTH = 40;
 
 // - - -
 
@@ -38,6 +41,7 @@ export const GameErase = ({
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("screen");
+  const { expoDesignData, palette } = useExpoDesignData();
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // current mouse position of the cursor
@@ -48,6 +52,20 @@ export const GameErase = ({
 
   // - -
 
+  const eraserToolType = useMemo(
+    () => viewScreen.eraserToolType ?? "eraser1",
+    [viewScreen.eraserToolType]
+  );
+
+  // - -
+
+  // Upper image orig data, the one which will erase into the bottom image
+  const upperImageOrigData = useMemo(
+    () => viewScreen.image1OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image1OrigData]
+  );
+
+  // Upper image (its contained size on the screen)
   const {
     width: containedImage1Width,
     height: containedImage1Height,
@@ -57,9 +75,9 @@ export const GameErase = ({
     () =>
       calculateObjectFit({
         parent: containerSize,
-        child: viewScreen.image1OrigData ?? { height: 0, width: 0 },
+        child: upperImageOrigData,
       }),
-    [containerSize, viewScreen.image1OrigData]
+    [containerSize, upperImageOrigData]
   );
 
   // - -
@@ -167,11 +185,11 @@ export const GameErase = ({
       return;
     }
 
-    ctx.fillStyle = "black";
+    ctx.fillStyle = expoDesignData?.backgroundColor ?? palette.background;
     fillCanvas();
-    ctx.lineWidth = 40;
+    ctx.lineWidth = LINE_WIDTH;
     ctx.lineCap = "round";
-  }, [ctx, fillCanvas]);
+  }, [ctx, expoDesignData?.backgroundColor, fillCanvas, palette.background]);
 
   return (
     <div className="w-full h-full relative" ref={containerRef}>
@@ -183,7 +201,10 @@ export const GameErase = ({
 
       <canvas
         className={cx("absolute", {
-          [classes.drawingCursor]: !isGameFinished,
+          [classes.eraser1]: !isGameFinished && eraserToolType === "eraser1",
+          [classes.eraser2]: !isGameFinished && eraserToolType === "eraser2",
+          [classes.eraser3]: !isGameFinished && eraserToolType === "eraser3",
+          [classes.eraser4]: !isGameFinished && eraserToolType === "eraser4",
         })}
         ref={canvasRef}
         onMouseDown={updateMousePosition}

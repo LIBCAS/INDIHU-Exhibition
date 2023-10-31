@@ -1,15 +1,17 @@
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
+import { ViewLoading } from "containers/views/view-loading/view-loading";
 import { Provider } from "react-redux";
 
 import { ThemeProvider } from "@emotion/react";
-import theme from "./mui-theme";
+import { getMuiTheme } from "mui-theme";
+import { createTheme } from "@mui/material";
 
 import { DialogRefProvider } from "context/dialog-ref-provider/dialog-ref-provider";
-import { DrawerPanelProvider } from "context/drawer-panel-provider/drawer-panel-provider";
-import { GlassMagnifierConfigProvider } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 import { App } from "app";
-import { ViewLoading } from "containers/views/view-loading/view-loading";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
+// - - -
 
 interface AppProvidersProps {
   store: any;
@@ -19,16 +21,29 @@ export const AppProviders = ({ store }: AppProvidersProps) => {
   return (
     <Suspense fallback={<ViewLoading />}>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <DialogRefProvider>
-            <DrawerPanelProvider>
-              <GlassMagnifierConfigProvider>
-                <App />
-              </GlassMagnifierConfigProvider>
-            </DrawerPanelProvider>
-          </DialogRefProvider>
-        </ThemeProvider>
+        <AppProviders2 />
       </Provider>
     </Suspense>
+  );
+};
+
+// - - -
+
+// Helper component in order to access redux store, so need to be wrapped inside <Provider>
+// Redux store needs to be accessed for current lightMode property to set correctly MUI Theming
+const AppProviders2 = () => {
+  const { isLightMode } = useExpoDesignData();
+
+  const theme = useMemo(
+    () => createTheme(getMuiTheme(isLightMode)),
+    [isLightMode]
+  );
+
+  return (
+    <ThemeProvider theme={theme}>
+      <DialogRefProvider>
+        <App />
+      </DialogRefProvider>
+    </ThemeProvider>
   );
 };

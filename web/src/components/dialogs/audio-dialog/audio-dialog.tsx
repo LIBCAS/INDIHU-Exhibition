@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
-import Dialog from "../dialog-wrap-typed";
-import { DialogType, DialogProps } from "../dialog-types";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 
 // Components
 import { Button } from "components/button/button";
@@ -36,33 +35,37 @@ const stateSelector = createSelector(
 
 // - - - - - - -
 
-export type AudioDialogDataProps = {
+export type AudioDialogProps = {
+  closeThisDialog: () => void;
   hasSpeechVolume: boolean;
   hasMusicVolume: boolean;
   isVideoPresent: boolean;
 };
 
-export const AudioDialog = (props: DialogProps<DialogType.AudioDialog>) => {
-  const { dialogData } = props;
+export const AudioDialog = ({
+  closeThisDialog,
+  hasSpeechVolume,
+  hasMusicVolume,
+  isVideoPresent,
+}: AudioDialogProps) => {
   const { expoVolumes } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
   const speechVolume = useMemo(() => expoVolumes.speechVolume, [expoVolumes]);
   const musicVolume = useMemo(() => expoVolumes.musicVolume, [expoVolumes]);
 
-  if (!dialogData) {
-    return null;
-  }
-
   return (
-    <Dialog
-      name={DialogType.AudioDialog}
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={<span className="text-2xl font-bold">Nastavení zvuku</span>}
+      big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       <div className="flex flex-col gap-5">
         {/* First slider */}
-        {(dialogData.hasSpeechVolume || dialogData.isVideoPresent) && (
+        {(hasSpeechVolume || isVideoPresent) && (
           <AudioSlider
             volumeKey="speechVolume"
             volumeObj={speechVolume}
@@ -70,7 +73,7 @@ export const AudioDialog = (props: DialogProps<DialogType.AudioDialog>) => {
           />
         )}
         {/* Second slider */}
-        {dialogData.hasMusicVolume && (
+        {hasMusicVolume && (
           <AudioSlider
             volumeKey="musicVolume"
             volumeObj={musicVolume}
@@ -102,7 +105,7 @@ export const AudioDialog = (props: DialogProps<DialogType.AudioDialog>) => {
           Zesílit vše
         </Button>
       </div>
-    </Dialog>
+    </DialogWrap>
   );
 };
 

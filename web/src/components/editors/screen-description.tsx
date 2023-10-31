@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { TitleTextField } from "./TextFields";
 import Music from "./music";
@@ -13,6 +14,7 @@ import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
 import { helpIconText } from "enums/text";
 import { ScreenCompletedCheckbox } from "./Checkboxes";
+import { screenType } from "enums/screen-type";
 
 type ScreenDescriptionProps = {
   activeScreen: Screen;
@@ -23,6 +25,7 @@ const ScreenDescription = ({
   activeScreen,
   sumOfPhotosTimes,
 }: ScreenDescriptionProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   const audioFile =
@@ -57,7 +60,7 @@ const ScreenDescription = ({
             <AudioMusic
               isAudio={true}
               audio={audioFile}
-              helpIconTitle={helpIconText.EDITOR_DESCRIPTION_AUDIO}
+              helpIconTitle={t("descFields.audioScreenTrackTooltip")}
               id="editor-description-audio"
             />
 
@@ -65,6 +68,9 @@ const ScreenDescription = ({
               audio={audioFile}
               activeScreen={activeScreen}
               sumOfPhotosTimes={sumOfPhotosTimes}
+              disabled={activeScreen.type === screenType.IMAGE_ZOOM}
+              helpIconLabel={t("descFields.screenTimeTooltip")}
+              helpIconId="time-help-icon"
             />
 
             <Music

@@ -1,29 +1,28 @@
-import Dialog from "../dialog-wrap-typed";
-import { DialogProps, DialogType } from "../dialog-types";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 
-export type InformationDialogDataProps = {
+export type InformationDialogProps = {
+  closeThisDialog: () => void;
   title: React.ReactNode | string;
   content: React.ReactNode | string;
   big: boolean;
 };
 
 export const InformationDialog = ({
-  dialogData,
-}: DialogProps<DialogType.InformationDialog>) => {
-  if (!dialogData) {
-    return null;
-  }
-
-  const { title, content, big } = dialogData;
-
+  closeThisDialog,
+  title,
+  content,
+  big,
+}: InformationDialogProps) => {
   return (
-    <Dialog
-      name={DialogType.InformationDialog}
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={title}
       big={big}
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       {typeof content === "string" ? <div>{content}</div> : content}
-    </Dialog>
+    </DialogWrap>
   );
 };

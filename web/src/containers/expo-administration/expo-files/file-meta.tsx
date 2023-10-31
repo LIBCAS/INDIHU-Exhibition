@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 import { round, get } from "lodash";
@@ -7,6 +8,7 @@ import { File as IndihuFile } from "models";
 type FileMetaProps = { activeFile: IndihuFile | null };
 
 const FileMeta = ({ activeFile }: FileMetaProps) => {
+  const { t } = useTranslation("expo");
   const fileSize = activeFile?.size ? parseInt(activeFile.size) : undefined;
 
   return (
@@ -15,12 +17,12 @@ const FileMeta = ({ activeFile }: FileMetaProps) => {
         {activeFile && (
           <div>
             <div className="meta-row">
-              <p>Název:</p>
+              <p>{t("files.nameCol")}</p>
               <p>{activeFile.name}</p>
             </div>
 
             <div className="meta-row">
-              <p>Typ:</p>
+              <p>{t("files.typeCol")}</p>
               <p>
                 {get(
                   activeFile,
@@ -31,7 +33,7 @@ const FileMeta = ({ activeFile }: FileMetaProps) => {
             </div>
 
             <div className="meta-row">
-              <p>Velikost:</p>
+              <p>{t("files.sizeCol")}</p>
               <p>
                 {!fileSize || isNaN(fileSize)
                   ? "Neznáma"
@@ -43,28 +45,28 @@ const FileMeta = ({ activeFile }: FileMetaProps) => {
 
             {activeFile.duration && (
               <div className="meta-row">
-                <p>Délka:</p>
+                <p>{t("files.durationCol")}</p>
                 <p>{`${activeFile.duration} s`}</p>
               </div>
             )}
 
             {activeFile.width && activeFile.height && (
               <div className="meta-row">
-                <p>Rozměry:</p>
+                <p>{t("files.dimensionsCol")}</p>
                 <p>{`${activeFile.width} x ${activeFile.height}`}</p>
               </div>
             )}
 
             {activeFile.width && (
               <div className="meta-row">
-                <p>Šířka:</p>
+                <p>{t("files.widthCol")}</p>
                 <p>{`${activeFile.width} pixelů`}</p>
               </div>
             )}
 
             {activeFile.height && (
               <div className="meta-row">
-                <p>Výška:</p>
+                <p>{t("files.heightCol")}</p>
                 <p>{`${activeFile.height} pixelů`}</p>
               </div>
             )}

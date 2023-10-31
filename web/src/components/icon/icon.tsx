@@ -1,14 +1,16 @@
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import { Icon as MuiIcon } from "@mui/material";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
+import { BasicTooltip } from "components/tooltip/tooltip";
+
 import cx from "classnames";
 
 interface IconProps {
-  name: string; // name either for FontIcon from 'react-md' or Icon from 'material-ui'
+  name: string | ReactNode; // name either for FontIcon from 'react-md' or Icon from 'material-ui'
   useMaterialUiIcon?: boolean;
   color?:
     | "expoThemeMode"
@@ -22,6 +24,9 @@ interface IconProps {
   noCenterPlace?: boolean; // by default, icon should be inside some container and centered
   className?: string;
   style?: CSSProperties;
+  tooltipId?: string;
+  tooltipText?: string;
+  tooltipVariant?: "light" | "dark"; // if undefined, based on selected theme
 }
 
 export const Icon = ({
@@ -32,6 +37,9 @@ export const Icon = ({
   style,
   onClick,
   noCenterPlace = false,
+  tooltipId,
+  tooltipText,
+  tooltipVariant,
 }: IconProps) => {
   const { expoDesignData, fgThemingIf } = useExpoDesignData();
 
@@ -58,6 +66,7 @@ export const Icon = ({
       style={{
         color: themeEnabledIconsColor,
       }}
+      data-tooltip-id={tooltipId ? tooltipId : undefined}
     >
       {/* Icon color either inherited from Button parent or div if some color prop is used */}
       {useMaterialUiIcon ? (
@@ -68,6 +77,15 @@ export const Icon = ({
         <FontIcon onClick={onClick} className="!text-inherit" style={style}>
           {name}
         </FontIcon>
+      )}
+
+      {/* Tooltip if tooltip text is provided */}
+      {tooltipId && tooltipText && (
+        <BasicTooltip
+          id={tooltipId}
+          content={tooltipText}
+          variant={tooltipVariant}
+        />
       )}
     </div>
   );

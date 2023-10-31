@@ -69,7 +69,6 @@ $md-colors-warn-md: false;
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 @import "components/main.scss";
-@import "components/loader.scss";
 @import "components/dialogs.scss";
 @import "components/toolbar.scss";
 @import "components/exposition.scss";
@@ -81,6 +80,7 @@ $md-colors-warn-md: false;
 @import "components/viewer.scss";
 @import "components/image-editor.scss";
 @import "components/infopoint.scss";
+@import "components/loader.scss";
 
 *:not(i) {
   font-family: "Work Sans";

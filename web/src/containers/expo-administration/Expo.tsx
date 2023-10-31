@@ -2,17 +2,19 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
 import { useRouteMatch, useLocation, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import AppHeader from "components/app-header";
 import TabMenu from "components/tab-menu";
+import LoaderScreen from "components/loaders/loader-screen";
 
 import Structure from "./expo-structure";
 import Files from "./expo-files";
-import Settings from "./expo-settings";
-import ExpoSharing from "./expo-sharing/expo-sharing";
+import ExpoSettings from "./expo-settings/expo-settings";
+import ExpoRating from "./expo-rating/expo-rating";
 import ExpoTheme from "./expo-theme/expo-theme";
 import Editor from "./expo-editor/ExpoEditor";
 
@@ -21,7 +23,8 @@ import { AppState } from "store/store";
 import { AppDispatch } from "store/store";
 
 import { getCurrentUser } from "actions/user-actions";
-import { loadExpo } from "actions/expoActions";
+import { loadExpo, clearActiveExpo } from "actions/expoActions";
+import { showLoader } from "actions/app-actions";
 import { isEmpty } from "lodash";
 
 const expoStateSelector = createSelector(
@@ -32,6 +35,7 @@ const expoStateSelector = createSelector(
 // - -
 
 const Expo = () => {
+  const { t } = useTranslation("expo");
   const { activeExpo } = useSelector(expoStateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -41,16 +45,22 @@ const Expo = () => {
 
   useEffect(() => {
     const handleExpoMount = async () => {
+      dispatch(showLoader(true));
       dispatch(getCurrentUser());
       await dispatch(loadExpo(match.params.id));
+      dispatch(showLoader(false));
     };
-
     handleExpoMount();
+
+    return () => {
+      const handleUnMount = async () => dispatch(clearActiveExpo());
+      handleUnMount();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!activeExpo || isEmpty(activeExpo)) {
-    return null;
+  if (isEmpty(activeExpo) || !activeExpo) {
+    return <LoaderScreen />;
   }
 
   return (
@@ -69,13 +79,19 @@ const Expo = () => {
         <TabMenu
           tabs={[
             {
-              label: "Struktura výstavy",
+              label: t("structure.tab"),
               link: `/expo/${activeExpo.id}/structure`,
             },
-            { label: "Soubory", link: `/expo/${activeExpo.id}/files` },
-            { label: "Nastavení", link: `/expo/${activeExpo.id}/settings` },
-            { label: "Sdílení", link: `/expo/${activeExpo.id}/sharing` },
-            { label: "Motív", link: `/expo/${activeExpo.id}/theme` },
+            { label: t("files.tab"), link: `/expo/${activeExpo.id}/files` },
+            {
+              label: t("settingsAndSharing.tab"),
+              link: `/expo/${activeExpo.id}/settings`,
+            },
+            {
+              label: t("rating.tab"),
+              link: `/expo/${activeExpo.id}/rating`,
+            },
+            { label: t("theming.tab"), link: `/expo/${activeExpo.id}/theme` },
           ]}
         />
       )}
@@ -90,11 +106,11 @@ const Expo = () => {
       />
       <Route
         path={`${match.url}/settings`}
-        render={() => <Settings activeExpo={activeExpo} />}
+        render={() => <ExpoSettings activeExpo={activeExpo} />}
       />
       <Route
-        path={`${match.url}/sharing`}
-        render={() => <ExpoSharing activeExpo={activeExpo} />}
+        path={`${match.url}/rating`}
+        render={() => <ExpoRating activeExpo={activeExpo} />}
       />
       <Route
         path={`${match.url}/theme`}

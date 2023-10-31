@@ -1,36 +1,13 @@
-// START screen
-import { ChaptersDialogDataProps } from "./chapters-dialog/chapters-dialog";
-import { ExpoInfoDialogDataProps } from "./expo-info-dialog/expo-info-dialog";
-import { FilesDialogDataProps } from "./files-dialog/files-dialog";
-import { WorksheetsDialogDataProps } from "./worksheets-dialog/worksheets-dialog";
-// FINISH screen
-import { ShareExpoDialogDataProps } from "./share-expo-dialog/share-expo-dialog";
-import { FinishAllFilesDialogDataProps } from "./finish-all-files-dialog/finish-all-files-dialog";
-import { FinishInfoDialogDataProps } from "./finish-info-dialog/finish-info-dialog";
-import { RatingDialogDataProps } from "./rating-dialog/rating-dialog";
-// Control panel
-import { AudioDialogDataProps } from "./audio-dialog/audio-dialog";
-import { SettingsDialogDataProps } from "./settings-dialog/settings-dialog";
-import { GlassMagnifierDialogDataProps } from "./glass-magnifier-dialog/glass-magnifier-dialog";
-// General
-import { InformationDialogDataProps } from "./information-dialog/information-dialog";
-
-import { File as IndihuFile, Document, AuthorObj } from "models";
+import {
+  File as IndihuFile,
+  Document,
+  AuthorObj,
+  ExpositionState,
+  ActiveExpo,
+} from "models";
 
 // All possible dialog names (important when calling setDialog action)
 export enum DialogType {
-  ChaptersDialog = "ChaptersDialog",
-  ExpoInfoDialog = "ExpoInfoDialog",
-  FilesDialog = "FilesDialog",
-  WorksheetsDialog = "WorksheetsDialog",
-  ShareExpoDialog = "ShareExpoDialog",
-  FinishInfoDialog = "FinishInfoDialog",
-  FinishAllFilesDialog = "FinishAllFilesDialog",
-  RatingDialog = "RatingDialog",
-  AudioDialog = "AudioDialog",
-  SettingsDialog = "SettingsDialog",
-  GlassMagnifierDialog = "GlassMagnifierDialog",
-  InformationDialog = "InformationDialog", // newer version of InfoDialog ("Info")
   // Others
   ScreenFileChoose = "ScreenFileChoose",
   ConfirmDialog = "ConfirmDialog",
@@ -44,6 +21,8 @@ export enum DialogType {
   ExpoShare = "ExpoShare",
   ExpoShareChangeOwner = "ExpoShareChangeOwner",
   ExpoShareRemoveCollaborator = "ExpoShareRemoveCollaborator",
+  ExpoNew = "ExpoNew",
+  ExpositionMenu = "ExpositionMenu",
 }
 
 type ScreenFileChooseDialogDataProps = {
@@ -83,35 +62,24 @@ type ExpoShareRemoveCollaboratorDataProps = {
   name: string | null | undefined;
 };
 
+type ExpoNewDataProps = Record<string, never>;
+type ExpositionMenuDataProps = {
+  id: string;
+  title: string;
+  url: string;
+  canEdit: boolean;
+  canDelete: boolean;
+  state: ExpositionState;
+  inProgress: boolean;
+  activeExpo: ActiveExpo;
+  expositions: any;
+};
+
 // Each dialog has built-in DialogProps: setDialog, closeDialog, dialogData, addDialogData
 // Each dialog has its own custom DialogDataProps --> type definition for dialog.dialogData
 // custom DialogDataProps - those who are supplied when setDialog(DialogType.Name, { ...dialogData })
 export type DialogDataProps<T extends DialogType> =
-  T extends DialogType.ChaptersDialog
-    ? ChaptersDialogDataProps
-    : T extends DialogType.ExpoInfoDialog
-    ? ExpoInfoDialogDataProps
-    : T extends DialogType.FilesDialog
-    ? FilesDialogDataProps
-    : T extends DialogType.WorksheetsDialog
-    ? WorksheetsDialogDataProps
-    : T extends DialogType.ShareExpoDialog
-    ? ShareExpoDialogDataProps
-    : T extends DialogType.FinishAllFilesDialog
-    ? FinishAllFilesDialogDataProps
-    : T extends DialogType.FinishInfoDialog
-    ? FinishInfoDialogDataProps
-    : T extends DialogType.RatingDialog
-    ? RatingDialogDataProps
-    : T extends DialogType.AudioDialog
-    ? AudioDialogDataProps
-    : T extends DialogType.SettingsDialog
-    ? SettingsDialogDataProps
-    : T extends DialogType.GlassMagnifierDialog
-    ? GlassMagnifierDialogDataProps
-    : T extends DialogType.InformationDialog
-    ? InformationDialogDataProps
-    : T extends DialogType.ScreenFileChoose
+  T extends DialogType.ScreenFileChoose
     ? ScreenFileChooseDialogDataProps
     : T extends DialogType.ConfirmDialog
     ? ConfirmDialogDataProps
@@ -135,6 +103,10 @@ export type DialogDataProps<T extends DialogType> =
     ? ExpoShareChangeOwnerDataProps
     : T extends DialogType.ExpoShareRemoveCollaborator
     ? ExpoShareRemoveCollaboratorDataProps
+    : T extends DialogType.ExpoNew
+    ? ExpoNewDataProps
+    : T extends DialogType.ExpositionMenu
+    ? ExpositionMenuDataProps
     : never;
 
 export type DialogProps<T extends DialogType> = {

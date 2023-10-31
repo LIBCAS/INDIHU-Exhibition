@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { compose, withState } from "recompose";
 import { TextField, SelectField, FontIcon, Button, Checkbox } from "react-md";
@@ -8,9 +9,38 @@ import CharacterCount from "components/editors/character-count";
 
 import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions";
-import { helpIconText } from "enums/text";
-import { animationTypeViewStartEnum } from "enums/animation-type";
 import { giveMeExpoTime } from "utils";
+import { ScreenStartAnimationEnum } from "enums/administration-screens";
+
+// - - -
+
+const animationTypeStartOptions = [
+  { label: "Bez animace", value: ScreenStartAnimationEnum.WITHOUT },
+  {
+    label: "Bez animace s rozmlženým pozadím",
+    value: ScreenStartAnimationEnum.WITHOUT_AND_BLUR_BACKGROUND,
+  },
+  {
+    label: "Shora dolů",
+    value: ScreenStartAnimationEnum.FROM_TOP,
+  },
+  {
+    label: "Zdola nahoru",
+    value: ScreenStartAnimationEnum.FROM_BOTTOM,
+  },
+  {
+    label: "Zleva doprava",
+    value: ScreenStartAnimationEnum.FROM_LEFT_TO_RIGHT,
+  },
+  {
+    label: "Zprava doleva",
+    value: ScreenStartAnimationEnum.FROM_RIGHT_TO_LEFT,
+  },
+];
+
+//const animationTypeStartOptions
+
+// - - -
 
 const Description = ({
   activeExpo,
@@ -21,6 +51,8 @@ const Description = ({
   error,
   setError,
 }) => {
+  const { t } = useTranslation("expo-editor");
+
   const image = getFileById(activeScreen.image);
   const audio = getFileById(activeScreen.audio);
 
@@ -44,37 +76,37 @@ const Description = ({
             <div className="flex-row-nowrap">
               <TextField
                 id="screen-start-textfield-title"
-                label="Název"
+                label={t("descFields.name")}
                 defaultValue={activeScreen.title}
                 onChange={(value) => updateScreenData({ title: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_START_DESCRIPTION_TITLE}
+                label={t("descFields.nameTooltip")}
                 id="editor-start-description-title"
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="screen-start-textfield-subtitle"
-                label="Podnázev"
+                label={t("descFields.subname")}
                 defaultValue={activeScreen.subTitle}
                 onChange={(value) => updateScreenData({ subTitle: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_START_DESCRIPTION_SUBTITLE}
+                label={t("descFields.subnameTooltip")}
                 id="editor-start-description-subtitle"
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="screen-start-textfield-perex"
-                label="Perex"
+                label={t("descFields.perex")}
                 rows={5}
                 defaultValue={activeScreen.perex}
                 onChange={(value) => updateScreenData({ perex: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_START_DESCRIPTION_PEREX}
+                label={t("descFields.perexTooltip")}
                 id="editor-start-description-perex"
               />
             </div>
@@ -84,7 +116,7 @@ const Description = ({
             <div className="row flex-centered">
               <TextField
                 id="screen-start-textfield-image"
-                label="Obrázek na pozadí"
+                label={t("descFields.backgroundImage")}
                 value={image ? image.name : ""}
                 disabled
               />
@@ -122,7 +154,7 @@ const Description = ({
                 )}
                 <Button
                   raised
-                  label="vybrat"
+                  label={t("descFields.backgroundImageSelectLabel")}
                   onClick={() =>
                     setDialog("ScreenFileChoose", {
                       onChoose: setImage,
@@ -132,7 +164,7 @@ const Description = ({
                   }
                 />
                 <HelpIcon
-                  label={helpIconText.EDITOR_START_DESCRIPTION_IMAGE}
+                  label={t("descFields.backgroundImageTooltip")}
                   id="editor-start-description-image"
                 />
               </div>
@@ -141,8 +173,8 @@ const Description = ({
               <SelectField
                 id="screen-start-selectfield-animation"
                 className="select-field big"
-                label="Animace obrázku"
-                menuItems={animationTypeViewStartEnum}
+                label={t("descFields.imageAnimation")}
+                menuItems={animationTypeStartOptions}
                 itemLabel={"label"}
                 itemValue={"value"}
                 position={"below"}
@@ -150,17 +182,17 @@ const Description = ({
                 onChange={(value) => updateScreenData({ animationType: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_START_DESCRIPTION_ANIMATION}
+                label={t("descFields.imageAnimationTooltip")}
                 id="editor-start-description-animation"
               />
             </div>
             <AudioMusic
               {...{
-                textFieldLabel: "Audio verze výstavy",
+                textFieldLabel: t("descFields.expoAudio"),
                 audio,
                 updateScreenData,
                 isAudio: true,
-                helpIconTitle: helpIconText.EDITOR_START_DESCRIPTION_AUDIO,
+                helpIconTitle: t("descFields.expoAudioTooltip"),
                 id: "editor-start-description-audio",
               }}
             />
@@ -169,7 +201,7 @@ const Description = ({
                 <div className="form-input form-input-with-suffix">
                   <TextField
                     id="screen-start-textfield-expoTime"
-                    label="Délka trvání výstavy"
+                    label={t("descFields.expoDuration")}
                     defaultValue={expoTimeValue}
                     onChange={(value) => {
                       const numberValue = Number(value);
@@ -190,7 +222,7 @@ const Description = ({
                   <span className="form-input-suffix">min</span>
                 </div>
                 <HelpIcon
-                  label={helpIconText.EDITOR_START_DESCRIPTION_EXPOTIME}
+                  label={t("descFields.expoDurationTooltip")}
                   id="editor-start-description-expotime"
                 />
               </div>
@@ -200,32 +232,32 @@ const Description = ({
                 </div>
               )}
               <div className="margin-bottom-small">
-                Odhadovaný čas bez her: <b>{expoTime}</b>
+                {t("descFields.timeEstimation")} <b>{expoTime}</b>
               </div>
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="screen-start-textfield-organization"
-                label="Organizace"
+                label={t("descFields.organization")}
                 defaultValue={activeScreen.organization}
                 onChange={(value) => updateScreenData({ organization: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_START_DESCRIPTION_ORGANIZATION}
+                label={t("descFields.organizationTooltip")}
                 id="editor-start-description-organization"
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="screen-start-textfield-organization-link"
-                label="Odkaz na webové stránky organizace"
+                label={t("descFields.organizationLink")}
                 defaultValue={activeScreen.organizationLink}
                 onChange={(value) =>
                   updateScreenData({ organizationLink: value })
                 }
               />
               <HelpIcon
-                label={helpIconText.EDITOR_START_DESCRIPTION_ORGANIZATION_LINK}
+                label={t("descFields.organizationLinkTooltip")}
                 id="editor-start-description-organization-link"
               />
             </div>
@@ -233,7 +265,7 @@ const Description = ({
               <Checkbox
                 id="screen-start-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label={t("descFields.screenCompleted")}
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={(value) =>

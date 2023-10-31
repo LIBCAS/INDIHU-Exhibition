@@ -12,6 +12,8 @@ import { generateTutorialStep, generateTutorialSteps } from "./tutorial-utils";
 
 // - - - - - - - -
 
+export type TutorialKey = "overlay" | "screenChange";
+
 export type TutorialStep = {
   stepKey: string;
   label: string;
@@ -25,11 +27,8 @@ type SingleTutorialObj = {
 };
 
 type AllTutorialObjs = {
-  overlay: SingleTutorialObj;
-  screenChange: SingleTutorialObj;
+  [key in TutorialKey]: SingleTutorialObj;
 };
-
-export type TutorialKey = keyof AllTutorialObjs;
 
 type LocalStorageTutorial = {
   [key in TutorialKey]: boolean;

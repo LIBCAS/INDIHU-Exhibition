@@ -1,4 +1,4 @@
-import { Spinner } from "components/spinner/spinner";
+import { Spinner } from "components/loaders/spinner";
 
 export const ViewLoading = () => {
   return (

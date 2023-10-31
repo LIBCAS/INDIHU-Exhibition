@@ -2,8 +2,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useScreenChapters } from "hooks/view-hooks/screen-chapters-hook";
 
-import Dialog from "../dialog-wrap-typed";
-import { DialogProps, DialogType } from "../dialog-types";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 
 import { ScreenItem } from "./screen-item";
 
@@ -12,7 +11,8 @@ import { ScreenHighlight } from "models/screen";
 
 // - -
 
-export type ChaptersDialogDataProps = {
+export type ChaptersDialogProps = {
+  closeThisDialog: () => void;
   screens?: Screen[][];
   viewExpoUrl?: string;
   hightlight?: ScreenHighlight;
@@ -20,25 +20,29 @@ export type ChaptersDialogDataProps = {
 };
 
 export const ChaptersDialog = ({
-  dialogData,
-  closeDialog,
-}: DialogProps<DialogType.ChaptersDialog>) => {
+  closeThisDialog,
+  screens,
+  viewExpoUrl,
+  hightlight,
+  onClick,
+}: ChaptersDialogProps) => {
   const { t } = useTranslation("exhibition");
-  const { screens, viewExpoUrl, hightlight, onClick } = dialogData ?? {};
 
   const screenChapters = useScreenChapters(screens);
 
   const handleClick = useCallback(() => {
-    closeDialog();
+    closeThisDialog();
     onClick?.();
-  }, [closeDialog, onClick]);
+  }, [closeThisDialog, onClick]);
 
   return (
-    <Dialog
-      big
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={<span className="text-2xl font-bold">{t("chapters")}</span>}
-      name={DialogType.ChaptersDialog}
+      big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       {screenChapters?.length === 0 && <span>{t("no-screens")}</span>}
       {screenChapters?.map((screenChapter) => (
@@ -51,6 +55,6 @@ export const ChaptersDialog = ({
           usedInDialog
         />
       ))}
-    </Dialog>
+    </DialogWrap>
   );
 };

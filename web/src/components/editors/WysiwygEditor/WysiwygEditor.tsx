@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useRef, useState, Dispatch, SetStateAction } from "react";
 import { useSpring, animated } from "react-spring";
 
@@ -9,7 +10,6 @@ import "./custom-editor-styles.scss";
 import CharacterCount from "../character-count";
 import HelpIcon from "components/help-icon";
 
-import { helpIconText } from "enums/text";
 import { getTextFromHtml } from "./getTextFromHtml";
 
 // - -
@@ -69,6 +69,8 @@ type WysiwygEditorProps =
   | (UncontrolledWysiwygEditorProps & CommonWysiwygEditorProps);
 
 const WysiwygEditor = (props: WysiwygEditorProps) => {
+  const { t } = useTranslation("expo-editor");
+
   const [isEditorFocused, setIsEditorFocused] = useState<boolean>(false);
   const quillRef = useRef<ReactQuill>(null);
 
@@ -85,7 +87,7 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
             color: isEditorFocused ? "#083d77" : "rgba(0, 0, 0, 0.54)",
           }}
         >
-          {props.label ?? "Text k tématu"}
+          {props.label ?? t("descFields.text")}
         </label>
 
         <div className="flex flex-col gap-1">
@@ -133,7 +135,7 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
       </div>
 
       <HelpIcon
-        label={props.helpIconText ?? helpIconText.EDITOR_DESCRIPTION_TEXT}
+        label={props.helpIconText ?? t("descFields.textTooltip")}
         id="editor-description-text"
       />
     </div>

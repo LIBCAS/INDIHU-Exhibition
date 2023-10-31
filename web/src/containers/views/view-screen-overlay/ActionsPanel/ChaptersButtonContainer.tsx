@@ -2,7 +2,8 @@ import { ChaptersButton } from "./chapters-button";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
-import { Size } from "hooks/element-size-hook";
+
+import { Size } from "models";
 
 import cx from "classnames";
 

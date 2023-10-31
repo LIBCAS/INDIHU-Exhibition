@@ -68,10 +68,6 @@ export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
       duration,
     },
     pause: !shouldIncrement,
-    onChange: (changedValues) => {
-      console.log("changedValues: ", changedValues.value);
-      return;
-    },
   });
 
   // text animation

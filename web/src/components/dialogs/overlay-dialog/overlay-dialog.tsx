@@ -19,12 +19,12 @@ interface OverlayDialogProps {
   closeThisDialog: () => void;
   openEditorScreenUrl: () => void;
   isEditorAccess: boolean;
-  openGlassMagnifierDialog: () => void;
-  hasGlassMagnifier: boolean;
   openSettingsDialog: () => void;
-  openAudioDialog: () => void;
+  hasGlassMagnifier: boolean;
+  openGlassMagnifierDialog: () => void;
   hasAudio: boolean;
   isAudioMuted: boolean;
+  openAudioDialog: () => void;
   openChaptersDialog: () => void;
   play: () => void;
   pause: () => void;
@@ -36,12 +36,12 @@ const OverlayDialog = ({
   closeThisDialog,
   openEditorScreenUrl,
   isEditorAccess,
-  openGlassMagnifierDialog,
-  hasGlassMagnifier,
   openSettingsDialog,
-  openAudioDialog,
+  hasGlassMagnifier,
+  openGlassMagnifierDialog,
   hasAudio,
   isAudioMuted,
+  openAudioDialog,
   openChaptersDialog,
   play,
   pause,
@@ -115,10 +115,7 @@ const OverlayDialog = ({
           iconBefore={
             <Icon color="expoThemeMode" useMaterialUiIcon name="layers" />
           }
-          onClick={() => {
-            openChaptersDialog();
-            closeThisDialog();
-          }}
+          onClick={openChaptersDialog}
         >
           Open Chapters dialog
         </Button>

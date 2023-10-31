@@ -1,21 +1,25 @@
-import { DialogType } from "../dialog-types";
-
-import Dialog from "../dialog-wrap-typed";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 import GlassMagnifierSettings from "containers/views/view-screen-overlay/ActionsPanel/GlassMagnifierButton/GlassMagnifierSettings";
 
 // - -
 
-export type GlassMagnifierDialogDataProps = Record<string, never>;
+interface GlassMagnifierProps {
+  closeThisDialog: () => void;
+}
 
-export const GlassMagnifierDialog = () => {
+export const GlassMagnifierDialog = ({
+  closeThisDialog,
+}: GlassMagnifierProps) => {
   return (
-    <Dialog
-      name={DialogType.GlassMagnifierDialog}
-      big
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={<span className="text-2xl font-bold">Glass Magnifier Dialog</span>}
+      big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       <GlassMagnifierSettings biggerElements />
-    </Dialog>
+    </DialogWrap>
   );
 };

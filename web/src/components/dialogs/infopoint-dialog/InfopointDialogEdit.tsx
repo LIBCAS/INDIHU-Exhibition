@@ -14,7 +14,7 @@ interface InfopointDialogEditProps {
   onDialogSubmit: (
     infopointIndexToEdit: number,
     formData: InfopointFormDataProcessed
-  ) => Promise<void>;
+  ) => void;
   infopoint: Infopoint;
   infopointIndex: number;
 }
@@ -48,9 +48,9 @@ const InfopointDialogEdit = ({
         iconName: infopoint.iconFile?.name ?? "",
         iconFile: infopoint.iconFile ?? null,
       }}
-      onSubmit={async (formData) => {
+      onSubmit={(formData) => {
         const formDataProcessed = createFormDataProcessed(formData);
-        await onDialogSubmit(infopointIndex, formDataProcessed);
+        onDialogSubmit(infopointIndex, formDataProcessed);
         setIsSubmitted(true);
         return;
       }}
@@ -60,8 +60,8 @@ const InfopointDialogEdit = ({
         <DialogWrap
           closeThisDialog={closeThisDialog}
           title="Upravit"
-          handleSubmit={async () => {
-            await formik.submitForm();
+          handleSubmit={() => {
+            formik.submitForm();
           }}
           //onClose={() => console.log("here onClose() closing edit dialog!")}
           closeAfterSuccessfulSubmit

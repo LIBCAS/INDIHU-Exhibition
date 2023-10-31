@@ -66,8 +66,7 @@ const InfoPanel = ({
     <div
       className={cx(
         classes.info, // info in the grid
-        // hidden sm:flex
-        "flex h-full justify-start items-end p-3 gap-2"
+        "hidden sm:flex h-full justify-start items-end p-3 gap-2"
       )}
       ref={infoPanelRef}
     >

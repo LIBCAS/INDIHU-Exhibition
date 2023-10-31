@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -27,6 +28,7 @@ export type ScreenEditorSlideshowProps =
   ConcreteScreenEditorProps<SlideshowScreen>;
 
 const ScreenSlideshow = (props: ScreenEditorProps) => {
+  const { t } = useTranslation("expo-editor");
   const match = useRouteMatch<{ position: string }>();
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
@@ -78,15 +80,15 @@ const ScreenSlideshow = (props: ScreenEditorProps) => {
       <TabMenu
         tabs={[
           {
-            label: "Název, popis, audio",
+            label: t("tabs.descTab"),
             link: `${match.url}/description`,
           },
           {
-            label: "Slideshow",
+            label: t("tabs.slideshowTab"),
             link: `${match.url}/slideshow`,
           },
           {
-            label: "Dokumenty",
+            label: t("tabs.documentsTab"),
             link: `${match.url}/documents`,
           },
         ]}
@@ -102,7 +104,12 @@ const ScreenSlideshow = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/slideshow`}
-        render={() => <Slideshow activeScreen={activeScreen} />}
+        render={() => (
+          <Slideshow
+            activeScreen={activeScreen}
+            sumOfPhotosTimes={sumOfPhotosTimes}
+          />
+        )}
       />
       <Route
         path={`${match.url}/documents`}
@@ -115,7 +122,7 @@ const ScreenSlideshow = (props: ScreenEditorProps) => {
         colNum={match.params.position.match(/(\d*)$/)?.[0]}
         noActions={
           !!find(activeScreen.images, (image) =>
-            find(image.infopoints, (item) => item.edit)
+            find(image?.infopoints, (item) => item.edit)
           )
         }
         history={history}

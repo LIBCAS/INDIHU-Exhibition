@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { connect } from "react-redux";
 import classNames from "classnames";
 
@@ -10,9 +12,10 @@ import HelpIcon from "components/help-icon";
 
 import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions";
-import { helpIconText } from "enums/text";
 
 const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
+  const { t } = useTranslation("expo-editor");
+
   const video = getFileById(activeScreen.video);
 
   const setVideo = (video) => {
@@ -30,7 +33,7 @@ const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
                 "img-none": !video,
               })}
             >
-              <div>Video</div>
+              <div>{t("descFields.videoScreen.videoBoxLabel")}</div>
               <Card
                 className={classNames("card-image auto-height", {
                   img: !!video,
@@ -101,7 +104,7 @@ const Video = ({ activeScreen, updateScreenData, setDialog, getFileById }) => {
                 </div>
               )}
             </div>
-            <HelpIcon label={helpIconText.EDITOR_VIDEO_VIDEO} />
+            <HelpIcon label={t("descFields.videoScreen.videoBoxTooltip")} />
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import FontIcon from "react-md/lib/FontIcons";
 import Button from "react-md/lib/Buttons/Button";
@@ -13,8 +14,6 @@ import { tabFolder } from "actions/file-actions";
 import { changeSwitchState } from "actions/app-actions";
 
 import { DialogType } from "components/dialogs/dialog-types";
-import { helpIconText } from "enums/text";
-import { fileTypeText } from "enums/file-type";
 import { screenType } from "enums/screen-type";
 
 type DocumentsProps = {
@@ -22,6 +21,7 @@ type DocumentsProps = {
 };
 
 const Documents = ({ activeScreen }: DocumentsProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   const isStartScreen = activeScreen.type === screenType.START;
@@ -41,9 +41,15 @@ const Documents = ({ activeScreen }: DocumentsProps) => {
               {screenDocuments.length > 1 && (
                 <div className="table-cell-first_5" />
               )}
-              <div className="table-cell-second_5">Název</div>
-              <div className="table-cell-third_5">Soubor/URL</div>
-              <div className="table-cell-fourth_5">Typ</div>
+              <div className="table-cell-second_5">
+                {t("documentsTable.nameCol")}
+              </div>
+              <div className="table-cell-third_5">
+                {t("documentsTable.fileUrlCol")}
+              </div>
+              <div className="table-cell-fourth_5">
+                {t("documentsTable.typeCol")}
+              </div>
               <div className="table-cell-fifth_5" />
             </div>
 
@@ -53,15 +59,15 @@ const Documents = ({ activeScreen }: DocumentsProps) => {
                 "type" in doc ? doc.type : "urlType" in doc ? doc.urlType : "";
 
               const docTypeString = docType.match(/^image/)
-                ? fileTypeText.IMAGE
+                ? t("documentsTable.imageLabel")
                 : docType.match(/^audio/)
-                ? fileTypeText.AUDIO
+                ? t("documentsTable.audioLabel")
                 : docType.match(/^video/)
-                ? fileTypeText.VIDEO
+                ? t("documentsTable.videoLabel")
                 : docType.match(/^application\/pdf/)
-                ? fileTypeText.PDF
+                ? t("documentsTable.pdfLabel")
                 : docType.match(/^WEB/)
-                ? fileTypeText.WEB
+                ? t("documentsTable.webLabel")
                 : docType;
 
               const docFileType =
@@ -69,9 +75,9 @@ const Documents = ({ activeScreen }: DocumentsProps) => {
 
               const docFileTypeString =
                 docFileType === "exhibitionFile"
-                  ? "Soubor k výstavě"
+                  ? t("documentsTable.exhibitionFileLabel")
                   : docFileType === "worksheet"
-                  ? "Pracovní list"
+                  ? t("documentsTable.worksheetFileLabel")
                   : "";
 
               return (
@@ -165,7 +171,7 @@ const Documents = ({ activeScreen }: DocumentsProps) => {
             })}
           </div>
 
-          <HelpIcon label={helpIconText.EDITOR_DOCUMENTS} />
+          <HelpIcon label={t("documentsTable.startScreenTableTooltip")} />
         </div>
 
         {/* Add (+) button below the table */}

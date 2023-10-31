@@ -1,13 +1,9 @@
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 import { useExpoDesignData } from "../expo-design-data-hook";
+import { Position } from "models";
 
 // React Component inside Image Container, after contained img itself
-// Thats why image container should be positioned relatively and this absolutely
-
-type Position = {
-  left: number;
-  top: number;
-};
+// Thats why image container should be positioned relatively and this absolutel
 
 type GlassMagnifierProps = {
   containedImgSize: { width: number; height: number };

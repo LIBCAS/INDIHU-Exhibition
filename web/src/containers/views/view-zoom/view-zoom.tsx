@@ -1,54 +1,94 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState, useEffect, useMemo, CSSProperties } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { animated, easings, useSpring, useTransition } from "react-spring";
+import { animated, useSpring, useTransition, easings } from "react-spring";
 
-import { ZoomScreen } from "models";
-import { AppState } from "store/store";
-import { calculateObjectFit } from "utils/object-fit";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import useElementSize from "hooks/element-size-hook";
+import { useZoomPhase, calculateSequenceParameters } from "./useZoomPhase";
 
-import { ScreenProps } from "models";
+// Models
+import { ScreenProps, ZoomScreen, Sequence, Size } from "models";
+import { AppState } from "store/store";
 
-const delayTime = 2000;
+// Utils
+import cx from "classnames";
+import { calculateObjectFit } from "utils/object-fit";
+import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
+
+// - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ZoomScreen,
-  ({ expo }: AppState) => expo.viewProgress,
-  (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
+  ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
+  (viewScreen, shouldIncrement) => ({ viewScreen, shouldIncrement })
 );
 
-export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
-  const { viewScreen, viewProgress } = useSelector(stateSelector);
-  const [ref, containerSize] = useElementSize();
-  const animations = viewScreen.sequences;
-  const [animation, setAnimation] = useState<
-    typeof animations[number] | undefined
-  >(undefined);
-  const { image } = screenPreloadedFiles;
+// - -
 
-  const { height, width } = useMemo(
+export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
+  const { image } = screenPreloadedFiles;
+  const { viewScreen, shouldIncrement } = useSelector(stateSelector);
+
+  const { bgTheming, fgTheming } = useExpoDesignData();
+
+  const sequences = useMemo(() => viewScreen.sequences, [viewScreen.sequences]);
+  const delayTime = useMemo(
+    () =>
+      (viewScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000,
+    [viewScreen.seqDelayTime]
+  );
+
+  const isTooltipPositionRight = useMemo(
+    () => (viewScreen.tooltipPosition === "TOP_RIGHT" ? true : false),
+    [viewScreen.tooltipPosition]
+  );
+
+  const tooltipStyle = useMemo<CSSProperties>(() => {
+    if (isTooltipPositionRight) {
+      return { top: 20, right: 20 };
+    }
+    return { top: 20, left: 20 };
+  }, [isTooltipPositionRight]);
+
+  const imageOrigData = useMemo<Size>(
+    () => viewScreen.imageOrigData ?? { width: 0, height: 0 },
+    [viewScreen.imageOrigData]
+  );
+
+  // - -
+
+  const [containerRef, containerSize] = useElementSize();
+
+  const { width: containedImgWidth, height: containedImgHeight } = useMemo(
     () =>
       calculateObjectFit({
         type: "contain",
         parent: containerSize,
-        child: viewScreen?.imageOrigData ?? { height: 0, width: 0 },
+        child: imageOrigData,
       }),
-    [containerSize, viewScreen?.imageOrigData]
+    [containerSize, imageOrigData]
   );
 
-  const [heightRatio, widthRatio] = useMemo(
+  const [widthRatio, heightRatio] = useMemo(
     () => [
-      height / (viewScreen.imageOrigData?.height ?? 1),
-      width / (viewScreen.imageOrigData?.width ?? 1),
+      containedImgWidth / (imageOrigData.width || 1),
+      containedImgHeight / (imageOrigData.height || 1),
     ],
     [
-      height,
-      viewScreen.imageOrigData?.height,
-      viewScreen.imageOrigData?.width,
-      width,
+      containedImgWidth,
+      imageOrigData.width,
+      imageOrigData.height,
+      containedImgHeight,
     ]
   );
+
+  // - -
+
+  const [currSequence, setCurrSequence] = useState<Sequence | null>(null);
+  const { zoomingIn, stayingIn } = useZoomPhase(currSequence) ?? {};
+
+  // - -
 
   const [{ zoom, translate }, api] = useSpring(() => ({
     zoom: 1,
@@ -56,53 +96,42 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   }));
 
   useEffect(() => {
-    if (!viewProgress.shouldIncrement) {
+    if (!shouldIncrement) {
       api.pause();
       return;
     }
-
     api.resume();
-  }, [api, viewProgress.shouldIncrement]);
+  }, [api, shouldIncrement]);
 
+  // Runs on beginning of the screen
   useEffect(() => {
-    animations.reduce((delay, animation) => {
-      const duration = (animation.time ?? 2) * 2 * 1000 + delayTime;
+    sequences?.reduce((accDelay, seq) => {
+      const { duration } = calculateSequenceParameters(seq);
+
       api.start({
         from: { zoom: 0, translate: 0 },
         to: { zoom: 1, translate: 1 },
-        delay,
-        config: { duration, easing: easings.easeInOutQuad },
-        onStart: () => setAnimation(animation),
+        delay: accDelay,
+        config: { duration: duration }, // easing: easings.easeInOutQuad
+        onStart: () => setCurrSequence(seq),
+        onResolve: () => setCurrSequence(null),
       });
 
-      return delay + duration + delayTime;
+      return accDelay + duration + delayTime;
     }, delayTime);
-  }, [animations, api]);
+  }, [sequences, api, delayTime]);
 
-  const tooltipPosition = viewScreen.tooltipPosition;
+  // - -
 
-  const onRight = useMemo(
-    () => tooltipPosition === "TOP_RIGHT",
-    [tooltipPosition]
-  );
-
-  const infoTransition = useTransition(animation, {
-    from: { opacity: 0, translateX: onRight ? 15 : -15 },
+  const infoTransition = useTransition(currSequence, {
+    from: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
     enter: { opacity: 1, translateX: 0, delay: 250 },
-    leave: { opacity: 0, translateX: onRight ? 15 : -15 },
+    leave: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
   });
-
-  const tooltipStyle = useMemo(
-    () => ({
-      top: 20,
-      ...(onRight ? { right: 20 } : { left: 20 }),
-    }),
-    [onRight]
-  );
 
   return (
     <div
-      ref={ref}
+      ref={containerRef}
       className="w-full h-full flex justify-center items-center overflow-hidden"
     >
       {image && (
@@ -110,20 +139,32 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
           className="w-full h-full object-contain"
           src={image}
           style={
-            animation
+            currSequence && zoomingIn && stayingIn
               ? {
                   scale: zoom
-                    .to([0, 0.35, 0.65, 1], [0, 1, 1, 0])
+                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0]) // zoom in, stay, zoom out
                     .to((x) => Math.log2(x + 1))
-                    .to([0, 1], [1, animation.zoom]),
+                    .to([0, 1], [1, currSequence.zoom]), // when zoom in, scale from 1 to zoom, stay, revert
                   translateX: translate
-                    .to([0, 0.35, 0.65, 1], [0, 1, 1, 0])
+                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
                     .to(easings.easeOutQuad)
-                    .to([0, 1], [0, width / 2 - animation.left * widthRatio]),
+                    .to(
+                      [0, 1],
+                      [
+                        0,
+                        containedImgWidth / 2 - currSequence.left * widthRatio,
+                      ]
+                    ),
                   translateY: translate
-                    .to([0, 0.35, 0.65, 1], [0, 1, 1, 0])
+                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
                     .to(easings.easeOutQuad)
-                    .to([0, 1], [0, height / 2 - animation.top * heightRatio]),
+                    .to(
+                      [0, 1],
+                      [
+                        0,
+                        containedImgHeight / 2 - currSequence.top * heightRatio,
+                      ]
+                    ),
                 }
               : undefined
           }
@@ -131,13 +172,19 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
       )}
 
       {infoTransition(
-        ({ opacity, translateX }, animation) =>
-          animation && (
+        ({ opacity, translateX }, currSequence) =>
+          currSequence && (
             <animated.div
+              className={cx(
+                "fixed p-4 shadow-md text-black bg-white max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw] overflow-x-hidden text-ellipsis",
+                {
+                  ...bgTheming,
+                  ...fgTheming,
+                }
+              )}
               style={{ opacity, translateX, ...tooltipStyle }}
-              className="fixed p-4 text-black bg-white shadow-md"
             >
-              {animation.text}
+              {currSequence.text}
             </animated.div>
           )
       )}

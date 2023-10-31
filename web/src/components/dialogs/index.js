@@ -7,7 +7,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import * as dialogActions from "../../actions/dialog-actions";
 import { setImageEditor } from "../../actions/app-actions";
-import Loader from "../loader";
+
 import ConfirmDialog from "./confirm-dialog";
 import DeleteAccount from "./delete-account";
 import ExpoDelete from "./expo-delete";
@@ -45,20 +45,6 @@ import UserDelete from "./user-delete";
 import UserReactivate from "./user-reactivate";
 import ViewWrapChapters from "./view-wrap-chapters";
 import ImageEditor from "../image-editor";
-import { ChaptersDialog } from "./chapters-dialog/chapters-dialog";
-import { FilesDialog } from "./files-dialog/files-dialog";
-import { WorksheetsDialog } from "./worksheets-dialog/worksheets-dialog";
-import { ExpoInfoDialog } from "./expo-info-dialog/expo-info-dialog";
-import { ShareExpoDialog } from "./share-expo-dialog/share-expo-dialog";
-import { FinishInfoDialog } from "./finish-info-dialog/finish-info-dialog";
-import { FinishAllFilesDialog } from "./finish-all-files-dialog/finish-all-files-dialog";
-import { AudioDialog } from "./audio-dialog/audio-dialog";
-import { RatingDialog } from "./rating-dialog/rating-dialog";
-import { SettingsDialog } from "./settings-dialog/settings-dialog";
-import { InformationDialog } from "./information-dialog/information-dialog";
-import { GlassMagnifierDialog } from "./glass-magnifier-dialog/glass-magnifier-dialog";
-
-export { default as WarningDialog } from "./warning-dialog";
 
 const Dialogs = ({
   setDialog,
@@ -68,7 +54,6 @@ const Dialogs = ({
   name,
   data,
   history,
-  loader,
   activeScreenEdited,
   imageEditor,
 }) => {
@@ -95,19 +80,6 @@ const Dialogs = ({
         place="right"
         className="help-icon-react-tooltip"
       />
-      {loader && <Loader />}
-      <FinishInfoDialog {...dialogProps} />
-      <FinishAllFilesDialog {...dialogProps} />
-      <ShareExpoDialog {...dialogProps} />
-      <ExpoInfoDialog {...dialogProps} />
-      <FilesDialog {...dialogProps} />
-      <WorksheetsDialog {...dialogProps} />
-      <ChaptersDialog {...dialogProps} />
-      <AudioDialog {...dialogProps} />
-      <RatingDialog {...dialogProps} />
-      <SettingsDialog {...dialogProps} />
-      <InformationDialog {...dialogProps} />
-      <GlassMagnifierDialog {...dialogProps} />
 
       <ConfirmDialog {...dialogProps} />
       <DeleteAccount {...dialogProps} />
@@ -157,13 +129,12 @@ export default compose(
   connect(
     ({
       dialog: { dialogs, name, data },
-      app: { loader, imageEditor },
+      app: { imageEditor },
       expo: { activeScreenEdited },
     }) => ({
       dialogs,
       name,
       data,
-      loader,
       imageEditor,
       activeScreenEdited,
     }),

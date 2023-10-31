@@ -20,7 +20,7 @@ const stateSelector = createSelector(
 
 interface InfopointDialogNewProps {
   closeThisDialog: () => void;
-  onDialogSubmit: (formData: InfopointFormDataProcessed) => Promise<void>;
+  onDialogSubmit: (formData: InfopointFormDataProcessed) => void;
 }
 
 const InfopointDialogNew = ({
@@ -50,9 +50,9 @@ const InfopointDialogNew = ({
         iconName: expoDesignData?.defaultInfopointIconFile?.name ?? "",
         iconFile: expoDesignData?.defaultInfopointIconFile ?? null,
       }}
-      onSubmit={async (formData) => {
+      onSubmit={(formData) => {
         const formDataProcessed = createFormDataProcessed(formData);
-        await onDialogSubmit(formDataProcessed);
+        onDialogSubmit(formDataProcessed);
         setIsSubmitted(true);
         return;
       }}
@@ -62,8 +62,8 @@ const InfopointDialogNew = ({
         <DialogWrap
           closeThisDialog={closeThisDialog}
           title="Vytvořit"
-          handleSubmit={async () => {
-            await formik.submitForm();
+          handleSubmit={() => {
+            formik.submitForm();
           }}
           //onClose={() => console.log("here onClose() closing add dialog!")}
           closeAfterSuccessfulSubmit

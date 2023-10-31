@@ -7,8 +7,10 @@ import Description from "./description";
 import Footer from "components/editors/footer";
 
 import { updateScreenData } from "actions/expoActions";
+import { useTranslation } from "react-i18next";
 
 const ScreenFinish = (props) => {
+  const { t } = useTranslation("expo-editor");
   const { match, activeScreen, history, url } = props;
 
   return (
@@ -16,7 +18,7 @@ const ScreenFinish = (props) => {
       <TabMenu
         tabs={[
           {
-            label: "Nastavení",
+            label: t("tabs.settingsTab"),
             link: `${match.url}/description`,
           },
         ]}

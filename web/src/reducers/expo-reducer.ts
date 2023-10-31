@@ -2,23 +2,22 @@ import { map, filter, find, concat } from "lodash";
 import { Reducer } from "redux";
 import * as c from "../actions/constants";
 
-import { ExpositionItem, Screen, Volumes, ViewExpo } from "models";
+import {
+  ExpositionItem,
+  Screen,
+  Volumes,
+  ViewExpo,
+  ExpositionFilterObj,
+  ExpositionPagerObj,
+} from "models";
 
 export type ExpoReducerState = {
   expositions: { items: ExpositionItem[]; count: number };
   activeExpo: Record<string, any>;
   activeScreen: Record<string, any>;
   activeScreenEdited: boolean;
-  filter: {
-    filter?: string;
-    sort?: string;
-    order?: string;
-    search?: string;
-  };
-  pager: {
-    page: number;
-    pageSize: number;
-  };
+  filter: ExpositionFilterObj;
+  pager: ExpositionPagerObj;
   cardsList: boolean;
   viewExpo: ViewExpo | null;
   viewProgress: {
@@ -44,7 +43,7 @@ export type ExpoReducerState = {
   };
 };
 
-const initialState = {
+const initialState: ExpoReducerState = {
   expositions: { items: [], count: 0 },
   activeExpo: {},
   activeScreen: {},

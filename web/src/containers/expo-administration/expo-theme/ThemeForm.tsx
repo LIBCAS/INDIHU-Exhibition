@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Form, FormikProps } from "formik";
 
 // Components
@@ -28,6 +29,7 @@ interface ThemeFormProps {
 }
 
 const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
+  const { t } = useTranslation("expo");
   const dispatch = useDispatch<AppDispatch>();
 
   const [importedFile, setImportedFile] = useState<File | null>(null);
@@ -63,19 +65,19 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
         {/* 1. General Expo Settings */}
         <div className="flex flex-col gap-1">
           <p className="font-bold text-xl underline mb-2">
-            1. Všeobecné nastavenie motívu expozície
+            {t("theming.generalThemeSettings.title")}
           </p>
           <div>
             <ReactMdSelectField
               name="theme"
-              label="Expo Theme"
+              label={t("theming.generalThemeSettings.expoThemeLabel")}
               controls={[
                 {
-                  label: "Svetlý",
+                  label: t("theming.generalThemeSettings.expoThemeLight"),
                   value: "LIGHT",
                 },
                 {
-                  label: "Tmavý",
+                  label: t("theming.generalThemeSettings.expoThemeDark"),
                   value: "DARK",
                 },
               ]}
@@ -83,38 +85,43 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
             />
           </div>
           <div>
-            <ColorPicker name="backgroundColor" label="Farba pozadia výstavy" />
-          </div>
-          <div>
-            <ColorPicker name="iconsColor" label="Farba ikon výstavy" />
-          </div>
-          <div>
             <ColorPicker
-              name="startButtonColor"
-              label="Farba tlačítka štart výstavy"
+              name="backgroundColor"
+              label={t("theming.generalThemeSettings.expoBackgroundColorLabel")}
             />
           </div>
           <div>
-            <ColorPicker name="tagsColor" label="Farba tagov výstavy" />
+            <ColorPicker
+              name="iconsColor"
+              label={t("theming.generalThemeSettings.expoIconsColorLabel")}
+            />
+          </div>
+          <div>
+            <ColorPicker
+              name="tagsColor"
+              label={t("theming.generalThemeSettings.expoTagsColorLabel")}
+            />
           </div>
         </div>
 
         {/* 2. Logo vs Vodoznak */}
         <div className="flex flex-col gap-1">
           <p className="font-bold text-xl underline mb-2">
-            2. Nastavenie loga a vodoznaku
+            {t("theming.logoAndWatermarkSettings.title")}
           </p>
           <div>
             <ReactMdSelectField
               name="logoType"
-              label="Expo Logo typ"
+              label={t("theming.logoAndWatermarkSettings.expoLogoTypeLabel")}
               controls={[
                 {
-                  label: "Logo",
+                  label: t("theming.logoAndWatermarkSettings.expoLogoTypeLogo"),
                   value: "LOGO",
                 },
                 {
-                  label: "Vodoznak",
+                  label: t(
+                    "theming.logoAndWatermarkSettings.expoLogoTypeWatermark"
+                  ),
                   value: "WATERMARK",
                 },
               ]}
@@ -124,18 +131,26 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
           <div>
             <ReactMdSelectField
               name="logoPosition"
-              label="Expo Logo pozícia"
+              label={t(
+                "theming.logoAndWatermarkSettings.expoLogoPositionLabel"
+              )}
               controls={[
                 {
-                  label: "Hore vpravo",
+                  label: t(
+                    "theming.logoAndWatermarkSettings.expoLogoPositionUpRight"
+                  ),
                   value: "UPPER_RIGHT",
                 },
                 {
-                  label: "Hore vľavo",
+                  label: t(
+                    "theming.logoAndWatermarkSettings.expoLogoPositionUpLeft"
+                  ),
                   value: "UPPER_LEFT",
                 },
                 {
-                  label: "Dole vľavo",
+                  label: t(
+                    "theming.logoAndWatermarkSettings.expoLogoPositionDownLeft"
+                  ),
                   value: "LOWER_LEFT",
                 },
               ]}
@@ -145,13 +160,13 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
           <div className="flex flex-col">
             <ReactMdTextField
               name="logoFileName"
-              label="Soubor loga/vodoznaku"
+              label={t("theming.logoAndWatermarkSettings.expoLogoFileLabel")}
               disabled
             />
 
             <Button
               flat
-              label="Vybrat"
+              label={t("theming.selectLabel")}
               onClick={() => {
                 dispatch(
                   setDialog(DialogType.ScreenFileChoose, {
@@ -172,25 +187,31 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
         {/* 3. Infopoint default values section */}
         <div className="flex flex-col gap-1">
           <p className="font-bold text-xl underline mb-2">
-            3. Predvolený motív pre infopointy
+            {t("theming.defaultInfopointSettings.title")}
           </p>
           <div>
             <ReactMdSelectField
               controls={[
                 {
-                  label: "Štvorec",
+                  label: t(
+                    "theming.defaultInfopointSettings.infopointShapeSquare"
+                  ),
                   value: "SQUARE",
                 },
                 {
-                  label: "Kruh",
+                  label: t(
+                    "theming.defaultInfopointSettings.infopointShapeCircle"
+                  ),
                   value: "CIRCLE",
                 },
                 {
-                  label: "Vlastná ikona",
+                  label: t(
+                    "theming.defaultInfopointSettings.infopointShapeIcon"
+                  ),
                   value: "ICON",
                 },
               ]}
-              label="Tvar infopointu"
+              label={t("theming.defaultInfopointSettings.infopointShapeLabel")}
               name="defaultInfopointShape"
               fullWidth
             />
@@ -198,27 +219,29 @@ const ThemeForm = ({ formik, activeExpo }: ThemeFormProps) => {
           <div>
             <ReactMdTextField
               name="defaultInfopointPxSize"
-              label="Velkosť v pixeloch"
+              label={t("theming.defaultInfopointSettings.infopointPxSizeLabel")}
               type="number"
             />
           </div>
           <div>
             <ColorPicker
               name="defaultInfopointColor"
-              label="Farba infopointu"
+              label={t("theming.defaultInfopointSettings.infopointColorLabel")}
             />
           </div>
 
           <div className="flex flex-col">
             <ReactMdTextField
               name="defaultInfopointIconFileName"
-              label="Soubor ikony infopointu"
+              label={t(
+                "theming.defaultInfopointSettings.infopointIconFileLabel"
+              )}
               disabled
             />
 
             <Button
               flat
-              label="Vybrat"
+              label={t("theming.selectLabel")}
               onClick={() => {
                 dispatch(
                   setDialog(DialogType.ScreenFileChoose, {

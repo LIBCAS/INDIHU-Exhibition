@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { connect } from "react-redux";
 import { map, filter, find } from "lodash";
 import { compose, withState } from "recompose";
@@ -11,22 +13,7 @@ import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions";
 import { updateScreenData } from "actions/expoActions";
 
-import { animationType, animationTypeText } from "enums/animation-type";
-import { helpIconText } from "enums/text";
-
-const options = [
-  { label: animationTypeText.WITHOUT, value: animationType.WITHOUT },
-  { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
-  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
-  {
-    label: animationTypeText.FROM_LEFT_TO_RIGHT,
-    value: animationType.FROM_LEFT_TO_RIGHT,
-  },
-  {
-    label: animationTypeText.FROM_RIGHT_TO_LEFT,
-    value: animationType.FROM_RIGHT_TO_LEFT,
-  },
-];
+import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
 const Parallax = ({
   activeScreen,
@@ -35,6 +22,8 @@ const Parallax = ({
   setActiveImageIndex,
   getFileById,
 }) => {
+  const { t } = useTranslation("expo-editor");
+
   const image =
     activeImageIndex !== -1 &&
     find(activeScreen.images, (image, i) => i === activeImageIndex && image)
@@ -110,16 +99,16 @@ const Parallax = ({
         />
         <div className="flex-row flex-space-between margin-bottom">
           <span>
-            <span>Nejspodnější</span>
+            <span>{t("descFields.parallaxScreen.theLowestImage")}</span>
             <HelpIcon
-              label={helpIconText.EDITOR_PARALLAX_IMAGE_BOTTOM}
+              label={t("descFields.parallaxScreen.theLowestImageTooltip")}
               id="editor-parallax-image-bottom"
             />
           </span>
           <span>
-            <span>Nejvrchnější</span>
+            <span>{t("descFields.parallaxScreen.theTopmostImage")}</span>
             <HelpIcon
-              label={helpIconText.EDITOR_PARALLAX_IMAGE_TOP}
+              label={t("descFields.parallaxScreen.theTopmostImageTooltip")}
               id="editor-parallax-image-top"
             />
           </span>
@@ -131,7 +120,7 @@ const Parallax = ({
                 <Image
                   {...{
                     key: `image-${activeImageIndex}`,
-                    title: "Obrázek",
+                    title: t("descFields.parallaxScreen.imageBoxTitle"),
                     image,
                     setImage,
                     onDelete: () =>
@@ -140,7 +129,9 @@ const Parallax = ({
                           i === activeImageIndex ? null : image
                         ),
                       }),
-                    helpIconLabel: helpIconText.EDITOR_PARALLAX_IMAGE,
+                    helpIconLabel: t(
+                      "descFields.parallaxScreen.imageBoxTooltip"
+                    ),
                     id: "editor-parallax-image",
                   }}
                 />
@@ -149,8 +140,33 @@ const Parallax = ({
                 <SelectField
                   id="screen-parallax-selectfield-animation"
                   className="select-field"
-                  label="Celková animace paralaxu"
-                  menuItems={options}
+                  label={t("descFields.parallaxScreen.parallaxAnimationLabel")}
+                  menuItems={[
+                    {
+                      label: t("descFields.parallaxScreen.animationWithout"),
+                      value: ScreenParallaxAnimationEnum.WITHOUT,
+                    },
+                    {
+                      label: t("descFields.parallaxScreen.animationFromTop"),
+                      value: ScreenParallaxAnimationEnum.FROM_TOP,
+                    },
+                    {
+                      label: t("descFields.parallaxScreen.animationFromBottom"),
+                      value: ScreenParallaxAnimationEnum.FROM_BOTTOM,
+                    },
+                    {
+                      label: t(
+                        "descFields.parallaxScreen.animationLeftToRight"
+                      ),
+                      value: ScreenParallaxAnimationEnum.FROM_LEFT_TO_RIGHT,
+                    },
+                    {
+                      label: t(
+                        "descFields.parallaxScreen.animationRightToLeft"
+                      ),
+                      value: ScreenParallaxAnimationEnum.FROM_RIGHT_TO_LEFT,
+                    },
+                  ]}
                   itemLabel={"label"}
                   itemValue={"value"}
                   position={"below"}
@@ -162,7 +178,9 @@ const Parallax = ({
                   }
                 />
                 <HelpIcon
-                  label={helpIconText.EDITOR_PARALLAX_ANIMATION}
+                  label={t(
+                    "descFields.parallaxScreen.parallaxAnimationTooltip"
+                  )}
                   id="editor-parallax-animation"
                 />
               </div>

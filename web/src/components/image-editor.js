@@ -12,7 +12,7 @@ import { Button, FontIcon, Card, Divider } from "react-md";
 
 import { setDialog } from "../actions/dialog-actions";
 import { setImageEditor } from "../actions/app-actions";
-import ComponentLoader from "./component-loader";
+import ComponentLoader from "./loaders/component-loader";
 
 const TOOLTIP_ID = "image-editor-toolbar-icon-tooltip";
 
@@ -205,30 +205,6 @@ class ImageEditor extends Component {
       },
       className,
     });
-    const closeAction = (className) => ({
-      tooltip: "Zavřít editor",
-      icon: "close",
-      onClick: () =>
-        setDialog("ConfirmDialog", {
-          title: "Zavření editoru",
-          content: (
-            <div>
-              <p>Opravdu chcete zavřít editor?</p>
-              <div className="flex-row-nowrap flex-center">
-                <FontIcon className="color-red">priority_high</FontIcon>
-                <p>
-                  <strong style={{ fontSize: "0.9em" }}>
-                    Provedené změny nebudou uloženy!
-                  </strong>
-                </p>
-              </div>
-            </div>
-          ),
-          onSubmit: close,
-          closeBefore: true,
-        }),
-      className,
-    });
     const resetAction = (className) => ({
       tooltip: "Zobrazit původní obrázek",
       icon: "cached",
@@ -352,6 +328,30 @@ class ImageEditor extends Component {
       onClick: () => setMenuOpen(true),
       className,
     });
+    const closeAction = (className) => ({
+      tooltip: "Zavřít editor",
+      icon: "close",
+      onClick: () =>
+        setDialog("ConfirmDialog", {
+          title: "Zavření editoru",
+          content: (
+            <div>
+              <p>Opravdu chcete zavřít editor?</p>
+              <div className="flex-row-nowrap flex-center">
+                <FontIcon className="color-red">priority_high</FontIcon>
+                <p>
+                  <strong style={{ fontSize: "0.9em" }}>
+                    Provedené změny nebudou uloženy!
+                  </strong>
+                </p>
+              </div>
+            </div>
+          ),
+          onSubmit: close,
+          closeBefore: true,
+        }),
+      className,
+    });
 
     const divider = (className) => ({ divider: true, className });
 
@@ -372,7 +372,6 @@ class ImageEditor extends Component {
                 menuAction("screen-big-max"),
                 divider("screen-big-min"),
                 saveAction("screen-big-min"),
-                closeAction("screen-big-min"),
                 resetAction("screen-big-min"),
                 divider("screen-big-min"),
                 guidesAction("screen-big-min"),
@@ -391,6 +390,7 @@ class ImageEditor extends Component {
                 divider("screen-big-min"),
                 swapHorizAction("screen-big-min"),
                 swapVertAction("screen-big-min"),
+                closeAction("!ml-auto !mr-3"),
               ].map(menuItem)}
           {loading && (
             <h3 className="image-editor-loading-title">

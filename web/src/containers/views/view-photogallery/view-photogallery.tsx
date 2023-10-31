@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 
 // Components
 import { Grid } from "@mui/material";
-import ImageItem from "./ImageItem";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
+import ImageItem from "./ImageItem";
+import LightBox from "./Lightbox";
 
 // Models
 import { AppState } from "store/store";
@@ -18,10 +20,9 @@ import { PhotogalleryScreen, ScreenProps } from "models";
 
 // Utils
 import cx from "classnames";
-import { setScreensInfo } from "actions/expoActions/viewer-actions";
-import { closeDialog } from "actions/dialog-actions";
 import classes from "./gallery-overlay.module.scss";
-import LightBox from "./Lightbox";
+import { setScreensInfo } from "actions/expoActions/viewer-actions";
+import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
 
 // - -
 
@@ -33,17 +34,18 @@ const stateSelector = createSelector(
 // - -
 
 export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
+  const { images } = screenPreloadedFiles;
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { images } = screenPreloadedFiles;
+  const { closeAllDialogs } = useDialogRef();
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
   );
 
-  const timeoutRef = useRef<NodeJS.Timeout>();
   const [isActivity, setIsActivity] = useState<boolean>(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const overlayOpacityAnimation = useSpring({
     opacity: isActivity ? 1 : 0,
@@ -52,7 +54,7 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
   // -- Style of grid based on number of total photos --
   const isLessPhotos = images ? images.length <= 6 : true;
 
-  // 2. Lightbox stuff
+  // 2. - - - Lightbox stuff - - -
   const isLightBoxOpened = useMemo(
     () => selectedImageIndex !== null,
     [selectedImageIndex]
@@ -80,8 +82,8 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       return;
     }
     setSelectedImageIndex((prev) => (prev !== null ? prev - 1 : prev));
-    dispatch(closeDialog()); // close any photo description dialog if its open
-  }, [selectedImageIndex, dispatch]);
+    closeAllDialogs();
+  }, [selectedImageIndex, closeAllDialogs]);
 
   const nextPhoto = useCallback(() => {
     if (
@@ -92,10 +94,10 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       return;
     }
     setSelectedImageIndex((prev) => (prev !== null ? prev + 1 : prev));
-    dispatch(closeDialog()); // close any photo description dialog if its open
-  }, [images, selectedImageIndex, dispatch]);
+    closeAllDialogs();
+  }, [images, selectedImageIndex, closeAllDialogs]);
 
-  // 3. Key press and mouse handlers
+  // 3. - - - Key press and mouse handlers - - -
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape" && isLightBoxOpened) {
@@ -117,7 +119,10 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     }
 
     setIsActivity(true);
-    const timeout = setTimeout(() => setIsActivity(false), 4000);
+    const timeout = setTimeout(
+      () => setIsActivity(false),
+      OVERLAY_UNACTIVE_TIMEOUT
+    );
     timeoutRef.current = timeout;
   }, []);
 
@@ -187,28 +192,33 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
               )}
               style={{ opacity: overlayOpacityAnimation.opacity }}
             >
-              <div className={cx(classes.leftNav)}>
-                <div className="w-full h-full flex items-center">
-                  <Button
-                    color="expoTheme"
-                    className="rounded-full pointer-events-auto"
-                    onClick={prevPhoto}
-                  >
-                    <Icon name="chevron_left" />
-                  </Button>
+              {selectedImageIndex !== 0 && (
+                <div className={cx(classes.leftNav)}>
+                  <div className="w-full h-full flex items-center">
+                    <Button
+                      color="expoTheme"
+                      className="rounded-full pointer-events-auto"
+                      onClick={prevPhoto}
+                    >
+                      <Icon name="chevron_left" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className={cx(classes.rightNav)}>
-                <div className="w-full h-full flex items-center justify-end">
-                  <Button
-                    color="expoTheme"
-                    className="rounded-full pointer-events-auto"
-                    onClick={nextPhoto}
-                  >
-                    <Icon name="chevron_right" />
-                  </Button>
+              )}
+
+              {selectedImageIndex !== images.length - 1 && (
+                <div className={cx(classes.rightNav)}>
+                  <div className="w-full h-full flex items-center justify-end">
+                    <Button
+                      color="expoTheme"
+                      className="rounded-full pointer-events-auto"
+                      onClick={nextPhoto}
+                    >
+                      <Icon name="chevron_right" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </animated.div>
           </animated.div>
         )}

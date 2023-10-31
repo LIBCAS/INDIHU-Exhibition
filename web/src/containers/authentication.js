@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import AppHeader from "components/app-header";
-import ComponentLoader from "../components/component-loader";
+import ComponentLoader from "../components/loaders/component-loader";
 import Button from "react-md/lib/Buttons/Button";
 import Captcha from "../components/form/redux-form/captcha";
 import TextField from "../components/form/redux-form/text-field";

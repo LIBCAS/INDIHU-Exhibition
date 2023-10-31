@@ -1,0 +1,171 @@
+{
+  "expoState": {
+    "prepare": "In preparation",
+    "opened": "Published",
+    "ended": "Finished",
+    "prepareTooltip": "The exhibition is under preparation. The content of the exhibition can be freely edited. The exhibition is only accessible to logged in users with whom the exhibition is shared.",
+    "openedTooltip": "The exhibition is publicly available via its URL. It is not possible to edit the exhibition.",
+    "endedTooltip": "The exhibition has been closed and is neither publicly available nor intended for further modifications. It is possible to set a notification to the user with a link to another website on its original URL. The exhibition can be transferred again to the status 'In preparation' or 'Published'."
+  },
+  "structure": {
+    "tab": "Exhibition structure",
+    "screenCategoryLabels": {
+      "chapter": "Chapter",
+      "content_screen": "Content screen",
+      "interactive_screen": "Interactive screen",
+      "game_screen": "Game screen"
+    },
+    "screenLabels": {
+      "start": "Start screen",
+      "intro": "Chapter introduction",
+      "image": "Image screen",
+      "video": "Video screen",
+      "text": "Text screen",
+      "parallax": "Parallax",
+      "image_zoom": "Image with zoom animation",
+      "slideshow": "Slideshow",
+      "photogallery_new": "Photogallery",
+      "image_change": "Image with change animation",
+      "external": "Screen with external content",
+      "signpost": "Signpost",
+      "game_find": "Find in the picture",
+      "game_draw": "Draw screen",
+      "game_wipe": "Wipe screen",
+      "game_sizing": "Guess the size screen",
+      "game_move": "Move it to the right place",
+      "game_options": "Quiz",
+      "finish": "Finish screen"
+    },
+    "screenTooltips": {
+      "intro": "It presents a series of screens that connect to each other in one thematic unit. For each chapter, an entry is created in the list of the exhibition's chapters.",
+      "image": "A screen centered around an image that you can animate and add infopoints to.",
+      "video": "A screen that is used to play a video from a document library. To share a video on the Internet, use the 'External Content Screen.'",
+      "text": "The screen will display text with a maximum range of 300 characters.",
+      "parallax": "The screen will display an image with a parallax effect including an imitation of its spatial movement, see https://www.youtube.com/watch?v=cUfmUPhApJ0.",
+      "image_zoom": "The screen first displays the overall image and then animates a sequence of movements zooming in on selected details of the image with infopoints.",
+      "slideshow": "A screen with a series of images.",
+      "photogallery_new": "Photo gallery screen.",
+      "image_change": "The screen will show two photos overlapping each other, when we use the slider to reveal one and cover the other photo. The slider can be vertical or horizontal. The transition from one image to another can also be set to click the mouse or as a blend.",
+      "external": "A screen that allows you to use an embed code to insert content published on the Internet (e.g. a video from YouTube or a map from Mapy.cz).",
+      "signpost": "The signpost screen.",
+      "game_find": "A mini-game where the visitor has to mark a place in the picture.",
+      "game_draw": "A mini-game where the visitor completes the missing part of the picture.",
+      "game_wipe": "A mini-game where the visitor reveals a hidden picture by 'erasing' with the mouse.",
+      "game_sizing": "The visitor is tasked with reducing or increasing the size of the object in the image so that it is in the same proportion as the reference object in the image.",
+      "game_move": "A mini-game where the visitor moves the object above the image to the correct target position by dragging the mouse.",
+      "game_options": "The visitor chooses the correct answer to a question from 3 answers. Each answer consists of text and an image."
+    }
+  },
+  "files": {
+    "tab": "Files",
+    "newFolder": "NEW FOLDER",
+    "uploadFile": "UPLOAD FILE",
+    "uploadFileTooltip": "The maximum file size is 250MB. When uploading multiple files, the limit is 260MB.",
+    "sorting": {
+      "created": "Created",
+      "name": "name"
+    },
+    "sortingTooltip": "Sorting",
+    "orderASC": "Ascending",
+    "orderDESC": "Descending",
+    "fileActions": {
+      "rename": "Rename",
+      "move": "Move",
+      "edit": "Edit",
+      "download": "Download",
+      "delete": "Delete"
+    },
+    "filePreview": "Náhled souboru",
+    "fileMetadata": "Metadata",
+    "nameCol": "Name:",
+    "typeCol": "Type:",
+    "sizeCol": "Size:",
+    "durationCol": "Duration:",
+    "dimensionsCol": "Dimensions:",
+    "widthCol": "Width:",
+    "heightCol": "Height:"
+  },
+  "settingsAndSharing": {
+    "tab": "Settings and sharing",
+    "expoState": "Exhibition state",
+    "expoUrl": "Exhibition URL",
+    "copyUrlLabel": "Copy URL",
+    "actualizeLabel": "Actualize",
+    "expoTags": "Exhibition tags",
+    "tagsInfoLabel": "Selected tags for the exhibition",
+    "saveLabel": "Save",
+    "selectLabel": "Select",
+    "expoEndedInfo": {
+      "info": "Information to the visitor in case the exhibition has already ended",
+      "backgroundImage": "Background image",
+      "backgroundImageTooltip": "An image selected from the document library to be displayed in the background of the page.",
+      "redirectUrl": "Url to redirect",
+      "redirectUrlTooltip": "URL address where the visitor is advised to continue. E.g. another exhibition or the website of the institution that implemented the exhibition.",
+      "infoForVisitor": "Notice to visitor",
+      "infoForVisitorTooltip": "Brief informational text that is displayed to the user."
+    },
+    "shareWithUsers": "Shared with users",
+    "nameCol": "Name",
+    "emailCol": "E-mail",
+    "privilegesCol": "Privileges",
+    "actionCol": "Actions",
+    "owner": "Owner",
+    "reading": "Reading",
+    "readWrite": "Reading and writing"
+  },
+  "rating": {
+    "tab": "Rating and attendance",
+    "expoRating": "Evaluation of the exhibition",
+    "expoNoRatingYet": "This exhibition has not yet been rated",
+    "ratingTable": {
+      "rateCount": "Number of ratings",
+      "avgRate": "Average rating",
+      "peopleTopicLikeCount": "Number of people who liked the theme of the exhibition:",
+      "peopleMediaLikeCount": "Number of people who liked the exhibition media:",
+      "peopleTextLikeCount": "Number of people who liked the texts of the exhibition:",
+      "peopleGameLikeCount": "Number of people who liked the exhibition games:"
+    },
+    "expoComments": "Comments on the exhibition",
+    "expoNoCommentsYet": "This exhibition has no comments yet.",
+    "created": "Created:",
+    "rating": "Rating:"
+  },
+  "theming": {
+    "tab": "Theme",
+    "generalThemeSettings": {
+      "title": "1. General setting of the exposure theme",
+      "expoThemeLabel": "Exposition theme",
+      "expoThemeLight": "Light",
+      "expoThemeDark": "Dark",
+      "expoBackgroundColorLabel": "Exposition background color",
+      "expoIconsColorLabel": "Exposition icons color",
+      "expoTagsColorLabel": "Exposition tags color"
+    },
+    "logoAndWatermarkSettings": {
+      "title": "2. Setting the logo and watermark",
+      "expoLogoTypeLabel": "Exposition logo type",
+      "expoLogoTypeLogo": "Logo",
+      "expoLogoTypeWatermark": "Watermark",
+      "expoLogoPositionLabel": "Exposition logo position",
+      "expoLogoPositionUpLeft": "Top left",
+      "expoLogoPositionUpRight": "Top right",
+      "expoLogoPositionDownLeft": "Bottom left",
+      "expoLogoFileLabel": "Logo / watermark file"
+    },
+    "defaultInfopointSettings": {
+      "title": "3. Default theme for infopoints",
+      "infopointShapeLabel": "Infopoint shape",
+      "infopointShapeSquare": "Square",
+      "infopointShapeCurcle": "Circle",
+      "infopointShapeIcon": "Icon",
+      "infopointPxSizeLabel": "Infopoint size in pixels",
+      "infopointColorLabel": "Infopoint color",
+      "infopointIconFileLabel": "Infopoint icon file"
+    },
+    "selectLabel": "Select",
+    "exportLabel": "Export",
+    "importLabel": "Import",
+    "resetSettingsLabel": "Reset settings",
+    "saveChangesLabel": "Save changes"
+  }
+}

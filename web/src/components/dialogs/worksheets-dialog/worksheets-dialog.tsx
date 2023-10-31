@@ -1,44 +1,47 @@
 import { useTranslation } from "react-i18next";
 
 // Components
-import Dialog from "../dialog-wrap-typed";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 import { FileItem } from "../files-dialog/file-item"; // from FilesDialog
 
 // Models
 import { Document } from "models";
-import { DialogProps, DialogType } from "../dialog-types";
 
 import { isWorksheetFile } from "utils/view-utils";
 
-export type WorksheetsDialogDataProps = {
+export type WorksheetsDialogProps = {
+  closeThisDialog: () => void;
   files?: Document[];
 };
 
 export const WorksheetsDialog = ({
-  dialogData,
-}: DialogProps<DialogType.WorksheetsDialog>) => {
+  closeThisDialog,
+  files,
+}: WorksheetsDialogProps) => {
   const { t } = useTranslation("exhibition");
 
-  const allFiles = dialogData?.files ?? [];
+  const allFiles = files ?? [];
   const worksheetFiles = allFiles.filter((currFile: Document) =>
     isWorksheetFile(currFile)
   );
 
   return (
-    <Dialog
-      big
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={
         <span className="text-2xl font-bold">{`${t("worksheets")} (${
           worksheetFiles.length
         })`}</span>
       }
-      name={DialogType.WorksheetsDialog}
+      big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       {!worksheetFiles.length && t("no-worksheets")}
       {worksheetFiles.map((file, index) => (
         <FileItem key={index} file={file} />
       ))}
-    </Dialog>
+    </DialogWrap>
   );
 };

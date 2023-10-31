@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 // Components
 import Carousel from "components/editors/carousel";
@@ -20,6 +21,7 @@ import HelpIcon from "components/help-icon";
 const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
   const { activeScreen } = props;
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor");
 
   // Carousel contains one card for each image from activeScreen.images
   // activeImageIndex is the index of currently active image from activeScreen.images
@@ -165,7 +167,7 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
             <div>
               <Image
                 key={`image-${activeImageIndex}`}
-                title="Obrázek"
+                title={t("descFields.photogalleryScreen.imageBoxTitle")}
                 image={activeImageFile}
                 setImage={setActiveImageFile}
                 onDelete={() => {
@@ -183,7 +185,9 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
                 }}
                 updateScreenData={updateScreenData}
                 id="editor-photogallery-image"
-                helpIconLabel="Test helpIconLabel"
+                helpIconLabel={t(
+                  "descFields.photogalleryScreen.imageBoxTooltip"
+                )}
                 images={activeScreen.images}
               />
             </div>
@@ -193,7 +197,7 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
               <div className="mt-8 min-w-[450px] flex gap-1">
                 <TextField
                   id={`photogallery-screen-photo-${activeImageIndex}-title`}
-                  label="Photo title"
+                  label={t("descFields.photogalleryScreen.photoTitleLabel")}
                   defaultValue={
                     activeScreen.images[activeImageIndex]?.photoTitle ?? ""
                   }
@@ -212,14 +216,16 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
 
                 <HelpIcon
                   id={`photogallery-screen-photo-${activeImageIndex}-title-help`}
-                  label="Test label"
+                  label={t("descFields.photogalleryScreen.photoTitleTooltip")}
                 />
               </div>
 
               <div className="min-w-[450px] flex gap-1">
                 <TextField
                   id={`photogallery-screen-photo-${activeImageIndex}-description`}
-                  label="Photo description"
+                  label={t(
+                    "descFields.photogalleryScreen.photoDescriptionLabel"
+                  )}
                   rows={5}
                   defaultValue={
                     activeScreen.images[activeImageIndex]?.photoDescription ??
@@ -240,7 +246,9 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
 
                 <HelpIcon
                   id={`photogallery-screen-photo-${activeImageIndex}-title-description`}
-                  label="Test label"
+                  label={t(
+                    "descFields.photogalleryScreen.photoDescriptionTooltip"
+                  )}
                 />
               </div>
             </div>

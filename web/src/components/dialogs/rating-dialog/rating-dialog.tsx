@@ -1,35 +1,26 @@
-import {
-  useState,
-  Dispatch,
-  SetStateAction,
-  ChangeEvent,
-  useMemo,
-} from "react";
-import { useDispatch } from "react-redux";
+import { useState, useMemo } from "react";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
-import Dialog from "../dialog-wrap-typed";
-import { DialogType, DialogProps } from "../dialog-types";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 
 // Components
-import { Rating, FormControlLabel, Checkbox, TextField } from "@mui/material";
+import { StarRating, PrimaryCheckbox, TextArea } from "components/form/mui";
 import { Icon } from "components/icon/icon";
-import SquareIcon from "@mui/icons-material/Square";
 
 // Models
-import { AppDispatch } from "store/store";
 import { ExpoRates } from "models";
 
 // Utils
 import cx from "classnames";
 import { submitRate } from "./submit-rate";
-import { setDialog } from "actions/dialog-actions";
-import { palette } from "palette";
+import { Spinner } from "components/loaders/spinner";
 
 // - - - - - - - -
 
 // Type meaning of "empty object"
-export type RatingDialogDataProps = {
+export type RatingDialogProps = {
+  closeThisDialog: () => void;
+  openInformationFailDialog: () => void;
   setExpoRates: (
     value: ExpoRates | ((prevValue: ExpoRates) => ExpoRates)
   ) => void;
@@ -37,19 +28,19 @@ export type RatingDialogDataProps = {
 };
 
 export const RatingDialog = ({
-  dialogData,
-  closeDialog,
-}: DialogProps<DialogType.RatingDialog>) => {
-  const { setExpoRates, expoId } = dialogData ?? {};
-  const dispatch = useDispatch<AppDispatch>();
-  const { isLightMode, palette } = useExpoDesignData();
-
+  closeThisDialog,
+  openInformationFailDialog,
+  setExpoRates,
+  expoId,
+}: RatingDialogProps) => {
   const [ratingValue, setRatingValue] = useState<number | null>(null);
   const [textValue, setTextValue] = useState<string>("");
   const [isTopicChecked, setIsTopicChecked] = useState<boolean>(false);
   const [isMediaChecked, setIsMediaChecked] = useState<boolean>(false);
   const [isTextChecked, setIsTextChecked] = useState<boolean>(false);
   const [isGameChecked, setIsGameChecked] = useState<boolean>(false);
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const numberOfCheckedCheckboxes = useMemo(() => {
     let counter = 0;
@@ -65,6 +56,7 @@ export const RatingDialog = ({
       return;
     }
 
+    setIsSubmitting(true);
     const rateFormData = {
       rating: ratingValue,
       text: textValue,
@@ -78,18 +70,14 @@ export const RatingDialog = ({
 
     // Submit
     const isSuccess = await submitRate(rateFormData, expoId);
+    setIsSubmitting(false);
     if (!isSuccess) {
-      dispatch(
-        setDialog(DialogType.InfoDialog, {
-          title: "Hodnotenie selhalo!",
-          text: "Odoslanie vásho hodnotenia zlyhalo.",
-        })
-      );
+      openInformationFailDialog();
       return;
     }
-
     // After successful submit, close Rating dialog
-    closeDialog();
+    closeThisDialog();
+
     // Mark this exposition as marked, do not show this rating dialog again
     if (setExpoRates && expoId) {
       setExpoRates((prev) => ({ ...prev, [expoId]: true }));
@@ -97,22 +85,21 @@ export const RatingDialog = ({
   };
 
   return (
-    <Dialog
-      name={DialogType.RatingDialog}
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={
         <div className="text-2xl font-medium">Jak se vám líbila výstava?</div>
       }
       big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       <div className="px-8 py-4 flex flex-col items-center gap-5">
         {/* Rating Box */}
         <div className="flex flex-col gap-3 w-full items-center">
           <div className="text-xl font-bold">Celkové hodnocení</div>
-          <RatingInput
-            ratingValue={ratingValue}
-            setRatingValue={setRatingValue}
-          />
+          <StarRating value={ratingValue} setValue={setRatingValue} />
         </div>
 
         {/* Checkbox section */}
@@ -123,25 +110,25 @@ export const RatingDialog = ({
           </div>
 
           <div className="flex flex-row w-full justify-center gap-4">
-            <CheckBox
+            <PrimaryCheckbox
               label="Téma"
               isChecked={isTopicChecked}
               setIsChecked={setIsTopicChecked}
               disabled={numberOfCheckedCheckboxes >= 2 && !isTopicChecked}
             />
-            <CheckBox
+            <PrimaryCheckbox
               label="Obrázky a videa"
               isChecked={isMediaChecked}
               setIsChecked={setIsMediaChecked}
               disabled={numberOfCheckedCheckboxes >= 2 && !isMediaChecked}
             />
-            <CheckBox
+            <PrimaryCheckbox
               label="Texty"
               isChecked={isTextChecked}
               setIsChecked={setIsTextChecked}
               disabled={numberOfCheckedCheckboxes >= 2 && !isTextChecked}
             />
-            <CheckBox
+            <PrimaryCheckbox
               label="Hry"
               isChecked={isGameChecked}
               setIsChecked={setIsGameChecked}
@@ -153,156 +140,41 @@ export const RatingDialog = ({
         {/* TextArea section */}
         <div className="flex flex-col gap-3 w-full items-center">
           <div className="text-xl font-bold">Vzkaz tvůrci</div>
-          <TextField
-            variant="filled"
-            multiline
-            rows={4}
+          <TextArea
+            value={textValue}
+            setValue={setTextValue}
             placeholder="V případe záujmu o odpoveď zanechte ve vzkazu svuj e-mail."
             fullWidth
-            sx={{
-              "& .MuiInputBase-root": {
-                borderRadius: "0px",
-                padding: "16px 16px",
-                backgroundColor: isLightMode
-                  ? palette["light-gray"]
-                  : palette["medium-gray"],
-
-                "&.Mui-focused": {
-                  backgroundColor: isLightMode
-                    ? palette["light-gray"]
-                    : palette["medium-gray"],
-                },
-
-                "&:hover": {
-                  backgroundColor: isLightMode
-                    ? palette["light-gray"]
-                    : palette["medium-gray"],
-                },
-              },
-
-              "& .MuiInputBase-inputMultiline": {
-                fontSize: "16px",
-              },
-              "& .MuiFilledInput-underline:after": {
-                borderBottom: "none",
-              },
-            }}
-            value={textValue}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setTextValue(event.target.value);
-            }}
+            rows={4}
           />
         </div>
 
         {/* Send Button */}
         <div className="mt-2">
           <SendButton
-            disabled={ratingValue === null || numberOfCheckedCheckboxes === 0}
+            disabled={
+              ratingValue === null ||
+              numberOfCheckedCheckboxes === 0 ||
+              isSubmitting
+            }
             onClick={onSubmit}
+            isSubmitting={isSubmitting}
           />
         </div>
       </div>
-    </Dialog>
+    </DialogWrap>
   );
 };
 
 // - - - - - - - - -
 
-interface RatingInputProps {
-  ratingValue: number | null;
-  setRatingValue: Dispatch<SetStateAction<number | null>>;
-}
-
-const RatingInput = ({ ratingValue, setRatingValue }: RatingInputProps) => {
-  const { isLightMode } = useExpoDesignData();
-
-  return (
-    <Rating
-      //name
-      size="large"
-      precision={0.5}
-      value={ratingValue}
-      onChange={(_event, newValue) => {
-        setRatingValue(newValue);
-      }}
-      sx={{
-        fontSize: "42px",
-        color: "#FFB347",
-        "& .MuiRating-iconEmpty": {
-          color: isLightMode ? undefined : palette["white"],
-        },
-      }}
-    />
-  );
-};
-
-// - - - - - - - -
-
-interface CheckBoxProps {
-  label: string;
-  isChecked: boolean;
-  setIsChecked: Dispatch<SetStateAction<boolean>>;
-  disabled?: boolean;
-}
-
-const CheckBox = ({
-  label,
-  isChecked,
-  setIsChecked,
-  disabled,
-}: CheckBoxProps) => {
-  const { isLightMode, palette } = useExpoDesignData();
-
-  return (
-    <FormControlLabel
-      label={label}
-      control={
-        <Checkbox
-          checkedIcon={<SquareIcon />}
-          checked={isChecked}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setIsChecked(event.target.checked);
-          }}
-        />
-      }
-      disabled={disabled}
-      sx={{
-        "& .MuiSvgIcon-root": {
-          fontSize: "22px",
-          color: isLightMode ? undefined : palette["white"],
-        },
-
-        "& .Mui-checked": {
-          "& .MuiSvgIcon-root": {
-            color: "#d2a473",
-            fontSize: "22px",
-            padding: "4px",
-            border: `1px solid ${palette.primary}`,
-            borderRadius: "5%",
-          },
-        },
-
-        "& .MuiTypography-root.Mui-disabled": {
-          color: isLightMode ? undefined : palette["gray"],
-        },
-        "& .MuiButtonBase-root.MuiCheckbox-root.Mui-disabled": {
-          "& .MuiSvgIcon-root": {
-            color: isLightMode ? undefined : palette["gray"],
-          },
-        },
-      }}
-    />
-  );
-};
-
-// - - - - - - - - -
-
-interface SendButtonProps {
+type SendButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
-}
+  isSubmitting: boolean;
+};
 
-const SendButton = ({ disabled, onClick }: SendButtonProps) => {
+const SendButton = ({ disabled, onClick, isSubmitting }: SendButtonProps) => {
   const { isLightMode } = useExpoDesignData();
 
   return (
@@ -318,7 +190,15 @@ const SendButton = ({ disabled, onClick }: SendButtonProps) => {
       onClick={onClick}
     >
       Odeslat
-      <Icon name="send" useMaterialUiIcon style={{ fontSize: "24px" }} />
+      {!isSubmitting && (
+        <Icon name="send" useMaterialUiIcon style={{ fontSize: "24px" }} />
+      )}
+      {isSubmitting && (
+        <Spinner
+          scale={1}
+          style={{ width: "24px", height: "24px", fontSize: "24px" }}
+        />
+      )}
     </button>
   );
 };

@@ -5,6 +5,10 @@ import { useLocalStorage } from "hooks/use-local-storage";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+import DialogPortal from "context/dialog-ref-provider/DialogPortal";
+
 // Custom hooks
 import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
@@ -15,14 +19,16 @@ import { Icon } from "components/icon/icon";
 import { ViewFinishInfo } from "./view-finish-info"; // authors panel
 import { ViewFinishButton } from "./view-finish-button"; // squared button with the icon in the middle
 
-// Actions
-import { setDialog } from "actions/dialog-actions";
+import { ShareExpoDialog } from "components/dialogs/share-expo-dialog/share-expo-dialog";
+import { FinishAllFilesDialog } from "components/dialogs/finish-all-files-dialog/finish-all-files-dialog";
+import { FinishInfoDialog } from "components/dialogs/finish-info-dialog/finish-info-dialog";
+import { RatingDialog } from "components/dialogs/rating-dialog/rating-dialog";
+import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
 // Models
 import { AppDispatch, AppState } from "store/store";
 import { Screen, ScreenWithOnlyTypeTitleDocuments, ExpoRates } from "models";
 import { ScreenProps } from "models";
-import { DialogType } from "components/dialogs/dialog-types";
 
 import cx from "classnames";
 
@@ -41,6 +47,16 @@ export const ViewFinish = ({
 }: Omit<ScreenProps, "infoPanelRef">) => {
   const { viewExpo } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    openNewTopDialog,
+    closeTopDialog,
+    isShareExpoDialogOpen,
+    isFinishAllFilesDialogOpen,
+    isFinishInfoDialogOpen,
+    isRatingDialogOpen,
+    isInformationDialogOpen,
+  } = useDialogRef();
 
   const [expoRates, setExpoRates] = useLocalStorage<ExpoRates>(
     `isExpoRated`,
@@ -110,15 +126,20 @@ export const ViewFinish = ({
 
   // - -
 
+  const openRatingDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.RatingDialog),
+    [openNewTopDialog]
+  );
+
+  const openInformationFailDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.InformationDialog),
+    [openNewTopDialog]
+  );
+
   // On mount, when viewFinish screen is loaded, open Rating dialog if not previously rated (saved into Local storage)
   useEffect(() => {
     if (!!viewExpo?.id && !expoRates[viewExpo.id]) {
-      dispatch(
-        setDialog(DialogType.RatingDialog, {
-          setExpoRates: setExpoRates,
-          expoId: viewExpo.id,
-        })
-      );
+      openRatingDialog();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, viewExpo, expoRates]);
@@ -127,13 +148,8 @@ export const ViewFinish = ({
 
   // 1) Clicking on first share icon will open the share dialog
   const openShareDialog = useCallback(
-    () =>
-      dispatch(
-        setDialog(DialogType.ShareExpoDialog, {
-          url: `${window.location.origin}/view/${url}`,
-        })
-      ),
-    [dispatch, url]
+    () => openNewTopDialog(DialogRefType.ShareExpoDialog),
+    [openNewTopDialog]
   );
 
   // 2) Clicking on second files of exposition will open the files dialog
@@ -141,14 +157,8 @@ export const ViewFinish = ({
     if (!structureStartFiles || !structureScreenFiles) {
       return;
     }
-
-    dispatch(
-      setDialog(DialogType.FinishAllFilesDialog, {
-        startFiles: structureStartFiles,
-        screensFiles: structureScreenFiles,
-      })
-    );
-  }, [dispatch, structureScreenFiles, structureStartFiles]);
+    openNewTopDialog(DialogRefType.FinishAllFilesDialog);
+  }, [openNewTopDialog, structureScreenFiles, structureStartFiles]);
 
   // 3) Clicking on third replay icon will redirect the user back to the start screen
   const replay = useCallback(() => push(`/view/${url}/start`), [push, url]);
@@ -156,17 +166,9 @@ export const ViewFinish = ({
   // 4) Clicking on fourth info icon will open the FinishInfoDialog
   // This icon button is visible only on small screens
   const openFinishInfoDialog = useCallback(
-    () =>
-      dispatch(
-        setDialog(DialogType.FinishInfoDialog, {
-          viewExpo,
-          viewStart,
-        })
-      ),
-    [dispatch, viewExpo, viewStart]
+    () => openNewTopDialog(DialogRefType.FinishInfoDialog),
+    [openNewTopDialog]
   );
-
-  // - - - - - - - -
 
   return (
     <>
@@ -229,6 +231,70 @@ export const ViewFinish = ({
           <ViewFinishInfo viewExpo={viewExpo} viewStart={viewStart} />
         </div>
       </div>
+
+      {isShareExpoDialogOpen && (
+        <DialogPortal
+          component={
+            <ShareExpoDialog
+              closeThisDialog={closeTopDialog}
+              url={`${window.location.origin}/view/${url}`}
+            />
+          }
+        />
+      )}
+
+      {isFinishAllFilesDialogOpen &&
+        structureStartFiles &&
+        structureScreenFiles && (
+          <DialogPortal
+            component={
+              <FinishAllFilesDialog
+                closeThisDialog={closeTopDialog}
+                startFiles={structureStartFiles}
+                screensFiles={structureScreenFiles}
+              />
+            }
+          />
+        )}
+
+      {isFinishInfoDialogOpen && (
+        <DialogPortal
+          component={
+            <FinishInfoDialog
+              closeThisDialog={closeTopDialog}
+              viewExpo={viewExpo}
+              viewStart={viewStart}
+            />
+          }
+        />
+      )}
+
+      {isRatingDialogOpen && viewExpo?.id && (
+        <DialogPortal
+          component={
+            <RatingDialog
+              closeThisDialog={closeTopDialog}
+              openInformationFailDialog={openInformationFailDialog}
+              setExpoRates={setExpoRates}
+              expoId={viewExpo?.id}
+            />
+          }
+        />
+      )}
+
+      {/* when rating has failed */}
+      {isInformationDialogOpen && (
+        <DialogPortal
+          component={
+            <InformationDialog
+              closeThisDialog={closeTopDialog}
+              title="Hodnotenie selhalo!"
+              content="Odoslanie vásho hodnotenia zlyhalo."
+              big={false}
+            />
+          }
+        />
+      )}
     </>
   );
 };

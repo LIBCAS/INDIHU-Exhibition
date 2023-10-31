@@ -78,7 +78,6 @@ const AuthController: FC = ({ children }) => {
     }
 
     return () => {
-      console.log("unmounted");
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }

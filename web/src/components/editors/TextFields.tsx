@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "store/store";
@@ -14,20 +15,21 @@ import { helpIconText } from "enums/text";
 type TitleTextFieldProps = { titleValue: string };
 
 export const TitleTextField = ({ titleValue }: TitleTextFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="flex-row-nowrap">
       <TextField
         id="editor-description-textfield-title"
-        label="Název"
+        label={t("descFields.name")}
         defaultValue={titleValue}
         onChange={(newTitle: string) =>
           dispatch(updateScreenData({ title: newTitle }))
         }
       />
       <HelpIcon
-        label={helpIconText.EDITOR_DESCRIPTION_TITLE}
+        label={t("descFields.nameScreenTooltip")}
         id="editor-description-title"
       />
     </div>
@@ -39,6 +41,7 @@ export const TitleTextField = ({ titleValue }: TitleTextFieldProps) => {
 type TextTextFieldProps = { textValue: string };
 
 export const TextTextField = ({ textValue }: TextTextFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -46,7 +49,7 @@ export const TextTextField = ({ textValue }: TextTextFieldProps) => {
       <div className="flex-row-nowrap">
         <TextField
           id="editor-description-textfield-text"
-          label="Text k tématu"
+          label={t("descFields.text")}
           rows={5}
           defaultValue={textValue}
           onChange={(newText: string) =>
@@ -54,7 +57,7 @@ export const TextTextField = ({ textValue }: TextTextFieldProps) => {
           }
         />
         <HelpIcon
-          label={helpIconText.EDITOR_DESCRIPTION_TEXT}
+          label={t("descFields.textTooltip")}
           id="editor-description-text"
         />
       </div>
@@ -71,19 +74,20 @@ type GameTitleTextFieldProps = { gameTitleValue: string };
 export const GameTitleTextField = ({
   gameTitleValue,
 }: GameTitleTextFieldProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="flex-row-nowrap">
       <TextField
         id="game-textfield-name"
-        label="Název"
+        label={t("descFields.gameName")}
         defaultValue={gameTitleValue}
         onChange={(newTitle: string) =>
           dispatch(updateScreenData({ title: newTitle }))
         }
       />
-      <HelpIcon label={helpIconText.EDITOR_GAME_TITLE} id="editor-game-title" />
+      <HelpIcon label={t("descFields.gameNameTitle")} id="editor-game-title" />
     </div>
   );
 };

@@ -1,20 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { Size } from "models";
 
-export interface Size {
-  width: number;
-  height: number;
-}
-
-function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
+const useElementSize = <T extends HTMLElement = HTMLDivElement>(): [
   (node: T | null) => void,
   Size,
   T | null
-] {
+] => {
   const [ref, setRef] = useState<T | null>(null);
   const [size, setSize] = useState<Size>({
     width: 0,
     height: 0,
   });
+
+  // - -
+
+  useEffect(() => {
+    handleSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref?.offsetHeight, ref?.offsetWidth]);
+
+  // - -
 
   const handleSize = useCallback(() => {
     setSize({
@@ -31,12 +36,7 @@ function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
     return () => window.removeEventListener("resize", handleSize);
   }, [handleSize]);
 
-  useEffect(() => {
-    handleSize();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref?.offsetHeight, ref?.offsetWidth]);
-
   return [setRef, size, ref];
-}
+};
 
 export default useElementSize;

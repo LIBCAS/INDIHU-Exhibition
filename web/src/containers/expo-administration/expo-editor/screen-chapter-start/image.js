@@ -9,35 +9,14 @@ import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions";
 import { updateScreenData } from "actions/expoActions";
 
-import { animationType, animationTypeText } from "enums/animation-type";
-import { helpIconText } from "enums/text";
+import { ScreenChapterStartAnimationEnum } from "enums/administration-screens";
+import { useTranslation } from "react-i18next";
 
-const options = [
-  {
-    label: animationTypeText.WITHOUT_FULL_SCREEN,
-    value: animationType.WITHOUT_FULL_SCREEN,
-  },
-  {
-    label: animationTypeText.WITHOUT_NO_CROP,
-    value: animationType.WITHOUT_NO_CROP,
-  },
-  {
-    label: animationTypeText.WITHOUT_AND_BLUR_BACKGROUND,
-    value: animationType.WITHOUT_AND_BLUR_BACKGROUND,
-  },
-  { label: animationTypeText.FROM_TOP, value: animationType.FROM_TOP },
-  { label: animationTypeText.FROM_BOTTOM, value: animationType.FROM_BOTTOM },
-  {
-    label: animationTypeText.FROM_LEFT_TO_RIGHT,
-    value: animationType.FROM_LEFT_TO_RIGHT,
-  },
-  {
-    label: animationTypeText.FROM_RIGHT_TO_LEFT,
-    value: animationType.FROM_RIGHT_TO_LEFT,
-  },
-];
+// - -
 
 const Image = ({ activeScreen, getFileById, updateScreenData }) => {
+  const { t } = useTranslation("expo-editor");
+
   const image = activeScreen.image ? getFileById(activeScreen.image) : null;
 
   const setImage = (image) => {
@@ -51,7 +30,7 @@ const Image = ({ activeScreen, getFileById, updateScreenData }) => {
           <div className="flex-row-nowrap one-image-row">
             <ImageComponent
               {...{
-                title: "Obrázek na pozadí",
+                title: t("descFields.introScreen.imageBoxTitle"),
                 image: image,
                 setImage: setImage,
                 onDelete: () =>
@@ -63,8 +42,7 @@ const Image = ({ activeScreen, getFileById, updateScreenData }) => {
                       height,
                     },
                   }),
-                helpIconLabel:
-                  helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_IMAGE,
+                helpIconLabel: t("descFields.introScreen.imageBoxTooltip"),
                 id: "editor-chapter-start-description-image",
               }}
             />
@@ -73,8 +51,48 @@ const Image = ({ activeScreen, getFileById, updateScreenData }) => {
             <SelectField
               id="chapter-start-selectfield-animation"
               className="select-field big"
-              label="Animace obrázku"
-              menuItems={options}
+              label={t("descFields.introScreen.imageAnimationLabel")}
+              menuItems={[
+                {
+                  label: t(
+                    "descFields.introScreen.imageAnimationWithoutFullScreen"
+                  ),
+                  value: ScreenChapterStartAnimationEnum.WITHOUT_FULL_SCREEN,
+                },
+                {
+                  label: t(
+                    "descFields.introScreen.imageAnimationWithoutNoCrop"
+                  ),
+                  value: ScreenChapterStartAnimationEnum.WITHOUT_NO_CROP,
+                },
+                {
+                  label: t(
+                    "descFields.introScreen.imageAnimationWithoutAndBlurBackground"
+                  ),
+                  value:
+                    ScreenChapterStartAnimationEnum.WITHOUT_AND_BLUR_BACKGROUND,
+                },
+                {
+                  label: t("descFields.introScreen.imageAnimationFromTop"),
+                  value: ScreenChapterStartAnimationEnum.FROM_TOP,
+                },
+                {
+                  label: t("descFields.introScreen.imageAnimationFromBottom"),
+                  value: ScreenChapterStartAnimationEnum.FROM_BOTTOM,
+                },
+                {
+                  label: t(
+                    "descFields.introScreen.imageAnimationFromLeftToRight"
+                  ),
+                  value: ScreenChapterStartAnimationEnum.FROM_LEFT_TO_RIGHT,
+                },
+                {
+                  label: t(
+                    "descFields.introScreen.imageAnimationFromRightToLeft"
+                  ),
+                  value: ScreenChapterStartAnimationEnum.FROM_RIGHT_TO_LEFT,
+                },
+              ]}
               itemLabel={"label"}
               itemValue={"value"}
               position={"below"}
@@ -82,7 +100,7 @@ const Image = ({ activeScreen, getFileById, updateScreenData }) => {
               onChange={(value) => updateScreenData({ animationType: value })}
             />
             <HelpIcon
-              label={helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_ANIMATION}
+              label={t("descFields.introScreen.imageAnimationTooltip")}
               id="editor-chapter-start-description-animation"
             />
           </div>

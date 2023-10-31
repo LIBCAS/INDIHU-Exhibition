@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { connect } from "react-redux";
 import { compose, withState } from "recompose";
 import { TextField, FontIcon, Button } from "react-md";
@@ -6,7 +8,6 @@ import HelpIcon from "components/help-icon";
 
 import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions";
-import { helpIconText } from "enums/text";
 
 const Description = ({
   activeScreen,
@@ -14,6 +15,8 @@ const Description = ({
   setDialog,
   getFileById,
 }) => {
+  const { t } = useTranslation("expo-editor");
+
   const image = getFileById(activeScreen.image);
 
   const setImage = (image) => {
@@ -28,7 +31,7 @@ const Description = ({
             <div className="row flex-centered">
               <TextField
                 id="screen-start-textfield-image"
-                label="Obrázek na pozadí"
+                label={t("screenFields.backgroundImage")}
                 value={image ? image.name : ""}
                 disabled
               />
@@ -66,7 +69,7 @@ const Description = ({
                 )}
                 <Button
                   raised
-                  label="vybrat"
+                  label={t("descFields.backgroundImageSelectLabel")}
                   onClick={() =>
                     setDialog("ScreenFileChoose", {
                       onChoose: setImage,
@@ -76,7 +79,7 @@ const Description = ({
                   }
                 />
                 <HelpIcon
-                  label={helpIconText.EDITOR_START_DESCRIPTION_IMAGE}
+                  label={t("descFields.backgroundImageTooltip")}
                   id="editor-start-description-image"
                 />
               </div>

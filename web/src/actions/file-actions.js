@@ -47,6 +47,7 @@ export const addFolder = (name) => async (dispatch, getState) => {
   return true;
 };
 
+// will add the file to the expo.structure
 export const addFile = (file, folder) => async (dispatch, getState) => {
   const expo = getState().expo.activeExpo;
   const files = expo.structure.files;

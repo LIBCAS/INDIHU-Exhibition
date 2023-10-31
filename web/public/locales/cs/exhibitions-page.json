@@ -1,0 +1,64 @@
+{
+  "header": {
+    "title": "Výstavy",
+    "filterLabel": "Filtr projektů:",
+    "sortLabel": "Řazení projektů: ",
+    "searchPlaceholder": "Hledat",
+    "sortTooltipASC": "Sestupně",
+    "sortTooltipDESC": "Vzestupně",
+    "tooltipList": "Seznam",
+    "tooltipGrid": "Mřížka",
+    "filterOptions": {
+      "all": "Vše",
+      "authorship": "Jsem autor",
+      "readOnly": "Sdíleno pro čtení",
+      "readWrite": "Sdíleno pro zápis"
+    },
+    "sortOptions": {
+      "title": "Název",
+      "state": "Stav",
+      "created": "Datum vytvoření",
+      "updated": "Datum poslední aktualizace",
+      "isEditing": "Naposledy upravil"
+    }
+  },
+  "expoCard": {
+    "createNewExpo": "Vytvořit novou výstavu",
+    "state": "Stav:",
+    "created": "Vytvořeno: ",
+    "updated": "Upraveno: ",
+    "averageRating": "Průměrné hodnocení: ",
+    "noAverageRatingYet": "Zatím nehodnoceno",
+    "edit": "Upravit",
+    "preview": "Náhled",
+    "editErrDialogTitle": "Nelze upravovat",
+    "editErrDialogText": "Výstavu nelze upravovat."
+  },
+  "expoTable": {
+    "createNewExpo": "Vytvořit novou výstavu",
+    "name": "Název",
+    "state": "Stav",
+    "created": "Vytvořeno",
+    "author": "Autor",
+    "updated": "Upraveno",
+    "lastEditedBy": "Naposledy upravil",
+    "actions": "Akce"
+  },
+  "expoCardActions": {
+    "update": "Upravit",
+    "preview": "Náhled",
+    "stateChange": "Změnit stav",
+    "rename": "Přejmenovat",
+    "share": "Sdílet",
+    "duplicate": "Duplikovat",
+    "delete": "Smazat"
+  },
+  "pager": {
+    "entriesPerPage": "Záznamů na stránku:"
+  },
+  "dialog": {
+    "newExpoTitle": "Nová výstava",
+    "newExpoLabel": "Název výstavy",
+    "submitLabel": "Vytvořit"
+  }
+}

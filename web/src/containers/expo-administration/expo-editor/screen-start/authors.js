@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { get, map } from "lodash";
@@ -11,7 +13,6 @@ import {
   updateStartAuthorsFilter,
   swapScreenCollaborators,
 } from "actions/expoActions";
-import { helpIconText } from "enums/text";
 
 const Authors = ({
   activeScreen,
@@ -19,6 +20,8 @@ const Authors = ({
   removeScreenCollaborators,
   swapScreenCollaborators,
 }) => {
+  const { t } = useTranslation("expo-editor");
+
   const collaborators = get(activeScreen, "collaborators", []);
 
   return (
@@ -31,8 +34,10 @@ const Authors = ({
                 {get(collaborators, "length", 0) > 1 && (
                   <div className="table-col cursor" />
                 )}
-                <div className="table-col cursor">Role</div>
-                <div className="table-col cursor">Osoby nebo text</div>
+                <div className="table-col cursor">{t("imprintTable.role")}</div>
+                <div className="table-col cursor">
+                  {t("imprintTable.personsText")}
+                </div>
                 <div className="table-col cursor" />
               </div>
               {map(collaborators, (item, i) => (
@@ -96,7 +101,7 @@ const Authors = ({
               ))}
             </div>
           </div>
-          <HelpIcon label={helpIconText.EDITOR_START_AUTHORS} />
+          <HelpIcon label={t("imprintTable.imprintTooltip")} />
         </div>
         <Button
           icon

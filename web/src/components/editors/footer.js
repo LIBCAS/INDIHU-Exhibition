@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { connect } from "react-redux";
 import { compose, withState, lifecycle, withHandlers } from "recompose";
 import Button from "react-md/lib/Buttons/Button";
@@ -6,14 +8,28 @@ import { saveScreen } from "../../actions/expoActions";
 import { setDialog } from "../../actions/dialog-actions";
 import { openViewer } from "../../utils";
 
-const Footer = ({ save, openView }) => (
-  <div className="flex-row flex-centered fixed-bottom-footer">
-    <div className="inner padding flex-row flex-space-between">
-      <Button raised label="Náhled" className="btn" onClick={openView} />
-      <Button raised label="Uložit" className="btn" onClick={save} />
+const Footer = ({ save, openView }) => {
+  const { t } = useTranslation("expo-editor");
+
+  return (
+    <div className="flex-row flex-centered fixed-bottom-footer">
+      <div className="inner padding flex-row flex-space-between">
+        <Button
+          raised
+          label={t("footer.previewLabel")}
+          className="btn"
+          onClick={openView}
+        />
+        <Button
+          raised
+          label={t("footer.saveLabel")}
+          className="btn"
+          onClick={save}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default compose(
   connect(null, { saveScreen, setDialog }),

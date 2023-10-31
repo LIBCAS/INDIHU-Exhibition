@@ -2,20 +2,35 @@ import { MutableRefObject, RefObject } from "react";
 
 // Enums
 import { screenType } from "enums/screen-type";
-import { zoomInTooltipPosition } from "enums/screen-enums";
-import { animationType } from "enums/animation-type";
-import {
-  horizontalPosition,
-  verticalPosition,
-  gameQuizAnswersType,
-  gameQuizType,
-} from "enums/screen-enums";
 
 // Models
 import { Document } from "./document";
 import { Infopoint } from "./infopoint";
 import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
 import { ActiveExpo } from "./exposition";
+
+// NEW
+import {
+  GameQuizAnswersType,
+  GameQuizType,
+  GameQuizAnswerDisplayType,
+  ZoomInTooltipPositionType,
+  ImageChangeAnimationType,
+  ImageChangeRodPositionType,
+  ImageChangeGradualTransitionBeginPositionType,
+  SignpostReferenceType,
+  ScreenChapterStartHorizontalPositionType,
+  ScreenChapterStartVerticalPositionType,
+  ScreenChapterStartAnimationType,
+  ScreenStartAnimationType,
+  ScreenImageAnimationType,
+  SlideshowScreenAnimationType,
+  ScreenParallaxAnimationType,
+  ScreenChapterIntroTextThemeType,
+  ScreenChapterIntroTextHaloEffectOnType,
+} from "./screen-administration";
+
+import { ScreenChooserState } from "containers/expo-administration/expo-editor/screen-signpost/ScreenChooser";
 
 // - - - - -
 
@@ -72,10 +87,6 @@ type Collaborator = {
   text: string;
 };
 
-export type AnimationType = typeof animationType[keyof typeof animationType];
-export type ZoomInTooltipPosition =
-  typeof zoomInTooltipPosition[keyof typeof zoomInTooltipPosition];
-
 export type SlideshowImages = {
   id: string;
   imageOrigData: ImageOrigData;
@@ -93,24 +104,31 @@ export type PhotogalleryImages = {
 }[];
 
 export type Sequence = {
-  text: string;
-  time: number;
-  zoom: number;
   left: number;
   top: number;
+  text: string;
+  zoom: number; // power of zoom scale
+  time: number; // zoom time, how much time until fully zoomed and then also fully unzoomed
+  stayInDetailTime?: number; // zoom in with time, stayDetail time, zoom out with time
   edit?: boolean; // whether being currently edited
   move?: boolean; // whether its infopoint being currently moved
   timeError?: boolean;
 };
 
-export type GameQuizAnswersType = keyof typeof gameQuizAnswersType;
-export type GameQuizType = keyof typeof gameQuizType;
 export type GameQuizAnswer = {
   correct: boolean;
   text: string;
   image: string | null; // imageId or null if image was not loaded
   imageOrigData?: ImageOrigData; // optional if image was not loaded yet
   infopoints?: Infopoint[];
+};
+
+export type EraserToolType = "eraser1" | "eraser2" | "eraser3" | "eraser4";
+
+export type ReferenceObj = {
+  reference: ScreenChooserState | null;
+  image?: string;
+  text?: string;
 };
 
 // - - - - -
@@ -128,6 +146,7 @@ export type Screen =
   | ZoomScreen
   | ImageChangeScreen
   | ExternalScreen
+  | SignpostScreen
   | GameFindScreen
   | GameDrawScreen
   | GameWipeScreen
@@ -143,7 +162,7 @@ export type StartScreen = {
   perex: string;
   image?: string;
   imageOrigData: ImageOrigData;
-  animationType: AnimationType;
+  animationType: ScreenStartAnimationType;
   expoTime: number;
   audio: string;
   collaborators: Collaborator[];
@@ -166,18 +185,18 @@ export type IntroScreen = {
   imageOrigData?: ImageOrigData;
   animateText: boolean;
   textPosition?: {
-    horizontal?: keyof typeof horizontalPosition;
-    vertical?: keyof typeof verticalPosition;
+    horizontal?: ScreenChapterStartHorizontalPositionType;
+    vertical?: ScreenChapterStartVerticalPositionType;
   };
-  animationType: AnimationType;
+  animationType: ScreenChapterStartAnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
   music: string;
   documents?: Document[];
   screenCompleted: boolean;
-  introTextTheme?: "light" | "dark";
-  isIntroTextHaloEffectOn?: "on" | "off";
+  introTextTheme?: ScreenChapterIntroTextThemeType;
+  isIntroTextHaloEffectOn?: ScreenChapterIntroTextHaloEffectOnType;
 };
 
 export type ImageScreen = {
@@ -187,7 +206,7 @@ export type ImageScreen = {
   text?: string;
   image?: string;
   imageOrigData?: ImageOrigData;
-  animationType: AnimationType;
+  animationType: ScreenImageAnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
@@ -234,7 +253,7 @@ export type SlideshowScreen = {
   title?: string;
   text?: string;
   images?: SlideshowImages;
-  animationType: AnimationType;
+  animationType: SlideshowScreenAnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
@@ -266,7 +285,7 @@ export type ParallaxScreeen = {
   title?: string;
   text?: string;
   images?: ParallaxImages;
-  animationType: AnimationType;
+  animationType: ScreenParallaxAnimationType;
   audio?: string;
   time: number;
   timeAuto: boolean;
@@ -284,16 +303,17 @@ export type ZoomScreen = {
   text?: string;
   image?: string;
   imageOrigData?: { width: number; height: number };
-  sequences: Sequence[];
-  tooltipPosition: ZoomInTooltipPosition;
+  sequences?: Sequence[];
+  tooltipPosition?: ZoomInTooltipPositionType;
+  seqDelayTime?: number;
   audio?: string;
   time: number;
-  timeAuto: boolean;
+  timeAuto?: boolean;
   documents?: Document[];
   aloneScreen: boolean;
   music?: string;
-  muteChapterMusic: boolean;
-  screenCompleted: boolean;
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
 };
 
 export type ImageChangeScreen = {
@@ -313,17 +333,9 @@ export type ImageChangeScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  animationType?:
-    | "HORIZONTAL"
-    | "VERTICAL"
-    | "GRADUAL_TRANSITION"
-    | "FADE_IN_OUT_TWO_IMAGES";
-  rodPosition?: "0" | "0.25" | "0.5" | "0.75" | "1";
-  gradualTransitionBeginPosition?:
-    | "VERTICAL_TOP_TO_BOTTOM"
-    | "VERTICAL_BOTTOM_TO_TOP"
-    | "HORIZONTAL_LEFT_TO_RIGHT"
-    | "HORIZONTAL_RIGHT_TO_LEFT";
+  animationType?: ImageChangeAnimationType;
+  rodPosition?: ImageChangeRodPositionType;
+  gradualTransitionBeginPosition?: ImageChangeGradualTransitionBeginPositionType;
   image1Infopoints?: Infopoint[];
   image2Infopoints?: Infopoint[];
 };
@@ -342,6 +354,26 @@ export type ExternalScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+};
+
+export type SignpostScreen = {
+  id: string;
+  type: typeof screenType.SIGNPOST;
+  title?: string;
+  text?: string;
+  audio?: string;
+  time: number;
+  timeAuto: number;
+  documents?: Document[];
+  aloneScreen: boolean;
+  //music
+  muteChapterMusic: boolean;
+  screenCompleted: boolean;
+  // Specific attributes
+  header?: string;
+  subheader?: string;
+  referenceType?: SignpostReferenceType;
+  links: ReferenceObj[];
 };
 
 export type GameFindScreen = {
@@ -392,6 +424,7 @@ export type GameWipeScreen = {
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  eraserToolType?: EraserToolType;
 };
 
 export type GameSizingScreen = {
@@ -444,4 +477,5 @@ export type GameQuizScreen = {
   screenCompleted?: boolean;
   answersType?: GameQuizAnswersType;
   quizType?: GameQuizType;
+  answersTextDisplayType?: GameQuizAnswerDisplayType;
 };

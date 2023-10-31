@@ -1,9 +1,6 @@
-type ObjectFitType = "contain" | "cover";
+import { Size } from "models";
 
-type Size = {
-  height: number;
-  width: number;
-};
+type ObjectFitType = "contain" | "cover";
 
 type CalculateObjectFitProps = {
   type?: ObjectFitType;

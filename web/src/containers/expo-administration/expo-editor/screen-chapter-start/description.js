@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import SelectField from "react-md/lib/SelectFields";
@@ -10,10 +11,16 @@ import HelpIcon from "components/help-icon";
 import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions";
 
-import { helpIconText } from "enums/text";
-import { horizontalPosition, verticalPosition } from "enums/screen-enums";
+import {
+  ScreenChapterStartHorizontalPositionEnum,
+  ScreenChapterStartVerticalPositionEnum,
+  ScreenChapterIntroTextThemeEnum,
+  ScreenChapterIntroTextHaloEffectOnEnum,
+} from "enums/administration-screens";
 
 const Description = ({ activeScreen, updateScreenData, getFileById }) => {
+  const { t } = useTranslation("expo-editor");
+
   const music = getFileById(activeScreen.music);
   const audio = getFileById(activeScreen.audio);
 
@@ -26,24 +33,24 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
             <div className="flex-row-nowrap">
               <TextField
                 id="chapter-start-textfield-title"
-                label="Název"
+                label={t("descFields.name")}
                 defaultValue={activeScreen.title}
                 onChange={(value) => updateScreenData({ title: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_TITLE}
+                label={t("descFields.nameChapterTooltip")}
                 id="editor-chapter-start-description-title"
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="chapter-start-textfield-subtitle"
-                label="Podnázev"
+                label={t("descFields.subname")}
                 defaultValue={activeScreen.subTitle}
                 onChange={(value) => updateScreenData({ subTitle: value })}
               />
               <HelpIcon
-                label={helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_SUBTITLE}
+                label={t("descFields.subnameChapterToolip")}
                 id="editor-chapter-start-description-title"
               />
             </div>
@@ -51,7 +58,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               <Checkbox
                 id="chapter-start-checkbox-animateText"
                 name="simple-checkboxes"
-                label="Animovat úvodní text"
+                label={t("descFields.imageChapterAnimation")}
                 checked={!!activeScreen.animateText}
                 value={!!activeScreen.animateText}
                 onChange={(value) => updateScreenData({ animateText: value })}
@@ -63,11 +70,20 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               <SelectField
                 id="chapter-start-selectfield-textPosition.horizontal"
                 className="select-field big"
-                label="Horizontální pozice textu"
+                label={t("descFields.horizontalTextPosition")}
                 menuItems={[
-                  { value: horizontalPosition.LEFT, label: "Vlevo" },
-                  { value: horizontalPosition.CENTER, label: "Veprostřed" },
-                  { value: horizontalPosition.RIGHT, label: "Vpravo" },
+                  {
+                    value: ScreenChapterStartHorizontalPositionEnum.LEFT,
+                    label: t("descFields.horizontalTextPositionLeftOption"),
+                  },
+                  {
+                    value: ScreenChapterStartHorizontalPositionEnum.CENTER,
+                    label: t("descFields.horizontalTextPositionCenterOption"),
+                  },
+                  {
+                    value: ScreenChapterStartHorizontalPositionEnum.RIGHT,
+                    label: t("descFields.horizontalTextPositionRightOption"),
+                  },
                 ]}
                 itemLabel={"label"}
                 itemValue={"value"}
@@ -85,11 +101,20 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               <SelectField
                 id="chapter-start-selectfield-textPosition.vertical"
                 className="select-field big"
-                label="Vertikální pozice textu"
+                label={t("descFields.verticalTextPosition")}
                 menuItems={[
-                  { value: verticalPosition.TOP, label: "Nahoře" },
-                  { value: verticalPosition.CENTER, label: "Veprostřed" },
-                  { value: verticalPosition.BOTTOM, label: "Dole" },
+                  {
+                    value: ScreenChapterStartVerticalPositionEnum.TOP,
+                    label: t("descFields.verticalTextPositionTopOption"),
+                  },
+                  {
+                    value: ScreenChapterStartVerticalPositionEnum.CENTER,
+                    label: t("descFields.verticalTextPositionCenterOption"),
+                  },
+                  {
+                    value: ScreenChapterStartVerticalPositionEnum.BOTTOM,
+                    label: t("descFields.verticalTextPositionBottomOption"),
+                  },
                 ]}
                 itemLabel={"label"}
                 itemValue={"value"}
@@ -110,10 +135,16 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               <SelectField
                 id="chapter-start-selectield-textColor"
                 className="select-field big"
-                label="Barva textu"
+                label={t("descFields.textTheme")}
                 menuItems={[
-                  { value: "light", label: "Světlá" },
-                  { value: "dark", label: "Tmavá" },
+                  {
+                    value: ScreenChapterIntroTextThemeEnum.LIGHT,
+                    label: t("descFields.textThemeLightOption"),
+                  },
+                  {
+                    value: ScreenChapterIntroTextThemeEnum.DARK,
+                    label: t("descFields.textThemeDarkOption"),
+                  },
                 ]}
                 itemLabel={"label"}
                 itemValue={"value"}
@@ -127,10 +158,16 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               <SelectField
                 id="chapter-start-selectfield-textHaloEffect"
                 className="select-field big"
-                label="Zapnout zvýraznění textu"
+                label={t("descFields.enableHaloEffect")}
                 menuItems={[
-                  { value: "on", label: "Zapnuto" },
-                  { value: "off", label: "Vypnuto" },
+                  {
+                    value: ScreenChapterIntroTextHaloEffectOnEnum.ON,
+                    label: t("descFields.enableHaloEffectOnOption"),
+                  },
+                  {
+                    value: ScreenChapterIntroTextHaloEffectOnEnum.OFF,
+                    label: t("descFields.enableHaloEffectOffOption"),
+                  },
                 ]}
                 itemLabel={"label"}
                 itemValue={"value"}
@@ -150,8 +187,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
                 isAudio: true,
                 audio,
                 updateScreenData,
-                helpIconTitle:
-                  helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_AUDIO,
+                helpIconTitle: t("descFields.audioScreenTrackTooltip"),
                 id: "editor-chapter-start-description-audio",
               }}
             />
@@ -160,8 +196,7 @@ const Description = ({ activeScreen, updateScreenData, getFileById }) => {
               {...{
                 music,
                 updateScreenData,
-                helpIconTitle:
-                  helpIconText.EDITOR_CHAPTER_START_DESCRIPTION_MUSIC,
+                helpIconTitle: t("descFields.audioChapterTrackTooltip"),
                 id: "editor-chapter-start-description-music",
               }}
             />

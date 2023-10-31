@@ -3,10 +3,7 @@ import { calculatePositions } from "./calculate-positions";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 import GlassMagnifier from "./GlassMagnifier";
 
-type Position = {
-  left: number;
-  top: number;
-};
+import { Position } from "models";
 
 export const useGlassMagnifier = (
   imageContainerEl: HTMLDivElement | null,

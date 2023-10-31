@@ -3,36 +3,60 @@ import { AppDispatch } from "store/store";
 
 import SelectField from "react-md/lib/SelectFields";
 
-import { GameQuizAnswersType, GameQuizScreen, GameQuizType } from "models";
+import {
+  GameQuizAnswerDisplayType,
+  GameQuizAnswersType,
+  GameQuizScreen,
+  GameQuizType,
+} from "models";
 
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
-import { gameQuizAnswersType, gameQuizType } from "enums/screen-enums";
+import {
+  GameQuizAnswerEnum,
+  GameQuizEnum,
+  GameQuizTextDisplayEnum,
+} from "enums/administration-screens";
+
+// - -
 
 const gameQuizAnswersTypeOptions = [
   {
     label: "Práve jedna správna odpoveď",
-    value: gameQuizAnswersType.SIMPLE_CHOICE,
+    value: GameQuizAnswerEnum.SIMPLE_CHOICE,
   },
   {
     label: "Viacero správnych odpovedí",
-    value: gameQuizAnswersType.MULTIPLE_CHOICE,
+    value: GameQuizAnswerEnum.MULTIPLE_CHOICE,
   },
 ];
 
 const gameQuizTypeOptions = [
   {
     label: "Iba text",
-    value: gameQuizType.ONLY_TEXT,
+    value: GameQuizEnum.ONLY_TEXT,
   },
   {
     label: "Iba obrázok",
-    value: gameQuizType.ONLY_IMAGES,
+    value: GameQuizEnum.ONLY_IMAGES,
   },
   {
     label: "Aj obrázok aj text",
-    value: gameQuizType.TEXT_IMAGES,
+    value: GameQuizEnum.TEXT_IMAGES,
   },
 ];
+
+const gameQuizTextDisplay = [
+  {
+    label: "Zobraziť ihneď po načítaní",
+    value: GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY,
+  },
+  {
+    label: "Zobrazit až po vyhodnotení kvízu",
+    value: GameQuizTextDisplayEnum.QUIZ_TEXT_AFTER_EVALUATION,
+  },
+];
+
+// - -
 
 type GameQuizAnswersTypeSelectProps = {
   activeScreen: GameQuizScreen;
@@ -97,6 +121,35 @@ export const GameQuizTypeSelect = ({
           dispatch(updateScreenData({ quizType: newValue }));
         }}
         fullWidth
+      />
+    </div>
+  );
+};
+
+// - - -
+
+type GameQuizAnswerTextDisplaySelectProps = { activeScreen: GameQuizScreen };
+
+export const GameQuizAnswerTextDisplaySelect = ({
+  activeScreen,
+}: GameQuizAnswerTextDisplaySelectProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <div className="w-full xl:w-fit">
+      <SelectField
+        menuItems={gameQuizTextDisplay}
+        itemLabel={"label"}
+        itemValue={"value"}
+        label="Vyberte kdy se má zobrazit text odpovědi"
+        position="below"
+        id="quiz-answer-text-display"
+        defaultValue={
+          activeScreen.answersTextDisplayType ?? "QUIZ_TEXT_IMMEDIATELY"
+        }
+        onChange={(newValue: GameQuizAnswerDisplayType) => {
+          dispatch(updateScreenData({ answersTextDisplayType: newValue }));
+        }}
       />
     </div>
   );

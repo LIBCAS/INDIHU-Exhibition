@@ -8,7 +8,7 @@ import { useField } from "formik";
 
 type SelectControlItem = {
   label: string;
-  value: string;
+  value: string | number;
 };
 
 interface ReactMdSelectFieldProps {

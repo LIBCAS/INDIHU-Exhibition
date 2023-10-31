@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { withRouter, Route } from "react-router-dom";
@@ -11,19 +12,21 @@ import { updateScreenData } from "actions/expoActions";
 import { helpIconText } from "enums/text";
 
 const ScreenGameDraw = (props) => {
+  const { t } = useTranslation("expo-editor");
   const { match, activeScreen, history, url } = props;
   const { position } = match.params;
   const resultTime = activeScreen.resultTime;
+
   return (
     <div>
       <TabMenu
         tabs={[
           {
-            label: "Název, úkol",
+            label: t("tabs.gameTab"),
             link: `${match.url}/description`,
           },
           {
-            label: "Obrázky",
+            label: t("tabs.imagesTab"),
             link: `${match.url}/images`,
           },
         ]}

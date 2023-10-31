@@ -1,5 +1,6 @@
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
+import { BasicTooltip } from "components/tooltip/tooltip";
 
 type GameActionsPanelProps = {
   isGameFinished?: boolean;
@@ -17,21 +18,38 @@ export const GameActionsPanel = ({
   return (
     <div className="flex flex-row-reverse gap-2">
       <div className="flex flex-row-reverse gap-2">
-        <Button
-          disabled={isGameFinished}
-          iconBefore={<Icon name="done" />}
-          color="primary"
+        <div
           className="pointer-events-auto"
-          style={{ width: "38px", height: "31px", border: "2px solid white" }}
-          onClick={onGameFinish}
-        />
-        <Button
-          iconBefore={<Icon name="replay" />}
-          color="primary"
+          data-tooltip-id="game-overlay-done-button-tooltip"
+        >
+          <Button
+            disabled={isGameFinished}
+            iconBefore={<Icon name="done" />}
+            color="primary"
+            style={{ width: "38px", height: "31px", border: "2px solid white" }}
+            onClick={onGameFinish}
+          />
+          <BasicTooltip
+            id="game-overlay-done-button-tooltip"
+            content="Hotovo"
+          />
+        </div>
+
+        <div
           className="pointer-events-auto"
-          style={{ width: "38px", height: "31px", border: "2px solid white" }}
-          onClick={onGameReset}
-        />
+          data-tooltip-id="game-overlay-replay-button-tooltip"
+        >
+          <Button
+            iconBefore={<Icon name="replay" />}
+            color="primary"
+            style={{ width: "38px", height: "31px", border: "2px solid white" }}
+            onClick={onGameReset}
+          />
+          <BasicTooltip
+            id="game-overlay-replay-button-tooltip"
+            content="Zahrát znovu"
+          />
+        </div>
       </div>
 
       <div className="flex flex-row-reverse gap-2">

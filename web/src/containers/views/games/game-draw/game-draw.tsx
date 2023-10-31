@@ -17,6 +17,7 @@ import { Button } from "components/button/button";
 import { useBoolean } from "hooks/boolean-hook";
 import { Popper } from "components/popper/popper";
 import { GameActionsPanel } from "../GameActionsPanel";
+import { BasicTooltip } from "components/tooltip/tooltip";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
@@ -170,35 +171,57 @@ export const GameDraw = ({
             onGameFinish={onFinish}
             onGameReset={onReset}
             gameActions={[
-              <Button
+              <div
+                className="relative"
                 key="color-picker-button"
-                color="expoTheme"
-                className="relative"
+                data-tooltip-id="game-overlay-color-picker-button-tooltip"
               >
-                <Icon name="palette" />
-                <input
-                  type="color"
-                  className="h-full w-full left-0 top-0 absolute opacity-0 hover:cursor-pointer"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                <Button color="expoTheme">
+                  <Icon name="palette" />
+                  <input
+                    type="color"
+                    className="h-full w-full left-0 top-0 absolute opacity-0 hover:cursor-pointer"
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                  />
+                </Button>
+                <BasicTooltip
+                  id="game-overlay-color-picker-button-tooltip"
+                  content="Výběr barvy"
                 />
-              </Button>,
+              </div>,
 
-              <Button
-                ref={(ref) => setAnchor(ref)}
-                key="thickness-button"
-                color="expoTheme"
+              <div
                 className="relative"
-                onClick={toggleThicknessPopover}
-                iconBefore={<Icon name="line_weight" />}
-              />,
+                key="thickness-button"
+                data-tooltip-id="game-overlay-thickness-button-tooltip"
+              >
+                <Button
+                  ref={(ref) => setAnchor(ref)}
+                  color="expoTheme"
+                  onClick={toggleThicknessPopover}
+                  iconBefore={<Icon name="line_weight" />}
+                />
+                <BasicTooltip
+                  id="game-overlay-thickness-button-tooltip"
+                  content="Výběr tloušťky"
+                />
+              </div>,
 
-              <Button
+              <div
                 key="tool-button"
-                color="expoTheme"
-                onClick={toggleTool}
-                iconBefore={<Icon name={erasing ? "draw" : "healing"} />}
-              />,
+                data-tooltip-id="game-overlay-tool-button-tooltip"
+              >
+                <Button
+                  color="expoTheme"
+                  onClick={toggleTool}
+                  iconBefore={<Icon name={erasing ? "draw" : "healing"} />}
+                />
+                <BasicTooltip
+                  id="game-overlay-tool-button-tooltip"
+                  content={erasing ? "Přepnout na tužku" : "Přepnout na gumu"}
+                />
+              </div>,
             ]}
           />,
           actionsPanelRef.current

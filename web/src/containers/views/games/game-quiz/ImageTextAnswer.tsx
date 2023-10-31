@@ -1,26 +1,34 @@
-import { Dispatch, SetStateAction, useMemo } from "react";
+import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
 import useElementSize from "hooks/element-size-hook";
 
 import { Checkbox, Radio } from "@mui/material";
 import ScreenAnchorInfopoint from "components/infopoint/ScreenAnchorInfopoint";
 import TooltipInfoPoint from "components/infopoint/TooltipInfopoint";
 
-import { GameQuizAnswer } from "models";
+import {
+  GameQuizAnswer,
+  GameQuizAnswerDisplayType,
+  GameQuizType,
+  Size,
+} from "models";
 import { InfopointStatusObject } from "components/infopoint/parseScreenMaps";
 
 import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
 import { getAnswerCheckboxIcon, getAnswerRadioIcon } from "./utils";
+import { isInfopointOutsideOrigImage } from "utils/view-utils";
 
 type ImageTextAnswerProps = {
   answer: GameQuizAnswer;
   answerIndex: number;
+  answerImageOrigData?: Size;
   preloadedImgSrc: string;
   isFinished: boolean;
   isMultipleChoice: boolean;
   markedAnswers: boolean[];
   setMarkedAnswers: Dispatch<SetStateAction<boolean[]>>;
-  quizType: "ONLY_TEXT" | "ONLY_IMAGES" | "TEXT_IMAGES";
+  quizType: GameQuizType;
+  answersTextDisplayType: GameQuizAnswerDisplayType;
 
   // Infopoint stuff
   infopointOpenStatusMap: Record<string, InfopointStatusObject>;
@@ -38,6 +46,7 @@ const ImageTextAnswer = ({
   markedAnswers,
   setMarkedAnswers,
   quizType,
+  answersTextDisplayType,
   infopointOpenStatusMap,
   setInfopointOpenStatusMap,
 }: ImageTextAnswerProps) => {
@@ -114,6 +123,15 @@ const ImageTextAnswer = ({
 
           {/* Infopoints */}
           {answer.infopoints?.map((infopoint, infopointIndex) => {
+            if (
+              isInfopointOutsideOrigImage({
+                infopointPosition: { left: infopoint.left, top: infopoint.top },
+                imageOrigData: answerImageOrigData,
+              })
+            ) {
+              return null;
+            }
+
             // Percentage when choosing infopoints in administrative
             const origLeftPercentage =
               infopoint.left / (answerImageOrigData.width / 100);
@@ -126,27 +144,25 @@ const ImageTextAnswer = ({
               fromTopHeight + (containedImageHeight / 100) * origTopPercentage;
 
             return (
-              <ScreenAnchorInfopoint
+              <Fragment
                 key={`quiz-infopoint-anchor-${answerIndex}-${infopointIndex}`}
-                id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
-                top={topPosition}
-                left={leftPosition}
-                infopoint={infopoint}
-              />
-            );
-          })}
-
-          {answer.infopoints?.map((infopoint, infopointIndex) => {
-            return (
-              <TooltipInfoPoint
-                key={`quiz-infopoint-tooltip-${answerIndex}-${infopointIndex}`}
-                id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
-                infopoint={infopoint}
-                infopointOpenStatusMap={infopointOpenStatusMap}
-                setInfopointOpenStatusMap={setInfopointOpenStatusMap}
-                primaryKey={answerIndex.toString()}
-                secondaryKey={infopointIndex.toString()}
-              />
+              >
+                <ScreenAnchorInfopoint
+                  id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
+                  top={topPosition}
+                  left={leftPosition}
+                  infopoint={infopoint}
+                />
+                <TooltipInfoPoint
+                  key={`quiz-infopoint-tooltip-${answerIndex}-${infopointIndex}`}
+                  id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
+                  infopoint={infopoint}
+                  infopointOpenStatusMap={infopointOpenStatusMap}
+                  setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                  primaryKey={answerIndex.toString()}
+                  secondaryKey={infopointIndex.toString()}
+                />
+              </Fragment>
             );
           })}
         </div>
@@ -183,7 +199,14 @@ const ImageTextAnswer = ({
             />
           )}
 
-          <div>{answer.text}</div>
+          {/* TEXT */}
+          {quizType === "TEXT_IMAGES" &&
+          !isFinished &&
+          answersTextDisplayType === "QUIZ_TEXT_AFTER_EVALUATION" ? (
+            <div className="italic">Kliknutím zvolíte túto možnosť</div>
+          ) : (
+            <div>{answer.text}</div>
+          )}
         </div>
       )}
 

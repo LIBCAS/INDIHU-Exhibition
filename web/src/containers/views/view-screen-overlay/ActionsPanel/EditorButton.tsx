@@ -28,14 +28,17 @@ const EditorButton = ({
           "pointer-events-auto",
           isAnyTutorialOpened && "bg-black opacity-40"
         )}
-        data-tooltip-id="editor-button-tooltip"
+        data-tooltip-id="overlay-editor-button-tooltip"
       >
         <Button color="expoTheme" onClick={openEditorScreenUrl}>
           <Icon name="edit" />
         </Button>
       </div>
 
-      <BasicTooltip id="editor-button-tooltip" content="Upravit obrazovku" />
+      <BasicTooltip
+        id="overlay-editor-button-tooltip"
+        content="Upravit obrazovku"
+      />
     </>
   );
 };

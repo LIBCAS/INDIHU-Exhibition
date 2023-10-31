@@ -1,4 +1,6 @@
+// import { useHistory } from "react-router-dom";
 import { Formik, FormikProps } from "formik";
+import { useTranslation } from "react-i18next";
 
 // Components
 import ThemeForm from "./ThemeForm";
@@ -44,7 +46,6 @@ const ExpoTheme = (props: ExpoThemeProps) => {
               theme: expoDesignData.theme,
               backgroundColor: expoDesignData.backgroundColor,
               iconsColor: expoDesignData.iconsColor,
-              startButtonColor: expoDesignData.startButtonColor,
               tagsColor: expoDesignData.tagsColor,
               logoType: expoDesignData.logoType,
               logoPosition: expoDesignData.logoPosition,
@@ -87,6 +88,9 @@ interface FooterProps {
 }
 
 const Footer = ({ formik, expoTitle }: FooterProps) => {
+  const { t } = useTranslation("expo");
+  // const history = useHistory();
+
   const importThemeFile = () => {
     const element = document.querySelector("#input-import-file");
     const inputElement = element as HTMLInputElement | null;
@@ -113,13 +117,13 @@ const Footer = ({ formik, expoTitle }: FooterProps) => {
         <div className="flex gap-2">
           <Button
             raised
-            label="Exportovať"
+            label={t("theming.exportLabel")}
             style={{ backgroundColor: "white" }}
             onClick={exportThemeFile}
           />
           <Button
             raised
-            label="Importovať"
+            label={t("theming.importLabel")}
             style={{ backgroundColor: "white" }}
             onClick={importThemeFile}
           />
@@ -127,15 +131,18 @@ const Footer = ({ formik, expoTitle }: FooterProps) => {
         <div className="flex gap-2">
           <Button
             raised
-            label="Resetovat nastavenia"
+            label={t("theming.resetSettingsLabel")}
             style={{ backgroundColor: "white" }}
             onClick={resetDesignSettings}
           />
           <Button
             raised
-            label="Uložit zmeny"
+            label={t("theming.saveChangesLabel")}
             style={{ backgroundColor: "white" }}
-            onClick={formik.submitForm}
+            onClick={() => {
+              formik.submitForm();
+              // history.go(0); // refresh page
+            }}
           />
         </div>
       </div>

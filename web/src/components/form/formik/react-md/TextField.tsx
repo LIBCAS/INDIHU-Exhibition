@@ -40,7 +40,7 @@ const ReactMdTextField = ({
   // field contains { name, value, onChange, onBlur, .. }
   // meta contains { value, error, touched, initialValue, initialError, initialTouched }
   // helper contains { setValue, setError, setTouched }
-  const [field, meta, helper] = useField<string>(name);
+  const [field, meta, helper] = useField<string | number>(name);
 
   return (
     <>
@@ -49,6 +49,12 @@ const ReactMdTextField = ({
         name={field.name}
         value={field.value}
         onChange={(newValue: string, _e: any) => {
+          // TextField from ReactMd always gives the string, even when type number is set
+          if (type === "number") {
+            const parsedNewValue = parseInt(newValue);
+            helper.setValue(parsedNewValue);
+            return;
+          }
           helper.setValue(newValue);
         }}
         onBlur={(_e: any) => {

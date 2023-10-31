@@ -11,27 +11,29 @@ import {
 } from "react-share";
 
 import { CopyClipboardBox } from "components/copy-clipboard-box/copy-clipboard-box";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 
-import { DialogProps, DialogType } from "../dialog-types";
-import Dialog from "../dialog-wrap-typed";
+// - -
 
-export type ShareExpoDialogDataProps = {
+export type ShareExpoDialogProps = {
+  closeThisDialog: () => void;
   url: string;
 };
 
 export const ShareExpoDialog = ({
-  dialogData,
-  closeDialog,
-}: DialogProps<DialogType.ShareExpoDialog>) => {
-  const { url } = dialogData ?? { url: "" };
+  closeThisDialog,
+  url,
+}: ShareExpoDialogProps) => {
   const { t } = useTranslation("exhibition");
 
   return (
-    <Dialog
-      big
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={<span className="text-2xl font-bold">{t("share-expo")}</span>}
-      name={DialogType.ShareExpoDialog}
+      big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       <div className="flex items-center justify-center gap-2 mb-2">
         <FacebookShareButton
@@ -67,8 +69,8 @@ export const ShareExpoDialog = ({
       <CopyClipboardBox
         text={url}
         tooltipText={t("copy-link")}
-        onCopy={closeDialog}
+        onCopy={closeThisDialog}
       />
-    </Dialog>
+    </DialogWrap>
   );
 };

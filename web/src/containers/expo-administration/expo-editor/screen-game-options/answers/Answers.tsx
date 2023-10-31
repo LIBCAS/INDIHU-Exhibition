@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 
 import {
+  GameQuizAnswerTextDisplaySelect,
   GameQuizAnswersTypeSelect,
   GameQuizTypeSelect,
 } from "./QuizSelectFields";
@@ -9,14 +10,19 @@ import AnswerItem from "./AnswerItem";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { ScreenGameQuizProps } from "../Description";
+import { GameQuizScreen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
-import { File as IndihuFile } from "models";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
 
-const Answers = (props: ScreenGameQuizProps) => {
+// - -
+
+type AnswersProps = {
+  activeScreen: GameQuizScreen;
+};
+
+const Answers = (props: AnswersProps) => {
   const { activeScreen } = props;
   const dispatch = useDispatch<AppDispatch>();
 
@@ -28,6 +34,9 @@ const Answers = (props: ScreenGameQuizProps) => {
         <div className="w-fit m-auto mb-16 flex flex-col gap-2 items-start xl:flex-row xl:w-auto xl:justify-center xl:gap-8">
           <GameQuizAnswersTypeSelect activeScreen={activeScreen} />
           <GameQuizTypeSelect activeScreen={activeScreen} />
+          {activeScreen.quizType === "TEXT_IMAGES" && (
+            <GameQuizAnswerTextDisplaySelect activeScreen={activeScreen} />
+          )}
         </div>
 
         <div className="max-w-full flex flex-col gap-2">
@@ -80,7 +89,7 @@ const Answers = (props: ScreenGameQuizProps) => {
                   );
                 }}
               >
-                Pridat novú možnosť
+                Pridat novú odpoveď
               </Button>
             </div>
           )}

@@ -12,6 +12,12 @@ import ImageTextAnswer from "./ImageTextAnswer";
 import { AppState } from "store/store";
 import { ScreenProps, GameQuizScreen } from "models";
 
+import {
+  GameQuizAnswerEnum,
+  GameQuizEnum,
+  GameQuizTextDisplayEnum,
+} from "enums/administration-screens";
+
 // - -
 
 const stateSelector = createSelector(
@@ -34,11 +40,15 @@ export const GameQuiz = ({
   } = useTooltipInfopoint(viewScreen);
 
   const isMultipleChoice = useMemo(
-    () => viewScreen.answersType === "MULTIPLE_CHOICE",
+    () => viewScreen.answersType === GameQuizAnswerEnum.MULTIPLE_CHOICE,
     [viewScreen.answersType]
   );
 
-  const quizType = viewScreen.quizType ?? "TEXT_IMAGES";
+  const quizType = viewScreen.quizType ?? GameQuizEnum.TEXT_IMAGES;
+
+  const answersTextDisplayType =
+    viewScreen.answersTextDisplayType ??
+    GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY;
 
   const [isFinished, setIsFinished] = useState<boolean>(false); // true after done button clicked
   const [markedAnswers, setMarkedAnswers] = useState<boolean[]>(() => {
@@ -90,6 +100,9 @@ export const GameQuiz = ({
               key={answerIndex}
               answer={answer}
               answerIndex={answerIndex}
+              answerImageOrigData={
+                viewScreen.answers?.[answerIndex]?.imageOrigData
+              }
               preloadedImgSrc={
                 screenPreloadedFiles.answers?.[answerIndex]?.image ?? ""
               }
@@ -97,6 +110,7 @@ export const GameQuiz = ({
               isMultipleChoice={isMultipleChoice}
               markedAnswers={markedAnswers}
               quizType={quizType}
+              answersTextDisplayType={answersTextDisplayType}
               setMarkedAnswers={setMarkedAnswers}
               infopointOpenStatusMap={infopointOpenStatusMap}
               setInfopointOpenStatusMap={setInfopointOpenStatusMap}

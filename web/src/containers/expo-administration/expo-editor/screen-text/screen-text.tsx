@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useRouteMatch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
@@ -21,6 +22,7 @@ import {
 export type ScreenEditorTextProps = ConcreteScreenEditorProps<TextScreen>;
 
 const ScreenText = (props: ScreenEditorProps) => {
+  const { t } = useTranslation("expo-editor");
   const match = useRouteMatch<{ position: string }>();
   const history = useHistory();
 
@@ -30,9 +32,9 @@ const ScreenText = (props: ScreenEditorProps) => {
     <div>
       <TabMenu
         tabs={[
-          { label: "Název, text, audio", link: `${match.url}/description` },
-          { label: "Text", link: `${match.url}/text` },
-          { label: "Dokumenty", link: `${match.url}/documents` },
+          { label: t("tabs.descTab3"), link: `${match.url}/description` },
+          { label: t("tabs.textTab"), link: `${match.url}/text` },
+          { label: t("tabs.documentsTab"), link: `${match.url}/documents` },
         ]}
       />
       <Route

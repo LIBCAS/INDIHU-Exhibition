@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
-
 import { useDialogRef } from "./dialog-ref-provider";
+
+// - -
 
 type DialogPortalProps = { component: React.ReactNode };
 

@@ -4,17 +4,20 @@ import {
   Dispatch,
   SetStateAction,
   useMemo,
+  useCallback,
   useEffect,
 } from "react";
 import { useSpring, animated } from "react-spring";
 
 import Slider from "@mui/material/Slider";
 import { Icon } from "components/icon/icon";
-import { Spinner } from "components/spinner/spinner";
+import { Spinner } from "components/loaders/spinner";
 
 import { secondsToVideoDuration } from "utils";
 
 // - -
+
+const playbackSpeedOptions = [0.5, 1.0, 1.5, 2.0];
 
 type VideoContentBodyProps = {
   videoSrc: string;
@@ -28,34 +31,36 @@ const VideoContentBody = ({
   setIsVideoLoaded,
 }: VideoContentBodyProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoBlobSrc, setVideoBlobSrc] = useState<string | null>(null);
 
   const [isVolumeHovered, setIsVolumeHovered] = useState<boolean>(false);
   const [isVideoHovered, setIsVideoHovered] = useState<boolean>(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
 
-  const [videoCurrTime, setVideoCurrTime] = useState<number>(0);
   const [videoVolume, setVideoVolume] = useState<number>(0.8);
   const [prevVideoVolume, setPrevVideoVolume] = useState<number>(0.8);
+  const [videoDuration, setVideoDuration] = useState<number>(0);
+  const [videoCurrTime, setVideoCurrTime] = useState<number>(0);
+  const [playbackSpeedIndex, setPlaybackSpeedIndex] = useState<number>(1); // index 1, second item as 1.0
 
-  const shouldShowControls = useMemo(() => {
-    return (isVideoPlaying && isVideoHovered) || !isVideoPlaying;
-  }, [isVideoHovered, isVideoPlaying]);
+  // - -
 
-  const { width: sliderWidth } = useSpring({
-    width: isVolumeHovered ? "35px" : "0px",
-  });
+  useEffect(() => {
+    const extractVideoFile = async () => {
+      const res = await fetch(videoSrc);
+      const blob = await res.blob();
+      const blobSrc = window.URL.createObjectURL(blob);
+      setVideoBlobSrc(blobSrc);
+    };
+    extractVideoFile();
 
-  const { opacity: controlsOpacity } = useSpring({
-    opacity: shouldShowControls ? 1 : 0,
-  });
-
-  const playPauseVideo = () => {
-    if (isVideoPlaying) {
-      videoRef.current?.pause();
-    } else {
-      videoRef.current?.play();
-    }
-  };
+    return () => {
+      if (videoBlobSrc) {
+        window.URL.revokeObjectURL(videoBlobSrc);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle changes of the video volume
   useEffect(() => {
@@ -69,35 +74,57 @@ const VideoContentBody = ({
     return () => setPrevVideoVolume(videoVolume);
   }, [videoVolume]);
 
-  // Handle changes of the video current time
-  // useEffect(() => {
-  //   console.log("videoCurrTime changes to: ", videoCurrTime);
-  // }, [videoCurrTime]);
+  useEffect(() => {
+    if (videoRef.current) {
+      const playbackSpeed = playbackSpeedOptions[playbackSpeedIndex];
+      videoRef.current.playbackRate = playbackSpeed;
+    }
+  }, [playbackSpeedIndex]);
+
+  // - -
+
+  const shouldShowControls = useMemo(() => {
+    return (isVideoPlaying && isVideoHovered) || !isVideoPlaying;
+  }, [isVideoHovered, isVideoPlaying]);
+
+  const { width: sliderWidth } = useSpring({
+    width: isVolumeHovered ? "35px" : "0px",
+  });
+
+  const { opacity: controlsOpacity } = useSpring({
+    opacity: shouldShowControls ? 1 : 0,
+  });
+
+  const playPauseVideo = useCallback(() => {
+    if (isVideoPlaying) {
+      videoRef.current?.pause();
+    } else {
+      videoRef.current?.play();
+    }
+  }, [isVideoPlaying]);
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setIsVideoHovered(true)}
+      onMouseLeave={() => setIsVideoHovered(false)}
+    >
       <video
         ref={videoRef}
-        src={videoSrc}
+        src={videoBlobSrc ?? ""}
         autoPlay={false}
         className="hover:cursor-pointer w-full h-full object-contain"
+        onLoadedMetadata={(e) => setVideoDuration(e.currentTarget.duration)}
         onCanPlay={() => setIsVideoLoaded(true)}
-        onMouseEnter={() => setIsVideoHovered(true)}
-        onMouseLeave={() => setIsVideoHovered(false)}
         onPlay={() => setIsVideoPlaying(true)}
         onPause={() => setIsVideoPlaying(false)}
-        // TODO
-        onTimeUpdate={(e) => {
-          const currTarget = e.currentTarget;
-          const currVideoTime = currTarget.currentTime;
-          setVideoCurrTime(currVideoTime);
-        }}
         onClick={() => playPauseVideo()}
+        onTimeUpdate={(e) => setVideoCurrTime(e.currentTarget.currentTime)}
         // controls
         // controlsList="nodownload"
       />
 
-      {!isVideoLoaded && (
+      {(!isVideoLoaded || !videoBlobSrc) && (
         <div className="absolute left-0 top-0 bottom-0 right-0 flex justify-center items-center">
           <Spinner scale={1} />
         </div>
@@ -110,10 +137,7 @@ const VideoContentBody = ({
           style={{ opacity: controlsOpacity }}
         >
           <div className="text-white w-full flex items-center gap-3 overflow-x-hidden">
-            <div
-              className="pointer-events-auto"
-              onMouseEnter={() => setIsVideoHovered(true)}
-            >
+            <div className="pointer-events-auto">
               <Icon
                 color="white"
                 useMaterialUiIcon
@@ -123,19 +147,15 @@ const VideoContentBody = ({
               />
             </div>
 
-            {/* TODO */}
             <div className="text-[13px]">
               {`${secondsToVideoDuration(
                 videoCurrTime
-              )} / ${secondsToVideoDuration(videoRef.current?.duration ?? 0)}`}
+              )} / ${secondsToVideoDuration(videoDuration)}`}
             </div>
 
             <div
               className="flex items-center gap-3 pointer-events-auto"
-              onMouseEnter={() => {
-                setIsVolumeHovered(true);
-                setIsVideoHovered(true);
-              }}
+              onMouseEnter={() => setIsVolumeHovered(true)}
               onMouseLeave={() => setIsVolumeHovered(false)}
             >
               <div>
@@ -191,7 +211,7 @@ const VideoContentBody = ({
                   }}
                   value={videoVolume}
                   onChange={(_event: Event, newValue: number | number[]) => {
-                    if (typeof newValue === "number" && videoRef.current) {
+                    if (typeof newValue === "number") {
                       setVideoVolume(newValue);
                     }
                   }}
@@ -199,16 +219,20 @@ const VideoContentBody = ({
               </animated.div>
             </div>
 
-            <div className="ml-auto cursor-pointer text-[13px] flex items-center">
-              1.25x
+            <div
+              className="ml-auto cursor-pointer text-[13px] flex items-center pointer-events-auto"
+              onClick={() => {
+                setPlaybackSpeedIndex(
+                  (prev) => (prev + 1) % playbackSpeedOptions.length
+                );
+              }}
+            >
+              {playbackSpeedOptions[playbackSpeedIndex].toFixed(2)}x
             </div>
           </div>
 
           {/* Timeline for seeking */}
-          <div
-            className="px-[10px] pointer-events-auto"
-            onMouseEnter={() => setIsVideoHovered(true)}
-          >
+          <div className="px-[10px] pointer-events-auto">
             <Slider
               size="small"
               min={0}
@@ -230,21 +254,12 @@ const VideoContentBody = ({
                   },
                 },
               }}
-              // TODO
-              value={
-                videoRef.current
-                  ? Number(
-                      (videoCurrTime / videoRef.current.duration).toFixed(2)
-                    )
-                  : 0
-              }
-              onChangeCommitted={(_e, newValue: number | number[]) => {
+              value={Number((videoCurrTime / videoDuration).toFixed(2))}
+              onChange={(_e, newValue: number | number[]) => {
                 if (typeof newValue === "number" && videoRef.current) {
-                  const videoEl = videoRef.current;
-                  const totalTime = videoEl.duration;
                   // e.g slided to 0.2 and total time is 60s -> 0.2 * 60 = 12s
-                  const newCurrTime = newValue * totalTime;
-                  setVideoCurrTime(newCurrTime);
+                  const newCurrTime = newValue * videoDuration;
+                  videoRef.current.currentTime = newCurrTime;
                 }
               }}
             />

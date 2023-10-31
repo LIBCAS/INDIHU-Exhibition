@@ -15,6 +15,7 @@ import ScreenSlideshow from "./screen-slideshow/screen-slideshow";
 import ScreenPhotogallery from "./screen-photogallery/screen-photogallery-new";
 import ScreenParallax from "./screen-parallax/screen-parallax";
 import ScreenExternal from "./screen-external/screen-external";
+import ScreenSignpost from "./screen-signpost/screen-signpost";
 import ScreenGameFind from "./screen-game-find/screen-game-find";
 import ScreenGameDraw from "./screen-game-draw/screen-game-draw";
 import ScreenGameWipe from "./screen-game-wipe/screen-game-wipe";
@@ -149,6 +150,10 @@ const ExpoEditor = ({ activeExpo }: ExpoEditorProps) => {
       <Route
         path={`${match.url}/${screenUrl.EXTERNAL}/:position`}
         render={() => <ScreenExternal {...editorProps} />}
+      />
+      <Route
+        path={`${match.url}/${screenUrl.SIGNPOST}/:position`}
+        render={() => <ScreenSignpost {...editorProps} />}
       />
     </div>
   );

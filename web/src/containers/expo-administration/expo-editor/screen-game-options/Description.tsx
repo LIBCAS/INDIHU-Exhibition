@@ -7,27 +7,18 @@ import Music from "components/editors/music";
 import HelpIcon from "components/help-icon";
 
 import { AppDispatch } from "store/store";
-import { ActiveExpo, GameQuizScreen } from "models";
+import { GameQuizScreen } from "models";
 
 import { getFileById } from "actions/file-actions-typed";
+import { updateScreenData } from "actions/expoActions";
 import { helpIconText } from "enums/text";
 
-export type ScreenGameQuizProps = {
-  activeExpo: ActiveExpo;
+type DescriptionProps = {
   activeScreen: GameQuizScreen;
-  getCurrentUser: any;
-  history: any;
-  loadExpo: any;
-  loadScreen: any;
-  location: any;
-  match: any;
-  staticContext: any;
-  updateScreenData: any;
-  url: string;
 };
 
-const Description = (props: ScreenGameQuizProps) => {
-  const { activeScreen, updateScreenData } = props;
+const Description = (props: DescriptionProps) => {
+  const { activeScreen } = props;
   const dispatch = useDispatch<AppDispatch>();
 
   const musicFile = dispatch(getFileById(activeScreen.music));

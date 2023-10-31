@@ -6,7 +6,6 @@ export type ThemeFormData = {
   theme: "LIGHT" | "DARK";
   backgroundColor: string;
   iconsColor: string;
-  startButtonColor: string;
   tagsColor: string;
   // 2
   logoType: "LOGO" | "WATERMARK";
@@ -27,7 +26,6 @@ export type ThemeFormDataProcessed = {
   theme: "LIGHT" | "DARK";
   backgroundColor: string;
   iconsColor: string;
-  startButtonColor: string;
   tagsColor: string;
   // 2
   logoType: "LOGO" | "WATERMARK";

@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSpring, animated } from "react-spring";
 
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
 // Components
-import Dialog from "../dialog-wrap-typed";
+import DialogWrap from "../dialog-wrap-noredux-typed";
 import { FileItem } from "../files-dialog/file-item"; // from FilesDialog
 
 import { Button } from "components/button/button";
@@ -13,27 +15,26 @@ import { Collapse } from "components/collapse/collapse";
 
 // Models
 import { Document, ScreenWithOnlyTypeTitleDocuments } from "models";
-import { DialogProps, DialogType } from "../dialog-types";
 
 import { isWorksheetFile } from "utils/view-utils";
-import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import cx from "classnames";
 
 // - - - - -
 
-export type FinishAllFilesDialogDataProps = {
+export type FinishAllFilesDialogProps = {
+  closeThisDialog: () => void;
   startFiles: Document[]; // from viewExpo.structure.start.documents
   screensFiles: ScreenWithOnlyTypeTitleDocuments[][]; // from viewExpo.structure.screens
 };
 
 export const FinishAllFilesDialog = ({
-  dialogData,
-}: DialogProps<DialogType.FinishAllFilesDialog>) => {
+  closeThisDialog,
+  startFiles,
+  screensFiles,
+}: FinishAllFilesDialogProps) => {
   const { t } = useTranslation("exhibition");
   const { isLightMode } = useExpoDesignData();
-
-  const { startFiles, screensFiles } = dialogData ?? {}; // if not loaded yet
 
   const expoFiles = startFiles?.filter(
     (file: Document) => !isWorksheetFile(file)
@@ -53,11 +54,13 @@ export const FinishAllFilesDialog = ({
     );
 
   return (
-    <Dialog
-      big
+    <DialogWrap
+      closeThisDialog={closeThisDialog}
       title={<span className="text-2xl font-bold">{t("all-files")}</span>}
-      name={DialogType.FinishAllFilesDialog}
+      big
       noDialogMenu
+      closeOnEsc
+      applyTheming
     >
       <div className="flex flex-col gap-6">
         {/* Worksheets */}
@@ -119,7 +122,7 @@ export const FinishAllFilesDialog = ({
           </div>
         </div>
       </div>
-    </Dialog>
+    </DialogWrap>
   );
 };
 

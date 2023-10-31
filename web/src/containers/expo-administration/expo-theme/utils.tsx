@@ -18,7 +18,6 @@ export const defaultInitialValues: ThemeFormData = {
   theme: "LIGHT",
   backgroundColor: "#393d41",
   iconsColor: "#d2a473",
-  startButtonColor: "#d2a473",
   tagsColor: "#000000",
   logoType: "LOGO",
   logoPosition: "UPPER_LEFT",
@@ -39,7 +38,6 @@ export const createThemeProcessedFormData = (
     theme: formData.theme || "LIGHT",
     backgroundColor: formData.backgroundColor || "#393d41",
     iconsColor: formData.iconsColor || "#d2a473",
-    startButtonColor: formData.startButtonColor || "#d2a473",
     tagsColor: formData.tagsColor || "#000000",
     // 2
     logoType: formData.logoType || "LOGO",
@@ -134,12 +132,15 @@ export const handleImportedFile = async (
         ) as ThemeFormDataProcessed;
 
         // 1.
-        const logoFile = importedFileData.logoFile;
-        const iconFile = importedFileData.defaultInfopointIconFile;
+        const importedLogoFile = importedFileData.logoFile;
+        const importedIconFile = importedFileData.defaultInfopointIconFile;
+
         const shouldUpdateLogoFile =
-          !!logoFile && !isFileInActiveExpoStructureFiles(activeExpo, logoFile);
+          !!importedLogoFile &&
+          !isFileInActiveExpoStructureFiles(activeExpo, importedLogoFile);
         const shouldUpdateIconFile =
-          !!iconFile && !isFileInActiveExpoStructureFiles(activeExpo, iconFile);
+          !!importedIconFile &&
+          !isFileInActiveExpoStructureFiles(activeExpo, importedIconFile);
 
         const respBody = await saveExpoDesignData(
           importedFileData,
@@ -154,13 +155,16 @@ export const handleImportedFile = async (
         // 2. Set the form based on retrieved response body with newly created file ids!
         Object.entries(respBody).forEach(([formKeyName, value]) => {
           if (formKeyName === "logoFile") {
-            formik.setFieldValue("logoFile", logoFile);
-            formik.setFieldValue("logoFileName", logoFile?.name ?? "");
+            formik.setFieldValue("logoFile", respBody.logoFile);
+            formik.setFieldValue("logoFileName", respBody.logoFile?.name ?? "");
           } else if (formKeyName === "defaultInfopointIconFile") {
-            formik.setFieldValue("defaultInfopointIconFile", iconFile);
+            formik.setFieldValue(
+              "defaultInfopointIconFile",
+              respBody.defaultInfopointIconFile
+            );
             formik.setFieldValue(
               "defaultInfopointIconFileName",
-              iconFile?.name ?? ""
+              respBody.defaultInfopointIconFile?.name ?? ""
             );
           } else {
             formik.setFieldValue(formKeyName, value);

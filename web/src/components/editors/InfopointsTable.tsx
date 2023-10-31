@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { FontIcon, Checkbox, Button } from "react-md";
 import { setDialog } from "actions/dialog-actions";
@@ -14,11 +15,8 @@ import InfopointDialogEdit from "components/dialogs/infopoint-dialog/InfopointDi
 interface InfopointsTableProps {
   title?: string;
   infopoints: Infopoint[];
-  onInfopointAdd: (dialogFormData: any) => Promise<void>;
-  onInfopointEdit: (
-    infopointIndexToEdit: number,
-    dialogFormData: any
-  ) => Promise<void>;
+  onInfopointAdd: (dialogFormData: any) => void;
+  onInfopointEdit: (infopointIndexToEdit: number, dialogFormData: any) => void;
   onInfopointDelete: (infopointIndexToDelete: number) => void;
 }
 
@@ -37,6 +35,8 @@ const InfopointsTable = ({
   onInfopointEdit,
   onInfopointDelete,
 }: InfopointsTableProps) => {
+  const { t } = useTranslation("expo-editor");
+
   const dispatch = useDispatch();
   const [isInfopointDialogNewOpen, setIsInfopointDialogNewOpen] =
     useState<boolean>(false);
@@ -62,12 +62,14 @@ const InfopointsTable = ({
 
   return (
     <div className="mt-4 min-w-[50%]">
-      <div>{title ?? "Infopointy"}</div>
+      <div>{title ?? t("infopointsTable.defaultTitle")}</div>
       <div className="w-full flex flex-col px-4 py-2 mb-4">
         {/* Table header */}
         <div className="table-row header">
-          <div className="table-col small">Popis</div>
-          <div className="table-col small">Stále zobrazen</div>
+          <div className="table-col small">{t("infopointsTable.descCol")}</div>
+          <div className="table-col small">
+            {t("infopointsTable.alwaysVisibleCol")}
+          </div>
         </div>
 
         {/* One table row for each infopoint */}

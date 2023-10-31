@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
 // Components
@@ -15,11 +16,11 @@ import { File as IndihuFile } from "models";
 // Utils
 import { getFileById } from "actions/file-actions";
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
-import { helpIconText } from "enums/text";
 
 // - -
 
 const Description = (props: ScreenEditorPhotogalleryProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   const { activeScreen } = props;
@@ -46,7 +47,7 @@ const Description = (props: ScreenEditorPhotogalleryProps) => {
             <AudioMusic
               isAudio
               audio={audio}
-              helpIconTitle={helpIconText.EDITOR_DESCRIPTION_AUDIO}
+              helpIconTitle={t("descFields.audioScreenTrackTooltip")}
               id="editor-photogallery-description-audio"
             />
 
@@ -55,7 +56,7 @@ const Description = (props: ScreenEditorPhotogalleryProps) => {
             <div className="row">
               <Checkbox
                 id="editor-photogallery-checkbox-chapter-music"
-                label="Vypnout zvukovou stopu kapitoly"
+                label={t("descFields.musicTurnOff")}
                 checked={activeScreen.muteChapterMusic ?? false}
                 onChange={(newValue: boolean) =>
                   dispatch(updateScreenData({ muteChapterMusic: newValue }))
@@ -67,7 +68,7 @@ const Description = (props: ScreenEditorPhotogalleryProps) => {
             <div className="row">
               <Checkbox
                 id="editor-photogallery-checkbox-screencompleted"
-                label="Obrazovka je dokončená"
+                label={t("descFields.screenCompleted")}
                 checked={activeScreen.screenCompleted ?? false}
                 onChange={(newValue: boolean) =>
                   dispatch(updateScreenData({ screenCompleted: newValue }))

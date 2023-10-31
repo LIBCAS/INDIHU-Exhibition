@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 
+// Components
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 
 import TextField from "react-md/lib/TextFields";
@@ -14,9 +15,11 @@ import HelpIcon from "components/help-icon";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
+// Models
 import { File as IndihuFile, GameQuizAnswer, GameQuizScreen } from "models";
 import { AppDispatch } from "store/store";
 
+// Actions and utils
 import { setDialog } from "actions/dialog-actions";
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
 import { helpIconText } from "enums/text";
@@ -60,12 +63,26 @@ const AnswerItem = ({
       }}
     >
       <AccordionSummary
+        id={`accordion-${currAnswerIndex}`}
         expandIcon={
           <Button>
-            <Icon useMaterialUiIcon name="expand_more" />
+            <Icon
+              useMaterialUiIcon
+              name="close"
+              tooltipText="Zavřít odpověď"
+              tooltipVariant="dark"
+            />
           </Button>
         }
-        id={`accordion-${currAnswerIndex}`}
+        sx={{
+          "& .MuiAccordionSummary-expandIconWrapper": {
+            visibility: "hidden",
+            "&.Mui-expanded": {
+              visibility: "visible",
+              transform: "none",
+            },
+          },
+        }}
       >
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-col">
@@ -180,6 +197,7 @@ const AnswerItem = ({
               <HelpIcon
                 label={helpIconText.EDITOR_GAME_OPTIONS_CORRECT_ANSWER}
                 id="editor-game-options-correct-answer"
+                className="!flex"
               />
             </div>
 
@@ -221,7 +239,13 @@ const AnswerItem = ({
                 );
               }}
             >
-              <Icon useMaterialUiIcon name="close" />
+              <Icon
+                useMaterialUiIcon
+                name="delete"
+                style={{ fontSize: "24px" }}
+                tooltipText="Vymazat odpověď"
+                tooltipVariant="dark"
+              />
             </Button>
           </div>
         </div>
@@ -343,7 +367,7 @@ const AnswerItem = ({
               infopoints={
                 activeScreen.answers[currAnswerIndex].infopoints ?? []
               }
-              onInfopointAdd={async (dialogFormData) => {
+              onInfopointAdd={(dialogFormData) => {
                 dispatch(
                   updateScreenData({
                     answers: activeScreen.answers.map((ans, idx) =>
@@ -365,7 +389,7 @@ const AnswerItem = ({
                   })
                 );
               }}
-              onInfopointEdit={async (infopointIndexToEdit, dialogFormData) => {
+              onInfopointEdit={(infopointIndexToEdit, dialogFormData) => {
                 dispatch(
                   updateScreenData({
                     answers: activeScreen.answers.map((ans, idx) =>

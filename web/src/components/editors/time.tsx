@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
+import HelpIcon from "components/help-icon";
 import { screenType } from "enums/screen-type";
 
 import { AppDispatch } from "store/store";
@@ -14,9 +16,20 @@ type TimeProps = {
   audio?: IndihuFile | null;
   activeScreen: Screen; // one of the many screens
   sumOfPhotosTimes?: number | null;
+  disabled?: boolean;
+  helpIconLabel?: string;
+  helpIconId?: string;
 };
 
-const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
+const Time = ({
+  audio,
+  activeScreen,
+  sumOfPhotosTimes,
+  disabled = false,
+  helpIconLabel,
+  helpIconId,
+}: TimeProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string | null>(null);
 
@@ -26,10 +39,12 @@ const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
         {/* TextField component*/}
         <div className="form-input form-input-with-suffix">
           <TextField
+            type="number"
             id="screen-image-textfield-time"
-            label="Celková doba zobrazení obrazovky"
+            label={t("descFields.screenTime")}
             value={"time" in activeScreen ? activeScreen.time : 20}
             disabled={
+              disabled ||
               (audio &&
                 audio.duration &&
                 "timeAuto" in activeScreen &&
@@ -50,9 +65,10 @@ const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
 
               dispatch(updateScreenData({ time: Math.abs(newTime) }));
             }}
-            type="number"
           />
-          <span className="form-input-suffix">vteřin</span>
+          <span className="form-input-suffix">
+            {t("descFields.screenTimeSeconds")}
+          </span>
         </div>
 
         {/* Manual time checkbox */}
@@ -61,8 +77,8 @@ const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
             <Checkbox
               id="editor-image-checkbox-time-photos-manual"
               name="simple-checkboxes"
-              label="Manuálne každej fotke nastaviť čas"
-              disabled={activeScreen.timeAuto}
+              label={t("descFields.manualScreenTime")}
+              disabled={disabled || activeScreen.timeAuto}
               checked={activeScreen.timePhotosManual}
               value={activeScreen.timePhotosManual}
               onChange={(newTimePhotosManual: boolean) => {
@@ -80,20 +96,15 @@ const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
           <Checkbox
             id="editor-image-checkbox-time-auto"
             name="simple-checkboxes"
-            label="Automaticky podle mluveného slova"
+            label={t("descFields.automaticScreenTime")}
             checked={
               "timeAuto" in activeScreen &&
               activeScreen.timeAuto &&
               !!audio &&
               !!audio.duration
             }
-            // value={
-            //   "timeAuto" in activeScreen &&
-            //   activeScreen.timeAuto &&
-            //   audio &&
-            //   audio.duration
-            // }
             disabled={
+              disabled ||
               !audio ||
               !audio.duration ||
               ("timePhotosManual" in activeScreen &&
@@ -121,6 +132,8 @@ const Time = ({ audio, activeScreen, sumOfPhotosTimes }: TimeProps) => {
         ) : (
           <div />
         )}
+
+        {helpIconLabel && helpIconId && <HelpIcon label={helpIconLabel} />}
       </div>
 
       {error && (

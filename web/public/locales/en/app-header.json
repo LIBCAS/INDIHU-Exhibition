@@ -1,0 +1,22 @@
+{
+  "logout": {
+    "conditionsOfUse": "Conditions of use",
+    "personalData": "Principles of working with personal data",
+    "projectIndihu": "Project INDIHU",
+    "registration": "Registration",
+    "login": "Login"
+  },
+  "logged": {
+    "settings": "Settings",
+    "users": "Users",
+    "exhibitions": "Exhibitions",
+    "accountManagement": "Account management",
+    "logout": "Logout",
+    "expositionState": "state:"
+  },
+  "manual": "Manual",
+  "languageSelect": {
+    "czech": "Czech",
+    "english": "English"
+  }
+}

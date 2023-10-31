@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { withRouter, Route } from "react-router-dom";
@@ -11,6 +12,7 @@ import Footer from "components/editors/footer";
 import { updateScreenData } from "actions/expoActions";
 
 const ScreenVideo = (props) => {
+  const { t } = useTranslation("expo-editor");
   const { match, activeScreen, history, url } = props;
   const { position } = match.params;
   return (
@@ -18,15 +20,15 @@ const ScreenVideo = (props) => {
       <TabMenu
         tabs={[
           {
-            label: "Název, text",
+            label: t("tabs.descTab4"),
             link: `${match.url}/description`,
           },
           {
-            label: "Video",
+            label: t("tabs.videoTab"),
             link: `${match.url}/video`,
           },
           {
-            label: "Dokumenty",
+            label: t("tabs.documentsTab"),
             link: `${match.url}/documents`,
           },
         ]}

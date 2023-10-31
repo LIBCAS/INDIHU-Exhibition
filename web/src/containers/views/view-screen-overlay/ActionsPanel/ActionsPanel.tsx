@@ -1,11 +1,18 @@
 import { useMemo, useCallback, MutableRefObject } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import DialogPortal from "context/dialog-ref-provider/DialogPortal";
+import { AudioDialog } from "components/dialogs/audio-dialog/audio-dialog";
+import { GlassMagnifierDialog } from "components/dialogs/glass-magnifier-dialog/glass-magnifier-dialog";
+import { SettingsDialog } from "components/dialogs/settings-dialog/settings-dialog";
+import { ChaptersDialog } from "components/dialogs/chapters-dialog/chapters-dialog";
 
 import useElementSize from "hooks/element-size-hook";
 import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
-// import { breakpoints } from "hooks/media-query-hook/breakpoints";
-// import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+import { breakpoints } from "hooks/media-query-hook/breakpoints";
+import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 
 import EditorButton from "./EditorButton";
 import SettingsButton from "./SettingsButton";
@@ -14,25 +21,26 @@ import PlayButton from "./PlayButton";
 import AudioButton from "./AudioButton";
 import ChaptersButtonContainer from "./ChaptersButtonContainer";
 
-// import InfoButton from "./InfoButton";
-// import ExpandActionsButton from "./ExpandActionsButton";
+import NextButton from "./NextButton";
 
-import { AppState, AppDispatch } from "store/store";
+import InfoButton from "./InfoButton";
+import ExpandActionsButton from "./ExpandActionsButton";
+
+import { AppState } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
-
-import { DialogType } from "components/dialogs/dialog-types";
-import { setDialog } from "actions/dialog-actions";
 
 import {
   screenUrl,
   mapScreenTypeValuesToKeys,
   glassMagnifierEnabled,
+  screenType,
 } from "enums/screen-type";
 import { openInNewTab, haveAccessToExpo } from "utils";
 
 import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 // - -
 
@@ -74,11 +82,11 @@ const ActionsPanel = ({
   actionsPanelRef,
   isScreenAudioPresent,
   isChapterMusicPresent,
-  // openDrawer,
+  openDrawer,
   play,
   pause,
-  // navigateBack,
-  // navigateForward,
+  navigateBack,
+  navigateForward,
   bind,
   isTutorialOpen,
   isAnyTutorialOpened,
@@ -86,12 +94,22 @@ const ActionsPanel = ({
 }: ActionsPanelProps) => {
   const { viewExpo, viewScreen, expoVolumes, userName, role, shouldIncrement } =
     useSelector(stateSelector);
-  const dispatch = useDispatch<AppDispatch>();
 
   const sectionScreen = useSectionScreenParams();
   const { section, screen } = sectionScreen;
   const [actionsBoxRef, actionsBoxSize] = useElementSize();
-  // const isSm = useMediaQuery(breakpoints.down("sm"));
+
+  const isSm = useMediaQuery(breakpoints.down("sm"));
+
+  const {
+    openNewTopDialog,
+    closeTopDialog,
+    closeAllDialogs,
+    isSettingsDialogOpen,
+    isGlassMagnifierDialogOpen,
+    isAudioDialogOpen,
+    isChaptersDialogOpen,
+  } = useDialogRef();
 
   // - - - - - - - - - - - - - - - - - - - -
   // - - OPEN EDITOR SCREEN HANDLER --
@@ -121,19 +139,21 @@ const ActionsPanel = ({
     expoCollaborators
   );
 
-  // - - GLASS MAGNIFIER TOOLTIP (desktop) / DIALOG (mobile) - -
-  // const openGlassMagnifierDialog = useCallback(() => {
-  //   dispatch(setDialog(DialogType.GlassMagnifierDialog, {}));
-  // }, [dispatch]);
+  // - - SETTINGS DIALOGS - -
+  const openSettingsDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.SettingsDialog),
+    [openNewTopDialog]
+  );
 
+  // - - GLASS MAGNIFIER DIALOG - -
   const hasGlassMagnifier =
     !!viewScreen &&
     glassMagnifierEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
 
-  // - - SETTINGS DIALOG - -
-  const openSettingsDialog = useCallback(() => {
-    dispatch(setDialog(DialogType.SettingsDialog, {}));
-  }, [dispatch]);
+  const openGlassMagnifierDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.GlassMagnifierDialog),
+    [openNewTopDialog]
+  );
 
   // - - AUDIO DIALOG - -
   const hasAudio =
@@ -148,29 +168,16 @@ const ActionsPanel = ({
     [expoVolumes]
   );
 
-  const openAudioDialog = useCallback(() => {
-    dispatch(
-      setDialog(DialogType.AudioDialog, {
-        hasSpeechVolume: isScreenAudioPresent,
-        hasMusicVolume: isChapterMusicPresent,
-        isVideoPresent:
-          (viewScreen && "video" in viewScreen && !!viewScreen.video) ?? false,
-      })
-    );
-  }, [dispatch, isChapterMusicPresent, isScreenAudioPresent, viewScreen]);
+  const openAudioDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.AudioDialog),
+    [openNewTopDialog]
+  );
 
   // - - CHAPTERS DIALOG - -
-  // const openChaptersDialog = useCallback(
-  //   () =>
-  //     dispatch(
-  //       setDialog(DialogType.ChaptersDialog, {
-  //         screens: viewExpo?.structure?.screens,
-  //         viewExpoUrl: viewExpo?.url,
-  //         hightlight: sectionScreen,
-  //       })
-  //     ),
-  //   [dispatch, sectionScreen, viewExpo?.structure?.screens, viewExpo?.url]
-  // );
+  const openChaptersDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.ChaptersDialog),
+    [openNewTopDialog]
+  );
 
   return (
     <div
@@ -183,18 +190,18 @@ const ActionsPanel = ({
         actionsPanelRef.current = divEl;
       }}
     >
-      {/* {isSm && (
+      {isSm && (
         <div className="flex gap-2">
           <InfoButton openDrawer={openDrawer} />
           <ExpandActionsButton
             openEditorScreenUrl={openEditorScreenUrl}
             isEditorAccess={isEditorAccess}
-            openGlassMagnifierDialog={openGlassMagnifierDialog}
-            hasGlassMagnifier={hasGlassMagnifier}
             openSettingsDialog={openSettingsDialog}
-            openAudioDialog={openAudioDialog}
+            hasGlassMagnifier={hasGlassMagnifier}
+            openGlassMagnifierDialog={openGlassMagnifierDialog}
             hasAudio={hasAudio}
             isAudioMuted={isAudioMuted}
+            openAudioDialog={openAudioDialog}
             openChaptersDialog={openChaptersDialog}
             play={play}
             pause={pause}
@@ -202,46 +209,90 @@ const ActionsPanel = ({
             navigateForward={navigateForward}
           />
         </div>
-      )} */}
+      )}
 
-      <div className="flex items-end gap-2">
-        <EditorButton
-          openEditorScreenUrl={openEditorScreenUrl}
-          isEditorAccess={isEditorAccess}
-          isAnyTutorialOpened={isAnyTutorialOpened}
+      {!isSm && (
+        <div className="flex flex-col gap-3">
+          {viewScreen?.type === screenType.SIGNPOST && <NextButton />}
+
+          <div className="flex items-end gap-2">
+            <EditorButton
+              openEditorScreenUrl={openEditorScreenUrl}
+              isEditorAccess={isEditorAccess}
+              isAnyTutorialOpened={isAnyTutorialOpened}
+            />
+            <SettingsButton isAnyTutorialOpened={isAnyTutorialOpened} />
+            <GlassMagnifierButton hasGlassMagnifier={hasGlassMagnifier} />
+            <PlayButton
+              shouldIncrement={shouldIncrement}
+              play={play}
+              pause={pause}
+              bind={bind}
+              isTutorialOpen={isTutorialOpen}
+              isAnyTutorialOpened={isAnyTutorialOpened}
+              step={step}
+            />
+            <AudioButton
+              // conditional rendered
+              hasAudio={hasAudio}
+              isAudioMuted={isAudioMuted}
+              bind={bind}
+              isTutorialOpen={isTutorialOpen}
+              isAnyTutorialOpened={isAnyTutorialOpened}
+              step={step}
+            />
+            <ChaptersButtonContainer
+              bind={bind}
+              isTutorialOpen={isTutorialOpen}
+              isAnyTutorialOpened={isAnyTutorialOpened}
+              step={step}
+              actionsBoxSize={actionsBoxSize}
+            />
+          </div>
+        </div>
+      )}
+
+      {isSettingsDialogOpen && (
+        <DialogPortal
+          component={<SettingsDialog closeThisDialog={closeTopDialog} />}
         />
-        <SettingsButton
-          openSettingsDialog={openSettingsDialog}
-          isAnyTutorialOpened={isAnyTutorialOpened}
+      )}
+
+      {isGlassMagnifierDialogOpen && (
+        <DialogPortal
+          component={<GlassMagnifierDialog closeThisDialog={closeTopDialog} />}
         />
-        <GlassMagnifierButton hasGlassMagnifier={hasGlassMagnifier} />
-        <PlayButton
-          shouldIncrement={shouldIncrement}
-          play={play}
-          pause={pause}
-          bind={bind}
-          isTutorialOpen={isTutorialOpen}
-          isAnyTutorialOpened={isAnyTutorialOpened}
-          step={step}
+      )}
+
+      {isAudioDialogOpen && (
+        <DialogPortal
+          component={
+            <AudioDialog
+              closeThisDialog={closeTopDialog}
+              hasSpeechVolume={isScreenAudioPresent}
+              hasMusicVolume={isChapterMusicPresent}
+              isVideoPresent={
+                (viewScreen && "video" in viewScreen && !!viewScreen.video) ??
+                false
+              }
+            />
+          }
         />
-        <AudioButton
-          // conditional rendered
-          hasAudio={hasAudio}
-          isAudioMuted={isAudioMuted}
-          openAudioDialog={openAudioDialog}
-          bind={bind}
-          isTutorialOpen={isTutorialOpen}
-          isAnyTutorialOpened={isAnyTutorialOpened}
-          step={step}
+      )}
+
+      {isChaptersDialogOpen && (
+        <DialogPortal
+          component={
+            <ChaptersDialog
+              closeThisDialog={closeTopDialog}
+              screens={viewExpo?.structure?.screens}
+              viewExpoUrl={viewExpo?.url}
+              hightlight={sectionScreen}
+              onClick={closeAllDialogs}
+            />
+          }
         />
-        <ChaptersButtonContainer
-          bind={bind}
-          isTutorialOpen={isTutorialOpen}
-          isAnyTutorialOpened={isAnyTutorialOpened}
-          step={step}
-          actionsBoxSize={actionsBoxSize}
-        />
-      </div>
+      )}
     </div>
   );
 };

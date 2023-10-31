@@ -29,14 +29,14 @@ export const loadScreen = (url) => async (dispatch, getState) => {
   if (!structure) setTimeout(() => dispatch(loadScreen(url)), 2000);
   else {
     const type =
-      /.+\/screen\/.+\/.+\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData)/.test(
+      /.+\/screen\/.+\/.+\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData|references)/.test(
         url
       )
         ? url.match(
-            /.+\/screen\/.+\/(.+)\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData)/
+            /.+\/screen\/.+\/(.+)\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData|references)/
           )[1]
         : url.match(
-            /.+\/screen\/(.+)\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData)/
+            /.+\/screen\/(.+)\/(description|authors|documents|image|images|video|sequence|slideshow|photogallery|parallax|text|answers|externalData|references)/
           )[1];
 
     const sfType =

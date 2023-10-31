@@ -1,6 +1,8 @@
-import { ImageScreen } from "models";
+import { IntroScreen, ImageScreen } from "models";
 
-export const getViewImageAnimation = (type: ImageScreen["animationType"]) =>
+export const getViewImageAnimation = (
+  type: IntroScreen["animationType"] | ImageScreen["animationType"]
+) =>
   type === "FROM_TOP"
     ? {
         from: {

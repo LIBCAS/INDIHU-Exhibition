@@ -41,6 +41,8 @@ import { AppDispatch, AppState } from "store/store";
 import cx from "classnames";
 import classes from "./view-screen-overlay.module.scss";
 import { isGameScreen } from "../../../utils/view-utils";
+import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
+import { screenType } from "enums/screen-type";
 
 // - - - - - -
 
@@ -222,7 +224,10 @@ export const ViewScreenOverlay = ({
     }
 
     setUnactive(false);
-    const timeout = setTimeout(() => setUnactive(true), 4000);
+    const timeout = setTimeout(
+      () => setUnactive(true),
+      OVERLAY_UNACTIVE_TIMEOUT
+    );
     timeoutRef.current = timeout;
 
     return () => {
@@ -358,14 +363,16 @@ export const ViewScreenOverlay = ({
             step={step}
           />
 
-          <ForwardButton
-            navigateForward={navigateForward}
-            forwardButtonRef={forwardButtonRef}
-            bind={bind}
-            isTutorialOpen={isTutorialOpen}
-            isAnyTutorialOpened={isAnyTutorialOpened}
-            step={step}
-          />
+          {viewScreen?.type !== screenType.SIGNPOST && (
+            <ForwardButton
+              navigateForward={navigateForward}
+              forwardButtonRef={forwardButtonRef}
+              bind={bind}
+              isTutorialOpen={isTutorialOpen}
+              isAnyTutorialOpened={isAnyTutorialOpened}
+              step={step}
+            />
+          )}
         </div>
       )}
 

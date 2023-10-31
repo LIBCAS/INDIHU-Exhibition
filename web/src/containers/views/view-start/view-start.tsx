@@ -1,32 +1,38 @@
-import { CSSProperties, useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { animated, useSpring } from "react-spring";
-import { useTranslation } from "react-i18next";
 import { createSelector } from "reselect";
 
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+import DialogPortal from "context/dialog-ref-provider/DialogPortal";
+
 import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
-import { useBoolean } from "hooks/boolean-hook";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useViewStartAnimation } from "./view-start-animation-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
-import Paper from "react-md/lib/Papers/Paper";
-import { ViewStartInfo } from "./view-start-info";
-import { ViewStartDetail } from "./view-start-detail";
+import StartInfoPanel from "./StartInfoPanel";
+import StartDetailPanel from "./StartDetailPanel";
+import StartButton from "./StartButton";
+
+import { ExpoInfoDialog } from "components/dialogs/expo-info-dialog/expo-info-dialog";
+import { ChaptersDialog } from "components/dialogs/chapters-dialog/chapters-dialog";
+import { FilesDialog } from "components/dialogs/files-dialog/files-dialog";
+import { WorksheetsDialog } from "components/dialogs/worksheets-dialog/worksheets-dialog";
 
 // Models
 import { AppDispatch, AppState } from "store/store";
 import { ViewExpo, StartScreen, ScreenProps } from "models";
 
 // Utils and actions
-import { DialogType } from "components/dialogs/dialog-types";
 import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { setViewProgress } from "actions/expoActions/viewer-actions";
-import { setDialog } from "actions/dialog-actions";
-import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
+import { calculateLogoPosition } from "./calculateLogoPosition";
 
 // - - - - - - - -
 
@@ -37,23 +43,34 @@ const stateSelector = createSelector(
 );
 
 export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
+  const { image } = screenPreloadedFiles ?? {}; // background image, if set
   const { viewExpo, viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
-  const [screenContainerRef, screenContainerSize] = useElementSize();
+  const { expoDesignData } = useExpoDesignData();
+  const isSmall = useMediaQuery(breakpoints.down("lg"));
+  const { navigateForward } = useExpoNavigation();
 
-  const { expoDesignData, bgTheming } = useExpoDesignData();
+  const {
+    openNewTopDialog,
+    closeTopDialog,
+    closeAllDialogs,
+    isExpoInfoDialogOpen,
+    isChaptersDialogOpen,
+    isFilesDialogOpen,
+    isWorksheetDialogOpen,
+  } = useDialogRef();
 
   const animationProps = useViewStartAnimation(viewScreen?.animationType);
   const animationStyles = useSpring(animationProps);
 
-  const isSmall = useMediaQuery(breakpoints.down("lg"));
-  const { navigateForward } = useExpoNavigation();
+  const [isInfoPanelOpen, setIsInfoPanelOpen] = useState<boolean>(false);
+  const [isDetailPanelOpen, setIsDetailPanelOpen] = useState<boolean>(false);
 
-  const [infoOpen, { toggle: toggleInfo }] = useBoolean(false); // toggling ViewStartInfo Component (left one)
-  const [detailsOpen, { toggle: toggleDetails }] = useBoolean(false); // toggling ViewStartDetail Component (right one)
-
-  const { image } = screenPreloadedFiles ?? {}; // background image, if set
+  const [screenContainerRef, screenContainerSize] = useElementSize();
+  const [infoPanelRef, infoPanelSize] = useResizeObserver({
+    ignoreUpdate: true,
+  });
 
   // - -
 
@@ -80,12 +97,12 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   // - -
 
   const { infoHeight } = useSpring({
-    infoHeight: infoOpen ? "50%" : "0%", // 75% previous
+    infoHeight: isInfoPanelOpen ? "50%" : "0%",
     config: { duration: 250 },
   });
 
   const { detailsHeight } = useSpring({
-    detailsHeight: detailsOpen ? "50%" : "0%", // 75% previous
+    detailsHeight: isDetailPanelOpen ? "50%" : "0%",
     config: { duration: 250 },
   });
 
@@ -96,42 +113,25 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
     navigateForward();
   }, [dispatch, navigateForward]);
 
-  const openMobileInfoDialog = useCallback(() => {
-    dispatch(setDialog(DialogType.ExpoInfoDialog, { viewExpo, viewScreen }));
-  }, [dispatch, viewExpo, viewScreen]);
+  const openMobileInfoDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.ExpoInfoDialog),
+    [openNewTopDialog]
+  );
 
-  // - -
+  const openChaptersDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.ChaptersDialog),
+    [openNewTopDialog]
+  );
 
-  const logoPositionStyles = useMemo<CSSProperties>(() => {
-    if (!expoDesignData) {
-      return {};
-    }
-    if (expoDesignData.logoPosition === "UPPER_LEFT") {
-      return {
-        left: `calc(${fromContainerToBgImageLeft}px + (${containedBgImageWidth}px / 12) )`,
-        top: `calc(${fromContainerToBgImageTop}px + (${containedBgImageHeight}px / 12) )`,
-      };
-    }
-    if (expoDesignData.logoPosition === "UPPER_RIGHT") {
-      return {
-        right: `calc(${fromContainerToBgImageLeft}px + (${containedBgImageWidth}px / 12) )`,
-        top: `calc(${fromContainerToBgImageTop}px + (${containedBgImageHeight}px / 12) )`,
-      };
-    }
-    if (expoDesignData.logoPosition === "LOWER_LEFT") {
-      return {
-        left: `calc(${fromContainerToBgImageLeft}px + (${containedBgImageWidth}px / 12) )`,
-        bottom: `calc(${fromContainerToBgImageTop}px + (${containedBgImageHeight}px / 12) )`,
-      };
-    }
-    return {};
-  }, [
-    expoDesignData,
-    containedBgImageWidth,
-    containedBgImageHeight,
-    fromContainerToBgImageLeft,
-    fromContainerToBgImageTop,
-  ]);
+  const openFilesDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.FilesDialog),
+    [openNewTopDialog]
+  );
+
+  const openWorksheetsDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.WorksheetDialog),
+    [openNewTopDialog]
+  );
 
   return (
     <>
@@ -164,7 +164,18 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
               style={{
                 opacity:
                   expoDesignData.logoType === "WATERMARK" ? 0.5 : undefined,
-                ...logoPositionStyles,
+                ...calculateLogoPosition(
+                  expoDesignData.logoPosition,
+                  {
+                    width: containedBgImageWidth,
+                    height: containedBgImageHeight,
+                  },
+                  {
+                    left: fromContainerToBgImageLeft,
+                    top: fromContainerToBgImageTop,
+                  },
+                  infoPanelSize
+                ),
               }}
             />
           </div>
@@ -172,103 +183,106 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* b) Flex container with 2 items, left Info panel, right Detail panel with start button (on top of bg image) */}
       <div className="fixed top-0 left-0 h-full w-full flex px-4 pt-4 gap-4">
-        {/* b1) small screen under 1024px first - only  start button and info panel which opens dialog with chapters and files */}
         {isSmall ? (
-          <Section>
+          <div className="flex-1 flex flex-col justify-end">
             <div />
-            <div className="flex justify-self-end gap-4">
-              <Paper
-                zDepth={3}
-                className={cx("h-full flex-1 bg-white p-4 cursor-pointer", {
-                  ...bgTheming,
-                })}
-                onClick={() => openMobileInfoDialog()}
-              >
-                <ViewStartInfo
-                  isOpen={infoOpen}
-                  toggle={toggleInfo}
-                  openMobileInfoDialog={openMobileInfoDialog}
-                  tags={viewExpo?.tags}
-                />
-              </Paper>
+            <div className="flex justify-self-end gap-4" ref={infoPanelRef}>
+              <StartInfoPanel
+                viewExpo={viewExpo}
+                viewScreen={viewScreen}
+                isInfoPanelOpen={isInfoPanelOpen}
+                setIsInfoPanelOpen={setIsInfoPanelOpen}
+                openMobileInfoDialog={openMobileInfoDialog}
+                openChaptersDialog={openChaptersDialog}
+              />
               <StartButton handleStart={handleStart} />
             </div>
-          </Section>
+          </div>
         ) : (
           <>
-            {/* b2) bigger screen, above 1024px, classic info panel, details panel and start button */}
-            {/* Info panel */}
-            <Section>
+            <div className="flex-1 flex flex-col justify-end">
               <div className="h-36" />
-              <animated.div style={{ height: infoHeight, minHeight: "13rem" }}>
-                <Paper
-                  zDepth={3}
-                  className={cx("h-full bg-white p-4 cursor-pointer", {
-                    ...bgTheming,
-                  })}
-                  onClick={() => toggleInfo()}
-                >
-                  <ViewStartInfo
-                    isOpen={infoOpen}
-                    toggle={toggleInfo}
-                    openMobileInfoDialog={openMobileInfoDialog}
-                    tags={viewExpo?.tags}
-                  />
-                </Paper>
+              <animated.div
+                style={{ height: infoHeight, minHeight: "13rem" }}
+                ref={infoPanelRef}
+              >
+                <StartInfoPanel
+                  viewExpo={viewExpo}
+                  viewScreen={viewScreen}
+                  isInfoPanelOpen={isInfoPanelOpen}
+                  setIsInfoPanelOpen={setIsInfoPanelOpen}
+                  openMobileInfoDialog={openMobileInfoDialog}
+                  openChaptersDialog={openChaptersDialog}
+                />
               </animated.div>
-            </Section>
+            </div>
 
             {/* Detail panel + Start button */}
-            <Section>
+            <div className="flex-1 flex flex-col justify-end">
               <StartButton handleStart={handleStart} />
               <animated.div
                 className="flex flex-col"
                 style={{ height: detailsHeight, minHeight: "13rem" }}
               >
-                <Paper
-                  zDepth={3}
-                  className={cx("h-full bg-white p-4 flex-1 cursor-pointer", {
-                    ...bgTheming,
-                  })}
-                  onClick={() => toggleDetails()}
-                >
-                  <ViewStartDetail
-                    isOpen={detailsOpen}
-                    toggle={toggleDetails}
-                  />
-                </Paper>
+                <StartDetailPanel
+                  viewScreen={viewScreen}
+                  isDetailPanelOpen={isDetailPanelOpen}
+                  setIsDetailPanelOpen={setIsDetailPanelOpen}
+                  openFilesDialog={openFilesDialog}
+                  openWorksheetsDialog={openWorksheetsDialog}
+                />
               </animated.div>
-            </Section>
+            </div>
           </>
         )}
       </div>
+
+      {isExpoInfoDialogOpen && (
+        <DialogPortal
+          component={
+            <ExpoInfoDialog
+              closeThisDialog={closeTopDialog}
+              viewExpo={viewExpo}
+              viewScreen={viewScreen}
+            />
+          }
+        />
+      )}
+
+      {isChaptersDialogOpen && (
+        <DialogPortal
+          component={
+            <ChaptersDialog
+              closeThisDialog={closeTopDialog}
+              screens={viewExpo.structure.screens}
+              viewExpoUrl={viewExpo.url}
+              onClick={closeAllDialogs}
+            />
+          }
+        />
+      )}
+
+      {isFilesDialogOpen && (
+        <DialogPortal
+          component={
+            <FilesDialog
+              closeThisDialog={closeTopDialog}
+              files={viewScreen?.documents}
+            />
+          }
+        />
+      )}
+
+      {isWorksheetDialogOpen && (
+        <DialogPortal
+          component={
+            <WorksheetsDialog
+              closeThisDialog={closeTopDialog}
+              files={viewScreen?.documents}
+            />
+          }
+        />
+      )}
     </>
   );
 };
-
-// - - - - - - - -
-
-interface StartButtonProps {
-  handleStart: () => Promise<void>;
-}
-
-const StartButton = ({ handleStart }: StartButtonProps) => {
-  const { t } = useTranslation("exhibition");
-  const { expoDesignData } = useExpoDesignData();
-
-  return (
-    <button
-      className="h-full lg:h-32 w-32 ml-auto border-x-4 border-t-4 lg:border-b-4 border-white p-4 text-bold text-lg bg-primary cursor-pointer mb-4 text-white"
-      style={{ backgroundColor: expoDesignData?.startButtonColor }}
-      onClick={handleStart}
-    >
-      {t("start")}
-    </button>
-  );
-};
-
-// - - - - - - - -
-
-const Section = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex-1 flex flex-col justify-end">{children}</div>
-);
