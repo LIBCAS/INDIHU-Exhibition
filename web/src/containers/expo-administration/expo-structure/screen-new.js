@@ -9,7 +9,11 @@ import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 
 import * as expoActions from "../../../actions/expoActions";
-import { screenCategories, screenType } from "../../../enums/screen-type";
+import {
+  mapScreenTypeValuesToKeys,
+  screenCategories,
+  screenType,
+} from "../../../enums/screen-type";
 
 // - -
 
@@ -80,12 +84,16 @@ const ScreenNew = ({
                     className="add-menu-item"
                     style={{ marginBottom: 3 }}
                     primaryText={t(
-                      `structure.screenLabels.${id.toLowerCase()}`
+                      `structure.screenLabels.${mapScreenTypeValuesToKeys[
+                        id
+                      ].toLowerCase()}`
                     )}
                     onClick={() => addScreen(rowNum, colNum, id, section)}
                     data-tooltip-id="expo-structure-screen-new-tooltip"
                     data-tooltip-content={t(
-                      `structure.screenTooltips.${id.toLowerCase()}`
+                      `structure.screenTooltips.${mapScreenTypeValuesToKeys[
+                        id
+                      ].toLowerCase()}`
                     )}
                   />
                 );

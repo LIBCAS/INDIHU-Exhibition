@@ -8,11 +8,12 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 // Custom Hooks
 import { useFilePreloader } from "context/file-preloader/file-preloader-provider";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
+import { useScreenCoordinatesById } from "hooks/view-hooks/useScreenCoordinatesById";
 
 // Components
 import { Viewers } from "../views";
@@ -246,23 +247,21 @@ export const NewViewScreen = ({
 
 // - - - -
 
-const screenTransitionStateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewProgress.totalTime,
-  ({ expo }: AppState) => expo.viewProgress.timeElapsed,
-  ({ expo }: AppState) => expo.viewProgress.shouldRedirect,
-  (totalTime, timeElapsed, shouldRedirect) => ({
-    totalTime,
-    timeElapsed,
-    shouldRedirect,
+const navigatorSelector = createSelector(
+  ({ expo }: AppState) => expo.viewScreen,
+  ({ expo }: AppState) => expo.viewProgress,
+  (viewScreen, viewProgress) => ({
+    viewScreen,
+    viewProgress,
   })
 );
 
 /* All screens other than START, FINISH and Game Screens are shouldRedirect = true */
 /* This component, if the time of the screen is passed && shouldRedirect => auto switch to the next screen! */
 const ScreenAutoNavigator = ({ children }: { children: ReactNode }) => {
-  const { totalTime, timeElapsed, shouldRedirect } = useSelector(
-    screenTransitionStateSelector
-  );
+  const { viewProgress, viewScreen } = useSelector(navigatorSelector);
+  const { totalTime, timeElapsed, shouldRedirect } = viewProgress;
+
   const { navigateForward } = useExpoNavigation();
 
   const timeRanOut = useMemo(
@@ -270,13 +269,31 @@ const ScreenAutoNavigator = ({ children }: { children: ReactNode }) => {
     [timeElapsed, totalTime]
   );
 
+  // - -
+
+  const history = useHistory();
+
+  const signpostNavigate =
+    viewScreen?.type === "SIGNPOST"
+      ? viewScreen.nextScreenReference ?? null
+      : null;
+
+  const { referenceUrl: signpostReferenceUrl } =
+    useScreenCoordinatesById(signpostNavigate) ?? {};
+
+  // - -
+
   useEffect(() => {
     if (shouldRedirect && timeRanOut) {
-      navigateForward();
+      if (signpostReferenceUrl) {
+        history.push(signpostReferenceUrl);
+      } else {
+        navigateForward();
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRanOut, shouldRedirect]);
+  }, [timeRanOut, shouldRedirect, signpostReferenceUrl]);
 
   return <>{children}</>;
 };

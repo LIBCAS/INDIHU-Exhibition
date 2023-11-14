@@ -15,6 +15,8 @@ import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -25,8 +27,16 @@ type AnswersProps = {
 const Answers = (props: AnswersProps) => {
   const { activeScreen } = props;
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameQuizScreen",
+  });
 
   const areAnswersFull = activeScreen.answers.length >= 8;
+
+  const quizType = useMemo(
+    () => activeScreen.quizType ?? "TEXT_IMAGES",
+    [activeScreen.quizType]
+  );
 
   return (
     <div className="container-big container-tabMenu">
@@ -34,7 +44,7 @@ const Answers = (props: AnswersProps) => {
         <div className="w-fit m-auto mb-16 flex flex-col gap-2 items-start xl:flex-row xl:w-auto xl:justify-center xl:gap-8">
           <GameQuizAnswersTypeSelect activeScreen={activeScreen} />
           <GameQuizTypeSelect activeScreen={activeScreen} />
-          {activeScreen.quizType === "TEXT_IMAGES" && (
+          {quizType === "TEXT_IMAGES" && (
             <GameQuizAnswerTextDisplaySelect activeScreen={activeScreen} />
           )}
         </div>
@@ -89,7 +99,7 @@ const Answers = (props: AnswersProps) => {
                   );
                 }}
               >
-                Pridat novú odpoveď
+                {t("addNewAnswer")}
               </Button>
             </div>
           )}

@@ -6,8 +6,10 @@ import { createSelector } from "reselect";
 import { Container } from "@mui/material";
 import ExpoStateRadioOptions from "./ExpoStateRadioOptions";
 import ExpoUrlChangeField from "./ExpoUrlChangeField";
+import EmbedCodeField from "./EmbedCodeField";
 import TagsSelect from "./tags/TagsSelect";
 import ClosedExpoSettings from "./ClosedExpoSettings";
+import CollaboratorsTable from "./CollaboratorsTable";
 
 // Models
 import { ActiveExpo } from "models";
@@ -16,7 +18,6 @@ import { AppState } from "store/store";
 // Utils and actions
 import { isEmpty } from "lodash";
 import { isAdmin } from "utils";
-import CollaboratorsTable from "./CollaboratorsTable";
 
 // - -
 
@@ -44,7 +45,7 @@ const ExpoSettings = ({ activeExpo }: ExpoSettingsProps) => {
 
   return (
     <Container maxWidth="xl">
-      <div className="pt-36 pb-16 flex flex-col gap-6">
+      <div className="pt-6 pb-16 flex flex-col gap-6">
         {/* Expo State Radio Options */}
         <div className="w-fit flex flex-col gap-2">
           <div className="font-bold text-lg">
@@ -63,6 +64,18 @@ const ExpoSettings = ({ activeExpo }: ExpoSettingsProps) => {
           {activeExpo && activeExpo?.url && (
             <div>
               <ExpoUrlChangeField expoUrl={activeExpo.url} />
+            </div>
+          )}
+        </div>
+
+        {/* Exhibition Embed code */}
+        <div className="w-fit flex flex-col gap-2">
+          <div className="font-bold text-lg">
+            {t("settingsAndSharing.expoEmbedCode")}
+          </div>
+          {activeExpo && activeExpo?.url && (
+            <div className="mt-1">
+              <EmbedCodeField expoUrl={activeExpo.url} />
             </div>
           )}
         </div>

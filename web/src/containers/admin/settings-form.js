@@ -11,6 +11,7 @@ import {
   getAdminSettings,
   changeAdminSettings,
 } from "../../actions/admin-actions";
+import { useTranslation } from "react-i18next";
 
 const Form = ({
   handleSubmit,
@@ -19,49 +20,53 @@ const Form = ({
   setAllowedRegistration,
   automaticRegistration,
   setAutomaticRegistration,
-}) => (
-  <form className="flex-form" onSubmit={handleSubmit}>
-    <Checkbox
-      id="admin-checkbox-allowedregistration"
-      name="simple-checkboxes"
-      label="Registrace povolena"
-      checked={allowedRegistration}
-      value={allowedRegistration}
-      onChange={(value) => setAllowedRegistration(value)}
-    />
-    <Checkbox
-      id="admin-checkbox-automaticregistration"
-      name="simple-checkboxes"
-      label="Automatická registrace"
-      checked={automaticRegistration}
-      value={automaticRegistration}
-      onChange={(value) => setAutomaticRegistration(value)}
-    />
-    <Field
-      component={TextField}
-      componentId="admin-textfield-lockduration"
-      name="lockDuration"
-      label="Zamknutí výstavy"
-      suffix="vteřin"
-      validate={[Validation.required]}
-    />
-    <div className="flex-row flex-centered">
-      <Button
-        className="flex-form-submit"
-        raised
-        primary
-        label="Potvrdit"
-        type="submit"
+}) => {
+  const { t } = useTranslation("admin-settings");
+
+  return (
+    <form className="flex-form" onSubmit={handleSubmit}>
+      <Checkbox
+        id="admin-checkbox-allowedregistration"
+        name="simple-checkboxes"
+        label={t("registrationAllowed")}
+        checked={allowedRegistration}
+        value={allowedRegistration}
+        onChange={(value) => setAllowedRegistration(value)}
       />
-      <Button
-        className="flex-form-submit"
-        raised
-        label="Zrušit"
-        onClick={() => setActiveForm(null)}
+      <Checkbox
+        id="admin-checkbox-automaticregistration"
+        name="simple-checkboxes"
+        label={t("automaticRegistration")}
+        checked={automaticRegistration}
+        value={automaticRegistration}
+        onChange={(value) => setAutomaticRegistration(value)}
       />
-    </div>
-  </form>
-);
+      <Field
+        component={TextField}
+        componentId="admin-textfield-lockduration"
+        name="lockDuration"
+        label={t("lockExhibition")}
+        suffix="vteřin"
+        validate={[Validation.required]}
+      />
+      <div className="flex-row flex-centered">
+        <Button
+          className="flex-form-submit"
+          raised
+          primary
+          label={t("confirmActionLabel")}
+          type="submit"
+        />
+        <Button
+          className="flex-form-submit"
+          raised
+          label={t("cancelActionLabel")}
+          onClick={() => setActiveForm(null)}
+        />
+      </div>
+    </form>
+  );
+};
 
 export default compose(
   connect(null, {

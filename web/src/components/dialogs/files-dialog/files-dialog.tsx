@@ -15,7 +15,7 @@ export type FilesDialogProps = {
 };
 
 export const FilesDialog = ({ closeThisDialog, files }: FilesDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   const allFiles = files ?? [];
   const expoFiles = allFiles.filter(

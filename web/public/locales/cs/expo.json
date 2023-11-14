@@ -90,7 +90,13 @@
     "expoState": "Stav výstavy",
     "expoUrl": "URL výstavy",
     "copyUrlLabel": "Kopírovat URL",
+    "copyUrlMessage": "Url výstavy bola skopírovaná do schránky.",
     "actualizeLabel": "Aktualizovat",
+    "expoEmbedCode": "Embed kód pre výstavu",
+    "embedCodeWidth": "Šírka",
+    "embedCodeHeight": "Výška",
+    "generateEmbedCode": "Vygenerovať embed kód",
+    "generateEmbedCodeMessage": "Vygenerovaný embed kód bol skopírovaný do schránky.",
     "expoTags": "Tagy výstavy",
     "tagsInfoLabel": "Zvolené tagy pro výstavu",
     "saveLabel": "Ulozit",
@@ -167,5 +173,31 @@
     "importLabel": "Importovat",
     "resetSettingsLabel": "Resetovat nastavenia",
     "saveChangesLabel": "Ulozit zmeny"
+  },
+  "tags": {
+    "exhibitionTopicGroupLabel": "Vyberte 1 téma, ktorým se vaše výstava zabýva",
+    "historyAndPeople": "Dějiny a lidé",
+    "nature": "Příroda",
+    "society": "Společnost",
+    "art": "Umění",
+    "scienceAndTechnique": "Věda a technika",
+
+    "exhibitionFormalPropertyGroupLabel": "Vyberte max. 2 formální vlastnosti vaší výstavy",
+    "englishFriendly": "English friendly",
+    "aesthetic": "Estetická",
+    "informative": "Informatívní",
+    "interactive": "Interaktivní",
+    "forMobiles": "Pro mobily",
+    "educational": "Vzdělávací",
+    "funny": "Zábavná",
+
+    "exhibitionIntendedForGroupLabel": "Vyberte pro koho je výstava určena",
+    "children": "Děti",
+    "adults": "Dospělí",
+    "experts": "Odborníci",
+    "family": "Rodina",
+    "seniors": "Senioři",
+    "students": "Studenti",
+    "teenagers": "Teenageři"
   }
 }

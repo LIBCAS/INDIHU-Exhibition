@@ -31,7 +31,7 @@ export const GameQuiz = ({
   actionsPanelRef,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen");
 
   const {
     infopointOpenStatusMap,

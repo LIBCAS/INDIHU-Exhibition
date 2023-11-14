@@ -78,6 +78,13 @@ export type MessageObj = {
   text?: string; // undefined if user did not write anything to the textfield
 };
 
+export type PreferenceObj = {
+  game: boolean;
+  media: boolean;
+  text: boolean;
+  topic: boolean;
+};
+
 // - -
 
 export type ViewExpo = {
@@ -139,6 +146,8 @@ export type ExpositionItem = {
   authorUsername: string;
   rating?: number; // avg rating, undefined if no rating yet
   ratingCount?: number;
+  messageCount?: number;
+  preferences: PreferenceObj;
 };
 
 export type ExpoRates = Record<ViewExpo["id"], boolean>;

@@ -90,7 +90,13 @@
     "expoState": "Exhibition state",
     "expoUrl": "Exhibition URL",
     "copyUrlLabel": "Copy URL",
+    "copyUrlMessage": "The URL of the exhibition was copied to the clipboard.",
     "actualizeLabel": "Actualize",
+    "expoEmbedCode": "Embed code for the exhibition",
+    "embedCodeWidth": "Width",
+    "embedCodeHeight": "Height",
+    "generateEmbedCode": "Generate the embed code",
+    "generateEmbedCodeMessage": "The generated embed code has been copied to the clipboard.",
     "expoTags": "Exhibition tags",
     "tagsInfoLabel": "Selected tags for the exhibition",
     "saveLabel": "Save",
@@ -167,5 +173,31 @@
     "importLabel": "Import",
     "resetSettingsLabel": "Reset settings",
     "saveChangesLabel": "Save changes"
+  },
+  "tags": {
+    "exhibitionTopicGroupLabel": "Choose 1 topic that your exhibition deals with",
+    "historyAndPeople": "History and people",
+    "nature": "Nature",
+    "society": "Society",
+    "art": "Art",
+    "scienceAndTechnique": "Science and technique",
+
+    "exhibitionFormalPropertyGroupLabel": "Select max. 2 formal characteristics of your exhibition",
+    "englishFriendly": "English friendly",
+    "aesthetic": "Aesthetic",
+    "informative": "Informative",
+    "interactive": "Interactive",
+    "forMobiles": "For mobiles",
+    "educational": "Educational",
+    "funny": "Funny",
+
+    "exhibitionIntendedForGroupLabel": "Choose who the exhibition is intended for",
+    "children": "Children",
+    "adults": "Adults",
+    "experts": "Experts",
+    "family": "Family",
+    "seniors": "Seniors",
+    "students": "Students",
+    "teenagers": "Teenagers"
   }
 }

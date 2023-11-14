@@ -26,7 +26,7 @@ export const ChaptersDialog = ({
   hightlight,
   onClick,
 }: ChaptersDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   const screenChapters = useScreenChapters(screens);
 

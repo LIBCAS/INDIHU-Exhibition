@@ -52,7 +52,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
 
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
 
   const isMediumScreen = useMediaQuery(breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(breakpoints.down("md"));
@@ -95,7 +95,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
         color="expoTheme"
         onClick={openChaptersDialog}
       >
-        Kapitoly
+        {t("chaptersButton")}
       </Button>
     );
   }
@@ -118,7 +118,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
         className="h-full flex flex-col"
       >
         <div className="flex justify-between items-center py-2 px-6 border-b border-b-black border-opacity-10">
-          <span className="text-3xl font-bold">{t("chapters")}</span>
+          <span className="text-3xl font-bold">{t("chaptersButton")}</span>
           <Button iconBefore={<Icon name="close" />} onClick={toggle} />
         </div>
         <div className="overflow-y-auto grow">
@@ -168,7 +168,7 @@ export const ChaptersButton = ({ maxHeight = 250 }: Props) => {
           color="expoTheme"
           onClick={toggle}
         >
-          {t("chapters")}
+          {t("chaptersButton")}
         </Button>
       </animated.div>
     </animated.div>

@@ -15,7 +15,7 @@ export const GameInfoPanel = ({
   isGameFinished,
   text,
 }: GameInfoPanelProps) => {
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen");
   const { bgFgTheming } = useExpoDesignData();
   const { title, task } = gameScreen;
 

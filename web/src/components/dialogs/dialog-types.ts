@@ -6,6 +6,8 @@ import {
   ActiveExpo,
 } from "models";
 
+import { UserInfoObj } from "reducers/user-reducer";
+
 // All possible dialog names (important when calling setDialog action)
 export enum DialogType {
   // Others
@@ -23,6 +25,12 @@ export enum DialogType {
   ExpoShareRemoveCollaborator = "ExpoShareRemoveCollaborator",
   ExpoNew = "ExpoNew",
   ExpositionMenu = "ExpositionMenu",
+  DeleteAccount = "DeleteAccount",
+  UserReactivate = "UserReactivate",
+  UserDelete = "UserDelete",
+  UserAccept = "UserAccept",
+  ScreenAuthorsChange = "ScreenAuthorsChange",
+  ScreenAuthorsAdd = "ScreenAuthorsAdd",
 }
 
 type ScreenFileChooseDialogDataProps = {
@@ -75,6 +83,29 @@ type ExpositionMenuDataProps = {
   expositions: any;
 };
 
+type DeleteAccountDataProps = Record<string, never>;
+
+type UserReactivateDataProps = {
+  id: string;
+  name: string;
+};
+
+type UserDeleteDataProps = {
+  id: string;
+  name: string;
+};
+
+type UserAcceptDataProps = {
+  user: UserInfoObj;
+};
+
+type ScreenAuthorsChangeDataProps = {
+  role: string;
+  text: string;
+};
+
+type ScreenAuthorsAddDataProps = Record<string, never>;
+
 // Each dialog has built-in DialogProps: setDialog, closeDialog, dialogData, addDialogData
 // Each dialog has its own custom DialogDataProps --> type definition for dialog.dialogData
 // custom DialogDataProps - those who are supplied when setDialog(DialogType.Name, { ...dialogData })
@@ -107,6 +138,18 @@ export type DialogDataProps<T extends DialogType> =
     ? ExpoNewDataProps
     : T extends DialogType.ExpositionMenu
     ? ExpositionMenuDataProps
+    : T extends DialogType.DeleteAccount
+    ? DeleteAccountDataProps
+    : T extends DialogType.UserReactivate
+    ? UserReactivateDataProps
+    : T extends DialogType.UserDelete
+    ? UserDeleteDataProps
+    : T extends DialogType.UserAccept
+    ? UserAcceptDataProps
+    : T extends DialogType.ScreenAuthorsChange
+    ? ScreenAuthorsChangeDataProps
+    : T extends DialogType.ScreenAuthorsAdd
+    ? ScreenAuthorsAddDataProps
     : never;
 
 export type DialogProps<T extends DialogType> = {

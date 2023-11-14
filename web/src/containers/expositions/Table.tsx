@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -10,6 +11,8 @@ import cx from "classnames";
 import { formatDate, formatTime } from "utils";
 import { setExpoFilter } from "actions/expoActions";
 import { useTranslation } from "react-i18next";
+import { Rating } from "@mui/material";
+import { getPreferenceText } from "./utils";
 
 type TableProps = {
   expositions: ExpositionItem[];
@@ -18,9 +21,7 @@ type TableProps = {
 
 const Table = ({ expositions, filter }: TableProps) => {
   const { t } = useTranslation(["exhibitions-page", "expo"]);
-
   const dispatch = useDispatch<AppDispatch>();
-  const history = useHistory();
 
   return (
     <table className="table-all">
@@ -119,34 +120,18 @@ const Table = ({ expositions, filter }: TableProps) => {
             {t("expoTable.lastEditedBy")}
           </td>
 
+          <td>{t("expoTable.averageRating")}</td>
+          <td>{t("expoTable.commentsCount")}</td>
+          <td>{t("expoTable.bestRatedPreference")}</td>
+
           <td className="table-all-col actions">{t("expoTable.actions")}</td>
         </tr>
       </thead>
 
-      {/* Table body as pther exposition rows */}
+      {/* Table body as other exposition rows */}
       <tbody>
         {expositions?.map((expoItem, idx) => (
-          <tr
-            key={idx}
-            className="table-all-row"
-            onClick={() => {
-              if (expoItem.state !== "ENDED" && expoItem.canEdit) {
-                history.push(`/expo/${expoItem.id}/structure`);
-              }
-            }}
-          >
-            <td className="table-all-col">{expoItem.title ?? "title"}</td>
-            <td className="table-all-col">
-              {t(`expoState.${expoItem.state.toLowerCase()}`, { ns: "expo" })}
-            </td>
-            <td className="table-all-col">{formatDate(expoItem.created)}</td>
-            <td className="table-all-col">{expoItem.authorUsername}</td>
-            <td className="table-all-col">{formatTime(expoItem.lastEdit)}</td>
-            <td className="table-all-col">{expoItem.isEditing}</td>
-            <td className="table-all-col select actions">
-              <ExpoMenu key={idx} expositionItem={expoItem} />
-            </td>
-          </tr>
+          <ExpoItemTableRow key={idx} expoItem={expoItem} expoItemIndex={idx} />
         ))}
       </tbody>
     </table>
@@ -154,3 +139,57 @@ const Table = ({ expositions, filter }: TableProps) => {
 };
 
 export default Table;
+
+// - - -
+
+type ExpoItemTableRowProps = {
+  expoItem: ExpositionItem;
+  expoItemIndex: number;
+};
+
+const ExpoItemTableRow = ({
+  expoItem,
+  expoItemIndex,
+}: ExpoItemTableRowProps) => {
+  const { t } = useTranslation(["exhibitions-page", "expo"]);
+  const history = useHistory();
+
+  const prefText = useMemo(
+    () => getPreferenceText(expoItem.preferences, t),
+    [expoItem.preferences, t]
+  );
+
+  return (
+    <tr
+      className="table-all-row"
+      onClick={() => {
+        if (expoItem.state !== "ENDED" && expoItem.canEdit) {
+          history.push(`/expo/${expoItem.id}/structure`);
+        }
+      }}
+    >
+      <td className="table-all-col">{expoItem.title ?? "title"}</td>
+      <td className="table-all-col">
+        {t(`expoState.${expoItem.state.toLowerCase()}`, { ns: "expo" })}
+      </td>
+      <td className="table-all-col">{formatDate(expoItem.created)}</td>
+      <td className="table-all-col">{expoItem.authorUsername}</td>
+      <td className="table-all-col">{formatTime(expoItem.lastEdit)}</td>
+      <td className="table-all-col">{expoItem.isEditing}</td>
+      <td className="table-all-col">
+        {expoItem.rating ? (
+          <Rating defaultValue={expoItem.rating} precision={0.1} readOnly />
+        ) : (
+          <div className="italic">{t("expoCard.noAverageRatingYet")}</div>
+        )}
+      </td>
+      <td className="table-all-col">{expoItem.messageCount ?? 0}</td>
+      <td className={cx("table-all-col", { italic: !prefText })}>
+        {prefText ?? t("expoCard.noBestRatedPreferenceYet")}
+      </td>
+      <td className="table-all-col select actions">
+        <ExpoMenu key={expoItemIndex} expositionItem={expoItem} />
+      </td>
+    </tr>
+  );
+};

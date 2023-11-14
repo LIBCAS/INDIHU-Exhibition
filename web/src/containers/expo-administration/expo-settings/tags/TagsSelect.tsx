@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+// Components
 import {
   FormControl,
   InputLabel,
@@ -12,10 +14,13 @@ import {
   Box,
   Chip,
 } from "@mui/material";
+import Button from "react-md/lib/Buttons/Button";
 
+// Models
 import { ActiveExpo } from "models";
 import { AppDispatch } from "store/store";
 
+// Actions and utils
 import { tagsOptions, TagValues } from "./tags-options";
 import {
   getTagLabelFromValue,
@@ -25,9 +30,6 @@ import {
 
 import { updateExpo } from "actions/expoActions";
 import { isEmpty } from "lodash";
-
-import Button from "react-md/lib/Buttons/Button";
-import { useTranslation } from "react-i18next";
 
 // - - - - - - - -
 
@@ -120,7 +122,7 @@ const TagsSelect = ({ activeExpo }: TagsSelectProps) => {
                 {selectedTags.map((tagValue) => (
                   <Chip
                     key={tagValue}
-                    label={getTagLabelFromValue(tagValue) ?? tagValue}
+                    label={t(getTagLabelFromValue(tagValue) ?? "")}
                     variant="outlined"
                     onDelete={() => {
                       const newTags = tags.filter((tag) => tag !== tagValue);
@@ -153,7 +155,7 @@ const TagsSelect = ({ activeExpo }: TagsSelectProps) => {
             if (tagOption.value === "--") {
               return (
                 <ListSubheader key={tagOption.label}>
-                  {tagOption.label}
+                  {t(tagOption.label)}
                 </ListSubheader>
               );
             }
@@ -166,7 +168,7 @@ const TagsSelect = ({ activeExpo }: TagsSelectProps) => {
                     tags.indexOf(tagOption.value) === -1 ? undefined : 700,
                 }}
               >
-                {tagOption.label}
+                {t(tagOption.label)}
               </MenuItem>
             );
           })}

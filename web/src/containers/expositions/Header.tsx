@@ -24,7 +24,7 @@ const Header = ({ cardsList, pager }: HeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="flex-header">
+    <div className="flex-header mt-2">
       <h2 className="flex-header-title">{t("header.title")}</h2>
       <Filter />
 

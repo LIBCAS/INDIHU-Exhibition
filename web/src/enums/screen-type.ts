@@ -166,7 +166,7 @@ export const automaticRouting = {
   PHOTOGALLERY_NEW: true,
   IMAGE_CHANGE: true,
   EXTERNAL: true,
-  SIGNPOST: false,
+  SIGNPOST: true,
   GAME_FIND: true,
   GAME_DRAW: true,
   GAME_WIPE: true,

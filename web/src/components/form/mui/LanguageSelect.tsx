@@ -27,16 +27,15 @@ const getLanguageFlagIcon = (language: LanguageKey) => {
 
 type LanguageSelectProps = {
   isSmallerVariant?: boolean;
-  isAppHeader?: boolean;
+  forceWhiteColoring?: boolean;
 };
 
 const LanguageSelect = ({
   isSmallerVariant = false,
-  isAppHeader = false,
+  forceWhiteColoring = false,
 }: LanguageSelectProps) => {
   const { isLightMode, palette } = useExpoDesignData(); // theme does not work in activeExpo or in app (only where viewExpo is loaded)
   const { t, i18n } = useTranslation("app-header");
-  console.log("i18: ", i18n);
 
   return (
     <FormControl
@@ -47,28 +46,33 @@ const LanguageSelect = ({
         "& .MuiSelect-select": {
           paddingTop: isSmallerVariant ? "12px" : "18px",
           paddingBottom: isSmallerVariant ? "8px" : "14px",
-          color: isAppHeader ? palette["white"] : undefined,
+          color: forceWhiteColoring ? palette["white"] : undefined,
         },
 
         "& .MuiOutlinedInput-notchedOutline": {
           borderColor:
-            isLightMode && !isAppHeader ? undefined : palette["white"],
+            isLightMode && !forceWhiteColoring ? undefined : palette["white"],
         },
 
         "& .MuiSvgIcon-root": {
-          color: isLightMode && !isAppHeader ? undefined : palette["white"],
+          color:
+            isLightMode && !forceWhiteColoring ? undefined : palette["white"],
         },
 
         "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
           borderColor:
-            isLightMode && !isAppHeader ? undefined : palette["muted-400"],
+            isLightMode && !forceWhiteColoring
+              ? undefined
+              : palette["muted-400"],
         },
 
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
           {
             borderWidth: "2px",
             borderColor:
-              isLightMode && !isAppHeader ? palette["black"] : palette["white"],
+              isLightMode && !forceWhiteColoring
+                ? palette["black"]
+                : palette["white"],
           },
       }}
     >
@@ -87,7 +91,7 @@ const LanguageSelect = ({
             <div
               className="flex gap-2"
               style={{
-                color: isAppHeader
+                color: forceWhiteColoring
                   ? undefined
                   : isLightMode
                   ? palette["black"]

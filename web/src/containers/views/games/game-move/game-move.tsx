@@ -28,7 +28,7 @@ export const GameMove = ({
   const [finished, setFinished] = useState(false);
   const [ref, { width, height }] = useElementSize();
   const [dragRef, { width: dragWidth, height: dragHeight }] = useElementSize();
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen");
 
   const [{ x, y }, api] = useSpring(() => ({
     x: 0,

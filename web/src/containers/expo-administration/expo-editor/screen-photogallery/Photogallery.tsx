@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import Carousel from "components/editors/carousel";
-import Image from "components/editors/image";
+import ImageBox from "components/editors/ImageBox";
 import TextField from "react-md/lib/TextFields";
 
 // Models
@@ -165,7 +165,7 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
           >
             {/* Left panel */}
             <div>
-              <Image
+              <ImageBox
                 key={`image-${activeImageIndex}`}
                 title={t("descFields.photogalleryScreen.imageBoxTitle")}
                 image={activeImageFile}
@@ -183,12 +183,22 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
                     })
                   );
                 }}
-                updateScreenData={updateScreenData}
-                id="editor-photogallery-image"
+                onLoad={(width: number, height: number) =>
+                  dispatch(
+                    updateScreenData({
+                      images: activeScreen.images?.map(
+                        (currImage, currImageIndex) =>
+                          currImageIndex === activeImageIndex
+                            ? { ...currImage, imageOrigData: { width, height } }
+                            : currImage
+                      ),
+                    })
+                  )
+                }
                 helpIconLabel={t(
                   "descFields.photogalleryScreen.imageBoxTooltip"
                 )}
-                images={activeScreen.images}
+                helpIconId={`editor-photogallery-image`}
               />
             </div>
 

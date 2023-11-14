@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useRouteMatch, useLocation, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-import AppHeader from "components/app-header";
+import AppHeader from "components/app-header/AppHeader";
 import TabMenu from "components/tab-menu";
 import LoaderScreen from "components/loaders/loader-screen";
 

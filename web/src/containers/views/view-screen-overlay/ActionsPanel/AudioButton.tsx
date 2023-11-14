@@ -1,4 +1,5 @@
 import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
@@ -27,6 +28,7 @@ const AudioButton = ({
   isAnyTutorialOpened,
   step,
 }: AudioButtonProps) => {
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
   const { openNewTopDialog } = useDialogRef();
 
   if (!hasAudio) {
@@ -55,7 +57,7 @@ const AudioButton = ({
 
       <BasicTooltip
         id="overlay-audio-button-tooltip"
-        content="Nastavení hlasitosti"
+        content={t("audioButtonTooltip")}
       />
     </>
   );

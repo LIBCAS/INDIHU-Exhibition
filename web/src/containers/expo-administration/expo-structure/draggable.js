@@ -30,7 +30,7 @@ const Draggable = ({
   return (
     <div
       id="expo-structure-container-modeller"
-      className="container-modeller structure"
+      className="container-modeller structure !pt-6"
       onMouseMove={onMouseMove}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}

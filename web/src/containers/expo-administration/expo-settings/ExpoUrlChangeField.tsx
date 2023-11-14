@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+import Snackbar from "components/snackbar/Snackbar";
 import Button from "react-md/lib/Buttons/Button";
 import TextField from "react-md/lib/TextFields";
 
@@ -30,6 +31,8 @@ type ExpoUrlChangeFieldProps = { expoUrl: string };
 const ExpoUrlChangeField = ({ expoUrl }: ExpoUrlChangeFieldProps) => {
   const { t } = useTranslation("expo");
   const dispatch = useDispatch<AppDispatch>();
+
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
 
   const [urlValue, setUrlValue] = useState<string>(expoUrl);
   const [urlValueErrMsg, setUrlValueErrMsg] = useState<string>("");
@@ -80,6 +83,7 @@ const ExpoUrlChangeField = ({ expoUrl }: ExpoUrlChangeFieldProps) => {
           onClick={() => {
             const urlToCopy = `${window.location.origin}/view/${expoUrl}`;
             navigator.clipboard.writeText(urlToCopy);
+            setIsSnackbarOpen(true);
           }}
         />
         <Button raised label="Storno" onClick={() => setUrlValue(expoUrl)} />
@@ -89,6 +93,12 @@ const ExpoUrlChangeField = ({ expoUrl }: ExpoUrlChangeFieldProps) => {
           onClick={handleActualize}
         />
       </div>
+
+      <Snackbar
+        isOpen={isSnackbarOpen}
+        onClose={() => setIsSnackbarOpen(false)}
+        message={t("settingsAndSharing.copyUrlMessage")}
+      />
     </div>
   );
 };

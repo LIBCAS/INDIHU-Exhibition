@@ -2,8 +2,9 @@ import { reduxForm, Field, SubmissionError } from "redux-form";
 import { compose, lifecycle, withHandlers, withState } from "recompose";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import AppHeader from "components/app-header";
+import AppHeader from "components/app-header/AppHeader";
 import ComponentLoader from "../components/loaders/component-loader";
 import Button from "react-md/lib/Buttons/Button";
 import Captcha from "../components/form/redux-form/captcha";
@@ -33,6 +34,8 @@ const Authentication = ({
   handleInfo,
   handleGDPR,
 }) => {
+  const { t } = useTranslation("landing-screen");
+
   return (
     <div className="authentication-container">
       <AppHeader
@@ -41,26 +44,23 @@ const Authentication = ({
         handleInfo={handleInfo}
         handleGDPR={handleGDPR}
       />
+
       <div className="authentication">
         <div className="left">
-          <h1>Kreativní nástroj pro tvorbu virtuálních výstav</h1>
-          <p>
-            Vytvářejte působivé online prezentace na libovolná témata, která
-            budou návštěvníkům dostupná na webu. INDIHU Exhibition umožňuje
-            vtáhnout návštěvníka do děje a tvořit obsahově bohaté prezentace.
-            Kombinujte obrázky, texty, fotogalerie, videa, mapy s dalšími
-            možnostmi. Zařaďte do výstavy i drobné interaktivní hry.
-          </p>
+          <h1>{t("title")}</h1>
+          <p>{t("description")}</p>
         </div>
         <div className="right">
           {!loader && (regAvailable || isSignIn) ? (
             <div>
               <h3 style={{ marginTop: "1em" }}>
                 <strong>
-                  {isSignIn ? "Přihlášení" : "Začněte vytvářet výstavy"}
+                  {isSignIn
+                    ? t("formular.login")
+                    : t("formular.startCreatingExhibitions")}
                 </strong>
               </h3>
-              {!isSignIn && <p>Nástroj je zcela zdarma</p>}
+              {!isSignIn && <p>{t("formular.appIsFree")}</p>}
             </div>
           ) : (
             <div />
@@ -68,7 +68,9 @@ const Authentication = ({
           {loader ? (
             <div className="full-width flex-col flex-centered margin-top-small">
               <ComponentLoader />
-              <h4 className="margin-top">Načítá se registrační formulář.</h4>
+              <h4 className="margin-top">
+                {t("formular.loadingRegistrationFormular")}
+              </h4>
             </div>
           ) : isSignIn ? (
             <form onSubmit={handleSubmit}>
@@ -76,7 +78,7 @@ const Authentication = ({
                 component={TextField}
                 componentId="authentification-textfield-name"
                 name="name"
-                label="Užívatelské jméno/e-mail"
+                label={t("formular.userNameLabel")}
                 validate={[Validation.required]}
               />
               <Field
@@ -84,20 +86,20 @@ const Authentication = ({
                 componentId="authentification-textfield-password"
                 name="password"
                 type="password"
-                label="Heslo"
+                label={t("formular.passwordLabel")}
                 validate={[Validation.required]}
               />
               <div className="authentication-buttons">
                 <Button
                   raised
                   primary
-                  label="Přihlásit"
+                  label={t("formular.loginButton")}
                   type="submit"
                   className="authentication-button"
                 />
                 <Button
                   flat
-                  label="Resetovat heslo"
+                  label={t("formular.resetPasswordButton")}
                   onClick={() => setDialog("PasswordReset")}
                   className="authentication-button margin-left-small"
                 />
@@ -109,28 +111,28 @@ const Authentication = ({
                 component={TextField}
                 componentId="registration-textfield-firstname"
                 name="firstName"
-                label="Jméno"
+                label={t("formular.firstNameLabel")}
                 validate={[Validation.required]}
               />
               <Field
                 component={TextField}
                 componentId="registration-textfield-surname"
                 name="surname"
-                label="Příjmení"
+                label={t("formular.surnameLabel")}
                 validate={[Validation.required]}
               />
               <Field
                 component={TextField}
                 componentId="registration-textfield-institution"
                 name="institution"
-                label="Instituce"
+                label={t("formular.institutionLabel")}
                 validate={[Validation.required]}
               />
               <Field
                 component={TextField}
                 componentId="registration-textfield-email"
                 name="email"
-                label="E-mail"
+                label={t("formular.emailLabel")}
                 validate={[Validation.required, Validation.email]}
               />
               <Field
@@ -138,7 +140,7 @@ const Authentication = ({
                 componentId="registration-textfield-password"
                 name="password"
                 type="password"
-                label="Heslo (min 5 znaků)"
+                label={t("formular.newPasswordLabel")}
                 validate={[Validation.required, Validation.password]}
               />
               <div className="flex-row flex-center">
@@ -150,7 +152,7 @@ const Authentication = ({
                   validate={[Validation.required]}
                   customLabel={
                     <div>
-                      Souhlasím s{" "}
+                      {t("formular.acceptTermsOfUsePart1")}{" "}
                       <span
                         style={{
                           textDecoration: "underline",
@@ -158,7 +160,7 @@ const Authentication = ({
                         }}
                         onClick={handleInfo}
                       >
-                        podmínkami užití
+                        {t("formular.acceptTermsOfUsePart2")}
                       </span>
                     </div>
                   }
@@ -177,7 +179,7 @@ const Authentication = ({
                 <Button
                   raised
                   primary
-                  label="Registrovat"
+                  label={t("formular.registerButton")}
                   type="submit"
                   className="authentication-button"
                 />
@@ -185,7 +187,7 @@ const Authentication = ({
             </form>
           ) : (
             <h4 className="text-center margin-none">
-              <strong>Registrace nejsou v současné době povoleny.</strong>
+              <strong>{t("formular.registrationNotAllowed")}</strong>
             </h4>
           )}
         </div>

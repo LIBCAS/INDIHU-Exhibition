@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "store/store";
+import { useTranslation } from "react-i18next";
 
 import SelectField from "react-md/lib/SelectFields";
 
@@ -19,45 +20,6 @@ import {
 
 // - -
 
-const gameQuizAnswersTypeOptions = [
-  {
-    label: "Práve jedna správna odpoveď",
-    value: GameQuizAnswerEnum.SIMPLE_CHOICE,
-  },
-  {
-    label: "Viacero správnych odpovedí",
-    value: GameQuizAnswerEnum.MULTIPLE_CHOICE,
-  },
-];
-
-const gameQuizTypeOptions = [
-  {
-    label: "Iba text",
-    value: GameQuizEnum.ONLY_TEXT,
-  },
-  {
-    label: "Iba obrázok",
-    value: GameQuizEnum.ONLY_IMAGES,
-  },
-  {
-    label: "Aj obrázok aj text",
-    value: GameQuizEnum.TEXT_IMAGES,
-  },
-];
-
-const gameQuizTextDisplay = [
-  {
-    label: "Zobraziť ihneď po načítaní",
-    value: GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY,
-  },
-  {
-    label: "Zobrazit až po vyhodnotení kvízu",
-    value: GameQuizTextDisplayEnum.QUIZ_TEXT_AFTER_EVALUATION,
-  },
-];
-
-// - -
-
 type GameQuizAnswersTypeSelectProps = {
   activeScreen: GameQuizScreen;
 };
@@ -66,14 +28,26 @@ export const GameQuizAnswersTypeSelect = ({
   activeScreen,
 }: GameQuizAnswersTypeSelectProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameQuizScreen",
+  });
 
   return (
     <div className="w-full xl:w-fit">
       <SelectField
-        menuItems={gameQuizAnswersTypeOptions}
+        menuItems={[
+          {
+            label: t("asnwerTypeSingleChoiceOption"),
+            value: GameQuizAnswerEnum.SIMPLE_CHOICE,
+          },
+          {
+            label: t("answerTypeMultipleChoiceOption"),
+            value: GameQuizAnswerEnum.MULTIPLE_CHOICE,
+          },
+        ]}
         itemLabel={"label"}
         itemValue={"value"}
-        label="Vyberte typ odpovedi"
+        label={t("asnwerTypeLabel")}
         position="below"
         id="answers-type"
         name="answers-type"
@@ -105,14 +79,30 @@ export const GameQuizTypeSelect = ({
   activeScreen,
 }: GameQuizTypeSelectProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameQuizScreen",
+  });
 
   return (
     <div className="w-full xl:w-fit">
       <SelectField
-        menuItems={gameQuizTypeOptions}
+        menuItems={[
+          {
+            label: t("quizTypeOnlyTextOption"),
+            value: GameQuizEnum.ONLY_TEXT,
+          },
+          {
+            label: t("quizTypeOnlyImageOption"),
+            value: GameQuizEnum.ONLY_IMAGES,
+          },
+          {
+            label: t("quizTypeBothTextImageOption"),
+            value: GameQuizEnum.TEXT_IMAGES,
+          },
+        ]}
         itemLabel={"label"}
         itemValue={"value"}
-        label="Vyberte formu kvízu"
+        label={t("quizTypeLabel")}
         position="below"
         id="quiz-type"
         name="quiz-type"
@@ -134,14 +124,26 @@ export const GameQuizAnswerTextDisplaySelect = ({
   activeScreen,
 }: GameQuizAnswerTextDisplaySelectProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameQuizScreen",
+  });
 
   return (
     <div className="w-full xl:w-fit">
       <SelectField
-        menuItems={gameQuizTextDisplay}
+        menuItems={[
+          {
+            label: t("asnwerDisplayTypeImmediateOption"),
+            value: GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY,
+          },
+          {
+            label: t("answerDisplayTypeAfterEvaluationOption"),
+            value: GameQuizTextDisplayEnum.QUIZ_TEXT_AFTER_EVALUATION,
+          },
+        ]}
         itemLabel={"label"}
         itemValue={"value"}
-        label="Vyberte kdy se má zobrazit text odpovědi"
+        label={t("answerDisplayTypeLabel")}
         position="below"
         id="quiz-answer-text-display"
         defaultValue={

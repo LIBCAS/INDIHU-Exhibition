@@ -22,6 +22,7 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    // Other initialization options like default namespace, immediate namespaced to load, etc ..
   });
 
 export default i18n;

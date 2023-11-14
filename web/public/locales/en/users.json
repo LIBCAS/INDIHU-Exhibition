@@ -1,0 +1,33 @@
+{
+  "title": "Users",
+  "allUsersLabel": "All users",
+  "usersToAcceptLabel": "Users to accept",
+
+  "usersState": {
+    "accepted": "Accepted",
+    "not_verified": "Not verified",
+    "to_accept": "To accept",
+    "deleted": "Deleted"
+  },
+  "usersSort": {
+    "updated": "Date last updated",
+    "created": "Creation date",
+    "userName": "Username",
+    "firstName": "First name",
+    "surname": "Surname",
+    "email": "Email",
+    "institution": "Institution"
+  },
+
+  "searchLabel": "Search",
+  "table": {
+    "username": "Username",
+    "firstname": "Firstname",
+    "surname": "Surname",
+    "email": "E-mail",
+    "institution": "institution",
+    "state": "State",
+    "action": "Action"
+  },
+  "pagesizeLabel": "Entries per page:"
+}

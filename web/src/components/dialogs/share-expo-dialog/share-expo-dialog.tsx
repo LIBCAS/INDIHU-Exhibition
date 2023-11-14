@@ -24,7 +24,7 @@ export const ShareExpoDialog = ({
   closeThisDialog,
   url,
 }: ShareExpoDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   return (
     <DialogWrap

@@ -1,0 +1,19 @@
+{
+  "title": "Settings",
+
+  "editProfileSubtitle": "Profile editation",
+  "usernameLabel": "Username",
+  "firstnameLabel": "First name",
+  "lastnameLabel": "Last name",
+  "institutionLabel": "Institution",
+  "emailLabel": "E-mail",
+  "emailNotificationsLabel": "E-mail notifications",
+  "editProfileActionButtonLabel": "Edit profile",
+
+  "changePasswordSubtitle": "Password change",
+  "newPasswordLabel": "New password",
+  "confirmPasswordLabel": "Confirm password",
+  "changePasswordActionButtonLabel": "Change password",
+
+  "deleteAccountActionButtonLabel": "Deactivate account"
+}

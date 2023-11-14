@@ -36,7 +36,7 @@ export const GameDraw = ({
   const [thickness, setThickness] = useState(5);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const ref = useRef<HTMLCanvasElement>(null);
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen");
   const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null);
   const [
     open,
@@ -187,7 +187,7 @@ export const GameDraw = ({
                 </Button>
                 <BasicTooltip
                   id="game-overlay-color-picker-button-tooltip"
-                  content="Výběr barvy"
+                  content={t("game-draw.colorChooserAction")}
                 />
               </div>,
 
@@ -204,7 +204,7 @@ export const GameDraw = ({
                 />
                 <BasicTooltip
                   id="game-overlay-thickness-button-tooltip"
-                  content="Výběr tloušťky"
+                  content={t("game-draw.thicknessChooserAction")}
                 />
               </div>,
 
@@ -219,7 +219,11 @@ export const GameDraw = ({
                 />
                 <BasicTooltip
                   id="game-overlay-tool-button-tooltip"
-                  content={erasing ? "Přepnout na tužku" : "Přepnout na gumu"}
+                  content={
+                    erasing
+                      ? t("game-draw.switchToPencilAction")
+                      : t("game-draw.switchToEraserAction")
+                  }
                 />
               </div>,
             ]}

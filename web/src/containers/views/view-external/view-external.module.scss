@@ -1,0 +1,8 @@
+.externalContainer {
+  overflow-y: auto;
+}
+
+.externalContainer > div:first-child,
+.externalContainer > iframe:first-child {
+  overflow: auto;
+}

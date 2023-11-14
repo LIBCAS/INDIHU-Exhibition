@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import {
   Card,
@@ -12,20 +14,14 @@ import {
 import { Edit, Launch } from "@mui/icons-material";
 import ExpoMenu from "./ExpoMenu";
 
-//import Card from "react-md/lib/Cards/Card";
-//import CardText from "react-md/lib/Cards/CardText";
-//import CardActions from "react-md/lib/Cards/CardActions";
-//import Divider from "react-md/lib/Dividers";
-//import Button from "react-md/lib/Buttons/Button";
-
 import { ExpositionItem } from "models";
 import { AppDispatch } from "store/store";
 
+import cx from "classnames";
 import { setDialog } from "actions/dialog-actions";
 import { formatDate, formatTime, openViewer } from "utils";
 import { DialogType } from "components/dialogs/dialog-types";
-import { expoStateText } from "enums/expo-state";
-import { useTranslation } from "react-i18next";
+import { getPreferenceText } from "./utils";
 
 // - -
 
@@ -34,9 +30,23 @@ type ExpoCardProps = {
 };
 
 const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
-  const { t } = useTranslation("exhibitions-page");
-  const { title, state, created, authorUsername, lastEdit, isEditing, rating } =
-    expositionItem;
+  const { t } = useTranslation(["exhibitions-page", "expo"]);
+  const {
+    title,
+    state,
+    created,
+    authorUsername,
+    lastEdit,
+    isEditing,
+    rating,
+    messageCount,
+    preferences,
+  } = expositionItem;
+
+  const prefText = useMemo(
+    () => getPreferenceText(preferences, t),
+    [preferences, t]
+  );
 
   return (
     <div className="w-full sm:w-[350px]">
@@ -50,7 +60,7 @@ const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
         }}
       >
         <CardContent>
-          <div className="p-2">
+          <div className="px-2 pt-2 pb-1">
             <div className="font-bold text-lg">{title}</div>
           </div>
 
@@ -59,7 +69,7 @@ const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
           <div className="mt-1 p-2 flex flex-col gap-2">
             <div className="flex justify-between items-center gap-2">
               <div className="font-medium text-base">{t("expoCard.state")}</div>
-              <div>{expoStateText[state]}</div>
+              <div>{t(`expoState.${state.toLowerCase()}`, { ns: "expo" })}</div>
             </div>
 
             <div className="flex justify-between items-center gap-2">
@@ -110,6 +120,25 @@ const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
                     {t("expoCard.noAverageRatingYet")}
                   </div>
                 )}
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center gap-4">
+              <div className="font-medium text-base">
+                {t("expoCard.commentsCount")}
+              </div>
+              <div>{messageCount ?? 0}</div>
+            </div>
+
+            <div className="flex justify-between items-center gap-4">
+              <div className="font-medium text-base">
+                {t("expoCard.bestRatedPreference")}
+              </div>
+              <div
+                className={cx({ italic: prefText === null })}
+                style={{ textAlign: "end" }}
+              >
+                {prefText ?? t("expoCard.noBestRatedPreferenceYet")}
               </div>
             </div>
           </div>

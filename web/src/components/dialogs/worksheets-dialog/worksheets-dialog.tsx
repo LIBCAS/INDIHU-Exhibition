@@ -18,7 +18,7 @@ export const WorksheetsDialog = ({
   closeThisDialog,
   files,
 }: WorksheetsDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   const allFiles = files ?? [];
   const worksheetFiles = allFiles.filter((currFile: Document) =>

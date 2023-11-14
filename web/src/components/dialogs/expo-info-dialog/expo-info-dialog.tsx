@@ -25,7 +25,7 @@ export const ExpoInfoDialog = ({
   viewExpo,
   viewScreen,
 }: ExpoInfoDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   const { openNewTopDialog } = useDialogRef();
 

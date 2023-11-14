@@ -32,7 +32,7 @@ const StartDetailPanel = ({
   openFilesDialog,
   openWorksheetsDialog,
 }: StartDetailPanelProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
   const { bgTheming, fgTheming } = useExpoDesignData();
 
   const collaborators = viewScreen.collaborators ?? [];

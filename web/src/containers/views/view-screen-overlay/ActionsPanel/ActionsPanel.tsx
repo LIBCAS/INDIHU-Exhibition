@@ -213,7 +213,9 @@ const ActionsPanel = ({
 
       {!isSm && (
         <div className="flex flex-col gap-3">
-          {viewScreen?.type === screenType.SIGNPOST && <NextButton />}
+          {viewScreen?.type === screenType.SIGNPOST && (
+            <NextButton nextScreenId={viewScreen.nextScreenReference} />
+          )}
 
           <div className="flex items-end gap-2">
             <EditorButton

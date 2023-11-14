@@ -46,7 +46,7 @@ const InfoPanel = ({
   step,
 }: InfoPanelProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const { t } = useTranslation(["screen", "tutorial"]);
+  const { t } = useTranslation("view-screen");
 
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
   const { bgFgTheming } = useExpoDesignData();
@@ -106,7 +106,7 @@ const InfoPanel = ({
               )}
               onClick={openDrawer}
             >
-              <span>{viewScreen?.title ?? t("no-title")}</span>
+              <span>{viewScreen?.title ?? t("overlay.no-title")}</span>
               <Icon name="info" />
             </div>
           </div>

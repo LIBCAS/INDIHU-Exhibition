@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
@@ -17,6 +19,8 @@ const EditorButton = ({
   isEditorAccess,
   isAnyTutorialOpened,
 }: EditorButtonProps) => {
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
+
   if (!isEditorAccess) {
     return null;
   }
@@ -37,7 +41,7 @@ const EditorButton = ({
 
       <BasicTooltip
         id="overlay-editor-button-tooltip"
-        content="Upravit obrazovku"
+        content={t("editorButtonTooltip")}
       />
     </>
   );

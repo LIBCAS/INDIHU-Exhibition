@@ -24,7 +24,7 @@ const RatingStatisticsTable = ({
   return (
     <TableContainer>
       <Table
-        aria-aria-label="rating statistics table"
+        aria-label="rating statistics table"
         sx={{
           minWidth: "320px",
           "& .MuiTableRow-root": {

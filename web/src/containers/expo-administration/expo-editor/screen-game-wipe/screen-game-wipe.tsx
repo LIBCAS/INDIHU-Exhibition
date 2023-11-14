@@ -9,8 +9,6 @@ import GameDescription from "components/editors/game-description";
 import Images from "./Images";
 import Footer from "components/editors/footer";
 
-import { helpIconText } from "enums/text";
-
 // Models
 import {
   ScreenEditorProps,
@@ -50,7 +48,7 @@ const ScreenGameWipe = (props: ScreenEditorProps) => {
         render={() => (
           <GameDescription
             activeScreen={activeScreen}
-            taskHelpIconLabel={helpIconText.EDITOR_GAME_WIPE_TASK}
+            taskHelpIconLabel={t("descFields.gameWipeScreen.taskTooltip")}
           />
         )}
       />

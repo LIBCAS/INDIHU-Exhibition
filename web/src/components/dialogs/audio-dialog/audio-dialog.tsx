@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import DialogWrap from "../dialog-wrap-noredux-typed";
@@ -50,6 +51,9 @@ export const AudioDialog = ({
 }: AudioDialogProps) => {
   const { expoVolumes } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("view-screen", {
+    keyPrefix: "overlay.audioDialog",
+  });
 
   const speechVolume = useMemo(() => expoVolumes.speechVolume, [expoVolumes]);
   const musicVolume = useMemo(() => expoVolumes.musicVolume, [expoVolumes]);
@@ -57,7 +61,7 @@ export const AudioDialog = ({
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
-      title={<span className="text-2xl font-bold">Nastavení zvuku</span>}
+      title={<span className="text-2xl font-bold">{t("title")}</span>}
       big
       noDialogMenu
       closeOnEsc
@@ -69,7 +73,7 @@ export const AudioDialog = ({
           <AudioSlider
             volumeKey="speechVolume"
             volumeObj={speechVolume}
-            tooltipContent={"Zvuková stopa mluvené řeči"}
+            tooltipContent={t("speechIconTooltip")}
           />
         )}
         {/* Second slider */}
@@ -77,7 +81,7 @@ export const AudioDialog = ({
           <AudioSlider
             volumeKey="musicVolume"
             volumeObj={musicVolume}
-            tooltipContent={"Zvuková stopa podkresové hudby"}
+            tooltipContent={t("backgroundMusicIconTooltip")}
           />
         )}
       </div>
@@ -94,7 +98,7 @@ export const AudioDialog = ({
           big
           onClick={() => dispatch(muteVolumes(expoVolumes))}
         >
-          Ztlumit vše
+          {t("muteEverythingLabel")}
         </Button>
         <Button
           type="contained"
@@ -102,7 +106,7 @@ export const AudioDialog = ({
           big
           onClick={() => dispatch(unmuteVolumes(expoVolumes))}
         >
-          Zesílit vše
+          {t("amplifyEverythingLabel")}
         </Button>
       </div>
     </DialogWrap>

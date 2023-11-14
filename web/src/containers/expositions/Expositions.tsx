@@ -1,25 +1,29 @@
 import { useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
 import { useIsFirstRender } from "hooks/first-render-hook";
 import { useDebounce } from "hooks/debounce-hook";
 
-import AppHeader from "components/app-header";
+// Components
+import AppHeader from "components/app-header/AppHeader";
 import Header from "./Header";
 import ExpoNewCard from "./ExpoNewCard";
 
 import ExpoCard from "./ExpoCard";
 import Table from "./Table";
-import Pager from "./Pager";
 import Footer from "containers/footer";
 
+// Models
 import { AppState, AppDispatch } from "store/store";
 
+// Actions and utils
 import { showLoader, setExpositionsScrollTop } from "actions/app-actions";
 import { getExpositionsParametrized, setExpoPager } from "actions/expoActions";
 import { getCurrentUser } from "actions/user-actions";
 import { debounce } from "lodash";
+import { Pagination } from "components/pagination/Pagination";
 
 // - -
 
@@ -46,6 +50,8 @@ const Expositions = () => {
   const { expositions, cardsList, filter, pager } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
   const isFirstRender = useIsFirstRender();
+
+  const { t } = useTranslation("exhibitions-page");
 
   // Extract from filter obj (in useEffect, they are act as string change)
   const filterFilter = useMemo(() => filter.filter, [filter.filter]);
@@ -109,7 +115,7 @@ const Expositions = () => {
 
       <div
         id={CONTAINER_ID}
-        className="expositions-container"
+        className="expositions-container !mt-0"
         onScroll={handleScroll}
       >
         <div className="expositions-container-inner h-full flex flex-col">
@@ -129,8 +135,24 @@ const Expositions = () => {
                   );
                 })}
               </div>
-              <div className="mt-auto">
-                <Pager expositionsCount={expositions.count} pager={pager} />
+
+              <div className="mt-2 p-4 w-full flex justify-center md:justify-end items-center">
+                <Pagination
+                  page={pager.page}
+                  pageSize={pager.pageSize}
+                  itemsCount={expositions.count}
+                  onPageSizeChange={(newPageSize: number) => {
+                    dispatch(setExpoPager(pager.page, newPageSize));
+                  }}
+                  pageSizeId="expositions-page-size"
+                  pageSizeLabel={t("pager.entriesPerPage")}
+                  onPageBefore={(newPage: number, newPageSize: number) => {
+                    dispatch(setExpoPager(newPage, newPageSize));
+                  }}
+                  onPageAfter={(newPage: number, newPageSize: number) => {
+                    dispatch(setExpoPager(newPage, newPageSize));
+                  }}
+                />
               </div>
             </div>
           )}
@@ -138,8 +160,24 @@ const Expositions = () => {
           {!cardsList && (
             <div className="h-full flex flex-col">
               <Table expositions={expositions.items} filter={filter} />
-              <div className="mt-auto">
-                <Pager expositionsCount={expositions.count} pager={pager} />
+
+              <div className="mt-2 p-4 w-full flex justify-center md:justify-end items-center">
+                <Pagination
+                  page={pager.page}
+                  pageSize={pager.pageSize}
+                  itemsCount={expositions.count}
+                  onPageSizeChange={(newPageSize: number) => {
+                    dispatch(setExpoPager(pager.page, newPageSize));
+                  }}
+                  pageSizeId="expositions-page-size"
+                  pageSizeLabel={t("pager.entriesPerPage")}
+                  onPageBefore={(newPage: number, newPageSize: number) => {
+                    dispatch(setExpoPager(newPage, newPageSize));
+                  }}
+                  onPageAfter={(newPage: number, newPageSize: number) => {
+                    dispatch(setExpoPager(newPage, newPageSize));
+                  }}
+                />
               </div>
             </div>
           )}

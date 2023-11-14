@@ -30,8 +30,6 @@ import {
   ScreenChapterIntroTextHaloEffectOnType,
 } from "./screen-administration";
 
-import { ScreenChooserState } from "containers/expo-administration/expo-editor/screen-signpost/ScreenChooser";
-
 // - - - - -
 
 export type ScreenProps = {
@@ -123,10 +121,18 @@ export type GameQuizAnswer = {
   infopoints?: Infopoint[];
 };
 
-export type EraserToolType = "eraser1" | "eraser2" | "eraser3" | "eraser4";
+export type EraserToolType =
+  | "eraser"
+  | "broom"
+  | "brush"
+  | "chisel"
+  | "hammer"
+  | "stick"
+  | "towel"
+  | "wipe_towel";
 
 export type ReferenceObj = {
-  reference: ScreenChooserState | null;
+  reference: string | null; // string as screen.id
   image?: string;
   text?: string;
 };
@@ -168,12 +174,15 @@ export type StartScreen = {
   collaborators: Collaborator[];
   documents?: Document[];
   screenCompleted: boolean;
+  organization?: string;
+  organizationLink?: string;
 };
 
 export type FinishScreen = {
   id?: string;
   type: typeof screenType.FINISH;
   title?: string;
+  image?: string;
 };
 
 export type IntroScreen = {
@@ -374,6 +383,7 @@ export type SignpostScreen = {
   subheader?: string;
   referenceType?: SignpostReferenceType;
   links: ReferenceObj[];
+  nextScreenReference?: string; // screen.id as string
 };
 
 export type GameFindScreen = {

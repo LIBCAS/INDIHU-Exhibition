@@ -82,7 +82,6 @@ export const useExpoNavigation = () => {
     } else {
       closeDrawerWithoutMarking();
     }
-
     push(view);
   }, [
     name,

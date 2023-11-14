@@ -1,0 +1,19 @@
+{
+  "title": "Nastavení",
+
+  "editProfileSubtitle": "Editace profilu",
+  "usernameLabel": "Užívatelské jméno",
+  "firstnameLabel": "Jméno",
+  "lastnameLabel": "Přijmení",
+  "institutionLabel": "Instituce",
+  "emailLabel": "E-mail",
+  "emailNotificationsLabel": "E-mail notifikácie",
+  "editProfileActionButtonLabel": "Upravit profil",
+
+  "changePasswordSubtitle": "Změna hesla",
+  "newPasswordLabel": "Nové heslo",
+  "confirmPasswordLabel": "Potvrdit heslo",
+  "changePasswordActionButtonLabel": "Změnit heslo",
+
+  "deleteAccountActionButtonLabel": "Zrušit účet"
+}

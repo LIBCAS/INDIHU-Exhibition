@@ -14,6 +14,8 @@ import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
+import ScreenChooser from "./ScreenChooser";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -23,6 +25,9 @@ type LinkReferencesProps = {
 
 const LinkReferences = ({ activeScreen }: LinkReferencesProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.signpostScreen",
+  });
 
   return (
     <div className="container container-tabMenu">
@@ -42,7 +47,19 @@ const LinkReferences = ({ activeScreen }: LinkReferencesProps) => {
             <div className="w-2/5">
               <ReferenceTypeSelect activeScreen={activeScreen} />
             </div>
-            <div className="w-2/5" />
+            <div className="w-2/5">
+              <ScreenChooser
+                label={t("nextScreenChooserLabel")}
+                value={activeScreen.nextScreenReference ?? null}
+                onChange={(newScreenId) =>
+                  dispatch(
+                    updateScreenData({
+                      nextScreenReference: newScreenId,
+                    })
+                  )
+                }
+              />
+            </div>
           </div>
         </div>
 
@@ -88,7 +105,7 @@ const LinkReferences = ({ activeScreen }: LinkReferencesProps) => {
               );
             }}
           >
-            Pridat nový odkaz
+            {t("addNewReferenceLabel")}
           </Button>
         </div>
       </div>

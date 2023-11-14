@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 // Components
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
@@ -20,17 +21,6 @@ import { DialogType } from "components/dialogs/dialog-types";
 
 import cx from "classnames";
 
-const titles = [
-  "Odkaz 1",
-  "Odkaz 2",
-  "Odkaz 3",
-  "Odkaz 4",
-  "Odkaz 5",
-  "Odkaz 6",
-  "Odkaz 7",
-  "Odkaz 8",
-];
-
 // - - -
 
 type LinkItemProps = {
@@ -49,6 +39,9 @@ export const LinkItem = ({
   setCurrLinkImage,
 }: LinkItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.signpostScreen",
+  });
 
   const referenceType = useMemo(
     () => activeScreen.referenceType ?? "TEXT_IMAGES",
@@ -68,7 +61,8 @@ export const LinkItem = ({
             <Icon
               useMaterialUiIcon
               name="close"
-              tooltipText="Zavřít odpověď"
+              tooltipId="link-close-icon-tooltip"
+              tooltipText={t("closeIconTooltip")}
               tooltipVariant="dark"
             />
           </Button>
@@ -142,7 +136,7 @@ export const LinkItem = ({
 
           <div className="w-full flex justify-center items-center">
             <h2 className="text-center mb-0 font-thin">
-              {titles[currLinkIndex]}
+              {`${t("reference")} ${currLinkIndex + 1}`}
             </h2>
           </div>
 
@@ -189,7 +183,8 @@ export const LinkItem = ({
                 useMaterialUiIcon
                 name="delete"
                 style={{ fontSize: "24px" }}
-                tooltipText="Vymazat odpověď"
+                tooltipId="link-delete-icon-tooltip"
+                tooltipText={t("deleteIconTooltip")}
                 tooltipVariant="dark"
               />
             </Button>
@@ -202,7 +197,7 @@ export const LinkItem = ({
           {referenceType !== "ONLY_TEXT" && (
             <div>
               <ImageBox
-                title="Obrázek odkazu"
+                title={t("imageLabel")}
                 image={currLinkImage}
                 setImage={setCurrLinkImage}
                 onDelete={() =>
@@ -227,7 +222,7 @@ export const LinkItem = ({
                     })
                   )
                 }
-                helpIconLabel={"Test help icon label"}
+                helpIconLabel={t("imageTooltip")}
                 helpIconId={`editor-signpost-screen-reference-${currLinkIndex}`}
               />
             </div>
@@ -238,7 +233,7 @@ export const LinkItem = ({
               <div className={cx("flex w-full")}>
                 <TextField
                   id={`signpost-screen-textfield-text-${currLinkIndex}`}
-                  label="Text odkazu"
+                  label={t("linkTextLabel")}
                   rows={2}
                   maxRows={2}
                   value={currLinkObj.text ?? ""}
@@ -253,7 +248,7 @@ export const LinkItem = ({
                   }
                 />
                 <HelpIcon
-                  label="test help icon label"
+                  label={t("linkTextTooltip")}
                   id={`signpost-screen-reference-text-${currLinkIndex}`}
                 />
               </div>
@@ -261,13 +256,14 @@ export const LinkItem = ({
 
             <div className="w-full">
               <ScreenChooser
+                label={t("linkScreenLabel")}
                 value={activeScreen.links?.[currLinkIndex]?.reference ?? null}
-                onChange={(newScreenChooser) =>
+                onChange={(newScreenId) =>
                   dispatch(
                     updateScreenData({
                       links: activeScreen.links.map((l, lidx) =>
                         lidx === currLinkIndex
-                          ? { ...l, reference: newScreenChooser }
+                          ? { ...l, reference: newScreenId }
                           : l
                       ),
                     })
@@ -277,68 +273,6 @@ export const LinkItem = ({
             </div>
           </div>
         </div>
-
-        {/* <div className="flex flex-col items-center gap-4">
-          {referenceType !== "ONLY_TEXT" && (
-            <ImageBox
-              title="Obrázek odkazu"
-              image={currLinkImage}
-              setImage={setCurrLinkImage}
-              onDelete={() =>
-                dispatch(
-                  updateScreenData({
-                    links: activeScreen.links?.map((l, lidx) =>
-                      currLinkIndex === lidx
-                        ? { ...l, image: null, imageOrigData: null }
-                        : l
-                    ),
-                  })
-                )
-              }
-              onLoad={(width: number, height: number) =>
-                dispatch(
-                  updateScreenData({
-                    links: activeScreen.links?.map((l, lidx) =>
-                      currLinkIndex === lidx
-                        ? { ...l, imageOrigData: { width, height } }
-                        : l
-                    ),
-                  })
-                )
-              }
-              helpIconLabel={"Test help icon label"}
-              helpIconId={`editor-signpost-screen-reference-${currLinkIndex}`}
-            />
-          )}
-
-          {referenceType !== "ONLY_IMAGES" && (
-            <div className={cx("flex w-full")}>
-              <TextField
-                id={`signpost-screen-textfield-text-${currLinkIndex}`}
-                label="Text odkazu"
-                rows={3}
-                defaultValue={currLinkObj.text ?? ""}
-                onChange={(newText: string) =>
-                  dispatch(
-                    updateScreenData({
-                      links: activeScreen.links?.map((l, lidx) =>
-                        currLinkIndex === lidx ? { ...l, text: newText } : l
-                      ),
-                    })
-                  )
-                }
-              />
-              <HelpIcon
-                label="test help icon label"
-                id={`signpost-screen-reference-text-${currLinkIndex}`}
-              />
-            </div>
-          )}
-
-          <div className="w-full mt-2">
-            <ScreenChooser value={choosedScreen} setValue={setChoosedScreen} />
-          </div>
-        </div> */}
       </AccordionDetails>
     </Accordion>
   );

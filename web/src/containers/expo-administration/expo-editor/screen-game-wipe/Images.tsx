@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import SelectField from "react-md/lib/SelectFields";
 import ImageBox from "components/editors/ImageBox";
@@ -8,7 +9,6 @@ import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
-import { helpIconText } from "enums/text";
 import { dispatch } from "index";
 
 // - -
@@ -19,6 +19,9 @@ type ImagesProps = {
 
 const Images = ({ activeScreen }: ImagesProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameWipeScreen",
+  });
 
   const image1File = activeScreen.image1
     ? dispatch(getFileById(activeScreen.image1))
@@ -47,7 +50,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
         <div className="w-full flex flex-col justify-around items-center gap-2 lg:flex-row">
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
-              title="Vrchní obrázek"
+              title={t("upperImageLabel")}
               image={image1File}
               setImage={setImage1File}
               onDelete={() => {
@@ -60,14 +63,14 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   updateScreenData({ image1OrigData: { width, height } })
                 );
               }}
-              helpIconLabel={helpIconText.EDITOR_GAME_WIPE_IMAGE1}
+              helpIconLabel={t("upperImageTooltip")}
               helpIconId="editor-game-wipe-image1"
             />
           </div>
 
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
-              title="Spodní obrázek"
+              title={t("bottomImageLabel")}
               image={image2File}
               setImage={setImage2File}
               onDelete={() => {
@@ -80,7 +83,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   updateScreenData({ image2OrigData: { width, height } })
                 );
               }}
-              helpIconLabel={helpIconText.EDITOR_GAME_WIPE_IMAGE2}
+              helpIconLabel={t("bottomImageTooltip")}
               helpIconId="editor-game-wipe-image2"
             />
           </div>
@@ -97,29 +100,49 @@ export default Images;
 type EraseToolSelectProps = { activeScreen: GameWipeScreen };
 
 const EraseToolSelect = ({ activeScreen }: EraseToolSelectProps) => {
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameWipeScreen",
+  });
+
   return (
     <SelectField
       menuItems={[
         {
-          label: "Guma 1",
-          value: "eraser1",
+          label: t("eraserOption"),
+          value: "eraser",
         },
         {
-          label: "Guma 2",
-          value: "eraser2",
+          label: t("broomOption"),
+          value: "broom",
         },
         {
-          label: "Guma 3",
-          value: "eraser3",
+          label: t("brushOption"),
+          value: "brush",
         },
         {
-          label: "Guma 4",
-          value: "eraser4",
+          label: t("chiselOption"),
+          value: "chisel",
+        },
+        {
+          label: t("hammerOption"),
+          value: "hammer",
+        },
+        {
+          label: t("stickOption"),
+          value: "stick",
+        },
+        {
+          label: t("towelOption"),
+          value: "towel",
+        },
+        {
+          label: t("wipeTowelOption"),
+          value: "wipe_towel",
         },
       ]}
       itemLabel="label"
       itemValue="value"
-      label="Vyberte si gumovací nástroj"
+      label={t("chooseEraserTypeLabel")}
       position="below"
       id="erase-tool-select"
       defaultValue={activeScreen.eraserToolType ?? "eraser1"}

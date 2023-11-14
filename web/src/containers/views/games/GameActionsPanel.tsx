@@ -1,6 +1,7 @@
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
+import { useTranslation } from "react-i18next";
 
 type GameActionsPanelProps = {
   isGameFinished?: boolean;
@@ -15,6 +16,8 @@ export const GameActionsPanel = ({
   onGameReset,
   gameActions,
 }: GameActionsPanelProps) => {
+  const { t } = useTranslation("view-screen");
+
   return (
     <div className="flex flex-row-reverse gap-2">
       <div className="flex flex-row-reverse gap-2">
@@ -31,7 +34,7 @@ export const GameActionsPanel = ({
           />
           <BasicTooltip
             id="game-overlay-done-button-tooltip"
-            content="Hotovo"
+            content={t("game.controls.finished")}
           />
         </div>
 
@@ -47,7 +50,7 @@ export const GameActionsPanel = ({
           />
           <BasicTooltip
             id="game-overlay-replay-button-tooltip"
-            content="Zahrát znovu"
+            content={t("game.controls.play-again")}
           />
         </div>
       </div>

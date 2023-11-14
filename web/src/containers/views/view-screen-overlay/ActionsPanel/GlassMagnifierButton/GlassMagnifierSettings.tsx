@@ -14,6 +14,7 @@ import {
 } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -24,6 +25,10 @@ type GlassMagnifierSettingsProps = {
 const GlassMagnifierSettings = ({
   biggerElements = false,
 }: GlassMagnifierSettingsProps) => {
+  const { t } = useTranslation("view-screen", {
+    keyPrefix: "overlay.glassMagnifier",
+  });
+
   const {
     isGlassMagnifierEnabled,
     setIsGlassMagnifierEnabled,
@@ -44,7 +49,7 @@ const GlassMagnifierSettings = ({
           variant={biggerElements ? "subtitle1" : "subtitle2"}
           sx={{ color: isLightMode ? undefined : palette["white"] }}
         >
-          Zapnutie lupy
+          {t("magnifierTurningOn")}
         </Typography>
         <Switch
           size="medium"
@@ -77,7 +82,7 @@ const GlassMagnifierSettings = ({
           variant={biggerElements ? "subtitle1" : "subtitle2"}
           sx={{ color: isLightMode ? undefined : palette["white"] }}
         >
-          Typ lupy
+          {t("magnifierType")}
         </Typography>
         <FormControl>
           <RadioGroup
@@ -91,7 +96,7 @@ const GlassMagnifierSettings = ({
             <FormControlLabel
               value="SQUARE"
               control={<Radio size={biggerElements ? "medium" : "small"} />}
-              label="Štvorec"
+              label={t("squareOption")}
               // css-vqmohf-MuiButtonBase-root-MuiRadio-root.Mui-checked
               sx={{
                 "& .MuiRadio-root": {
@@ -105,7 +110,7 @@ const GlassMagnifierSettings = ({
             <FormControlLabel
               value="CIRCLE"
               control={<Radio size={biggerElements ? "medium" : "small"} />}
-              label="Kruh"
+              label={t("circleOption")}
               sx={{
                 "& .MuiRadio-root": {
                   color: isLightMode ? palette["black"] : palette["white"],
@@ -124,7 +129,7 @@ const GlassMagnifierSettings = ({
           variant={biggerElements ? "subtitle1" : "subtitle2"}
           sx={{ color: isLightMode ? undefined : palette["white"] }}
         >
-          Velikost lupy
+          {t("magnifierSize")}
         </Typography>
         <Slider
           min={50}
@@ -167,7 +172,7 @@ const GlassMagnifierSettings = ({
           variant={biggerElements ? "subtitle1" : "subtitle2"}
           sx={{ color: isLightMode ? undefined : palette["white"] }}
         >
-          Velikost zoomu
+          {t("zoomSize")}
         </Typography>
         <Slider
           min={1}

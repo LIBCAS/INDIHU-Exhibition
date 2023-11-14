@@ -36,7 +36,7 @@ const StartInfoPanel = ({
   openMobileInfoDialog,
   openChaptersDialog,
 }: StartInfoPanelProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
   const { bgTheming, fgTheming } = useExpoDesignData();
   const isSmall = useMediaQuery(breakpoints.down("lg"));
 

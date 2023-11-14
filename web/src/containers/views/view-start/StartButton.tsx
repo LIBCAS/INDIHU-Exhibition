@@ -6,7 +6,7 @@ interface StartButtonProps {
 }
 
 const StartButton = ({ handleStart }: StartButtonProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
   const { expoDesignData } = useExpoDesignData();
 
   return (

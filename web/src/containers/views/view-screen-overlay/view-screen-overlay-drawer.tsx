@@ -51,7 +51,7 @@ export const ViewScreenOverlayDrawer = ({
   const { isLightMode } = useExpoDesignData();
 
   const panelRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-creen", { keyPrefix: "overlayDrawer" });
 
   const drawerStyle = useSpring({
     transform: `translate(${isDrawerOpen ? "0%" : "-100%"}, 0)`,
@@ -106,10 +106,13 @@ export const ViewScreenOverlayDrawer = ({
           <span className="text-4xl font-bold py-4">
             {viewScreen?.title ?? t("no-title")}
           </span>
-          {screenText && (
+
+          {screenText ? (
             <div className="overflow-y-auto">
               <WysiwygPreview htmlMarkup={screenText} scrollbar />
             </div>
+          ) : (
+            <div className="italic">{t("no-text")}</div>
           )}
         </div>
 
@@ -122,7 +125,7 @@ export const ViewScreenOverlayDrawer = ({
               viewScreen.documents.length !== 0 && (
                 <>
                   <div className="text-2xl my-2 font-bold">
-                    Souvisejíci dokumenty:{" "}
+                    {t("relatedDocuments")}
                   </div>
                   {viewScreen.documents.map(
                     (document: Document, index: number) => (

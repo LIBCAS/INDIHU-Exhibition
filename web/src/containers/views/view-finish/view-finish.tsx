@@ -65,7 +65,7 @@ export const ViewFinish = ({
 
   const { push } = useHistory();
   const isSmall = useMediaQuery(breakpoints.down("md"));
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   const { bgFgTheming } = useExpoDesignData();
 

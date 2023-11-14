@@ -6,6 +6,7 @@ import { RefCallback } from "context/tutorial-provider/use-tutorial";
 import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import cx from "classnames";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -28,6 +29,8 @@ const PlayButton = ({
   isAnyTutorialOpened,
   step,
 }: PlayButtonProps) => {
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
+
   return (
     <>
       <div
@@ -47,7 +50,9 @@ const PlayButton = ({
 
       <BasicTooltip
         id="overlay-play-button-tooltip"
-        content={shouldIncrement ? "Pozastavit výstavu" : "Přehrát výstavu"}
+        content={
+          shouldIncrement ? t("stopButtonTooltip") : t("playButtonTooltip")
+        }
       />
     </>
   );

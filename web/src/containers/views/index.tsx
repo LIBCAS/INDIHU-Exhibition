@@ -22,7 +22,7 @@ import { ViewZoom } from "./view-zoom/view-zoom";
 import { ViewSlideshow } from "./view-slideshow/view-slideshow";
 import { ViewPhotogallery } from "./view-photogallery/view-photogallery";
 import { ViewImageChange } from "./view-image-change/view-image-change";
-import ViewExternal from "./view-external";
+import ViewExternal from "./view-external/view-external";
 import { ViewSignpost } from "./view-signpost/view-signpost";
 import { GameFind } from "./games/game-find/game-find";
 import { GameDraw } from "./games/game-draw/game-draw";

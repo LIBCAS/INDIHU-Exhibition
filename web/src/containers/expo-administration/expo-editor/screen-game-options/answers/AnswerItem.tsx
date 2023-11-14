@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 // Components
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
@@ -22,20 +23,10 @@ import { AppDispatch } from "store/store";
 // Actions and utils
 import { setDialog } from "actions/dialog-actions";
 import { updateScreenData } from "actions/expoActions/screen-actions-typed";
-import { helpIconText } from "enums/text";
 import { DialogType } from "components/dialogs/dialog-types";
 import cx from "classnames";
 
-const titles = [
-  "Varianta A",
-  "Varianta B",
-  "Varianta C",
-  "Varianta D",
-  "Varianta E",
-  "Varianta F",
-  "Varianta G",
-  "Varianta H",
-];
+const indexToVariantChar = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 // - - -
 
@@ -55,6 +46,9 @@ const AnswerItem = ({
   setCurrAnswerImage,
 }: AnswerItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameQuizScreen",
+  });
 
   return (
     <Accordion
@@ -69,7 +63,8 @@ const AnswerItem = ({
             <Icon
               useMaterialUiIcon
               name="close"
-              tooltipText="Zavřít odpověď"
+              tooltipId="answer-close-icon-tooltip"
+              tooltipText={t("closeAnswerTooltip")}
               tooltipVariant="dark"
             />
           </Button>
@@ -148,7 +143,7 @@ const AnswerItem = ({
                 "font-thin": !currAnswer.correct,
               })}
             >
-              {titles[currAnswerIndex]}
+              {`${t("variant")} ${indexToVariantChar[currAnswerIndex]}`}
             </h2>
           </div>
 
@@ -158,7 +153,7 @@ const AnswerItem = ({
                 <Checkbox
                   id={`screen-game-options-answer-${currAnswerIndex}`}
                   name={`checkboxStateGameOptions-${currAnswerIndex}`}
-                  label="správná odpověd"
+                  label={t("correctAnswer")}
                   checked={!!activeScreen.answers[currAnswerIndex]?.correct}
                   onChange={(newValue: boolean) =>
                     dispatch(
@@ -195,7 +190,7 @@ const AnswerItem = ({
               )}
 
               <HelpIcon
-                label={helpIconText.EDITOR_GAME_OPTIONS_CORRECT_ANSWER}
+                label={t("correctAnswerTooltip")}
                 id="editor-game-options-correct-answer"
                 className="!flex"
               />
@@ -243,7 +238,8 @@ const AnswerItem = ({
                 useMaterialUiIcon
                 name="delete"
                 style={{ fontSize: "24px" }}
-                tooltipText="Vymazat odpověď"
+                tooltipId="delete-answer-icon-tooltip"
+                tooltipText={t("deleteAnswerTooltip")}
                 tooltipVariant="dark"
               />
             </Button>
@@ -257,7 +253,7 @@ const AnswerItem = ({
           <div className="max-w-full flex flex-col gap-4 mb-8">
             {activeScreen.quizType !== "ONLY_TEXT" && (
               <ImageBox
-                title="Doprovodný obrázek"
+                title={t("answerImageLabel")}
                 image={currAnswerImage}
                 setImage={setCurrAnswerImage}
                 onDelete={() =>
@@ -289,9 +285,8 @@ const AnswerItem = ({
                     })
                   )
                 }
-                helpIconLabel={helpIconText.EDITOR_GAME_OPTIONS_ANSWER_IMAGE}
+                helpIconLabel={t("answerImageTooltip")}
                 helpIconId="editor-game-options-answer-image"
-                // TODO - add support for infopoints
                 infopoints={
                   activeScreen.answers[currAnswerIndex]?.infopoints ?? []
                 }
@@ -333,7 +328,7 @@ const AnswerItem = ({
               >
                 <TextField
                   id={`game-options-textfield-text-${currAnswerIndex}`}
-                  label="Text odpovědi"
+                  label={t("answerTextLabel")}
                   rows={3}
                   defaultValue={currAnswer.text}
                   onChange={(newText: string) =>
@@ -349,7 +344,7 @@ const AnswerItem = ({
                   }
                 />
                 <HelpIcon
-                  label={helpIconText.EDITOR_GAME_OPTIONS_TEXT}
+                  label={t("answerTextTooltip")}
                   id="editor-game-options-text"
                 />
               </div>

@@ -21,7 +21,6 @@ const ScreenCardMenu = ({
   viewUrl,
   editUrl,
   change,
-  expoId,
   aloneScreen,
   position,
 }) => {
@@ -46,7 +45,7 @@ const ScreenCardMenu = ({
             openViewer(
               type === "START" || type === "FINISH"
                 ? `/view/${viewUrl}/${type === "START" ? "start" : "finish"}`
-                : `/screen/${expoId}/${rowNum}/${colNum}`
+                : `/view/${viewUrl}/${rowNum}/${colNum}`
             )
           }
         />

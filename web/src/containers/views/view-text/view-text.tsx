@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { useTranslation } from "react-i18next";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import WysiwygPreview from "components/editors/WysiwygEditor/WysiwygPreview";
@@ -19,8 +18,6 @@ const stateSelector = createSelector(
 
 export const ViewText = () => {
   const { viewScreen } = useSelector(stateSelector);
-
-  const { t } = useTranslation("screen");
   const { fgTheming } = useExpoDesignData();
 
   return (
@@ -31,7 +28,7 @@ export const ViewText = () => {
             ...fgTheming,
           })}
         >
-          {viewScreen.title ?? t("no-title")}
+          {viewScreen.title}
         </div>
         <div className="mb-auto">
           <WysiwygPreview

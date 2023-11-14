@@ -23,8 +23,8 @@ import Verify from "containers/verify";
 import Expositions from "containers/expositions/Expositions";
 import Expo from "containers/expo-administration/Expo";
 import { ExpoViewer } from "containers/expo-viewer/expo-viewer";
-import Profile from "containers/profile/profile";
-import Users from "containers/users/users";
+import Profile from "containers/profile/Profile";
+import Users from "containers/users/Users";
 import Admin from "containers/admin/admin";
 
 // Models
@@ -98,7 +98,7 @@ export const App = () => {
           <Route path="/exhibitions" component={Expositions} />
           <Route path="/expo/:id" component={Expo} />
           <Route path="/view/:name" component={ExpoViewer} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/profile" render={() => <Profile isAdmin={admin} />} />
           {admin && <Route path="/users" component={Users} />}
           {admin && <Route path="/administration" component={Admin} />}
         </AuthController>

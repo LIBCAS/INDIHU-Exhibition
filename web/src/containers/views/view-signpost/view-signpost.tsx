@@ -11,12 +11,11 @@ import { AppState } from "store/store";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as SignpostScreen,
-  ({ expo }: AppState) => expo.viewExpo?.url,
-  (viewScreen, expoUrl) => ({ viewScreen, expoUrl })
+  (viewScreen) => ({ viewScreen })
 );
 
 export const ViewSignpost = ({ screenPreloadedFiles }: ScreenProps) => {
-  const { viewScreen, expoUrl } = useSelector(stateSelector);
+  const { viewScreen } = useSelector(stateSelector);
 
   const referenceType = useMemo(
     () => viewScreen.referenceType ?? "TEXT_IMAGES",
@@ -44,7 +43,6 @@ export const ViewSignpost = ({ screenPreloadedFiles }: ScreenProps) => {
             }
             referenceType={referenceType}
             numberOfTotalReferences={viewScreen.links.length}
-            expoUrl={expoUrl}
           />
         ))}
       </div>

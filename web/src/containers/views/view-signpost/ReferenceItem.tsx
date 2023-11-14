@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useScreenCoordinatesById } from "hooks/view-hooks/useScreenCoordinatesById";
 
+import { Link } from "react-router-dom";
 import { Icon } from "components/icon/icon";
 
 import { ReferenceObj, SignpostReferenceType } from "models";
@@ -16,7 +17,6 @@ type ReferenceItemProps = {
   preloadedReferenceImgSrc: string;
   referenceType: SignpostReferenceType;
   numberOfTotalReferences: number;
-  expoUrl: string | undefined;
 };
 
 const ReferenceItem = ({
@@ -25,23 +25,16 @@ const ReferenceItem = ({
   preloadedReferenceImgSrc,
   referenceType,
   numberOfTotalReferences,
-  expoUrl,
 }: ReferenceItemProps) => {
   const [isReferenceHovered, setIsReferenceHovered] = useState<boolean>(false);
-
-  const referenceUrl = useMemo(() => {
-    const { chapterIndex, screenIndex } = referenceObj.reference ?? {};
-    if (chapterIndex === "start") {
-      return `/view/${expoUrl}/start`;
-    }
-    if (chapterIndex === "finish") {
-      return `/view/${expoUrl}/finish`;
-    }
-    return `/view/${expoUrl}/${chapterIndex}/${screenIndex}`;
-  }, [referenceObj.reference, expoUrl]);
+  const { referenceUrl } =
+    useScreenCoordinatesById(referenceObj.reference) ?? {};
 
   return (
-    <Link to={referenceUrl} key={referenceIndex}>
+    <Link
+      to={(location) => (referenceUrl ? referenceUrl : location)}
+      key={referenceIndex}
+    >
       <div
         className={cx(
           "w-[340px] flex flex-col gap-4 self-stretch p-4 md:p-6 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer",

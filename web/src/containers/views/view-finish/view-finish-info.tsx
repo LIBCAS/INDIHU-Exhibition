@@ -20,7 +20,7 @@ export const ViewFinishInfo = ({
   viewStart,
 }: ViewFinishInfoProps) => {
   const collaborators = viewStart?.collaborators ?? [];
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   const tags = useMemo(() => viewExpo?.tags, [viewExpo?.tags]);
 

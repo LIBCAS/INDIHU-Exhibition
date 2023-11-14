@@ -16,6 +16,7 @@ import { BasicTooltip } from "components/tooltip/tooltip";
 import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
 import { Size, PhotogalleryImages } from "models";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -114,6 +115,10 @@ const Toolbar = ({
   overlayOpacityAnimation,
   currPhotoObj,
 }: ToolbarProps) => {
+  const { t } = useTranslation("view-screen", {
+    keyPrefix: "photogalleryScreen",
+  });
+
   const { openNewTopDialog, closeTopDialog, isInformationDialogOpen } =
     useDialogRef();
 
@@ -141,7 +146,7 @@ const Toolbar = ({
             </Button>
             <BasicTooltip
               id="photogallery-zoom-in-button-tooltip"
-              content="Přiblížit"
+              content={t("zoomInTooltip")}
             />
           </div>
 
@@ -157,7 +162,7 @@ const Toolbar = ({
             </Button>
             <BasicTooltip
               id="photogallery-zoom-reset-button-tooltip"
-              content="Resetovat přiblížení"
+              content={t("resetZoomTooltip")}
             />
           </div>
 
@@ -173,7 +178,7 @@ const Toolbar = ({
             </Button>
             <BasicTooltip
               id="photogallery-zoom-out-button-tooltip"
-              content="Oddálit"
+              content={t("zoomOutTooltip")}
             />
           </div>
 
@@ -190,7 +195,7 @@ const Toolbar = ({
               </Button>
               <BasicTooltip
                 id="photogallery-photo-description-button-tooltip"
-                content="Otevřít popis fotografie"
+                content={t("openDescTooltip")}
               />
             </div>
           )}
@@ -207,7 +212,7 @@ const Toolbar = ({
                 style={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip id="photogallery-close" content="Zavřít" />
+            <BasicTooltip id="photogallery-close" content={t("closeTooltip")} />
           </div>
         </div>
       </animated.div>

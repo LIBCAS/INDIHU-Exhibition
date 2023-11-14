@@ -28,7 +28,7 @@ export const GameFind = ({
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [pin, setPin] = useState<{ x: number; y: number }>();
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen");
 
   const onFinish = useCallback(() => {
     setFinished(true);

@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { useExpoScreenStructure } from "hooks/view-hooks/expo-screen-structure-hook";
 
 import {
@@ -15,62 +13,14 @@ import { screenType } from "enums/screen-type";
 
 // - -
 
-// Utils
-const parseScreenChooserStateToStringValue = (
-  screenChooserState: ScreenChooserState | null
-) => {
-  if (screenChooserState === null) {
-    return ""; // empty string will pick no option
-  }
-  const { chapterIndex, screenIndex } = screenChooserState;
-  if (chapterIndex === "start") {
-    return "start";
-  }
-  if (chapterIndex === "finish") {
-    return "finish";
-  }
-  if (screenIndex === null) {
-    console.error("Screen chooser has received invalid input value!");
-    return "";
-  }
-  return `${chapterIndex}-${screenIndex}`;
-};
-
-const getChooserStateFromStringValue = (value: string): ScreenChooserState => {
-  // "start" | "finish" |  "0-0"
-  if (value === "start") {
-    return { chapterIndex: "start", screenIndex: null };
-  }
-  if (value === "finish") {
-    return { chapterIndex: "finish", screenIndex: null };
-  }
-
-  const [chapterIndex, screenIndex] = value.split("-");
-  return {
-    chapterIndex: parseInt(chapterIndex),
-    screenIndex: parseInt(screenIndex),
-  };
-};
-
-// - -
-
-export type ScreenChooserState = {
-  chapterIndex: "start" | "finish" | number; // numbering from 0
-  screenIndex: number | null; // numbering from 0
-};
-
 type ScreenChooserProps = {
-  value: ScreenChooserState | null;
-  onChange: (newScreenChooserState: ScreenChooserState) => void;
+  value: string | "start" | "finish" | null; // screen.id as string, or initial null (start and finish screns do not have id)
+  onChange: (newScreenId: string | "start" | "finish") => void;
+  label: string;
 };
 
-const ScreenChooser = ({ value, onChange }: ScreenChooserProps) => {
+const ScreenChooser = ({ value, onChange, label }: ScreenChooserProps) => {
   const { allScreensStructure } = useExpoScreenStructure();
-
-  const selectFieldValue = useMemo(
-    () => parseScreenChooserStateToStringValue(value),
-    [value]
-  );
 
   return (
     <FormControl variant="standard" fullWidth>
@@ -90,13 +40,13 @@ const ScreenChooser = ({ value, onChange }: ScreenChooserProps) => {
           },
         }}
       >
-        Zvolená odkazová obrazovka
+        {label}
       </InputLabel>
 
       <Select
         labelId="screen-chooser-label"
         id="screen-chooser-select"
-        value={selectFieldValue}
+        value={value ?? ""}
         onChange={(
           event: SelectChangeEvent<string | "start" | "finish" | "">
         ) => {
@@ -107,9 +57,7 @@ const ScreenChooser = ({ value, onChange }: ScreenChooserProps) => {
             );
             return;
           }
-
-          const chooserState = getChooserStateFromStringValue(newValue);
-          onChange(chooserState);
+          onChange(newValue);
         }}
         sx={{
           "& .MuiSelect-standard": {
@@ -148,7 +96,7 @@ const ScreenChooser = ({ value, onChange }: ScreenChooserProps) => {
                   : screen.type === screenType.FINISH
                   ? "finish"
                   : "chapterIndex" in screen && "screenIndex" in screen
-                  ? `${screen.chapterIndex}-${screen.screenIndex}`
+                  ? screen.id
                   : "" // NOTE: "" will select no option
               }
             >

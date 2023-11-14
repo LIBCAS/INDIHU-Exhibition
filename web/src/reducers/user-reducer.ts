@@ -12,18 +12,39 @@ import { map } from "lodash";
 
 // - -
 
+export type UserTableType = "ALL" | "FOR_ACCEPT";
+export type UserStateType =
+  | "ACCEPTED"
+  | "NOT_VERIFIED"
+  | "TO_ACCEPT"
+  | "DELETED";
+
+export type UserTableFilter = UserStateType | "ALL";
+export type UserTableSort =
+  | "updated"
+  | "created"
+  | "userName"
+  | "firstName"
+  | "surname"
+  | "email"
+  | "institution";
+
+// - -
+
 export type UserInfoObj = {
-  id: string;
-  firstName: string;
-  surName: string;
-  email: string;
-  verifiedEmail: boolean;
-  userName: string;
-  institution: string;
-  state: string;
   accepted: boolean;
-  ldapUser: boolean;
   deletedUser: boolean;
+  email: string; // could be undefined
+  firstName: string;
+  id: string;
+  institution: string; // could be undefined
+  ldapUser: boolean;
+  registrationNotifications: boolean;
+  state: UserStateType;
+  surname: string;
+  userName: string;
+  verifiedEmail: boolean;
+  toAccept?: UserInfoObj; // TODO - improvised
 };
 
 export type AllUsers = {
@@ -31,10 +52,10 @@ export type AllUsers = {
   count: number;
   page: number;
   pageSize: number;
-  filter: string;
-  sort: string;
+  filter: UserTableFilter;
+  sort: UserTableSort;
   search: string;
-  table: string;
+  table: UserTableType;
 };
 
 export type UsersObj = {

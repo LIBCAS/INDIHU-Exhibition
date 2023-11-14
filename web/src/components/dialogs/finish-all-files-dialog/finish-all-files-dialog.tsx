@@ -33,7 +33,7 @@ export const FinishAllFilesDialog = ({
   startFiles,
   screensFiles,
 }: FinishAllFilesDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
   const { isLightMode } = useExpoDesignData();
 
   const expoFiles = startFiles?.filter(

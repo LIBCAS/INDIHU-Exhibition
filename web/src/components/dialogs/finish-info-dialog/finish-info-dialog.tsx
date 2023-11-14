@@ -16,7 +16,7 @@ export const FinishInfoDialog = ({
   viewExpo,
   viewStart,
 }: FinishInfoDialogProps) => {
-  const { t } = useTranslation("exhibition");
+  const { t } = useTranslation("view-exhibition");
 
   return (
     <DialogWrap

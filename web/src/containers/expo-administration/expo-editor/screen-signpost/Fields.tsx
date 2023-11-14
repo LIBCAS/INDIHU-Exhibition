@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import TextField from "react-md/lib/TextFields";
 import HelpIcon from "components/help-icon";
@@ -16,12 +17,15 @@ type HeaderTextFieldProps = { activeScreen: SignpostScreen };
 
 export const HeaderTextField = ({ activeScreen }: HeaderTextFieldProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.signpostScreen",
+  });
 
   return (
     <div className="flex">
       <TextField
         id="screen-signpost-header-textfield"
-        label="Hlavička rozcestníku"
+        label={t("headerLabel")}
         lineDirection="center"
         defaultValue={activeScreen.header ?? ""}
         onChange={(newHeaderValue: string) =>
@@ -32,7 +36,7 @@ export const HeaderTextField = ({ activeScreen }: HeaderTextFieldProps) => {
       <div className="self-center">
         <HelpIcon
           id="screen-signpost-header-helpIcon"
-          label="Test header help icon label"
+          label={t("headerTooltip")}
         />
       </div>
     </div>
@@ -47,12 +51,15 @@ export const SubheaderTextField = ({
   activeScreen,
 }: SubheaderTextFieldProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.signpostScreen",
+  });
 
   return (
     <div className="flex">
       <TextField
         id="screen-signpost-subheader-textfield"
-        label="Sub hlavička rozcestníku"
+        label={t("subheaderLabel")}
         lineDirection="center"
         defaultValue={activeScreen.subheader ?? ""}
         onChange={(newSubHeaderValue: string) =>
@@ -63,7 +70,7 @@ export const SubheaderTextField = ({
       <div className="self-center">
         <HelpIcon
           id="screen-signpost-subheader-helpIcon"
-          label="Test sub header help icon label"
+          label={t("subheaderTooltip")}
         />
       </div>
     </div>
@@ -78,26 +85,29 @@ export const ReferenceTypeSelect = ({
   activeScreen,
 }: ReferenceTypeSelectProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.signpostScreen",
+  });
 
   return (
     <SelectField
       menuItems={[
         {
-          label: "Iba text",
+          label: t("onlyTextOption"),
           value: SignpostReferenceEnum.ONLY_TEXT,
         },
         {
-          label: "Iba obrázok",
+          label: t("onlyImageOption"),
           value: SignpostReferenceEnum.ONLY_IMAGES,
         },
         {
-          label: "Aj obrázok aj text",
+          label: t("bothTextImageOption"),
           value: SignpostReferenceEnum.TEXT_IMAGES,
         },
       ]}
       itemLabel={"label"}
       itemValue={"value"}
-      label="Vyberte formu odkazov"
+      label={t("referenceTypeLabel")}
       position="below"
       id="screen-signpost-referenceType-selectfield"
       defaultValue={activeScreen.referenceType ?? "TEXT_IMAGES"}

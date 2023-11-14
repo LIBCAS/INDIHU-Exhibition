@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useTranslation } from "react-i18next";
 
 import { TagValues } from "containers/expo-administration/expo-settings/tags/tags-options";
 import {
@@ -16,6 +17,7 @@ interface TagsListProps {
 }
 
 const TagsList = ({ tags }: TagsListProps) => {
+  const { t } = useTranslation("expo");
   const { expoDesignData, isLightMode } = useExpoDesignData();
   const sortedTags = useMemo(() => sortTagValues(tags), [tags]);
 
@@ -30,7 +32,7 @@ const TagsList = ({ tags }: TagsListProps) => {
           })}
           style={{ backgroundColor: expoDesignData?.tagsColor }}
         >
-          {getTagLabelFromValue(tagValue)}
+          {t(getTagLabelFromValue(tagValue) ?? "")}
         </div>
       ))}
     </div>

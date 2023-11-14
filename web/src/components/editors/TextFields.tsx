@@ -8,7 +8,6 @@ import HelpIcon from "components/help-icon";
 import CharacterCount from "./character-count";
 
 import { updateScreenData } from "actions/expoActions";
-import { helpIconText } from "enums/text";
 
 // - -
 
@@ -87,7 +86,10 @@ export const GameTitleTextField = ({
           dispatch(updateScreenData({ title: newTitle }))
         }
       />
-      <HelpIcon label={t("descFields.gameNameTitle")} id="editor-game-title" />
+      <HelpIcon
+        label={t("descFields.gameNameTooltip")}
+        id="editor-game-title"
+      />
     </div>
   );
 };
@@ -100,13 +102,14 @@ export const GameTaskTextField = ({
   taskValue,
   taskHelpIconLabel,
 }: GameTaskTextFieldProps) => {
+  const { t } = useTranslation("expo-editor", { keyPrefix: "descFields" });
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="flex-row-nowrap">
       <TextField
         id="game-textfield-task"
-        label="Úkol minihry"
+        label={t("gameTask")}
         defaultValue={taskValue}
         onChange={(newTask: string) =>
           dispatch(updateScreenData({ task: newTask }))
@@ -126,6 +129,7 @@ export const GameResultTimeTextField = ({
 }: GameResultTimeTextFieldProps) => {
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", { keyPrefix: "descFields" });
 
   return (
     <div className="flex-row-nowrap">
@@ -133,7 +137,7 @@ export const GameResultTimeTextField = ({
         <div className="form-input form-input-with-suffix">
           <TextField
             id="game-textfield-result-time"
-            label="Doba zobrazení výsledku"
+            label={t("gameResultTime")}
             type="number"
             defaultValue={resultTimeValue}
             onChange={(newResultTimeValue: number) => {
@@ -160,7 +164,7 @@ export const GameResultTimeTextField = ({
         )}
       </div>
       <HelpIcon
-        label={helpIconText.EDITOR_GAME_RESULT_TIME}
+        label={t("gameResultTimeTooltip")}
         id="editor-game-result-time"
       />
     </div>

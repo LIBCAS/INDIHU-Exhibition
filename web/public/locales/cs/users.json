@@ -1,0 +1,33 @@
+{
+  "title": "Uživatelé",
+  "allUsersLabel": "Všichni uživatelé",
+  "usersToAcceptLabel": "Uživatelé ke schválení",
+
+  "usersState": {
+    "accepted": "Akceptován",
+    "not_verified": "Neoveřen",
+    "to_accept": "Ke schválení",
+    "deleted": "Smazán"
+  },
+  "usersSort": {
+    "updated": "Datum poslední aktualizace",
+    "created": "Datum vytvoření",
+    "userName": "Uživatelské jméno",
+    "firstName": "Jméno",
+    "surname": "Přijmení",
+    "email": "Email",
+    "institution": "Instituce"
+  },
+
+  "searchLabel": "Hledat",
+  "table": {
+    "username": "Uživatelské jméno",
+    "firstname": "Jméno",
+    "surname": "Přijmení",
+    "email": "E-mail",
+    "institution": "Instituce",
+    "state": "Stav",
+    "action": "Akce"
+  },
+  "pagesizeLabel": "Záznamu na stránku:"
+}

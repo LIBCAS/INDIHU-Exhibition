@@ -1,10 +1,12 @@
+import { useTranslation } from "react-i18next";
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
 
 import cx from "classnames";
-import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
-import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 // - -
 
@@ -14,6 +16,7 @@ type SettingsButtonProps = {
 
 const SettingsButton = ({ isAnyTutorialOpened }: SettingsButtonProps) => {
   const { openNewTopDialog } = useDialogRef();
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
 
   return (
     <>
@@ -34,7 +37,7 @@ const SettingsButton = ({ isAnyTutorialOpened }: SettingsButtonProps) => {
 
       <BasicTooltip
         id="overlay-settings-button-tooltip"
-        content="Otevřít nastavení"
+        content={t("settingsButtonTooltip")}
       />
     </>
   );

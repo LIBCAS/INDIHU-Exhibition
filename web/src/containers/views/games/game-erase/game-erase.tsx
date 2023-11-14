@@ -40,7 +40,7 @@ export const GameErase = ({
   actionsPanelRef,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const { t } = useTranslation("screen");
+  const { t } = useTranslation("view-screen");
   const { expoDesignData, palette } = useExpoDesignData();
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
@@ -53,7 +53,7 @@ export const GameErase = ({
   // - -
 
   const eraserToolType = useMemo(
-    () => viewScreen.eraserToolType ?? "eraser1",
+    () => viewScreen.eraserToolType ?? "eraser",
     [viewScreen.eraserToolType]
   );
 
@@ -201,10 +201,18 @@ export const GameErase = ({
 
       <canvas
         className={cx("absolute", {
-          [classes.eraser1]: !isGameFinished && eraserToolType === "eraser1",
-          [classes.eraser2]: !isGameFinished && eraserToolType === "eraser2",
-          [classes.eraser3]: !isGameFinished && eraserToolType === "eraser3",
-          [classes.eraser4]: !isGameFinished && eraserToolType === "eraser4",
+          [classes.eraserEraser]:
+            !isGameFinished && eraserToolType === "eraser",
+          [classes.eraserBroom]: !isGameFinished && eraserToolType === "broom",
+          [classes.eraserBrush]: !isGameFinished && eraserToolType === "brush",
+          [classes.eraserChisel]:
+            !isGameFinished && eraserToolType === "chisel",
+          [classes.eraserHammer]:
+            !isGameFinished && eraserToolType === "hammer",
+          [classes.eraserStick]: !isGameFinished && eraserToolType === "stick",
+          [classes.eraserTowel]: !isGameFinished && eraserToolType === "towel",
+          [classes.eraserWipetowel]:
+            !isGameFinished && eraserToolType === "wipe_towel",
         })}
         ref={canvasRef}
         onMouseDown={updateMousePosition}

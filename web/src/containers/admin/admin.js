@@ -3,7 +3,7 @@ import { compose, lifecycle, withState } from "recompose";
 
 import { getAdminSettings } from "../../actions/admin-actions";
 
-import AppHeader from "components/app-header";
+import AppHeader from "components/app-header/AppHeader";
 import Header from "./header";
 import Settings from "./settings";
 import SettingsForm from "./settings-form";
@@ -12,7 +12,7 @@ const Admin = ({ settings, activeForm, setActiveForm }) => (
   <div>
     <AppHeader adminStyle />
     {settings && (
-      <div className="container">
+      <div className="container !pt-6">
         <Header />
         {activeForm === "adminSettingsForm" ? (
           <SettingsForm

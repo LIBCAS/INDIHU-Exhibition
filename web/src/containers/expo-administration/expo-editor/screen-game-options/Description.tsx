@@ -1,17 +1,16 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 
-import Music from "components/editors/music";
 import HelpIcon from "components/help-icon";
 
 import { AppDispatch } from "store/store";
 import { GameQuizScreen } from "models";
 
-import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
-import { helpIconText } from "enums/text";
+import { MuteChapterMusicCheckbox } from "components/editors/Checkboxes";
 
 type DescriptionProps = {
   activeScreen: GameQuizScreen;
@@ -20,8 +19,9 @@ type DescriptionProps = {
 const Description = (props: DescriptionProps) => {
   const { activeScreen } = props;
   const dispatch = useDispatch<AppDispatch>();
-
-  const musicFile = dispatch(getFileById(activeScreen.music));
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameQuizScreen",
+  });
 
   return (
     <div className="container container-tabMenu">
@@ -31,49 +31,45 @@ const Description = (props: DescriptionProps) => {
             <div className="flex-row-nowrap">
               <TextField
                 id="game-options-textfield-name"
-                label="Název"
+                label={t("nameLabel")}
                 defaultValue={activeScreen?.title ?? ""}
                 onChange={(newTitle: string) =>
-                  updateScreenData({ title: newTitle })
+                  dispatch(updateScreenData({ title: newTitle }))
                 }
               />
               <HelpIcon
-                label={helpIconText.EDITOR_GAME_TITLE}
+                label={t("nameTooltip")}
                 id="editor-game-options-title"
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="game-options-textfield-task"
-                label="Otázka"
+                label={t("taskLabel")}
                 defaultValue={activeScreen?.task ?? ""}
                 onChange={(newTask: string) =>
-                  updateScreenData({ task: newTask })
+                  dispatch(updateScreenData({ task: newTask }))
                 }
               />
               <HelpIcon
-                label={helpIconText.EDITOR_GAME_OPTIONS_TASK}
+                label={t("taskTooltip")}
                 id="editor-game-options-task"
               />
             </div>
           </div>
           <div className="part margin-bottom margin-horizontal">
-            <Music
-              aloneScreen={activeScreen.aloneScreen}
-              musicFile={musicFile}
-              muteChapterMusic={!!activeScreen.muteChapterMusic}
-              helpIconTitle={helpIconText.EDITOR_DESCRIPTION_MUSIC}
-              id="editor-game-options-music"
+            <MuteChapterMusicCheckbox
+              muteChapterMusicValue={!!activeScreen.muteChapterMusic}
             />
             <div className="row">
               <Checkbox
                 id="game-options-checkbox-screencompleted"
                 name="simple-checkboxes"
-                label="Obrazovka je dokončená"
+                label={t("screenCompleted")}
                 checked={activeScreen.screenCompleted}
                 value={activeScreen.screenCompleted}
                 onChange={(newValue: boolean) =>
-                  updateScreenData({ screenCompleted: newValue })
+                  dispatch(updateScreenData({ screenCompleted: newValue }))
                 }
                 className="checkbox-shift-left-by-padding"
               />
