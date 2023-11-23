@@ -7,6 +7,7 @@ import {
   MenuItem,
   SelectChangeEvent,
   ListSubheader,
+  FormHelperText,
 } from "@mui/material";
 
 import { screenType } from "enums/screen-type";
@@ -17,13 +18,31 @@ type ScreenChooserProps = {
   value: string | "start" | "finish" | null; // screen.id as string, or initial null (start and finish screns do not have id)
   onChange: (newScreenId: string | "start" | "finish") => void;
   label: string;
+  helperText?: string;
+  error?: boolean;
 };
 
-const ScreenChooser = ({ value, onChange, label }: ScreenChooserProps) => {
+const ScreenChooser = ({
+  value,
+  onChange,
+  label,
+  helperText,
+  error,
+}: ScreenChooserProps) => {
   const { allScreensStructure } = useExpoScreenStructure();
 
   return (
-    <FormControl variant="standard" fullWidth>
+    <FormControl
+      variant="standard"
+      fullWidth
+      error={error}
+      sx={{
+        "& .MuiFormHelperText-root": {
+          fontSize: "12px",
+          fontFamily: "Work Sans",
+        },
+      }}
+    >
       <InputLabel
         id="screen-chooser-label"
         sx={{
@@ -107,6 +126,8 @@ const ScreenChooser = ({ value, onChange, label }: ScreenChooserProps) => {
           );
         })}
       </Select>
+
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 };

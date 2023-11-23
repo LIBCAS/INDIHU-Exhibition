@@ -15,7 +15,23 @@ export const getMuiTheme = (isLightMode: boolean): ThemeOptions => {
       },
     },
 
+    palette: {
+      error: {
+        main: "#f44336",
+      },
+    },
+
     components: {
+      // Name of the component
+      MuiFormHelperText: {
+        styleOverrides: {
+          // Name of the slot
+          root: {
+            fontSize: "12px",
+          },
+        },
+      },
+
       // Name of the component
       MuiModal: {
         styleOverrides: {

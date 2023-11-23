@@ -14,7 +14,7 @@ import { SlideshowScreen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions";
 import { isEmpty } from "lodash";
 import { SlideshowScreenAnimationEnum } from "enums/administration-screens";
 

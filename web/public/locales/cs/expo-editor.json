@@ -203,7 +203,8 @@
     },
     "externalScreen": {
       "insertedCodeLabel": "Kód vložený do stránky",
-      "insertedCodeTooltip": "Zde vložte embed kód webové stránky či služby, kterou chcete do výstavy zapojit."
+      "insertedCodeTooltip": "Zde vložte embed kód webové stránky či služby, kterou chcete do výstavy zapojit.",
+      "shouldScaleExternalDataLabel": "Škálovat na celou obrazovku"
     },
     "signpostScreen": {
       "headerLabel": "Hlavička rozcestníku",
@@ -301,9 +302,9 @@
       "deleteAnswerTooltip": "Vymazat odpověd",
       "closeAnswerTooltip": "Zavřit odpověd",
       "answerImageLabel": "Doprovodný obrázek",
-      "asnwerImageTooltip": "Vyberte ilustrační obrázek z knihovny dokumentů.",
-      "asnwerTextLabel": "Text odpovědi",
-      "asnwerTextTooltip": "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi.",
+      "answerImageTooltip": "Vyberte ilustrační obrázek z knihovny dokumentů.",
+      "answerTextLabel": "Text odpovědi",
+      "answerTextTooltip": "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi.",
       "addNewAnswer": "Pridat novú odpoveď"
     }
   },
@@ -337,6 +338,37 @@
     "defaultTitle": "Infopointy",
     "descCol": "Popis",
     "alwaysVisibleCol": "Stále zobrazen"
+  },
+  "infopointsForm": {
+    "addInfopointTitle": "Vytvořit",
+    "editInfopointTitle": "Upravit",
+    "headerLabel": "Nadpis infopointu",
+    "bodyContentTypeLabel": "Typ tela infopointu",
+    "bodyContentTextOption": "Text",
+    "bodyContentImageOption": "Obrázok",
+    "bodyContentVideoOption": "Video",
+    "textBodyLabel": "Textový popis infopointu",
+    "imageFileLabel": "Soubor obrázku",
+    "videoFileLabel": "Soubor videa",
+    "selectButtonLabel": "Vybrat",
+
+    "optionalOptionsSectionSubheader": "Volitelné možnosti:",
+    "alwaysVisibleLabel": "Stále zobrazen",
+    "urlIncludeLabel": "Pridat externý odkaz",
+    "screenUrlIncludeLabel": "Pridat odkaz na inú obrazovku výstavy",
+    "urlAdressLabel": "URL adresa",
+    "urlNameLabel": "Název odkazovaného souboru",
+    "screenUrlChooseLabel": "Vyberte obrazovku tejto výstavy",
+    "screenUrlNameLabel": "Název interného odkazu na obrazovku",
+
+    "shapeSizeColorSectionSubheader": "Tvar, velikost a farba infopointu:",
+    "shapeLabel": "Tvar infopointu",
+    "shapeSquareOption": "Štvorec",
+    "shapeCircleOption": "Kruh",
+    "shapeIconOption": "Vlastná ikona",
+    "sizeLabel": "Velikost v pixeloch",
+    "colorLabel": "Farba infopointu",
+    "iconFileLabel": "Soubor vlastnej ikony"
   },
   "imageBox": {
     "emptySelectLabel": "Vybrat",

@@ -23,7 +23,7 @@ const ExpoRating = ({ activeExpo }: ExpoRatingProps) => {
 
   return (
     <Container maxWidth="xl">
-      <div className="pt-6 pb-16 flex flex-col gap-6">
+      <div className="pt-36 pb-16 flex flex-col gap-6">
         {/* Rating statistics */}
         <div className="w-fit flex flex-col gap-2">
           <div className="font-bold text-lg">{t("rating.expoRating")}</div>

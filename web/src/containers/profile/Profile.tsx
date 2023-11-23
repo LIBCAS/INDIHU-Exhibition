@@ -50,7 +50,7 @@ const Profile = ({ isAdmin }: ProfileProps) => {
       <AppHeader profileStyle />
 
       {!isEmpty(userInfo) && (
-        <div className="container edit-profile !pt-6">
+        <div className="container edit-profile">
           <div className="flex-row flex-centered">
             <h2>{t("title")}</h2>
             <div />

@@ -11,7 +11,7 @@ import { AppDispatch } from "store/store";
 
 // Actions and utils
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 

@@ -16,7 +16,7 @@ import { AppDispatch } from "store/store";
 
 // Actions and utils
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 
 import { ScreenChapterStartAnimationEnum } from "enums/administration-screens";
 

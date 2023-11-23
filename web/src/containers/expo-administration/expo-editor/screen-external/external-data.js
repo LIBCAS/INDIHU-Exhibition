@@ -1,7 +1,10 @@
 import { useTranslation } from "react-i18next";
 import TextField from "react-md/lib/TextFields";
+import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 
 import HelpIcon from "components/help-icon";
+
+// - -
 
 const ExternalData = ({ activeScreen, updateScreenData }) => {
   const { t } = useTranslation("expo-editor", {
@@ -22,6 +25,18 @@ const ExternalData = ({ activeScreen, updateScreenData }) => {
           <HelpIcon
             label={t("insertedCodeTooltip")}
             id="editor-external-externaldata"
+          />
+        </div>
+
+        <div className="mt-2">
+          <Checkbox
+            id="external-screen-data-should-scale"
+            name="shouldScaleExternalData"
+            label={t("shouldScaleExternalDataLabel")}
+            checked={activeScreen.shouldScaleExternalData}
+            onChange={(newValue) => {
+              updateScreenData({ shouldScaleExternalData: newValue });
+            }}
           />
         </div>
       </div>

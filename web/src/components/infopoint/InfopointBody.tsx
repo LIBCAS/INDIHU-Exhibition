@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { useScreenCoordinatesById } from "hooks/view-hooks/useScreenCoordinatesById";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
@@ -21,6 +22,9 @@ const InfopointBody = ({
   isVideoLoaded,
   setIsVideoLoaded,
 }: InputArguments) => {
+  const { referenceUrl } =
+    useScreenCoordinatesById(infopoint.screenIdReference ?? null) ?? {};
+
   return (
     <div className={cx("flex flex-col gap-[10px] p-1 max-w-[288px]")}>
       {/* 1. Infopoint Header */}
@@ -98,6 +102,25 @@ const InfopointBody = ({
           </div>
         </div>
       )}
+
+      {/* 4. Optional Screen Id reference link */}
+      {infopoint.isScreenIdIncluded &&
+        infopoint.screenIdReference &&
+        infopoint.screenNameReference && (
+          <div className="flex">
+            <div
+              className="flex cursor-pointer"
+              onClick={() => {
+                window.open(referenceUrl, "_blank");
+              }}
+            >
+              <button className="text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
+                {infopoint.screenNameReference}
+              </button>
+              <Icon name="arrow_forward" useMaterialUiIcon />
+            </div>
+          </div>
+        )}
     </div>
   );
 };

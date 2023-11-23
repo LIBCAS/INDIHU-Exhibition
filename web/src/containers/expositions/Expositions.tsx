@@ -115,7 +115,7 @@ const Expositions = () => {
 
       <div
         id={CONTAINER_ID}
-        className="expositions-container !mt-0"
+        className="expositions-container"
         onScroll={handleScroll}
       >
         <div className="expositions-container-inner h-full flex flex-col">

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import EditableTextField from "components/editable-text-field/EditableTextField";
 
 import TextField from "react-md/lib/TextFields";
 import Radio from "react-md/lib/SelectionControls/Radio";
@@ -22,7 +23,7 @@ import { AppDispatch } from "store/store";
 
 // Actions and utils
 import { setDialog } from "actions/dialog-actions";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 import cx from "classnames";
 
@@ -136,15 +137,35 @@ const AnswerItem = ({
             </Button>
           </div>
 
-          <div className="w-full flex justify-center items-center">
-            <h2
-              className={cx("text-center mb-0", {
-                "font-bold": currAnswer.correct,
-                "font-thin": !currAnswer.correct,
-              })}
-            >
-              {`${t("variant")} ${indexToVariantChar[currAnswerIndex]}`}
-            </h2>
+          <div className="mx-4 w-full flex justify-center items-center">
+            <div>
+              <EditableTextField
+                id={`answer-${currAnswerIndex}-editable-textfield`}
+                value={
+                  currAnswer.customUserLabel ??
+                  `${t("variant")} ${indexToVariantChar[currAnswerIndex]}`
+                }
+                onCommit={(newCustomLabel: string) =>
+                  dispatch(
+                    updateScreenData({
+                      answers: activeScreen.answers?.map((ans, ansIdx) =>
+                        ansIdx === currAnswerIndex
+                          ? { ...ans, customUserLabel: newCustomLabel }
+                          : ans
+                      ),
+                    })
+                  )
+                }
+                textComponent="h2"
+                textComponentClassName={cx(
+                  "whitespace-nowrap text-center mb-0",
+                  {
+                    "font-bold": currAnswer.correct,
+                    "font-thin": !currAnswer.correct,
+                  }
+                )}
+              />
+            </div>
           </div>
 
           <div className="flex items-center gap-6">
@@ -172,7 +193,7 @@ const AnswerItem = ({
                   id={`screen-game-options-answer-${currAnswerIndex}`}
                   name={`radioStateGameOptions-${currAnswerIndex}`}
                   className="radio-option"
-                  label="správná odpověd"
+                  label={t("correctAnswer")}
                   value={currAnswerIndex}
                   checked={currAnswer.correct}
                   onClick={() =>
@@ -247,6 +268,7 @@ const AnswerItem = ({
         </div>
       </AccordionSummary>
 
+      {/* Accordion Details */}
       <AccordionDetails>
         <div className="flex flex-col justify-center items-center gap-6 xl:flex-row xl:justify-evenly xl:items-start xl:gap-0">
           {/* Answer left administration */}

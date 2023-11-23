@@ -14,7 +14,7 @@ import { File as IndihuFile } from "models";
 
 // Utils
 import { isEmpty } from "lodash";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 import { getFileById } from "actions/file-actions";
 import HelpIcon from "components/help-icon";
 

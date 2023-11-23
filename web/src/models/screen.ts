@@ -119,6 +119,7 @@ export type GameQuizAnswer = {
   image: string | null; // imageId or null if image was not loaded
   imageOrigData?: ImageOrigData; // optional if image was not loaded yet
   infopoints?: Infopoint[];
+  customUserLabel?: string;
 };
 
 export type EraserToolType =
@@ -135,6 +136,7 @@ export type ReferenceObj = {
   reference: string | null; // string as screen.id
   image?: string;
   text?: string;
+  customUserLabel?: string;
 };
 
 // - - - - -
@@ -355,6 +357,7 @@ export type ExternalScreen = {
   title?: string;
   text?: string;
   externalData: string;
+  shouldScaleExternalData?: boolean;
   audio?: string;
   time: number;
   timeAuto: boolean;

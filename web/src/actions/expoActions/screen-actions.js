@@ -18,6 +18,7 @@ import {
   EXPO_STRUCTURE_SCREEN_SET,
   EXPOSITIONS,
   EXPO_EDITOR_UPDATE,
+  EXPO_SCREEN_DB_UPDATE,
 } from "../constants";
 
 import { objectsEqual } from "../../utils";
@@ -49,7 +50,7 @@ export const loadScreen = (url) => async (dispatch, getState) => {
 
     dispatch({
       type: EXPO_SCREEN_SET,
-      payload: { activeScreen },
+      payload: { activeScreen: activeScreen, activeScreenDb: activeScreen },
     });
   }
 };
@@ -106,6 +107,7 @@ export const saveScreen =
 
     if (ret) {
       dispatch(setActiveScreenEdited(false));
+      dispatch(setActiveScreenDb(activeScreen)); //
     }
 
     loadExpo(expo.id);
@@ -114,31 +116,45 @@ export const saveScreen =
     return ret;
   };
 
-export const setActiveScreenEdited = (activeScreenEdited = true) => ({
-  type: EXPOSITIONS,
-  payload: { activeScreenEdited },
+export const setActiveScreenEdited = (activeScreenEdited = true) => {
+  return {
+    type: EXPOSITIONS,
+    payload: { activeScreenEdited },
+  };
+};
+
+const setActiveScreenDb = (newActiveScreenDb) => ({
+  type: EXPO_SCREEN_DB_UPDATE,
+  payload: { activeScreenDb: newActiveScreenDb },
 });
 
 export const updateScreenData = (data) => async (dispatch, getState) => {
-  if (isEmpty(data)) {
+  if (isEmpty(data) || data === null || data === undefined) {
     dispatch({
       type: EXPO_SCREEN_UPDATE,
       payload: null,
     });
     dispatch(setActiveScreenEdited(false));
+    return;
   }
 
-  const activeScreen = get(getState(), "expo.activeScreen");
+  const activeScreenDb = get(getState(), "expo.activeScreenDb"); // state from last save, as stored in DB
+  const activeScreen = get(getState(), "expo.activeScreen"); // state with current changes being made from last save
+  const newActiveScreen = { ...activeScreen, ...data };
 
-  if (
-    activeScreen &&
-    !objectsEqual({ ...activeScreen, ...data }, activeScreen)
-  ) {
+  // Reflect change to the redux store (if previous change is different from current change)
+  if (activeScreen && !objectsEqual(newActiveScreen, activeScreen)) {
     dispatch({
       type: EXPO_SCREEN_UPDATE,
       payload: { ...data },
     });
+  }
+
+  // Reflect the change according to DB
+  if (activeScreenDb && !objectsEqual(newActiveScreen, activeScreenDb)) {
     dispatch(setActiveScreenEdited());
+  } else {
+    dispatch(setActiveScreenEdited(false));
   }
 };
 

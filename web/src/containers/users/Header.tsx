@@ -21,7 +21,7 @@ const Header = ({ tableState, setTableState }: HeaderProps) => {
   const { t } = useTranslation("users");
 
   return (
-    <div className="flex-header">
+    <div className="flex-header !pt-0">
       <h2 className="flex-header-title">{t("title")}</h2>
 
       {/* FILTER */}

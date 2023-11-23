@@ -10,7 +10,7 @@ import { screenType } from "enums/screen-type";
 import { AppDispatch } from "store/store";
 import { File as IndihuFile, Screen } from "models";
 
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 
 type TimeProps = {
   audio?: IndihuFile | null;

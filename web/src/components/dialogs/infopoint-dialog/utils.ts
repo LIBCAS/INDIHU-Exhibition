@@ -15,6 +15,13 @@ export const createFormDataProcessed = (
     isUrlIncluded: formData.isUrlIncluded ?? false,
     url: formData.isUrlIncluded ? formData.url : undefined,
     urlName: formData.isUrlIncluded ? formData.urlName : undefined,
+    isScreenIdIncluded: formData.isScreenIdIncluded ?? false,
+    screenIdReference: formData.isScreenIdIncluded
+      ? formData.screenIdReference
+      : undefined,
+    screenNameReference: formData.isScreenIdIncluded
+      ? formData.screenNameReference
+      : undefined,
     shape: formData.shape ?? "SQUARE",
     pxSize: formData.pxSize ?? 24,
     color: formData.shape !== "ICON" ? formData.color : undefined,

@@ -12,7 +12,7 @@ const Admin = ({ settings, activeForm, setActiveForm }) => (
   <div>
     <AppHeader adminStyle />
     {settings && (
-      <div className="container !pt-6">
+      <div className="container">
         <Header />
         {activeForm === "adminSettingsForm" ? (
           <SettingsForm

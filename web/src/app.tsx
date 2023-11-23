@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 // Contexts
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 
 // Contexts relative
 import DialogsRef from "context/dialog-ref-provider/DialogsRef";
@@ -28,11 +28,12 @@ import Users from "containers/users/Users";
 import Admin from "containers/admin/admin";
 
 // Models
-import { AppState } from "store/store";
+import { AppDispatch, AppState } from "store/store";
 
 // Utils
 import { isAdmin, isIE, isProduction } from "utils";
 import * as storage from "./utils/storage";
+import { setActiveScreenEdited } from "actions/expoActions";
 
 // - -
 
@@ -47,6 +48,8 @@ const VERSION = 12;
 
 export const App = () => {
   const { role } = useSelector(stateSelector);
+  const dispatch = useDispatch<AppDispatch>();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
   const [warning, setWarning] = useState<string | null>(null);
@@ -71,40 +74,51 @@ export const App = () => {
     }
   }, []);
 
+  // - -
+
+  const history = useHistory();
+
+  useEffect(() => {
+    // Listen for changes in the route
+    const unlisten = history.listen((_location, _action) => {
+      dispatch(setActiveScreenEdited(false));
+    });
+    return () => unlisten();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
+
   return (
-    <BrowserRouter>
-      <div className="app">
-        <AuthController>
-          <Helmet>
-            <title>INDIHU Exhibition</title>
-            <meta
-              name="description"
-              content="Vývoj nástrojů a infrastruktury pro digital humanities"
-            />
-          </Helmet>
-
-          <Loader />
-          <DialogsRef />
-          <Dialogs />
-          <WarningDialog content={warning} onClose={closeWarning} />
-
-          <Route
-            exact
-            path="/"
-            component={() => <Authentication isSignIn={true} />}
+    <div className="app">
+      <AuthController>
+        <Helmet>
+          <title>INDIHU Exhibition</title>
+          <meta
+            name="description"
+            content="Vývoj nástrojů a infrastruktury pro digital humanities"
           />
-          <Route exact path="/register" component={Authentication} />
-          <Route path="/verify/:secret" component={Verify} />
-          <Route path="/exhibitions" component={Expositions} />
-          <Route path="/expo/:id" component={Expo} />
-          <Route path="/view/:name" component={ExpoViewer} />
-          <Route path="/profile" render={() => <Profile isAdmin={admin} />} />
-          {admin && <Route path="/users" component={Users} />}
-          {admin && <Route path="/administration" component={Admin} />}
-        </AuthController>
+        </Helmet>
 
-        {!isProduction() && <div className="test-env">TEST</div>}
-      </div>
-    </BrowserRouter>
+        <Loader />
+        <DialogsRef />
+        <Dialogs />
+        <WarningDialog content={warning} onClose={closeWarning} />
+
+        <Route
+          exact
+          path="/"
+          component={() => <Authentication isSignIn={true} />}
+        />
+        <Route exact path="/register" component={Authentication} />
+        <Route path="/verify/:secret" component={Verify} />
+        <Route path="/exhibitions" component={Expositions} />
+        <Route path="/expo/:id" component={Expo} />
+        <Route path="/view/:name" component={ExpoViewer} />
+        <Route path="/profile" render={() => <Profile isAdmin={admin} />} />
+        {admin && <Route path="/users" component={Users} />}
+        {admin && <Route path="/administration" component={Admin} />}
+      </AuthController>
+
+      {!isProduction() && <div className="test-env">TEST</div>}
+    </div>
   );
 };

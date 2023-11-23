@@ -16,6 +16,7 @@ export type ExpoReducerState = {
   activeExpo: Record<string, any>;
   activeScreen: Record<string, any>;
   activeScreenEdited: boolean;
+  activeScreenDb: Record<string, any>; // at load page -> activeScreen and activeScreenDb are same, but activeScreen is currently being modified before save, while activeScreenDB is reflecting the screen currently stored in DB
   filter: ExpositionFilterObj;
   pager: ExpositionPagerObj;
   cardsList: boolean;
@@ -48,6 +49,7 @@ const initialState: ExpoReducerState = {
   activeExpo: {},
   activeScreen: {},
   activeScreenEdited: false,
+  activeScreenDb: {},
   filter: {
     filter: "ALL",
     sort: "updated",
@@ -138,6 +140,13 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
         ...state,
         activeScreen: action.payload
           ? { ...state.activeScreen, ...action.payload }
+          : null,
+      };
+    case c.EXPO_SCREEN_DB_UPDATE:
+      return {
+        ...state,
+        activeScreenDb: action.payload
+          ? { ...state.activeScreenDb, ...action.payload }
           : null,
       };
     case c.EXPO_SCREEN_COLLABORATORS_ADD:

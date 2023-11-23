@@ -203,7 +203,8 @@
     },
     "externalScreen": {
       "insertedCodeLabel": "Code embedded in the page",
-      "insertedCodeTooltip": "Here, insert the embed code of the website or service you want to include in the exhibition."
+      "insertedCodeTooltip": "Here, insert the embed code of the website or service you want to include in the exhibition.",
+      "shouldScaleExternalDataLabel": "Scale to full screen"
     },
     "signpostScreen": {
       "headerLabel": "Signpost header",
@@ -337,6 +338,37 @@
     "defaultTitle": "Infopoints",
     "descCol": "Description",
     "alwaysVisibleCol": "Always visible"
+  },
+  "infopointsForm": {
+    "addInfopointTitle": "Create",
+    "editInfopointTitle": "Edit",
+    "headerLabel": "Infopoint header",
+    "bodyContentTypeLabel": "Infopoint body type",
+    "bodyContentTextOption": "Text",
+    "bodyContentImageOption": "Image",
+    "bodyContentVideoOption": "Video",
+    "textBodyLabel": "Infopoint text description",
+    "imageFileLabel": "Image file",
+    "videoFileLabel": "Video file",
+    "selectButtonLabel": "Select",
+
+    "optionalOptionsSectionSubheader": "Optional options",
+    "alwaysVisibleLabel": "Always visible",
+    "urlIncludeLabel": "Add an external link",
+    "screenUrlIncludeLabel": "Add a link to another screen of the exhibition",
+    "urlAdressLabel": "URL adress",
+    "urlNameLabel": "Name of referenced file",
+    "screenUrlChooseLabel": "Select the screen of this exhibition",
+    "screenUrlNameLabel": "Name of the internal link of chosen screen",
+
+    "shapeSizeColorSectionSubheader": "Shape, size and color of infopoint:",
+    "shapeLabel": "Infopoint shape",
+    "shapeSquareOption": "Square",
+    "shapeCircleOption": "Circle",
+    "shapeIconOption": "Custom icon",
+    "sizeLabel": "Size in pixels",
+    "colorLabel": "Infopoint color",
+    "iconFileLabel": "File of custom icon"
   },
   "imageBox": {
     "emptySelectLabel": "Select",

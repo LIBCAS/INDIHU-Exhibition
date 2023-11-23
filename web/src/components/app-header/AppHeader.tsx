@@ -60,7 +60,7 @@ const AppHeader = ({
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       component="header"
       sx={{
         color: "white",

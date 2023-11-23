@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
@@ -27,6 +28,8 @@ const InfopointDialogNew = ({
   closeThisDialog,
   onDialogSubmit,
 }: InfopointDialogNewProps) => {
+  const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const { expositionDesignData: expoDesignData } = useSelector(stateSelector);
 
@@ -44,6 +47,9 @@ const InfopointDialogNew = ({
         isUrlIncluded: false,
         url: "",
         urlName: "",
+        isScreenIdIncluded: false,
+        screenIdReference: "",
+        screenNameReference: "",
         shape: expoDesignData?.defaultInfopointShape ?? "SQUARE",
         pxSize: expoDesignData?.defaultInfopointPxSize ?? 24,
         color: expoDesignData?.defaultInfopointColor ?? "#d2a473",
@@ -61,7 +67,7 @@ const InfopointDialogNew = ({
       {(formik) => (
         <DialogWrap
           closeThisDialog={closeThisDialog}
-          title="Vytvořit"
+          title={t("addInfopointTitle")}
           handleSubmit={() => {
             formik.submitForm();
           }}

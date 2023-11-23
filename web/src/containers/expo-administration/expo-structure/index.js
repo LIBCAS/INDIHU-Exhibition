@@ -17,7 +17,7 @@ const Structure = ({ activeExpo }) => {
     <Draggable
       screens={screens}
       component={({ onClickEnabled, draggedScreen, targetLocationCard }) => (
-        <div>
+        <div className="!pb-4">
           {screens && (
             <div className="structure-col">
               <div className="col-line" />

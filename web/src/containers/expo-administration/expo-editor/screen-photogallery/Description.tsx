@@ -15,7 +15,7 @@ import { File as IndihuFile } from "models";
 
 // Utils
 import { getFileById } from "actions/file-actions";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 
 // - -
 

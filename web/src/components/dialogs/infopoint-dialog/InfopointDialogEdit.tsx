@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 import InfopointForm from "./InfopointForm";
@@ -25,6 +27,8 @@ const InfopointDialogEdit = ({
   infopoint,
   infopointIndex,
 }: InfopointDialogEditProps) => {
+  const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   return (
@@ -42,6 +46,9 @@ const InfopointDialogEdit = ({
         isUrlIncluded: infopoint.isUrlIncluded ?? false,
         url: infopoint.url ?? "",
         urlName: infopoint.urlName ?? "",
+        isScreenIdIncluded: infopoint.isScreenIdIncluded ?? false,
+        screenIdReference: infopoint.screenIdReference ?? "",
+        screenNameReference: infopoint.screenNameReference ?? "",
         shape: infopoint.shape ?? "SQUARE",
         pxSize: infopoint.pxSize ?? 24,
         color: infopoint.color ?? "#d2a473",
@@ -59,7 +66,7 @@ const InfopointDialogEdit = ({
       {(formik) => (
         <DialogWrap
           closeThisDialog={closeThisDialog}
-          title="Upravit"
+          title={t("editInfopointTitle")}
           handleSubmit={() => {
             formik.submitForm();
           }}

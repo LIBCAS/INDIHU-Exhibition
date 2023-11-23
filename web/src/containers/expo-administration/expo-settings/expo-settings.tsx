@@ -45,7 +45,7 @@ const ExpoSettings = ({ activeExpo }: ExpoSettingsProps) => {
 
   return (
     <Container maxWidth="xl">
-      <div className="pt-6 pb-16 flex flex-col gap-6">
+      <div className="pt-36 pb-16 flex flex-col gap-6">
         {/* Expo State Radio Options */}
         <div className="w-fit flex flex-col gap-2">
           <div className="font-bold text-lg">

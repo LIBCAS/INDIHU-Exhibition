@@ -16,6 +16,8 @@ import {
 } from "components/form/formik/react-md";
 import Button from "react-md/lib/Buttons/Button";
 import ColorPicker from "components/form/formik/ColorPicker";
+import ScreenChooser from "containers/expo-administration/expo-editor/screen-signpost/ScreenChooser";
+import { useTranslation } from "react-i18next";
 
 // - - - - - - -
 
@@ -25,13 +27,17 @@ interface InfopointFormProps {
 
 const InfopointForm = ({ formik }: InfopointFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
+
+  const isScreenIdReferenceError =
+    !!formik.touched.screenIdReference && !!formik.errors.screenIdReference;
 
   return (
     <Form>
       <div>
         <ReactMdTextField
           name="header"
-          label="Nadpis infopointu"
+          label={t("headerLabel")}
           id="infopoint-header-textfield"
         />
       </div>
@@ -40,20 +46,20 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
         <ReactMdRadioGroup
           controls={[
             {
-              label: "Text",
+              label: t("bodyContentTextOption"),
               value: "TEXT",
             },
             {
-              label: "Obrázok",
+              label: t("bodyContentImageOption"),
               value: "IMAGE",
             },
             {
-              label: "Video",
+              label: t("bodyContentVideoOption"),
               value: "VIDEO",
             },
           ]}
           name="bodyContentType"
-          label="Typ tela infopointu"
+          label={t("bodyContentTypeLabel")}
           inline
           className="mt-6"
           labelClassName="mb-0 font-['Work_Sans'] text-[13px] text-black/[.54]"
@@ -64,7 +70,7 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
         <div>
           <ReactMdTextField
             name="text"
-            label="Textový popis infopointu"
+            label={t("textBodyLabel")}
             multiLine
             maxLength={150}
           />
@@ -73,11 +79,15 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
 
       {formik.values.bodyContentType === "IMAGE" && (
         <div className="flex flex-col">
-          <ReactMdTextField name="imageName" label="Soubor obrázku" disabled />
+          <ReactMdTextField
+            name="imageName"
+            label={t("imageFileLabel")}
+            disabled
+          />
 
           <Button
             flat
-            label="Vybrat"
+            label={t("selectButtonLabel")}
             onClick={() => {
               dispatch(
                 setDialog(DialogType.ScreenFileChoose, {
@@ -97,11 +107,15 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
 
       {formik.values.bodyContentType === "VIDEO" && (
         <div className="flex flex-col">
-          <ReactMdTextField name="videoName" label="Soubor videa" disabled />
+          <ReactMdTextField
+            name="videoName"
+            label={t("videoFileLabel")}
+            disabled
+          />
 
           <Button
             flat
-            label="Vybrat"
+            label={t("selectButtonLabel")}
             onClick={() => {
               dispatch(
                 setDialog(DialogType.ScreenFileChoose, {
@@ -121,26 +135,53 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
 
       <div>
         <div className="mt-4 mb-1 font-['Work_Sans'] text-[15px] text-black/[.83] underline">
-          Voliteľné možnosti:
+          {t("optionalOptionsSectionSubheader")}
         </div>
 
-        <ReactMdCheckbox name="alwaysVisible" label="Stále zobrazen" />
-        <ReactMdCheckbox name="isUrlIncluded" label="Pridat odkaz" />
+        <ReactMdCheckbox name="alwaysVisible" label={t("alwaysVisibleLabel")} />
+        <ReactMdCheckbox name="isUrlIncluded" label={t("urlIncludeLabel")} />
+        <ReactMdCheckbox
+          name="isScreenIdIncluded"
+          label={t("screenUrlIncludeLabel")}
+        />
 
         {formik.values.isUrlIncluded && (
-          <div className="-mt-4">
-            <ReactMdTextField name="url" label="URL adresa" />
-            <ReactMdTextField
-              name="urlName"
-              label="Název odkazovaného souboru"
-            />
+          <div>
+            <ReactMdTextField name="url" label={t("urlAdressLabel")} />
+            <ReactMdTextField name="urlName" label={t("urlNameLabel")} />
+          </div>
+        )}
+
+        {formik.values.isScreenIdIncluded && (
+          <div className="my-4">
+            <div>
+              <ScreenChooser
+                label={t("screenUrlChooseLabel")}
+                value={formik.values.screenIdReference}
+                onChange={(newScreenId) =>
+                  formik.setFieldValue("screenIdReference", newScreenId)
+                }
+                error={isScreenIdReferenceError}
+                helperText={
+                  isScreenIdReferenceError
+                    ? formik.errors.screenIdReference
+                    : undefined
+                }
+              />
+            </div>
+            <div className="mt-2">
+              <ReactMdTextField
+                name="screenNameReference"
+                label={t("screenUrlNameLabel")}
+              />
+            </div>
           </div>
         )}
       </div>
 
       <div>
-        <div className="mt-4 mb-1 font-['Work_Sans'] text-[15px] text-black/[.83] underline">
-          Tvar, velikost a farba infopointu:
+        <div className="mt-8 mb-1 font-['Work_Sans'] text-[15px] text-black/[.83] underline">
+          {t("shapeSizeColorSectionSubheader")}
         </div>
 
         <div className="w-full flex items-start gap-2">
@@ -148,19 +189,19 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
             <ReactMdSelectField
               controls={[
                 {
-                  label: "Štvorec",
+                  label: t("shapeSquareOption"),
                   value: "SQUARE",
                 },
                 {
-                  label: "Kruh",
+                  label: t("shapeCircleOption"),
                   value: "CIRCLE",
                 },
                 {
-                  label: "Vlastná ikona",
+                  label: t("shapeIconOption"),
                   value: "ICON",
                 },
               ]}
-              label="Tvar infopointu"
+              label={t("shapeLabel")}
               name="shape"
               fullWidth
             />
@@ -169,27 +210,27 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
           <div className="w-3/6">
             <ReactMdTextField
               name="pxSize"
-              label="Velkosť v pixeloch"
+              label={t("sizeLabel")}
               type="number"
             />
           </div>
         </div>
 
         {formik.values.shape !== "ICON" && (
-          <ColorPicker name="color" label="Farba infopointu" />
+          <ColorPicker name="color" label={t("colorLabel")} />
         )}
 
         {formik.values.shape === "ICON" && (
           <div className="flex flex-col">
             <ReactMdTextField
               name="iconName"
-              label="Soubor vlastnej ikony"
+              label={t("iconFileLabel")}
               disabled
             />
 
             <Button
               flat
-              label="Vybrat"
+              label={t("selectButtonLabel")}
               onClick={() => {
                 dispatch(
                   setDialog(DialogType.ScreenFileChoose, {

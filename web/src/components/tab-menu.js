@@ -6,8 +6,10 @@ import { filter, get } from "lodash";
 const TabsHeader = ({ tabs, toggleMenu, open, location }) => {
   const selected = filter(tabs, (t) => t.link === location.pathname);
   const ie = navigator.appVersion.toString().indexOf(".NET") > 0;
+
+  // Is fixed and should stay fixed (old design)
   return (
-    <div className="tabMenu" style={{ position: "static" }}>
+    <div className="tabMenu" style={{ position: "fixed", top: "64px" }}>
       <div className="tabMenu-tab selected" onClick={() => toggleMenu(!open)}>
         {get(selected, "[0]label", "Menu")}
       </div>

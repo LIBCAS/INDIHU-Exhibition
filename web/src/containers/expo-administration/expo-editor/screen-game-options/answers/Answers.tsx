@@ -1,5 +1,8 @@
+import { useMemo } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+// Components
 import {
   GameQuizAnswerTextDisplaySelect,
   GameQuizAnswersTypeSelect,
@@ -10,13 +13,13 @@ import AnswerItem from "./AnswerItem";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
+// Models
 import { GameQuizScreen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
 
+// Actions and utils
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 // - -
 

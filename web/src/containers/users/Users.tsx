@@ -103,7 +103,7 @@ const Users = () => {
   return (
     <div>
       <AppHeader adminStyle />
-      <div className="container !pt-6">
+      <div className="container">
         <Header tableState={userTableState} setTableState={setTableState} />
         <Table tableType={userTableState.tableType} usersAll={usersAll} />
 

@@ -12,7 +12,7 @@ import { File as IndihuFile } from "models";
 
 import { DialogType } from "components/dialogs/dialog-types";
 import { setDialog } from "../../actions/dialog-actions";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 import { helpIconText } from "../../enums/text";
 
 type AudioMusicProps = {

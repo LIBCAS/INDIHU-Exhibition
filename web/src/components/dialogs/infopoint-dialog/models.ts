@@ -13,6 +13,9 @@ export interface InfopointFormData {
   isUrlIncluded: boolean;
   url: string;
   urlName: string;
+  isScreenIdIncluded: boolean;
+  screenIdReference: string;
+  screenNameReference: string;
   shape: InfopointShape;
   pxSize: number;
   color: string;
@@ -30,6 +33,9 @@ export interface InfopointFormDataProcessed {
   isUrlIncluded: boolean;
   url?: string;
   urlName?: string;
+  isScreenIdIncluded: boolean;
+  screenIdReference?: string; // id of the screen
+  screenNameReference?: string; // custom label for the link
   shape: InfopointShape;
   pxSize: number;
   color?: string;

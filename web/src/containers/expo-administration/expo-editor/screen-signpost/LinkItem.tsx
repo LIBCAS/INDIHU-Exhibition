@@ -20,6 +20,7 @@ import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 
 import cx from "classnames";
+import EditableTextField from "components/editable-text-field/EditableTextField";
 
 // - - -
 
@@ -134,10 +135,27 @@ export const LinkItem = ({
             </Button>
           </div>
 
-          <div className="w-full flex justify-center items-center">
-            <h2 className="text-center mb-0 font-thin">
-              {`${t("reference")} ${currLinkIndex + 1}`}
-            </h2>
+          <div className="mx-4 w-full flex justify-center items-center">
+            <EditableTextField
+              id={`linkItem-${currLinkIndex}-editable-textfield`}
+              value={
+                currLinkObj.customUserLabel ??
+                `${t("reference")} ${currLinkIndex + 1}`
+              }
+              onCommit={(newCustomLabel: string) => {
+                dispatch(
+                  updateScreenData({
+                    links: activeScreen.links?.map((link, linkIndex) =>
+                      linkIndex === currLinkIndex
+                        ? { ...link, customUserLabel: newCustomLabel }
+                        : link
+                    ),
+                  })
+                );
+              }}
+              textComponent="h2"
+              textComponentClassName="whitespace-nowrap text-center mb-0"
+            />
           </div>
 
           <div className="flex items-center gap-6">

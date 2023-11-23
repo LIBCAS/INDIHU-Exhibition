@@ -11,7 +11,7 @@ import {
   GameQuizType,
 } from "models";
 
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 import {
   GameQuizAnswerEnum,
   GameQuizEnum,

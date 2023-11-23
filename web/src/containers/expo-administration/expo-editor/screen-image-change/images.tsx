@@ -10,7 +10,7 @@ import { AppDispatch } from "store/store";
 import { ImageChangeScreen, File as IndihuFile } from "models";
 
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions/screen-actions-typed";
+import { updateScreenData } from "actions/expoActions/screen-actions";
 import {
   ImageChangeAnimationEnum,
   ImageChangeGradualTransitionBeginPositionEnum,

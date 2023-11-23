@@ -1,15 +1,14 @@
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import SelectField from "react-md/lib/SelectFields";
+import EraseToolSelect from "../screen-game-sizing/EraseToolSelect";
 import ImageBox from "components/editors/ImageBox";
 
-import { GameWipeScreen, File as IndihuFile, EraserToolType } from "models";
+import { GameWipeScreen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
-import { dispatch } from "index";
 
 // - -
 
@@ -43,7 +42,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
     <div className="container container-tabMenu">
       <div className="screen">
         <div className="mt-4 mb-6 flex justify-start">
-          <div className="w-[250px]">
+          <div className="w-[220px] mb-4">
             <EraseToolSelect activeScreen={activeScreen} />
           </div>
         </div>
@@ -94,62 +93,3 @@ const Images = ({ activeScreen }: ImagesProps) => {
 };
 
 export default Images;
-
-// - - -
-
-type EraseToolSelectProps = { activeScreen: GameWipeScreen };
-
-const EraseToolSelect = ({ activeScreen }: EraseToolSelectProps) => {
-  const { t } = useTranslation("expo-editor", {
-    keyPrefix: "descFields.gameWipeScreen",
-  });
-
-  return (
-    <SelectField
-      menuItems={[
-        {
-          label: t("eraserOption"),
-          value: "eraser",
-        },
-        {
-          label: t("broomOption"),
-          value: "broom",
-        },
-        {
-          label: t("brushOption"),
-          value: "brush",
-        },
-        {
-          label: t("chiselOption"),
-          value: "chisel",
-        },
-        {
-          label: t("hammerOption"),
-          value: "hammer",
-        },
-        {
-          label: t("stickOption"),
-          value: "stick",
-        },
-        {
-          label: t("towelOption"),
-          value: "towel",
-        },
-        {
-          label: t("wipeTowelOption"),
-          value: "wipe_towel",
-        },
-      ]}
-      itemLabel="label"
-      itemValue="value"
-      label={t("chooseEraserTypeLabel")}
-      position="below"
-      id="erase-tool-select"
-      defaultValue={activeScreen.eraserToolType ?? "eraser1"}
-      onChange={(newEraserToolType: EraserToolType) => {
-        dispatch(updateScreenData({ eraserToolType: newEraserToolType }));
-      }}
-      fullWidth
-    />
-  );
-};

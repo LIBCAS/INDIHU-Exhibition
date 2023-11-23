@@ -24,6 +24,7 @@ export const infopointSchema = Yup.object({
   }),
   // videoFile is display none
   alwaysVisible: Yup.boolean().optional(),
+
   isUrlIncluded: Yup.boolean().optional(),
   url: Yup.string().when("isUrlIncluded", {
     is: (isUrlIncluded: boolean) => isUrlIncluded === true,
@@ -33,6 +34,17 @@ export const infopointSchema = Yup.object({
     is: (isUrlIncluded: boolean) => isUrlIncluded === true,
     then: (schema) => schema.required("*Povinné"),
   }),
+
+  isScreenIdIncluded: Yup.boolean().optional(),
+  screenIdReference: Yup.string().when("isScreenIdIncluded", {
+    is: (isScreenIdIncluded: boolean) => isScreenIdIncluded === true,
+    then: (schema) => schema.required("*Povinné"),
+  }),
+  screenNameReference: Yup.string().when("isScreenIdIncluded", {
+    is: (isScreenIdIncluded: boolean) => isScreenIdIncluded === true,
+    then: (schema) => schema.required("*Povinné"),
+  }),
+
   shape: Yup.mixed<InfopointShape>().oneOf(["SQUARE", "CIRCLE", "ICON"]),
   pxSize: Yup.number()
     .min(1, "Nemůže být menší než 1 pixel")
