@@ -1,7 +1,7 @@
 {
   "logout": {
-    "conditionsOfUse": "Conditions of use",
-    "personalData": "Principles of working with personal data",
+    "conditionsOfUse": "Terms of use",
+    "personalData": "Principles of data protection",
     "projectIndihu": "Project INDIHU",
     "registration": "Registration",
     "login": "Login"
@@ -10,9 +10,9 @@
     "settings": "Settings",
     "users": "Users",
     "exhibitions": "Exhibitions",
-    "accountManagement": "Account management",
-    "logout": "Logout",
-    "expositionState": "state:"
+    "accountManagement": "Account settings",
+    "logout": "Log out",
+    "expositionState": "status:"
   },
   "manual": "Manual",
   "languageSelect": {
