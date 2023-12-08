@@ -10,25 +10,25 @@
 
     "settingsDialog": {
       "title": "Settings",
-      "languageSelectLabel": "Language select:"
+      "languageSelectLabel": "Language selection:"
     },
 
     "glassMagnifier": {
-      "title": "Glass magnifier settings",
-      "magnifierTurningOn": "Turning on magnifier",
-      "magnifierType": "Magnifier type",
+      "title": "Magnifying glass settings",
+      "magnifierTurningOn": "Turn on the magnifying glass",
+      "magnifierType": "Magnifying glass type",
       "squareOption": "Square",
       "circleOption": "Circle",
-      "magnifierSize": "Magnifier size",
+      "magnifierSize": "Magnifying glass size",
       "zoomSize": "Zoom size"
     },
 
     "audioDialog": {
       "title": "Audio settings",
-      "speechIconTooltip": "Audio track of spoken speech",
+      "speechIconTooltip": "Commentary soundtrack",
       "backgroundMusicIconTooltip": "Background music soundtrack",
-      "muteEverythingLabel": "Mute everything",
-      "amplifyEverythingLabel": "Amplify everything"
+      "muteEverythingLabel": "Reduce the volume",
+      "amplifyEverythingLabel": "Increase the volume"
     }
   },
 
@@ -42,7 +42,7 @@
     "zoomInTooltip": "Zoom in",
     "resetZoomTooltip": "Reset zoom",
     "zoomOutTooltip": "Zoom out",
-    "openDescTooltip": "Open photo description",
+    "openDescTooltip": "Open image description",
     "closeTooltip": "Close"
   },
 
