@@ -9,15 +9,15 @@
     "chaptersButton": "Kapitoly",
 
     "settingsDialog": {
-      "title": "Nastavenia",
-      "languageSelectLabel": "Výber jazyka:"
+      "title": "Nastavení",
+      "languageSelectLabel": "Výběr jazyka:"
     },
 
     "glassMagnifier": {
-      "title": "Nastavenia lupy",
-      "magnifierTurningOn": "Zapnutie lupy",
+      "title": "Nastavení lupy",
+      "magnifierTurningOn": "Zapnutí lupy",
       "magnifierType": "Typ lupy",
-      "squareOption": "Štvorec",
+      "squareOption": "Čtverec",
       "circleOption": "Kruh",
       "magnifierSize": "Velikost lupy",
       "zoomSize": "Velikost zoomu"
