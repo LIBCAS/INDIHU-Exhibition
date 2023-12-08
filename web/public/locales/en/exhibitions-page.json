@@ -2,29 +2,29 @@
   "header": {
     "title": "Exhibitions",
     "filterLabel": "Project filter:",
-    "sortLabel": "Sorting of projects:",
+    "sortLabel": "Project view:",
     "searchPlaceholder": "Search",
-    "sortTooltipASC": "Ascending",
-    "sortTooltipDESC": "Descending",
+    "sortTooltipASC": "Descending",
+    "sortTooltipDESC": "Ascending",
     "tooltipList": "List",
     "tooltipGrid": "Grid",
     "filterOptions": {
       "all": "All",
-      "authorship": "I am author",
+      "authorship": "I am the author",
       "readOnly": "Shared for reading",
-      "readWrite": "Shared for writing"
+      "readWrite": "Shared for editing"
     },
     "sortOptions": {
       "title": "Name",
-      "state": "State",
+      "state": "Status",
       "created": "Creation date",
-      "updated": "Date last updated",
+      "updated": "Last updated date",
       "isEditing": "Last edited by"
     }
   },
   "expoCard": {
-    "createNewExpo": "Create new exhibition",
-    "state": "State:",
+    "createNewExpo": "Create a new exhibition",
+    "state": "Status:",
     "created": "Created:",
     "updated": "Updated:",
     "averageRating": "Average rating:",
@@ -44,7 +44,7 @@
   "expoTable": {
     "createNewExpo": "Create new exhibition",
     "name": "Name",
-    "state": "State",
+    "state": "Status",
     "created": "Created",
     "author": "Author",
     "updated": "Updated",
@@ -57,7 +57,7 @@
   "expoCardActions": {
     "update": "Update",
     "preview": "Preview",
-    "stateChange": "Change state",
+    "stateChange": "Change status",
     "rename": "Rename",
     "share": "Share",
     "duplicate": "Duplicate",
