@@ -5,7 +5,7 @@
 
   "usersState": {
     "accepted": "Akceptován",
-    "not_verified": "Neoveřen",
+    "not_verified": "Neověřen",
     "to_accept": "Ke schválení",
     "deleted": "Smazán"
   },
@@ -14,7 +14,7 @@
     "created": "Datum vytvoření",
     "userName": "Uživatelské jméno",
     "firstName": "Jméno",
-    "surname": "Přijmení",
+    "surname": "Příjmení",
     "email": "Email",
     "institution": "Instituce"
   },
@@ -23,11 +23,11 @@
   "table": {
     "username": "Uživatelské jméno",
     "firstname": "Jméno",
-    "surname": "Přijmení",
+    "surname": "Příjmení",
     "email": "E-mail",
     "institution": "Instituce",
     "state": "Stav",
     "action": "Akce"
   },
-  "pagesizeLabel": "Záznamu na stránku:"
+  "pagesizeLabel": "Záznamů na stránku:"
 }
