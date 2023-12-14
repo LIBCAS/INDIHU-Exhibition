@@ -6,7 +6,7 @@
   "overlay": {
     "info": {
       "label": "Information",
-      "text": "CLick to view additional information about the screen and its text."
+      "text": "Click to view additional information about the screen and its text."
     },
     "navigation": {
       "label": "Navigation",
@@ -26,13 +26,13 @@
     },
     "progressbar": {
       "label": "Rewind",
-      "text": "Some types of screens (such as video or photo gallery ones) have a special bar to help you fast forward in the current screen."
+      "text": "Some types of screens (such as video or photo gallery screens) have a special bar to help you fast forward in the current screen."
     }
   },
 
   "screenChange": {
     "dragThumb": {
-      "label": "Drag thumb",
+      "label": "Scroll bar",
       "text": "Drag to reveal the background image."
     }
   }
