@@ -1,12 +1,12 @@
 {
   "title": "Users",
   "allUsersLabel": "All users",
-  "usersToAcceptLabel": "Users to accept",
+  "usersToAcceptLabel": "Users pending approval",
 
   "usersState": {
     "accepted": "Accepted",
     "not_verified": "Not verified",
-    "to_accept": "To accept",
+    "to_accept": "Pending approval",
     "deleted": "Deleted"
   },
   "usersSort": {
@@ -25,8 +25,8 @@
     "firstname": "Firstname",
     "surname": "Surname",
     "email": "E-mail",
-    "institution": "institution",
-    "state": "State",
+    "institution": "Institution",
+    "state": "Status",
     "action": "Action"
   },
   "pagesizeLabel": "Entries per page:"
