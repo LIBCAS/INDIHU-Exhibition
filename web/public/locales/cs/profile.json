@@ -2,12 +2,12 @@
   "title": "Nastavení",
 
   "editProfileSubtitle": "Editace profilu",
-  "usernameLabel": "Užívatelské jméno",
+  "usernameLabel": "Uživatelské jméno",
   "firstnameLabel": "Jméno",
-  "lastnameLabel": "Přijmení",
+  "lastnameLabel": "Příjmení",
   "institutionLabel": "Instituce",
   "emailLabel": "E-mail",
-  "emailNotificationsLabel": "E-mail notifikácie",
+  "emailNotificationsLabel": "Zasílat notifikace",
   "editProfileActionButtonLabel": "Upravit profil",
 
   "changePasswordSubtitle": "Změna hesla",
