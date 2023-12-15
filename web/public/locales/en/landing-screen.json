@@ -1,23 +1,23 @@
 {
   "title": "Creative tool for creating virtual exhibitions",
-  "description": "Create impressive online presentations on any topic that will be available to visitors on the web. INDIHU Exhibition makes it possible to draw the visitor into the story and create content-rich presentations. Combine images, texts, photo galleries, videos, maps with other options. Include small interactive games in the exhibition.",
+  "description": "Create compelling online exhibitions on any topic that will be available online. INDIHU Exhibition allows you to immerse the visitor through multimedia material and interactive games.",
   "formular": {
     "login": "Login",
     "userNameLabel": "Username/e-mail",
     "passwordLabel": "Password",
-    "loginButton": "Login",
+    "loginButton": "Log in",
     "resetPasswordButton": "Reset password",
 
     "startCreatingExhibitions": "Start creating exhibitions",
     "appIsFree": "The tool is completely free",
-    "loadingRegistrationFormular": "The registration form is being loaded.",
-    "firstNameLabel": "Firstname",
+    "loadingRegistrationFormular": "The registration form is loading.",
+    "firstNameLabel": "First name",
     "surnameLabel": "Surname",
     "institutionLabel": "Institution",
     "emailLabel": "E-mail",
     "newPasswordLabel": "Password (min 5 characters)",
     "acceptTermsOfUsePart1": "I agree with",
-    "acceptTermsOfUsePart2": "terms of use",
+    "acceptTermsOfUsePart2": "the terms of use",
     "registerButton": "Register",
     "registrationNotAllowed": "Registrations are currently not allowed."
   },
