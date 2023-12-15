@@ -1,9 +1,9 @@
 {
   "title": "Kreativní nástroj pro tvorbu virtuálních výstav",
-  "description": "Vytvářejte působivé online prezentace na libovolná témata, která budou návštěvníkům dostupná na webu. INDIHU Exhibition umožňuje vtáhnout návštěvníka do děje a tvořit obsahově bohaté prezentace. Kombinujte obrázky, texty, fotogalerie, videa, mapy s dalšími možnostmi. Zařaďte do výstavy i drobné interaktivní hry.",
+  "description": "Vytvářejte působivé online výstavy na libovolná témata, které budou návštěvníkům dostupné na webu. INDIHU Exhibition umožňuje vtáhnout návštěvníka do děje prostřednictvím multimediálního materiálu s interaktivních her.",
   "formular": {
-    "login": "Prihlášení",
-    "userNameLabel": "Užívatelské jméno/e-mail",
+    "login": "Přihlášení",
+    "userNameLabel": "Uživatelské jméno/e-mail",
     "passwordLabel": "Heslo",
     "loginButton": "Přihlásit",
     "resetPasswordButton": "Resetovat heslo",
@@ -12,7 +12,7 @@
     "appIsFree": "Nástroj je zcela zdarma",
     "loadingRegistrationFormular": "Načítá se registrační formulář.",
     "firstNameLabel": "Jméno",
-    "surnameLabel": "Přijmení",
+    "surnameLabel": "Příjmení",
     "institutionLabel": "Instituce",
     "emailLabel": "E-mail",
     "newPasswordLabel": "Heslo (min 5 znaků)",
