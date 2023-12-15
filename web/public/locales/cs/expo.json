@@ -1,7 +1,7 @@
 {
   "expoState": {
     "prepare": "V přípravě",
-    "opened": "Zveřejnená",
+    "opened": "Zveřejněná",
     "ended": "Ukončená",
     "prepareTooltip": "Výstava je v přípravě. Obsah výstavy je možné libovolně upravovat. Výstava je přístupná pouze přihlášeným uživatelům, se kterými je výstava sdílena.",
     "openedTooltip": "Výstava je veřejně dostupná přes svoje URL. Výstavu není možné upravovat.",
@@ -12,7 +12,7 @@
     "screenCategoryLabels": {
       "chapter": "Kapitola",
       "content_screen": "Obsahová obrazovka",
-      "interactive_screen": "Interaktívní obrazovka",
+      "interactive_screen": "Interaktivní obrazovka",
       "game_screen": "Herní obrazovka"
     },
     "screenLabels": {
@@ -34,10 +34,10 @@
       "game_sizing": "Hádej velikost",
       "game_move": "Posuň na správné místo",
       "game_options": "Kvíz",
-      "finish": "Záveř výstavy"
+      "finish": "Závěr výstavy"
     },
     "screenTooltips": {
-      "intro": "Uvádí sérii obrazovek, které na sebe navazují v jednom tematickém celku. Pro každou kapitolu vzniká záznam v seznamu kapitol výstavy.",
+      "intro": "Uvádí sérii obrazovek, které na sebe navazují v jednom tématickém celku. Pro každou kapitolu vzniká záznam v seznamu kapitol výstavy.",
       "image": "Obrazovka, jejímž ústředním motivem je obrázek, který můžete animovat a přidat infopointy.",
       "video": "Obrazovka, která slouží k přehrání videa z knihovny dokumentů. Pro sdílení videa na internetu použijte “Obrazovku s externím obsahem.",
       "text": "Obrazovka zobrazí text o max. rozsahu 300 znaků.",
@@ -46,13 +46,13 @@
       "slideshow": "Obrazovka se sérií obrázků.",
       "photogallery_new": "Obrazovka fotogalerie.",
       "image_change": "Obrazovka zobrazí dvě vzájemně se překrývající fotografie, kdy pomocí táhla odkrýváme jednu a zakrýváme druhou fotografii. Táhlo může být vertikální a  horizontální. Přechod jednoho obrázku v druhý lze nastavit také na kliknutí myši nebo jako prolínání.",
-      "external": "Obrazovka, která vám umožňuje vložit pomocí embed kódu obsah uveřejněný na internetu (např. Video z YouTube nebo mapu z Mapy.cz).",
+      "external": "Obrazovka, která vám umožňuje vložit pomocí embed kódu obsah zveřejněný na internetu (např. Video z YouTube nebo mapu z Mapy.cz).",
       "signpost": "Obrazovka rozcestníku.",
-      "game_find": "Minihra, kde má návštěvník označit místo v obrázku.",
-      "game_draw": "Minihra, kde návštěvník dokresluje chybějící část obrázku.",
-      "game_wipe": "Minihra, kde návštěvník “gumováním” pomocí myši odhalí skrytý obrázek.",
+      "game_find": "Hra, kde má návštěvník označit místo v obrázku.",
+      "game_draw": "Hra, kde návštěvník dokresluje chybějící část obrázku.",
+      "game_wipe": "Hra, kde návštěvník “gumováním” pomocí myši odhalí skrytý obrázek.",
       "game_sizing": "Návštěvník má za úkol zmenšit nebo zvětšit velikost předmětu na obrázku tak, aby byl ve stejném poměru k referenčnímu předmětu na obrázku.",
-      "game_move": "Minihra, kde návštěvník tažením myši přesouvá objekt nad obrázkem do správné cílové pozice.",
+      "game_move": "Hra, kde návštěvník tažením myši přesouvá objekt nad obrázkem do správné cílové pozice.",
       "game_options": "Návštěvník vybírá správnou odpověď na otázku ze 3 odpovědí. Každá odpověď je tvořena textem a obrázkem."
     }
   },
@@ -82,7 +82,7 @@
     "sizeCol": "Velikost:",
     "durationCol": "Délka:",
     "dimensionsCol": "Rozměry:",
-    "widthCol": "Šírka:",
+    "widthCol": "Šířka:",
     "heightCol": "Výška:"
   },
   "settingsAndSharing": {
@@ -90,22 +90,22 @@
     "expoState": "Stav výstavy",
     "expoUrl": "URL výstavy",
     "copyUrlLabel": "Kopírovat URL",
-    "copyUrlMessage": "Url výstavy bola skopírovaná do schránky.",
+    "copyUrlMessage": "URL výstavy bylo zkopírováno do schránky.",
     "actualizeLabel": "Aktualizovat",
-    "expoEmbedCode": "Embed kód pre výstavu",
-    "embedCodeWidth": "Šírka",
+    "expoEmbedCode": "Embed kód pro výstavu",
+    "embedCodeWidth": "Šířka",
     "embedCodeHeight": "Výška",
     "generateEmbedCode": "Vygenerovať embed kód",
-    "generateEmbedCodeMessage": "Vygenerovaný embed kód bol skopírovaný do schránky.",
+    "generateEmbedCodeMessage": "Vygenerovaný embed kód byl zkopírován do schránky.",
     "expoTags": "Tagy výstavy",
     "tagsInfoLabel": "Zvolené tagy pro výstavu",
-    "saveLabel": "Ulozit",
+    "saveLabel": "Uložit",
     "selectLabel": "Vybrat",
     "expoEndedInfo": {
-      "info": "Informace návštěvníkovi v případě, že je výstava již ukončená",
+      "info": "Informace pro návštěvníka v případě, že je výstava již ukončená",
       "backgroundImage": "Obrázek na pozadí",
       "backgroundImageTooltip": "Obrázek vybraný z knihovny dokumentů, který se zobrazí na pozadí stránky.",
-      "redirectUrl": "Url pro přesměrování",
+      "redirectUrl": "URL pro přesměrování",
       "redirectUrlTooltip": "URL adresa, kam je návštěvníkovi doporučeno pokračovat. Např. další výstava nebo webové stránky instituce, která výstavu realizovala.",
       "infoForVisitor": "Oznámení návštevníkovi",
       "infoForVisitorTooltip": "Stručný informační text, který se zobrazí uživateli."
@@ -122,60 +122,60 @@
   "rating": {
     "tab": "Hodnocení a návštěvnost",
     "expoRating": "Hodnocení výstavy",
-    "expoNoRatingYet": "Zatím nebyla táto výstava hodnocena.",
+    "expoNoRatingYet": "Tato výstava zatím nebyla hodnocena.",
     "ratingTable": {
       "rateCount": "Počet hodnocení",
-      "avgRate": "Priemerné hodnocení",
+      "avgRate": "Průměrné hodnocení",
       "peopleTopicLikeCount": "Počet lidí, kterým se líbilo téma výstavy:",
       "peopleMediaLikeCount": "Počet lidí, kterým se líbila média výstavy:",
       "peopleTextLikeCount": "Počet lidí, kterým se líbily texty výstavy:",
       "peopleGameLikeCount": "Počet lidí, kterým se líbily hry výstavy:"
     },
-    "expoComments": "Komentáre k výstave",
+    "expoComments": "Komentáře k výstavě",
     "expoNoCommentsYet": "Tato výstava zatím nemá žádné komentáře.",
-    "created": "Vytvoreno:",
+    "created": "Vytvořeno:",
     "rating": "Hodnocení:"
   },
   "theming": {
-    "tab": "Motív",
+    "tab": "Motiv",
     "generalThemeSettings": {
-      "title": "1. Všeobecné nastavenie motívu expozície",
-      "expoThemeLabel": "Motív expozície",
+      "title": "1. Všeobecné nastavení motivu expozice",
+      "expoThemeLabel": "Motiv expozice",
       "expoThemeLight": "Světlý",
       "expoThemeDark": "Tmavý",
-      "expoBackgroundColorLabel": "Farba pozadia expozície",
-      "expoIconsColorLabel": "Farba ikon expozície",
-      "expoTagsColorLabel": "Farba tagov expozície"
+      "expoBackgroundColorLabel": "Barva pozadí expozice",
+      "expoIconsColorLabel": "Barva ikon expozice",
+      "expoTagsColorLabel": "Barva tagů expozice"
     },
     "logoAndWatermarkSettings": {
-      "title": "2. Nastavenie loga a vodoznaku",
-      "expoLogoTypeLabel": "Typ loga expozície",
+      "title": "2. Nastavení loga a vodoznaku",
+      "expoLogoTypeLabel": "Typ loga expozice",
       "expoLogoTypeLogo": "Logo",
       "expoLogoTypeWatermark": "Vodoznak",
-      "expoLogoPositionLabel": "Pozícia loga expozície",
-      "expoLogoPositionUpLeft": "Hore vľavo",
-      "expoLogoPositionUpRight": "Hore vpravo",
-      "expoLogoPositionDownLeft": "Dole vľavo",
+      "expoLogoPositionLabel": "Pozice loga expozice",
+      "expoLogoPositionUpLeft": "Nahoře vlevo",
+      "expoLogoPositionUpRight": "Nahoře vpravo",
+      "expoLogoPositionDownLeft": "Dole vevo",
       "expoLogoFileLabel": "Soubor loga / vodoznaku"
     },
     "defaultInfopointSettings": {
-      "title": "3. Predvolený motív pre infopointy",
+      "title": "3. Předvolený motiv pre infopointy",
       "infopointShapeLabel": "Tvar infopointu",
-      "infopointShapeSquare": "Štvorec",
+      "infopointShapeSquare": "Čtverec",
       "infopointShapeCurcle": "Kruh",
       "infopointShapeIcon": "Ikona",
-      "infopointPxSizeLabel": "Velikost infopointu v pixeloch",
-      "infopointColorLabel": "Farba infopointu",
+      "infopointPxSizeLabel": "Velikost infopointu v pixelech",
+      "infopointColorLabel": "Barva infopointu",
       "infopointIconFileLabel": "Soubor ikony infopointu"
     },
     "selectLabel": "Vybrat",
     "exportLabel": "Exportovat",
     "importLabel": "Importovat",
-    "resetSettingsLabel": "Resetovat nastavenia",
-    "saveChangesLabel": "Ulozit zmeny"
+    "resetSettingsLabel": "Resetovat nastavení",
+    "saveChangesLabel": "Uložit změny"
   },
   "tags": {
-    "exhibitionTopicGroupLabel": "Vyberte 1 téma, ktorým se vaše výstava zabýva",
+    "exhibitionTopicGroupLabel": "Vyberte 1 téma, kterým se vaše výstava zabývá",
     "historyAndPeople": "Dějiny a lidé",
     "nature": "Příroda",
     "society": "Společnost",
@@ -185,13 +185,13 @@
     "exhibitionFormalPropertyGroupLabel": "Vyberte max. 2 formální vlastnosti vaší výstavy",
     "englishFriendly": "English friendly",
     "aesthetic": "Estetická",
-    "informative": "Informatívní",
+    "informative": "Informativní",
     "interactive": "Interaktivní",
     "forMobiles": "Pro mobily",
     "educational": "Vzdělávací",
     "funny": "Zábavná",
 
-    "exhibitionIntendedForGroupLabel": "Vyberte pro koho je výstava určena",
+    "exhibitionIntendedForGroupLabel": "Vyberte, pro koho je výstava určena",
     "children": "Děti",
     "adults": "Dospělí",
     "experts": "Odborníci",
