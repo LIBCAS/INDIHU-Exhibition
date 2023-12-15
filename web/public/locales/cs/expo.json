@@ -139,13 +139,13 @@
   "theming": {
     "tab": "Motiv",
     "generalThemeSettings": {
-      "title": "1. Všeobecné nastavení motivu expozice",
-      "expoThemeLabel": "Motiv expozice",
+      "title": "1. Všeobecné nastavení motivu výstavy",
+      "expoThemeLabel": "Motiv",
       "expoThemeLight": "Světlý",
       "expoThemeDark": "Tmavý",
-      "expoBackgroundColorLabel": "Barva pozadí expozice",
-      "expoIconsColorLabel": "Barva ikon expozice",
-      "expoTagsColorLabel": "Barva tagů expozice"
+      "expoBackgroundColorLabel": "Barva pozadí",
+      "expoIconsColorLabel": "Barva ikon",
+      "expoTagsColorLabel": "Barva tagů"
     },
     "logoAndWatermarkSettings": {
       "title": "2. Nastavení loga a vodoznaku",
