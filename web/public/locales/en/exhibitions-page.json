@@ -42,7 +42,7 @@
     "editErrDialogText": "The exhibition cannot be edited."
   },
   "expoTable": {
-    "createNewExpo": "Create new exhibition",
+    "createNewExpo": "Create a new exhibition",
     "name": "Name",
     "state": "Status",
     "created": "Created",
