@@ -10,7 +10,7 @@
     "tooltipGrid": "Mřížka",
     "filterOptions": {
       "all": "Vše",
-      "authorship": "Jsem autor",
+      "authorship": "Jsem autor/ka",
       "readOnly": "Sdíleno pro čtení",
       "readWrite": "Sdíleno pro zápis"
     },
@@ -19,7 +19,7 @@
       "state": "Stav",
       "created": "Datum vytvoření",
       "updated": "Datum poslední aktualizace",
-      "isEditing": "Naposledy upravil"
+      "isEditing": "Naposledy upravil/a"
     }
   },
   "expoCard": {
