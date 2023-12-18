@@ -207,9 +207,9 @@
       "shouldScaleExternalDataLabel": "Scale to full screen"
     },
     "signpostScreen": {
-      "headerLabel": "Signpost header",
+      "headerLabel": "Directory header",
       "headerTooltip": "Test header tooltip",
-      "subheaderLabel": "Signpost subheader",
+      "subheaderLabel": "Directory subheader",
       "subheaderTooltip": "Test subheader tooltip",
       "referenceTypeLabel": "Choose a form of links",
       "onlyTextOption": "Only text",
