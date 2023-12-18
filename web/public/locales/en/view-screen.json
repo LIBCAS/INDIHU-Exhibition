@@ -14,12 +14,12 @@
     },
 
     "glassMagnifier": {
-      "title": "Magnifying glass settings",
-      "magnifierTurningOn": "Turn on the magnifying glass",
-      "magnifierType": "Magnifying glass type",
+      "title": "Magnifier settings",
+      "magnifierTurningOn": "Turn on the magnifier",
+      "magnifierType": "Magnifier type",
       "squareOption": "Square",
       "circleOption": "Circle",
-      "magnifierSize": "Magnifying glass size",
+      "magnifierSize": "Magnifier size",
       "zoomSize": "Zoom size"
     },
 
