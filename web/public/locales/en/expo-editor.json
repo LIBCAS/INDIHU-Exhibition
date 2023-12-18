@@ -186,8 +186,8 @@
       "animationGradualOption": "Gradual transition",
       "animationFadeInOutTwoImagesOption": "Image dissolve",
 
-      "initialRodPositionLabel": "The initial position of the drag on the screen",
-      "initialRodPositionTooltip": "Choose one of the five options where the rod will initially be placed on the screen (relative to the previous choice).",
+      "initialRodPositionLabel": "The initial position of the slider on the screen",
+      "initialRodPositionTooltip": "Choose one of the five options where the slider will initially be placed on the screen.",
       "initialRodPositionStartOption": "At the beginning of the screen",
       "initialRodPositionQuarterOption": "In a quarter of the screen",
       "initialRodPositionHalfOption": "In the middle of the screen",
@@ -211,7 +211,7 @@
       "headerTooltip": "Test header tooltip",
       "subheaderLabel": "Directory subheader",
       "subheaderTooltip": "Test subheader tooltip",
-      "referenceTypeLabel": "Choose a form of links",
+      "referenceTypeLabel": "Choose the form of links",
       "onlyTextOption": "Only text",
       "onlyImageOption": "Only image",
       "bothTextImageOption": "Both text and image",
@@ -224,17 +224,17 @@
       "linkScreenLabel": "Selected link screen",
       "deleteIconTooltip": "Delete link",
       "closeIconTooltip": "Close link",
-      "addNewReferenceLabel": "Add new link"
+      "addNewReferenceLabel": "Add a new link"
     },
 
     "gameFindScreen": {
-      "taskTooltip": "Describe his task to the user as precisely as possible (eg find on the map where the Church of the Holy Cross stood).",
+      "taskTooltip": "Describe this task to the user as precisely as possible (e.g. find on the map where the Church of the Holy Cross stood).",
       "imageAssignmentLabel": "Assignment",
       "imageAssignmentTooltip": "From the document library, select an image on which the user will search for a specific point based on the input.",
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select an image from the document library that shows the correct location that the user should have found.",
-      "showUsersTip": "View user's tip",
-      "showUsersTipTooltip": "Check this box if you want the user to see both the correct solution and your hint."
+      "showUsersTip": "View user's guess",
+      "showUsersTipTooltip": "Check this box if you want the user to see both the correct solution and their guess."
     },
     "gameDrawScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. complete the graph of how coal mining developed after 1950).",
@@ -243,7 +243,7 @@
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select a complete image from the document library.",
       "showUsersDrawing": "View user's drawing",
-      "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and your hint."
+      "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess."
     },
     "gameWipeScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. see how the building looked before its renovation).",
@@ -253,7 +253,7 @@
       "brushOption": "Brush",
       "chiselOption": "Chisel",
       "hammerOption": "Hammer",
-      "stickOption": "Stick",
+      "stickOption": "Mallet",
       "towelOption": "Towel",
       "wipeTowelOption": "Wipe towel",
       "upperImageLabel": "Upper image",
@@ -262,27 +262,27 @@
       "bottomImageTooltip": "From the document library, select the image that appears after erasing the top image to show the 'after' stage."
     },
     "gameSizingScreen": {
-      "taskTooltip": "Describe the task to the user as precisely as possible (e.g. Estimate how big the Věstonické Venus statuette is compared to the matchbox).",
+      "taskTooltip": "Describe the task to the user as precisely as possible (e.g. Estimate how big the Venus from Vestonice statuette is compared to the matchbox).",
       "imageReferenceLabel": "Reference subject image",
       "imageReferenceTooltip": "From the document library, select an image of the guessed object, the size of which the user should compare with the reference image.",
-      "imageCompareLabel": "Image of the object being compared",
-      "imageCompareTooltip": "From the document library, select an image of a ref object whose size is generally known (e.g. a matchbox).",
-      "imageResultLabel": "The resulting image",
+      "imageCompareLabel": "Image of the guessed subject",
+      "imageCompareTooltip": "From the document library, select an image of the reference object whose size is generally known (e.g. a matchbox).",
+      "imageResultLabel": "The result image",
       "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects."
     },
     "gameMoveScreen": {
-      "taskTooltip": "Describe the user's task as precisely as possible (eg, select the correct shard and assemble the broken plate).",
+      "taskTooltip": "Describe the user's task as precisely as possible (e.g., select the correct shard and assemble the broken plate).",
       "imageAssignmentLabel": "Assignment",
       "imageAssignmentTooltip": "Select a pre-made image from the document library where a certain part is missing.",
       "imageResultLabel": "Result",
-      "imageResultTooltip": "Select the resulting complete image from the document library.",
+      "imageResultTooltip": "Select the complete image from the document library.",
       "object": "Object",
       "objectSelectLabel": "Select",
       "objectTooltip": "From the document library, select an image with parts for the user to select from."
     },
     "gameQuizScreen": {
-      "nameLabel": "Name",
-      "nameTooltip": "The name of the screen that will be displayed to the visitor in the bar for the text version. The name also appears as the screen naming in the list of all screens in the edit. If you don't fill it in, the screen type will remain listed as the title.",
+      "nameLabel": "Title",
+      "nameTooltip": "Title of screen displayed to the visitor in the text bar. The title will also appear as the name of the screens in the list of all screens in the project. If not filled, the screen will remain listed as the type of the screen.",
       "taskLabel": "Question",
       "taskTooltip": "A question that the visitor has to answer by choosing from 3 options.",
       "screenCompleted": "Screen is completed",
@@ -296,16 +296,16 @@
       "answerDisplayTypeLabel": "Choose when to display the reply text",
       "asnwerDisplayTypeImmediateOption": "Show immediately after loading",
       "answerDisplayTypeAfterEvaluationOption": "Show only after the quiz is evaluated",
-      "variant": "Variant",
+      "variant": "Option",
       "correctAnswer": "Correct answer",
       "correctAnswerTooltip": "If this answer is correct, mark it.",
       "deleteAnswerTooltip": "Delete answer",
       "closeAnswerTooltip": "Close answer",
-      "answerImageLabel": "Accompanying image",
-      "answerImageTooltip": "Select an illustration image from the document library.",
+      "answerImageLabel": "Supporting image",
+      "answerImageTooltip": "Select an image from the document library.",
       "answerTextLabel": "Answer text",
       "answerTextTooltip": "Please enter a reasonably long text for this answer option.",
-      "addNewAnswer": "Add new answer"
+      "addNewAnswer": "Add a new answer"
     }
   },
   "documentsTable": {
@@ -352,14 +352,14 @@
     "videoFileLabel": "Video file",
     "selectButtonLabel": "Select",
 
-    "optionalOptionsSectionSubheader": "Optional options",
+    "optionalOptionsSectionSubheader": "Optional actions",
     "alwaysVisibleLabel": "Always visible",
     "urlIncludeLabel": "Add an external link",
     "screenUrlIncludeLabel": "Add a link to another screen of the exhibition",
     "urlAdressLabel": "URL adress",
-    "urlNameLabel": "Name of referenced file",
+    "urlNameLabel": "Title of the referenced file",
     "screenUrlChooseLabel": "Select the screen of this exhibition",
-    "screenUrlNameLabel": "Name of the internal link of chosen screen",
+    "screenUrlNameLabel": "Title of the internal link of chosen screen",
 
     "shapeSizeColorSectionSubheader": "Shape, size and color of infopoint:",
     "shapeLabel": "Infopoint shape",
