@@ -38,6 +38,23 @@
     "relatedDocuments": "Related documents:"
   },
 
+  "ratingDialog": {
+    "title": "How did you like the exhibition?",
+    "overallRating": "Overall rating",
+    "whatYouLikedMost": "What did you like the most?",
+    "max2Options": "(max. 2 options)",
+    "topicOption": "Topic",
+    "mediaOption": "Images and videos",
+    "textOption": "Texts",
+    "gameOption": "Games",
+    "messageToTheExpoCreator": "Message to expo creator",
+    "messageToTheExpoCreatorPlaceholder": "If you are interested, write here what you would like to convey to the author of the exhibition (optional).",
+    "linkToReviewer": "Link to you",
+    "linkToReviewerPlaceholder": "Your email adress",
+    "sendWithoutRatingCheckboxLabel": "Submit a comment without rating",
+    "sendActionButtonLabel": "Send"
+  },
+
   "photogalleryScreen": {
     "zoomInTooltip": "Zoom in",
     "resetZoomTooltip": "Reset zoom",

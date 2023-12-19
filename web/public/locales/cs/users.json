@@ -7,7 +7,14 @@
     "accepted": "Akceptován",
     "not_verified": "Neověřen",
     "to_accept": "Ke schválení",
+    "rejected": "Zamietnutý",
     "deleted": "Smazán"
+  },
+  "usersAction": {
+    "reactivate": "Reaktivovat uživatele",
+    "accept": "Akceptovat uživatele",
+    "reject": "Zamítnout uživatele",
+    "delete": "Vymazat užívatele"
   },
   "usersSort": {
     "updated": "Datum poslední aktualizace",

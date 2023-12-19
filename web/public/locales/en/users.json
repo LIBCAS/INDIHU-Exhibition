@@ -7,7 +7,14 @@
     "accepted": "Accepted",
     "not_verified": "Not verified",
     "to_accept": "Pending approval",
+    "rejected": "Rejected",
     "deleted": "Deleted"
+  },
+  "usersAction": {
+    "reactivate": "Reactivate user",
+    "accept": "Accept user",
+    "reject": "Reject user",
+    "delete": "Delete user"
   },
   "usersSort": {
     "updated": "Date last updated",

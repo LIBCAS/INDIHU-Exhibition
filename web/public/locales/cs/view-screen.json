@@ -38,6 +38,23 @@
     "relatedDocuments": "Souvisejíci dokumenty:"
   },
 
+  "ratingDialog": {
+    "title": "Jak se vám líbila výstava?",
+    "overallRating": "Celkové hodnocení",
+    "whatYouLikedMost": "Co se vám nejvíce líbilo?",
+    "max2Options": "(max. 2 možnosti)",
+    "topicOption": "Téma",
+    "mediaOption": "Obrázky a videa",
+    "textOption": "Texty",
+    "gameOption": "Hry",
+    "messageToTheExpoCreator": "Vzkaz tvůrci",
+    "messageToTheExpoCreatorPlaceholder": "V případě zájmu sem napište, co byste chtěli odkázat autorovi výstavy (volitelné).",
+    "linkToReviewer": "Odkaz na vás",
+    "linkToReviewerPlaceholder": "Vaše emailová adresa",
+    "sendWithoutRatingCheckboxLabel": "Odeslat komentář bez hodnocení",
+    "sendActionButtonLabel": "Odeslat"
+  },
+
   "photogalleryScreen": {
     "zoomInTooltip": "Přiblížit",
     "resetZoomTooltip": "Resetovat přiblížení",

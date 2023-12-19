@@ -18,7 +18,7 @@
       "title": "Název",
       "state": "Stav",
       "created": "Datum vytvoření",
-      "updated": "Datum poslední aktualizace",
+      "edited": "Datum poslední aktualizace",
       "isEditing": "Naposledy upravil/a"
     }
   },
@@ -27,8 +27,11 @@
     "state": "Stav:",
     "created": "Vytvořeno:",
     "updated": "Upraveno:",
+    "numberOfViews": "Počet zhlédnutí:",
+    "noNumberOfViewsYet": "Zatím žádná shlédnutí",
     "averageRating": "Průměrné hodnocení:",
     "noAverageRatingYet": "Zatím nehodnoceno",
+    "ratingRedirectLabel": "Presmerovanie na kartu s hodnotením",
     "commentsCount": "Počet komentářů:",
     "bestRatedPreference": "Nejlépe hodnocený prvek:",
     "noBestRatedPreferenceYet": "Zatím žádný",
@@ -38,6 +41,8 @@
     "preferenceMedia": "Média",
     "edit": "Upravit",
     "preview": "Náhled",
+    "pinTooltip": "Připnout tuto výstavu",
+    "unpinTooltip": "Odepnout tuto expozici",
     "editErrDialogTitle": "Nelze upravovat",
     "editErrDialogText": "Výstavu nelze upravovat."
   },

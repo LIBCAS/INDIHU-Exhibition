@@ -18,7 +18,7 @@
       "title": "Name",
       "state": "Status",
       "created": "Creation date",
-      "updated": "Last updated date",
+      "edited": "Last updated date",
       "isEditing": "Last edited by"
     }
   },
@@ -27,8 +27,11 @@
     "state": "Status:",
     "created": "Created:",
     "updated": "Updated:",
+    "numberOfViews": "Number of views:",
+    "noNumberOfViewsYet": "No views yet",
     "averageRating": "Average rating:",
     "noAverageRatingYet": "Not rated yet",
+    "ratingRedirectLabel": "Redirection to the rating tab",
     "commentsCount": "Number of comments:",
     "bestRatedPreference": "Top rated feature:",
     "noBestRatedPreferenceYet": "None yet",
@@ -38,6 +41,8 @@
     "preferenceMedia": "Media",
     "edit": "Edit",
     "preview": "Preview",
+    "pinTooltip": "Pin this exhibition",
+    "unpinTooltip": "Unpin this exhibition",
     "editErrDialogTitle": "Cannot edit",
     "editErrDialogText": "The exhibition cannot be edited."
   },
