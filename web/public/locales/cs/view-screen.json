@@ -48,8 +48,8 @@
     "textOption": "Texty",
     "gameOption": "Hry",
     "messageToTheExpoCreator": "Vzkaz tvůrci",
-    "messageToTheExpoCreatorPlaceholder": "V případě zájmu sem napište, co byste chtěli odkázat autorovi výstavy (volitelné).",
-    "linkToReviewer": "Odkaz na vás",
+    "messageToTheExpoCreatorPlaceholder": "V případě zájmu zanechte autorovi výstavy vzkaz (volitelné).",
+    "linkToReviewer": "Váš kontakt",
     "linkToReviewerPlaceholder": "Vaše emailová adresa",
     "sendWithoutRatingCheckboxLabel": "Odeslat komentář bez hodnocení",
     "sendActionButtonLabel": "Odeslat"
