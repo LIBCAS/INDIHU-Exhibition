@@ -31,7 +31,7 @@
     "noNumberOfViewsYet": "Zatím žádná shlédnutí",
     "averageRating": "Průměrné hodnocení:",
     "noAverageRatingYet": "Zatím nehodnoceno",
-    "ratingRedirectLabel": "Presmerovanie na kartu s hodnotením",
+    "ratingRedirectLabel": "Přesměrovat na kartu s hodnocením",
     "commentsCount": "Počet komentářů:",
     "bestRatedPreference": "Nejlépe hodnocený prvek:",
     "noBestRatedPreferenceYet": "Zatím žádný",
@@ -42,7 +42,7 @@
     "edit": "Upravit",
     "preview": "Náhled",
     "pinTooltip": "Připnout tuto výstavu",
-    "unpinTooltip": "Odepnout tuto expozici",
+    "unpinTooltip": "Odepnout tuto výstavu",
     "editErrDialogTitle": "Nelze upravovat",
     "editErrDialogText": "Výstavu nelze upravovat."
   },
