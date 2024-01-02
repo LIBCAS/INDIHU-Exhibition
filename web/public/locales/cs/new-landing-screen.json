@@ -9,35 +9,35 @@
   },
   "introSection": {
     "title": "Kreativní nástroj pro tvorbu virtuálních výstav",
-    "subtitle": "INDIHU Exhibition je nástroj pro tvorbu multimediálních bohatých virtuálních výstav s interaktivními prvky. Výstavy mohou vytvářet výstavy na libovolná témata jednotlivci i týmy. Návštěvníci očekávají, že budete online a tento nástroj vám to umožní.",
+    "subtitle": "INDIHU Exhibition je online nástroj pro tvorbu virtuálních multimediálních výstav s interaktivními prvky. Výstavy mohou na libovolná témata vytvářet jak jednotlivci, tak celé tvůrčí týmy. Nástroj má širokou škálu využití pro instituce zprostředkovávající kulturní dědictví, vědecké pracovníky i širokou veřejnost.",
     "startCreatingLabel": "Začít vytvářet",
-    "scrollDown": "POSUNOUT DOLU"
+    "scrollDown": "POSUNOUT DOLŮ"
   },
   "functionalitySection": {
     "title": "Funkcionalita",
-    "subtitle": "Vytvářejte snadno působivé online výstavy, které budou návštěvníkům dostupné na webu. INDIHU Exhibition umožňuje vkombinovat obrázky, texty, fotogalerie, videa, mapy s dalšími možnostmi. Zařaďte do výstavy i drobné interaktivní hry.",
+    "subtitle": "Vytvářejte snadno působivé virtuální výstavy, které budou návštěvníkům dostupné online kdykoli a odkudkoli. INDIHU Exhibition umožňuje kombinovat textové, vizuální i zvukové materiály s interaktivními hrami, které návštěvníka ještě více vtáhnou do děje.",
     "func1Text": "Umožní tvořit virtuální výstavy, aniž byste museli rozumět webdesignu.",
     "func2Text": "Nabízí multimediální obsah – videa, obrázky, animace, hudba, hry a další.",
     "func3Text": "Na tvorbě výstavy můžete spolupracovat s více tvůrci.",
     "func4Text": "Nabízíme hostování výstavy.",
     "func5Text": "Snadné sdílení návštěvníkům i spoluautorům.",
-    "func6Text": "Vytvářejte interaktivní výstavy několika kliknutí."
+    "func6Text": "Vytvářejte interaktivní výstavy na pár kliknutí."
   },
   "selectedExhibitionsSection": {
     "title": "Vybrané výstavy",
     "subtitle": "Inspirujte se výstavami, které vytvořili ostatní tvůrci. Najděte nápady pro své vlastní výstavy a uvidíte, jak mohou být výstavy pestré. Ukázky jsou průběžně aktualizovány.",
-    "openOnlineExhibition": "Otevřit online výstavu"
+    "openOnlineExhibition": "Otevřít online výstavu"
   },
   "registrationSection": {
     "title": "Začněte vytvářet výstavy!",
-    "subtitle": "Vytvářejte snadno působivé online výstavy, které budou návštěvníkům dostupné na webu. INDIHU Exhibition umožňuje vkombinovat obrázky, texty, fotogalerie, videa, mapy s dalšími možnostmi. Zařaďte do výstavy i drobné interaktivní hry.",
+    "subtitle": "Vytvářejte snadno působivé virtuální výstavy, které budou návštěvníkům dostupné online kdykoli a odkudkoli. INDIHU Exhibition umožňuje kombinovat textové, vizuální i zvukové materiály s interaktivními hrami, které návštěvníka ještě více vtáhnou do děje.",
     "toolIsFree": "Nástroj je zcela zdarma!",
     "registerForm": {
       "formTitle": "Registrace",
       "formSubtitle": "Začněte vytvářet vizuální výstavy zdarma!",
       "or": "nebo",
       "nameFieldLabel": "Jméno",
-      "surnameFieldLabel": "Přijmení",
+      "surnameFieldLabel": "Příjmení",
       "institutionFieldLabel": "Instituce",
       "emailFieldLabel": "E-mail",
       "passwordFieldLabel": "Heslo",
@@ -46,7 +46,7 @@
       "login": "Přihlásit se"
     },
     "loginForm": {
-      "usernameFieldLabel": "Užívatelské jméno/e-mail",
+      "usernameFieldLabel": "Uživatelské jméno/e-mail",
       "passwordFieldLabel": "Heslo",
       "login": "Přihlásit se"
     }
