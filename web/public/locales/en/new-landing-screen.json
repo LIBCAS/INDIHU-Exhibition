@@ -15,22 +15,22 @@
   },
   "functionalitySection": {
     "title": "Functionality",
-    "subtitle": "Easily create impressive online exhibits that are accessible to visitors on the web. INDIHU Exhibition allows you to combine images, texts, photo galleries, videos, maps with other options. Include small interactive games in the exhibition.",
-    "func1Text": "It will allow you to create virtual exhibitions without having to understand web design.",
-    "func2Text": "It offers multimedia content – videos, images, animations, music, games and more.",
-    "func3Text": "You can collaborate with several creators on the creation of the exhibition.",
+    "subtitle": "Easily create immersive virtual exhibitions that can be accessed online by visitors anytime, anywhere. INDIHU Exhibition allows you to combine text, visual and audio materials with interactive games to allow total immersion of the visitor.",
+    "func1Text": "Create virtual exhibitions without being an expert in web design.",
+    "func2Text": "Include multimedia content – videos, images, animations, music, games and more.",
+    "func3Text": "Collaborate with multiple creators to create your virtual exhibition.",
     "func4Text": "We offer exhibition hosting.",
     "func5Text": "Easy sharing to visitors and co-authors.",
     "func6Text": "Create interactive exhibitions with a few clicks."
   },
   "selectedExhibitionsSection": {
     "title": "Selected exhibitions",
-    "subtitle": "Get inspired by exhibitions created by other creators. Find ideas for your own exhibitions and see how colorful exhibitions can be. Samples are continuously updated.",
+    "subtitle": "Get inspired by exhibitions created by other creators. Find ideas for your own exhibitions and see how interactive and fun exhibitions can be. Samples are continuously updated.",
     "openOnlineExhibition": "Open online exhibition"
   },
   "registrationSection": {
     "title": "Start creating exhibitions!",
-    "subtitle": "Easily create impressive online exhibits that are accessible to visitors on the web. INDIHU Exhibition allows you to combine images, texts, photo galleries, videos, maps with other options. Include small interactive games in the exhibition.",
+    "subtitle": "Easily create immersive virtual exhibitions that can be accessed online by visitors anytime, anywhere. INDIHU Exhibition allows you to combine text, visual and audio materials with interactive games to allow total immersion of the visitor.",
     "toolIsFree": "The tool is completely free!",
     "registerForm": {
       "formTitle": "Registration",
@@ -42,7 +42,7 @@
       "emailFieldLabel": "E-mail",
       "passwordFieldLabel": "Password",
       "createAccountButton": "Create account",
-      "alreadyHaveAccount": "Already have account?",
+      "alreadyHaveAccount": "Already have an account?",
       "login": "Log in"
     },
     "loginForm": {
@@ -57,7 +57,7 @@
       "creation": "Creation",
       "projects": "Projects",
       "history": "History",
-      "creators": "A team of creators",
+      "creators": "Creator Group",
       "devInformation": "Development information"
     },
     "indihu": {
