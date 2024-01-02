@@ -49,8 +49,8 @@
     "gameOption": "Hry",
     "messageToTheExpoCreator": "Vzkaz tvůrci",
     "messageToTheExpoCreatorPlaceholder": "V případě zájmu zanechte autorovi výstavy vzkaz (volitelné).",
-    "linkToReviewer": "Váš kontakt",
-    "linkToReviewerPlaceholder": "Vaše emailová adresa",
+    "linkToReviewer": "Kontakt na vás",
+    "linkToReviewerPlaceholder": "Vaše e-mailová adresa",
     "sendWithoutRatingCheckboxLabel": "Odeslat komentář bez hodnocení",
     "sendActionButtonLabel": "Odeslat"
   },
