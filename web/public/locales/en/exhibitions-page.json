@@ -8,6 +8,7 @@
     "sortTooltipDESC": "Ascending",
     "tooltipList": "List",
     "tooltipGrid": "Grid",
+    "showOnlyPinnedLabel": "Show only pinned exhibitions",
     "filterOptions": {
       "all": "All",
       "authorship": "I am the author",

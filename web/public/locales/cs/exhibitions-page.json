@@ -8,6 +8,7 @@
     "sortTooltipDESC": "Vzestupně",
     "tooltipList": "Seznam",
     "tooltipGrid": "Mřížka",
+    "showOnlyPinnedLabel": "Zobrazit pouze připnuté výstavy",
     "filterOptions": {
       "all": "Vše",
       "authorship": "Jsem autor/ka",

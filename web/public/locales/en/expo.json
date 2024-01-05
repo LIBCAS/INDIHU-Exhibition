@@ -131,6 +131,7 @@
       "peopleTextLikeCount": "Number of people who liked the texts of the exhibition:",
       "peopleGameLikeCount": "Number of people who liked the exhibition games:"
     },
+    "numberOfViews": "Number of views:",
     "expoComments": "Comments",
     "expoNoCommentsYet": "This exhibition has no comments yet.",
     "created": "Created:",
@@ -199,5 +200,9 @@
     "seniors": "Seniors",
     "students": "Students",
     "teenagers": "Teenagers"
-  }
+  },
+  "expoUnauthorizedAccessTitle": "Unauthorized access",
+  "expoUnauthorizedAccessText": "You are not authorized to access this exhibition",
+  "expoNotFoundTitle": "Exhibition not found",
+  "expoNotFoundText": "The exhibition located under this URL was not found."
 }

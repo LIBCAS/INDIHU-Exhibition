@@ -131,6 +131,7 @@
       "peopleTextLikeCount": "Počet lidí, kterým se líbily texty výstavy:",
       "peopleGameLikeCount": "Počet lidí, kterým se líbily hry výstavy:"
     },
+    "numberOfViews": "Počet zhlédnutí:",
     "expoComments": "Komentáře k výstavě",
     "expoNoCommentsYet": "Tato výstava zatím nemá žádné komentáře.",
     "created": "Vytvořeno:",
@@ -199,5 +200,9 @@
     "seniors": "Senioři",
     "students": "Studenti",
     "teenagers": "Teenageři"
-  }
+  },
+  "expoUnauthorizedAccessTitle": "Neautorizovaný přístup",
+  "expoUnauthorizedAccessText": "Nemáte oprávnění k přístupu na tuto výstavu.",
+  "expoNotFoundTitle": "Výstava nenalezena",
+  "expoNotFoundText": "Výstava umístěná pod touto URL nebyla nalezena."
 }

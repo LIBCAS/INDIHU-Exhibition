@@ -9,7 +9,7 @@
   },
   "introSection": {
     "title": "A creative tool for creating virtual exhibitions",
-    "subtitle": "INDIHU Exhibition is a tool for creating multimedia rich virtual exhibitions with interactive elements. Exhibitions Individuals and teams can create exhibitions on any topic. Visitors expect you to be online and this tool allows you to do that.",
+    "subtitle": "INDIHU Exhibition is a tool for creating rich multimedia virtual exhibitions with interactive elements. Individuals and teams can create exhibitions on any topic. Visitors expect you to be online and this tool allows you to do that.",
     "startCreatingLabel": "Start creating",
     "scrollDown": "SCROLL DOWN"
   },
@@ -19,9 +19,9 @@
     "func1Text": "Create virtual exhibitions without being an expert in web design.",
     "func2Text": "Include multimedia content – videos, images, animations, music, games and more.",
     "func3Text": "Collaborate with multiple creators to create your virtual exhibition.",
-    "func4Text": "We offer exhibition hosting.",
-    "func5Text": "Easy sharing to visitors and co-authors.",
-    "func6Text": "Create interactive exhibitions with a few clicks."
+    "func4Text": "Host the exhibition at <externalLink>https://exhibition.indihu.cz/</externalLink> domain operated by the Library of the Academy of Sciences of the Czech Republic.",
+    "func5Text": "Easily share the exhibition and personalize the url link.",
+    "func6Text": "Browse exhibitions on your computer as well as on your mobile device."
   },
   "selectedExhibitionsSection": {
     "title": "Selected exhibitions",

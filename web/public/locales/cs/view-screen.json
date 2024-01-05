@@ -35,10 +35,10 @@
   "overlayDrawer": {
     "no-title": "Obrazovka bez názvu",
     "no-text": "Obrazovka neobsahuje žádný text",
-    "relatedDocuments": "Souvisejíci dokumenty:"
+    "relatedDocuments": "Související dokumenty:"
   },
 
-  "ratingDialog": {
+  "rating": {
     "title": "Jak se vám líbila výstava?",
     "overallRating": "Celkové hodnocení",
     "whatYouLikedMost": "Co se vám nejvíce líbilo?",
@@ -52,7 +52,11 @@
     "linkToReviewer": "Kontakt na vás",
     "linkToReviewerPlaceholder": "Vaše e-mailová adresa",
     "sendWithoutRatingCheckboxLabel": "Odeslat komentář bez hodnocení",
-    "sendActionButtonLabel": "Odeslat"
+    "sendActionButtonLabel": "Odeslat",
+    "expoAlreadyRatedTitle": "Výstava již byla ohodnocena",
+    "expoAlreadyRatedText": "Výstava již byla vámi v minulosti ohodnocena!",
+    "ratingFailureTitle": "Hodnocení výstavy selhalo",
+    "ratingFailureText": "Odeslání vašeho hodnocení selhalo."
   },
 
   "photogalleryScreen": {

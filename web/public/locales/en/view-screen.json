@@ -38,7 +38,7 @@
     "relatedDocuments": "Related documents:"
   },
 
-  "ratingDialog": {
+  "rating": {
     "title": "How did you like the exhibition?",
     "overallRating": "Overall rating",
     "whatYouLikedMost": "What did you like the most?",
@@ -52,7 +52,11 @@
     "linkToReviewer": "Your contact info",
     "linkToReviewerPlaceholder": "Your e-mail adress",
     "sendWithoutRatingCheckboxLabel": "Submit a comment without rating",
-    "sendActionButtonLabel": "Send"
+    "sendActionButtonLabel": "Send",
+    "expoAlreadyRatedTitle": "The exhibition has already been rated",
+    "expoAlreadyRatedText": "The exhibition has already been rated by you in the past!",
+    "ratingFailureTitle": "Failure in exhibition's rating",
+    "ratingFailureText": "Failed to submit your rating."
   },
 
   "photogalleryScreen": {

@@ -16,11 +16,11 @@
   "functionalitySection": {
     "title": "Funkcionalita",
     "subtitle": "Vytvářejte snadno působivé virtuální výstavy, které budou návštěvníkům dostupné online kdykoli a odkudkoli. INDIHU Exhibition umožňuje kombinovat textové, vizuální i zvukové materiály s interaktivními hrami, které návštěvníka ještě více vtáhnou do děje.",
-    "func1Text": "Umožní tvořit virtuální výstavy, aniž byste museli rozumět webdesignu.",
-    "func2Text": "Nabízí multimediální obsah – videa, obrázky, animace, hudba, hry a další.",
-    "func3Text": "Na tvorbě výstavy můžete spolupracovat s více tvůrci.",
-    "func4Text": "Nabízíme hostování výstavy.",
-    "func5Text": "Snadné sdílení návštěvníkům i spoluautorům.",
+    "func1Text": "Umožňuje vytvářet virtuální výstavy, aniž byste museli rozumět webdesignu.",
+    "func2Text": "Nabízí multimediální obsah – videa, obrázky, animace, hudbu, hry a další.",
+    "func3Text": "Umožňuje spolupracovat na vytváření výstavy s více tvůrci.",
+    "func4Text": "Hostování výstavy na adrese <externalLink>https://exhibition.indihu.cz/</externalLink> provozované Knihovnou Akademie věd ČR.",
+    "func5Text": "Snadné sdílení výstavy s možností personalizace url kódu.",
     "func6Text": "Vytvářejte interaktivní výstavy během několika kliknutí."
   },
   "selectedExhibitionsSection": {
