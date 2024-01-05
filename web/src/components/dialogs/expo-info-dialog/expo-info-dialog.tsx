@@ -33,8 +33,8 @@ export const ExpoInfoDialog = ({
     () =>
       viewScreen?.perex
         ? (viewScreen?.perex?.split("\n") as string[])
-        : ["Expozice neobsahuje perex"],
-    [viewScreen?.perex]
+        : [t("no-perex")],
+    [t, viewScreen?.perex]
   );
 
   const openChaptersDialog = useCallback(() => {

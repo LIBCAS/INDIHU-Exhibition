@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import LoginForm from "containers/new-landing-page/registration-section/LoginForm";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 
@@ -11,12 +13,14 @@ type LoginDialogProps = {
 };
 
 const LoginDialog = ({ closeThisDialog, oauthConfigs }: LoginDialogProps) => {
+  const { t } = useTranslation("new-landing-screen");
+
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
       title={
         <span className="text-[28px] font-medium text-primary-blue font-inter">
-          Přihlásit se
+          {t("registrationSection.loginForm.login")}
         </span>
       }
       big

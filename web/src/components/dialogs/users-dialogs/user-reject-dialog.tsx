@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation, Trans } from "react-i18next";
 
 // Components
 import DialogWrap from "../dialog-wrap-noredux-typed";
@@ -25,6 +26,7 @@ export const UserRejectDialog = ({
   currUser,
   userTableState,
 }: UserRejectDialogProps) => {
+  const { t } = useTranslation("users", { keyPrefix: "rejectUserDialog" });
   const dispatch = useDispatch<AppDispatch>();
 
   const [isSubmitSucc, setIsSubmitSucc] = useState<boolean>(false);
@@ -48,18 +50,20 @@ export const UserRejectDialog = ({
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
-      title="Zamítnutí užívatele"
+      title={t("title")}
       handleSubmit={handleUserRejectSubmit}
       closeOnEsc
       closeAfterSuccessfulSubmit
       isSubmitSuccessful={isSubmitSucc}
-      submitLabel="Zamietnuť"
+      submitLabel={t("submitLabel")}
     >
       <div>
         <p>
-          {`Užívatel ${
-            currUser.userName ?? ""
-          } bude zamítnut. POZOR! Akce je nevratná`}
+          <Trans
+            t={t}
+            i18nKey={"content"}
+            values={{ userName: currUser.userName ?? "" }}
+          />
         </p>
       </div>
     </DialogWrap>

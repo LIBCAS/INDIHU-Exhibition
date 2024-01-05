@@ -9,8 +9,13 @@ import SelectField from "../form/redux-form/select-field";
 
 import { getActiveUsers } from "../../actions/user-actions";
 import { changeOwner, loadExpo } from "../../actions/expoActions";
+import { useTranslation } from "react-i18next";
 
 const ExpoShareChangeOwner = ({ handleSubmit, activeExpo }) => {
+  const { t } = useTranslation("expo", {
+    keyPrefix: "expoShareChangeOwnerDialog",
+  });
+
   const options = [];
   forEach(activeExpo.collaborators, (c) => {
     if (get(c, "id")) {
@@ -23,10 +28,12 @@ const ExpoShareChangeOwner = ({ handleSubmit, activeExpo }) => {
 
   return (
     <Dialog
-      title="Změnit vlastníka výstavy"
+      title={t("title")}
       name="ExpoShareChangeOwner"
       handleSubmit={handleSubmit}
-      submitLabel={!isEmpty(options) ? "Změnit" : "OK"}
+      submitLabel={
+        !isEmpty(options) ? t("submitLabelChange") : t("submitLabelOk")
+      }
     >
       <form onSubmit={handleSubmit}>
         <div className="dialog-share">
@@ -34,12 +41,12 @@ const ExpoShareChangeOwner = ({ handleSubmit, activeExpo }) => {
             <Field
               component={SelectField}
               componentId="expo-share-change-owner-selectfield-username"
-              label="Uživatelské jméno"
+              label={t("userNameFieldLabel")}
               name="collaborator"
               menuItems={options}
             />
           ) : (
-            <p>Výstava není s nikým sdílena.</p>
+            <p>{t("expoIsNotSharedWithAnyone")}</p>
           )}
         </div>
       </form>

@@ -4,19 +4,30 @@ import { compose, withHandlers } from "recompose";
 
 import Dialog from "./dialog-wrap";
 import { removeCollaborator } from "../../actions/expoActions";
+import { useTranslation, Trans } from "react-i18next";
 
-const ExpoShareRemoveCollaborator = ({ handleSubmit, data }) => (
-  <Dialog
-    title="Odebrání spolupracovníka"
-    name="ExpoShareRemoveCollaborator"
-    submitLabel="Odebrat"
-    handleSubmit={handleSubmit}
-  >
-    <p>
-      Spolupracovník {data && data.name ? `${data.name} ` : ""}bude odebrán.
-    </p>
-  </Dialog>
-);
+const ExpoShareRemoveCollaborator = ({ handleSubmit, data }) => {
+  const { t } = useTranslation("expo", {
+    keyPrefix: "expoShareRemoveCollaboratorDialog",
+  });
+
+  return (
+    <Dialog
+      title={t("title")}
+      name="ExpoShareRemoveCollaborator"
+      submitLabel={t("submitLabel")}
+      handleSubmit={handleSubmit}
+    >
+      <p>
+        <Trans
+          t={t}
+          i18nKey="collaboratorWillBeRemoved"
+          values={{ collaboratorName: data?.name ?? "" }}
+        />
+      </p>
+    </Dialog>
+  );
+};
 
 export default compose(
   connect(({ dialog: { data } }) => ({ data }), null),

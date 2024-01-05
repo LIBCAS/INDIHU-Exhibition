@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { animated, useSpring } from "react-spring";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
@@ -29,6 +30,8 @@ export const ScreenItem = ({
   isSubScreen = false,
   highlight,
 }: ScreenItemProps) => {
+  const { t } = useTranslation("view-exhibition");
+
   const [isOpen, setIsOpen] = useState(false);
   const isChapter = !!screen.subScreens;
 
@@ -99,9 +102,10 @@ export const ScreenItem = ({
           to={currentScreenItemNavLink}
         >
           {screen.type === "START"
-            ? "Úvodní obrazovka"
-            : screen.title ??
-              `Nepojmenovaná ${isChapter ? "kapitola" : "obrazovka"}`}
+            ? t("start-screen")
+            : screen.title ?? isChapter
+            ? t("untitled-chapter")
+            : t("untitled-screen")}
         </NavLink>
       </div>
 

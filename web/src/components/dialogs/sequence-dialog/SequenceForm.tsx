@@ -6,6 +6,7 @@ import {
   ReactMdTextField,
   ReactMdSelectField,
 } from "components/form/formik/react-md";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -14,16 +15,18 @@ interface SequenceFormProps {
 }
 
 const SequenceForm = (_props: SequenceFormProps) => {
+  const { t } = useTranslation("expo-editor", { keyPrefix: "sequenceForm" });
+
   return (
     <Form>
       <div className="flex flex-col gap-4">
         <div>
           <ReactMdTextField
             name="text"
-            label="Popis sekvencie"
+            label={t("sequenceDescriptionLabel")}
             multiLine
             maxLength={150}
-            helpText='"Vložte popis zoomu"'
+            helpText={t("sequenceDescriptionHelpText")}
           />
         </div>
 
@@ -31,7 +34,7 @@ const SequenceForm = (_props: SequenceFormProps) => {
           <div className="w-1/2">
             <ReactMdSelectField
               name="zoom"
-              label="Priblížení"
+              label={t("sequenceZoomLabel")}
               controls={[
                 { label: "2x", value: 2 },
                 { label: "3x", value: 3 },
@@ -45,7 +48,7 @@ const SequenceForm = (_props: SequenceFormProps) => {
               name="time"
               type="number"
               parseAsFloat
-              label="Doba priblížení"
+              label={t("sequenceZoomTimeLabel")}
             />
           </div>
         </div>
@@ -54,7 +57,7 @@ const SequenceForm = (_props: SequenceFormProps) => {
           <ReactMdTextField
             name="stayInDetailTime"
             type="number"
-            label="Doba setrvání na detailu"
+            label={t("sequenceStayOnDetailTimeLabel")}
             parseAsFloat
           />
         </div>

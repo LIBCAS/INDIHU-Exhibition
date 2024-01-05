@@ -7,25 +7,30 @@ import Dialog from "./dialog-wrap";
 import TextField from "../form/redux-form/text-field";
 import * as Validation from "../form/redux-form/validation";
 import { renameExpo } from "../../actions/expoActions";
+import { useTranslation } from "react-i18next";
 
-const ExpoRename = ({ handleSubmit }) => (
-  <Dialog
-    title="Nový název výstavy"
-    name="ExpoRename"
-    handleSubmit={handleSubmit}
-    submitLabel="Přejmenovat"
-  >
-    <form onSubmit={handleSubmit}>
-      <Field
-        component={TextField}
-        componentId="expo-rename-textfield-name"
-        label="Název výstavy"
-        name="name"
-        validate={[Validation.required]}
-      />
-    </form>
-  </Dialog>
-);
+const ExpoRename = ({ handleSubmit }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "expoRenameDialog" });
+
+  return (
+    <Dialog
+      title={t("title")}
+      name="ExpoRename"
+      handleSubmit={handleSubmit}
+      submitLabel={t("submitLabel")}
+    >
+      <form onSubmit={handleSubmit}>
+        <Field
+          component={TextField}
+          componentId="expo-rename-textfield-name"
+          label={t("nameFieldLabel")}
+          name="name"
+          validate={[Validation.required]}
+        />
+      </form>
+    </Dialog>
+  );
+};
 
 export default compose(
   connect(({ dialog: { data } }) => ({ data }), null),

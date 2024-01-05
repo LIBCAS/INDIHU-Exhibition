@@ -10,32 +10,33 @@ import CheckBox from "../form/redux-form/check-box";
 import * as Validation from "../form/redux-form/validation";
 
 import { addCollaborators } from "../../actions/expoActions";
-
-const options = [
-  { label: "Jen pro čtení", value: "READ_ONLY" },
-  { label: "Pro čtení a zápis", value: "EDIT" },
-];
+import { useTranslation, withTranslation } from "react-i18next";
 
 const ExpoShare = ({ handleSubmit, change }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "expoShareDialog" });
+
   return (
     <Dialog
-      title="Sdílet s"
+      title={t("title")}
       name="ExpoShare"
       handleSubmit={handleSubmit}
-      submitLabel="Sdílet"
+      submitLabel={t("submitLabel")}
     >
       <Field
         name="option"
         component={SelectField}
         componentId="expo-share-selectfield-choose-type"
-        menuItems={options}
-        placeholder="Vyberte typ"
+        menuItems={[
+          { label: t("readOnlyOption"), value: "READ_ONLY" },
+          { label: t("editOption"), value: "EDIT" },
+        ]}
+        placeholder={t("selectTypeFieldLabel")}
         validate={[Validation.required]}
       />
       <Field
         component={TextField}
         componentId="expo-share-textfield-name"
-        label="E-mail uživatele"
+        label={t("userEmailField")}
         name="name"
         validate={[Validation.required, Validation.email]}
       />
@@ -43,7 +44,7 @@ const ExpoShare = ({ handleSubmit, change }) => {
         component={CheckBox}
         componentId="expo-share-checkbox-invite"
         name="invite"
-        customLabel="Pokud užívatel neexistuje, odeslat e-mailovou pozvánku" // Pokud uživatel neexistuje, odeslat e-mailovou pozvánku
+        customLabel={t("ifUserDoesNotExistSendEmailInvite")}
         change={change}
       />
     </Dialog>
@@ -52,6 +53,7 @@ const ExpoShare = ({ handleSubmit, change }) => {
 
 export default compose(
   connect(({ dialog: { data } }) => ({ data }), null),
+  withTranslation("expo"),
   withHandlers({
     onSubmit:
       (dialog) =>

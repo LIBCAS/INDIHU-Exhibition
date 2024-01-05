@@ -66,7 +66,7 @@ const LoginForm = ({ oauthConfigs }: LoginFormProps) => {
           /> */}
         </div>
 
-        <p className="reg-form__p">nebo</p>
+        <p className="reg-form__p">{t("registerForm.or")}</p>
 
         {/* FORM */}
         <div className="w-full px-4 mb-2 md:max-w-[520px]">
@@ -115,12 +115,12 @@ const LoginForm = ({ oauthConfigs }: LoginFormProps) => {
       {/* Footer */}
       <div className="dialog__footer">
         <div className="p-[12px] flex justify-center items-center gap-2">
-          <span>Zapomenuté heslo?</span>
+          <span>{t("loginForm.forgetPassword")}</span>
           <span
             className="cursor-pointer underline"
             onClick={() => dispatch(setDialog(DialogType.PasswordReset, {}))}
           >
-            Připomenout heslo
+            {t("loginForm.remindPassword")}
           </span>
         </div>
       </div>

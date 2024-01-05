@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 
@@ -19,6 +21,7 @@ const SequenceDialogNew = ({
   closeThisDialog,
   onDialogSubmit,
 }: SequenceDialogNewProps) => {
+  const { t } = useTranslation("expo-editor", { keyPrefix: "sequenceForm" });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   return (
@@ -39,7 +42,7 @@ const SequenceDialogNew = ({
       {(formik) => (
         <DialogWrap
           closeThisDialog={closeThisDialog}
-          title="Vytvořit"
+          title={t("createNewSequenceTitle")}
           handleSubmit={() => {
             formik.submitForm();
           }}

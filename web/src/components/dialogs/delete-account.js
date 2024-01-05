@@ -5,24 +5,28 @@ import { reduxForm } from "redux-form";
 import Dialog from "./dialog-wrap";
 
 import { deleteAccount, signOut } from "../../actions/user-actions";
+import { useTranslation } from "react-i18next";
 
-const DeleteAccount = ({ handleSubmit, fail }) => (
-  <Dialog
-    title="Zrušit účet"
-    name="DeleteAccount"
-    handleSubmit={handleSubmit}
-    submitLabel="Zrušit účet"
-  >
-    <p>Opravdu chcete zrušit účet?</p>
-    <p>
-      <strong>
-        Zrušením účtu dojde k uzamknutí všech výstav, které vlastníte, a nebude
-        možné s nimi dále pracovat!
-      </strong>
-    </p>
-    {fail && <span className="invalid">Nepodařilo se odstranit účet!</span>}
-  </Dialog>
-);
+const DeleteAccount = ({ handleSubmit, fail }) => {
+  const { t } = useTranslation("profile", {
+    keyPrefix: "deactivateAccountDialog",
+  });
+
+  return (
+    <Dialog
+      title={t("title")}
+      name="DeleteAccount"
+      handleSubmit={handleSubmit}
+      submitLabel={t("submitLabel")}
+    >
+      <p>{t("reallyWantToDeactivateAccount")}</p>
+      <p>
+        <strong>{t("deactivateConsequences")}</strong>
+      </p>
+      {fail && <span className="invalid">{t("failedToDeactivate")}</span>}
+    </Dialog>
+  );
+};
 
 export default compose(
   connect(

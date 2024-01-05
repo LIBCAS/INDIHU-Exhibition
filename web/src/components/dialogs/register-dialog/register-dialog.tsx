@@ -2,6 +2,7 @@ import DialogWrap from "../dialog-wrap-noredux-typed";
 import RegistrationForm from "containers/new-landing-page/registration-section/RegistrationForm";
 
 import { OAuthConfigObj } from "containers/landing-page/Authentication";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -14,12 +15,14 @@ const RegisterDialog = ({
   closeThisDialog,
   oauthConfigs,
 }: RegisterDialogProps) => {
+  const { t } = useTranslation("new-landing-screen");
+
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
       title={
         <span className="text-[28px] font-medium text-primary-blue font-inter">
-          Registrace
+          {t("registrationSection.registerForm.formTitle")}
         </span>
       }
       big

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 
@@ -27,6 +29,7 @@ const SequenceDialogEdit = ({
   sequence,
   sequenceIndex,
 }: SequenceDialogEditProps) => {
+  const { t } = useTranslation("sequenceForm", { keyPrefix: "sequenceForm" });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   return (
@@ -48,7 +51,7 @@ const SequenceDialogEdit = ({
       {(formik) => (
         <DialogWrap
           closeThisDialog={closeThisDialog}
-          title="Upravit"
+          title={t("editExistingSequenceTitle")}
           handleSubmit={() => {
             formik.submitForm();
           }}

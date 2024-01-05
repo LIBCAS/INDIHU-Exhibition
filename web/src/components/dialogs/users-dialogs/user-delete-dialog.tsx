@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation, Trans } from "react-i18next";
 
 // Components
 import DialogWrap from "../dialog-wrap-noredux-typed";
@@ -25,6 +26,7 @@ export const UserDeleteDialog = ({
   currUser,
   userTableState,
 }: UserDeleteDialogProps) => {
+  const { t } = useTranslation("users", { keyPrefix: "deleteUserDialog" });
   const dispatch = useDispatch<AppDispatch>();
 
   const [isSubmitSucc, setIsSubmitSucc] = useState<boolean>(false);
@@ -48,15 +50,21 @@ export const UserDeleteDialog = ({
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
-      title="Odstranit užívatele"
+      title={t("title")}
       handleSubmit={handleUserDeleteSubmit}
       closeOnEsc
       closeAfterSuccessfulSubmit
       isSubmitSuccessful={isSubmitSucc}
-      submitLabel="Odstranit"
+      submitLabel={t("submitLabel")}
     >
       <div>
-        <p>{`Užívatel ${currUser.userName} bude odstraněn.`}</p>
+        <p>
+          <Trans
+            t={t}
+            i18nKey={"content"}
+            values={{ userName: currUser.userName }}
+          />
+        </p>
       </div>
     </DialogWrap>
   );

@@ -5,6 +5,7 @@ import { AppState } from "store/store";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -49,11 +50,12 @@ const OverlayDialog = ({
   navigateForward,
 }: OverlayDialogProps) => {
   const { shouldIncrement } = useSelector(stateSelector);
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlayDialog" });
 
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
-      title={<span className="text-2xl font-bold">Overlay Dialog</span>}
+      title={<span className="text-2xl font-bold">{t("title")}</span>}
       big
       noDialogMenu
       closeOnEsc
@@ -68,7 +70,7 @@ const OverlayDialog = ({
             }
             onClick={openEditorScreenUrl}
           >
-            Edit current screen
+            {t("editCurrentScreen")}
           </Button>
         )}
 
@@ -79,7 +81,7 @@ const OverlayDialog = ({
           }
           onClick={openSettingsDialog}
         >
-          Open Settings
+          {t("openSettings")}
         </Button>
 
         {hasGlassMagnifier && (
@@ -90,7 +92,7 @@ const OverlayDialog = ({
             }
             onClick={openGlassMagnifierDialog}
           >
-            Open Glass Magnifier configuration
+            {t("openGlassMagnifierSettings")}
           </Button>
         )}
 
@@ -106,7 +108,7 @@ const OverlayDialog = ({
             }
             onClick={openAudioDialog}
           >
-            Open Audio volume settings
+            {t("openAudioVolumeSettings")}
           </Button>
         )}
 
@@ -117,7 +119,7 @@ const OverlayDialog = ({
           }
           onClick={openChaptersDialog}
         >
-          Open Chapters dialog
+          {t("openChaptersOverview")}
         </Button>
 
         <div className="mt-6 px-12 flex justify-between">
@@ -140,7 +142,7 @@ const OverlayDialog = ({
             }
             onClick={shouldIncrement ? pause : play}
           >
-            {shouldIncrement ? "Zastavit" : "Prehrat"}
+            {shouldIncrement ? t("pause") : t("play")}
           </Button>
 
           <Button color="expoTheme" onClick={navigateForward}>
