@@ -48,7 +48,9 @@
     "loginForm": {
       "usernameFieldLabel": "Username/e-mail",
       "passwordFieldLabel": "Password",
-      "login": "Log in"
+      "login": "Log in",
+      "forgetPassword": "Forgotten password?",
+      "remindPassword": "Remind password"
     }
   },
   "footer": {

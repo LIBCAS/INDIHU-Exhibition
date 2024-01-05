@@ -36,5 +36,26 @@
     "state": "Status",
     "action": "Action"
   },
-  "pagesizeLabel": "Entries per page:"
+  "pagesizeLabel": "Entries per page:",
+
+  "acceptUserDialog": {
+    "title": "Accept user",
+    "submitLabel": "Accept",
+    "content": "User \"{{userName}}\" will be accepted. \nCAREFUL! This action can not be reverted."
+  },
+  "deleteUserDialog": {
+    "title": "Delete user",
+    "submitLabel": "Delete",
+    "content": "User \"{{userName}}\" will be deleted."
+  },
+  "reactivateUserDialog": {
+    "title": "Reactivate user",
+    "submitLabel": "Reactivate",
+    "content": "User \"{{userName}}\" will be reactivated."
+  },
+  "rejectUserDialog": {
+    "title": "Reject user",
+    "submitLabel": "Reject",
+    "content": "User \"{{userName}}\" will be rejected. \nCAREFUL! This action can not be reverted."
+  }
 }

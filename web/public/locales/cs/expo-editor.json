@@ -370,6 +370,15 @@
     "colorLabel": "Barva infopointu",
     "iconFileLabel": "Soubor vlastní ikony"
   },
+  "sequenceForm": {
+    "createNewSequenceTitle": "Vytvořit novou sekvenci",
+    "editExistingSequenceTitle": "Upravit stávající sekvenci",
+    "sequenceDescriptionLabel": "Popis sekvence",
+    "sequenceDescriptionHelpText": "Vložte popis priblížení",
+    "sequenceZoomLabel": "Priblížení",
+    "sequenceZoomTimeLabel": "Doba priblížení",
+    "sequenceStayOnDetailTimeLabel": "Doba setrvání na detailu"
+  },
   "imageBox": {
     "emptySelectLabel": "Vybrat",
     "zoomInTooltip": "Přiblížit",
@@ -378,5 +387,9 @@
     "openFileExplorerTooltip": "Otevřít prohlížeč souborů",
     "openImageEditorTooltip": "Otevřít obrázek v editoru",
     "deleteImageFromBox": "Odstranit obrázek z boxu"
+  },
+
+  "confirmDialog": {
+    "submitLabel": "Potvrdit"
   }
 }

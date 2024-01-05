@@ -204,5 +204,58 @@
   "expoUnauthorizedAccessTitle": "Unauthorized access",
   "expoUnauthorizedAccessText": "You are not authorized to access this exhibition",
   "expoNotFoundTitle": "Exhibition not found",
-  "expoNotFoundText": "The exhibition located under this URL was not found."
+  "expoNotFoundText": "The exhibition located under this URL was not found.",
+
+  "expoDeleteDialog": {
+    "submitLabel": "Delete",
+    "expoWillBeDeleted": "The selected exhibition named <strong>{{expoName}}</strong> will be deleted.",
+    "actionIsPermanent": "The action is irreversible and deletes the exhibition including all documents and materials!"
+  },
+  "expoDuplicateDialog": {
+    "title": "Duplication of the exhibition",
+    "submitLabel": "Duplicate",
+    "newDuplicatedExpoNameFieldLabel": "Name of the exhibition"
+  },
+  "expoRenameDialog": {
+    "title": "New exhibition name",
+    "submitLabel": "Rename",
+    "nameFieldLabel": "Name of the exhibition"
+  },
+  "expoShareChangeOwnerDialog": {
+    "title": "Change the owner of the exhibition",
+    "submitLabelChange": "Change",
+    "submitLabelOk": "OK",
+    "userNameFieldLabel": "Username",
+    "expoIsNotSharedWithAnyone": "The exhibition is not shared with anyone."
+  },
+  "expoShareRemoveCollaboratorDialog": {
+    "title": "Remove collaborator",
+    "submitLabel": "Remove",
+    "collaboratorWillBeRemoved": "Collaborator {{collaboratorName}} will be removed."
+  },
+  "expoShareDialog": {
+    "title": "Share with",
+    "submitLabel": "Share",
+    "readOnlyOption": "Read only",
+    "editOption": "Read and write",
+    "selectTypeFieldLabel": "Select share type",
+    "userEmailField": "E-mail of user",
+    "ifUserDoesNotExistSendEmailInvite": "If the user does not exist, send an e-mail invitation",
+    "responseUserAdded": {
+      "title": "User added",
+      "text": "The exhibition was shared with the user {{userName}}."
+    },
+    "responseIndihuUserInvitedByEmail": {
+      "title": "User invited",
+      "text": "An e-mail invitation has been sent to the user {{userName}}."
+    },
+    "responseNotIndihuUser": {
+      "title": "Invite user",
+      "text": "{{userName}} is not user of Indihu Exhibition. Please select \"send email invitation\" checkbox option."
+    },
+    "responseUserIsAlreadyShared": {
+      "title": "The user is already cooperating",
+      "text": "The exhibition is already shared with user {{userName}}."
+    }
+  }
 }

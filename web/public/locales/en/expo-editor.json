@@ -370,6 +370,15 @@
     "colorLabel": "Infopoint color",
     "iconFileLabel": "File of custom icon"
   },
+  "sequenceForm": {
+    "createNewSequenceTitle": "Create new sequence",
+    "editExistingSequenceTitle": "Edit existing sequence",
+    "sequenceDescriptionLabel": "Sequence description",
+    "sequenceDescriptionHelpText": "Enter a zoom description",
+    "sequenceZoomLabel": "Zoom size",
+    "sequenceZoomTimeLabel": "Zoom duration",
+    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail"
+  },
   "imageBox": {
     "emptySelectLabel": "Select",
     "zoomInTooltip": "Zoom in",
@@ -378,5 +387,9 @@
     "openFileExplorerTooltip": "Open in file explorer",
     "openImageEditorTooltip": "Open image in image editor",
     "deleteImageFromBox": "Remove image from box"
+  },
+
+  "confirmDialog": {
+    "submitLabel": "Confirm"
   }
 }

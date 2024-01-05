@@ -36,5 +36,26 @@
     "state": "Stav",
     "action": "Akce"
   },
-  "pagesizeLabel": "Záznamů na stránku:"
+  "pagesizeLabel": "Záznamů na stránku:",
+
+  "acceptUserDialog": {
+    "title": "Schválení uživatele",
+    "submitLabel": "Akceptovat",
+    "content": "Užívatel \"{{userName}}\" bude schválen. \nPOZOR! Akce je nevratná"
+  },
+  "deleteUserDialog": {
+    "title": "Odstranit užívatele",
+    "submitLabel": "Odstranit",
+    "content": "Užívatel \"{{userName}}\" bude odstraněn."
+  },
+  "reactivateUserDialog": {
+    "title": "Reaktivace uživatele",
+    "submitLabel": "Reaktivovat",
+    "content": "Užívatel \"{{userName}}\" bude reaktivován."
+  },
+  "rejectUserDialog": {
+    "title": "Zamítnutí užívatele",
+    "submitLabel": "Zamítnout",
+    "content": "Užívatel \"{{userName}}\" bude zamítnut. \nPOZOR! Akce je nevratná"
+  }
 }

@@ -204,5 +204,58 @@
   "expoUnauthorizedAccessTitle": "Neautorizovaný přístup",
   "expoUnauthorizedAccessText": "Nemáte oprávnění k přístupu na tuto výstavu.",
   "expoNotFoundTitle": "Výstava nenalezena",
-  "expoNotFoundText": "Výstava umístěná pod touto URL nebyla nalezena."
+  "expoNotFoundText": "Výstava umístěná pod touto URL nebyla nalezena.",
+
+  "expoDeleteDialog": {
+    "submitLabel": "Smazat",
+    "expoWillBeDeleted": "Vybraná výstava s názvem <strong>{{expoName}}</strong> bude smazaná.",
+    "actionIsPermanent": "Akce je nevratná a smaže výstavu včetne všech dokumentů a podkladů!"
+  },
+  "expoDuplicateDialog": {
+    "title": "Duplikace výstavy",
+    "submitLabel": "Duplikovat",
+    "newDuplicatedExpoNameFieldLabel": "Název výstavy"
+  },
+  "expoRenameDialog": {
+    "title": "Nový název výstavy",
+    "submitLabel": "Přejmenovat",
+    "nameFieldLabel": "Název výstavy"
+  },
+  "expoShareChangeOwnerDialog": {
+    "title": "Změnit vlastníka výstavy",
+    "submitLabelChange": "Změnit",
+    "submitLabelOk": "OK",
+    "userNameFieldLabel": "Uživatelské jméno",
+    "expoIsNotSharedWithAnyone": "Výstava není s nikým sdílena."
+  },
+  "expoShareRemoveCollaboratorDialog": {
+    "title": "Odebrání spolupracovníka",
+    "submitLabel": "Odebrat",
+    "collaboratorWillBeRemoved": "Spolupracovník {{collaboratorName}} bude odebrán."
+  },
+  "expoShareDialog": {
+    "title": "Sdílet s",
+    "submitLabel": "Sdílet",
+    "readOnlyOption": "Jen pro čtení",
+    "editOption": "Pro čtení a zápis",
+    "selectTypeFieldLabel": "Vyberte typ",
+    "userEmailField": "E-mail užívatele",
+    "ifUserDoesNotExistSendEmailInvite": "Pokud užívatel neexistuje, odeslat e-mailovou pozvánku",
+    "responseUserAdded": {
+      "title": "Uživatel přidaný",
+      "text": "Výstava byla sdílena uživateli {{userName}}."
+    },
+    "responseIndihuUserInvitedByEmail": {
+      "title": "Uživatel pozvaný",
+      "text": "Uživateli {{userName}} byla zaslána pozvánka na e-mail."
+    },
+    "responseNotIndihuUser": {
+      "title": "Pozvat uživatele",
+      "text": "{{userName}} není uživatel Indihu. Prosím vyberte možnost \"odeslat e-mailovou pozvánku\""
+    },
+    "responseUserIsAlreadyShared": {
+      "title": "Užívatel již spolupracuje",
+      "text": "Výstava je již sdílena s užívatelem {{userName}}."
+    }
+  }
 }

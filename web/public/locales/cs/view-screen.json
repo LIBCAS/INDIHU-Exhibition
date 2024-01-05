@@ -32,6 +32,17 @@
     }
   },
 
+  "overlayDialog": {
+    "title": "Rozhranie",
+    "editCurrentScreen": "Upravit aktuální obrazovku",
+    "openSettings": "Otevřít nastavení",
+    "openGlassMagnifierSettings": "Otevřít nastavení lupy",
+    "openAudioVolumeSettings": "Otevřít nastavení zvuku",
+    "openChaptersOverview": "Otevřít zeznam kapitol",
+    "pause": "Pozastavit",
+    "play": "Přehrát"
+  },
+
   "overlayDrawer": {
     "no-title": "Obrazovka bez názvu",
     "no-text": "Obrazovka neobsahuje žádný text",

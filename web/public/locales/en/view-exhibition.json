@@ -21,5 +21,9 @@
   "share": "Share",
   "share-expo": "Share exhibition",
   "copy-link": "Copy link to exhibition",
-  "authors": "Authors of exhibition"
+  "authors": "Authors of exhibition",
+  "no-perex": "Exhibition does not contain perex",
+  "start-screen": "Start screen",
+  "untitled-chapter": "Untitled chapter",
+  "untitled-screen": "Untitled screen"
 }

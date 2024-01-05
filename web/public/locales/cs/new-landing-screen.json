@@ -48,7 +48,9 @@
     "loginForm": {
       "usernameFieldLabel": "Uživatelské jméno/e-mail",
       "passwordFieldLabel": "Heslo",
-      "login": "Přihlásit se"
+      "login": "Přihlásit se",
+      "forgetPassword": "Zapomenuté heslo?",
+      "remindPassword": "Připomenout heslo"
     }
   },
   "footer": {

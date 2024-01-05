@@ -15,5 +15,13 @@
   "confirmPasswordLabel": "Potvrdit heslo",
   "changePasswordActionButtonLabel": "Změnit heslo",
 
-  "deleteAccountActionButtonLabel": "Zrušit účet"
+  "deleteAccountActionButtonLabel": "Zrušit účet",
+
+  "deactivateAccountDialog": {
+    "title": "Zrušit účet",
+    "submitLabel": "Zrušit účet",
+    "reallyWantToDeactivateAccount": "Opravdu chcete zrušit účet?",
+    "deactivateConsequences": "Zrušením účtu dojde k uzamknutí všech výstav, které vlastníte, a nebude možné s nimi dále pracovat!",
+    "failedToDeactivate": "Nepodařilo se odstranit účet!"
+  }
 }
