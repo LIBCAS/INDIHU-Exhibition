@@ -4,7 +4,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // Components
-import { LanguageSelect } from "components/form/mui";
+import LanguageSelect from "components/language-select/LanguageSelect";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -187,7 +187,7 @@ const LoginAppHeader = ({
               dispatch(signOut());
               history.replace("/");
             }}
-            className="text-inherit !font-['Work_Sans'] "
+            className="text-inherit !font-['Work_Sans'] whitespace-nowrap"
           >
             {t("logged.logout")}
           </div>

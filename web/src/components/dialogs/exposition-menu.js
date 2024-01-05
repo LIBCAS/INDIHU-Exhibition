@@ -11,8 +11,6 @@ import { changeRadioState } from "../../actions/app-actions";
 import { loadExpo } from "../../actions/expoActions";
 import { openViewer } from "../../utils";
 
-// const { t } = useTranslation("exhibitions-page");
-
 const ExpositionMenu = ({
   handleSubmit,
   dialogData,
@@ -118,7 +116,10 @@ const ExpositionMenu = ({
           onClick={(e) => {
             e.stopPropagation();
             closeDialog();
-            setDialog("ExpoDuplicate", { id: get(dialogData, "id") });
+            setDialog("ExpoDuplicate", {
+              id: get(dialogData, "id"),
+              expositionsFilterState: get(dialogData, "expositionsFilterState"),
+            });
           }}
           className="exposition-menu-button"
         />

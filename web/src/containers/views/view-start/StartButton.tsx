@@ -11,7 +11,7 @@ const StartButton = ({ handleStart }: StartButtonProps) => {
 
   return (
     <button
-      className="h-full lg:h-32 w-32 ml-auto border-x-4 border-t-4 lg:border-b-4 border-white p-4 text-bold text-lg bg-primary cursor-pointer mb-4 text-white"
+      className="h-full w-32 lg:h-32 p-4 ml-auto mb-4 border-4 border-solid border-white text-white text-bold text-lg bg-primary cursor-pointer"
       style={{ backgroundColor: expoDesignData?.iconsColor }}
       onClick={handleStart}
     >

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import DialogWrap from "../dialog-wrap-noredux-typed";
-import { LanguageSelect } from "components/form/mui";
+import LanguageSelect from "components/language-select/LanguageSelect";
 
 // - - - - - - - -
 

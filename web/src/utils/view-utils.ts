@@ -1,34 +1,8 @@
 import { gameScreens } from "enums/screen-type";
-import { Screen, Document, Position, Size } from "models";
+import { Screen, Document } from "models";
 
 export const isGameScreen = (type?: Screen["type"]) =>
   !!gameScreens.find((screenType) => screenType === type);
-
-export const isStartOrFinishScreen = (type: Screen["type"]) => {
-  return type === "START" || type === "FINISH";
-};
-
-// - - -
-
-export const parseUrlSection = (
-  section: string
-): number | "start" | "finish" | undefined => {
-  if (section === "start" || section === "finish") {
-    return section;
-  }
-
-  const parsedSection = parseInt(section);
-  if (isNaN(parsedSection)) {
-    return undefined;
-  }
-
-  return parsedSection;
-};
-
-export const parseUrlScreen = (screen: string): number | undefined => {
-  const parsedScreen = parseInt(screen);
-  return isNaN(parsedScreen) ? undefined : parsedScreen;
-};
 
 // - - - - -
 
@@ -102,37 +76,4 @@ export const getHaloEffectStyle = (
       textShadow: `-1px 0 ${shadowColor}, 0 1px ${shadowColor}, 1px 0 ${shadowColor}, 0 -1px ${shadowColor}`,
     };
   }
-};
-
-// - -
-type InfopointOutsideArgs = {
-  infopointPosition: Position;
-  imageOrigData: Size | undefined;
-};
-
-export const isInfopointOutsideOrigImage = ({
-  infopointPosition,
-  imageOrigData,
-}: InfopointOutsideArgs) => {
-  if (
-    !imageOrigData ||
-    imageOrigData.width === 0 ||
-    imageOrigData.height === 0
-  ) {
-    return true;
-  }
-
-  if (
-    infopointPosition.left < 0 ||
-    infopointPosition.left > imageOrigData.width
-  ) {
-    return true;
-  }
-  if (
-    infopointPosition.top < 0 ||
-    infopointPosition.top > imageOrigData.height
-  ) {
-    return true;
-  }
-  return false;
 };

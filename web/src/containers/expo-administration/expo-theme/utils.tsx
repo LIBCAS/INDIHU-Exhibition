@@ -11,6 +11,7 @@ import { dispatch } from "index";
 import { showLoader } from "actions/app-actions";
 import { addFile } from "actions/file-actions";
 import { setDialog } from "actions/dialog-actions";
+import { setExpoDesignData } from "actions/expoActions";
 
 // - - -
 
@@ -29,6 +30,8 @@ export const defaultInitialValues: ThemeFormData = {
   defaultInfopointIconFileName: "",
   defaultInfopointIconFile: null,
 };
+
+// - - -
 
 export const createThemeProcessedFormData = (
   formData: ThemeFormData
@@ -125,13 +128,14 @@ export const handleImportedFile = async (
   const fileReader = new FileReader();
   fileReader.onload = async (event) => {
     try {
+      // 1. Read form properties from imported file
       const content = event.target?.result;
       if (content) {
         const importedFileData = JSON.parse(
           content as string
         ) as ThemeFormDataProcessed;
 
-        // 1.
+        // 2. Get the information whether the FE redux store (.expoFiles) will need to be updated according to the new imported files
         const importedLogoFile = importedFileData.logoFile;
         const importedIconFile = importedFileData.defaultInfopointIconFile;
 
@@ -142,6 +146,8 @@ export const handleImportedFile = async (
           !!importedIconFile &&
           !isFileInActiveExpoStructureFiles(activeExpo, importedIconFile);
 
+        // 3. Use read properties in order to contact BE which will create new icon and logo file and responds with the newly created IDs
+        // Does not save all changes, manual save will be required
         const respBody = await saveExpoDesignData(
           importedFileData,
           activeExpo.id,
@@ -149,10 +155,10 @@ export const handleImportedFile = async (
           shouldUpdateIconFile
         );
         if (!respBody) {
-          throw new Error();
+          throw new Error(); // jump to error handling
         }
 
-        // 2. Set the form based on retrieved response body with newly created file ids!
+        // 4. Set the form based on retrieved response body with newly created file ids!
         Object.entries(respBody).forEach(([formKeyName, value]) => {
           if (formKeyName === "logoFile") {
             formik.setFieldValue("logoFile", respBody.logoFile);
@@ -170,6 +176,29 @@ export const handleImportedFile = async (
             formik.setFieldValue(formKeyName, value);
           }
         });
+
+        // 5. Can happen (if not part of previous export) that the logoFile and infopoint icon file will not be included in response
+        // thus, the form for these two fields will be in old previous state
+        if (!respBody.logoFile) {
+          formik.setFieldValue("logoFile", null);
+          formik.setFieldValue("logoFileName", "");
+        }
+        if (!respBody.defaultInfopointIconFile) {
+          formik.setFieldValue("defaultInfopointIconFile", null);
+          formik.setFieldValue("defaultInfopointIconFileName", "");
+        }
+
+        // 6. Store the current state in global local state (needs manual save)
+        dispatch(setExpoDesignData(respBody));
+
+        // 7. Show succesful dialog
+        dispatch(
+          setDialog(DialogType.InfoDialog, {
+            title: "Import bol úspešný!",
+            text: "Import prebehol úspešne. Na uloženie zmien nezabudnite kliknúť na tlačítko 'Uložiť zmeny'",
+            noStornoButton: true,
+          })
+        );
       }
     } catch (error) {
       const errMsg = error instanceof Error ? error.message : "";

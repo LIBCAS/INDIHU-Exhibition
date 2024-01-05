@@ -1,12 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 
-import { IconButton } from "@mui/material";
+// Components
+import { Button } from "components/button/button";
+import { Icon } from "components/icon/icon";
 import { MoreVert } from "@mui/icons-material";
 
+// Models
 import { ExpositionItem, ActiveExpo } from "models";
 import { AppState, AppDispatch } from "store/store";
+import { ExpositionsFilterStateObj } from "./Expositions";
 
+// Actions and utils
 import { setDialog } from "../../actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 
@@ -22,15 +27,18 @@ const stateSelector = createSelector(
 
 type ExpoMenuProps = {
   expositionItem: ExpositionItem;
+  expositionsFilterState: ExpositionsFilterStateObj;
 };
 
-const ExpoMenu = ({ expositionItem }: ExpoMenuProps) => {
+const ExpoMenu = ({
+  expositionItem,
+  expositionsFilterState,
+}: ExpoMenuProps) => {
   const { activeExpo, expositions } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <IconButton
-      id="expo-menu-card-action-menu"
+    <Button
       onClick={(e) => {
         e.stopPropagation();
         dispatch(
@@ -44,12 +52,13 @@ const ExpoMenu = ({ expositionItem }: ExpoMenuProps) => {
             inProgress: expositionItem.inProgress,
             activeExpo: activeExpo,
             expositions: expositions,
+            expositionsFilterState: expositionsFilterState,
           })
         );
       }}
     >
-      <MoreVert />
-    </IconButton>
+      <Icon useMaterialUiIcon name={<MoreVert />} />
+    </Button>
   );
 };
 

@@ -5,26 +5,30 @@ import {
   TwitterIcon,
   TwitterShareButton,
   EmailIcon,
-  EmailShareButton,
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
 
-import { CopyClipboardBox } from "components/copy-clipboard-box/copy-clipboard-box";
+import { CopyClipboardBox } from "./CopyClipboardBox";
 import DialogWrap from "../dialog-wrap-noredux-typed";
+import { getEmailContent } from "./getEmailContent";
 
 // - -
 
 export type ShareExpoDialogProps = {
   closeThisDialog: () => void;
   url: string;
+  expoTitle: string | undefined;
 };
 
 export const ShareExpoDialog = ({
   closeThisDialog,
   url,
+  expoTitle,
 }: ShareExpoDialogProps) => {
   const { t } = useTranslation("view-exhibition");
+
+  const emailContent = getEmailContent(expoTitle ?? "", url);
 
   return (
     <DialogWrap
@@ -43,6 +47,7 @@ export const ShareExpoDialog = ({
           <FacebookIcon size={45} />
           <p className="text-inherit">Facebook</p>
         </FacebookShareButton>
+
         <WhatsappShareButton
           url={url}
           className="!w-24 flex flex-col items-center"
@@ -50,6 +55,7 @@ export const ShareExpoDialog = ({
           <WhatsappIcon size={45} />
           <p className="text-inherit">Whatsapp</p>
         </WhatsappShareButton>
+
         <TwitterShareButton
           url={url}
           className="!w-24 flex flex-col items-center"
@@ -57,13 +63,15 @@ export const ShareExpoDialog = ({
           <TwitterIcon size={45} />
           <p className="text-inherit">Twitter</p>
         </TwitterShareButton>
-        <EmailShareButton
-          url={url}
+
+        {/* Replaced by EmailShareButton */}
+        <a
           className="!w-24 flex flex-col items-center"
+          href={`mailto:?subject=${emailContent.subject}&body=${emailContent.body}`}
         >
           <EmailIcon size={45} />
           <p className="text-inherit">Email</p>
-        </EmailShareButton>
+        </a>
       </div>
 
       <CopyClipboardBox

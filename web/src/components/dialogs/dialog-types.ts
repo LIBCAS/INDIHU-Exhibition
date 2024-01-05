@@ -1,3 +1,4 @@
+import { ExpositionsFilterStateObj } from "containers/expositions/Expositions";
 import {
   File as IndihuFile,
   Document,
@@ -5,8 +6,6 @@ import {
   ExpositionState,
   ActiveExpo,
 } from "models";
-
-import { UserInfoObj } from "reducers/user-reducer";
 
 // All possible dialog names (important when calling setDialog action)
 export enum DialogType {
@@ -26,11 +25,9 @@ export enum DialogType {
   ExpoNew = "ExpoNew",
   ExpositionMenu = "ExpositionMenu",
   DeleteAccount = "DeleteAccount",
-  UserReactivate = "UserReactivate",
-  UserDelete = "UserDelete",
-  UserAccept = "UserAccept",
   ScreenAuthorsChange = "ScreenAuthorsChange",
   ScreenAuthorsAdd = "ScreenAuthorsAdd",
+  PasswordReset = "PasswordReset",
 }
 
 type ScreenFileChooseDialogDataProps = {
@@ -52,6 +49,8 @@ type InfoDialogDataProps = {
   content?: React.ReactNode; // either content or text as body
   text?: string;
   noStornoButton?: boolean;
+  noDialogMenu?: boolean;
+  large?: boolean;
 };
 
 type FileNewFolderDataProps = Record<string, never>;
@@ -81,23 +80,10 @@ type ExpositionMenuDataProps = {
   inProgress: boolean;
   activeExpo: ActiveExpo;
   expositions: any;
+  expositionsFilterState: ExpositionsFilterStateObj;
 };
 
 type DeleteAccountDataProps = Record<string, never>;
-
-type UserReactivateDataProps = {
-  id: string;
-  name: string;
-};
-
-type UserDeleteDataProps = {
-  id: string;
-  name: string;
-};
-
-type UserAcceptDataProps = {
-  user: UserInfoObj;
-};
 
 type ScreenAuthorsChangeDataProps = {
   role: string;
@@ -105,6 +91,8 @@ type ScreenAuthorsChangeDataProps = {
 };
 
 type ScreenAuthorsAddDataProps = Record<string, never>;
+
+type PasswordResetDataProps = Record<string, never>;
 
 // Each dialog has built-in DialogProps: setDialog, closeDialog, dialogData, addDialogData
 // Each dialog has its own custom DialogDataProps --> type definition for dialog.dialogData
@@ -140,16 +128,12 @@ export type DialogDataProps<T extends DialogType> =
     ? ExpositionMenuDataProps
     : T extends DialogType.DeleteAccount
     ? DeleteAccountDataProps
-    : T extends DialogType.UserReactivate
-    ? UserReactivateDataProps
-    : T extends DialogType.UserDelete
-    ? UserDeleteDataProps
-    : T extends DialogType.UserAccept
-    ? UserAcceptDataProps
     : T extends DialogType.ScreenAuthorsChange
     ? ScreenAuthorsChangeDataProps
     : T extends DialogType.ScreenAuthorsAdd
     ? ScreenAuthorsAddDataProps
+    : T extends DialogType.PasswordReset
+    ? PasswordResetDataProps
     : never;
 
 export type DialogProps<T extends DialogType> = {

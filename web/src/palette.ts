@@ -23,4 +23,7 @@ export const palette = {
   "light-mode-b": "#ffffff", // background color in light mode (white)
   "dark-mode-f": "#ffffff", // text (foreground) color in dark mode (white text on dark background)
   "light-mode-f": "#121416", // text (foreground) color in light mode (black text on light background)
+
+  // Administration primary blue
+  "primary-blue": "#142E54",
 };

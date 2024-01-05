@@ -1,0 +1,59 @@
+@import "../../new-landing-page/variables.scss";
+
+.pp-content-section {
+  background-color: white;
+  color: $primary-color;
+}
+
+.pp-content-section h2 {
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 40px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 576px) {
+  .pp-content-section h2 {
+    font-size: 40px;
+    line-height: 44px;
+  }
+}
+
+@media (min-width: 768px) {
+  .pp-content-section h2 {
+    font-size: 44px;
+    line-height: 48px;
+  }
+}
+
+.pp-content-section p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (min-width: 576px) {
+  .pp-content-section p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .pp-content-section p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.pp-content-section .pp-link {
+  color: #3366cc;
+}
+
+.pp-content-section .pp-link:visited {
+  color: #6c40c9;
+}
+
+.pp-content-section .pp-link:hover {
+  text-decoration: underline;
+}

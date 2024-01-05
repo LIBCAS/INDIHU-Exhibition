@@ -2,14 +2,7 @@ import { map, filter, find, concat } from "lodash";
 import { Reducer } from "redux";
 import * as c from "../actions/constants";
 
-import {
-  ExpositionItem,
-  Screen,
-  Volumes,
-  ViewExpo,
-  ExpositionFilterObj,
-  ExpositionPagerObj,
-} from "models";
+import { ExpositionItem, Screen, Volumes, ViewExpo } from "models";
 
 export type ExpoReducerState = {
   expositions: { items: ExpositionItem[]; count: number };
@@ -17,9 +10,6 @@ export type ExpoReducerState = {
   activeScreen: Record<string, any>;
   activeScreenEdited: boolean;
   activeScreenDb: Record<string, any>; // at load page -> activeScreen and activeScreenDb are same, but activeScreen is currently being modified before save, while activeScreenDB is reflecting the screen currently stored in DB
-  filter: ExpositionFilterObj;
-  pager: ExpositionPagerObj;
-  cardsList: boolean;
   viewExpo: ViewExpo | null;
   viewProgress: {
     timeElapsed: number;
@@ -50,17 +40,6 @@ const initialState: ExpoReducerState = {
   activeScreen: {},
   activeScreenEdited: false,
   activeScreenDb: {},
-  filter: {
-    filter: "ALL",
-    sort: "updated",
-    order: "ASC",
-    search: "",
-  },
-  pager: {
-    page: 0,
-    pageSize: 10,
-  },
-  cardsList: true,
   viewExpo: null,
   viewProgress: {
     timeElapsed: 0,
@@ -92,10 +71,6 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
   switch (action.type) {
     case c.EXPOSITIONS:
       return { ...state, ...action.payload };
-    case c.EXPOSITIONS_FILTER:
-      return { ...state, filter: { ...action.payload } };
-    case c.EXPOSITIONS_PAGER:
-      return { ...state, pager: { ...action.payload } };
     case c.EXPO_SET:
       return { ...state, ...action.payload };
     case c.EXPO_UPDATE:
@@ -390,6 +365,41 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
         screensInfo: {
           ...state.screensInfo,
           ...action.payload,
+        },
+      };
+    }
+    case c.EXPO_DESIGN_DATA_UPDATE: {
+      return {
+        ...state,
+        activeExpo: {
+          ...state.activeExpo,
+          expositionDesignData: action.payload,
+        },
+      };
+    }
+    case c.EXPOSITION_ITEM_PIN: {
+      return {
+        ...state,
+        expositions: {
+          ...state.expositions,
+          items: state.expositions.items.map((expositionItem) =>
+            expositionItem.id === action.payload
+              ? { ...expositionItem, pinned: true }
+              : expositionItem
+          ),
+        },
+      };
+    }
+    case c.EXPOSITION_ITEM_UNPIN: {
+      return {
+        ...state,
+        expositions: {
+          ...state.expositions,
+          items: state.expositions.items.map((expositionItem) =>
+            expositionItem.id === action.payload
+              ? { ...expositionItem, pinned: false }
+              : expositionItem
+          ),
         },
       };
     }

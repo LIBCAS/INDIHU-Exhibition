@@ -1,10 +1,10 @@
-import { useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
-import { useIsFirstRender } from "hooks/first-render-hook";
 import { useDebounce } from "hooks/debounce-hook";
+import { useIsFirstRender } from "hooks/first-render-hook";
 
 // Components
 import AppHeader from "components/app-header/AppHeader";
@@ -14,89 +14,102 @@ import ExpoNewCard from "./ExpoNewCard";
 import ExpoCard from "./ExpoCard";
 import Table from "./Table";
 import Footer from "containers/footer";
+import { Pagination } from "components/pagination/Pagination";
 
 // Models
 import { AppState, AppDispatch } from "store/store";
 
 // Actions and utils
-import { showLoader, setExpositionsScrollTop } from "actions/app-actions";
-import { getExpositionsParametrized, setExpoPager } from "actions/expoActions";
+import { showLoader } from "actions/app-actions";
+import { getExpositionsParametrized } from "actions/expoActions";
 import { getCurrentUser } from "actions/user-actions";
 import { debounce } from "lodash";
-import { Pagination } from "components/pagination/Pagination";
+import { setExpositionsScrollTop } from "actions/app-actions";
 
 // - -
 
 const stateSelector = createSelector(
-  ({ app }: AppState) => app.expositionsScrollTop,
   ({ expo }: AppState) => expo.expositions,
-  ({ expo }: AppState) => expo.cardsList,
-  ({ expo }: AppState) => expo.filter,
-  ({ expo }: AppState) => expo.pager,
-  (expositionsScrollTop, expositions, cardsList, filter, pager) => ({
-    expositionsScrollTop,
-    expositions,
-    cardsList,
-    filter,
-    pager,
-  })
+  (expositions) => ({ expositions })
 );
+
+// - -
+
+type ExpositionFilter = "ALL" | "AUTHORSHIP" | "READ_ONLY" | "READ_WRITE";
+
+type ExpositionSort = "title" | "state" | "created" | "edited" | "isEditing";
+
+type ExpositionOrder = "ASC" | "DESC";
+
+export type ExpositionsFilterStateObj = {
+  filter: ExpositionFilter;
+  sort: ExpositionSort;
+  order: ExpositionOrder;
+  search: string;
+  page: number;
+  pageSize: number;
+  isCardList: boolean;
+  showOnlyPinned: boolean;
+};
+
+export type ExpositionsFilterStateSetter = <
+  K extends keyof ExpositionsFilterStateObj
+>(
+  userStateKey: K,
+  newValue: ExpositionsFilterStateObj[K]
+) => void;
 
 // - -
 
 const CONTAINER_ID = "expositions-scroll-container";
 
 const Expositions = () => {
-  const { expositions, cardsList, filter, pager } = useSelector(stateSelector);
+  const { expositions } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
-  const isFirstRender = useIsFirstRender();
-
   const { t } = useTranslation("exhibitions-page");
 
-  // Extract from filter obj (in useEffect, they are act as string change)
-  const filterFilter = useMemo(() => filter.filter, [filter.filter]);
-  const filterSort = useMemo(() => filter.sort, [filter.sort]);
-  const filterOrder = useMemo(() => filter.order, [filter.order]);
-  const filterSearch = useMemo(() => filter.search, [filter.search]);
-
-  const debouncedFilterSearch = useDebounce(filterSearch, 400);
+  const isFirstRender = useIsFirstRender();
 
   // - -
 
-  useEffect(() => {
-    const handleMount = async () => {
-      dispatch(showLoader(true));
-      await dispatch(getCurrentUser(true));
-      await dispatch(getExpositionsParametrized());
-      dispatch(showLoader(false));
-    };
-    handleMount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [expositionsFilterState, setExpositionsFilterState] =
+    useState<ExpositionsFilterStateObj>({
+      filter: "ALL",
+      sort: "edited",
+      order: "ASC",
+      search: "",
+      page: 0,
+      pageSize: 10,
+      isCardList: true,
+      showOnlyPinned: false,
+    });
+
+  const debouncedSearchFilter = useDebounce(expositionsFilterState.search, 400);
 
   // - -
 
   useEffect(() => {
     const handleChange = async () => {
-      if (isFirstRender) {
-        return;
-      }
       dispatch(showLoader(true));
-      await dispatch(getExpositionsParametrized());
+      if (isFirstRender) {
+        await dispatch(getCurrentUser(true));
+      }
+      await dispatch(getExpositionsParametrized(expositionsFilterState));
       dispatch(showLoader(false));
     };
+
     handleChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardsList, pager, filterSort, filterOrder]);
-
-  // This effect will trigger the previous effect
-  useEffect(() => {
-    if (isFirstRender) {
-      return;
-    }
-    dispatch(setExpoPager(0, pager.pageSize));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedFilterSearch, filterFilter]);
+  }, [
+    expositionsFilterState.filter,
+    expositionsFilterState.sort,
+    expositionsFilterState.order,
+    debouncedSearchFilter,
+    expositionsFilterState.page,
+    expositionsFilterState.pageSize,
+    expositionsFilterState.isCardList,
+    expositionsFilterState.showOnlyPinned,
+  ]);
 
   // - -
 
@@ -109,6 +122,16 @@ const Expositions = () => {
     }, 300);
   };
 
+  // - -
+
+  const filteredExpositions = useMemo(
+    () =>
+      expositions.items?.filter((expositionItem) =>
+        expositionsFilterState.showOnlyPinned ? expositionItem.pinned : true
+      ),
+    [expositions?.items, expositionsFilterState.showOnlyPinned]
+  );
+
   return (
     <div className="expositions-container-outter">
       <AppHeader expositionsStyle />
@@ -119,18 +142,22 @@ const Expositions = () => {
         onScroll={handleScroll}
       >
         <div className="expositions-container-inner h-full flex flex-col">
-          <Header cardsList={cardsList} pager={pager} />
+          <Header
+            expositionsFilterState={expositionsFilterState}
+            setExpositionsFilterState={setExpositionsFilterState}
+          />
 
-          {cardsList && (
+          {expositionsFilterState.isCardList && (
             <div className="h-full flex flex-col">
               <div className="flex justify-center flex-wrap gap-[10px]">
                 <ExpoNewCard />
 
-                {expositions?.items?.map((expositionItem) => {
+                {filteredExpositions?.map((expositionItem) => {
                   return (
                     <ExpoCard
                       key={expositionItem.id}
                       expositionItem={expositionItem}
+                      expositionsFilterState={expositionsFilterState}
                     />
                   );
                 })}
@@ -138,44 +165,76 @@ const Expositions = () => {
 
               <div className="mt-2 p-4 w-full flex justify-center md:justify-end items-center">
                 <Pagination
-                  page={pager.page}
-                  pageSize={pager.pageSize}
-                  itemsCount={expositions.count}
+                  page={expositionsFilterState.page}
+                  pageSize={expositionsFilterState.pageSize}
+                  itemsCount={
+                    expositionsFilterState.showOnlyPinned
+                      ? filteredExpositions?.length ?? 0
+                      : expositions.count
+                  }
                   onPageSizeChange={(newPageSize: number) => {
-                    dispatch(setExpoPager(pager.page, newPageSize));
+                    setExpositionsFilterState((prev) => ({
+                      ...prev,
+                      page: 0,
+                      pageSize: newPageSize,
+                    }));
                   }}
                   pageSizeId="expositions-page-size"
                   pageSizeLabel={t("pager.entriesPerPage")}
-                  onPageBefore={(newPage: number, newPageSize: number) => {
-                    dispatch(setExpoPager(newPage, newPageSize));
+                  onPageBefore={(newPage: number, _newPageSize: number) => {
+                    setExpositionsFilterState((prev) => ({
+                      ...prev,
+                      page: newPage,
+                    }));
                   }}
-                  onPageAfter={(newPage: number, newPageSize: number) => {
-                    dispatch(setExpoPager(newPage, newPageSize));
+                  onPageAfter={(newPage: number, _newPageSize: number) => {
+                    setExpositionsFilterState((prev) => ({
+                      ...prev,
+                      page: newPage,
+                    }));
                   }}
                 />
               </div>
             </div>
           )}
 
-          {!cardsList && (
+          {!expositionsFilterState.isCardList && (
             <div className="h-full flex flex-col">
-              <Table expositions={expositions.items} filter={filter} />
+              <Table
+                expositions={expositions.items}
+                expositionsFilterState={expositionsFilterState}
+                setExpositionsFilterState={setExpositionsFilterState}
+              />
 
               <div className="mt-2 p-4 w-full flex justify-center md:justify-end items-center">
                 <Pagination
-                  page={pager.page}
-                  pageSize={pager.pageSize}
-                  itemsCount={expositions.count}
+                  page={expositionsFilterState.page}
+                  pageSize={expositionsFilterState.pageSize}
+                  itemsCount={
+                    expositionsFilterState.showOnlyPinned
+                      ? filteredExpositions?.length ?? 0
+                      : expositions.count
+                  }
                   onPageSizeChange={(newPageSize: number) => {
-                    dispatch(setExpoPager(pager.page, newPageSize));
+                    setExpositionsFilterState((prev) => ({
+                      ...prev,
+                      page: 0,
+                      pageSize: newPageSize,
+                    }));
                   }}
                   pageSizeId="expositions-page-size"
                   pageSizeLabel={t("pager.entriesPerPage")}
-                  onPageBefore={(newPage: number, newPageSize: number) => {
-                    dispatch(setExpoPager(newPage, newPageSize));
+                  onPageBefore={(newPage: number, _newPageSize: number) => {
+                    setExpositionsFilterState((prev) => ({
+                      ...prev,
+                      page: newPage,
+                    }));
                   }}
-                  onPageAfter={(newPage: number, newPageSize: number) => {
-                    dispatch(setExpoPager(newPage, newPageSize));
+                  onPageAfter={(newPage: number, _newPageSize: number) => {
+                    setExpositionsFilterState((prev) => ({
+                      ...prev,
+                      page: newPage,
+                    }));
                   }}
                 />
               </div>

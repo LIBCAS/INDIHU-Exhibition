@@ -2,7 +2,7 @@ import { render } from "react-dom";
 import { AppProviders } from "app-providers";
 
 import configureStore from "store/store";
-import registerServiceWorker from "./registerServiceWorker";
+//import registerServiceWorker from "./registerServiceWorker"; // TODO, missing script in /public/service-worker.js
 
 import "babel-polyfill";
 import "i18n";
@@ -15,4 +15,4 @@ export const dispatch = store.dispatch;
 
 render(<AppProviders store={store} />, document.getElementById("root"));
 
-registerServiceWorker();
+//registerServiceWorker();

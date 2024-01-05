@@ -10,10 +10,12 @@ import cx from "classnames";
 
 type GlassMagnifierButtonProps = {
   hasGlassMagnifier: boolean;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const GlassMagnifierButton = ({
   hasGlassMagnifier,
+  getTutorialEclipseClassnameByStepkeys,
 }: GlassMagnifierButtonProps) => {
   const { isGlassMagnifierEnabled, setIsGlassMagnifierEnabled } =
     useGlassMagnifierConfig();
@@ -24,7 +26,10 @@ const GlassMagnifierButton = ({
     <>
       {hasGlassMagnifier && (
         <div
-          className={cx("pointer-events-auto")}
+          className={cx(
+            "pointer-events-auto",
+            getTutorialEclipseClassnameByStepkeys([""])
+          )}
           data-tooltip-id="glass-magnifier-button-tooltip"
         >
           <div>

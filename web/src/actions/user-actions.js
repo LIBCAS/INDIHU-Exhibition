@@ -7,13 +7,16 @@ import { USER, USER_INFO, USERS } from "./constants";
 import { showLoader } from "./app-actions";
 import * as storage from "../utils/storage";
 
-const parseToken = (token) => (dispatch) => {
+export const parseToken = (token) => (dispatch) => {
   const decoded = JWTDecode(token);
+
   const role = decoded.aut;
   const userName = decoded.userName;
+
   storage.set("token", token);
   storage.set("role", JSON.stringify(role));
   storage.set("userName", userName);
+
   dispatch({
     type: USER,
     payload: { role, userName },

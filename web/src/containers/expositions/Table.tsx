@@ -1,27 +1,36 @@
-import { useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useMemo, Dispatch, SetStateAction } from "react";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
+// Components
 import ExpoMenu from "./ExpoMenu";
+import { Rating } from "@mui/material";
 
-import { ExpositionItem, ExpositionFilterObj } from "models";
-import { AppDispatch } from "store/store";
+// Models
+import { ExpositionItem } from "models";
+import { ExpositionsFilterStateObj } from "./Expositions";
 
+// Utils
 import cx from "classnames";
 import { formatDate, formatTime } from "utils";
-import { setExpoFilter } from "actions/expoActions";
-import { useTranslation } from "react-i18next";
-import { Rating } from "@mui/material";
 import { getPreferenceText } from "./utils";
+
+// - -
 
 type TableProps = {
   expositions: ExpositionItem[];
-  filter: ExpositionFilterObj;
+  expositionsFilterState: ExpositionsFilterStateObj;
+  setExpositionsFilterState: Dispatch<
+    SetStateAction<ExpositionsFilterStateObj>
+  >;
 };
 
-const Table = ({ expositions, filter }: TableProps) => {
+const Table = ({
+  expositions,
+  expositionsFilterState,
+  setExpositionsFilterState,
+}: TableProps) => {
   const { t } = useTranslation(["exhibitions-page", "expo"]);
-  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <table className="table-all">
@@ -30,17 +39,10 @@ const Table = ({ expositions, filter }: TableProps) => {
         <tr className="table-all-row header">
           <td
             className={cx("table-all-col sort", {
-              active: filter.sort === "title",
+              active: expositionsFilterState.sort === "title",
             })}
             onClick={() => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  "title",
-                  filter.search,
-                  filter.order
-                )
-              );
+              setExpositionsFilterState((prev) => ({ ...prev, sort: "title" }));
             }}
           >
             {t("expoTable.name")}
@@ -48,17 +50,10 @@ const Table = ({ expositions, filter }: TableProps) => {
 
           <td
             className={cx("table-all-col sort", {
-              active: filter.sort === "state",
+              active: expositionsFilterState.sort === "state",
             })}
             onClick={() => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  "state",
-                  filter.search,
-                  filter.order
-                )
-              );
+              setExpositionsFilterState((prev) => ({ ...prev, sort: "state" }));
             }}
           >
             {t("expoTable.state")}
@@ -66,17 +61,13 @@ const Table = ({ expositions, filter }: TableProps) => {
 
           <td
             className={cx("table-all-col sort", {
-              active: filter.sort === "created",
+              active: expositionsFilterState.sort === "created",
             })}
             onClick={() => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  "created",
-                  filter.search,
-                  filter.order
-                )
-              );
+              setExpositionsFilterState((prev) => ({
+                ...prev,
+                sort: "created",
+              }));
             }}
           >
             {t("expoTable.created")}
@@ -86,17 +77,13 @@ const Table = ({ expositions, filter }: TableProps) => {
 
           <td
             className={cx("table-all-col sort", {
-              active: filter.sort === "updated",
+              active: expositionsFilterState.sort === "edited",
             })}
             onClick={() => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  "updated",
-                  filter.search,
-                  filter.order
-                )
-              );
+              setExpositionsFilterState((prev) => ({
+                ...prev,
+                sort: "edited",
+              }));
             }}
           >
             {t("expoTable.updated")}
@@ -104,25 +91,23 @@ const Table = ({ expositions, filter }: TableProps) => {
 
           <td
             className={cx("table-all-col sort", {
-              active: filter.sort === "isEditing",
+              active: expositionsFilterState.sort === "isEditing",
             })}
             onClick={() => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  "isEditing",
-                  filter.search,
-                  filter.order
-                )
-              );
+              setExpositionsFilterState((prev) => ({
+                ...prev,
+                sort: "isEditing",
+              }));
             }}
           >
             {t("expoTable.lastEditedBy")}
           </td>
 
-          <td>{t("expoTable.averageRating")}</td>
-          <td>{t("expoTable.commentsCount")}</td>
-          <td>{t("expoTable.bestRatedPreference")}</td>
+          <td className="table-all-col">{t("expoTable.averageRating")}</td>
+          <td className="table-all-col">{t("expoTable.commentsCount")}</td>
+          <td className="table-all-col">
+            {t("expoTable.bestRatedPreference")}
+          </td>
 
           <td className="table-all-col actions">{t("expoTable.actions")}</td>
         </tr>
@@ -131,7 +116,12 @@ const Table = ({ expositions, filter }: TableProps) => {
       {/* Table body as other exposition rows */}
       <tbody>
         {expositions?.map((expoItem, idx) => (
-          <ExpoItemTableRow key={idx} expoItem={expoItem} expoItemIndex={idx} />
+          <ExpoItemTableRow
+            key={idx}
+            expoItem={expoItem}
+            expoItemIndex={idx}
+            expositionsFilterState={expositionsFilterState}
+          />
         ))}
       </tbody>
     </table>
@@ -145,11 +135,13 @@ export default Table;
 type ExpoItemTableRowProps = {
   expoItem: ExpositionItem;
   expoItemIndex: number;
+  expositionsFilterState: ExpositionsFilterStateObj;
 };
 
 const ExpoItemTableRow = ({
   expoItem,
   expoItemIndex,
+  expositionsFilterState,
 }: ExpoItemTableRowProps) => {
   const { t } = useTranslation(["exhibitions-page", "expo"]);
   const history = useHistory();
@@ -188,7 +180,11 @@ const ExpoItemTableRow = ({
         {prefText ?? t("expoCard.noBestRatedPreferenceYet")}
       </td>
       <td className="table-all-col select actions">
-        <ExpoMenu key={expoItemIndex} expositionItem={expoItem} />
+        <ExpoMenu
+          key={expoItemIndex}
+          expositionItem={expoItem}
+          expositionsFilterState={expositionsFilterState}
+        />
       </td>
     </tr>
   );

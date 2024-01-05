@@ -44,6 +44,7 @@ const SequenceForm = (_props: SequenceFormProps) => {
             <ReactMdTextField
               name="time"
               type="number"
+              parseAsFloat
               label="Doba priblížení"
             />
           </div>
@@ -54,6 +55,7 @@ const SequenceForm = (_props: SequenceFormProps) => {
             name="stayInDetailTime"
             type="number"
             label="Doba setrvání na detailu"
+            parseAsFloat
           />
         </div>
       </div>

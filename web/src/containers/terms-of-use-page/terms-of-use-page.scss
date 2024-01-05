@@ -1,0 +1,18 @@
+.terms-of-use-page *,
+.terms-of-use-page *::before,
+.terms-of-use-page *::after {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.terms-of-use-page h1,
+.terms-of-use-page h2,
+.terms-of-use-page h3,
+.terms-of-use-page h4,
+.terms-of-use-page h5,
+.terms-of-use-page h6,
+.terms-of-use-page p {
+  color: inherit;
+}

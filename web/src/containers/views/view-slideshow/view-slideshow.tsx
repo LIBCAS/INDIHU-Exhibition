@@ -9,7 +9,7 @@ import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
 
 import { AppState } from "store/store";
-import { ScreenProps, SlideshowScreen } from "models";
+import { Position, ScreenProps, SlideshowScreen } from "models";
 
 import {
   setViewProgress,
@@ -19,7 +19,7 @@ import {
 import { getScreenTime } from "utils/screen";
 import { calculateObjectFit } from "utils/object-fit";
 import { resolveSlideshowAnimation } from "./view-slideshow-animation";
-import { isInfopointOutsideOrigImage } from "utils/view-utils";
+import { calculateInfopointPosition } from "utils/infopoint-utils";
 
 // - - - -
 
@@ -290,38 +290,43 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
             {!isAnimationRunning &&
               viewScreen.images?.[photoIndex]?.infopoints?.map(
                 (infopoint, infopointIndex) => {
+                  const infopointPosition: Position = {
+                    left: infopoint.left,
+                    top: infopoint.top,
+                  };
+
+                  const imgBoxSize =
+                    viewScreen.images?.[photoIndex]?.imageOrigData;
+
+                  const imgNaturalSize = {
+                    width: photoImgEl?.naturalWidth ?? 0,
+                    height: photoImgEl?.naturalHeight ?? 0,
+                  };
+
+                  const imgViewSize = {
+                    width: containedImageWidth,
+                    height: containedImageHeight,
+                  };
+
                   if (
-                    isInfopointOutsideOrigImage({
-                      infopointPosition: {
-                        left: infopoint.left,
-                        top: infopoint.top,
-                      },
-                      imageOrigData:
-                        viewScreen.images?.[photoIndex]?.imageOrigData,
-                    })
+                    !imgBoxSize ||
+                    !imgNaturalSize.width ||
+                    !imgNaturalSize.height ||
+                    !imgViewSize.width ||
+                    !imgViewSize.height
                   ) {
                     return null;
                   }
 
-                  // Percentage when choosing the infopoints in administrative
-                  const origTopPercentage =
-                    infopoint.top / (imageOrigData.height / 100);
-                  const origLeftPercentage =
-                    infopoint.left / (imageOrigData.width / 100);
+                  const { left, top } = calculateInfopointPosition(
+                    infopointPosition,
+                    imgBoxSize,
+                    imgNaturalSize,
+                    imgViewSize
+                  );
 
-                  const topPosition =
-                    fromTopHeight +
-                    (containedImageHeight / 100) * origTopPercentage;
-                  const leftPosition =
-                    fromLeftWidth +
-                    (containedImageWidth / 100) * origLeftPercentage;
-
-                  if (
-                    leftPosition > containedImageWidth ||
-                    topPosition > containedImageHeight
-                  ) {
-                    return null;
-                  }
+                  const adjustedLeft = fromLeftWidth + left;
+                  const adjustedTop = fromTopHeight + top;
 
                   // Render the small 'primary' colored shaking squares or circles
                   // Render one Tooltip for each anchor
@@ -331,8 +336,8 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
                     >
                       <ScreenAnchorInfopoint
                         id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
-                        top={topPosition}
-                        left={leftPosition}
+                        left={adjustedLeft}
+                        top={adjustedTop}
                         infopoint={infopoint}
                       />
                       <TooltipInfoPoint

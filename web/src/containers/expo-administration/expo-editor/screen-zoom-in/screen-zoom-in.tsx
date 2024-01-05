@@ -18,6 +18,8 @@ import {
 } from "models";
 
 import { find } from "lodash";
+import { calculateTotalSequencesTime } from "containers/views/view-zoom/useZoomPhase";
+import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
 
 // - -
 
@@ -30,6 +32,12 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
 
   const zoomInProps = props as ScreenEditorZoomInProps;
   const { activeScreen, url } = zoomInProps;
+
+  //
+  const totalZoomScreenTime = calculateTotalSequencesTime(
+    activeScreen.sequences ?? [],
+    (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000
+  );
 
   return (
     <div>
@@ -51,11 +59,21 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <ScreenDescription activeScreen={activeScreen} />}
+        render={() => (
+          <ScreenDescription
+            activeScreen={activeScreen}
+            totalZoomScreenTime={totalZoomScreenTime}
+          />
+        )}
       />
       <Route
         path={`${match.url}/sequence`}
-        render={() => <Sequence activeScreen={activeScreen} />}
+        render={() => (
+          <Sequence
+            activeScreen={activeScreen}
+            totalZoomScreenTime={totalZoomScreenTime}
+          />
+        )}
       />
       <Route
         path={`${match.url}/documents`}

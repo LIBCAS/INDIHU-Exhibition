@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // Components
-import { LanguageSelect } from "components/form/mui";
+import LanguageSelect from "components/language-select/LanguageSelect";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 

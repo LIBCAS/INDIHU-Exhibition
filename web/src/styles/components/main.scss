@@ -873,6 +873,19 @@
   }
 }
 
+//NEW
+.slick-track {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.slick-slide .carousel-card {
+  display: block !important;
+  width: 100px !important;
+  height: 100px !important;
+}
+//
+
 .carousel {
   display: flex;
   flex-direction: column;

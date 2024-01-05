@@ -18,7 +18,7 @@ import Dialogs from "components/dialogs";
 import WarningDialog from "components/dialogs/warning-dialog";
 
 // Pages
-import Authentication from "containers/authentication";
+import Authentication from "containers/landing-page/Authentication";
 import Verify from "containers/verify";
 import Expositions from "containers/expositions/Expositions";
 import Expo from "containers/expo-administration/Expo";
@@ -26,14 +26,24 @@ import { ExpoViewer } from "containers/expo-viewer/expo-viewer";
 import Profile from "containers/profile/Profile";
 import Users from "containers/users/Users";
 import Admin from "containers/admin/admin";
+import OAuthProviderPage from "containers/OAuthProviderPage";
+
+import LandingPage from "containers/new-landing-page/LandingPage";
+// import AboutPage from "containers/about-page/AboutPage";
+import TermsOfUsePage from "containers/terms-of-use-page/TermsOfUsePage";
+import PrivacyPolicyPage from "containers/privacy-policy-page/PrivacyPolicyPage";
+
+import AboutTemporaryPage from "containers/about-temporary-page/AboutTemporaryPage";
 
 // Models
 import { AppDispatch, AppState } from "store/store";
+import { OAuthConfigObj } from "containers/new-landing-page/LandingPage";
 
 // Utils
 import { isAdmin, isIE, isProduction } from "utils";
 import * as storage from "./utils/storage";
 import { setActiveScreenEdited } from "actions/expoActions";
+import { fetcher } from "utils/fetcher";
 
 // - -
 
@@ -87,6 +97,26 @@ export const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
+  // - -
+
+  // Load oauth configs
+  const [oauthConfigs, setOauthConfigs] = useState<OAuthConfigObj[] | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchOAuthConfigs = async () => {
+      const response = await fetcher("/api/oauth/configs");
+      if (response.status !== 200) {
+        return;
+      }
+      const configs = await response.json();
+      setOauthConfigs(configs);
+    };
+
+    fetchOAuthConfigs();
+  }, []);
+
   return (
     <div className="app">
       <AuthController>
@@ -106,14 +136,46 @@ export const App = () => {
         <Route
           exact
           path="/"
+          component={() => <LandingPage oauthConfigs={oauthConfigs} />}
+        />
+
+        <Route
+          exact
+          path="/landing-page"
           component={() => <Authentication isSignIn={true} />}
         />
-        <Route exact path="/register" component={Authentication} />
+        <Route
+          exact
+          path="/register"
+          component={() => <Authentication isSignIn={false} />}
+        />
+
+        {/* <Route
+          path="/about"
+          component={() => <AboutPage oauthConfigs={oauthConfigs} />}
+        /> */}
+
+        <Route
+          path="/about"
+          component={() => <AboutTemporaryPage oauthConfigs={oauthConfigs} />}
+        />
+
+        <Route
+          path="/terms-of-use"
+          component={() => <TermsOfUsePage oauthConfigs={oauthConfigs} />}
+        />
+
+        <Route
+          path="/privacy-policy"
+          component={() => <PrivacyPolicyPage oauthConfigs={oauthConfigs} />}
+        />
+
         <Route path="/verify/:secret" component={Verify} />
         <Route path="/exhibitions" component={Expositions} />
         <Route path="/expo/:id" component={Expo} />
         <Route path="/view/:name" component={ExpoViewer} />
         <Route path="/profile" render={() => <Profile isAdmin={admin} />} />
+        <Route path="/oauth/:providerName" component={OAuthProviderPage} />
         {admin && <Route path="/users" component={Users} />}
         {admin && <Route path="/administration" component={Admin} />}
       </AuthController>

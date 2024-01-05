@@ -30,6 +30,7 @@ import { helpIconText } from "enums/text";
 import { dispatch } from "index";
 import { DialogType } from "components/dialogs/dialog-types";
 import { useTranslation } from "react-i18next";
+import { isInfopointOutsideImageBox } from "utils/infopoint-utils";
 
 const infopointSize = 34;
 
@@ -162,6 +163,8 @@ const ImageContainer = ({
   const [initImgSize, setInitImgSize] = useState<Size | null>(null);
   const [imgSize, setImgSize] = useState<Size | null>(null);
 
+  const [naturalImgSize, setNaturalImgSize] = useState<Size | null>(null);
+
   const imageRef = useRef<HTMLImageElement | null>(null);
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -279,6 +282,10 @@ const ImageContainer = ({
               width: imageElRect.width,
               height: imageElRect.height,
             });
+            setNaturalImgSize({
+              width: imageEl.naturalWidth,
+              height: imageEl.naturalHeight,
+            });
           }}
           onMouseMove={onMouseMoveHandler}
         />
@@ -288,6 +295,46 @@ const ImageContainer = ({
           if (!("left" in infopoint && "top" in infopoint)) {
             return null;
           }
+          if (!initImgSize || !imgSize) {
+            return null;
+          }
+
+          // Prepare variables
+          const infopointPosition = {
+            left: infopoint.left,
+            top: infopoint.top,
+          };
+          const imgBoxSize = {
+            width: initImgSize?.width ?? 0,
+            height: initImgSize?.height ?? 0,
+          };
+          const imgNaturalSize = {
+            width: naturalImgSize?.width ?? 0,
+            height: naturalImgSize?.height ?? 0,
+          };
+
+          if (
+            !imgBoxSize.width ||
+            !imgBoxSize.height ||
+            !imgNaturalSize.width ||
+            !imgNaturalSize.height
+          ) {
+            return null;
+          }
+
+          let xPercentage;
+          let yPercentage;
+
+          if (isInfopointOutsideImageBox(infopointPosition, imgBoxSize)) {
+            xPercentage = infopointPosition.left / (imgNaturalSize.width / 100);
+            yPercentage = infopointPosition.top / (imgNaturalSize.height / 100);
+          } else {
+            xPercentage = infopointPosition.left / (imgBoxSize.width / 100);
+            yPercentage = infopointPosition.top / (imgBoxSize.height / 100);
+          }
+
+          const adjustedLeft = xPercentage * (imgSize.width / 100);
+          const adjustedTop = yPercentage * (imgSize.height / 100);
 
           return (
             <React.Fragment key={`infopoint-${infopointIndex}`}>
@@ -304,8 +351,8 @@ const ImageContainer = ({
                   fontSize: `${infopointSize}px`,
                   color: "#3366cc",
                   position: "absolute",
-                  left: infopoint.left * zoomX - infopointSize / 2,
-                  top: infopoint.top * zoomY - infopointSize / 2,
+                  left: adjustedLeft - infopointSize / 2,
+                  top: adjustedTop - infopointSize / 2,
                 }}
                 onMouseDown={() => setInfopointIndexMouseDown(infopointIndex)}
                 onMouseUp={releaseInfopointIcon}
@@ -432,9 +479,9 @@ const SettingsPanel = ({
           onClick={() => {
             const imageEditorObj = {
               expoId: expoId,
-              onClose: undefined,
               src: `/api/files/${image.fileId}`,
               type: image.type,
+              onClose: undefined,
             };
             dispatch(setImageEditor(imageEditorObj));
           }}

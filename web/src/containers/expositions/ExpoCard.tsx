@@ -3,33 +3,38 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Rating,
-  Divider,
-  Button,
-} from "@mui/material";
-import { Edit, Launch } from "@mui/icons-material";
+// Components
+import { Button } from "components/button/button";
+import { Icon } from "components/icon/icon";
+
+import { Card, CardContent, CardActions, Rating, Divider } from "@mui/material";
+import { PushPin, PushPinOutlined } from "@mui/icons-material";
 import ExpoMenu from "./ExpoMenu";
 
+// Models
 import { ExpositionItem } from "models";
 import { AppDispatch } from "store/store";
+import { ExpositionsFilterStateObj } from "./Expositions";
 
+// Actions and utils
 import cx from "classnames";
 import { setDialog } from "actions/dialog-actions";
-import { formatDate, formatTime, openViewer } from "utils";
+import { formatDate, formatTime, openInNewTab, openViewer } from "utils";
 import { DialogType } from "components/dialogs/dialog-types";
+import { pinExpositionItem, unpinExpositionItem } from "actions/expoActions";
 import { getPreferenceText } from "./utils";
 
 // - -
 
 type ExpoCardProps = {
   expositionItem: ExpositionItem;
+  expositionsFilterState: ExpositionsFilterStateObj;
 };
 
-const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
+const ExpoCard = ({
+  expositionItem,
+  expositionsFilterState,
+}: ExpoCardProps) => {
   const { t } = useTranslation(["exhibitions-page", "expo"]);
   const {
     title,
@@ -41,11 +46,18 @@ const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
     rating,
     messageCount,
     preferences,
+    viewCount,
+    canEdit,
   } = expositionItem;
 
   const prefText = useMemo(
     () => getPreferenceText(preferences, t),
     [preferences, t]
+  );
+
+  const canAccessTheExpo = useMemo(
+    () => state !== "ENDED" && canEdit,
+    [state, canEdit]
   );
 
   return (
@@ -110,11 +122,43 @@ const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
 
             <div className="flex justify-between items-center gap-4">
               <div className="font-medium text-base">
+                {t("expoCard.numberOfViews")}
+              </div>
+              <div>
+                {viewCount ?? (
+                  <span className="italic">
+                    {t("expoCard.noNumberOfViewsYet")}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center gap-4">
+              <div className="font-medium text-base">
                 {t("expoCard.averageRating")}
               </div>
               <div className="flex">
                 {rating ? (
-                  <Rating defaultValue={rating} precision={0.1} readOnly />
+                  <div className="flex gap-1">
+                    <Rating defaultValue={rating} precision={0.1} readOnly />
+                    <Button
+                      className="self-center"
+                      noPadding
+                      onClick={() => {
+                        openInNewTab(
+                          `${window.origin}/expo/${expositionItem.id}/rating`
+                        );
+                      }}
+                    >
+                      <Icon
+                        name="launch"
+                        style={{ fontSize: "12px" }}
+                        tooltipId="rating-redirect-icon"
+                        tooltipVariant="dark"
+                        tooltipText={t("expoCard.ratingRedirectLabel")}
+                      />
+                    </Button>
+                  </div>
                 ) : (
                   <div className="italic">
                     {t("expoCard.noAverageRatingYet")}
@@ -147,19 +191,28 @@ const ExpoCard = ({ expositionItem }: ExpoCardProps) => {
         <Divider sx={{ marginTop: "auto" }} />
 
         <CardActions>
-          <div className="w-full flex items-center">
+          <div className="w-full flex items-center gap-1">
             <div>
               <EditButton
                 expoId={expositionItem.id}
-                expoState={expositionItem.state}
-                canEdit={expositionItem.canEdit}
+                canAccessTheExpo={canAccessTheExpo}
               />
             </div>
             <div>
               <PreviewButton expoUrl={expositionItem.url} />
             </div>
+            <div>
+              <PinButton
+                isExpoPinned={expositionItem.pinned}
+                expoId={expositionItem.id}
+              />
+            </div>
+
             <div className="ml-auto">
-              <ExpoMenu expositionItem={expositionItem} />
+              <ExpoMenu
+                expositionItem={expositionItem}
+                expositionsFilterState={expositionsFilterState}
+              />
             </div>
           </div>
         </CardActions>
@@ -174,17 +227,16 @@ export default ExpoCard;
 
 type EditButtonProps = {
   expoId: ExpositionItem["id"];
-  expoState: ExpositionItem["state"];
-  canEdit: ExpositionItem["canEdit"];
+  canAccessTheExpo: boolean;
 };
 
-const EditButton = ({ expoId, expoState, canEdit }: EditButtonProps) => {
+const EditButton = ({ expoId, canAccessTheExpo }: EditButtonProps) => {
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("exhibitions-page");
 
   const handleEditClick = () => {
-    if (expoState === "ENDED" || !canEdit) {
+    if (!canAccessTheExpo) {
       const dialogTitle = t("expoCard.editErrDialogTitle");
       const dialogText = t("expoCard.editErrDialogText");
       dispatch(
@@ -201,16 +253,9 @@ const EditButton = ({ expoId, expoState, canEdit }: EditButtonProps) => {
 
   return (
     <Button
-      variant="text"
+      iconBefore={<Icon useMaterialUiIcon name="edit" />}
+      className="px-2 py-2"
       onClick={handleEditClick}
-      size="large"
-      startIcon={<Edit />}
-      sx={{
-        color: "#000000DE",
-        "&:hover": {
-          backgroundColor: "rgba(0,0,0, 0.03)",
-        },
-      }}
     >
       {t("expoCard.edit")}
     </Button>
@@ -228,18 +273,57 @@ const PreviewButton = ({ expoUrl }: PreviewButtonProps) => {
 
   return (
     <Button
-      variant="text"
+      iconBefore={<Icon useMaterialUiIcon name="launch" />}
+      className="px-2 py-2"
       onClick={() => openViewer(`/view/${expoUrl}`)}
-      size="large"
-      startIcon={<Launch />}
-      sx={{
-        color: "#000000DE",
-        "&:hover": {
-          backgroundColor: "rgba(0,0,0, 0.03)",
-        },
-      }}
     >
       {t("expoCard.preview")}
+    </Button>
+  );
+};
+
+// - - -
+
+type PinButtonProps = {
+  isExpoPinned: boolean;
+  expoId: string;
+};
+
+const PinButton = ({ isExpoPinned, expoId }: PinButtonProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("exhibitions-page");
+
+  const handlePin = () => {
+    dispatch(pinExpositionItem(expoId));
+  };
+
+  const handleUnpin = () => {
+    dispatch(unpinExpositionItem(expoId));
+  };
+
+  if (isExpoPinned) {
+    return (
+      <Button onClick={handleUnpin} key="unpin-button">
+        <Icon
+          useMaterialUiIcon
+          name={<PushPin />}
+          tooltipId="unpin-action-button-tooltip"
+          tooltipVariant="dark"
+          tooltipText={t("expoCard.unpinTooltip")}
+        />
+      </Button>
+    );
+  }
+
+  return (
+    <Button onClick={handlePin} key="pin-button">
+      <Icon
+        useMaterialUiIcon
+        name={<PushPinOutlined />}
+        tooltipId={"pin-action-button-tooltip"}
+        tooltipVariant="dark"
+        tooltipText={t("expoCard.pinTooltip")}
+      />
     </Button>
   );
 };

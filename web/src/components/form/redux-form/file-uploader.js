@@ -27,7 +27,7 @@ const FileUploader = ({
               uploadProps={{
                 accept:
                   accept ||
-                  "video/mp4,audio/mp3,image/jpeg,image/png,application/*,text/*",
+                  "video/mp4,audio/mp3,image/jpeg,image/png,application/*,text/*,.pdf,.doc,.docx",
                 multiple: true,
               }}
             >

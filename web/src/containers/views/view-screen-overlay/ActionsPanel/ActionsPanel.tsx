@@ -14,6 +14,7 @@ import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 
+// Components
 import EditorButton from "./EditorButton";
 import SettingsButton from "./SettingsButton";
 import GlassMagnifierButton from "./GlassMagnifierButton/GlassMagnifierButton";
@@ -26,10 +27,12 @@ import NextButton from "./NextButton";
 import InfoButton from "./InfoButton";
 import ExpandActionsButton from "./ExpandActionsButton";
 
+// Models
 import { AppState } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
+// Utils and actions
 import {
   screenUrl,
   mapScreenTypeValuesToKeys,
@@ -42,21 +45,19 @@ import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
+import useUser from "hooks/use-user";
+
 // - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
   ({ expo }: AppState) => expo.expoVolumes,
-  ({ user }: AppState) => user.userName,
-  ({ user }: AppState) => user.role,
   ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
-  (viewExpo, viewScreen, expoVolumes, userName, role, shouldIncrement) => ({
+  (viewExpo, viewScreen, expoVolumes, shouldIncrement) => ({
     viewExpo,
     viewScreen,
     expoVolumes,
-    userName,
-    role,
     shouldIncrement,
   })
 );
@@ -73,9 +74,8 @@ type ActionsPanelProps = {
   navigateBack: () => void;
   navigateForward: () => void;
   bind: (stepKey: string) => { ref: RefCallback };
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
   step: TutorialStep | null;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const ActionsPanel = ({
@@ -88,12 +88,13 @@ const ActionsPanel = ({
   navigateBack,
   navigateForward,
   bind,
-  isTutorialOpen,
-  isAnyTutorialOpened,
   step,
+  getTutorialEclipseClassnameByStepkeys,
 }: ActionsPanelProps) => {
-  const { viewExpo, viewScreen, expoVolumes, userName, role, shouldIncrement } =
+  const { viewExpo, viewScreen, expoVolumes, shouldIncrement } =
     useSelector(stateSelector);
+
+  const { userName, role } = useUser() ?? {};
 
   const sectionScreen = useSectionScreenParams();
   const { section, screen } = sectionScreen;
@@ -133,8 +134,8 @@ const ActionsPanel = ({
   const expoCollaborators = viewExpo?.collaborators;
 
   const isEditorAccess = haveAccessToExpo(
-    role,
-    userName,
+    role ?? [],
+    userName ?? null,
     expoAuthor,
     expoCollaborators
   );
@@ -221,34 +222,46 @@ const ActionsPanel = ({
             <EditorButton
               openEditorScreenUrl={openEditorScreenUrl}
               isEditorAccess={isEditorAccess}
-              isAnyTutorialOpened={isAnyTutorialOpened}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
             />
-            <SettingsButton isAnyTutorialOpened={isAnyTutorialOpened} />
-            <GlassMagnifierButton hasGlassMagnifier={hasGlassMagnifier} />
+            <SettingsButton
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
+            />
+            <GlassMagnifierButton
+              hasGlassMagnifier={hasGlassMagnifier}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
+            />
             <PlayButton
               shouldIncrement={shouldIncrement}
               play={play}
               pause={pause}
               bind={bind}
-              isTutorialOpen={isTutorialOpen}
-              isAnyTutorialOpened={isAnyTutorialOpened}
-              step={step}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
             />
             <AudioButton
               // conditional rendered
               hasAudio={hasAudio}
               isAudioMuted={isAudioMuted}
               bind={bind}
-              isTutorialOpen={isTutorialOpen}
-              isAnyTutorialOpened={isAnyTutorialOpened}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
               step={step}
             />
             <ChaptersButtonContainer
               bind={bind}
-              isTutorialOpen={isTutorialOpen}
-              isAnyTutorialOpened={isAnyTutorialOpened}
-              step={step}
               actionsBoxSize={actionsBoxSize}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
             />
           </div>
         </div>

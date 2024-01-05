@@ -3,7 +3,6 @@ import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
-import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import cx from "classnames";
 import { useTranslation } from "react-i18next";
@@ -15,9 +14,7 @@ type PlayButtonProps = {
   play: () => void;
   pause: () => void;
   bind: (stepKey: string) => { ref: RefCallback };
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
-  step: TutorialStep | null;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const PlayButton = ({
@@ -25,9 +22,7 @@ const PlayButton = ({
   play,
   pause,
   bind,
-  isTutorialOpen,
-  isAnyTutorialOpened,
-  step,
+  getTutorialEclipseClassnameByStepkeys,
 }: PlayButtonProps) => {
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
 
@@ -37,9 +32,7 @@ const PlayButton = ({
         {...bind("play")}
         className={cx(
           "pointer-events-auto",
-          isAnyTutorialOpened &&
-            (!isTutorialOpen || step?.stepKey !== "play") &&
-            "bg-black opacity-40"
+          getTutorialEclipseClassnameByStepkeys(["play"])
         )}
         data-tooltip-id="overlay-play-button-tooltip"
       >

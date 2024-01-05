@@ -1,0 +1,18 @@
+.privacy-policy-page *,
+.privacy-policy-page *::before,
+.privacy-policy-page *::after {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.privacy-policy-page h1,
+.privacy-policy-page h2,
+.privacy-policy-page h3,
+.privacy-policy-page h4,
+.privacy-policy-page h5,
+.privacy-policy-page h6,
+.privacy-policy-page p {
+  color: inherit;
+}

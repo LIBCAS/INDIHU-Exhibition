@@ -119,6 +119,7 @@ export const TutorialProvider = ({ children }: TutorialProviderProps) => {
     },
   });
 
+  //
   useEffect(() => {
     const storageObject = Object.entries(store).reduce<LocalStorageTutorial>(
       (acc, [key, tutorialObj]) => ({ ...acc, [key]: tutorialObj.isCompleted }),
@@ -127,6 +128,7 @@ export const TutorialProvider = ({ children }: TutorialProviderProps) => {
     localStorage.setItem("tutorial", JSON.stringify(storageObject));
   }, [store]);
 
+  //
   const markSingleTutorialOpenStatus = (
     tutorialKey: TutorialKey,
     status: boolean

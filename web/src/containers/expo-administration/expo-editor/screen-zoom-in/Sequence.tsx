@@ -17,16 +17,16 @@ import { updateScreenData } from "actions/expoActions";
 import { getFileById } from "actions/file-actions-typed";
 import { compact, concat } from "lodash";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
-import { calculateTotalSequencesTime } from "containers/views/view-zoom/useZoomPhase";
 import { ZoomInTooltipPositionEnum } from "enums/administration-screens";
 
 // - -
 
 type SequenceProps = {
   activeScreen: ZoomScreen;
+  totalZoomScreenTime: number;
 };
 
-const Sequence = ({ activeScreen }: SequenceProps) => {
+const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,11 +34,6 @@ const Sequence = ({ activeScreen }: SequenceProps) => {
   const setImageFile = (imgFile: IndihuFile) => {
     dispatch(updateScreenData({ image: imgFile.id, sequences: [] }));
   };
-
-  const totalZoomScreenTime = calculateTotalSequencesTime(
-    activeScreen.sequences ?? [],
-    (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000
-  );
 
   useEffect(() => {
     dispatch(updateScreenData({ time: totalZoomScreenTime }));
@@ -95,7 +90,7 @@ const Sequence = ({ activeScreen }: SequenceProps) => {
                 activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME
               }
               onChange={(newDelayTime: string) => {
-                const parsedDelayTime = parseInt(newDelayTime);
+                const parsedDelayTime = parseFloat(newDelayTime);
                 if (isNaN(parsedDelayTime)) {
                   return;
                 }

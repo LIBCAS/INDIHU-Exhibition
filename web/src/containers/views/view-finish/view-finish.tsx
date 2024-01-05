@@ -15,9 +15,10 @@ import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
-import { Icon } from "components/icon/icon";
 import { ViewFinishInfo } from "./view-finish-info"; // authors panel
 import { ViewFinishButton } from "./view-finish-button"; // squared button with the icon in the middle
+import RatingPanel from "./rating-panel/RatingPanel";
+import { Icon } from "components/icon/icon";
 
 import { ShareExpoDialog } from "components/dialogs/share-expo-dialog/share-expo-dialog";
 import { FinishAllFilesDialog } from "components/dialogs/finish-all-files-dialog/finish-all-files-dialog";
@@ -47,10 +48,21 @@ export const ViewFinish = ({
 }: Omit<ScreenProps, "infoPanelRef">) => {
   const { viewExpo } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("view-exhibition");
+
+  const { url } = viewExpo ?? {};
+  const { image } = screenPreloadedFiles;
+
+  const isSmall = useMediaQuery(breakpoints.down("md"));
+  const isLessThanXl = useMediaQuery(breakpoints.down("xl"));
+
+  const { bgFgTheming } = useExpoDesignData();
+  const { push } = useHistory();
 
   const {
     openNewTopDialog,
     closeTopDialog,
+    closeAllDialogs,
     isShareExpoDialogOpen,
     isFinishAllFilesDialogOpen,
     isFinishInfoDialogOpen,
@@ -63,14 +75,10 @@ export const ViewFinish = ({
     {}
   );
 
-  const { push } = useHistory();
-  const isSmall = useMediaQuery(breakpoints.down("md"));
-  const { t } = useTranslation("view-exhibition");
-
-  const { bgFgTheming } = useExpoDesignData();
-
-  const { url } = viewExpo ?? {};
-  const { image } = screenPreloadedFiles;
+  const isExpoAlreadyRated = useMemo(
+    () => !!viewExpo?.id && expoRates[viewExpo.id],
+    [expoRates, viewExpo?.id]
+  );
 
   // - - - - - - - -
 
@@ -136,14 +144,6 @@ export const ViewFinish = ({
     [openNewTopDialog]
   );
 
-  // On mount, when viewFinish screen is loaded, open Rating dialog if not previously rated (saved into Local storage)
-  useEffect(() => {
-    if (!!viewExpo?.id && !expoRates[viewExpo.id]) {
-      openRatingDialog();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, viewExpo, expoRates]);
-
   // - - - - - - - - -
 
   // 1) Clicking on first share icon will open the share dialog
@@ -191,8 +191,25 @@ export const ViewFinish = ({
               alt="background"
             />
           )}
-          <div className="w-full h-full grid place-items-center absolute">
-            <div className="flex gap-4">
+
+          <div className="absolute w-full h-full flex justify-center items-center">
+            <div
+              className={cx("hidden", bgFgTheming, {
+                "xl:block xl:mx-auto": !isExpoAlreadyRated,
+              })}
+            >
+              <RatingPanel
+                openInformationFailDialog={openInformationFailDialog}
+                expoId={viewExpo?.id}
+                setExpoRates={setExpoRates}
+              />
+            </div>
+
+            <div
+              className={cx("flex flex-wrap justify-center gap-4", {
+                "xl:flex-col xl:pr-[5%] xl:gap-6": !isExpoAlreadyRated,
+              })}
+            >
               <ViewFinishButton
                 label={t("share")}
                 icon={<Icon color="white" name="share" />}
@@ -210,6 +227,20 @@ export const ViewFinish = ({
                 icon={<Icon color="white" name="replay" />}
                 onClick={replay}
               />
+
+              {isLessThanXl && (
+                <ViewFinishButton
+                  label={"Hodnotiť výstavu"}
+                  icon={
+                    <Icon
+                      color="white"
+                      name="star"
+                      onClick={openRatingDialog}
+                    />
+                  }
+                />
+              )}
+
               {isSmall && (
                 <ViewFinishButton
                   label={t("info")}
@@ -238,6 +269,7 @@ export const ViewFinish = ({
             <ShareExpoDialog
               closeThisDialog={closeTopDialog}
               url={`${window.location.origin}/view/${url}`}
+              expoTitle={viewExpo?.title}
             />
           }
         />
@@ -269,14 +301,27 @@ export const ViewFinish = ({
         />
       )}
 
-      {isRatingDialogOpen && viewExpo?.id && (
+      {isRatingDialogOpen && isExpoAlreadyRated && (
+        <DialogPortal
+          component={
+            <InformationDialog
+              closeThisDialog={closeTopDialog}
+              title={t("rating.expoAlreadyRatedTitle")}
+              content={t("rating.expoAlreadyRatedText")}
+              big
+            />
+          }
+        />
+      )}
+
+      {isRatingDialogOpen && viewExpo?.id && !isExpoAlreadyRated && (
         <DialogPortal
           component={
             <RatingDialog
               closeThisDialog={closeTopDialog}
               openInformationFailDialog={openInformationFailDialog}
-              setExpoRates={setExpoRates}
               expoId={viewExpo?.id}
+              setExpoRates={setExpoRates}
             />
           }
         />
@@ -287,9 +332,9 @@ export const ViewFinish = ({
         <DialogPortal
           component={
             <InformationDialog
-              closeThisDialog={closeTopDialog}
-              title="Hodnotenie selhalo!"
-              content="Odoslanie vásho hodnotenia zlyhalo."
+              closeThisDialog={closeAllDialogs}
+              title={t("rating.ratingFailureTitle")}
+              content={t("rating.expoAlreadyRatedText")}
               big={false}
             />
           }

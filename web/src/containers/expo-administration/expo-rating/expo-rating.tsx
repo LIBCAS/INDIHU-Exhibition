@@ -21,6 +21,8 @@ const ExpoRating = ({ activeExpo }: ExpoRatingProps) => {
     return null;
   }
 
+  console.log("activeExpo: ", activeExpo);
+
   return (
     <Container maxWidth="xl">
       <div className="pt-36 pb-16 flex flex-col gap-6">
@@ -36,6 +38,12 @@ const ExpoRating = ({ activeExpo }: ExpoRatingProps) => {
               <RatingStatisticsTable expositionRating={expositionRating} />
             </div>
           )}
+        </div>
+
+        {/* Views */}
+        <div className="flex gap-4 items-center">
+          <div className="font-bold text-lg">{t("rating.numberOfViews")}</div>
+          <span>{activeExpo.viewCounter}</span>
         </div>
 
         {/* Messages to the exposition, textfield from rating dialog */}

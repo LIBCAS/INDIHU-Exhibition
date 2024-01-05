@@ -1,0 +1,18 @@
+.about-page *,
+.about-page *::before,
+.about-page *::after {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.about-page h1,
+.about-page h2,
+.about-page h3,
+.about-page h4,
+.about-page h5,
+.about-page h6,
+.about-page p {
+  color: inherit;
+}

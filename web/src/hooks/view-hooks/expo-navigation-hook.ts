@@ -6,7 +6,10 @@ import { createSelector } from "reselect";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 
 import { AppState } from "store/store";
-import { viewerRouter } from "utils";
+import { viewerRouter } from "utils/routing";
+import { useSectionScreenParams } from "./section-screen-hook";
+
+// - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
@@ -15,13 +18,13 @@ const stateSelector = createSelector(
   })
 );
 
+// - -
+
 export const useExpoNavigation = () => {
   const { viewExpo } = useSelector(stateSelector);
-  const { name, section, screen } = useParams<{
-    name: string;
-    section: string;
-    screen: string;
-  }>();
+  const { section, screen } = useSectionScreenParams();
+
+  const { name } = useParams<{ name: string }>();
   const { push } = useHistory();
   const {
     closeDrawerWithoutMarking,
@@ -32,6 +35,9 @@ export const useExpoNavigation = () => {
   // 1.) NavigateBack
   const navigateBack = useCallback(() => {
     const view = viewerRouter(name, viewExpo, section, screen, false);
+    if (!view) {
+      return;
+    }
 
     // If Drawer was previously open.. open otherwise keep closed
     const viewTokens = view.split("/");
@@ -65,6 +71,9 @@ export const useExpoNavigation = () => {
   // 2.) NavigateForward
   const navigateForward = useCallback(() => {
     const view = viewerRouter(name, viewExpo, section, screen, true);
+    if (!view) {
+      return;
+    }
 
     // If Drawer was previously open.. open otherwise keep closed
     const viewTokens = view.split("/");

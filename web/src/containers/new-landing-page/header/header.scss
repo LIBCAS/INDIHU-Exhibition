@@ -1,0 +1,119 @@
+@import "../variables.scss";
+
+/* -- Header -- */
+
+header {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  z-index: 10;
+  color: white;
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out;
+}
+
+header.scrolled {
+  color: $primary-color;
+  background-color: white;
+}
+
+header nav li {
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+header nav li:hover {
+  border-bottom-color: white;
+}
+
+header.scrolled nav li:hover {
+  border-bottom-color: $primary-color;
+}
+
+header nav a {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+header.scrolled nav a:hover {
+  color: $primary-color;
+  border-bottom-color: $primary-color;
+}
+
+header nav li a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+header nav li.active {
+  border-bottom-color: white;
+}
+
+header.scrolled nav li.active {
+  border-bottom-color: $primary-color;
+}
+
+header .login-button {
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid white;
+  border-radius: 60px;
+  color: white !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+header .login-button:hover {
+  background-color: white;
+  color: $primary-color !important;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+header .login-button.scrolled {
+  background-color: white;
+  color: $primary-color !important;
+  border-color: $primary-color;
+}
+
+header .register-button {
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid white;
+  border-radius: 60px;
+  color: $primary-color !important;
+  background-color: white;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+header .register-button.scrolled {
+  background-color: $primary-color;
+  color: white !important;
+}
+
+/* - - COLLAPSE MOBILE PANEL - - */
+.collapse-mobile-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  color: $primary-color;
+  transform: translateX(100%);
+  transition: transform 0.2s ease-in-out;
+}
+
+.collapse-mobile-panel * {
+  color: inherit;
+}
+
+.collapse-mobile-panel.open {
+  transform: translateX(0);
+}

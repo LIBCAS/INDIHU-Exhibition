@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from "reselect";
+import { Dispatch, SetStateAction } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { Tooltip } from "react-tooltip";
@@ -9,24 +9,22 @@ import TextField from "react-md/lib/TextFields";
 import FontIcon from "react-md/lib/FontIcons";
 import Button from "react-md/lib/Buttons/Button";
 
-import { AppState, AppDispatch } from "store/store";
 import { ExpositionFilter, ExpositionSort } from "models";
-
-import { setExpoFilter } from "actions/expoActions";
-
-// - -
-
-const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.filter,
-  ({ expo }: AppState) => expo.pager,
-  (filter, pager) => ({ filter, pager })
-);
+import { ExpositionsFilterStateObj } from "./Expositions";
 
 // - -
 
-const Filter = () => {
-  const { filter } = useSelector(stateSelector);
-  const dispatch = useDispatch<AppDispatch>();
+type FilterProps = {
+  expositionsFilterState: ExpositionsFilterStateObj;
+  setExpositionsFilterState: Dispatch<
+    SetStateAction<ExpositionsFilterStateObj>
+  >;
+};
+
+const Filter = ({
+  expositionsFilterState,
+  setExpositionsFilterState,
+}: FilterProps) => {
   const { t } = useTranslation("exhibitions-page");
 
   return (
@@ -49,16 +47,14 @@ const Filter = () => {
           itemLabel="label"
           itemValue="value"
           position="below"
-          value={filter.filter}
+          value={expositionsFilterState.filter}
           onChange={async (newFilterValue: ExpositionFilter) => {
-            dispatch(
-              setExpoFilter(
-                newFilterValue,
-                filter.sort,
-                filter.search,
-                filter.order
-              )
-            );
+            setExpositionsFilterState((prev) => ({
+              ...prev,
+              filter: newFilterValue,
+              page: 0,
+              pageSize: 10,
+            }));
           }}
         />
       </div>
@@ -73,22 +69,18 @@ const Filter = () => {
             { label: t("header.sortOptions.title"), value: "title" },
             { label: t("header.sortOptions.state"), value: "state" },
             { label: t("header.sortOptions.created"), value: "created" },
-            { label: t("header.sortOptions.updated"), value: "updated" },
+            { label: t("header.sortOptions.edited"), value: "edited" },
             { label: t("header.sortOptions.isEditing"), value: "isEditing" },
           ]}
           itemLabel="label"
           itemValue="value"
           position="below"
-          value={filter.sort}
+          value={expositionsFilterState.sort}
           onChange={async (newSortValue: ExpositionSort) => {
-            dispatch(
-              setExpoFilter(
-                filter.filter,
-                newSortValue,
-                filter.search,
-                filter.order
-              )
-            );
+            setExpositionsFilterState((prev) => ({
+              ...prev,
+              sort: newSortValue,
+            }));
           }}
         />
       </div>
@@ -100,22 +92,21 @@ const Filter = () => {
             icon
             data-tooltip-id="filter-tooltip"
             data-tooltip-content={
-              filter.order === "ASC"
+              expositionsFilterState.order === "ASC"
                 ? t("header.sortTooltipASC")
                 : t("header.sortTooltipDESC")
             }
             onClick={async () => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  filter.sort,
-                  filter.search,
-                  filter.order === "ASC" ? "DESC" : "ASC"
-                )
-              );
+              const currOrder = expositionsFilterState.order;
+              setExpositionsFilterState((prev) => ({
+                ...prev,
+                order: currOrder === "ASC" ? "DESC" : "ASC",
+              }));
             }}
           >
-            {filter.order === "ASC" ? "arrow_downward" : "arrow_upward"}
+            {expositionsFilterState.order === "ASC"
+              ? "arrow_downward"
+              : "arrow_upward"}
           </Button>
           <Tooltip
             id="filter-tooltip"
@@ -131,16 +122,14 @@ const Filter = () => {
             id="expositions-filter-textfield-search"
             placeholder={t("header.searchPlaceholder")}
             className="search-input"
-            defaultValue={filter.search}
+            defaultValue={expositionsFilterState.search}
             onChange={async (newSearchValue: string) => {
-              dispatch(
-                setExpoFilter(
-                  filter.filter,
-                  filter.sort,
-                  newSearchValue,
-                  filter.order
-                )
-              );
+              setExpositionsFilterState((prev) => ({
+                ...prev,
+                search: newSearchValue,
+                page: 0,
+                pageSize: 10,
+              }));
             }}
           />
           <FontIcon className="search-icon">search</FontIcon>

@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useTutorialStore } from "./tutorial-provider";
+import { useIsAnyTutorialOpened, useTutorialStore } from "./tutorial-provider";
 
 import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 
@@ -38,6 +38,8 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
   const steps = useMemo(() => {
     return singleTutorialObj.steps;
   }, [singleTutorialObj.steps]);
+
+  // - - -
 
   // Index of currently displaying step of tutorial based on provided tutorialKey
   const [currStepIndex, setCurrStepIndex] = useState<number>(0);
@@ -81,19 +83,20 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
   // currStepObj is one step from array of steps, but if index is equal to length or bigger, then it will be undefined
   const isTutorialCompleted = store[tutorialKey].isCompleted;
 
-  const currStepObj: TutorialStep | undefined | null =
-    shouldOpen && !isTutorialCompleted ? steps[currStepIndex] : null;
+  const isTutorialOpenAllowed =
+    !isTutorialCompleted && shouldOpen && currStepIndex < steps.length;
 
-  const currAnchor: HTMLElement | undefined | null = currStepObj
-    ? anchors[currStepObj?.stepKey]
+  const currStepObj: TutorialStep | null = isTutorialOpenAllowed
+    ? steps[currStepIndex] ?? null
     : null;
 
-  const isTutorialOpen =
-    shouldOpen && !isTutorialCompleted && currStepObj && currAnchor
-      ? true
-      : false;
+  const currAnchor: HTMLElement | null = currStepObj
+    ? anchors[currStepObj?.stepKey] ?? null
+    : null;
 
-  // When opened status for some of the tutorials change, mark it into the store object stored in local storage
+  const isTutorialOpen = isTutorialOpenAllowed && !!currStepObj && !!currAnchor;
+
+  // Write current tutorial open status to the tutorial store, global information
   useEffect(() => {
     if (isTutorialOpen) {
       markSingleTutorialOpenStatus(tutorialKey, true);
@@ -105,6 +108,7 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTutorialOpen]);
 
+  //
   useEffect(() => {
     if (currAnchor && isTutorialOpen) {
       currAnchor.classList.add("border-solid", "border-4", "border-primary");
@@ -122,15 +126,15 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
   // 1.
   const nextTutorialStep = useCallback(() => {
     if (currStepIndex + 1 === steps.length) {
-      markSingleTutorialOpenStatus(tutorialKey, false);
       markSingleTutorialCompletionStatus(tutorialKey, true);
+      setCurrStepIndex(steps.length);
+      return;
     }
-    // Can cause currStepObj to be undefined
+    // Can cause currStepObj to be undefined -> null
     setCurrStepIndex((prev) => prev + 1);
   }, [
     currStepIndex,
     markSingleTutorialCompletionStatus,
-    markSingleTutorialOpenStatus,
     steps.length,
     tutorialKey,
   ]);
@@ -139,33 +143,21 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
   const skipTutorial = useCallback(() => {
     setCurrStepIndex(steps.length);
     markSingleTutorialCompletionStatus(tutorialKey, true);
-    markSingleTutorialOpenStatus(tutorialKey, false);
-  }, [
-    markSingleTutorialCompletionStatus,
-    markSingleTutorialOpenStatus,
-    steps.length,
-    tutorialKey,
-  ]);
+  }, [markSingleTutorialCompletionStatus, steps.length, tutorialKey]);
 
   // 3.
   const escapeTutorial = useCallback(() => {
     setCurrStepIndex(steps.length);
     markSingleTutorialCompletionStatus(tutorialKey, false);
-    markSingleTutorialOpenStatus(tutorialKey, false);
-  }, [
-    markSingleTutorialCompletionStatus,
-    markSingleTutorialOpenStatus,
-    steps.length,
-    tutorialKey,
-  ]);
+  }, [markSingleTutorialCompletionStatus, steps.length, tutorialKey]);
 
   // Tooltip component which will display information (label, text) of current tutorial step
   const TutorialTooltip = useMemo(
     () =>
-      currStepObj && (
+      isTutorialOpen && (
         <Popper
           open={isTutorialOpen}
-          anchor={currAnchor ?? null}
+          anchor={currAnchor}
           arrow
           placement="auto"
           rebuildListener={screen}
@@ -212,6 +204,40 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
     ]
   );
 
+  // - -
+
+  // true if this or any other tutorial is opened
+  const isAnyTutorialOpened = useIsAnyTutorialOpened();
+
+  const getTutorialEclipseClassnameByStepkeys = useCallback(
+    (stepKeys: string[]): string => {
+      const className = "bg-black opacity-40";
+      if (!isAnyTutorialOpened) {
+        return "";
+      }
+      if (isAnyTutorialOpened && !isTutorialOpen) {
+        return className;
+      }
+      if (isTutorialOpen && !stepKeys.includes(currStepObj.stepKey)) {
+        return className;
+      }
+      return "";
+    },
+    [currStepObj?.stepKey, isAnyTutorialOpened, isTutorialOpen]
+  );
+
+  const getTutorialEnhanceClassnameByStepkeys = useCallback(
+    (stepKeys: string[]) => {
+      if (isTutorialOpen && stepKeys.includes(currStepObj.stepKey)) {
+        return "border-solid border-4 border-primary";
+      }
+      return "";
+    },
+    [currStepObj?.stepKey, isTutorialOpen]
+  );
+
+  // - -
+
   // Returned object
   const tutorial = useMemo(
     () => ({
@@ -220,8 +246,18 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
       TutorialTooltip,
       escapeTutorial,
       isTutorialOpen,
+      getTutorialEclipseClassnameByStepkeys,
+      getTutorialEnhanceClassnameByStepkeys,
     }),
-    [TutorialTooltip, bind, currStepObj, escapeTutorial, isTutorialOpen]
+    [
+      TutorialTooltip,
+      bind,
+      currStepObj,
+      escapeTutorial,
+      isTutorialOpen,
+      getTutorialEclipseClassnameByStepkeys,
+      getTutorialEnhanceClassnameByStepkeys,
+    ]
   );
 
   return tutorial;

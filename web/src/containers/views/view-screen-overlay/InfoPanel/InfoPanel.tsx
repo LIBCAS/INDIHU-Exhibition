@@ -5,19 +5,21 @@ import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 import { useExpoScreenProgress } from "hooks/view-hooks/expo-screen-progress-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 
 import { ProgressBar } from "components/progress-bar/progress-bar";
 import { Icon } from "components/icon/icon";
 
 import { AppState } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
-import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
 import { isGameScreen } from "utils/view-utils";
 import { tickTime } from "constants/view-screen-progress";
 import { screenType } from "enums/screen-type";
+
+import { breakpoints } from "hooks/media-query-hook/breakpoints";
 
 // - -
 
@@ -31,9 +33,7 @@ type InfoPanelProps = {
   openDrawer: () => void;
   keyKey: number;
   bind: (stepKey: string) => { ref: RefCallback };
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
-  step: TutorialStep | null;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const InfoPanel = ({
@@ -41,12 +41,12 @@ const InfoPanel = ({
   openDrawer,
   keyKey,
   bind,
-  isTutorialOpen,
-  isAnyTutorialOpened,
-  step,
+  getTutorialEclipseClassnameByStepkeys,
 }: InfoPanelProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+
+  const isSm = useMediaQuery(breakpoints.down("sm"));
 
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
   const { bgFgTheming } = useExpoDesignData();
@@ -62,6 +62,10 @@ const InfoPanel = ({
     );
   }, [viewScreen?.type]);
 
+  if (amIGameScreen || isSm) {
+    return null;
+  }
+
   return (
     <div
       className={cx(
@@ -70,48 +74,40 @@ const InfoPanel = ({
       )}
       ref={infoPanelRef}
     >
-      {!amIGameScreen && (
-        <div
-          {...bind("info")}
-          className={cx(
-            isAnyTutorialOpened &&
-              (!isTutorialOpen ||
-                (step?.stepKey !== "info" &&
-                  step?.stepKey !== "progressbar")) &&
-              "bg-black opacity-40"
-          )}
-        >
-          <div className="flex flex-col bg-white pointer-events-auto">
-            <div
-              {...bind("progressbar")}
-              className={cx(
-                isAnyTutorialOpened &&
-                  (!isTutorialOpen || step?.stepKey !== "progressbar") &&
-                  "bg-black opacity-40"
-              )}
-            >
-              <ProgressBar
-                key={`${viewScreen?.id}-${keyKey}`}
-                percentage={percentage}
-                height={isVideoOrSlideshowScreen ? 10 : 6}
-              />
-            </div>
+      <div
+        {...bind("info")}
+        className={cx(
+          getTutorialEclipseClassnameByStepkeys(["info", "progressbar"])
+        )}
+      >
+        <div className="flex flex-col bg-white pointer-events-auto">
+          <div
+            {...bind("progressbar")}
+            className={cx(
+              getTutorialEclipseClassnameByStepkeys(["progressbar"])
+            )}
+          >
+            <ProgressBar
+              key={`${viewScreen?.id}-${keyKey}`}
+              percentage={percentage}
+              height={isVideoOrSlideshowScreen ? 10 : 6}
+            />
+          </div>
 
-            <div
-              className={cx(
-                "flex justify-between gap-4 p-4 cursor-pointer min-w-[300px]",
-                {
-                  ...bgFgTheming,
-                }
-              )}
-              onClick={openDrawer}
-            >
-              <span>{viewScreen?.title ?? t("overlay.no-title")}</span>
-              <Icon name="info" />
-            </div>
+          <div
+            className={cx(
+              "flex justify-between gap-4 p-4 cursor-pointer min-w-[300px]",
+              {
+                ...bgFgTheming,
+              }
+            )}
+            onClick={openDrawer}
+          >
+            <span>{viewScreen?.title ?? t("overlay.no-title")}</span>
+            <Icon name="info" />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

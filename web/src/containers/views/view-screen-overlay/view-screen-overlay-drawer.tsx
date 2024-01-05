@@ -51,7 +51,7 @@ export const ViewScreenOverlayDrawer = ({
   const { isLightMode } = useExpoDesignData();
 
   const panelRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation("view-creen", { keyPrefix: "overlayDrawer" });
+  const { t } = useTranslation("view-screen", { keyPrefix: "overlayDrawer" });
 
   const drawerStyle = useSpring({
     transform: `translate(${isDrawerOpen ? "0%" : "-100%"}, 0)`,

@@ -16,11 +16,11 @@ import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-m
 import { getViewImageAnimation } from "./view-image-animation";
 import { calculateObjectFit } from "utils/object-fit";
 import { getScreenTime } from "utils/screen";
-import { isInfopointOutsideOrigImage } from "utils/view-utils";
 
 import { AppState } from "store/store";
 import { ImageScreen } from "models";
 import { ScreenProps } from "models";
+import { calculateInfopointPosition } from "utils/infopoint-utils";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ImageScreen,
@@ -48,6 +48,7 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - - -
 
   const {
+    width: containedImageWidth,
     height: containedImageHeight,
     left: fromLeft,
     top: fromTop,
@@ -61,10 +62,10 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
     [parentSize, viewScreen.imageOrigData]
   );
 
-  const ratio = useMemo(
-    () => containedImageHeight / (viewScreen.imageOrigData?.height ?? 1),
-    [containedImageHeight, viewScreen.imageOrigData?.height]
-  );
+  // const ratio = useMemo(
+  //   () => containedImageHeight / (viewScreen.imageOrigData?.height ?? 1),
+  //   [containedImageHeight, viewScreen.imageOrigData?.height]
+  // );
 
   // - - - -
 
@@ -147,21 +148,46 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
           )}
 
           {viewScreen.infopoints?.map((infopoint, infopointIndex) => {
+            const infopointPosition = {
+              left: infopoint.left,
+              top: infopoint.top,
+            };
+            const imgBoxSize = viewScreen.imageOrigData;
+            const imgNaturalSize = {
+              width: containedImgEl?.naturalWidth ?? 0,
+              height: containedImgEl?.naturalHeight ?? 0,
+            };
+            const imgViewSize = {
+              width: containedImageWidth,
+              height: containedImageHeight,
+            };
+
             if (
-              isInfopointOutsideOrigImage({
-                infopointPosition: { left: infopoint.left, top: infopoint.top },
-                imageOrigData: viewScreen.imageOrigData,
-              })
+              !imgBoxSize ||
+              !imgNaturalSize.width ||
+              !imgNaturalSize.height ||
+              !imgViewSize.width ||
+              !imgViewSize.height
             ) {
               return null;
             }
+
+            const { left, top } = calculateInfopointPosition(
+              infopointPosition,
+              imgBoxSize,
+              imgNaturalSize,
+              imgViewSize
+            );
+
+            const adjustedLeft = fromLeft + left;
+            const adjustedTop = fromTop + top;
 
             return (
               <React.Fragment key={`infopoint-tooltip-${infopointIndex}`}>
                 <ScreenAnchorInfopoint
                   id={`infopoint-tooltip-${infopointIndex}`}
-                  top={fromTop + infopoint.top * ratio}
-                  left={fromLeft + infopoint.left * ratio}
+                  left={adjustedLeft}
+                  top={adjustedTop}
                   infopoint={infopoint}
                   // we need to scale the infopoint back down to normal size
                   style={{

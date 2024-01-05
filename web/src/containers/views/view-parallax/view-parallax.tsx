@@ -1,14 +1,18 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { animated, easings, useSpring } from "react-spring";
 import { createSelector } from "reselect";
 
-import { AppState } from "store/store";
-import { ParallaxScreeen } from "models";
-import { getScreenTime } from "utils/screen";
+import { animated, easings, useSpring } from "react-spring";
 import useElementSize from "hooks/element-size-hook";
 
-import { ScreenProps } from "models";
+// Models
+import { ScreenProps, ParallaxScreeen } from "models";
+import { AppState } from "store/store";
+
+// Utils
+import { getScreenTime } from "utils/screen";
+
+// - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ParallaxScreeen,
@@ -16,22 +20,31 @@ const stateSelector = createSelector(
   (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
 );
 
+// - -
+
 export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
-  const [ref, { height, width }] = useElementSize();
   const { viewScreen, viewProgress } = useSelector(stateSelector);
   const { images } = viewScreen;
-  const rootImg = screenPreloadedFiles.images?.[0];
 
+  const preloadedImages = screenPreloadedFiles.images;
+  const preloadedRootImg = preloadedImages?.[0];
+
+  const duration = useMemo(
+    () => getScreenTime(viewScreen, { unit: "ms" }),
+    [viewScreen]
+  );
+
+  // Animation stuff
   const animationType = viewScreen.animationType;
 
-  const horizontal = useMemo(
+  const isAnimationHorizontal = useMemo(
     () =>
       animationType === "FROM_LEFT_TO_RIGHT" ||
       animationType === "FROM_RIGHT_TO_LEFT",
     [animationType]
   );
 
-  const scale = useMemo(
+  const animationScale = useMemo(
     () =>
       animationType === "FROM_BOTTOM" || animationType === "FROM_RIGHT_TO_LEFT"
         ? -1
@@ -39,16 +52,19 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
     [animationType]
   );
 
+  //
+  const [
+    viewContainerRef,
+    { width: viewContainerWidth, height: viewContainerHeight },
+  ] = useElementSize();
+
   const totalDistance = useMemo(
-    () => (horizontal ? width : height) / 4,
-    [height, horizontal, width]
+    () =>
+      (isAnimationHorizontal ? viewContainerWidth : viewContainerHeight) / 8,
+    [isAnimationHorizontal, viewContainerWidth, viewContainerHeight]
   );
 
-  const duration = useMemo(
-    () => getScreenTime(viewScreen, { unit: "ms" }),
-    [viewScreen]
-  );
-
+  //
   const { offset } = useSpring({
     from: {
       offset: -1,
@@ -62,30 +78,35 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
 
   return (
     <div
-      ref={ref}
+      ref={viewContainerRef}
       className="h-full w-full flex justify-center items-center relative overflow-hidden"
     >
-      {rootImg && (
-        <img className="w-full h-full object-contain" src={rootImg} />
+      {preloadedRootImg && (
+        <img src={preloadedRootImg} className="w-full h-full object-contain" />
       )}
 
-      {images?.slice(1).map((_value, index) => {
+      {images?.map((imgId, imgIndex) => {
+        if (imgIndex === 0) {
+          return null;
+        }
+
+        // Interpolation of offset value to value that is used directly in style prop
         const translateOffset = offset.to(
           (value) =>
             ((value * totalDistance) / images?.length ?? 1) *
-            (index + 1) *
-            scale
+            (imgIndex + 1) *
+            animationScale
         );
 
         return (
           <animated.img
-            key={index}
-            className="absolute"
+            key={imgId}
+            className="absolute w-full h-full object-contain"
+            src={preloadedImages?.[imgIndex]}
             style={{
-              translateY: horizontal ? undefined : translateOffset,
-              translateX: horizontal ? translateOffset : undefined,
+              translateY: isAnimationHorizontal ? undefined : translateOffset,
+              translateX: isAnimationHorizontal ? translateOffset : undefined,
             }}
-            src={screenPreloadedFiles.images?.[index]}
           />
         );
       })}

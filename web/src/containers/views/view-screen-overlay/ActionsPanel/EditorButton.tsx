@@ -11,13 +11,13 @@ import cx from "classnames";
 type EditorButtonProps = {
   openEditorScreenUrl: () => void;
   isEditorAccess: boolean;
-  isAnyTutorialOpened: boolean;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const EditorButton = ({
   openEditorScreenUrl,
   isEditorAccess,
-  isAnyTutorialOpened,
+  getTutorialEclipseClassnameByStepkeys,
 }: EditorButtonProps) => {
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
 
@@ -30,7 +30,7 @@ const EditorButton = ({
       <div
         className={cx(
           "pointer-events-auto",
-          isAnyTutorialOpened && "bg-black opacity-40"
+          getTutorialEclipseClassnameByStepkeys([""])
         )}
         data-tooltip-id="overlay-editor-button-tooltip"
       >

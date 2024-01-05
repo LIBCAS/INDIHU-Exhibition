@@ -15,23 +15,21 @@ type AudioButtonProps = {
   hasAudio: boolean;
   isAudioMuted: boolean;
   bind: (stepKey: string) => { ref: RefCallback };
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
   step: TutorialStep | null;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const AudioButton = ({
   hasAudio,
   isAudioMuted,
   bind,
-  isTutorialOpen,
-  isAnyTutorialOpened,
   step,
+  getTutorialEclipseClassnameByStepkeys,
 }: AudioButtonProps) => {
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
   const { openNewTopDialog } = useDialogRef();
 
-  if (!hasAudio) {
+  if (step?.stepKey !== "audio" && !hasAudio) {
     return null;
   }
 
@@ -41,9 +39,7 @@ const AudioButton = ({
         {...bind("audio")}
         className={cx(
           "pointer-events-auto",
-          isAnyTutorialOpened &&
-            (!isTutorialOpen || step?.stepKey !== "audio") &&
-            "bg-black opacity-40"
+          getTutorialEclipseClassnameByStepkeys(["audio"])
         )}
         data-tooltip-id="overlay-audio-button-tooltip"
       >

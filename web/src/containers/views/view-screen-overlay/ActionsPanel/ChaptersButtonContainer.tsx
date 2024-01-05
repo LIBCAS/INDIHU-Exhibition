@@ -1,7 +1,6 @@
 import { ChaptersButton } from "./chapters-button";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
-import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import { Size } from "models";
 
@@ -11,27 +10,21 @@ import cx from "classnames";
 
 type ChaptersButtonContainerProps = {
   bind: (stepKey: string) => { ref: RefCallback };
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
-  step: TutorialStep | null;
   actionsBoxSize: Size;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const ChaptersButtonContainer = ({
   bind,
-  isTutorialOpen,
-  isAnyTutorialOpened,
-  step,
   actionsBoxSize,
+  getTutorialEclipseClassnameByStepkeys,
 }: ChaptersButtonContainerProps) => {
   return (
     <div
       {...bind("chapters")}
       className={cx(
         "pointer-events-auto",
-        isAnyTutorialOpened &&
-          (!isTutorialOpen || step?.stepKey !== "chapters") &&
-          "bg-black opacity-40"
+        getTutorialEclipseClassnameByStepkeys(["chapters"])
       )}
     >
       <ChaptersButton maxHeight={actionsBoxSize.height - 35} />

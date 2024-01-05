@@ -13,11 +13,7 @@ import { Pagination } from "components/pagination/Pagination";
 
 // Models
 import { AppState, AppDispatch } from "store/store";
-import {
-  UserTableFilter,
-  UserTableSort,
-  UserTableType,
-} from "reducers/user-reducer";
+import { UserTableFilter, UserTableSort } from "reducers/user-reducer";
 
 // Actions
 import { getUsers } from "actions/admin-actions";
@@ -26,7 +22,8 @@ import { getUsers } from "actions/admin-actions";
 
 const stateSelector = createSelector(
   ({ user }: AppState) => user.users.all,
-  (usersAll) => ({ usersAll })
+  ({ user }: AppState) => user.userName,
+  (usersAll, userName) => ({ usersAll, userName })
 );
 
 // - -
@@ -37,7 +34,6 @@ export type UserTableStateObj = {
   filter: UserTableFilter;
   sort: UserTableSort;
   search: string;
-  tableType: UserTableType;
 };
 
 type UserTableStateKey = keyof UserTableStateObj;
@@ -50,7 +46,7 @@ export type UserTableSetter = <K extends keyof UserTableStateObj>(
 // - -
 
 const Users = () => {
-  const { usersAll } = useSelector(stateSelector);
+  const { usersAll, userName } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("users");
 
@@ -60,7 +56,6 @@ const Users = () => {
     filter: "ALL",
     sort: "updated",
     search: "",
-    tableType: "ALL",
   });
 
   const setTableState: UserTableSetter = useCallback(
@@ -84,8 +79,7 @@ const Users = () => {
         userTableState.pageSize,
         userTableState.filter,
         userTableState.sort,
-        debouncedSearchFilter,
-        userTableState.tableType
+        debouncedSearchFilter
       )
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +89,6 @@ const Users = () => {
     userTableState.filter,
     userTableState.sort,
     debouncedSearchFilter,
-    userTableState.tableType,
   ]);
 
   // - -
@@ -105,7 +98,11 @@ const Users = () => {
       <AppHeader adminStyle />
       <div className="container">
         <Header tableState={userTableState} setTableState={setTableState} />
-        <Table tableType={userTableState.tableType} usersAll={usersAll} />
+        <Table
+          usersAll={usersAll}
+          userName={userName as string}
+          userTableState={userTableState}
+        />
 
         <div className="mt-2 p-4 w-full flex justify-center md:justify-end items-center">
           <Pagination
@@ -113,6 +110,7 @@ const Users = () => {
             pageSize={userTableState.pageSize}
             itemsCount={usersAll.count}
             onPageSizeChange={(newPageSize: number) => {
+              setTableState("page", 0);
               setTableState("pageSize", newPageSize);
             }}
             pageSizeId="users-table-pagesize"

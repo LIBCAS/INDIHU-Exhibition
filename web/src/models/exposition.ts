@@ -16,7 +16,7 @@ export type ExpositionSort =
   | "title"
   | "state"
   | "created"
-  | "updated"
+  | "edited"
   | "isEditing";
 export type ExpositionOrder = "ASC" | "DESC";
 
@@ -130,6 +130,7 @@ export type ActiveExpo = {
   expositionDesignData?: ExpositionDesignDataObj;
   expositionRating?: ExpositionRatingObj;
   messages?: MessageObj[];
+  viewCounter: number;
 };
 
 export type ExpositionItem = {
@@ -148,6 +149,8 @@ export type ExpositionItem = {
   ratingCount?: number;
   messageCount?: number;
   preferences: PreferenceObj;
+  viewCount?: number;
+  pinned: boolean;
 };
 
 export type ExpoRates = Record<ViewExpo["id"], boolean>;

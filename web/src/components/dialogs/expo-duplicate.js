@@ -32,7 +32,15 @@ export default compose(
   withRouter,
   withHandlers({
     onSubmit: (dialog) => async (formData, dispatch, props) => {
-      if (await dispatch(duplicateExpo(formData.name, props.data.id))) {
+      if (
+        await dispatch(
+          duplicateExpo(
+            formData.name,
+            props.data.id,
+            props.data.expositionsFilterState
+          )
+        )
+      ) {
         dialog.closeDialog();
       }
     },

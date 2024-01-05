@@ -1,0 +1,81 @@
+@import "../../new-landing-page/variables.scss";
+
+/* --  About intro section -- */
+
+.about-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.about-section .image-background-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-color;
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.about-section img {
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+.about-section .description {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.about-section .description {
+  color: white;
+}
+
+.about-section .description h1 {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 48px;
+}
+
+@media (min-width: 576px) {
+  .about-section .description h1 {
+    font-size: 56px;
+    line-height: 68px;
+  }
+}
+
+@media (min-width: 768px) {
+  .about-section .description h1 {
+    font-size: 64px;
+    line-height: 72px;
+  }
+}
+
+.about-section .description p {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+@media (min-width: 576px) {
+  .about-section .description p {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .about-section .description p {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}

@@ -11,10 +11,12 @@ import cx from "classnames";
 // - -
 
 type SettingsButtonProps = {
-  isAnyTutorialOpened: boolean;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
-const SettingsButton = ({ isAnyTutorialOpened }: SettingsButtonProps) => {
+const SettingsButton = ({
+  getTutorialEclipseClassnameByStepkeys,
+}: SettingsButtonProps) => {
   const { openNewTopDialog } = useDialogRef();
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
 
@@ -23,7 +25,7 @@ const SettingsButton = ({ isAnyTutorialOpened }: SettingsButtonProps) => {
       <div
         className={cx(
           "pointer-events-auto",
-          isAnyTutorialOpened && "bg-black opacity-40"
+          getTutorialEclipseClassnameByStepkeys([""])
         )}
         data-tooltip-id="overlay-settings-button-tooltip"
       >

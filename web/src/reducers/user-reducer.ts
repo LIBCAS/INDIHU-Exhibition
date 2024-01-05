@@ -12,12 +12,12 @@ import { map } from "lodash";
 
 // - -
 
-export type UserTableType = "ALL" | "FOR_ACCEPT";
 export type UserStateType =
-  | "ACCEPTED"
   | "NOT_VERIFIED"
   | "TO_ACCEPT"
-  | "DELETED";
+  | "ACCEPTED"
+  | "REJECTED"
+  | "DELETED"; // special mark in DB
 
 export type UserTableFilter = UserStateType | "ALL";
 export type UserTableSort =
@@ -44,7 +44,7 @@ export type UserInfoObj = {
   surname: string;
   userName: string;
   verifiedEmail: boolean;
-  toAccept?: UserInfoObj; // TODO - improvised
+  deleted?: string; // deleted timestamp, if user was deleted this is present, otherwise undefined
 };
 
 export type AllUsers = {
@@ -55,7 +55,6 @@ export type AllUsers = {
   filter: UserTableFilter;
   sort: UserTableSort;
   search: string;
-  table: UserTableType;
 };
 
 export type UsersObj = {
@@ -86,7 +85,6 @@ const initialState: UserReducerState = {
       filter: "ALL",
       sort: "updated",
       search: "",
-      table: "ALL",
     },
     active: [],
   },

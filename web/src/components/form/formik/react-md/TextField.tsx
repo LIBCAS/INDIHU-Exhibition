@@ -10,6 +10,7 @@ interface ReactMdTextFieldProps {
   name: string;
   label: string;
   type?: "text" | "email" | "password" | "number"; // default is text
+  parseAsFloat?: boolean;
   id?: string; // if not supplied, name prop is used as identifier
   disabled?: boolean;
   maxLength?: number; // needs to be validated by Formik, this will only add the counter, automatic error state is manually set
@@ -26,6 +27,7 @@ const ReactMdTextField = ({
   name,
   label,
   type = "text",
+  parseAsFloat,
   id,
   disabled,
   maxLength,
@@ -51,7 +53,10 @@ const ReactMdTextField = ({
         onChange={(newValue: string, _e: any) => {
           // TextField from ReactMd always gives the string, even when type number is set
           if (type === "number") {
-            const parsedNewValue = parseInt(newValue);
+            const parsedNewValue = parseAsFloat
+              ? parseFloat(newValue)
+              : parseInt(newValue);
+
             helper.setValue(parsedNewValue);
             return;
           }

@@ -1,0 +1,38 @@
+@import "../variables.scss";
+
+/* -- Footer -- */
+
+#footer {
+  background-color: $primary-color;
+  color: white;
+
+  &.white-variant {
+    background-color: white;
+    color: $primary-color;
+  }
+
+  & h4 {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  & ul li {
+    font-size: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  & ul li:hover {
+    text-decoration: underline;
+  }
+
+  .bottom-footer p,
+  .bottom-footer a {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .bottom-footer a:hover {
+    text-decoration: underline;
+  }
+}

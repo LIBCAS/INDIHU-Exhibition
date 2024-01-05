@@ -31,6 +31,9 @@ module.exports = {
         // others
         "disabled-dark": "rgba(0, 0, 0, 0.26)",
         "disabled-light": "rgba(0, 0, 0, 0.12)",
+
+        //
+        "primary-blue": "#142E54;",
       },
       zIndex: {
         45: 45,
@@ -39,6 +42,9 @@ module.exports = {
       screens: {
         // Backward compatibility for old expo administration screens
         desktop: "801px",
+      },
+      fontFamily: {
+        inter: ['"Inter"', '"sans-serif"'],
       },
     },
   },

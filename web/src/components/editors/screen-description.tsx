@@ -14,16 +14,17 @@ import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
 import { helpIconText } from "enums/text";
 import { ScreenCompletedCheckbox } from "./Checkboxes";
-import { screenType } from "enums/screen-type";
 
 type ScreenDescriptionProps = {
   activeScreen: Screen;
   sumOfPhotosTimes?: number | null; // in case of slideshow description
+  totalZoomScreenTime?: number;
 };
 
 const ScreenDescription = ({
   activeScreen,
   sumOfPhotosTimes,
+  totalZoomScreenTime,
 }: ScreenDescriptionProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
@@ -64,14 +65,25 @@ const ScreenDescription = ({
               id="editor-description-audio"
             />
 
-            <Time
-              audio={audioFile}
-              activeScreen={activeScreen}
-              sumOfPhotosTimes={sumOfPhotosTimes}
-              disabled={activeScreen.type === screenType.IMAGE_ZOOM}
-              helpIconLabel={t("descFields.screenTimeTooltip")}
-              helpIconId="time-help-icon"
-            />
+            {activeScreen.type === "IMAGE_ZOOM" && (
+              <div className="mt-4 mb-3 flex gap-2 text-lg">
+                <div>{t("descFields.imageZoomScreen.totalScreenTime")}</div>
+                <div>
+                  {totalZoomScreenTime}{" "}
+                  {t("descFields.imageZoomScreen.seconds")}
+                </div>
+              </div>
+            )}
+
+            {activeScreen.type !== "IMAGE_ZOOM" && (
+              <Time
+                audio={audioFile}
+                activeScreen={activeScreen}
+                sumOfPhotosTimes={sumOfPhotosTimes}
+                helpIconLabel={t("descFields.screenTimeTooltip")}
+                helpIconId="time-help-icon"
+              />
+            )}
 
             <Music
               aloneScreen={

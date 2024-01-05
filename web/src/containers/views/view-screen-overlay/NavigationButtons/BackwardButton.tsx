@@ -1,8 +1,6 @@
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
-
 import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
 
@@ -10,16 +8,14 @@ import cx from "classnames";
 
 type BackwardButtonProps = {
   navigateBack: () => void;
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
-  step: TutorialStep | null;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
+  getTutorialEnhanceClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const BackwardButton = ({
   navigateBack,
-  isTutorialOpen,
-  isAnyTutorialOpened,
-  step,
+  getTutorialEclipseClassnameByStepkeys,
+  getTutorialEnhanceClassnameByStepkeys,
 }: BackwardButtonProps) => {
   return (
     <div
@@ -31,12 +27,8 @@ const BackwardButton = ({
       <div
         className={cx(
           "pointer-events-auto",
-          isTutorialOpen &&
-            step?.stepKey === "navigation" &&
-            "border-solid border-4 border-primary",
-          isAnyTutorialOpened &&
-            (!isTutorialOpen || step?.stepKey !== "navigation") &&
-            "bg-black opacity-40"
+          getTutorialEclipseClassnameByStepkeys(["navigation"]),
+          getTutorialEnhanceClassnameByStepkeys(["navigation"])
         )}
       >
         <Button color="expoTheme" onClick={navigateBack}>

@@ -4,7 +4,6 @@ import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
-import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
@@ -15,18 +14,14 @@ type ForwardButtonProps = {
   navigateForward: () => void;
   forwardButtonRef: RefObject<HTMLDivElement>;
   bind: (stepKey: string) => { ref: RefCallback };
-  isTutorialOpen: boolean;
-  isAnyTutorialOpened: boolean;
-  step: TutorialStep | null;
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const ForwardButton = ({
   navigateForward,
   forwardButtonRef,
   bind,
-  isTutorialOpen,
-  isAnyTutorialOpened,
-  step,
+  getTutorialEclipseClassnameByStepkeys,
 }: ForwardButtonProps) => {
   return (
     <div
@@ -39,9 +34,7 @@ const ForwardButton = ({
         {...bind("navigation")}
         className={cx(
           "pointer-events-auto",
-          isAnyTutorialOpened &&
-            (!isTutorialOpen || step?.stepKey !== "navigation") &&
-            "bg-black opacity-40"
+          getTutorialEclipseClassnameByStepkeys(["navigation"])
         )}
       >
         <div ref={forwardButtonRef}>

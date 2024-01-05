@@ -47,6 +47,7 @@ type DialogWrapProps = {
   noStornoButton?: boolean;
   noSubmitButton?: boolean;
   applyTheming?: boolean;
+  sectionStyle?: CSSProperties;
 };
 
 const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
@@ -67,6 +68,7 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
   noStornoButton,
   noSubmitButton,
   applyTheming,
+  sectionStyle,
   children,
 }) => {
   const { isLightMode } = useExpoDesignData();
@@ -146,6 +148,7 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
             "no-margin-bottom": noDialogMenu,
             "padding-big": noToolbar && noDialogMenu,
           })}
+          style={sectionStyle}
         >
           {children}
         </CardText>

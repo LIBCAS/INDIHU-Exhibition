@@ -6,7 +6,7 @@ import {
   EXPO_ADD,
 } from "../constants";
 import { showLoader } from "../app-actions";
-import { saveExpo, getExpositions } from "./expo-actions";
+import { getExpositionsParametrized, saveExpo } from "./expo-actions";
 import { structPrototype } from "../../enums/struct-prototype";
 
 // Create new expo
@@ -118,46 +118,47 @@ export const deleteExpo = (id) => async (dispatch) => {
   }
 };
 
-export const duplicateExpo = (name, id) => async (dispatch) => {
-  dispatch(showLoader(true));
-  try {
-    const response = await fetch("/api/exposition/", {
-      method: "POST",
-      body: name,
-    });
+export const duplicateExpo =
+  (name, id, expositionsFilterState) => async (dispatch) => {
+    dispatch(showLoader(true));
+    try {
+      const response = await fetch("/api/exposition/", {
+        method: "POST",
+        body: name,
+      });
 
-    if (response.status === 200) {
-      const expoNew = await response.json();
+      if (response.status === 200) {
+        const expoNew = await response.json();
 
-      const response2 = await fetch(`/api/exposition/${id}`);
+        const response2 = await fetch(`/api/exposition/${id}`);
 
-      if (response2.status === 200) {
-        const expoOld = await response2.json();
+        if (response2.status === 200) {
+          const expoOld = await response2.json();
 
-        if (
-          await saveExpo({
-            ...expoNew,
-            structure: JSON.parse(expoOld.structure),
-            state: expoOld.state,
-          })
-        ) {
-          await dispatch({
-            type: EXPO_ADD,
-            payload: { ...expoNew },
-          });
+          if (
+            await saveExpo({
+              ...expoNew,
+              structure: JSON.parse(expoOld.structure),
+              state: expoOld.state,
+            })
+          ) {
+            await dispatch({
+              type: EXPO_ADD,
+              payload: { ...expoNew },
+            });
 
-          await dispatch(getExpositions());
+            await dispatch(getExpositionsParametrized(expositionsFilterState));
 
-          dispatch(showLoader(false));
-          return true;
+            dispatch(showLoader(false));
+            return true;
+          }
         }
       }
-    }
 
-    dispatch(showLoader(false));
-    return false;
-  } catch (error) {
-    dispatch(showLoader(false));
-    return false;
-  }
-};
+      dispatch(showLoader(false));
+      return false;
+    } catch (error) {
+      dispatch(showLoader(false));
+      return false;
+    }
+  };

@@ -1,83 +1,87 @@
 import {
   EXPO_SET,
   EXPOSITIONS,
-  EXPOSITIONS_FILTER,
-  EXPOSITIONS_PAGER,
   EXPO_UPDATE,
+  EXPO_DESIGN_DATA_UPDATE,
+  EXPOSITION_ITEM_PIN,
+  EXPOSITION_ITEM_UNPIN,
 } from "../constants";
 
-import {
-  ExpositionFilter,
-  ExpositionSort,
-  ExpositionOrder,
-  ExpositionsObj,
-} from "models";
+import { ExpositionsObj } from "models";
 import { AppDispatch, AppState } from "store/store";
 
 import { fetcher } from "utils/fetcher";
-import { createQuery, createFilter } from "../../utils";
 import { showLoader } from "../app-actions";
-import { compact, get } from "lodash";
+import { get } from "lodash";
+import { ThemeFormDataProcessed } from "containers/expo-administration/expo-theme/models";
+
+import { ExpositionsFilterStateObj } from "containers/expositions/Expositions";
 
 export const getExpositionsParametrized =
-  () => async (dispatch: AppDispatch, getState: () => AppState) => {
+  (expositionsState: ExpositionsFilterStateObj) =>
+  async (dispatch: AppDispatch, getState: () => AppState) => {
     try {
       const user = getState().user.info;
       const email = get(user, "email");
 
-      const filter = getState().expo.filter;
-      const pager = getState().expo.pager;
-      // const cardsLists = getState().expo.cardsList;
+      const { filter, search, sort, order, page, pageSize, showOnlyPinned } =
+        expositionsState;
 
       const filterArr = [];
-      if (
-        email &&
-        (filter.filter === "READ_ONLY" || filter.filter === "READ_WRITE")
-      ) {
+      if (email && (filter === "READ_ONLY" || filter === "READ_WRITE")) {
         filterArr.push({
-          field: filter.filter === "READ_ONLY" ? "readRights" : "writeRights",
+          field: filter === "READ_ONLY" ? "readRights" : "writeRights",
           operation: "CONTAINS",
           value: email,
         });
       }
-      if (email && filter.filter === "AUTHORSHIP") {
+      if (email && filter === "AUTHORSHIP") {
         filterArr.push({
           field: "author",
           operation: "EQ",
           value: user.email,
         });
       }
-      if (filter.search) {
+      if (search) {
         filterArr.push({
           field: "title",
           operation: "CONTAINS",
-          value: filter.search,
+          value: search,
         });
       }
 
+      // Filtration of pinned expos is not currently supported in BE !!
       const postBody = {
-        page: pager.page,
-        pageSize: pager.pageSize,
-        sort: filter.sort,
-        order: filter.order,
-        operation: "AND",
-        filter: filterArr,
+        page: page,
+        pageSize: pageSize,
+        sort: showOnlyPinned ? "edited" : sort,
+        order: showOnlyPinned ? "ASC" : order,
+        operation: showOnlyPinned ? "AND" : "AND",
+        filter: showOnlyPinned ? [] : filterArr,
       };
 
-      const response = await fetcher("/api/exposition/parametrized", {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(postBody),
-      });
+      const response = await fetcher(
+        `/api/exposition/parametrized?showPinned=${showOnlyPinned}`,
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json",
+          }),
+          body: JSON.stringify(postBody),
+        }
+      );
 
       const expositions = (await response.json()) as ExpositionsObj;
 
       if (expositions) {
         dispatch({
           type: EXPOSITIONS,
-          payload: { expositions },
+          payload: {
+            expositions: {
+              items: expositions.items ?? [],
+              count: expositions.count ?? 0,
+            },
+          },
         });
 
         return expositions;
@@ -92,91 +96,6 @@ export const getExpositionsParametrized =
     } catch (error) {
       console.error("Fetching expositions has failed!");
       console.error(error);
-      return false;
-    }
-  };
-
-// @Deprecated
-export const getExpositions =
-  (expoCount?: number) =>
-  async (dispatch: AppDispatch, getState: () => AppState) => {
-    try {
-      const user = getState().user.info;
-      const email = get(user, "email");
-
-      const filter = getState().expo.filter;
-      const pager = getState().expo.pager;
-      const cardsList = getState().expo.cardsList;
-      const count = getState().expo.expositions.count;
-
-      // 1. Create filtering query params consisting of two parts: filter.filter and search string
-      const filterFilter =
-        email && filter.filter !== "ALL"
-          ? {
-              field:
-                filter.filter === "READ_ONLY" ? "readRights" : "writeRights",
-              operation: "CONTAINS",
-              value: email,
-            }
-          : null;
-
-      const filterSearch = filter.search
-        ? { field: "title", operation: "CONTAINS", value: filter.search }
-        : null;
-
-      const filterQueryParams = createFilter(
-        compact([filterFilter, filterSearch])
-      ); // can be empty list
-
-      // 2. Create query params for sort, order, page and pageSize
-      const cardsPageSize =
-        count || expoCount
-          ? {
-              field: "pageSize",
-              value:
-                count && expoCount
-                  ? Math.max(count, expoCount)
-                  : expoCount
-                  ? expoCount
-                  : count,
-            }
-          : null;
-
-      const tablePageSize = { field: "pageSize", value: pager.pageSize }; // default is 10 pageSize
-
-      const otherQueryParams = compact([
-        { field: "sort", value: filter.sort }, // default refreshed by "updated"
-        { field: "order", value: filter.order }, // default refreshed by "ASC"
-        cardsList ? null : { field: "page", value: pager.page },
-        cardsList ? cardsPageSize : tablePageSize,
-      ]);
-
-      // 3. Create final query string
-      const queryString = createQuery([
-        ...filterQueryParams,
-        ...otherQueryParams,
-      ]);
-
-      // 4. Finally fetch and process response
-      const response = await fetcher(`/api/exposition/${queryString}`);
-      const expositions = await response.json();
-
-      if (expositions) {
-        dispatch({
-          type: EXPOSITIONS,
-          payload: { expositions },
-        });
-
-        return expositions;
-      } else {
-        dispatch({
-          type: EXPOSITIONS,
-          payload: { expositions: {} },
-        });
-      }
-
-      return response.status === 200;
-    } catch (error) {
       return false;
     }
   };
@@ -204,6 +123,12 @@ export const loadExpo = (id: string) => async (dispatch: AppDispatch) => {
   await dispatch(showLoader(true));
   try {
     const response = await fetcher(`/api/exposition/${id}`);
+
+    if (response.status !== 200) {
+      await dispatch(showLoader(false));
+      return response.status;
+    }
+
     const expo = await response.json();
 
     await dispatch({
@@ -214,7 +139,7 @@ export const loadExpo = (id: string) => async (dispatch: AppDispatch) => {
     });
 
     await dispatch(showLoader(false));
-    return response.status === 200;
+    return response.status;
   } catch (error) {
     await dispatch(showLoader(false));
     return false;
@@ -263,29 +188,71 @@ export const checkExpoURL =
     }
   };
 
-export const setExpoFilter = (
-  filter: ExpositionFilter,
-  sort: ExpositionSort,
-  search: string,
-  order: ExpositionOrder
-) => ({
-  type: EXPOSITIONS_FILTER,
-  payload: { filter, sort, search, order },
-});
+// - - - -
 
-export const setExpoPager = (page: number, pageSize: number) => ({
-  type: EXPOSITIONS_PAGER,
-  payload: { page, pageSize },
-});
+export const pinExpositionItem =
+  (expoId: string) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(showLoader(true));
 
-export const changeExpositionsViewType = (cardsList: boolean) => ({
-  type: EXPO_SET,
-  payload: {
-    cardsList,
-  },
-});
+      const resp = await fetcher(`/api/exposition/${expoId}/pin`, {
+        method: "POST",
+      });
+
+      if (resp.status !== 200) {
+        dispatch(showLoader(false));
+        return false;
+      }
+
+      dispatch({
+        type: EXPOSITION_ITEM_PIN,
+        payload: expoId,
+      });
+
+      dispatch(showLoader(false));
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+export const unpinExpositionItem =
+  (expoId: string) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(showLoader(true));
+
+      const resp = await fetcher(`/api/exposition/${expoId}/unpin`, {
+        method: "POST",
+      });
+
+      if (resp.status !== 200) {
+        console.log("not 200!");
+        dispatch(showLoader(false));
+        return false;
+      }
+
+      dispatch({
+        type: EXPOSITION_ITEM_UNPIN,
+        payload: expoId,
+      });
+
+      dispatch(showLoader(false));
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+// - - - -
 
 export const clearActiveExpo = () => ({
   type: EXPO_SET,
   payload: { activeExpo: {} },
+});
+
+export const setExpoDesignData = (expoDesignData: ThemeFormDataProcessed) => ({
+  type: EXPO_DESIGN_DATA_UPDATE,
+  payload: expoDesignData,
 });

@@ -68,12 +68,14 @@ export const haveAccessToExpo = (
   authorUsername?: string,
   collaborators?: CollaboratorObj[]
 ): boolean => {
-  if (isAdmin(role)) {
-    return true;
-  }
   if (!userName) {
     return false;
   }
+
+  if (isAdmin(role)) {
+    return true;
+  }
+
   if (authorUsername === userName) {
     return true;
   }

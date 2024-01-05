@@ -205,6 +205,7 @@ export const ExpoViewer = () => {
             <DrawerPanelProvider>
               <GlassMagnifierConfigProvider>
                 <ViewSection
+                  expoId={viewExpo.id}
                   name={match.params.name}
                   handleViewScreen={handleViewScreen}
                   setViewScreenIsLoaded={setViewScreenIsLoaded}

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 // Components
 import Carousel from "components/editors/carousel";
 import HelpIcon from "components/help-icon";
-import Image from "components/editors/image"; // TODO - replace for newer version
 import { SelectField } from "react-md";
 
 // Models
@@ -18,6 +17,7 @@ import { updateScreenData } from "actions/expoActions";
 import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
 import { filter } from "lodash";
+import ImageBox from "components/editors/ImageBox";
 // - -
 
 type ParallaxProps = {
@@ -135,7 +135,7 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
           <div className="screen-image">
             <div className="screen-two-cols">
               <div className="flex-row-nowrap one-image-row">
-                <Image
+                <ImageBox
                   key={`image-${activeImageIndex}`}
                   title={t("descFields.parallaxScreen.imageBoxTitle")}
                   image={activeImage}
@@ -149,8 +149,11 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
                       })
                     );
                   }}
+                  onLoad={(_width, _height_) => {
+                    //
+                  }}
+                  helpIconId="editor-parallax-image"
                   helpIconLabel={t("descFields.parallaxScreen.imageBoxTooltip")}
-                  id={"editor-parallax-image"}
                 />
               </div>
 

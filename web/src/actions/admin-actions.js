@@ -5,37 +5,32 @@ import { USERS, ADMIN } from "./constants";
 import { createFilter, createQuery } from "../utils";
 
 export const getUsers =
-  (
-    page = 1,
-    pageSize = 20,
-    filter = "ALL",
-    sort = "firstName",
-    search = "",
-    table = "ALL"
-  ) =>
+  (page = 1, pageSize = 20, filter = "ALL", sort = "firstName", search = "") =>
   async (dispatch) => {
     try {
       const createdFilter =
         filter === "ALL"
           ? []
+          : filter === "DELETED"
+          ? [
+              { field: "filter[0].field", value: "deleted" },
+              { field: "filter[0].operation", value: "NOT_NULL" },
+              { field: "filter[0].value", value: null },
+            ]
           : createFilter([{ field: "state", operation: "EQ", value: filter }]);
 
-      const response =
-        table === "ALL"
-          ? await fetch(
-              `/api/user/${search === "" ? "" : `q/${search}`}${createQuery(
-                compact([
-                  ...createdFilter,
-                  { field: "sort", value: sort },
-                  { field: "order", value: "ASC" },
-                  { field: "page", value: page },
-                  { field: "pageSize", value: pageSize },
-                ])
-              )}`
-            )
-          : await fetch("/api/registration/toFinish", {
-              params: { page, pageSize, order: "ASC" },
-            });
+      const response = await fetch(
+        `/api/user/${search === "" ? "" : `q/${search}`}${createQuery(
+          compact([
+            ...createdFilter,
+            { field: "sort", value: sort },
+            { field: "order", value: "ASC" },
+            { field: "page", value: page },
+            { field: "pageSize", value: pageSize },
+            { field: "allowDeleted", value: true },
+          ])
+        )}`
+      );
 
       if (response.status === 200) {
         const users = await response.json();
@@ -51,7 +46,6 @@ export const getUsers =
               filter,
               sort,
               search,
-              table,
             },
           },
         });
@@ -66,22 +60,11 @@ export const getUsers =
     }
   };
 
-export const deleteUser = (id) => async (dispatch, getState) => {
+export const deleteUser = (id) => async (_dispatch, _getState) => {
   try {
     const response = await fetch(`/api/user/${id}`, { method: "DELETE" });
 
     if (response.status === 200) {
-      const all = getState().user.users.all;
-      dispatch(
-        getUsers(
-          all.page,
-          all.pageSize,
-          all.filter,
-          all.sort,
-          all.search,
-          all.table
-        )
-      );
       return true;
     }
     return false;
@@ -90,57 +73,31 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   }
 };
 
-export const reactivateUser = (id) => async (dispatch, getState) => {
+export const reactivateUser = (id) => async (_dispatch, _getState) => {
   try {
     const response = await fetch(`/api/user/reactivate/${id}`, {
       method: "POST",
     });
 
     if (response.status === 200) {
-      const all = getState().user.users.all;
-      dispatch(
-        getUsers(
-          all.page,
-          all.pageSize,
-          all.filter,
-          all.sort,
-          all.search,
-          all.table
-        )
-      );
       return true;
     }
-
     return false;
   } catch (error) {
     return false;
   }
 };
 
-export const updateUser = (user) => async (dispatch, getState) => {
+export const acceptUser = (userId) => async (_dispatch, _getState) => {
   try {
-    const response = await fetch(`/api/user/`, {
-      method: "PUT",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(user),
+    const response = await fetch(`/api/user/${userId}/accept`, {
+      method: "POST",
     });
 
     if (response.status === 200) {
-      const all = getState().user.users.all;
-      dispatch(
-        getUsers(
-          all.page,
-          all.pageSize,
-          all.filter,
-          all.sort,
-          all.search,
-          all.table
-        )
-      );
       return true;
     }
+
     return false;
   } catch (error) {
     console.log(error);
@@ -148,34 +105,25 @@ export const updateUser = (user) => async (dispatch, getState) => {
   }
 };
 
-export const acceptUser = (userId) => async (dispatch, getState) => {
+export const rejectUser = (userId) => async (_dispatch, _getState) => {
   try {
-    const response = await fetch(`/api/registration/${userId}`, {
-      method: "PUT",
+    const response = await fetch(`/api/user/${userId}/reject`, {
+      method: "POST",
     });
 
     if (response.status === 200) {
-      const all = getState().user.users.all;
-
-      dispatch(
-        getUsers(
-          all.page,
-          all.pageSize,
-          all.filter,
-          all.sort,
-          all.search,
-          all.table
-        )
-      );
-
       return true;
     }
+
     return false;
   } catch (error) {
     console.log(error);
     return false;
   }
 };
+
+// - - -
+// - - -
 
 export const getAdminSettings = () => async (dispatch) => {
   try {

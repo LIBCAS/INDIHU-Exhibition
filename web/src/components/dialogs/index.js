@@ -40,9 +40,6 @@ import ScreenFileChoose from "./screen-file-choose";
 import ScreenDocumentNew from "./screen-document-new";
 import ScreenLink from "./screen-link";
 import ScreenMove from "./screen-move";
-import UserAccept from "./user-accept";
-import UserDelete from "./user-delete";
-import UserReactivate from "./user-reactivate";
 import ViewWrapChapters from "./view-wrap-chapters";
 import ImageEditor from "../image-editor";
 
@@ -115,9 +112,6 @@ const Dialogs = ({
       <ScreenFileChoose {...dialogProps} />
       <ScreenLink {...dialogProps} />
       <ScreenMove {...dialogProps} />
-      <UserAccept {...dialogProps} />
-      <UserDelete {...dialogProps} />
-      <UserReactivate {...dialogProps} />
       <ViewWrapChapters {...dialogProps} />
       {imageEditor && <ImageEditor {...imageEditor} />}
     </div>

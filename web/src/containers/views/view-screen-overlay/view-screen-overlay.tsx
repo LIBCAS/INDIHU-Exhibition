@@ -14,8 +14,8 @@ import { createSelector } from "reselect";
 import { animated, useSpring } from "react-spring";
 
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
+import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useIsAnyTutorialOpened } from "context/tutorial-provider/tutorial-provider";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
 
@@ -43,6 +43,7 @@ import classes from "./view-screen-overlay.module.scss";
 import { isGameScreen } from "../../../utils/view-utils";
 import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
 import { screenType } from "enums/screen-type";
+import { breakpoints } from "hooks/media-query-hook/breakpoints";
 
 // - - - - - -
 
@@ -104,11 +105,19 @@ export const ViewScreenOverlay = ({
   const forwardButtonRef = useRef<HTMLDivElement>(null);
 
   // Custom hooks
+  const isSm = useMediaQuery(breakpoints.down("sm"));
+
   const { navigateBack, navigateForward } = useExpoNavigation();
 
-  const { bind, step, TutorialTooltip, escapeTutorial, isTutorialOpen } =
-    useTutorial("overlay", unactive === false);
-  const isAnyTutorialOpened = useIsAnyTutorialOpened();
+  const {
+    bind,
+    step,
+    TutorialTooltip,
+    escapeTutorial,
+    isTutorialOpen,
+    getTutorialEclipseClassnameByStepkeys,
+    getTutorialEnhanceClassnameByStepkeys,
+  } = useTutorial("overlay", unactive === false || !isSm);
 
   const { isDrawerPanelOpen, openDrawer, closeDrawer } = useDrawerPanel();
 
@@ -299,9 +308,9 @@ export const ViewScreenOverlay = ({
           openDrawer={openDrawer}
           keyKey={key}
           bind={bind}
-          isTutorialOpen={isTutorialOpen}
-          isAnyTutorialOpened={isAnyTutorialOpened}
-          step={step}
+          getTutorialEclipseClassnameByStepkeys={
+            getTutorialEclipseClassnameByStepkeys
+          }
         />
 
         {/* 2b) Actions panel - right down corner, action buttons */}
@@ -315,9 +324,10 @@ export const ViewScreenOverlay = ({
           navigateBack={navigateBack}
           navigateForward={navigateForward}
           bind={bind}
-          isTutorialOpen={isTutorialOpen}
-          isAnyTutorialOpened={isAnyTutorialOpened}
           step={step}
+          getTutorialEclipseClassnameByStepkeys={
+            getTutorialEclipseClassnameByStepkeys
+          }
         />
 
         {/* 2c) ExpoProgressBar - progressbar in the bottom of the screen, for whole expo with thumnbnails */}
@@ -325,7 +335,7 @@ export const ViewScreenOverlay = ({
           className={cx(
             classes.progressBar,
             "h-full pointer-events-auto",
-            isAnyTutorialOpened && "bg-black opacity-40"
+            getTutorialEclipseClassnameByStepkeys([""])
           )}
           onMouseEnter={() => setIsProgressbarHovered(true)}
           onMouseLeave={() => setIsProgressbarHovered(false)}
@@ -358,9 +368,12 @@ export const ViewScreenOverlay = ({
         >
           <BackwardButton
             navigateBack={navigateBack}
-            isTutorialOpen={isTutorialOpen}
-            isAnyTutorialOpened={isAnyTutorialOpened}
-            step={step}
+            getTutorialEclipseClassnameByStepkeys={
+              getTutorialEclipseClassnameByStepkeys
+            }
+            getTutorialEnhanceClassnameByStepkeys={
+              getTutorialEnhanceClassnameByStepkeys
+            }
           />
 
           {viewScreen?.type !== screenType.SIGNPOST && (
@@ -368,9 +381,9 @@ export const ViewScreenOverlay = ({
               navigateForward={navigateForward}
               forwardButtonRef={forwardButtonRef}
               bind={bind}
-              isTutorialOpen={isTutorialOpen}
-              isAnyTutorialOpened={isAnyTutorialOpened}
-              step={step}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
             />
           )}
         </div>

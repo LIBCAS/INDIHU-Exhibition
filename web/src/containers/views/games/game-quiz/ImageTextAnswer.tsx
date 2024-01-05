@@ -16,7 +16,7 @@ import { InfopointStatusObject } from "components/infopoint/parseScreenMaps";
 import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
 import { getAnswerCheckboxIcon, getAnswerRadioIcon } from "./utils";
-import { isInfopointOutsideOrigImage } from "utils/view-utils";
+import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
 type ImageTextAnswerProps = {
   answer: GameQuizAnswer;
@@ -123,25 +123,27 @@ const ImageTextAnswer = ({
 
           {/* Infopoints */}
           {answer.infopoints?.map((infopoint, infopointIndex) => {
-            if (
-              isInfopointOutsideOrigImage({
-                infopointPosition: { left: infopoint.left, top: infopoint.top },
-                imageOrigData: answerImageOrigData,
-              })
-            ) {
-              return null;
-            }
+            const infopointPosition = {
+              left: infopoint.left,
+              top: infopoint.top,
+            };
+            const imgBoxSize = {
+              width: answerImageOrigData.width,
+              height: answerImageOrigData.height,
+            };
+            const imgViewSize = {
+              width: containedImageWidth,
+              height: containedImageHeight,
+            };
 
-            // Percentage when choosing infopoints in administrative
-            const origLeftPercentage =
-              infopoint.left / (answerImageOrigData.width / 100);
-            const origTopPercentage =
-              infopoint.top / (answerImageOrigData.height / 100);
+            const { left, top } = calculateInfopointPositionByImageBoxSize(
+              infopointPosition,
+              imgBoxSize,
+              imgViewSize
+            );
 
-            const leftPosition =
-              fromLeftWidth + (containedImageWidth / 100) * origLeftPercentage;
-            const topPosition =
-              fromTopHeight + (containedImageHeight / 100) * origTopPercentage;
+            const adjustedLeft = fromLeftWidth + left;
+            const adjustedTop = fromTopHeight + top;
 
             return (
               <Fragment
@@ -149,8 +151,8 @@ const ImageTextAnswer = ({
               >
                 <ScreenAnchorInfopoint
                   id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
-                  top={topPosition}
-                  left={leftPosition}
+                  left={adjustedLeft}
+                  top={adjustedTop}
                   infopoint={infopoint}
                 />
                 <TooltipInfoPoint

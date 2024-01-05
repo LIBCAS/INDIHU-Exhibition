@@ -2,11 +2,8 @@
 export const APP = "APP";
 export const RADIO_STATE_CHANGE = "RADIO_STATE_CHANGE";
 export const SWITCH_STATE_CHANGE = "SWITCH_STATE_CHANGE";
-export const MOUSE_ACTUALIZE = "MOUSE_ACTUALIZE";
-export const ZOOM_ACTUALIZE = "ZOOM_ACTUALIZE";
-export const ZOOM_ACTUALIZE_2 = "ZOOM_ACTUALIZE_2";
-export const ZOOM_ACTUALIZE_3 = "ZOOM_ACTUALIZE_3";
 export const IMAGE_EDITOR = "IMAGE_EDITOR";
+export const OAUTH_LOGIN = "OAUTH_LOGIN";
 
 // Dialog part of redux store
 export const DIALOG_SET = "DIALOG_SET";
@@ -30,8 +27,6 @@ export const TAB_FILE = "TAB_FILE";
 
 // Expo part of the redux store
 export const EXPOSITIONS = "EXPOSITIONS"; // setActiveScreenEdited from screen-actions.js, getExpositions from expo-actions.js
-export const EXPOSITIONS_FILTER = "EXPOSITIONS_FILTER"; // setExpoFilter from expo-actions.js
-export const EXPOSITIONS_PAGER = "EXPOSITIONS_PAGER"; // setExpoPager from expo-actions.js
 
 export const EXPO_SET = "EXPO_SET"; // loadExpo (store.expo.activeExpo), updateExpo, changeExpositionsViewType (store.expo.cardsList) from expo-actions.js
 export const EXPO_UPDATE = "EXPO_UPDATE";
@@ -74,3 +69,9 @@ export const EXPO_TOOLTIP_INFO_UPDATE = "EXPO_TOOLTIP_INFO_UPDATE";
 export const EXPO_VOLUMES_UPDATE = "EXPO_VOLUMES_SPEECH_UPDATE";
 
 export const EXPO_SCREENS_INFO_UPDATE = "EXPO_SCREENS_INFO_UPDATE";
+
+export const EXPO_DESIGN_DATA_UPDATE = "EXPO_DESIGN_DATA_UPDATE";
+
+export const EXPOSITION_ITEM_PIN = "EXPOSITION_ITEM_PIN";
+
+export const EXPOSITION_ITEM_UNPIN = "EXPOSITION_ITEM_UNPIN";

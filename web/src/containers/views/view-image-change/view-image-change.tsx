@@ -20,11 +20,12 @@ import { ScreenProps } from "models";
 import cx from "classnames";
 import { getScreenTime } from "utils/screen";
 import { calculateObjectFit } from "utils/object-fit";
-import { isInfopointOutsideOrigImage } from "utils/view-utils";
+
 import {
   shouldShowBeforeImageInfopoint,
   shouldShowAfterImageInfopoint,
 } from "./shouldShowDynamicInfopoint";
+import { calculateInfopointPosition } from "utils/infopoint-utils";
 
 // - - -
 
@@ -42,6 +43,13 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // Hook up with reference to screen container div, provide its current width and height
   const [screenContainerRef, screenContainerSize] = useElementSize();
+
+  const [imageBeforeEl, setImageBeforeEl] = useState<HTMLImageElement | null>(
+    null
+  );
+  const [imageAfterEl, setImageAfterEl] = useState<HTMLImageElement | null>(
+    null
+  );
 
   const { expoDesignData } = useExpoDesignData();
 
@@ -409,6 +417,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
               : undefined
           }
           onClick={() => closeInfopoints(viewScreen)()}
+          onLoad={(e) => setImageBeforeEl(e.currentTarget)}
         />
       )}
 
@@ -443,37 +452,52 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           )}
           alt="foreground"
           onClick={() => closeInfopoints(viewScreen)()}
+          onLoad={(e) => setImageAfterEl(e.currentTarget)}
         />
       )}
 
       {/* 4. Infopoints Anchors - currently for all types of animation */}
       {/* 4a) Before image infopoints */}
       {viewScreen.image1Infopoints?.map((infopoint, infopointIndex) => {
+        const infopointPosition = { left: infopoint.left, top: infopoint.top };
+        const imgBoxSize = {
+          width: viewScreen.image1OrigData?.width ?? 0,
+          height: viewScreen.image1OrigData?.height ?? 0,
+        };
+        const imgNaturalSize = {
+          width: imageBeforeEl?.naturalWidth ?? 0,
+          height: imageBeforeEl?.naturalHeight ?? 0,
+        };
+        const imgViewSize = {
+          width: firstContainedImageWidth,
+          height: firstContainedImageHeight,
+        };
+
         if (
-          isInfopointOutsideOrigImage({
-            infopointPosition: { left: infopoint.left, top: infopoint.top },
-            imageOrigData: viewScreen.image1OrigData,
-          })
+          !imgBoxSize.width ||
+          !imgBoxSize.height ||
+          !imgNaturalSize.width ||
+          !imgNaturalSize.height ||
+          !imgViewSize.width ||
+          !imgViewSize.height
         ) {
           return null;
         }
 
-        // Percentage when choosing the infopoints in administrative (BEFORE image)
-        const origLeftPercentage =
-          infopoint.left / (image1OrigData.width / 100);
-        const origTopPercentage = infopoint.top / (image1OrigData.height / 100);
+        const { left, top } = calculateInfopointPosition(
+          infopointPosition,
+          imgBoxSize,
+          imgNaturalSize,
+          imgViewSize
+        );
 
-        const leftPosition =
-          fromContainerToFirstImageLeft +
-          (firstContainedImageWidth / 100) * origLeftPercentage;
-        const topPosition =
-          fromContainerToFirstImageTop +
-          (firstContainedImageHeight / 100) * origTopPercentage;
+        const adjustedLeft = fromContainerToSecondImageLeft + left;
+        const adjustedTop = fromContainerToSecondImageTop + top;
 
         // Dynamic infopoints feature!
         if (
           !shouldShowBeforeImageInfopoint({
-            infopointPosition: { left: leftPosition, top: topPosition },
+            infopointPosition: { left: adjustedLeft, top: adjustedTop },
             currentRodPosition: {
               left: currentRodPosition.x,
               top: currentRodPosition.y,
@@ -491,8 +515,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           <React.Fragment key={`infopoint-tooltip-${0}-${infopointIndex}`}>
             <ScreenAnchorInfopoint
               id={`infopoint-tooltip-${0}-${infopointIndex}`}
-              top={topPosition}
-              left={leftPosition}
+              left={adjustedLeft}
+              top={adjustedTop}
               infopoint={infopoint}
             />
             <TooltipInfoPoint
@@ -510,31 +534,45 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* 4b) After image infopoints */}
       {viewScreen.image2Infopoints?.map((infopoint, infopointIndex) => {
+        const infopointPosition = { left: infopoint.left, top: infopoint.top };
+        const imgBoxSize = {
+          width: viewScreen.image2OrigData?.width ?? 0,
+          height: viewScreen.image2OrigData?.height ?? 0,
+        };
+        const imgNaturalSize = {
+          width: imageAfterEl?.naturalWidth ?? 0,
+          height: imageAfterEl?.naturalHeight ?? 0,
+        };
+        const imgViewSize = {
+          width: secondContainedImageWidth,
+          height: secondContainedImageHeight,
+        };
+
         if (
-          isInfopointOutsideOrigImage({
-            infopointPosition: { left: infopoint.left, top: infopoint.top },
-            imageOrigData: viewScreen.image2OrigData,
-          })
+          !imgBoxSize.width ||
+          !imgBoxSize.height ||
+          !imgNaturalSize.width ||
+          !imgNaturalSize.height ||
+          !imgViewSize.width ||
+          !imgViewSize.height
         ) {
           return null;
         }
 
-        // Percentage when choosing the infopoints in administrative (AFTER image)
-        const origLeftPercentage =
-          infopoint.left / (image2OrigData.width / 100);
-        const origTopPercentage = infopoint.top / (image2OrigData.height / 100);
+        const { left, top } = calculateInfopointPosition(
+          infopointPosition,
+          imgBoxSize,
+          imgNaturalSize,
+          imgViewSize
+        );
 
-        const leftPosition =
-          fromContainerToSecondImageLeft +
-          (secondContainedImageWidth / 100) * origLeftPercentage;
-        const topPosition =
-          fromContainerToSecondImageTop +
-          (secondContainedImageHeight / 100) * origTopPercentage;
+        const adjustedLeft = fromContainerToFirstImageLeft + left;
+        const adjustedTop = fromContainerToFirstImageTop + top;
 
         // Dynamic infopoints feature!
         if (
           !shouldShowAfterImageInfopoint({
-            infopointPosition: { left: leftPosition, top: topPosition },
+            infopointPosition: { left: adjustedLeft, top: adjustedTop },
             currentRodPosition: {
               left: currentRodPosition.x,
               top: currentRodPosition.y,
@@ -551,8 +589,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           <React.Fragment key={`infopoint-tooltip-${1}-${infopointIndex}`}>
             <ScreenAnchorInfopoint
               id={`infopoint-tooltip-${1}-${infopointIndex}`}
-              top={topPosition}
-              left={leftPosition}
+              left={adjustedLeft}
+              top={adjustedTop}
               infopoint={infopoint}
             />
             <TooltipInfoPoint

@@ -15,6 +15,10 @@ import { refreshToken } from "actions/user-actions";
 const noAuthRoutes = [
   { regex: new RegExp(/\/view\/.*/) }, // expoViewer
   { regex: new RegExp(/\/verify\/.*/) }, // verify mail
+  { regex: new RegExp(/\/oauth\/./) }, // oauth routes
+  { regex: new RegExp(/\/about/) }, // about page
+  { regex: new RegExp(/\/terms-of-use/) }, // terms of use page
+  { regex: new RegExp(/\/privacy-policy/) }, // privacy policy page
 ];
 
 const AuthController: FC = ({ children }) => {
@@ -67,7 +71,8 @@ const AuthController: FC = ({ children }) => {
       storage.remove("token");
       if (
         location.pathname !== "/register" &&
-        location.pathname !== "/grafana"
+        location.pathname !== "/grafana" &&
+        location.pathname !== "/landing-page"
       ) {
         history.replace("/");
       }

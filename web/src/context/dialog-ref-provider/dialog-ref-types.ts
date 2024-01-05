@@ -16,4 +16,7 @@ export enum DialogRefType {
   RatingDialog = "RatingDialog",
   // GENERAL DIALOGS
   InformationDialog = "InformationDialog",
+  // Landing Page Dialogs
+  RegisterDialog = "RegisterDialog",
+  LoginDialog = "LoginDialog",
 }
