@@ -6,6 +6,7 @@ import Dialog from "./dialog-wrap";
 import Radio from "react-md/lib/SelectionControls/Radio";
 import { moveFile, tabFile } from "../../actions/file-actions";
 import { changeRadioState } from "../../actions/app-actions";
+import { Trans, useTranslation } from "react-i18next";
 
 const FileMove = ({
   handleSubmit,
@@ -14,16 +15,23 @@ const FileMove = ({
   structure,
   changeRadioState,
 }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "fileMoveDialog" });
+
   const folders = structure ? structure.files : null;
+
   return (
     <Dialog
-      title="Přesunutí souboru"
+      title={t("title")}
       name="FileMove"
       handleSubmit={handleSubmit}
-      submitLabel="Přesunout"
+      submitLabel={t("submitLabel")}
     >
       <p>
-        Kam chcete přesunout soubor{data && data.name ? ` ${data.name}` : ""}?
+        <Trans
+          t={t}
+          i18nKey={"whereToMoveFile"}
+          values={{ fileName: data?.name ?? "" }}
+        />
       </p>
       {folders && (
         <form onSubmit={handleSubmit}>
@@ -47,7 +55,7 @@ const FileMove = ({
                   name={"ROOT"}
                   className="radio-option"
                   value={"ROOT"}
-                  label={"Nezařazené"}
+                  label={t("uncategorized")}
                   checkedIconChildren={"folder"}
                   uncheckedIconChildren={"folder_open"}
                   checked={radio === "ROOT"}

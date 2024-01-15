@@ -7,13 +7,18 @@ import TextField from "../form/redux-form/text-field";
 import * as Validation from "../form/redux-form/validation";
 
 import { changeScreenCollaborators } from "../../actions/expoActions";
+import { useTranslation } from "react-i18next";
 
 const ScreenAuthorsChange = ({ handleSubmit }) => {
+  const { t } = useTranslation("expo", {
+    keyPrefix: "screenAuthorsChangeDialog",
+  });
+
   return (
     <Dialog
-      title="Změnit autory výstavy nebo spolupracovníky"
+      title={t("title")}
       name="ScreenAuthorsChange"
-      submitLabel="Uložit"
+      submitLabel={t("submitLabel")}
       handleSubmit={handleSubmit}
     >
       <form onSubmit={handleSubmit}>
@@ -21,14 +26,14 @@ const ScreenAuthorsChange = ({ handleSubmit }) => {
           component={TextField}
           componentId="screen-authors-change-textfield-role"
           name="role"
-          label="Role"
+          label={t("roleField")}
           validate={[Validation.required]}
         />
         <Field
           component={TextField}
           componentId="screen-authors-change-textfield-text"
           name="text"
-          label="Osoby nebo text"
+          label={t("textField")}
           validate={[Validation.required]}
           multiLine
         />

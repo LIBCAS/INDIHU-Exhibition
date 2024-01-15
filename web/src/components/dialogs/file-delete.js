@@ -6,30 +6,39 @@ import { FontIcon } from "react-md/lib";
 
 import Dialog from "./dialog-wrap";
 import { deleteFile, tabFile, isFileUsed } from "../../actions/file-actions";
+import { useTranslation, Trans } from "react-i18next";
 
 const FileDelete = ({ handleSubmit, data, isFileUsed, dialogName }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "fileDeleteDialog" });
+
   const screen =
     data && dialogName === "FileDelete" ? isFileUsed(data.id) : false;
+
   return (
     <Dialog
       title={<FontIcon className="color-black">delete</FontIcon>}
       name="FileDelete"
       handleSubmit={handleSubmit}
-      submitLabel="Smazat"
+      submitLabel={t("submitLabel")}
     >
       <p>
-        Vybraný soubor <strong>{get(data, "name", "")}</strong> bude smazán.
+        <Trans
+          t={t}
+          i18nKey="warningText"
+          values={{ fileName: get(data, "name", "") }}
+          components={{ strong: <strong /> }}
+        />
       </p>
       <div className="flex-row-nowrap flex-center">
         <FontIcon className="color-red">priority_high</FontIcon>
         <p style={{ fontSize: "0.9em" }}>
-          <strong>Akce je nevratná.</strong>
+          <strong>{t("actionIsIrreversible")}</strong>
         </p>
       </div>
       {screen ? (
         <p style={{ fontSize: "0.9em", marginLeft: 24 }}>
           <br />
-          Soubor je používán v obrazovce <strong>{screen}</strong>.
+          {t("fileIsUsedInScreen")} <strong>{screen}</strong>.
         </p>
       ) : (
         ""

@@ -104,8 +104,7 @@ const ExpositionMenu = ({
             )
               await loadExpo(get(dialogData, "id"));
             setDialog("ExpoShare", {
-              id: get(dialogData, "id"),
-              author: get(dialogData, "activeExpo.author"),
+              expoId: get(dialogData, "id"),
             });
           }}
           className="exposition-menu-button"

@@ -5,41 +5,49 @@ import Dialog from "./dialog-wrap";
 import TextField from "../form/redux-form/text-field";
 import * as Validation from "../form/redux-form/validation";
 import { passwordReset } from "../../actions/user-actions";
+import { useTranslation, withTranslation } from "react-i18next";
 
-const PasswordReset = ({ handleSubmit }) => (
-  <Dialog
-    title="Reset hesla"
-    name="PasswordReset"
-    handleSubmit={handleSubmit}
-    submitLabel="Resetovat"
-  >
-    <form onSubmit={handleSubmit}>
-      <Field
-        component={TextField}
-        componentId="password-reset-textfield-email"
-        label="Email"
-        name="email"
-        validate={[Validation.required, Validation.email]}
-      />
-    </form>
-  </Dialog>
-);
+const PasswordReset = ({ handleSubmit }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "passwordResetDialog" });
+
+  return (
+    <Dialog
+      title={t("title")}
+      name="PasswordReset"
+      handleSubmit={handleSubmit}
+      submitLabel={t("submitLabel")}
+    >
+      <form onSubmit={handleSubmit}>
+        <Field
+          component={TextField}
+          componentId="password-reset-textfield-email"
+          label={t("emailField")}
+          name="email"
+          validate={[Validation.required, Validation.email]}
+        />
+      </form>
+    </Dialog>
+  );
+};
 
 export default compose(
+  withTranslation("expo", { keyPrefix: "passwordResetDialog" }),
   withHandlers({
-    onSubmit: (dialog) => async (formData, dispatch) => {
-      if (await dispatch(passwordReset(formData.email))) {
-        dialog.setDialog("Info", {
-          title: "Reset hesla úspěšný",
-          text: "Nové heslo bylo zasláno na zadaný email.",
-        });
-      } else {
-        dialog.setDialog("Info", {
-          title: "Reset hesla neúspěšný",
-          text: "Reset hesla byl neúspěšný.",
-        });
-      }
-    },
+    onSubmit:
+      (dialog) =>
+      async (formData, dispatch, { t }) => {
+        if (await dispatch(passwordReset(formData.email))) {
+          dialog.setDialog("Info", {
+            title: t("responseSuccess.title"),
+            text: t("responseSuccess.text"),
+          });
+        } else {
+          dialog.setDialog("Info", {
+            title: t("responseFailure.title"),
+            text: t("responseFailure.text"),
+          });
+        }
+      },
   }),
   reduxForm({
     form: "passwordResetForm",

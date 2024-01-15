@@ -14,6 +14,7 @@ import { addScreenDocument } from "../../actions/expoActions";
 import { tabFolder } from "../../actions/file-actions";
 
 import { fileTypeOpts, documentOpts } from "../../enums/file-type";
+import { useTranslation, withTranslation } from "react-i18next";
 
 const ScreenDocumentNew = ({
   handleSubmit,
@@ -25,11 +26,13 @@ const ScreenDocumentNew = ({
   change,
   activeScreen,
 }) => {
+  const { t } = useTranslation(["expo", "expo-editor"]);
+
   return (
     <Dialog
-      title="Nový dokument"
+      title={t("screenDocumentNewDialog.title")}
       name="ScreenDocumentNew"
-      submitLabel="Vytvořit"
+      submitLabel={t("screenDocumentNewDialog.submitLabel")}
       handleSubmit={handleSubmit}
       onClose={() => tabFolder(null)}
     >
@@ -38,7 +41,7 @@ const ScreenDocumentNew = ({
           component={TextField}
           componentId="screen-document-new-textfield-filename"
           name="fileName"
-          label="Název dokumentu"
+          label={t("screenDocumentNewDialog.fileNameField")}
           validate={[Validation.required]}
           onChange={(e, value) =>
             addDialogData("ScreenDocumentNew", { fileName: value })
@@ -50,7 +53,7 @@ const ScreenDocumentNew = ({
           name="radioStatePrepare"
           className="radio-option"
           value={documentOpts[0].value}
-          label={documentOpts[0].label}
+          label={t("documentsTable.emptyLinkLabel", { ns: "expo-editor" })}
           checked={documentType === documentOpts[0].value}
           onClick={() => changeDocumentType(documentOpts[0].value)}
         />
@@ -59,7 +62,7 @@ const ScreenDocumentNew = ({
           name="radioStatePrepare"
           className="radio-option"
           value={documentOpts[1].value}
-          label={documentOpts[1].label}
+          label={t("documentsTable.urlLabel", { ns: "expo-editor" })}
           checked={documentType === documentOpts[1].value}
           onClick={() => changeDocumentType(documentOpts[1].value)}
         />
@@ -68,7 +71,7 @@ const ScreenDocumentNew = ({
           name="radioStatePrepare"
           className="radio-option"
           value={documentOpts[2].value}
-          label={documentOpts[2].label}
+          label={t("documentsTable.fileLabel", { ns: "expo-editor" })}
           checked={documentType === documentOpts[2].value}
           onClick={() => changeDocumentType(documentOpts[2].value)}
         />
@@ -80,7 +83,7 @@ const ScreenDocumentNew = ({
               component={TextField}
               componentId="screen-document-new-textfield-url"
               name="url"
-              label="URL adresa"
+              label={t("screenDocumentNewDialog.urlAddressField")}
               validate={[Validation.required]}
               onChange={(e, value) =>
                 addDialogData("ScreenDocumentNew", { url: value })
@@ -90,7 +93,7 @@ const ScreenDocumentNew = ({
               component={SelectField}
               componentId="screen-document-new-selectfield-urltype"
               name="urlType"
-              label="Typ souboru"
+              label={t("screenDocumentNewDialog.urlTypeField")}
               menuItems={fileTypeOpts}
               validate={[Validation.required]}
               onChange={(e, value) =>
@@ -108,13 +111,13 @@ const ScreenDocumentNew = ({
                 component={TextField}
                 componentId="screen-document-new-textfield-name"
                 name="name"
-                label="Soubor"
+                label={t("screenDocumentNewDialog.fileField")}
                 validate={[Validation.required]}
                 disabled
               />
               <Button
                 flat
-                label="Vybrat"
+                label={t("screenDocumentNewDialog.chooseActionLabel")}
                 onClick={() =>
                   setDialog("ScreenDocumentChoose", {
                     onChoose: (file) => change("name", get(file, "name")),
@@ -129,10 +132,20 @@ const ScreenDocumentNew = ({
                   component={SelectField}
                   componentId="screen-document-new-selectfield-documentFileType"
                   name="documentFileType"
-                  label="Typ vybraného souboru"
+                  label={t("screenDocumentNewDialog.documentFileTypeField")}
                   menuItems={[
-                    { value: "exhibitionFile", label: "Soubor k výstavě" },
-                    { value: "worksheet", label: "Pracovní list" },
+                    {
+                      value: "exhibitionFile",
+                      label: t("documentsTable.exhibitionFileLabel", {
+                        ns: "expo-editor",
+                      }),
+                    },
+                    {
+                      value: "worksheet",
+                      label: t("documentsTable.worksheetFileLabel", {
+                        ns: "expo-editor",
+                      }),
+                    },
                   ]}
                   validate={[Validation.required]}
                   onChange={(e, value) =>
@@ -167,6 +180,7 @@ export default compose(
     { tabFolder }
   ),
   withState("documentType", "changeDocumentType", "NONE"),
+  withTranslation("expo"),
   withHandlers({
     onSubmit: (dialog) => async (formData, dispatch, props) => {
       const { file, tabFolder, documentType } = props;
@@ -194,7 +208,7 @@ export default compose(
         dialog.closeDialog();
       } else
         throw new SubmissionError({
-          type: "*Soubor již existuje",
+          type: props.t("screenDocumentNewDialog.fileAlreadyExistsError"),
         });
     },
   }),

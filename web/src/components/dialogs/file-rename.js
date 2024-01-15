@@ -6,25 +6,30 @@ import Dialog from "./dialog-wrap";
 import TextField from "../form/redux-form/text-field";
 import * as Validation from "../form/redux-form/validation";
 import { renameFile, tabFile } from "../../actions/file-actions";
+import { useTranslation } from "react-i18next";
 
-const FileRename = ({ handleSubmit }) => (
-  <Dialog
-    title="Přejmenovat soubor"
-    name="FileRename"
-    handleSubmit={handleSubmit}
-    submitLabel="Přejmenovat"
-  >
-    <form onSubmit={handleSubmit}>
-      <Field
-        component={TextField}
-        componentId="filerename-textfield-name"
-        label="Nový název souboru"
-        name="name"
-        validate={[Validation.required]}
-      />
-    </form>
-  </Dialog>
-);
+const FileRename = ({ handleSubmit }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "fileRenameDialog" });
+
+  return (
+    <Dialog
+      title={t("title")}
+      name="FileRename"
+      handleSubmit={handleSubmit}
+      submitLabel={t("submitLabel")}
+    >
+      <form onSubmit={handleSubmit}>
+        <Field
+          component={TextField}
+          componentId="filerename-textfield-name"
+          label={t("newNameField")}
+          name="name"
+          validate={[Validation.required]}
+        />
+      </form>
+    </Dialog>
+  );
+};
 
 export default compose(
   connect(

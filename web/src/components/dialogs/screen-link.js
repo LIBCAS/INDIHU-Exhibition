@@ -5,6 +5,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import Button from "react-md/lib/Buttons/Button";
 
 import Dialog from "./dialog-wrap";
+import { useTranslation } from "react-i18next";
 
 const ScreenLink = ({
   handleSubmit,
@@ -13,12 +14,14 @@ const ScreenLink = ({
   setShowCopied,
   timeoutId,
   setTimeoutId,
-}) =>
-  initialValues.link ? (
+}) => {
+  const { t } = useTranslation("expo", { keyPrefix: "screenLinkDialog" });
+
+  return initialValues.link ? (
     <Dialog
-      title="Odkaz obrazovky"
+      title={t("title")}
       name="ScreenLink"
-      submitLabel="Zavřít"
+      submitLabel={t("submitLabel")}
       handleSubmit={handleSubmit}
       noStornoButton={true}
       big={true}
@@ -43,12 +46,12 @@ const ScreenLink = ({
                     margin: 0,
                   }}
                 >
-                  Zkopírováno!
+                  {t("copied")}
                 </div>
               )}
               <Button
                 raised
-                label="Kopírovat do schránky"
+                label={t("copyToClipboardLabel")}
                 onClick={() => {
                   setShowCopied(true);
                   clearTimeout(timeoutId);
@@ -63,6 +66,7 @@ const ScreenLink = ({
   ) : (
     <div />
   );
+};
 
 export default compose(
   withState("showCopied", "setShowCopied", false),

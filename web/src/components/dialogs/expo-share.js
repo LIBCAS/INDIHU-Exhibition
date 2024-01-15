@@ -10,7 +10,7 @@ import CheckBox from "../form/redux-form/check-box";
 import * as Validation from "../form/redux-form/validation";
 
 import { addCollaborators } from "../../actions/expoActions";
-import { useTranslation, withTranslation } from "react-i18next";
+import { useTranslation, withTranslation, Trans } from "react-i18next";
 
 const ExpoShare = ({ handleSubmit, change }) => {
   const { t } = useTranslation("expo", { keyPrefix: "expoShareDialog" });
@@ -53,13 +53,13 @@ const ExpoShare = ({ handleSubmit, change }) => {
 
 export default compose(
   connect(({ dialog: { data } }) => ({ data }), null),
-  withTranslation("expo"),
+  withTranslation("expo", { keyPrefix: "expoShareDialog" }),
   withHandlers({
     onSubmit:
       (dialog) =>
-      async (formData, dispatch, { data }) => {
-        // formData is object as { option, name, invite } clicked by user from the form
-        // data (dialogData) is object send within setDialog as { activeExpo.id, activeExpo.author }
+      async (formData, dispatch, { data, t }) => {
+        console.log("data: ", data);
+        console.log("formData: ", formData);
 
         const response = await dispatch(
           addCollaborators(
@@ -73,25 +73,49 @@ export default compose(
         if (response === 200) {
           dialog.closeDialog();
           dialog.setDialog("Info", {
-            title: "Uživatel přidaný",
-            text: `Výstava byla sdílena uživateli ${formData.name}.`,
+            title: t("responseUserAdded.title"),
+            content: (
+              <Trans
+                t={t}
+                i18nKey={"responseUserAdded.text"}
+                values={{ userName: formData.name }}
+              />
+            ),
           });
         } else if (response === 201) {
           dialog.closeDialog();
           dialog.setDialog("Info", {
-            title: "Uživatel pozvaný",
-            text: `Uživateli ${formData.name} byla zaslána pozvánka na e-mail.`,
+            title: t("responseIndihuUserInvitedByEmail.title"),
+            content: (
+              <Trans
+                t={t}
+                i18nKey={"responseIndihuUserInvitedByEmail.text"}
+                values={{ userName: formData.name }}
+              />
+            ),
           });
         } else if (response === 406) {
           dialog.setDialog("Info", {
-            title: "Pozvat uživatele",
-            text: `${formData.name} není uživatel Indihu. Prosím vyberte možnost "odeslat e-mailovou pozvánku"`,
+            title: t("responseNotIndihuUser.title"),
+            content: (
+              <Trans
+                t={t}
+                i18nKey={"responseNotIndihuUser.text"}
+                values={{ userName: formData.name }}
+              />
+            ),
           });
         } else if (response === 409) {
           dialog.closeDialog();
           dialog.setDialog("Info", {
-            title: "Užívatel již spolupracuje",
-            text: `Výstava je již sdílena s užívatelem ${formData.name}.`,
+            title: t("responseUserIsAlreadyShared.title"),
+            content: (
+              <Trans
+                t={t}
+                i18nKey={"responseUserIsAlreadyShared.text"}
+                values={{ userName: formData.name }}
+              />
+            ),
           });
         }
       },

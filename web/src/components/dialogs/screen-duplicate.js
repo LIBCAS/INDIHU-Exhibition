@@ -7,6 +7,7 @@ import { forEach, get } from "lodash";
 import SelectField from "../form/redux-form/select-field";
 
 import { duplicateScreen, duplicateChapter } from "../../actions/expoActions";
+import { useTranslation } from "react-i18next";
 
 const selector = formValueSelector("ScreenDuplicate");
 
@@ -17,6 +18,8 @@ const ScreenDuplicate = ({
   rowNum,
   change,
 }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "screenDuplicateDialog" });
+
   const options = [];
   const options2 = [];
   let lastCol = 0;
@@ -65,12 +68,10 @@ const ScreenDuplicate = ({
   return (
     <Dialog
       title={
-        dialogData && dialogData.colNum
-          ? "Pozice duplikované obrazovky"
-          : "Pozice duplikované kapitoly"
+        dialogData && dialogData.colNum ? t("titleScreen") : t("titleChapter")
       }
       name="ScreenDuplicate"
-      submitLabel="Duplikovat"
+      submitLabel={t("submitLabel")}
       handleSubmit={handleSubmit}
       big={true}
     >
@@ -80,7 +81,7 @@ const ScreenDuplicate = ({
             <Field
               component={SelectField}
               componentId="screen-duplicate-selectfield-chapter"
-              label="Kapitola"
+              label={t("chapterLabel")}
               name="rowNum"
               menuItems={options}
               onChange={(e, value) => {
@@ -96,7 +97,7 @@ const ScreenDuplicate = ({
             <Field
               component={SelectField}
               componentId="screen-duplicate-selectfield-screen"
-              label="Obrazovka"
+              label={t("screenLabel")}
               name="colNum"
               menuItems={options2}
             />
@@ -105,7 +106,7 @@ const ScreenDuplicate = ({
           <Field
             component={SelectField}
             componentId="screen-duplicate-selectfield-position"
-            label="Pozice"
+            label={t("positionLabel")}
             name="rowNum"
             menuItems={options}
           />

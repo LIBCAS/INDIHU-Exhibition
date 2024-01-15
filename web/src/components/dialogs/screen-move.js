@@ -13,6 +13,7 @@ import {
   moveAloneScreenToChapter,
   moveScreenFromChapter,
 } from "../../actions/expoActions";
+import { useTranslation } from "react-i18next";
 
 const selector = formValueSelector("ScreenMove");
 
@@ -24,6 +25,8 @@ const ScreenMove = ({
   change,
   aloneScreen,
 }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "screenMoveDialog" });
+
   const options = [];
   const options2 = [];
   let lastCol = 0;
@@ -80,11 +83,11 @@ const ScreenMove = ({
     <Dialog
       title={
         get(dialogData, "type") !== "INTRO"
-          ? "Nová pozice obrazovky"
-          : "Nová pozice kapitoly"
+          ? t("titleScreen")
+          : t("titleChapter")
       }
       name="ScreenMove"
-      submitLabel="Přesunout"
+      submitLabel={t("submitLabel")}
       handleSubmit={handleSubmit}
       big={true}
     >
@@ -96,7 +99,7 @@ const ScreenMove = ({
           <Field
             component={CheckBox}
             componentId="screen-move-checkbox-aloneScreen"
-            label="Samostatná obrazovka"
+            label={t("separateScreenFieldLabel")}
             name="aloneScreen"
             change={change}
             onClick={(value) => {
@@ -141,7 +144,7 @@ const ScreenMove = ({
             <Field
               component={SelectField}
               componentId="screen-move-selectfield-chapter"
-              label="Kapitola"
+              label={t("chapterFieldLabel")}
               name="rowNum"
               menuItems={options}
               onChange={(_, value) => {
@@ -157,7 +160,7 @@ const ScreenMove = ({
             <Field
               component={SelectField}
               componentId="screen-move-selectfield-screen"
-              label="Obrazovka"
+              label={t("screenFieldLabel")}
               name="colNum"
               menuItems={options2}
             />
@@ -166,7 +169,7 @@ const ScreenMove = ({
           <Field
             component={SelectField}
             componentId="screen-move-selectfield-position"
-            label="Pozice"
+            label={t("positionFieldLabel")}
             name="rowNum"
             menuItems={options}
           />

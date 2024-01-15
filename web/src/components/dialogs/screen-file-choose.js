@@ -13,6 +13,7 @@ import {
   keyShortcutsEnhancer,
   sortFilterFiles,
 } from "../../containers/expo-administration/expo-files/utils";
+import { useTranslation, withTranslation } from "react-i18next";
 
 const ScreenFileChoose = ({
   handleSubmit,
@@ -30,15 +31,17 @@ const ScreenFileChoose = ({
   setOrder,
   containerID,
 }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "screenFileChooseDialog" });
+
   const onClose = () => {
     tabFolder(null);
   };
 
   return (
     <Dialog
-      title="Vybrat soubor"
+      title={t("title")}
       name="ScreenFileChoose"
-      submitLabel="Vybrat"
+      submitLabel={t("submitLabel")}
       handleSubmit={handleSubmit}
       onClose={onClose}
       className="large"
@@ -106,6 +109,7 @@ export default compose(
     ),
   })),
   keyShortcutsEnhancer,
+  withTranslation("expo", { keyPrefix: "screenFileChooseDialog" }),
   withHandlers({
     onSubmit: (dialog) => async (formData, dispatch, props) => {
       const { activeFile, dialogData } = props;
@@ -117,7 +121,7 @@ export default compose(
         dialog.closeDialog();
       } else
         dialog.addDialogData("ScreenFileChoose", {
-          error: "*Vyber soubor",
+          error: props.t("chooseFileErrorText"),
         });
     },
   }),

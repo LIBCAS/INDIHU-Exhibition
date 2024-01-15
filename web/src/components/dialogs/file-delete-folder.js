@@ -6,30 +6,38 @@ import { FontIcon } from "react-md/lib";
 
 import Dialog from "./dialog-wrap";
 import { deleteFolder, isFileInFolderUsed } from "../../actions/file-actions";
+import { useTranslation, Trans } from "react-i18next";
 
 const FileDeleteFolder = ({ handleSubmit, data, isFileInFolderUsed }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "fileDeleteFolderDialog" });
+
   const screens = data ? isFileInFolderUsed(data.name) : false;
+
   return (
     <Dialog
       title={<FontIcon className="color-black">delete</FontIcon>}
       name="FileDeleteFolder"
       handleSubmit={handleSubmit}
-      submitLabel="Smazat"
+      submitLabel={t("submitLabel")}
     >
       <p>
-        Vybraná složka <strong>{get(data, "name", "")}</strong> a všechen její
-        obsah bude smazán.
+        <Trans
+          t={t}
+          i18nKey="warningText"
+          values={{ folderName: get(data, "name", "") }}
+          components={{ strong: <strong /> }}
+        />
       </p>
       <div className="flex-row-nowrap flex-center">
         <FontIcon className="color-red">priority_high</FontIcon>
         <p style={{ fontSize: "0.9em" }}>
-          <strong>Akce je nevratná.</strong>
+          <strong>{t("actionIsIrreversible")}</strong>
         </p>
       </div>
       {!isEmpty(screens) ? (
         <p style={{ fontSize: "0.9em", marginLeft: 24 }}>
           <br />
-          Soubory ze složky jsou používány v obrazovkách:
+          {t("folderFilesAreUsedInFollowingScreens")}
           {screens.map((screen) => (
             <span key={screen}>
               <br />
