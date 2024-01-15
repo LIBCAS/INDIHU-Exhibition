@@ -257,5 +257,145 @@
       "title": "Užívatel již spolupracuje",
       "text": "Výstava je již sdílena s užívatelem {{userName}}."
     }
+  },
+  "expoStateDialog": {
+    "title": "Změna stavu výstavy",
+    "submitLabel": "Změnit"
+  },
+  "fileDeleteFolderDialog": {
+    "submitLabel": "Smazat",
+    "warningText": "Vybraná složka <strong>{{folderName}}</strong> a všechen její obsah bude smazán.",
+    "actionIsIrreversible": "Akce je nevratná.",
+    "folderFilesAreUsedInFollowingScreens": "Soubory ze složky jsou používány v obrazovkách:"
+  },
+  "fileDeleteDialog": {
+    "submitLabel": "Smazat",
+    "warningText": "Vybraný soubor <strong>{{fileName}}</strong> bude smazán.",
+    "actionIsIrreversible": "Akce je nevratná.",
+    "fileIsUsedInScreen": "Soubor je používán v obrazovce"
+  },
+  "fileMoveDialog": {
+    "title": "Přesunutí souboru",
+    "submitLabel": "Přesunout",
+    "whereToMoveFile": "Kam chcete přesunout soubor {{fileName}} ?",
+    "uncategorized": "Nezařazené"
+  },
+  "fileNewFolderDialog": {
+    "title": "Nový adresář",
+    "submitLabel": "Vytvořit",
+    "folderNameField": "Název adresáře",
+    "folderWithThisNameAlreadyExists": "Složka s tímto jménem již existuje."
+  },
+  "fileRenameFolderDialog": {
+    "title": "Přejmenovat složku",
+    "submitLabel": "Přejmenovat",
+    "newFolderNameField": "Nový název složky",
+    "folderWithThisNameAlreadyExists": "Složka s tímto jménem již existuje."
+  },
+  "fileRenameDialog": {
+    "title": "Přejmenovat soubor",
+    "submitLabel": "Přejmenovat",
+    "newFileNameField": "Nový název souboru"
+  },
+  "imageEditorSaveDialog": {
+    "title": "Uložit jako",
+    "submitLabel": "Uložit",
+    "fileNameField": "Název souboru",
+    "stornoActionLabel": "Storno",
+    "confirmActionLabel": "Potvrdit"
+  },
+  "passwordResetDialog": {
+    "title": "Reset hesla",
+    "submitLabel": "Reset",
+    "emailField": "Email",
+    "responseSuccess": {
+      "title": "Reset hesla úspěšný",
+      "text": "Nové heslo bylo zasláno na zadaný email."
+    },
+    "responseFailure": {
+      "title": "Reset hesla neúspěšný",
+      "text": "Reset hesla byl neúspěšný."
+    }
+  },
+  "screenAuthorsAddDialog": {
+    "title": "Přidat autory výstavy nebo spolupracovníky",
+    "submitLabel": "Uložit",
+    "roleField": "Role",
+    "textField": "Osoby nebo text"
+  },
+  "screenAuthorsChangeDialog": {
+    "title": "Změnit autory výstavy nebo spolupracovníky",
+    "submitLabel": "Uložit",
+    "roleField": "Role",
+    "textField": "Osoby nebo text"
+  },
+  "screenDeleteDialog": {
+    "submitLabel": "Smazat",
+    "introChapterScreenDeletion": "Obrazovka <strong>Úvod do kapitoly</strong> bude smazána.",
+    "introChapterWholeChapterDeletionWarning": "Pozor, smažete tím celou kapitolu. Akce je nevratná.",
+    "introChapterDocumentsStay": "Dokumenty, podklady a soubory v editoru zůstanou.",
+    "otherScreenDeletion": "Vybraná obrazovka <strong>{{screenName}}</strong> bude smazána.",
+    "otherScreenDocumentsStay": "Akce je nevratná. Smažete pouze obrazovku, ale dokumenty a podklady zůstanou na serveru zachovány!"
+  },
+  "screenDocumentChangeDialog": {
+    "title": "Upravit dokument",
+    "submitLabel": "Upravit",
+    "documentNameField": "Název dokumentu",
+    "urlAdressField": "URL adresa",
+    "fileTypeField": "Typ souboru",
+    "fileField": "Soubor",
+    "selectActionLabel": "Vybrat",
+    "typeOfChosenFile": "Typ vybraného souboru"
+  },
+  "screenDocumentChooseDialog": {
+    "title": "Vybrat soubor",
+    "submitLabel": "Vybrat",
+    "errorText": "*Vyber soubor"
+  },
+  "screenDocumentNewDialog": {
+    "title": "Nový dokument",
+    "submitLabel": "Vytvořit",
+    "fileNameField": "Název dokumentu",
+    "urlAddressField": "URL adresa",
+    "urlTypeField": "Typ souboru",
+    "fileField": "Soubor",
+    "chooseActionLabel": "Vybrat",
+    "documentFileTypeField": "Typ vybraného souboru",
+    "fileAlreadyExistsError": "*Soubor již existuje"
+  },
+  "screenDuplicateDialog": {
+    "titleScreen": "Pozice duplikované obrazovky",
+    "titleChapter": "Pozice duplikované kapitoly",
+    "submitLabel": "Duplikovat",
+    "chapterLabel": "Kapitola",
+    "screenLabel": "Obrazovka",
+    "positionLabel": "Pozice"
+  },
+  "screenFileChooseDialog": {
+    "title": "Vybrat soubor",
+    "submitLabel": "Vybrat",
+    "chooseFileErrorText": "*Vyber soubor"
+  },
+  "screenLinkDialog": {
+    "title": "Odkaz obrazovky",
+    "submitLabel": "Zavřít",
+    "copied": "Zkopírováno!",
+    "copyToClipboardLabel": "Kopírovat do schránky"
+  },
+  "screenMoveDialog": {
+    "titleScreen": "Nová pozice obrazovky",
+    "titleChapter": "Nová pozice kapitoly",
+    "submitLabel": "Přesunout",
+    "separateScreenFieldLabel": "Samostatná obrazovka",
+    "chapterFieldLabel": "Kapitola",
+    "screenFieldLabel": "Obrazovka",
+    "positionFieldLabel": "Pozice"
+  },
+  "viewWrapChapterDialog": {
+    "title": "Kapitoly"
+  },
+  "warningDialog": {
+    "title": "Varování",
+    "submitLabel": "OK"
   }
 }
