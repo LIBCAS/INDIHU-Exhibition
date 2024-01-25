@@ -24,6 +24,18 @@
       "label": "Přehrávání",
       "text": "Výstavu je možné pozastavit tímto tlačítkem anebo mezerníkem. Opětovným stisknutím tlačítka nebo stisknutím enteru na klávesnici se pak přehrávání obnoví."
     },
+    "glass-magnifier": {
+      "label": "Lupa",
+      "text": "Na některých typech obrazovek lze použít tlačítko lupy, pomocí kterého je možné si zvětšit část obsahu obrazovky, který se nachází pod kurzorem."
+    },
+    "settings": {
+      "label": "Nastavení",
+      "text": "Kliknutím lze zobrazit a změnit nastavení dostupná během prohlížení výstavy."
+    },
+    "editor": {
+      "label": "Editace obrazovky",
+      "text": "Jako tvůrce výstavy, kliknutí na toto tlačítko způsobí přesměrování na stránku editace aktuální obrazovky."
+    },
     "progressbar": {
       "label": "Přetáčení",
       "text": "V případě obrazovky s videem nebo slideshow je možné pomocí tohoto proužku aktuální obrazovku přetáčet."
@@ -34,10 +46,71 @@
     }
   },
 
+  "mobile-overlay": {
+    "play": {
+      "label": "Přehrávání",
+      "text": "Výstavu je možné pozastavit tímto tlačítkem. Opětovným stisknutím tlačítka se pak přehrávání obnoví."
+    },
+    "screen-info": {
+      "label": "Informace",
+      "text": "Kliknutím zobrazíte podrobnější informace k obrazovce a její text."
+    },
+    "help-tutorial-button": {
+      "label": "Nápověda",
+      "text": "U některých typů obrazovek se nachází toto tlačítko nápovědy, které lze použít k zobrazení dodatečných informací nebo nápovědy o tom, jak s danou obrazovkou pracovat."
+    },
+    "overlay-button": {
+      "label": "Rozhraní",
+      "text": "Klepnutí tohoto tlačítka otevře dodatečná nastavení a funkcionality k aktuální výstavě."
+    }
+  },
+
   "screenChange": {
     "dragThumb": {
       "label": "Táhlo",
       "text": "Posunutím odhalíte obrázek v pozadí."
+    }
+  },
+
+  "gameDraw": {
+    "help-tutorial": {
+      "label": "Hra dokresli",
+      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu dokresli."
+    }
+  },
+
+  "gameFind": {
+    "help-tutorial": {
+      "label": "Hra nájdi na obrázku",
+      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu nájdi na obrázku."
+    }
+  },
+
+  "gameMove": {
+    "help-tutorial": {
+      "label": "Hra posuň na správné místo",
+      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu posuň na správné místo."
+    }
+  },
+
+  "gameOptions": {
+    "help-tutorial": {
+      "label": "Hra kvíz",
+      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu kvíz."
+    }
+  },
+
+  "gameSizing": {
+    "help-tutorial": {
+      "label": "Hra hádej velikost",
+      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu hádej velikost."
+    }
+  },
+
+  "gameWipe": {
+    "help-tutorial": {
+      "label": "Hra stírací los",
+      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu stírací los."
     }
   }
 }
