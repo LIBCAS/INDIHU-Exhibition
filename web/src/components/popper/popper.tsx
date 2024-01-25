@@ -62,13 +62,20 @@ export const Popper = <TAnchor extends HTMLElement | null>({
     }
   }, [rebuildListener, rebuildListener2, update]);
 
+  // for shift layouts
+  useEffect(() => {
+    setTimeout(() => {
+      update?.();
+    }, 75);
+  }, [update]);
+
   if (!open) return null;
 
   return (
     <div
       ref={setPopperElement}
       className={cx(
-        "bg-white p-2 shadow-md z-50 max-w-md border-solid border-[1px]",
+        "bg-white p-2 shadow-md z-50 max-w-md border-solid border-[1px] pointer-events-auto",
         bgFgTheming,
         {
           "border-black": isLightMode,

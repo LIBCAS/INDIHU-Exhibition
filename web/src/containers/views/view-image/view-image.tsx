@@ -22,6 +22,8 @@ import { ImageScreen } from "models";
 import { ScreenProps } from "models";
 import { calculateInfopointPosition } from "utils/infopoint-utils";
 
+// - - -
+
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ImageScreen,
   ({ expo }: AppState) => expo.viewProgress.shouldIncrement,

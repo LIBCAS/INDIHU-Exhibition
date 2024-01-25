@@ -4,17 +4,21 @@ import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
 
+import { RefCallback } from "context/tutorial-provider/use-tutorial";
+
 import cx from "classnames";
 
 // - -
 
 type EditorButtonProps = {
+  bind: (stepKey: string) => { ref: RefCallback };
   openEditorScreenUrl: () => void;
   isEditorAccess: boolean;
   getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const EditorButton = ({
+  bind,
   openEditorScreenUrl,
   isEditorAccess,
   getTutorialEclipseClassnameByStepkeys,
@@ -28,6 +32,7 @@ const EditorButton = ({
   return (
     <>
       <div
+        {...bind("editor")}
         className={cx(
           "pointer-events-auto",
           getTutorialEclipseClassnameByStepkeys([""])

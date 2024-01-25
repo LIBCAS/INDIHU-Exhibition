@@ -6,32 +6,23 @@ import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
-import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 import cx from "classnames";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 type AudioButtonProps = {
-  hasAudio: boolean;
   isAudioMuted: boolean;
   bind: (stepKey: string) => { ref: RefCallback };
-  step: TutorialStep | null;
   getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const AudioButton = ({
-  hasAudio,
   isAudioMuted,
   bind,
-  step,
   getTutorialEclipseClassnameByStepkeys,
 }: AudioButtonProps) => {
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
   const { openNewTopDialog } = useDialogRef();
-
-  if (step?.stepKey !== "audio" && !hasAudio) {
-    return null;
-  }
 
   return (
     <>

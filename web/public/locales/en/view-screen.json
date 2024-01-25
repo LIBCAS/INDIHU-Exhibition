@@ -51,6 +51,7 @@
 
   "rating": {
     "title": "How did you like the exhibition?",
+    "expoRating": "Rating of the exhibition",
     "overallRating": "Overall rating",
     "whatYouLikedMost": "What did you like the most?",
     "max2Options": "(max. 2 options)",

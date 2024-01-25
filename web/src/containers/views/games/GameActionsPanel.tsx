@@ -20,7 +20,25 @@ export const GameActionsPanel = ({
 
   return (
     <div className="flex flex-row-reverse gap-2">
-      <div className="flex flex-row-reverse gap-2">
+      <div className="flex gap-2">
+        {/* Play again button */}
+        <div
+          className="pointer-events-auto"
+          data-tooltip-id="game-overlay-replay-button-tooltip"
+        >
+          <Button
+            iconBefore={<Icon name="replay" />}
+            color="primary"
+            style={{ width: "38px", height: "31px", border: "2px solid white" }}
+            onClick={onGameReset}
+          />
+          <BasicTooltip
+            id="game-overlay-replay-button-tooltip"
+            content={t("game.controls.play-again")}
+          />
+        </div>
+
+        {/* Done button */}
         <div
           className="pointer-events-auto"
           data-tooltip-id="game-overlay-done-button-tooltip"
@@ -37,25 +55,10 @@ export const GameActionsPanel = ({
             content={t("game.controls.finished")}
           />
         </div>
-
-        <div
-          className="pointer-events-auto"
-          data-tooltip-id="game-overlay-replay-button-tooltip"
-        >
-          <Button
-            iconBefore={<Icon name="replay" />}
-            color="primary"
-            style={{ width: "38px", height: "31px", border: "2px solid white" }}
-            onClick={onGameReset}
-          />
-          <BasicTooltip
-            id="game-overlay-replay-button-tooltip"
-            content={t("game.controls.play-again")}
-          />
-        </div>
       </div>
 
-      <div className="flex flex-row-reverse gap-2">
+      {/* Additional actions for particular game screens */}
+      <div className="flex gap-2">
         {Array.isArray(gameActions)
           ? gameActions.map((action, index) => (
               <div key={index} className="pointer-events-auto">

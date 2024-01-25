@@ -24,6 +24,7 @@ import cx from "classnames";
 import classes from "./game-erase.module.scss";
 import { calculateObjectFit } from "utils/object-fit";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameWipeScreen,
@@ -38,6 +39,7 @@ export const GameErase = ({
   screenPreloadedFiles,
   infoPanelRef,
   actionsPanelRef,
+  isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
@@ -191,6 +193,27 @@ export const GameErase = ({
     ctx.lineCap = "round";
   }, [ctx, expoDesignData?.backgroundColor, fillCanvas, palette.background]);
 
+  // - -
+
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
+    "gameWipe",
+    !isMobileOverlay
+  );
+
+  const onKeydownAction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        escapeTutorial();
+      }
+    },
+    [escapeTutorial]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
+  });
+
   return (
     <div className="w-full h-full relative" ref={containerRef}>
       <img
@@ -200,7 +223,7 @@ export const GameErase = ({
       />
 
       <canvas
-        className={cx("absolute", {
+        className={cx("absolute touch-none", {
           [classes.eraserEraser]:
             !isGameFinished && eraserToolType === "eraser",
           [classes.eraserBroom]: !isGameFinished && eraserToolType === "broom",
@@ -215,9 +238,9 @@ export const GameErase = ({
             !isGameFinished && eraserToolType === "wipe_towel",
         })}
         ref={canvasRef}
-        onMouseDown={updateMousePosition}
-        onMouseEnter={updateMousePosition}
-        onMouseMove={erase}
+        onPointerDown={updateMousePosition}
+        onPointerEnter={updateMousePosition}
+        onPointerMove={erase}
       />
 
       {infoPanelRef.current &&
@@ -226,6 +249,7 @@ export const GameErase = ({
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
             text={t("game-erase.task")}
+            bindTutorial={bind("wiping")}
           />,
           infoPanelRef.current
         )}
@@ -239,6 +263,8 @@ export const GameErase = ({
           />,
           actionsPanelRef.current
         )}
+
+      {TutorialTooltip}
     </div>
   );
 };

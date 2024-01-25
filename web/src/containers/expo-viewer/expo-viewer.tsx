@@ -102,7 +102,7 @@ export const ExpoViewer = () => {
     // HOWEVER /view/ReactNewExhibition2023-02-18T152236836Z/start CAN also be valid!! if custom url in settings was not set!!
     // (custom default url which was set is in fetched wExpo.url, if custom url was not set.. it contains the default url with dates)
     const matchUrlWithoutView = match.url.replace(/^\/view\//, "");
-    if (wExpo && matchUrlWithoutView !== wExpo.url) {
+    if (wExpo && wExpo.url && matchUrlWithoutView !== wExpo.url) {
       const newUrl = location.pathname.replace(
         new RegExp(
           `^${match.url.replace(/([.*+?^=!:${}()|[\]/\\])/g, "\\$1")}`,

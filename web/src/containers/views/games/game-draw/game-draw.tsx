@@ -18,6 +18,7 @@ import { useBoolean } from "hooks/boolean-hook";
 import { Popper } from "components/popper/popper";
 import { GameActionsPanel } from "../GameActionsPanel";
 import { BasicTooltip } from "components/tooltip/tooltip";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
@@ -28,33 +29,46 @@ export const GameDraw = ({
   screenPreloadedFiles,
   infoPanelRef,
   actionsPanelRef,
+  isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const [finished, setFinished] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { t } = useTranslation("view-screen");
+
+  const [isGameFinished, setIsGameFinished] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // setting always, even when the pen or erase is not down
   const [color, setColor] = useState("#000000");
   const [thickness, setThickness] = useState(5);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-  const ref = useRef<HTMLCanvasElement>(null);
-  const { t } = useTranslation("view-screen");
-  const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null);
+
+  const [thicknessAnchor, setThicknessAnchor] =
+    useState<HTMLButtonElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [
     open,
     { toggle: toggleThicknessPopover, setFalse: closeThicknessPopover },
   ] = useBoolean(false);
+
   const [erasing, { toggle: toggleTool }] = useBoolean(false);
 
+  // - -
+
   const clearCanvas = useCallback(() => {
-    ctx?.clearRect(0, 0, ref.current?.width ?? 0, ref.current?.height ?? 0);
+    ctx?.clearRect(
+      0,
+      0,
+      canvasRef.current?.width ?? 0,
+      canvasRef.current?.height ?? 0
+    );
   }, [ctx]);
 
-  const onFinish = useCallback(() => {
-    setFinished(true);
+  const onGameFinish = useCallback(() => {
+    setIsGameFinished(true);
     clearCanvas();
   }, [clearCanvas]);
 
-  const onReset = useCallback(() => {
-    setFinished(false);
+  const onGameReset = useCallback(() => {
+    setIsGameFinished(false);
     clearCanvas();
   }, [clearCanvas]);
 
@@ -66,11 +80,11 @@ export const GameDraw = ({
   );
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!canvasRef.current) return;
 
-    ref.current.height = window.innerHeight;
-    ref.current.width = window.innerWidth;
-    setCtx(ref.current.getContext("2d"));
+    canvasRef.current.height = window.innerHeight;
+    canvasRef.current.width = window.innerWidth;
+    setCtx(canvasRef.current.getContext("2d"));
   }, []);
 
   useEffect(() => {
@@ -85,7 +99,7 @@ export const GameDraw = ({
 
   const draw = useCallback(
     (e: MouseEvent<HTMLCanvasElement>) => {
-      if (!ctx || e.buttons !== 1 || finished) {
+      if (!ctx || e.buttons !== 1 || isGameFinished) {
         setMousePosition({ x: e.clientX, y: e.clientY });
         return;
       }
@@ -95,14 +109,35 @@ export const GameDraw = ({
       ctx.lineTo(e.clientX, e.clientY);
       ctx.stroke();
     },
-    [ctx, finished, mousePosition.x, mousePosition.y]
+    [ctx, isGameFinished, mousePosition.x, mousePosition.y]
   );
 
-  const transition = useTransition(finished, {
+  const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
+  });
+
+  // - -
+
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
+    "gameDraw",
+    !isMobileOverlay
+  );
+
+  const onKeydownAction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        escapeTutorial();
+      }
+    },
+    [escapeTutorial]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
   });
 
   return (
@@ -126,18 +161,18 @@ export const GameDraw = ({
       )}
 
       <canvas
-        className={cx("absolute", {
-          [classes.drawingCursor]: !finished && !erasing,
-          [classes.erasingCursor]: !finished && erasing,
+        className={cx("absolute touch-none", {
+          [classes.drawingCursor]: !isGameFinished && !erasing,
+          [classes.erasingCursor]: !isGameFinished && erasing,
         })}
-        ref={ref}
-        onMouseDown={updateMousePosition}
-        onMouseEnter={updateMousePosition}
-        onMouseMove={draw}
+        ref={canvasRef}
+        onPointerDown={updateMousePosition}
+        onPointerEnter={updateMousePosition}
+        onPointerMove={draw}
       />
 
       <Popper
-        anchor={anchor}
+        anchor={thicknessAnchor}
         placement="top-start"
         open={open}
         onClickOutside={closeThicknessPopover}
@@ -158,8 +193,9 @@ export const GameDraw = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            isGameFinished={finished}
+            isGameFinished={isGameFinished}
             text={t("game-draw.task")}
+            bindTutorial={bind("drawing")}
           />,
           infoPanelRef.current
         )}
@@ -167,10 +203,46 @@ export const GameDraw = ({
       {actionsPanelRef.current &&
         ReactDOM.createPortal(
           <GameActionsPanel
-            isGameFinished={finished}
-            onGameFinish={onFinish}
-            onGameReset={onReset}
+            isGameFinished={isGameFinished}
+            onGameFinish={onGameFinish}
+            onGameReset={onGameReset}
             gameActions={[
+              <div
+                key="tool-button"
+                data-tooltip-id="game-overlay-tool-button-tooltip"
+              >
+                <Button
+                  color="expoTheme"
+                  onClick={toggleTool}
+                  iconBefore={<Icon name={erasing ? "draw" : "healing"} />}
+                />
+                <BasicTooltip
+                  id="game-overlay-tool-button-tooltip"
+                  content={
+                    erasing
+                      ? t("game-draw.switchToPencilAction")
+                      : t("game-draw.switchToEraserAction")
+                  }
+                />
+              </div>,
+
+              <div
+                className="relative"
+                key="thickness-button"
+                data-tooltip-id="game-overlay-thickness-button-tooltip"
+              >
+                <Button
+                  ref={(ref) => setThicknessAnchor(ref)}
+                  color="expoTheme"
+                  onClick={toggleThicknessPopover}
+                  iconBefore={<Icon name="line_weight" />}
+                />
+                <BasicTooltip
+                  id="game-overlay-thickness-button-tooltip"
+                  content={t("game-draw.thicknessChooserAction")}
+                />
+              </div>,
+
               <div
                 className="relative"
                 key="color-picker-button"
@@ -190,46 +262,12 @@ export const GameDraw = ({
                   content={t("game-draw.colorChooserAction")}
                 />
               </div>,
-
-              <div
-                className="relative"
-                key="thickness-button"
-                data-tooltip-id="game-overlay-thickness-button-tooltip"
-              >
-                <Button
-                  ref={(ref) => setAnchor(ref)}
-                  color="expoTheme"
-                  onClick={toggleThicknessPopover}
-                  iconBefore={<Icon name="line_weight" />}
-                />
-                <BasicTooltip
-                  id="game-overlay-thickness-button-tooltip"
-                  content={t("game-draw.thicknessChooserAction")}
-                />
-              </div>,
-
-              <div
-                key="tool-button"
-                data-tooltip-id="game-overlay-tool-button-tooltip"
-              >
-                <Button
-                  color="expoTheme"
-                  onClick={toggleTool}
-                  iconBefore={<Icon name={erasing ? "draw" : "healing"} />}
-                />
-                <BasicTooltip
-                  id="game-overlay-tool-button-tooltip"
-                  content={
-                    erasing
-                      ? t("game-draw.switchToPencilAction")
-                      : t("game-draw.switchToEraserAction")
-                  }
-                />
-              </div>,
             ]}
           />,
           actionsPanelRef.current
         )}
+
+      {TutorialTooltip}
     </div>
   );
 };

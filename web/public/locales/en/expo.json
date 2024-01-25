@@ -135,7 +135,9 @@
     "expoComments": "Comments",
     "expoNoCommentsYet": "This exhibition has no comments yet.",
     "created": "Created:",
-    "rating": "Rating:"
+    "rating": "Rating:",
+    "ratingNotSpecified": "Not specified",
+    "emailContact": "Reviewer's email:"
   },
   "theming": {
     "tab": "Theme",
@@ -209,7 +211,7 @@
   "expoDeleteDialog": {
     "submitLabel": "Delete",
     "expoWillBeDeleted": "The selected exhibition named <strong>{{expoName}}</strong> will be deleted.",
-    "actionIsPermanent": "The action is irreversible and deletes the exhibition including all documents and materials!"
+    "actionIsPermanent": "Deletion of the exhibition is irreversible and deletes the exhibition including all documents and materials!"
   },
   "expoDuplicateDialog": {
     "title": "Duplication of the exhibition",
@@ -251,7 +253,7 @@
     },
     "responseNotIndihuUser": {
       "title": "Invite user",
-      "text": "{{userName}} is not user of Indihu Exhibition. Please select \"send email invitation\" checkbox option."
+      "text": "{{userName}} is not user of INDIHU Exhibition. Please select \"send e-mail invitation\" checkbox option."
     },
     "responseUserIsAlreadyShared": {
       "title": "The user is already cooperating",
@@ -319,10 +321,10 @@
   "screenDeleteDialog": {
     "submitLabel": "Delete",
     "introChapterScreenDeletion": "The <strong>Chapter Introduction</strong> screen will be deleted.",
-    "introChapterWholeChapterDeletionWarning": "Be careful, this will delete the entire chapter. The action is non-refundable.",
+    "introChapterWholeChapterDeletionWarning": "Be careful, this will delete the entire chapter. The action is irreversible.",
     "introChapterDocumentsStay": "Documents and files will remain in the editor.",
     "otherScreenDeletion": "The selected screen <strong>{{screenName}}</strong> will be deleted.",
-    "otherScreenDocumentsStay": "The action is non-refundable. You only delete the screen, but the documents and background will remain on the server!"
+    "otherScreenDocumentsStay": "The action is irreversible. You only delete the screen, but the documents and background will remain on the server!"
   },
   "screenDocumentChangeDialog": {
     "title": "Change document",

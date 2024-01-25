@@ -12,7 +12,16 @@ import { generateTutorialStep, generateTutorialSteps } from "./tutorial-utils";
 
 // - - - - - - - -
 
-export type TutorialKey = "overlay" | "screenChange";
+export type TutorialKey =
+  | "overlay"
+  | "mobile-overlay"
+  | "screenChange"
+  | "gameDraw"
+  | "gameFind"
+  | "gameMove"
+  | "gameOptions"
+  | "gameSizing"
+  | "gameWipe";
 
 export type TutorialStep = {
   stepKey: string;
@@ -93,6 +102,21 @@ export const TutorialProvider = ({ children }: TutorialProviderProps) => {
           t("overlay.play.text")
         ),
         generateTutorialStep(
+          "glass-magnifier",
+          t("overlay.glass-magnifier.label"),
+          t("overlay.glass-magnifier.text")
+        ),
+        generateTutorialStep(
+          "settings",
+          t("overlay.settings.label"),
+          t("overlay.settings.text")
+        ),
+        generateTutorialStep(
+          "editor",
+          t("overlay.editor.label"),
+          t("overlay.editor.text")
+        ),
+        generateTutorialStep(
           "progressbar",
           t("overlay.progressbar.label"),
           t("overlay.progressbar.text")
@@ -106,6 +130,32 @@ export const TutorialProvider = ({ children }: TutorialProviderProps) => {
       isCurrentlyOpen: false,
       isCompleted: storageTutorial ? storageTutorial.overlay : false,
     },
+    "mobile-overlay": {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "play",
+          t("mobile-overlay.play.label"),
+          t("mobile-overlay.play.text")
+        ),
+        generateTutorialStep(
+          "screen-info",
+          t("mobile-overlay.screen-info.label"),
+          t("mobile-overlay.screen-info.text")
+        ),
+        generateTutorialStep(
+          "help-tutorial-button",
+          t("mobile-overlay.help-tutorial-button.label"),
+          t("mobile-overlay.help-tutorial-button.text")
+        ),
+        generateTutorialStep(
+          "overlay-button",
+          t("mobile-overlay.overlay-button.label"),
+          t("mobile-overlay.overlay-button.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial["mobile-overlay"] : false,
+    },
     screenChange: {
       steps: generateTutorialSteps(
         generateTutorialStep(
@@ -117,9 +167,75 @@ export const TutorialProvider = ({ children }: TutorialProviderProps) => {
       isCurrentlyOpen: false,
       isCompleted: storageTutorial ? storageTutorial.screenChange : false,
     },
+    gameDraw: {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "drawing",
+          t("gameDraw.help-tutorial.label"),
+          t("gameDraw.help-tutorial.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial.gameDraw : false,
+    },
+    gameFind: {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "finding",
+          t("gameFind.help-tutorial.label"),
+          t("gameFind.help-tutorial.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial.gameFind : false,
+    },
+    gameMove: {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "moving",
+          t("gameMove.help-tutorial.label"),
+          t("gameMove.help-tutorial.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial.gameMove : false,
+    },
+    gameOptions: {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "options",
+          t("gameOptions.help-tutorial.label"),
+          t("gameOptions.help-tutorial.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial.gameOptions : false,
+    },
+    gameSizing: {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "sizing",
+          t("gameSizing.help-tutorial.label"),
+          t("gameSizing.help-tutorial.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial.gameSizing : false,
+    },
+    gameWipe: {
+      steps: generateTutorialSteps(
+        generateTutorialStep(
+          "wiping",
+          t("gameWipe.help-tutorial.label"),
+          t("gameWipe.help-tutorial.text")
+        )
+      ),
+      isCurrentlyOpen: false,
+      isCompleted: storageTutorial ? storageTutorial.gameWipe : false,
+    },
   });
 
-  //
+  // When some changes occurs to store state, reflect it immediately into local storage
   useEffect(() => {
     const storageObject = Object.entries(store).reduce<LocalStorageTutorial>(
       (acc, [key, tutorialObj]) => ({ ...acc, [key]: tutorialObj.isCompleted }),
@@ -139,6 +255,7 @@ export const TutorialProvider = ({ children }: TutorialProviderProps) => {
     }));
   };
 
+  //
   const markSingleTutorialCompletionStatus = (
     tutorialKey: TutorialKey,
     status: boolean

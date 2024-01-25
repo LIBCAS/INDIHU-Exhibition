@@ -10,14 +10,12 @@ import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
 // Custom hooks
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 // Components
 import { ViewFinishInfo } from "./view-finish-info"; // authors panel
 import { ViewFinishButton } from "./view-finish-button"; // squared button with the icon in the middle
-import RatingPanel from "./rating-panel/RatingPanel";
 import { Icon } from "components/icon/icon";
 
 import { ShareExpoDialog } from "components/dialogs/share-expo-dialog/share-expo-dialog";
@@ -48,15 +46,15 @@ export const ViewFinish = ({
 }: Omit<ScreenProps, "infoPanelRef">) => {
   const { viewExpo } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("view-exhibition");
+  const { t } = useTranslation(["view-exhibition", "view-screen"]);
+
+  const { bgFgTheming } = useExpoDesignData();
 
   const { url } = viewExpo ?? {};
   const { image } = screenPreloadedFiles;
 
-  const isSmall = useMediaQuery(breakpoints.down("md"));
-  const isLessThanXl = useMediaQuery(breakpoints.down("xl"));
+  const { isMobile, isLg } = useMediaDevice();
 
-  const { bgFgTheming } = useExpoDesignData();
   const { push } = useHistory();
 
   const {
@@ -76,7 +74,7 @@ export const ViewFinish = ({
   );
 
   const isExpoAlreadyRated = useMemo(
-    () => !!viewExpo?.id && expoRates[viewExpo.id],
+    () => !!viewExpo?.id && !!expoRates[viewExpo.id],
     [expoRates, viewExpo?.id]
   );
 
@@ -173,7 +171,7 @@ export const ViewFinish = ({
   return (
     <>
       {/* Image on small screen */}
-      {isSmall && image && (
+      {isMobile && image && (
         <img
           src={image}
           className="w-full h-full absolute object-contain"
@@ -181,35 +179,18 @@ export const ViewFinish = ({
         />
       )}
 
-      <div className="w-full h-full flex absolute">
-        {/* 1) Image and four icons inside (last icon is only on small screens) */}
-        <div className="h-full grow relative">
-          {!isSmall && image && (
+      <div className="absolute w-full h-full flex">
+        <div className="relative h-full grow">
+          {!isMobile && image && (
             <img
               src={image}
-              className="w-full h-full absolute object-contain"
-              alt="background"
+              className="absolute w-full h-full object-contain"
+              alt="finish-screen-background-image"
             />
           )}
 
           <div className="absolute w-full h-full flex justify-center items-center">
-            <div
-              className={cx("hidden", bgFgTheming, {
-                "xl:block xl:mx-auto": !isExpoAlreadyRated,
-              })}
-            >
-              <RatingPanel
-                openInformationFailDialog={openInformationFailDialog}
-                expoId={viewExpo?.id}
-                setExpoRates={setExpoRates}
-              />
-            </div>
-
-            <div
-              className={cx("flex flex-wrap justify-center gap-4", {
-                "xl:flex-col xl:pr-[5%] xl:gap-6": !isExpoAlreadyRated,
-              })}
-            >
+            <div className="flex flex-wrap justify-center items-start gap-y-4">
               <ViewFinishButton
                 label={t("share")}
                 icon={<Icon color="white" name="share" />}
@@ -228,20 +209,15 @@ export const ViewFinish = ({
                 onClick={replay}
               />
 
-              {isLessThanXl && (
+              {isLg && (
                 <ViewFinishButton
                   label={"Hodnotiť výstavu"}
-                  icon={
-                    <Icon
-                      color="white"
-                      name="star"
-                      onClick={openRatingDialog}
-                    />
-                  }
+                  icon={<Icon color="white" name="star" />}
+                  onClick={openRatingDialog}
                 />
               )}
 
-              {isSmall && (
+              {isLg && (
                 <ViewFinishButton
                   label={t("info")}
                   icon={<Icon color="white" name="info" />}
@@ -252,14 +228,19 @@ export const ViewFinish = ({
           </div>
         </div>
 
-        {/* 2) Side authors panel */}
         <div
           className={cx(
-            "h-full bg-white p-8 shadow-md hidden md:block md:w-[400px]",
+            "hidden lg:block lg:w-[400px] h-full py-8 pl-8 pr-8 bg-white shadow-md overflow-auto expo-scrollbar",
             bgFgTheming
           )}
         >
-          <ViewFinishInfo viewExpo={viewExpo} viewStart={viewStart} />
+          <ViewFinishInfo
+            viewExpo={viewExpo}
+            viewStart={viewStart}
+            openInformationFailDialog={openInformationFailDialog}
+            setExpoRates={setExpoRates}
+            isExpoAlreadyRated={isExpoAlreadyRated}
+          />
         </div>
       </div>
 
@@ -306,21 +287,21 @@ export const ViewFinish = ({
           component={
             <InformationDialog
               closeThisDialog={closeTopDialog}
-              title={t("rating.expoAlreadyRatedTitle")}
-              content={t("rating.expoAlreadyRatedText")}
+              title={t("rating.expoAlreadyRatedTitle", { ns: "view-screen" })}
+              content={t("rating.expoAlreadyRatedText", { ns: "view-screen" })}
               big
             />
           }
         />
       )}
 
-      {isRatingDialogOpen && viewExpo?.id && !isExpoAlreadyRated && (
+      {isRatingDialogOpen && !isExpoAlreadyRated && viewExpo?.id && (
         <DialogPortal
           component={
             <RatingDialog
               closeThisDialog={closeTopDialog}
               openInformationFailDialog={openInformationFailDialog}
-              expoId={viewExpo?.id}
+              expoId={viewExpo.id}
               setExpoRates={setExpoRates}
             />
           }
@@ -333,8 +314,8 @@ export const ViewFinish = ({
           component={
             <InformationDialog
               closeThisDialog={closeAllDialogs}
-              title={t("rating.ratingFailureTitle")}
-              content={t("rating.expoAlreadyRatedText")}
+              title={t("rating.ratingFailureTitle", { ns: "view-screen" })}
+              content={t("rating.expoAlreadyRatedText", { ns: "view-screen" })}
               big={false}
             />
           }

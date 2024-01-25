@@ -6,15 +6,15 @@ import {
   useCallback,
   ReactNode,
   MutableRefObject,
-  RefObject,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { animated, useSpring } from "react-spring";
+import { useSwipeable } from "react-swipeable";
 
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
@@ -43,7 +43,7 @@ import classes from "./view-screen-overlay.module.scss";
 import { isGameScreen } from "../../../utils/view-utils";
 import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
 import { screenType } from "enums/screen-type";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
+import { useIsAnyTutorialOpened } from "context/tutorial-provider/tutorial-provider";
 
 // - - - - - -
 
@@ -68,8 +68,9 @@ type ViewScreenOverlayProps = {
   children:
     | ReactNode
     | ((
-        infoPanelRef: RefObject<HTMLDivElement>,
-        actionsPanelRef: MutableRefObject<HTMLDivElement | null>
+        infoPanelRef: MutableRefObject<HTMLDivElement | null>,
+        actionsPanelRef: MutableRefObject<HTMLDivElement | null>,
+        isMobileOverlay: boolean
       ) => JSX.Element);
 };
 
@@ -92,23 +93,30 @@ export const ViewScreenOverlay = ({
     return viewScreen?.type === "START" || viewScreen?.type === "FINISH";
   }, [viewScreen?.type]);
 
+  const amIGameScreen = useMemo(
+    () => isGameScreen(viewScreen?.type),
+    [viewScreen?.type]
+  );
+
   // States
-  const [unactive, setUnactive] = useState<boolean>(true); // automatically inactive after 4s without mouse movement
+  const [isOverlayActive, setIsOverlayActive] = useState<boolean>(true); // automatically inactive after 4s without mouse movement
   const [wasMouseMovement, setWasMouseMovement] = useState<boolean>(false); // for game screens, if was mouse movement, stop redirection to next screen
   const [isProgressbarHovered, setIsProgressbarHovered] = useState(false); // Progressbar height animation on hover
   const [key] = useState<number>(0); // incrementing on replay
 
   // Refs
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const infoPanelRef = useRef<HTMLDivElement>(null); // info, left down panel
+  const infoPanelRef = useRef<HTMLDivElement | null>(null); // info, left down panel
   const actionsPanelRef = useRef<HTMLDivElement | null>(null); // actions, right down panel
   const forwardButtonRef = useRef<HTMLDivElement>(null);
 
   // Custom hooks
-  const isSm = useMediaQuery(breakpoints.down("sm"));
+  const { isSm: isMobileOverlay } = useMediaDevice();
 
   const { navigateBack, navigateForward } = useExpoNavigation();
 
+  // On mobile -> mobile version of overlay
+  // On Desktop -- only if game screen is not active
   const {
     bind,
     step,
@@ -117,15 +125,20 @@ export const ViewScreenOverlay = ({
     isTutorialOpen,
     getTutorialEclipseClassnameByStepkeys,
     getTutorialEnhanceClassnameByStepkeys,
-  } = useTutorial("overlay", unactive === false || !isSm);
+  } = useTutorial(
+    isMobileOverlay ? "mobile-overlay" : "overlay",
+    isOverlayActive === true && (isMobileOverlay ? true : !amIGameScreen)
+  );
+
+  const isAnyTutorialOpen = useIsAnyTutorialOpened();
 
   const { isDrawerPanelOpen, openDrawer, closeDrawer } = useDrawerPanel();
 
   const { setIsGlassMagnifierEnabled } = useGlassMagnifierConfig();
 
   // Animations
-  const { opacity } = useSpring({
-    opacity: unactive && !isDrawerPanelOpen ? 0 : 1,
+  const { overlayOpacity } = useSpring({
+    overlayOpacity: !isOverlayActive && !isDrawerPanelOpen ? 0 : 1,
   });
 
   const { barHeight } = useSpring({
@@ -133,15 +146,17 @@ export const ViewScreenOverlay = ({
   });
 
   // Callbacks
-  const play = useCallback(
-    () => dispatch(setViewProgress({ shouldIncrement: true })),
-    [dispatch]
-  );
+  const play = useCallback(() => {
+    if (!isAnyTutorialOpen) {
+      dispatch(setViewProgress({ shouldIncrement: true }));
+    }
+  }, [dispatch, isAnyTutorialOpen]);
 
-  const pause = useCallback(
-    () => dispatch(setViewProgress({ shouldIncrement: false })),
-    [dispatch]
-  );
+  const pause = useCallback(() => {
+    if (!isAnyTutorialOpen) {
+      dispatch(setViewProgress({ shouldIncrement: false }));
+    }
+  }, [dispatch, isAnyTutorialOpen]);
 
   // Mute callback - fired when pressing M on keyboard
   const toggleSound = useCallback(() => {
@@ -172,20 +187,58 @@ export const ViewScreenOverlay = ({
 
   // Dont redirect the GameScreen (normally redirect after e.g 15s) after the mouse movement
   useEffect(() => {
-    if (isGameScreen(viewScreen?.type) && wasMouseMovement) {
+    if (amIGameScreen && wasMouseMovement) {
       dispatch(setViewProgress({ shouldRedirect: false }));
     }
-  }, [wasMouseMovement, dispatch, viewScreen]);
+  }, [wasMouseMovement, dispatch, amIGameScreen]);
+
+  // Stop the exposition if any tutorial was opened, after tutorial finish, resume playing of the expo
+  useEffect(() => {
+    if (isAnyTutorialOpen && shouldIncrement) {
+      dispatch(setViewProgress({ shouldIncrement: false }));
+    }
+
+    return () => {
+      if (isAnyTutorialOpen && !shouldIncrement) {
+        dispatch(setViewProgress({ shouldIncrement: true }));
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAnyTutorialOpen, shouldIncrement]);
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: (_e) => {
+      if (amIGameScreen || isPhotogalleryLightboxOpened) {
+        return;
+      }
+      navigateForward();
+    },
+    onSwipedRight: (_e) => {
+      if (amIGameScreen || isPhotogalleryLightboxOpened) {
+        return;
+      }
+      navigateBack();
+    },
+    delta: 80,
+  });
 
   // - - -
 
   // Keyboard - arrows navigation, space bar will stop the progress, escape will close the side Drawer panel
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight" && !isPhotogalleryLightboxOpened) {
+      if (
+        event.key === "ArrowRight" &&
+        !isPhotogalleryLightboxOpened &&
+        !isAnyTutorialOpen
+      ) {
         navigateForward();
       }
-      if (event.key === "ArrowLeft" && !isPhotogalleryLightboxOpened) {
+      if (
+        event.key === "ArrowLeft" &&
+        !isPhotogalleryLightboxOpened &&
+        !isAnyTutorialOpen
+      ) {
         navigateBack();
       }
       if (event.key === "Escape") {
@@ -212,6 +265,7 @@ export const ViewScreenOverlay = ({
     },
     [
       isPhotogalleryLightboxOpened,
+      isAnyTutorialOpen,
       navigateForward,
       navigateBack,
       escapeTutorial,
@@ -232,12 +286,15 @@ export const ViewScreenOverlay = ({
       clearTimeout(timeoutRef.current);
     }
 
-    setUnactive(false);
-    const timeout = setTimeout(
-      () => setUnactive(true),
-      OVERLAY_UNACTIVE_TIMEOUT
-    );
-    timeoutRef.current = timeout;
+    setIsOverlayActive(true);
+
+    if (!isAnyTutorialOpen) {
+      const timeout = setTimeout(
+        () => setIsOverlayActive(false),
+        OVERLAY_UNACTIVE_TIMEOUT
+      );
+      timeoutRef.current = timeout;
+    }
 
     return () => {
       if (timeoutRef.current) {
@@ -245,7 +302,7 @@ export const ViewScreenOverlay = ({
       }
       clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [isAnyTutorialOpen]);
 
   /* Add and remove event listeners (basically on mount and unmount) */
   useEffect(() => {
@@ -268,9 +325,13 @@ export const ViewScreenOverlay = ({
     // First Div next to the <audio> element!
     // Children is here ScreenComponent without overlay (START or FINISH) which will retrieve the infoPanelRef!
     return (
-      <div className="w-full h-full overflow-hidden" key={key}>
+      <div
+        className="w-full h-full overflow-hidden"
+        key={key}
+        {...swipeHandlers}
+      >
         {children instanceof Function
-          ? children(infoPanelRef, actionsPanelRef)
+          ? children(infoPanelRef, actionsPanelRef, isMobileOverlay)
           : children}
       </div>
     );
@@ -284,22 +345,28 @@ export const ViewScreenOverlay = ({
         key={key}
         onMouseDown={() => setWasMouseMovement(true)}
         onMouseMove={() => setWasMouseMovement(true)}
+        {...swipeHandlers}
       >
         {children instanceof Function
-          ? children(infoPanelRef, actionsPanelRef)
+          ? children(infoPanelRef, actionsPanelRef, isMobileOverlay)
           : children}
       </div>
 
       {/* 2. Second div next to the <audio> element(s), first part of overlay, over ScreenComponent, but under drawer (z-index 40) */}
       <animated.div
         className={cx(
-          classes.overlay, // grid parent
-          "fixed left-0 top-0 bg-none pointer-events-none h-full w-full grid z-40 "
+          "fixed left-0 top-0 bg-none pointer-events-none h-full w-full grid z-40",
+          {
+            [classes.overlay]: !isMobileOverlay,
+            [classes["overlay-mobile"]]: isMobileOverlay,
+          }
         )}
         // Animations of grid parent overlay
         style={{
-          opacity,
-          gridTemplateRows: barHeight.to((h) => `3fr 1fr 3fr ${h}px`),
+          opacity: overlayOpacity,
+          gridTemplateRows: isMobileOverlay
+            ? undefined
+            : barHeight.to((h) => `3fr 1fr 3fr ${h}px`),
         }}
       >
         {/* 2a) Info panel - left down corner, can open the Drawer */}
@@ -311,11 +378,13 @@ export const ViewScreenOverlay = ({
           getTutorialEclipseClassnameByStepkeys={
             getTutorialEclipseClassnameByStepkeys
           }
+          isMobileOverlay={isMobileOverlay}
         />
 
         {/* 2b) Actions panel - right down corner, action buttons */}
         <ActionsPanel
           actionsPanelRef={actionsPanelRef}
+          isMobileOverlay={isMobileOverlay}
           isScreenAudioPresent={audioRef.current !== null}
           isChapterMusicPresent={chapterMusicRef.current !== null}
           openDrawer={openDrawer}
@@ -330,18 +399,20 @@ export const ViewScreenOverlay = ({
           }
         />
 
-        {/* 2c) ExpoProgressBar - progressbar in the bottom of the screen, for whole expo with thumnbnails */}
-        <div
-          className={cx(
-            classes.progressBar,
-            "h-full pointer-events-auto",
-            getTutorialEclipseClassnameByStepkeys([""])
-          )}
-          onMouseEnter={() => setIsProgressbarHovered(true)}
-          onMouseLeave={() => setIsProgressbarHovered(false)}
-        >
-          <ExpoProgressBar isProgressbarHovered={isProgressbarHovered} />
-        </div>
+        {/* 2c) ExpoProgressBar - progressbar in the bottom of the screen, for whole expo with thumbnails */}
+        {!isMobileOverlay && (
+          <div
+            className={cx(
+              classes.progressBar,
+              "h-full pointer-events-auto",
+              getTutorialEclipseClassnameByStepkeys([""])
+            )}
+            onMouseEnter={() => setIsProgressbarHovered(true)}
+            onMouseLeave={() => setIsProgressbarHovered(false)}
+          >
+            <ExpoProgressBar isProgressbarHovered={isProgressbarHovered} />
+          </div>
+        )}
 
         {/* Keyboard binding.. */}
         <div
@@ -359,7 +430,7 @@ export const ViewScreenOverlay = ({
       />
 
       {/* 4. Second part of the overlay, z-index 50, over ScreenComponent and also over Drawer panel */}
-      {!isPhotogalleryLightboxOpened && (
+      {!isPhotogalleryLightboxOpened && !isMobileOverlay && (
         <div
           className={cx(
             classes.overlay, // grid parent

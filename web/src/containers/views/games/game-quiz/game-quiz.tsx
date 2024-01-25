@@ -2,7 +2,10 @@ import ReactDOM from "react-dom";
 import { useCallback, useState, useMemo, useEffect } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
+
 import { useTranslation } from "react-i18next";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
+
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -18,6 +21,9 @@ import {
   GameQuizTextDisplayEnum,
 } from "enums/administration-screens";
 
+import cx from "classnames";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+
 // - -
 
 const stateSelector = createSelector(
@@ -29,9 +35,12 @@ export const GameQuiz = ({
   screenPreloadedFiles,
   infoPanelRef,
   actionsPanelRef,
+  isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+
+  const { isSm, isMobileLandscape } = useMediaDevice();
 
   const {
     infopointOpenStatusMap,
@@ -67,27 +76,44 @@ export const GameQuiz = ({
 
   // - -
 
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
+    "gameOptions",
+    !isMobileOverlay
+  );
+
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeAllInfopoints(viewScreen)();
+        escapeTutorial();
       }
     },
-    [closeAllInfopoints, viewScreen]
+    [closeAllInfopoints, escapeTutorial, viewScreen]
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", onKeydownAction);
-    return () => {
-      window.removeEventListener("keydown", onKeydownAction);
-    };
-  }, [onKeydownAction]);
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
+  });
 
   // - -
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center gap-10 p-4 md:p-8 lg:p-16 xl:p-20">
-      <span className="text-white font-bold text-3xl text-center mt-16">
+    <div
+      className={cx(
+        "w-full h-full flex flex-col justify-center items-center p-4 md:p-8 lg:p-16 xl:p-20",
+        {
+          "gap-10": !isSm && !isMobileLandscape,
+          "gap-5": isSm || isMobileLandscape,
+        }
+      )}
+    >
+      <span
+        className={cx("text-white font-bold text-3xl text-center", {
+          "mt-16": !isSm && !isMobileLandscape,
+          "mt-4": isSm || isMobileLandscape,
+        })}
+      >
         {viewScreen.task ?? "Neuvedeno"}
       </span>
 
@@ -125,6 +151,7 @@ export const GameQuiz = ({
             gameScreen={viewScreen}
             isGameFinished={isFinished}
             text={t("game-quiz.task")}
+            bindTutorial={bind("options")}
           />,
           infoPanelRef.current
         )}
@@ -138,6 +165,8 @@ export const GameQuiz = ({
           />,
           actionsPanelRef.current
         )}
+
+      {TutorialTooltip}
     </div>
   );
 };

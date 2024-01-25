@@ -89,16 +89,17 @@
 
 .expo-scrollbar::-webkit-scrollbar-thumb {
   background-color: #ced4da;
-  visibility: hidden;
-}
-
-.expo-scrollbar:hover::-webkit-scrollbar-thumb {
   visibility: visible;
 }
 
-// .expo-scrollbar:hover {
-//   overflow: auto;
-// }
+.expo-scrollbar.scrollbar-hide::-webkit-scrollbar-thumb {
+  background-color: #ced4da;
+  visibility: hidden;
+}
+
+.expo-scrollbar.scrollbar-hide:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
 
 /* WIDTH */
 

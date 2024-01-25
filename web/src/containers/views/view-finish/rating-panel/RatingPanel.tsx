@@ -63,13 +63,17 @@ const RatingPanel = ({
 
   //
   const canRatingBeSubmitted = useMemo(() => {
-    if (!isWithoutRatingChecked) {
-      return (
-        ratingValue !== null &&
-        (numberOfCheckedCheckboxes === 1 || numberOfCheckedCheckboxes === 2)
-      );
+    // With checkbox -> text (vzkaz) is mandatory, contactEmail is optional, other fields are ignored
+    if (isWithoutRatingChecked) {
+      return textValue.length !== 0;
     }
-    return textValue.length !== 0;
+
+    // Without checkbox -> rating, checkboxes and text are mandatory (text can be empty string but cannot be null)
+    // contactEmail is optional
+    return (
+      ratingValue !== null &&
+      (numberOfCheckedCheckboxes === 1 || numberOfCheckedCheckboxes === 2)
+    );
   }, [
     isWithoutRatingChecked,
     numberOfCheckedCheckboxes,
@@ -78,18 +82,15 @@ const RatingPanel = ({
   ]);
 
   const onSubmit = async () => {
-    if (!expoId || !canRatingBeSubmitted) {
+    if (!canRatingBeSubmitted) {
       return;
     }
-
-    if (!expoId || !ratingValue) {
-      return;
-    }
-    if (numberOfCheckedCheckboxes !== 1 && numberOfCheckedCheckboxes !== 2) {
+    if (!expoId) {
       return;
     }
 
     setIsSubmitting(true);
+
     const rateFormData = {
       rating: ratingValue,
       preferences: {
@@ -123,8 +124,9 @@ const RatingPanel = ({
 
   return (
     <div
-      className={cx("px-8 py-4 flex flex-col items-center gap-5", {
-        "py-8": !closeRatingDialog,
+      className={cx("flex flex-col items-center gap-5", {
+        "p-0 mt-6": !closeRatingDialog, // if not in dialog, inside panel
+        "px-8 py-4": closeRatingDialog, // if in dialog
       })}
     >
       {/* Rating Box */}

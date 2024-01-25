@@ -1,10 +1,9 @@
 import "./header.scss";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 // Components
 import RegisterDialog from "components/dialogs/register-dialog/register-dialog";
@@ -37,6 +36,8 @@ type HeaderProps = {
 const Header = ({ oauthConfigs }: HeaderProps) => {
   const { t } = useTranslation("new-landing-screen");
 
+  const { isMobile, isTablet, isDesktop, isMobileLandscape } = useMediaDevice();
+
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState<boolean>(false);
   const location = useLocation();
 
@@ -50,19 +51,6 @@ const Header = ({ oauthConfigs }: HeaderProps) => {
     isRegisterDialogOpen,
     isLoginDialogOpen,
   } = useDialogRef();
-
-  // - -
-
-  const isLessThanSm = useMediaQuery(breakpoints.down("sm"));
-  const isLessThanLg = useMediaQuery(breakpoints.down("lg"));
-
-  // Helpers
-  const isMobile = useMemo(() => isLessThanSm, [isLessThanSm]);
-  const isTablet = useMemo(
-    () => !isLessThanSm && isLessThanLg,
-    [isLessThanLg, isLessThanSm]
-  );
-  const isDesktop = useMemo(() => !isLessThanLg, [isLessThanLg]);
 
   // - -
 
@@ -86,15 +74,15 @@ const Header = ({ oauthConfigs }: HeaderProps) => {
 
   return (
     <header className={cx({ scrolled: isScrolled === true })}>
-      <div className="h-[90px] px-[16px] py-[8px]">
+      <div className="h-auto px-[16px] py-[15px]">
         <div className="h-full pl-[2.5%] pr-[5%] sm:px-[8px] lg:px-[8px] flex justify-between items-center gap-12">
           {/* 1. Logo */}
           <div>
             <a href="/" className="no-underline">
               <img
                 src={isScrolled ? headerLogoColor : headerLogoWhite}
-                width={176}
-                height={60}
+                width={isMobile || isMobileLandscape ? 132 : 176}
+                height={isMobile || isMobileLandscape ? 30 : 40}
                 alt="INDIHU Exhibition"
                 title="INDIHU Exhibition"
               />
@@ -105,7 +93,11 @@ const Header = ({ oauthConfigs }: HeaderProps) => {
           <nav>
             {(isMobile || isTablet) && (
               <button type="button" onClick={() => setIsMobilePanelOpen(true)}>
-                <MenuIcon sx={{ fontSize: "40px" }} />
+                <MenuIcon
+                  sx={{
+                    fontSize: isMobile || isMobileLandscape ? "30px" : "40px",
+                  }}
+                />
               </button>
             )}
 
@@ -188,9 +180,12 @@ const Header = ({ oauthConfigs }: HeaderProps) => {
           open: isMobilePanelOpen,
         })}
       >
-        {/* Close icon */}
         <div className="h-[90px] w-full px-[16px] py-[8px]">
-          <div className="h-full pl-[2.5%] pr-[5%] sm:px-[8px] lg:px-[8px] flex justify-end items-center">
+          <div className="h-full pl-[2.5%] pr-[5%] sm:px-[8px] lg:px-[8px] flex justify-between items-center">
+            <div>
+              <LanguageSelect isHeaderScrolled={true} />
+            </div>
+
             <nav>
               <button type="button" onClick={() => setIsMobilePanelOpen(false)}>
                 <CloseIcon sx={{ fontSize: "40px" }} />
@@ -199,64 +194,95 @@ const Header = ({ oauthConfigs }: HeaderProps) => {
           </div>
         </div>
 
-        {/* Content */}
-        <ul className="pb-[32px] flex flex-col justify-end items-center gap-10">
-          <li
-            className={cx(
-              "min-w-[100px] pb-[4px] flex justify-center items-center",
-              {
-                "border-b-2 border-b-solid border-b-primary-blue":
-                  isHomePageLinkActive,
-              }
-            )}
-          >
-            <a href="/" className="font-bold">
-              {t("header.introduction")}
-            </a>
-          </li>
+        <div
+          className={cx("grow flex items-center", {
+            "flex-col justify-between": !isMobileLandscape,
+            "flex-row-reverse justify-around": isMobileLandscape,
+          })}
+        >
+          {/* Login and Register button */}
+          <div className="flex flex-col gap-1 justify-start items-center">
+            <ul className="flex flex-col justify-start items-center gap-3">
+              <li className="min-w-[100px] pb-[4px] flex justify-center items-center">
+                <button
+                  className={cx("login-button", { scrolled: true })}
+                  style={{ paddingLeft: "20px", paddingRight: "20px" }}
+                  onClick={() => openNewTopDialog(DialogRefType.LoginDialog)}
+                >
+                  {t("header.login")}
+                </button>
+              </li>
+              <li className="min-w-[100px] pb-[4px] flex justify-center items-center">
+                <button
+                  className={cx("register-button", { scrolled: true })}
+                  style={{ paddingLeft: "20px", paddingRight: "20px" }}
+                  onClick={() => openNewTopDialog(DialogRefType.RegisterDialog)}
+                >
+                  {t("header.register")}
+                </button>
+              </li>
+            </ul>
+          </div>
 
-          <li
-            className={cx(
-              "min-w-[100px] pb-[4px] flex justify-center items-center",
-              {
-                "border-b-2 border-b-solid border-b-primary-blue":
-                  isAboutPageLinkActive,
-              }
-            )}
-          >
-            <a href="/about" className="font-bold">
-              {t("header.about")}
-            </a>
-          </li>
-
-          <li
-            className={cx(
-              "min-w-[100px] pb-[4px] flex justify-center items-center",
-              {
-                "border-b-2 border-b-solid border-b-primary-blue":
-                  isTermsOfUsePageLinkActive,
-              }
-            )}
-          >
-            <a href="/terms-of-use" className="font-bold">
-              {t("header.termsOfUse")}
-            </a>
-          </li>
-
-          <li className="min-w-[100px] pb-[4px] flex justify-center items-center gap-[4px]">
-            <a
-              href="https://libcas.github.io/indihu-manual/"
-              target="_blank"
-              rel="noreferrer"
-              className="font-bold"
+          {/* Content */}
+          <ul className="pb-[32px] flex flex-col justify-end items-center gap-10">
+            <li
+              className={cx(
+                "min-w-[100px] pb-[4px] flex justify-center items-center",
+                {
+                  "border-b-2 border-b-solid border-b-primary-blue":
+                    isHomePageLinkActive,
+                }
+              )}
             >
-              {t("header.manual")}
-            </a>
-            <i>
-              <BsBoxArrowUpRight />
-            </i>
-          </li>
-        </ul>
+              <a href="/" className="font-bold">
+                {t("header.introduction")}
+              </a>
+            </li>
+
+            <li
+              className={cx(
+                "min-w-[100px] pb-[4px] flex justify-center items-center",
+                {
+                  "border-b-2 border-b-solid border-b-primary-blue":
+                    isAboutPageLinkActive,
+                }
+              )}
+            >
+              <a href="/about" className="font-bold">
+                {t("header.about")}
+              </a>
+            </li>
+
+            <li
+              className={cx(
+                "min-w-[100px] pb-[4px] flex justify-center items-center",
+                {
+                  "border-b-2 border-b-solid border-b-primary-blue":
+                    isTermsOfUsePageLinkActive,
+                }
+              )}
+            >
+              <a href="/terms-of-use" className="font-bold">
+                {t("header.termsOfUse")}
+              </a>
+            </li>
+
+            <li className="min-w-[100px] pb-[4px] flex justify-center items-center gap-[4px]">
+              <a
+                href="https://libcas.github.io/indihu-manual/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold"
+              >
+                {t("header.manual")}
+              </a>
+              <i>
+                <BsBoxArrowUpRight />
+              </i>
+            </li>
+          </ul>
+        </div>
       </div>
     </header>
   );

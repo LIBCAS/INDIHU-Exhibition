@@ -7,7 +7,6 @@ import { useGesture } from "@use-gesture/react";
 
 import useElementSize from "hooks/element-size-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
-import { useTutorialStore } from "context/tutorial-provider/tutorial-provider";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
@@ -142,16 +141,13 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - -
 
   // Tutorial 'screenChange' as "infotour" for this screen
-  const { store } = useTutorialStore();
   const {
     bind: bindTutorial,
     TutorialTooltip,
     isTutorialOpen,
   } = useTutorial(
     "screenChange",
-    animation !== "GRADUAL_TRANSITION" &&
-      animation !== "FADE_IN_OUT_TWO_IMAGES" &&
-      store.overlay.isCompleted
+    animation !== "GRADUAL_TRANSITION" && animation !== "FADE_IN_OUT_TWO_IMAGES"
   );
 
   // - - -

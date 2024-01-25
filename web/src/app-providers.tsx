@@ -11,6 +11,7 @@ import { DialogRefProvider } from "context/dialog-ref-provider/dialog-ref-provid
 import { App } from "app";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { BrowserRouter } from "react-router-dom";
+import { MediaDeviceProvider } from "context/media-device-provider/media-device-provider";
 
 // - - -
 
@@ -43,9 +44,11 @@ const AppProviders2 = () => {
   return (
     <ThemeProvider theme={theme}>
       <DialogRefProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <MediaDeviceProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </MediaDeviceProvider>
       </DialogRefProvider>
     </ThemeProvider>
   );

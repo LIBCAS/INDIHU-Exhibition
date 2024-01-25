@@ -2,12 +2,13 @@ import { useTranslation } from "react-i18next";
 import {
   FacebookIcon,
   FacebookShareButton,
-  TwitterIcon,
+  //TwitterIcon,
   TwitterShareButton,
   EmailIcon,
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import { XIcon } from "./XIcon";
 
 import { CopyClipboardBox } from "./CopyClipboardBox";
 import DialogWrap from "../dialog-wrap-noredux-typed";
@@ -60,8 +61,8 @@ export const ShareExpoDialog = ({
           url={url}
           className="!w-24 flex flex-col items-center"
         >
-          <TwitterIcon size={45} />
-          <p className="text-inherit">Twitter</p>
+          <XIcon size={45} />
+          <p className="text-inherit">X</p>
         </TwitterShareButton>
 
         {/* Replaced by EmailShareButton */}

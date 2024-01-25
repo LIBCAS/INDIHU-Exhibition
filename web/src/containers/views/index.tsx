@@ -133,7 +133,7 @@ export const Viewers = ({
   return (
     <TutorialProvider>
       <ViewScreenOverlay chapterMusicRef={chapterMusicRef} audioRef={audioRef}>
-        {(infoPanelRef, actionsPanelRef) =>
+        {(infoPanelRef, actionsPanelRef, isMobileOverlay) =>
           !screenPreloadedFiles || isScreenLoading || isMusicLoading ? (
             <ViewLoading />
           ) : (
@@ -142,6 +142,7 @@ export const Viewers = ({
               infoPanelRef={infoPanelRef}
               actionsPanelRef={actionsPanelRef}
               chapterMusicRef={chapterMusicRef}
+              isMobileOverlay={isMobileOverlay}
             />
           )
         }

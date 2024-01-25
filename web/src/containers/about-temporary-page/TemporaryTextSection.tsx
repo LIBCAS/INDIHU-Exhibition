@@ -36,7 +36,7 @@ const TemporaryTextSection = () => {
               }}
             />
           </p>
-          <p>
+          <p id="contact-email">
             <Trans
               t={t}
               i18nKey={"paragraph4"}

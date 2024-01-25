@@ -41,21 +41,21 @@
   "acceptUserDialog": {
     "title": "Schválení uživatele",
     "submitLabel": "Akceptovat",
-    "content": "Užívatel \"{{userName}}\" bude schválen. \nPOZOR! Akce je nevratná"
+    "content": "Uživatel \"{{userName}}\" bude schválen. \nPOZOR! Akce je nevratná"
   },
   "deleteUserDialog": {
-    "title": "Odstranit užívatele",
+    "title": "Odstranit uživatele",
     "submitLabel": "Odstranit",
-    "content": "Užívatel \"{{userName}}\" bude odstraněn."
+    "content": "Uživatel \"{{userName}}\" bude odstraněn."
   },
   "reactivateUserDialog": {
     "title": "Reaktivace uživatele",
     "submitLabel": "Reaktivovat",
-    "content": "Užívatel \"{{userName}}\" bude reaktivován."
+    "content": "Uživatel \"{{userName}}\" bude reaktivován."
   },
   "rejectUserDialog": {
-    "title": "Zamítnutí užívatele",
+    "title": "Zamítnutí uživatele",
     "submitLabel": "Zamítnout",
-    "content": "Užívatel \"{{userName}}\" bude zamítnut. \nPOZOR! Akce je nevratná"
+    "content": "Uživatel \"{{userName}}\" bude zamítnut. \nPOZOR! Akce je nevratná"
   }
 }

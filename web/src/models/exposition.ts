@@ -74,8 +74,9 @@ export type MessageObj = {
   id: string;
   created: string;
   updated: string;
-  rating: number; // number of stars in this message
+  rating?: number; // number of stars in this message
   text?: string; // undefined if user did not write anything to the textfield
+  contactEmail?: string;
 };
 
 export type PreferenceObj = {

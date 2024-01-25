@@ -11,8 +11,6 @@ import { ChaptersDialog } from "components/dialogs/chapters-dialog/chapters-dial
 
 import useElementSize from "hooks/element-size-hook";
 import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 
 // Components
 import EditorButton from "./EditorButton";
@@ -46,6 +44,8 @@ import cx from "classnames";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 import useUser from "hooks/use-user";
+import { isGameScreen } from "utils/view-utils";
+import HelpButton from "./HelpButton";
 
 // - -
 
@@ -66,6 +66,7 @@ const stateSelector = createSelector(
 
 type ActionsPanelProps = {
   actionsPanelRef: MutableRefObject<HTMLDivElement | null>;
+  isMobileOverlay: boolean;
   isScreenAudioPresent: boolean;
   isChapterMusicPresent: boolean;
   openDrawer: () => void;
@@ -80,6 +81,7 @@ type ActionsPanelProps = {
 
 const ActionsPanel = ({
   actionsPanelRef,
+  isMobileOverlay,
   isScreenAudioPresent,
   isChapterMusicPresent,
   openDrawer,
@@ -99,8 +101,6 @@ const ActionsPanel = ({
   const sectionScreen = useSectionScreenParams();
   const { section, screen } = sectionScreen;
   const [actionsBoxRef, actionsBoxSize] = useElementSize();
-
-  const isSm = useMediaQuery(breakpoints.down("sm"));
 
   const {
     openNewTopDialog,
@@ -184,16 +184,49 @@ const ActionsPanel = ({
     <div
       className={cx(
         classes.actions,
-        "h-full p-3 flex flex-row-reverse justify-start items-end gap-4 "
+        "overflow-hidden h-full p-3 flex justify-end items-end gap-4 flex-wrap content-end gap-y-[8px]"
       )}
       ref={(divEl) => {
         actionsBoxRef(divEl);
-        actionsPanelRef.current = divEl;
       }}
     >
-      {isSm && (
+      {/* Prepared div for game action buttons, through ReactDOM.createPortal */}
+      <div
+        ref={(gameActionsPanelDiv) =>
+          (actionsPanelRef.current = gameActionsPanelDiv)
+        }
+      ></div>
+
+      {/*  */}
+      {isMobileOverlay && (
         <div className="flex gap-2">
-          <InfoButton openDrawer={openDrawer} />
+          <PlayButton
+            shouldIncrement={shouldIncrement}
+            play={play}
+            pause={pause}
+            bind={bind}
+            getTutorialEclipseClassnameByStepkeys={
+              getTutorialEclipseClassnameByStepkeys
+            }
+          />
+          <InfoButton
+            openDrawer={openDrawer}
+            bind={bind}
+            getTutorialEclipseClassnameByStepkeys={
+              getTutorialEclipseClassnameByStepkeys
+            }
+          />
+
+          {(step?.stepKey === "help-tutorial-button" ||
+            isGameScreen(viewScreen?.type)) && (
+            <HelpButton
+              bind={bind}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
+            />
+          )}
+
           <ExpandActionsButton
             openEditorScreenUrl={openEditorScreenUrl}
             isEditorAccess={isEditorAccess}
@@ -208,11 +241,15 @@ const ActionsPanel = ({
             pause={pause}
             navigateBack={navigateBack}
             navigateForward={navigateForward}
+            bind={bind}
+            getTutorialEclipseClassnameByStepkeys={
+              getTutorialEclipseClassnameByStepkeys
+            }
           />
         </div>
       )}
 
-      {!isSm && (
+      {!isMobileOverlay && (
         <div className="flex flex-col gap-3">
           {viewScreen?.type === screenType.SIGNPOST && (
             <NextButton nextScreenId={viewScreen.nextScreenReference} />
@@ -220,6 +257,7 @@ const ActionsPanel = ({
 
           <div className="flex items-end gap-2">
             <EditorButton
+              bind={bind}
               openEditorScreenUrl={openEditorScreenUrl}
               isEditorAccess={isEditorAccess}
               getTutorialEclipseClassnameByStepkeys={
@@ -227,16 +265,19 @@ const ActionsPanel = ({
               }
             />
             <SettingsButton
+              bind={bind}
               getTutorialEclipseClassnameByStepkeys={
                 getTutorialEclipseClassnameByStepkeys
               }
             />
-            <GlassMagnifierButton
-              hasGlassMagnifier={hasGlassMagnifier}
-              getTutorialEclipseClassnameByStepkeys={
-                getTutorialEclipseClassnameByStepkeys
-              }
-            />
+            {(step?.stepKey === "glass-magnifier" || hasGlassMagnifier) && (
+              <GlassMagnifierButton
+                bind={bind}
+                getTutorialEclipseClassnameByStepkeys={
+                  getTutorialEclipseClassnameByStepkeys
+                }
+              />
+            )}
             <PlayButton
               shouldIncrement={shouldIncrement}
               play={play}
@@ -246,16 +287,16 @@ const ActionsPanel = ({
                 getTutorialEclipseClassnameByStepkeys
               }
             />
-            <AudioButton
-              // conditional rendered
-              hasAudio={hasAudio}
-              isAudioMuted={isAudioMuted}
-              bind={bind}
-              getTutorialEclipseClassnameByStepkeys={
-                getTutorialEclipseClassnameByStepkeys
-              }
-              step={step}
-            />
+            {(step?.stepKey === "screen-info" || hasAudio) && (
+              <AudioButton
+                isAudioMuted={isAudioMuted}
+                bind={bind}
+                getTutorialEclipseClassnameByStepkeys={
+                  getTutorialEclipseClassnameByStepkeys
+                }
+              />
+            )}
+
             <ChaptersButtonContainer
               bind={bind}
               actionsBoxSize={actionsBoxSize}

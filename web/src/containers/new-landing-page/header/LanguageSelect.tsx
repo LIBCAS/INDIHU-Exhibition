@@ -48,7 +48,9 @@ const LanguageSelect = ({ isHeaderScrolled }: LanguageSelectProps) => {
 
         "& .MuiInputBase-root:before": {
           borderBottomWidth: "0px",
-          borderColor: "white !important",
+          borderColor: `${
+            isHeaderScrolled ? palette["primary-blue"] : "white"
+          } !important`,
         },
 
         "& .MuiInputBase-root:after": {

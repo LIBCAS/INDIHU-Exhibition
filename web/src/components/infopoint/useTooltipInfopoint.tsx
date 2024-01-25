@@ -1,8 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 // Components
 import ScreenAnchorInfopoint from "./ScreenAnchorInfopoint";
 import TooltipInfoPoint from "./TooltipInfopoint";
+
+import { useMediaQuery } from "@mui/material";
+import { breakpoints } from "hooks/media-query-hook/breakpoints";
 
 // Utils
 import {
@@ -10,6 +13,7 @@ import {
   parseSlideshowScreenMap,
   parseImageChangeScreenMap,
   parseGameQuizScreenMap,
+  InfopointStatusObject,
 } from "./parseScreenMaps";
 
 // Models
@@ -54,25 +58,82 @@ type InfopointSupportedScreens =
  * EXAMPLES: SLIDESHOW screen or IMAGE screen
  */
 const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
+  const isSm = useMediaQuery(breakpoints.down("sm"));
+
+  const [isMapParsingDone, setIsMapParsingDone] = useState<boolean>(false);
+
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
   // isAlwaysVisible is the mark for each infopoint, set in the slideshow administration
   const [infopointOpenStatusMap, setInfopointOpenStatusMap] = useState(() => {
+    let parsedInfopointStatusMap: Record<string, InfopointStatusObject> | null =
+      null;
+
     if (viewScreen.type === screenType.GAME_OPTIONS) {
-      return parseGameQuizScreenMap(viewScreen);
+      parsedInfopointStatusMap = parseGameQuizScreenMap(viewScreen);
+    } else if (viewScreen.type === screenType.SLIDESHOW) {
+      parsedInfopointStatusMap = parseSlideshowScreenMap(viewScreen);
+    } else if (viewScreen.type === screenType.IMAGE_CHANGE) {
+      parsedInfopointStatusMap = parseImageChangeScreenMap(viewScreen);
+    } else {
+      // TODO - improve structure
+      parsedInfopointStatusMap = parseImageScreenMap(viewScreen);
     }
-    if (viewScreen.type === screenType.SLIDESHOW) {
-      return parseSlideshowScreenMap(viewScreen);
-    }
-    if (viewScreen.type === screenType.IMAGE_CHANGE) {
-      return parseImageChangeScreenMap(viewScreen);
-    }
-    return parseImageScreenMap(viewScreen);
+
+    setIsMapParsingDone(true);
+    return parsedInfopointStatusMap;
   });
+
+  // - - -
+
+  // On small (mobile) screens, all infopoint, even the alwaysVisible, are by default first closed and then could be opened
+  useEffect(() => {
+    if (!isSm) {
+      setInfopointOpenStatusMap((prevMap) => {
+        if (!prevMap) {
+          return prevMap;
+        }
+        const entries = Object.entries(prevMap);
+        const nextMap = entries.reduce(
+          (acc, [key, infopointStatus]) => ({
+            ...acc,
+            [key]: {
+              ...infopointStatus,
+              isOpen: infopointStatus.isAlwaysVisible,
+            },
+          }),
+          {} as Record<string, InfopointStatusObject>
+        );
+
+        return nextMap;
+      });
+
+      return;
+    }
+
+    setInfopointOpenStatusMap((prevMap) => {
+      if (!prevMap) {
+        return prevMap;
+      }
+      const entries = Object.entries(prevMap);
+      const nextMapWithClosedInfopoints = entries.reduce(
+        (acc, [key, infopointStatus]) => ({
+          ...acc,
+          [key]: { ...infopointStatus, isOpen: false },
+        }),
+        {} as Record<string, InfopointStatusObject>
+      );
+
+      return nextMapWithClosedInfopoints;
+    });
+  }, [isSm, isMapParsingDone]);
 
   // - - -
 
   // Iterates through whole map and close all of the infopoints
   const closeAllInfopoints = useCallback(() => {
+    if (!infopointOpenStatusMap) {
+      return;
+    }
     const entries = Object.entries(infopointOpenStatusMap);
     const closedEntries = entries.map(([key, infopoint]) => {
       return [key, { ...infopoint, isOpen: false }];
@@ -85,6 +146,9 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
   // Iterates through whole map, but close only infopoints of current photo
   const closePhotoInfopoints = useCallback(
     (photoIndex: number) => {
+      if (!infopointOpenStatusMap) {
+        return;
+      }
       const entries = Object.entries(infopointOpenStatusMap);
       const closedEntries = entries.map(([key, infopoint]) => {
         const parsedPhotoKey = parseInt(key.charAt(0));

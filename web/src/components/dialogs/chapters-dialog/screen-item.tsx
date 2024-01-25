@@ -103,9 +103,8 @@ export const ScreenItem = ({
         >
           {screen.type === "START"
             ? t("start-screen")
-            : screen.title ?? isChapter
-            ? t("untitled-chapter")
-            : t("untitled-screen")}
+            : screen.title ??
+              t(isChapter ? "untitled-chapter" : "untitled-screen")}
         </NavLink>
       </div>
 

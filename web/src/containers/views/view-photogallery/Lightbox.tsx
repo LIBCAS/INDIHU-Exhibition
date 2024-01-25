@@ -55,40 +55,44 @@ const LightBox = ({
             />
 
             {/* Image itself */}
-            <div
-              ref={imgContainerRef}
-              style={{ width: "100%", height: "100%" }}
-              className="flex justify-center items-center"
-            >
-              <TransformComponent
-                wrapperStyle={{
-                  maxWidth: `${imgContainerSize.width}px`,
-                  maxHeight: `${imgContainerSize.height}px`,
-                }}
-                contentStyle={{
-                  maxWidth: `${imgContainerSize.width}px`,
-                  maxHeight: `${imgContainerSize.height}px`,
-                }}
+            <div className="w-full h-full pointer-events-none">
+              <div
+                ref={imgContainerRef}
+                style={{ width: "100%", height: "100%" }}
+                className="flex justify-center items-center"
               >
-                <img
-                  src={currPhotoSrc}
-                  alt="lightbox-image"
-                  style={{
+                <TransformComponent
+                  wrapperStyle={{
                     maxWidth: `${imgContainerSize.width}px`,
                     maxHeight: `${imgContainerSize.height}px`,
                   }}
-                  onLoad={(e) => {
-                    const imageEl = e.currentTarget;
-                    const imageWidth = imageEl.width;
-                    const imageHeight = imageEl.height;
-                    setContainedImageSize({
-                      width: imageWidth,
-                      height: imageHeight,
-                    });
+                  contentStyle={{
+                    maxWidth: `${imgContainerSize.width}px`,
+                    maxHeight: `${imgContainerSize.height}px`,
                   }}
-                />
-              </TransformComponent>
+                >
+                  <img
+                    src={currPhotoSrc}
+                    alt="lightbox-image"
+                    style={{
+                      maxWidth: `${imgContainerSize.width}px`,
+                      maxHeight: `${imgContainerSize.height}px`,
+                    }}
+                    onLoad={(e) => {
+                      const imageEl = e.currentTarget;
+                      const imageWidth = imageEl.width;
+                      const imageHeight = imageEl.height;
+                      setContainedImageSize({
+                        width: imageWidth,
+                        height: imageHeight,
+                      });
+                    }}
+                  />
+                </TransformComponent>
+              </div>
             </div>
+
+            <div className="w-full h-[24px]" />
           </div>
         );
       }}

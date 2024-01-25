@@ -3,7 +3,7 @@
   "paragraph1": "The application INDIHU Exhibition is operated by the Library of Czech Academy of Sciences. It is intended primarily for the staff of the Institutes of the Academy of Sciences, universities and memory institutions, but also for the general public as part of science popularization. The use of the tool is free of charge and is subject to registration, which is subsequently approved by the administrator.",
   "paragraph2": "The Library of Czech Academy of Sciences undertakes to operate this application on a long-term basis at <externalLink>https://exhibition.indihu.cz/</externalLink>. Users will be informed if the terms of use change. Technical details and description of use are available in the user manual <externalLink>https://nnis.github.io/indihu-manual/</externalLink>.",
   "paragraph3": "Further information is available in the development environment at <externalLink>https://github.com/LIBCAS/INDIHU-Exhibition</externalLink>.",
-  "paragraph4": "Contact email: <mailLink>info@indihu.cz</mailLink>",
+  "paragraph4": "Contact e-mail: <mailLink>info@indihu.cz</mailLink>",
   "creationSubtitle": "​​History",
-  "creationParagraph": "The software was developed as open source under the GNU GPL v3 license in the framework of the project \"INDIHU – Development of tools and infrastructure for digital humanities\" supported by the Ministry of Culture NAKI program in 2016-2020 under DG16P02B039. More information about the project at <externalLink>https://indihu.cz/</externalLink>."
+  "creationParagraph": "The INDIHU Exhibition tool has been significantly redesigned between 2021–2024 as part of the international project Loaded - Open. Digitalisation, accessibility and educational use of art collections in memory institutions supported by the EEA Grants, Culture Programme. More about the project at <externalLink>https://loaded-open.eu/en/o-projektu/</externalLink>."
 }

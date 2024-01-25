@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 
 import { useIsAnyTutorialOpened, useTutorialStore } from "./tutorial-provider";
 
@@ -7,8 +6,7 @@ import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 
 // Components
 import { Popper } from "components/popper/popper";
-import { Button } from "components/button/button";
-import { Icon } from "components/icon/icon";
+import TutorialContentBody from "./TutorialContentBody";
 
 // Types
 import { TutorialKey, TutorialStep } from "./tutorial-provider";
@@ -20,8 +18,6 @@ export type RefCallback = (ref: HTMLElement | null) => void;
 // - - - - - - - -
 
 export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
-  const { t } = useTranslation("tutorial");
-
   // Whole object will all tutorials and their info + helper functions to manipulate with them
   const {
     store,
@@ -163,31 +159,13 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
           rebuildListener={screen}
           rebuildListener2={section}
         >
-          <div className="p-2">
-            <div className="flex justify-between">
-              <span className="text-2xl font-semibold inline-block mb-2">
-                {currStepObj.label}
-              </span>
-              <span className="text-gray">
-                {currStepIndex + 1} z {steps.length}
-              </span>
-            </div>
-            <p className="text-inherit">{currStepObj.text}</p>
-            <div className="flex items-center justify-between gap-2">
-              <Button
-                color="expoTheme"
-                iconBefore={<Icon color="primary" name="skip_next" />}
-                onClick={skipTutorial}
-              >
-                {t("skip", { ns: "tutorial" })}
-              </Button>
-              <Button color="primary" onClick={nextTutorialStep}>
-                {currStepIndex + 1 === steps.length
-                  ? t("finish", { ns: "tutorial" })
-                  : t("next", { ns: "tutorial" })}
-              </Button>
-            </div>
-          </div>
+          <TutorialContentBody
+            currStepObj={currStepObj}
+            currStepIndex={currStepIndex}
+            numberOfSteps={steps.length}
+            nextTutorialStep={nextTutorialStep}
+            skipTutorial={skipTutorial}
+          />
         </Popper>
       ),
     [
@@ -200,7 +178,6 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
       section,
       skipTutorial,
       steps.length,
-      t,
     ]
   );
 

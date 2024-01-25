@@ -6,6 +6,9 @@ import { Icon } from "components/icon/icon";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 import OverlayDialog from "components/dialogs/overlay-dialog/overlay-dialog";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+import { RefCallback } from "context/tutorial-provider/use-tutorial";
+
+import cx from "classnames";
 
 // - -
 
@@ -23,6 +26,8 @@ type ExpandActionsButtonProps = {
   pause: () => void;
   navigateBack: () => void;
   navigateForward: () => void;
+  bind: (stepKey: string) => { ref: RefCallback };
+  getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const ExpandActionsButton = ({
@@ -39,13 +44,21 @@ const ExpandActionsButton = ({
   pause,
   navigateBack,
   navigateForward,
+  bind,
+  getTutorialEclipseClassnameByStepkeys,
 }: ExpandActionsButtonProps) => {
   const { openNewTopDialog, closeTopDialog, isOverlayDialogOpen } =
     useDialogRef();
 
   return (
     <>
-      <div className="pointer-events-auto">
+      <div
+        {...bind("overlay-button")}
+        className={cx(
+          "pointer-events-auto",
+          getTutorialEclipseClassnameByStepkeys(["overlay-button"])
+        )}
+      >
         <Button
           color="expoTheme"
           onClick={() => openNewTopDialog(DialogRefType.OverlayDialog)}

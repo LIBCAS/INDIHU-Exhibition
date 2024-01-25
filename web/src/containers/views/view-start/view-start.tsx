@@ -9,10 +9,10 @@ import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
 import useElementSize from "hooks/element-size-hook";
 import useResizeObserver from "hooks/use-resize-observer";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useViewStartAnimation } from "./view-start-animation-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 // Components
 import StartInfoPanel from "./StartInfoPanel";
@@ -29,10 +29,10 @@ import { AppDispatch, AppState } from "store/store";
 import { ViewExpo, StartScreen, ScreenProps } from "models";
 
 // Utils and actions
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
 import { setViewProgress } from "actions/expoActions/viewer-actions";
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateLogoPosition } from "./calculateLogoPosition";
+import ExpoAuthorsDialog from "components/dialogs/expo-authors-dialog/expo-authors-dialog";
 
 // - - - - - - - -
 
@@ -48,8 +48,9 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { expoDesignData } = useExpoDesignData();
-  const isSmall = useMediaQuery(breakpoints.down("lg"));
   const { navigateForward } = useExpoNavigation();
+
+  const { isMobile, isTablet, isDesktop } = useMediaDevice();
 
   const {
     openNewTopDialog,
@@ -59,6 +60,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
     isChaptersDialogOpen,
     isFilesDialogOpen,
     isWorksheetDialogOpen,
+    isExpoAuthorsDialogOpen,
   } = useDialogRef();
 
   const animationProps = useViewStartAnimation(viewScreen?.animationType);
@@ -183,9 +185,24 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* b) Flex container with 2 items, left Info panel, right Detail panel with start button (on top of bg image) */}
       <div className="fixed top-0 left-0 h-full w-full flex px-4 pt-4 gap-4">
-        {isSmall ? (
+        {isMobile && (
           <div className="flex-1 flex flex-col justify-end">
-            <div />
+            <div className="flex flex-col justify-end">
+              <StartButton handleStart={handleStart} />
+              <StartInfoPanel
+                viewExpo={viewExpo}
+                viewScreen={viewScreen}
+                isInfoPanelOpen={isInfoPanelOpen}
+                setIsInfoPanelOpen={setIsInfoPanelOpen}
+                openMobileInfoDialog={openMobileInfoDialog}
+                openChaptersDialog={openChaptersDialog}
+              />
+            </div>
+          </div>
+        )}
+
+        {isTablet && (
+          <div className="flex-1 flex flex-col justify-end">
             <div className="flex justify-self-end gap-4" ref={infoPanelRef}>
               <StartInfoPanel
                 viewExpo={viewExpo}
@@ -198,7 +215,9 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
               <StartButton handleStart={handleStart} />
             </div>
           </div>
-        ) : (
+        )}
+
+        {isDesktop && (
           <>
             <div className="flex-1 flex flex-col justify-end">
               <div className="h-36" />
@@ -279,6 +298,17 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
             <WorksheetsDialog
               closeThisDialog={closeTopDialog}
               files={viewScreen?.documents}
+            />
+          }
+        />
+      )}
+
+      {isExpoAuthorsDialogOpen && (
+        <DialogPortal
+          component={
+            <ExpoAuthorsDialog
+              closeThisDialog={closeTopDialog}
+              collaboratorsData={viewScreen.collaborators}
             />
           }
         />

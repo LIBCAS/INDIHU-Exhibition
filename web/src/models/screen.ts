@@ -34,9 +34,10 @@ import {
 
 export type ScreenProps = {
   screenPreloadedFiles: ScreenPreloadedFiles;
-  infoPanelRef: RefObject<HTMLDivElement>;
+  infoPanelRef: MutableRefObject<HTMLDivElement | null>;
   actionsPanelRef: MutableRefObject<HTMLDivElement | null>;
   chapterMusicRef: RefObject<HTMLAudioElement>;
+  isMobileOverlay: boolean;
 };
 
 export type ScreenEditorProps = {

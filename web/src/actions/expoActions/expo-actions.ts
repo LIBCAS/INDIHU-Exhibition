@@ -227,7 +227,6 @@ export const unpinExpositionItem =
       });
 
       if (resp.status !== 200) {
-        console.log("not 200!");
         dispatch(showLoader(false));
         return false;
       }

@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
-import { MouseEvent, useCallback, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
 import { animated, useTransition } from "react-spring";
 import { ScreenProps } from "models";
 import cx from "classnames";
@@ -14,6 +14,7 @@ import pinIcon from "assets/img/pin.png";
 import classes from "./game-find.module.scss";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
@@ -24,6 +25,7 @@ export const GameFind = ({
   screenPreloadedFiles,
   infoPanelRef,
   actionsPanelRef,
+  isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
@@ -61,6 +63,27 @@ export const GameFind = ({
     from: { x: 0 },
     enter: { x: 1 },
     leave: { x: 1 },
+  });
+
+  //
+
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
+    "gameFind",
+    !isMobileOverlay
+  );
+
+  const onKeydownAction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        escapeTutorial();
+      }
+    },
+    [escapeTutorial]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
   });
 
   return (
@@ -111,6 +134,7 @@ export const GameFind = ({
             gameScreen={viewScreen}
             text={t("game-find.task")}
             isGameFinished={finished}
+            bindTutorial={bind("finding")}
           />,
           infoPanelRef.current
         )}
@@ -124,6 +148,8 @@ export const GameFind = ({
           />,
           actionsPanelRef.current
         )}
+
+      {TutorialTooltip}
     </div>
   );
 };

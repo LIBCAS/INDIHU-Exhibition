@@ -6,7 +6,7 @@ import nahranoOtevrenoLogo from "../../../assets/img/landing-page/nahrano-otevre
 import knihovnaLogo from "../../../assets/img/landing-page/knihovna-logo-white.png";
 
 import { BsBoxArrowUpRight } from "react-icons/bs";
-import { BsFacebook } from "react-icons/bs";
+// import { BsFacebook } from "react-icons/bs";
 import { BsGithub } from "react-icons/bs";
 
 // list of countries here: https://github.com/madebybowtie/FlagKit/blob/master/Assets/Flags.md
@@ -14,6 +14,8 @@ import Flag from "react-flagkit";
 
 import { palette } from "palette";
 import cx from "classnames";
+
+import { HashLink } from "react-router-hash-link";
 
 // - -
 
@@ -42,17 +44,17 @@ const Footer = ({ useWhiteVariant = false }: FooterProps) => {
                   {t("footer.about.projects")}
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="/about#history-section">{t("footer.about.history")}</a>
-              </li>
+              </li> */}
               <li>
                 <a href="/about#creators-section">
                   {t("footer.about.creators")}
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#">{t("footer.about.devInformation")}</a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -74,13 +76,15 @@ const Footer = ({ useWhiteVariant = false }: FooterProps) => {
                   <BsBoxArrowUpRight color="white" />
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#">{t("footer.indihu.events")}</a>
-              </li>
+              </li> */}
               <li>
-                <a href="#">{t("footer.indihu.adminContact")}</a>
+                <HashLink to="/about#contact-email">
+                  {t("footer.indihu.adminContact")}
+                </HashLink>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="https://github.com/LIBCAS/INDIHU-Exhibition"
                   target="_blank"
@@ -88,7 +92,7 @@ const Footer = ({ useWhiteVariant = false }: FooterProps) => {
                 >
                   {t("footer.indihu.githubSourceCode")}
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -177,22 +181,26 @@ const Footer = ({ useWhiteVariant = false }: FooterProps) => {
           <a href="/privacy-policy" title="Zásady ochrany osobních údajů">
             {t("footer.privacyPolicy")}
           </a>
-          <span className="px-2 self-center">|</span>
-          <a href="#" title="Zásady použití cookies">
+
+          {/* <span className="px-2 self-center">|</span> */}
+
+          {/* <a href="#" title="Zásady použití cookies">
             {t("footer.cookiesPolicy")}
-          </a>
+          </a> */}
         </div>
 
         <div className="flex gap-1">
-          <a href="#" title="Facebook" className="flex items-center gap-1">
+          {/* <a href="#" title="Facebook" className="flex items-center gap-1">
             <BsFacebook
               color={
                 useWhiteVariant ? palette["primary-blue"] : palette["white"]
               }
             />
             <span>Facebook</span>
-          </a>
-          <span className="px-2 self-center">|</span>
+          </a> */}
+
+          {/* <span className="px-2 self-center">|</span> */}
+
           <a
             href="https://github.com/LIBCAS/INDIHU-Exhibition"
             target="_blank"

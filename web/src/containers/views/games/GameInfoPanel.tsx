@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { Icon } from "components/icon/icon";
+import { RefCallback } from "context/tutorial-provider/use-tutorial";
 
 import cx from "classnames";
 
@@ -8,19 +9,21 @@ type GameInfoPanelProps = {
   gameScreen: { title?: string; task?: string };
   isGameFinished?: boolean;
   text?: string; // if not present, screen title with custom game task wont be visible
+  bindTutorial: { ref: RefCallback };
 };
 
 export const GameInfoPanel = ({
   gameScreen,
   isGameFinished,
   text,
+  bindTutorial,
 }: GameInfoPanelProps) => {
   const { t } = useTranslation("view-screen");
   const { bgFgTheming } = useExpoDesignData();
   const { title, task } = gameScreen;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" {...bindTutorial}>
       {text && (
         <div
           className={cx(

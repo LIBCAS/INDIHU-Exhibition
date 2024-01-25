@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { animated, useSpring, useTransition } from "react-spring";
 import { createSelector } from "reselect";
 import { useDrag } from "@use-gesture/react";
@@ -14,6 +14,7 @@ import useElementSize from "hooks/element-size-hook";
 import expand from "../../../../assets/img/expand.png";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameSizingScreen,
@@ -24,6 +25,7 @@ export const GameSizing = ({
   screenPreloadedFiles,
   infoPanelRef,
   actionsPanelRef,
+  isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
@@ -95,6 +97,28 @@ export const GameSizing = ({
     leave: { opacity: 0 },
   });
 
+  // - -
+
+  const {
+    bind: bindTutorial,
+    TutorialTooltip,
+    escapeTutorial,
+  } = useTutorial("gameSizing", !isMobileOverlay);
+
+  const onKeydownAction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        escapeTutorial();
+      }
+    },
+    [escapeTutorial]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
+  });
+
   return (
     <div className="w-full h-full flex px-12">
       <div className="flex-grow m-4 flex justify-center items-center relative">
@@ -141,6 +165,7 @@ export const GameSizing = ({
             gameScreen={viewScreen}
             isGameFinished={finished}
             text={t("game-sizing.task")}
+            bindTutorial={bindTutorial("sizing")}
           />,
           infoPanelRef.current
         )}
@@ -154,6 +179,8 @@ export const GameSizing = ({
           />,
           actionsPanelRef.current
         )}
+
+      {TutorialTooltip}
     </div>
   );
 };

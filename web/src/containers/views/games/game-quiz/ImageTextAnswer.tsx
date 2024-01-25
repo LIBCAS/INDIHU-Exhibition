@@ -17,6 +17,7 @@ import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
 import { getAnswerCheckboxIcon, getAnswerRadioIcon } from "./utils";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 type ImageTextAnswerProps = {
   answer: GameQuizAnswer;
@@ -50,6 +51,8 @@ const ImageTextAnswer = ({
   infopointOpenStatusMap,
   setInfopointOpenStatusMap,
 }: ImageTextAnswerProps) => {
+  const { isSm, isMobileLandscape } = useMediaDevice();
+
   const [imageContainerRef, imageContainerSize] =
     useElementSize<HTMLImageElement>();
 
@@ -77,8 +80,10 @@ const ImageTextAnswer = ({
     <div
       key={answerIndex}
       className={cx(
-        "w-[380px] flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer relative",
+        "flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer relative",
         {
+          "w-[380px]": !isSm && isMobileLandscape,
+          "w-[260px]": isSm || isMobileLandscape,
           "!p-2": quizType === "ONLY_IMAGES",
           "!p-3": quizType === "ONLY_TEXT",
           "border-blue !bg-[#3d7eca4d]":
@@ -113,7 +118,12 @@ const ImageTextAnswer = ({
     >
       {/* CONTAINED IMAGE + ITS INFOPOINTS */}
       {(quizType === "TEXT_IMAGES" || quizType === "ONLY_IMAGES") && (
-        <div className="w-full h-[300px] relative">
+        <div
+          className={cx("w-full relative", {
+            "h-[300px]": !isSm && !isMobileLandscape,
+            "h-[200px]": isSm || isMobileLandscape,
+          })}
+        >
           <img
             ref={imageContainerRef}
             src={preloadedImgSrc}

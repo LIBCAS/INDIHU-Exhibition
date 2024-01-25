@@ -17,7 +17,7 @@
     },
     "screenLabels": {
       "start": "Úvod do výstavy",
-      "intro": "Úvod do výstavy",
+      "intro": "Úvod do kapitoly",
       "image": "Obrazovka s obrázkem",
       "video": "Obrazovka s videem",
       "text": "Obrazovka s textem",
@@ -135,7 +135,9 @@
     "expoComments": "Komentáře k výstavě",
     "expoNoCommentsYet": "Tato výstava zatím nemá žádné komentáře.",
     "created": "Vytvořeno:",
-    "rating": "Hodnocení:"
+    "rating": "Hodnocení:",
+    "ratingNotSpecified": "Neuvedeno",
+    "emailContact": "E-mail recenzenta:"
   },
   "theming": {
     "tab": "Motiv",
@@ -239,8 +241,8 @@
     "readOnlyOption": "Jen pro čtení",
     "editOption": "Pro čtení a zápis",
     "selectTypeFieldLabel": "Vyberte typ",
-    "userEmailField": "E-mail užívatele",
-    "ifUserDoesNotExistSendEmailInvite": "Pokud užívatel neexistuje, odeslat e-mailovou pozvánku",
+    "userEmailField": "E-mail uživatele",
+    "ifUserDoesNotExistSendEmailInvite": "Pokud uživatel neexistuje, odeslat e-mailovou pozvánku",
     "responseUserAdded": {
       "title": "Uživatel přidaný",
       "text": "Výstava byla sdílena uživateli {{userName}}."
@@ -251,11 +253,11 @@
     },
     "responseNotIndihuUser": {
       "title": "Pozvat uživatele",
-      "text": "{{userName}} není uživatel Indihu. Prosím vyberte možnost \"odeslat e-mailovou pozvánku\""
+      "text": "{{userName}} není uživatel INDIHU Exhibition. Prosím vyberte možnost \"odeslat e-mailovou pozvánku\""
     },
     "responseUserIsAlreadyShared": {
-      "title": "Užívatel již spolupracuje",
-      "text": "Výstava je již sdílena s užívatelem {{userName}}."
+      "title": "Uživatel již spolupracuje",
+      "text": "Výstava je již sdílena s uživatelem {{userName}}."
     }
   },
   "expoStateDialog": {
@@ -307,10 +309,10 @@
   "passwordResetDialog": {
     "title": "Reset hesla",
     "submitLabel": "Reset",
-    "emailField": "Email",
+    "emailField": "E-mail",
     "responseSuccess": {
       "title": "Reset hesla úspěšný",
-      "text": "Nové heslo bylo zasláno na zadaný email."
+      "text": "Nové heslo bylo zasláno na zadaný e-mail."
     },
     "responseFailure": {
       "title": "Reset hesla neúspěšný",

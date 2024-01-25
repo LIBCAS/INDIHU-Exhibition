@@ -21,11 +21,9 @@ const ExpoRating = ({ activeExpo }: ExpoRatingProps) => {
     return null;
   }
 
-  console.log("activeExpo: ", activeExpo);
-
   return (
     <Container maxWidth="xl">
-      <div className="pt-36 pb-16 flex flex-col gap-6">
+      <div className="w-full pt-36 pb-16 flex flex-col gap-6">
         {/* Rating statistics */}
         <div className="w-fit flex flex-col gap-2">
           <div className="font-bold text-lg">{t("rating.expoRating")}</div>
@@ -47,7 +45,7 @@ const ExpoRating = ({ activeExpo }: ExpoRatingProps) => {
         </div>
 
         {/* Messages to the exposition, textfield from rating dialog */}
-        <div className="w-full flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <div className="font-bold text-lg">{t("rating.expoComments")}</div>
           {(!messages || messages?.length === 0) && (
             <div className="pl-2 italic">{t("rating.expoNoCommentsYet")}</div>

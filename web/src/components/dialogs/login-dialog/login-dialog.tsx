@@ -37,7 +37,10 @@ const LoginDialog = ({ closeThisDialog, oauthConfigs }: LoginDialogProps) => {
       }}
       sectionStyle={{ padding: 0 }}
     >
-      <LoginForm oauthConfigs={oauthConfigs} />
+      <LoginForm
+        oauthConfigs={oauthConfigs}
+        closeLoginDialog={closeThisDialog}
+      />
     </DialogWrap>
   );
 };

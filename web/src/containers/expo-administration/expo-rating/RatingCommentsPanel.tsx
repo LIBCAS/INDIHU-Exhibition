@@ -6,6 +6,7 @@ import { MessageObj } from "models";
 
 import { formatDate } from "utils";
 import { palette } from "palette";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 // - -
 
@@ -16,8 +17,10 @@ type RatingCommentsPanelProps = {
 const RatingCommentsPanel = ({ messages }: RatingCommentsPanelProps) => {
   const { t } = useTranslation("expo");
 
+  const { isMd } = useMediaDevice();
+
   return (
-    <div className="max-h-[490px] flex flex-col gap-4 pr-2 expo-scrollbar">
+    <div className="w-full h-full flex flex-col gap-4">
       {messages.map((message) => {
         if (!message.text) {
           return null;
@@ -34,25 +37,44 @@ const RatingCommentsPanel = ({ messages }: RatingCommentsPanelProps) => {
           >
             <div className="text-base">{message.text}</div>
 
-            <div className="flex justify-end items-center gap-3">
+            <div className="flex flex-col justify-end items-end gap-1 md:flex-row md:items-center md:gap-3">
               <div className="flex gap-1 items-center text-sm italic">
                 <div>{t("rating.created")}</div>
                 <div>{formatDate(message.created)}</div>
               </div>
 
-              <div className="w-[6px] h-[6px] rounded-full bg-black" />
+              {!isMd && (
+                <div className="w-[6px] h-[6px] rounded-full bg-black" />
+              )}
 
               <div className="flex gap-1 items-center text-sm italic">
                 <div>{t("rating.rating")}</div>
                 <div>
-                  <Rating
-                    value={message.rating}
-                    precision={0.5}
-                    readOnly
-                    size="small"
-                  />
+                  {message.rating ? (
+                    <Rating
+                      value={message.rating}
+                      precision={0.5}
+                      readOnly
+                      size="small"
+                    />
+                  ) : (
+                    <span className="italic">
+                      {t("rating.ratingNotSpecified")}
+                    </span>
+                  )}
                 </div>
               </div>
+
+              {message.contactEmail && !isMd && (
+                <div className="w-[6px] h-[6px] rounded-full bg-black" />
+              )}
+
+              {message.contactEmail && (
+                <div className="flex gap-1 items-center text-sm italic">
+                  <span className="italic">{t("rating.emailContact")}</span>
+                  <span>{message.contactEmail}</span>
+                </div>
+              )}
             </div>
           </div>
         );

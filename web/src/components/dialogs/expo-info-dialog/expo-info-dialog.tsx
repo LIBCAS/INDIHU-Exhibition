@@ -5,19 +5,20 @@ import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import TagsList from "components/tags-list/TagsList";
 
-import { ViewExpo } from "models";
+import { StartScreen, ViewExpo } from "models";
 
 import DialogWrap from "../dialog-wrap-noredux-typed";
 
 import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+import { isWorksheetFile } from "utils/view-utils";
 
 // - - - - - - - - -
 
 export type ExpoInfoDialogProps = {
   closeThisDialog: () => void;
   viewExpo: ViewExpo;
-  viewScreen: any;
+  viewScreen: StartScreen;
 };
 
 export const ExpoInfoDialog = ({
@@ -36,6 +37,20 @@ export const ExpoInfoDialog = ({
         : [t("no-perex")],
     [t, viewScreen?.perex]
   );
+
+  const startExpoFiles = useMemo(
+    () => viewScreen.documents?.filter((currDoc) => !isWorksheetFile(currDoc)),
+    [viewScreen.documents]
+  );
+
+  const startWorksheetFiles = useMemo(
+    () => viewScreen.documents?.filter((currDoc) => isWorksheetFile(currDoc)),
+    [viewScreen.documents]
+  );
+
+  const openAuthorsDialog = useCallback(() => {
+    openNewTopDialog(DialogRefType.ExpoAuthorsDialog);
+  }, [openNewTopDialog]);
 
   const openChaptersDialog = useCallback(() => {
     openNewTopDialog(DialogRefType.ChaptersDialog);
@@ -64,22 +79,29 @@ export const ExpoInfoDialog = ({
         <div className="pb-5 border-b border-b-black border-opacity-10">
           {expoPerexLines}
         </div>
-        <div className="mt-5 flex justify-between items-center gap-6">
-          {/* Tags */}
-          {tags && <TagsList tags={tags} />}
 
-          {/* Dialog opening buttons */}
-          <div className="flex items-center gap-2">
-            <Button color="primary" onClick={openChaptersDialog}>
-              <Icon color="white" name="layers" />
-            </Button>
+        {/* Dialog opening buttons */}
+        <div className="flex justify-end items-center gap-2">
+          <Button color="primary" onClick={openAuthorsDialog}>
+            <Icon color="white" name="account_box" />
+          </Button>
+          <Button color="primary" onClick={openChaptersDialog}>
+            <Icon color="white" name="layers" />
+          </Button>
+          {startWorksheetFiles?.length !== 0 && (
             <Button color="primary" onClick={openWorksheetDialog}>
               <Icon color="white" name="description" />
             </Button>
+          )}
+          {startExpoFiles?.length !== 0 && (
             <Button color="primary" onClick={openFilesDialog}>
               <Icon color="white" name="folder" />
             </Button>
-          </div>
+          )}
+        </div>
+
+        <div className="mt-5 flex justify-between items-center gap-6">
+          {tags && <TagsList tags={tags} />}
         </div>
       </DialogWrap>
     </>

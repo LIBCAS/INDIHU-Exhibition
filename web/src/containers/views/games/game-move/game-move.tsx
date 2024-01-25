@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { animated, useSpring, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
 import { useDrag } from "@use-gesture/react";
@@ -13,6 +13,7 @@ import { GameMoveScreen } from "models";
 
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameMoveScreen,
@@ -23,6 +24,7 @@ export const GameMove = ({
   screenPreloadedFiles,
   infoPanelRef,
   actionsPanelRef,
+  isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
@@ -70,6 +72,28 @@ export const GameMove = ({
     leave: { opacity: 0 },
   });
 
+  // - -
+
+  const {
+    bind: bindTutorial,
+    TutorialTooltip,
+    escapeTutorial,
+  } = useTutorial("gameMove", !isMobileOverlay);
+
+  const onKeydownAction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        escapeTutorial();
+      }
+    },
+    [escapeTutorial]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
+  });
+
   return (
     <div className="w-full h-full relative" ref={ref}>
       {transition(({ opacity }, finished) =>
@@ -108,6 +132,7 @@ export const GameMove = ({
             gameScreen={viewScreen}
             isGameFinished={finished}
             text={t("game-move.task")}
+            bindTutorial={bindTutorial("moving")}
           />,
           infoPanelRef.current
         )}
@@ -121,6 +146,8 @@ export const GameMove = ({
           />,
           actionsPanelRef.current
         )}
+
+      {TutorialTooltip}
     </div>
   );
 };

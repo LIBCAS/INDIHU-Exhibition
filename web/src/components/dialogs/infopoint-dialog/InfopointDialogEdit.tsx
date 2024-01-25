@@ -70,7 +70,6 @@ const InfopointDialogEdit = ({
           handleSubmit={() => {
             formik.submitForm();
           }}
-          //onClose={() => console.log("here onClose() closing edit dialog!")}
           closeAfterSuccessfulSubmit
           isSubmitSuccessful={isSubmitted}
           closeOnEsc

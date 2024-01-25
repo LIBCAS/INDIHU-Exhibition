@@ -1,11 +1,10 @@
-import { RefObject, useMemo } from "react";
+import { MutableRefObject, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useTranslation } from "react-i18next";
 import { useExpoScreenProgress } from "hooks/view-hooks/expo-screen-progress-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
-import { useMediaQuery } from "hooks/media-query-hook/media-query-hook";
 
 import { ProgressBar } from "components/progress-bar/progress-bar";
 import { Icon } from "components/icon/icon";
@@ -19,8 +18,6 @@ import { isGameScreen } from "utils/view-utils";
 import { tickTime } from "constants/view-screen-progress";
 import { screenType } from "enums/screen-type";
 
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
-
 // - -
 
 const stateSelector = createSelector(
@@ -29,11 +26,12 @@ const stateSelector = createSelector(
 );
 
 type InfoPanelProps = {
-  infoPanelRef: RefObject<HTMLDivElement>;
+  infoPanelRef: MutableRefObject<HTMLDivElement | null>;
   openDrawer: () => void;
   keyKey: number;
   bind: (stepKey: string) => { ref: RefCallback };
   getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
+  isMobileOverlay: boolean;
 };
 
 const InfoPanel = ({
@@ -42,11 +40,10 @@ const InfoPanel = ({
   keyKey,
   bind,
   getTutorialEclipseClassnameByStepkeys,
+  isMobileOverlay,
 }: InfoPanelProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
-
-  const isSm = useMediaQuery(breakpoints.down("sm"));
 
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
   const { bgFgTheming } = useExpoDesignData();
@@ -62,17 +59,30 @@ const InfoPanel = ({
     );
   }, [viewScreen?.type]);
 
-  if (amIGameScreen || isSm) {
-    return null;
+  // TODO: Handle something information about game screens in mobile
+  // classic screen is handled by Drawer Panel with info button
+  if (isMobileOverlay) {
+    return <div />;
+  }
+
+  // Game screen has different info panel than other screen type
+  if (amIGameScreen) {
+    return (
+      <div
+        className={cx(classes.info, "p-3 flex justify-start items-end")}
+        ref={(infoPanelDiv) => {
+          infoPanelRef.current = infoPanelDiv;
+        }}
+      ></div>
+    );
   }
 
   return (
     <div
       className={cx(
         classes.info, // info in the grid
-        "hidden sm:flex h-full justify-start items-end p-3 gap-2"
+        "flex h-full justify-start items-end p-3 gap-2"
       )}
-      ref={infoPanelRef}
     >
       <div
         {...bind("info")}

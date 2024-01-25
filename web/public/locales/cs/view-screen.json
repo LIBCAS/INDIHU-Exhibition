@@ -33,12 +33,12 @@
   },
 
   "overlayDialog": {
-    "title": "Rozhranie",
+    "title": "Rozhraní",
     "editCurrentScreen": "Upravit aktuální obrazovku",
     "openSettings": "Otevřít nastavení",
     "openGlassMagnifierSettings": "Otevřít nastavení lupy",
     "openAudioVolumeSettings": "Otevřít nastavení zvuku",
-    "openChaptersOverview": "Otevřít zeznam kapitol",
+    "openChaptersOverview": "Otevřít seznam kapitol",
     "pause": "Pozastavit",
     "play": "Přehrát"
   },
@@ -51,6 +51,7 @@
 
   "rating": {
     "title": "Jak se vám líbila výstava?",
+    "expoRating": "Hodnocení výstavy",
     "overallRating": "Celkové hodnocení",
     "whatYouLikedMost": "Co se vám nejvíce líbilo?",
     "max2Options": "(max. 2 možnosti)",

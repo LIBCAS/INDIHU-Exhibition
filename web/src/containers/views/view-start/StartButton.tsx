@@ -10,13 +10,15 @@ const StartButton = ({ handleStart }: StartButtonProps) => {
   const { expoDesignData } = useExpoDesignData();
 
   return (
-    <button
-      className="h-full w-32 lg:h-32 p-4 ml-auto mb-4 border-4 border-solid border-white text-white text-bold text-lg bg-primary cursor-pointer"
-      style={{ backgroundColor: expoDesignData?.iconsColor }}
-      onClick={handleStart}
-    >
-      {t("start")}
-    </button>
+    <div className="ml-auto mb-3 h-full flex justify-center items-center lg:items-end">
+      <button
+        className="w-32 h-32 p-4 border-4 border-solid border-white text-white text-bold text-lg bg-primary cursor-pointer"
+        style={{ backgroundColor: expoDesignData?.iconsColor }}
+        onClick={handleStart}
+      >
+        {t("start")}
+      </button>
+    </div>
   );
 };
 

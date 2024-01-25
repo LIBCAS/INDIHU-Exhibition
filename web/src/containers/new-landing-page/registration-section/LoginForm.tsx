@@ -29,9 +29,10 @@ type LoginFormData = {
 
 type LoginFormProps = {
   oauthConfigs: OAuthConfigObj[] | null;
+  closeLoginDialog: () => void;
 };
 
-const LoginForm = ({ oauthConfigs }: LoginFormProps) => {
+const LoginForm = ({ oauthConfigs, closeLoginDialog }: LoginFormProps) => {
   const { t } = useTranslation("new-landing-screen", {
     keyPrefix: "registrationSection",
   });
@@ -79,6 +80,7 @@ const LoginForm = ({ oauthConfigs }: LoginFormProps) => {
 
               if (isSignSucc) {
                 history.push("/exhibitions");
+                closeLoginDialog();
               } else {
                 formik.setFieldError("password", "*Chybné přihlašovací údaje");
               }

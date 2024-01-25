@@ -5,6 +5,7 @@ import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
 import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+import { useSwipeable } from "react-swipeable";
 
 // Components
 import { Grid } from "@mui/material";
@@ -44,7 +45,7 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     null
   );
 
-  const [isActivity, setIsActivity] = useState<boolean>(false);
+  const [isActivity, setIsActivity] = useState<boolean>(false); // photogallery overlay
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   const overlayOpacityAnimation = useSpring({
@@ -119,12 +120,15 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     }
 
     setIsActivity(true);
-    const timeout = setTimeout(
-      () => setIsActivity(false),
-      OVERLAY_UNACTIVE_TIMEOUT
-    );
-    timeoutRef.current = timeout;
-  }, []);
+
+    if (!isLightBoxOpened) {
+      const timeout = setTimeout(
+        () => setIsActivity(false),
+        OVERLAY_UNACTIVE_TIMEOUT
+      );
+      timeoutRef.current = timeout;
+    }
+  }, [isLightBoxOpened]);
 
   useEffect(() => {
     document.addEventListener("keydown", onKeydownAction);
@@ -137,21 +141,37 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     };
   }, [onKeydownAction, onMouseAction]);
 
+  useEffect(() => {
+    if (isLightBoxOpened && timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLightBoxOpened, timeoutRef.current]);
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      nextPhoto();
+    },
+    onSwipedRight: () => {
+      prevPhoto();
+    },
+    delta: 80,
+  });
+
   return (
     <div className="w-full h-full relative">
       {/* Gallery always rendered */}
       <div
-        className="w-full h-full py-[5%] px-[7.5%]"
+        className="w-full h-full pl-[7.5%] pr-[5%] py-[5%] 2xl:pr-[5.9%]"
         style={{
           backgroundColor: isLightBoxOpened ? "black" : undefined,
-          opacity: isLightBoxOpened ? 0.1 : undefined,
+          opacity: isLightBoxOpened ? 0.05 : undefined,
         }}
       >
         <Grid
           container
           spacing={{ xs: 3, sm: 3, lg: 3 }}
-          className="w-full h-full overflow-y-auto expo-scrollbar"
-          sx={{ overflowX: "hidden", paddingRight: 3 }}
+          className="w-full h-full overflow-x-hidden overflow-y-auto expo-scrollbar pr-[2.5%] 2xl:pr-[1.6%]"
         >
           {images?.map((imageBlobSrc, imageIndex) => (
             <ImageItem
@@ -174,6 +194,7 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
             <div
               key={selectedImageIndex}
               className="absolute top-0 left-0 w-full h-full px-[7%] py-[4.5%]"
+              {...swipeHandlers}
             >
               <LightBox
                 key={`lightbox-image-${selectedImageIndex}`}

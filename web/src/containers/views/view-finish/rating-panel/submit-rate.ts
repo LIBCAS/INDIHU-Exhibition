@@ -1,5 +1,5 @@
 type RateFormData = {
-  rating: number;
+  rating: number | null;
   preferences: {
     topic: boolean;
     media: boolean;

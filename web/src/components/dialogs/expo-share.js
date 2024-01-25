@@ -58,9 +58,6 @@ export default compose(
     onSubmit:
       (dialog) =>
       async (formData, dispatch, { data, t }) => {
-        console.log("data: ", data);
-        console.log("formData: ", formData);
-
         const response = await dispatch(
           addCollaborators(
             formData.name,

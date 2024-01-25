@@ -22,7 +22,7 @@ export const FinishInfoDialog = ({
     <DialogWrap
       closeThisDialog={closeThisDialog}
       title={<span className="text-2xl font-bold">{t("info")}</span>}
-      large
+      big
       noDialogMenu
       closeOnEsc
       applyTheming
