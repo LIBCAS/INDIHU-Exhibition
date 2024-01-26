@@ -81,5 +81,12 @@
 
   "oauth": {
     "login": "Přihlásit se"
+  },
+
+  "loginResponseErrors": {
+    "publicEmailError": "V nastavení profilu u poskytovatele ({{providerName}}) je potřeba nastavit verejnú emailovou adresu.",
+    "waitingForAdminAcceptInfo": "Registrace proběhla úspěšně, avšak čeká se na schválení od administrátora.",
+    "stillNotAcceptedError": "Už jste registrováni a stále neproběhlo potvrzení administrátorem.",
+    "otherUnknownError": "Při pokusu o přihlášení došlo k neočekávané chybě."
   }
 }

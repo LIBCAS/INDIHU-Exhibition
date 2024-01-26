@@ -34,7 +34,7 @@
     },
     "editor": {
       "label": "Editace obrazovky",
-      "text": "Jako tvůrce výstavy, kliknutí na toto tlačítko způsobí přesměrování na stránku editace aktuální obrazovky."
+      "text": "Pro tvůrce výstavy: po kliknutí na toto tlačítko budete přesměrování na stránku editace aktuální obrazovky."
     },
     "progressbar": {
       "label": "Přetáčení",
@@ -57,11 +57,11 @@
     },
     "help-tutorial-button": {
       "label": "Nápověda",
-      "text": "U některých typů obrazovek se nachází toto tlačítko nápovědy, které lze použít k zobrazení dodatečných informací nebo nápovědy o tom, jak s danou obrazovkou pracovat."
+      "text": "U některých typů obrazovek se nachází toto tlačítko nápovědy, které lze použít k zobrazení dodatečných informací nebo nápovědy o možnostech práce s obrazovkou."
     },
     "overlay-button": {
       "label": "Rozhraní",
-      "text": "Klepnutí tohoto tlačítka otevře dodatečná nastavení a funkcionality k aktuální výstavě."
+      "text": "Stisknutím tlačítka otevřete dodatečná nastavení a funkcionality k aktuální výstavě."
     }
   },
 
@@ -75,42 +75,42 @@
   "gameDraw": {
     "help-tutorial": {
       "label": "Hra dokresli",
-      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu dokresli."
+      "text": "Jak používat obrazovku Dokresli."
     }
   },
 
   "gameFind": {
     "help-tutorial": {
-      "label": "Hra nájdi na obrázku",
-      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu nájdi na obrázku."
+      "label": "Hra najdi na obrázku",
+      "text": "Jak používat obrazovku Najdi na obrázku."
     }
   },
 
   "gameMove": {
     "help-tutorial": {
       "label": "Hra posuň na správné místo",
-      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu posuň na správné místo."
+      "text": "Jak používat obrazovku Posuň na správné místo."
     }
   },
 
   "gameOptions": {
     "help-tutorial": {
-      "label": "Hra kvíz",
-      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu kvíz."
+      "label": "Hra Kvíz",
+      "text": "Jak používat obrazovku Kvíz."
     }
   },
 
   "gameSizing": {
     "help-tutorial": {
       "label": "Hra hádej velikost",
-      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu hádej velikost."
+      "text": "Jak používat obrazovku Hádej velikost."
     }
   },
 
   "gameWipe": {
     "help-tutorial": {
       "label": "Hra stírací los",
-      "text": "Vysvetlenie užívateľovi o tom ako pracovať s obrazovkou typu stírací los."
+      "text": "Jak používat obrazovku Stírací los."
     }
   }
 }
