@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { animated, useSpring } from "react-spring";
 import { createSelector } from "reselect";
@@ -15,6 +16,8 @@ import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 // Components
+import { Snackbar, Alert } from "@mui/material";
+
 import StartInfoPanel from "./StartInfoPanel";
 import StartDetailPanel from "./StartDetailPanel";
 import StartButton from "./StartButton";
@@ -43,6 +46,8 @@ const stateSelector = createSelector(
 );
 
 export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
+  const { t } = useTranslation("view-exhibition");
+
   const { image } = screenPreloadedFiles ?? {}; // background image, if set
   const { viewExpo, viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
@@ -73,6 +78,9 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const [infoPanelRef, infoPanelSize] = useResizeObserver({
     ignoreUpdate: true,
   });
+
+  const [isLandscapeRecommendationOpen, setIsLandscapeRecommendationOpen] =
+    useState<boolean>(isMobile ? true : false);
 
   // - -
 
@@ -313,6 +321,19 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
           }
         />
       )}
+
+      {/* Mobile snackbar for recommendation to turn the mobile into landscape mode */}
+      <Snackbar
+        open={isLandscapeRecommendationOpen}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+      >
+        <Alert
+          severity="info"
+          onClose={() => setIsLandscapeRecommendationOpen(false)}
+        >
+          {t("landscapeModeRecommendation")}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

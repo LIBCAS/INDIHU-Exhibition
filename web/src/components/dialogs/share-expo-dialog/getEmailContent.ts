@@ -6,7 +6,7 @@ export const getEmailContent = (expoTitle: string, expoUrl: string) => {
 
       posílám Vám / Ti pozvánku na virtuální výstavu s názvem ${expoTitle}.
 
-      Url: ${expoUrl}.
+      Odkaz na výstavu: ${expoUrl}
 
       Přeji příjemnou zábavu!
     `

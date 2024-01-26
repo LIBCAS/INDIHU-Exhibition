@@ -102,13 +102,13 @@ export const screenCategories = [
       { id: "TEXT", name: "Obrazovka s textem" },
       { id: "PARALLAX", name: "Parallax" },
       { id: "IMAGE_ZOOM", name: "Animace přiblížení" },
+      { id: "PHOTOGALERY", name: "Slideshow" },
     ],
   },
   {
     categoryId: "INTERACTIVE_SCREEN",
     categoryName: "Interaktivní obrazovka",
     screens: [
-      { id: "PHOTOGALERY", name: "Slideshow" },
       { id: "PHOTOGALLERY_NEW", name: "Fotogalerie" },
       { id: "IMAGE_CHANGE", name: "Foto před a po" },
       { id: "EXTERNAL", name: "Obrazovka s externím obsahem" },

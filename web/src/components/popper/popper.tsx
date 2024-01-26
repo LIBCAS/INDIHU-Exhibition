@@ -66,7 +66,7 @@ export const Popper = <TAnchor extends HTMLElement | null>({
   useEffect(() => {
     setTimeout(() => {
       update?.();
-    }, 75);
+    }, 100);
   }, [update]);
 
   if (!open) return null;

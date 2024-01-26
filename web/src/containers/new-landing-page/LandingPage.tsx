@@ -3,6 +3,7 @@ import "./landing-page.scss";
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation, Trans } from "react-i18next";
 
 // Components
 import Header from "./header/Header";
@@ -45,6 +46,8 @@ type LandingPageProps = {
 };
 
 const LandingPage = ({ oauthConfigs }: LandingPageProps) => {
+  const { t } = useTranslation("new-landing-screen");
+
   const { oAuthLoginResponse } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -90,13 +93,21 @@ const LandingPage = ({ oauthConfigs }: LandingPageProps) => {
           }
           sx={{ fontSize: "13px" }}
         >
-          {oAuthLoginResponse?.oAuthResponseType === "publicEmailError"
-            ? `V nastavení profilu u poskytovatele (${oAuthLoginResponse.providerName}) je potřeba nastavit verejnú emailovou adresu.`
-            : oAuthLoginResponse?.oAuthResponseType === "waitingForAdminAccept"
-            ? "Registrace proběhla úspěšně, avšak čeká se na schválení od administrátora."
-            : oAuthLoginResponse?.oAuthResponseType === "stillNotAcceptedError"
-            ? "Už jste registrováni a stále neproběhlo potvrzení administrátorem."
-            : "Při pokusu o přihlášení došlo k neočekávané chybě."}
+          {oAuthLoginResponse?.oAuthResponseType === "publicEmailError" ? (
+            <Trans
+              t={t}
+              i18nKey="loginResponseErrors.publicEmailError"
+              values={{ providerName: oAuthLoginResponse.providerName }}
+            />
+          ) : oAuthLoginResponse?.oAuthResponseType ===
+            "waitingForAdminAccept" ? (
+            t("loginResponseErrors.waitingForAdminAcceptInfo")
+          ) : oAuthLoginResponse?.oAuthResponseType ===
+            "stillNotAcceptedError" ? (
+            t("loginResponseErrors.stillNotAcceptedError")
+          ) : (
+            t("loginResponseErrors.otherUnknownError")
+          )}
         </Alert>
       </Snackbar>
     </div>

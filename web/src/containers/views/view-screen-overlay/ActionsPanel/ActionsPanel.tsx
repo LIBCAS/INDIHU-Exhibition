@@ -256,14 +256,16 @@ const ActionsPanel = ({
           )}
 
           <div className="flex items-end gap-2">
-            <EditorButton
-              bind={bind}
-              openEditorScreenUrl={openEditorScreenUrl}
-              isEditorAccess={isEditorAccess}
-              getTutorialEclipseClassnameByStepkeys={
-                getTutorialEclipseClassnameByStepkeys
-              }
-            />
+            {(step?.stepKey === "editor" || isEditorAccess) && (
+              <EditorButton
+                bind={bind}
+                openEditorScreenUrl={openEditorScreenUrl}
+                getTutorialEclipseClassnameByStepkeys={
+                  getTutorialEclipseClassnameByStepkeys
+                }
+              />
+            )}
+
             <SettingsButton
               bind={bind}
               getTutorialEclipseClassnameByStepkeys={

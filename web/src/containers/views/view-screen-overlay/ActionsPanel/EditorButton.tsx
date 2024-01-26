@@ -13,21 +13,15 @@ import cx from "classnames";
 type EditorButtonProps = {
   bind: (stepKey: string) => { ref: RefCallback };
   openEditorScreenUrl: () => void;
-  isEditorAccess: boolean;
   getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
 };
 
 const EditorButton = ({
   bind,
   openEditorScreenUrl,
-  isEditorAccess,
   getTutorialEclipseClassnameByStepkeys,
 }: EditorButtonProps) => {
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
-
-  if (!isEditorAccess) {
-    return null;
-  }
 
   return (
     <>
@@ -35,7 +29,7 @@ const EditorButton = ({
         {...bind("editor")}
         className={cx(
           "pointer-events-auto",
-          getTutorialEclipseClassnameByStepkeys([""])
+          getTutorialEclipseClassnameByStepkeys(["editor"])
         )}
         data-tooltip-id="overlay-editor-button-tooltip"
       >
