@@ -3,9 +3,9 @@
     "prepare": "V přípravě",
     "opened": "Zveřejněná",
     "ended": "Ukončená",
-    "prepareTooltip": "Výstava je v přípravě. Obsah výstavy je možné libovolně upravovat. Výstava je přístupná pouze přihlášeným uživatelům, se kterými je výstava sdílena.",
+    "prepareTooltip": "Výstava je v přípravě. Obsah výstavy je možné libovolně upravovat. Výstava je přístupná pouze přihlášeným tvůrcem, se kterými je výstava sdílena.",
     "openedTooltip": "Výstava je veřejně dostupná přes svoje URL. Výstavu není možné upravovat.",
-    "endedTooltip": "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení uživateli s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”."
+    "endedTooltip": "Výstava byla ukončena a není ani veřejně dostupná ani určena k dalším úpravám. Na její původní URL je možné nastavit oznámení tvůrci s odkazem na jiný web. Výstavu lze znovu převést do stavu “V přípravě” nebo “Zveřejněná”."
   },
   "structure": {
     "tab": "Struktura výstavy",
