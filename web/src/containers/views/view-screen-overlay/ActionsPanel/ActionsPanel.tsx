@@ -46,6 +46,8 @@ import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import useUser from "hooks/use-user";
 import { isGameScreen } from "utils/view-utils";
 import HelpButton from "./HelpButton";
+import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
+import DisableGlassMagnifierButton from "./GlassMagnifierButton/DisableGlassMagnifierButton";
 
 // - -
 
@@ -111,6 +113,8 @@ const ActionsPanel = ({
     isAudioDialogOpen,
     isChaptersDialogOpen,
   } = useDialogRef();
+
+  const { isGlassMagnifierEnabled } = useGlassMagnifierConfig();
 
   // - - - - - - - - - - - - - - - - - - - -
   // - - OPEN EDITOR SCREEN HANDLER --
@@ -200,17 +204,22 @@ const ActionsPanel = ({
       {/*  */}
       {isMobileOverlay && (
         <div className="flex gap-2">
+          {!isGameScreen(viewScreen?.type) && (
+            <InfoButton
+              openDrawer={openDrawer}
+              bind={bind}
+              getTutorialEclipseClassnameByStepkeys={
+                getTutorialEclipseClassnameByStepkeys
+              }
+            />
+          )}
+
+          {isGlassMagnifierEnabled && <DisableGlassMagnifierButton />}
+
           <PlayButton
             shouldIncrement={shouldIncrement}
             play={play}
             pause={pause}
-            bind={bind}
-            getTutorialEclipseClassnameByStepkeys={
-              getTutorialEclipseClassnameByStepkeys
-            }
-          />
-          <InfoButton
-            openDrawer={openDrawer}
             bind={bind}
             getTutorialEclipseClassnameByStepkeys={
               getTutorialEclipseClassnameByStepkeys

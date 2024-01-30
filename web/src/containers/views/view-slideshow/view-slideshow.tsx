@@ -6,7 +6,7 @@ import { animated, useTransition } from "react-spring";
 import { useCountdown } from "hooks/countdown-hook";
 import useElementSize from "hooks/element-size-hook";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
-import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/useGlassMagnifier";
 
 import { AppState } from "store/store";
 import { Position, ScreenProps, SlideshowScreen } from "models";

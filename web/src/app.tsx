@@ -18,7 +18,6 @@ import Dialogs from "components/dialogs";
 import WarningDialog from "components/dialogs/warning-dialog";
 
 // Pages
-import Authentication from "containers/landing-page/Authentication";
 import Verify from "containers/verify";
 import Expositions from "containers/expositions/Expositions";
 import Expo from "containers/expo-administration/Expo";
@@ -137,17 +136,6 @@ export const App = () => {
           exact
           path="/"
           component={() => <LandingPage oauthConfigs={oauthConfigs} />}
-        />
-
-        <Route
-          exact
-          path="/landing-page"
-          component={() => <Authentication isSignIn={true} />}
-        />
-        <Route
-          exact
-          path="/register"
-          component={() => <Authentication isSignIn={false} />}
         />
 
         {/* <Route

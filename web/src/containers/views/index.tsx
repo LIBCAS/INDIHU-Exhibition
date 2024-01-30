@@ -94,14 +94,16 @@ const resolveScreenComponent = (
 type ViewersProps = {
   isScreenLoading: boolean;
   screenPreloadedFiles: ScreenPreloadedFiles | undefined;
+  areScreenFilesLoading: boolean;
   isMusicLoading: boolean;
-  chapterMusicRef: React.RefObject<HTMLAudioElement>;
-  audioRef: React.RefObject<HTMLAudioElement>;
+  chapterMusicRef: HTMLAudioElement | null;
+  audioRef: HTMLAudioElement | null;
 };
 
 export const Viewers = ({
   isScreenLoading,
   screenPreloadedFiles,
+  areScreenFilesLoading,
   isMusicLoading,
   chapterMusicRef,
   audioRef,
@@ -134,7 +136,10 @@ export const Viewers = ({
     <TutorialProvider>
       <ViewScreenOverlay chapterMusicRef={chapterMusicRef} audioRef={audioRef}>
         {(infoPanelRef, actionsPanelRef, isMobileOverlay) =>
-          !screenPreloadedFiles || isScreenLoading || isMusicLoading ? (
+          !screenPreloadedFiles ||
+          isScreenLoading ||
+          isMusicLoading ||
+          areScreenFilesLoading ? (
             <ViewLoading />
           ) : (
             <ScreenComponent

@@ -159,6 +159,7 @@ export const GameQuiz = ({
       {actionsPanelRef.current &&
         ReactDOM.createPortal(
           <GameActionsPanel
+            isMobileOverlay={isMobileOverlay}
             isGameFinished={isFinished}
             onGameFinish={onFinish}
             onGameReset={onReset}

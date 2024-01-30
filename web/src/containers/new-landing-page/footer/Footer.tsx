@@ -175,7 +175,7 @@ const Footer = ({ useWhiteVariant = false }: FooterProps) => {
 
       {/* Bottom */}
       <div className="bottom-footer px-[30px] py-[26px] flex flex-col gap-5 md:w-full md:flex-row md:justify-between">
-        <p className="flex gap-4">© 2023 INDIHU Exhibition</p>
+        <p className="flex gap-4">© INDIHU Exhibition - v2.0</p>
 
         <div className="flex gap-1">
           <a href="/privacy-policy" title="Zásady ochrany osobních údajů">

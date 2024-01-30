@@ -11,7 +11,7 @@ import { createSelector } from "reselect";
 import { useSpring, animated } from "react-spring";
 import useElementSize from "hooks/element-size-hook";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
-import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/glass-magnifier-hook";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/useGlassMagnifier";
 
 import { getViewImageAnimation } from "./view-image-animation";
 import { calculateObjectFit } from "utils/object-fit";

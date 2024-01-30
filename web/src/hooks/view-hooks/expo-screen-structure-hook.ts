@@ -3,12 +3,12 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-import { ExpoStructure, Screen } from "models";
+import { ExpoStructure, FinishScreen, Screen, StartScreen } from "models";
 import { AppState } from "store/store";
 
 // - -
 
-type ChapterIndexedScreen = Screen & {
+export type ChapterIndexedScreen = Screen & {
   chapterIndex: number;
   screenIndex: number;
 };
@@ -17,6 +17,13 @@ type DelimiterObj = {
   chapterIndex: number | "start" | "finish";
 };
 type FlattenedStructure = (ChapterIndexedScreen | DelimiterObj | undefined)[];
+type AllFlattenedStructure = (
+  | StartScreen
+  | FinishScreen
+  | ChapterIndexedScreen
+  | DelimiterObj
+  | undefined
+)[];
 
 // - -
 
@@ -85,7 +92,7 @@ export const useExpoScreenStructure = () => {
     chapterIndex: "finish",
   };
 
-  const allScreensStructure = [
+  const allScreensStructure: AllFlattenedStructure = [
     startDelimitor,
     expoStructure?.start,
     ...(chapterScreensStructure ?? []),

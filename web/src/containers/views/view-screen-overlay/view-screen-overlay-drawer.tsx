@@ -112,8 +112,9 @@ export const ViewScreenOverlayDrawer = ({
             </span>
           </div>
 
-          <div className="flex-grow flex flex-col gap-6 overflow-y-auto">
-            <div className="h-[65%] overflow-y-auto pr-2 expo-scrollbar">
+          {/*  */}
+          <div className="flex-grow flex flex-col justify-between gap-8 overflow-y-auto">
+            <div className="flex-grow overflow-y-auto pr-2 expo-scrollbar">
               {screenText ? (
                 <div>
                   <WysiwygPreview htmlMarkup={screenText} />
@@ -123,7 +124,7 @@ export const ViewScreenOverlayDrawer = ({
               )}
             </div>
 
-            <div className="h-[35%] overflow-y-auto pr-2 expo-scrollbar">
+            <div className="max-h-[35%] overflow-y-auto pr-2 expo-scrollbar">
               {viewScreen &&
                 "documents" in viewScreen &&
                 viewScreen.documents &&
@@ -181,83 +182,19 @@ export const ViewScreenOverlayDrawer = ({
             </div>
           </div>
         </div>
-
-        {/* <div className="flex flex-col px-8 py-4 overflow-y-auto md:px-16 md:py-8 h-2/3">
-          <ExpoTimeProgress key={viewScreen?.id} />
-          <span className="text-4xl font-bold py-4">
-            {viewScreen?.title ?? t("no-title")}
-          </span>
-
-          {screenText ? (
-            <div className="overflow-y-auto">
-              <WysiwygPreview htmlMarkup={screenText} scrollbar />
-            </div>
-          ) : (
-            <div className="italic">{t("no-text")}</div>
-          )}
-        </div> */}
-
-        {/* Three types of document, first file document, then url document, and last empty link document */}
-        {/* <div className="flex flex-col px-8 py-4 md:px-16 md:py-8 h-1/3">
-          <div className="h-[95%] overflow-y-auto pr-3 expo-scrollbar">
-            {viewScreen &&
-              "documents" in viewScreen &&
-              viewScreen.documents &&
-              viewScreen.documents.length !== 0 && (
-                <>
-                  <div className="text-2xl my-2 font-bold">
-                    {t("relatedDocuments")}
-                  </div>
-                  {viewScreen.documents.map(
-                    (document: Document, index: number) => (
-                      <div
-                        key={`document-${index}-${
-                          "name" in document ? document.name : document.fileName
-                        }`}
-                        className="py-1 px-2.5"
-                      >
-                        {"fileId" in document ? (
-                          <a
-                            href={`/api/files/${document.fileId}`}
-                            download={document.fileName ?? document.name}
-                            className="flex justify-start"
-                          >
-                            <Icon name="file_download" />
-                            <span className="ml-3 underline">
-                              {document.fileName ?? document.name}
-                            </span>
-                          </a>
-                        ) : "url" in document ? (
-                          <a
-                            className="flex justify-start"
-                            href={document.url}
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            <Icon name="language" />
-                            <span className="ml-3 underline">
-                              {document.fileName}
-                            </span>
-                          </a>
-                        ) : (
-                          <div className="flex justify-start">
-                            <Icon name="filter_none" />
-                            <span className="ml-3">{document.fileName}</span>
-                          </div>
-                        )}
-                      </div>
-                    )
-                  )}
-                </>
-              )}
-          </div>
-        </div> */}
       </animated.div>
     </animated.div>
   );
 };
 
 const ExpoTimeProgress = () => {
+  const { isLightMode } = useExpoDesignData();
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
-  return <ProgressBar height={10} percentage={percentage} />;
+  return (
+    <ProgressBar
+      height={10}
+      percentage={percentage}
+      color={isLightMode ? "white" : undefined}
+    />
+  );
 };

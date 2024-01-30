@@ -20,6 +20,7 @@ import { ActiveExpo } from "models";
 import { ThemeFormData } from "./models";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import { useTranslation } from "react-i18next";
 
 // - - - - - - - -
 
@@ -28,6 +29,7 @@ interface ExpoThemeProps {
 }
 
 const ExpoTheme = (props: ExpoThemeProps) => {
+  const { t } = useTranslation("expo", { keyPrefix: "theming" });
   const dispatch = useDispatch<AppDispatch>();
 
   const activeExpo = props.activeExpo;
@@ -69,16 +71,16 @@ const ExpoTheme = (props: ExpoThemeProps) => {
         if (!respBody) {
           dispatch(
             setDialog(DialogType.InfoDialog, {
-              title: "Uloženie zmien nebolo úspešné",
-              text: "Pri ukladaní zmien motívu nastala chyba.",
+              title: t("saveThemeFailureDialog.title") ?? "",
+              text: t("saveThemeFailureDialog.text"),
               noStornoButton: true,
             })
           );
         } else {
           dispatch(
             setDialog(DialogType.InfoDialog, {
-              title: "Uloženie zmien prebehlo úspešné",
-              text: "Zmeny motívu boli úspešné uložené.",
+              title: t("saveThemeSuccessDialog.title") ?? "",
+              text: t("saveThemeSuccessDialog.text"),
               noStornoButton: true,
             })
           );

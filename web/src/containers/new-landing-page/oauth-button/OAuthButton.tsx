@@ -2,7 +2,7 @@ import "./oauth-button.scss";
 import { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 
-import { OAuthConfigObj } from "containers/landing-page/Authentication";
+import { OAuthConfigObj } from "../LandingPage";
 
 // Icons
 import { BsFacebook } from "react-icons/bs";

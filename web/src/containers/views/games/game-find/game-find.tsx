@@ -142,6 +142,7 @@ export const GameFind = ({
       {actionsPanelRef.current &&
         ReactDOM.createPortal(
           <GameActionsPanel
+            isMobileOverlay={isMobileOverlay}
             isGameFinished={finished}
             onGameFinish={onFinish}
             onGameReset={onReset}

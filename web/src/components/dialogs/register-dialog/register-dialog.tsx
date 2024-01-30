@@ -1,7 +1,7 @@
 import DialogWrap from "../dialog-wrap-noredux-typed";
 import RegistrationForm from "containers/new-landing-page/registration-section/RegistrationForm";
 
-import { OAuthConfigObj } from "containers/landing-page/Authentication";
+import { OAuthConfigObj } from "containers/new-landing-page/LandingPage";
 import { useTranslation } from "react-i18next";
 
 // - -

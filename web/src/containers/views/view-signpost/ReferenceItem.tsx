@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useScreenCoordinatesById } from "hooks/view-hooks/useScreenCoordinatesById";
+import { useScreenDataByScreenId } from "hooks/view-hooks/useScreenDataByScreenId";
 
 import { Link } from "react-router-dom";
 import { Icon } from "components/icon/icon";
@@ -27,12 +27,12 @@ const ReferenceItem = ({
   numberOfTotalReferences,
 }: ReferenceItemProps) => {
   const [isReferenceHovered, setIsReferenceHovered] = useState<boolean>(false);
-  const { referenceUrl } =
-    useScreenCoordinatesById(referenceObj.reference) ?? {};
+  const { screenReferenceUrl } =
+    useScreenDataByScreenId(referenceObj.reference) ?? {};
 
   return (
     <Link
-      to={(location) => (referenceUrl ? referenceUrl : location)}
+      to={(location) => (screenReferenceUrl ? screenReferenceUrl : location)}
       key={referenceIndex}
     >
       <div

@@ -7,7 +7,7 @@ import TouContentSection from "./content-section/TouContentSection";
 import Footer from "containers/new-landing-page/footer/Footer";
 
 // Models
-import { OAuthConfigObj } from "containers/landing-page/Authentication";
+import { OAuthConfigObj } from "containers/new-landing-page/LandingPage";
 
 // - -
 

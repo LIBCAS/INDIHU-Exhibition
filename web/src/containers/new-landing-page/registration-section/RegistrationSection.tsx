@@ -2,7 +2,7 @@ import "./registration-section.scss";
 import { useTranslation } from "react-i18next";
 
 import RegistrationForm from "./RegistrationForm";
-import { OAuthConfigObj } from "containers/landing-page/Authentication";
+import { OAuthConfigObj } from "../LandingPage";
 
 // - -
 

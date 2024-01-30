@@ -3,17 +3,16 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // Custom Hooks
 import { useFilePreloader } from "context/file-preloader/file-preloader-provider";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
-import { useScreenCoordinatesById } from "hooks/view-hooks/useScreenCoordinatesById";
+import { useScreenDataByScreenId } from "hooks/view-hooks/useScreenDataByScreenId";
 
 // Components
 import { Viewers } from "../views";
@@ -30,6 +29,7 @@ import {
   mapScreenTypeValuesToKeys,
   musicEnabled,
 } from "enums/screen-type";
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 
 // - - - - - - - -
 
@@ -58,11 +58,14 @@ export const NewViewScreen = ({
     useSelector(stateSelector);
   const dispatch = useDispatch();
 
-  const { params } = useRouteMatch<{ section: string; screen: string }>();
-  const { screen, section } = params;
+  const { section, screen } = useSectionScreenParams();
 
-  const { screenPreloadedFiles, chapterMusicCache, isMusicLoading } =
-    useFilePreloader();
+  const {
+    screenPreloadedFiles,
+    isLoading: areScreenFilesLoading,
+    chapterMusicCache,
+    isMusicLoading,
+  } = useFilePreloader();
 
   const [isScreenLoading, setIsScreenLoading] = useState<boolean>(true);
 
@@ -72,14 +75,14 @@ export const NewViewScreen = ({
   // audioSrc is also in the start screen the audio subor of the whole expo
   // if audiosrc is undefined, <audio> element referring will not be rendered
   // If rendered -- <audio> will always have source of the current screen audio!!!
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
   const audioSrc = useMemo(
     () => screenPreloadedFiles?.audio,
     [screenPreloadedFiles]
   );
 
+  const [musicRef, setMusicRef] = useState<HTMLAudioElement | null>(null);
   const [musicSrc, setMusicSrc] = useState<string | null>(null);
-  const musicRef = useRef<HTMLAudioElement>(null);
 
   const isMusicDisabled = useMemo(() => {
     if (!viewScreen) {
@@ -123,55 +126,54 @@ export const NewViewScreen = ({
 
   // - - -
 
-  /* Effect responsible for handling new setting new musicSrc, e.g when new section with our without music */
+  /* Effect responsible for handling setting new musicSrc, e.g when new section with our without music */
   useEffect(() => {
-    if (section === "start" || section === "finish") {
-      setMusicSrc(null);
-      return;
-    }
-    const parsedSection = parseInt(section);
-    if (isNaN(parsedSection)) {
+    if (section === undefined || section === "start" || section === "finish") {
       setMusicSrc(null);
       return;
     }
 
-    if (!(parsedSection in chapterMusicCache)) {
+    if (!(section in chapterMusicCache)) {
       setMusicSrc(null);
       return;
     }
 
-    const musicBlobSrc = chapterMusicCache[parsedSection];
+    const musicBlobSrc = chapterMusicCache[section];
     setMusicSrc(musicBlobSrc ?? null);
   }, [section, chapterMusicCache]);
 
   /* Effect reacting on previous effect when musicSrc has changed, handles automatic playing of new musicSrc  */
   useEffect(() => {
-    if (!musicRef.current) {
+    if (!musicRef) {
       return;
     }
 
-    const musicEl = musicRef.current;
-    musicEl.loop = true;
-    musicEl.volume = expoVolumes.musicVolume.actualVolume / 100;
+    musicRef.loop = true;
+    musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
     if (shouldIncrement) {
-      musicEl.play();
+      musicRef.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [musicSrc]);
+  }, [musicSrc, musicRef]);
 
   /* Effect which pauses the playing chapter music if current screen does not support music playing */
   useEffect(() => {
-    if (isMusicDisabled && musicRef.current) {
-      musicRef.current.pause();
+    if (musicRef && isMusicDisabled) {
+      musicRef.pause();
+      return;
     }
-  }, [isMusicDisabled]);
+    if (musicRef && !isMusicDisabled) {
+      musicRef.play();
+    }
+  }, [isMusicDisabled, musicRef]);
 
   /* Effect which handles automatic playing of current screen audio + when going to new screen.. pause and rewind old audio */
   useEffect(() => {
-    if (!viewScreen || !audioRef.current) {
+    if (!viewScreen || !audioRef) {
       return;
     }
     // E.g not to play the audio verze vystavy on the start screen!
+    // TODO -- out as memo use
     const isAudioDisabled =
       !audioEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
 
@@ -179,64 +181,74 @@ export const NewViewScreen = ({
       return;
     }
 
-    const audio = audioRef.current;
     if (shouldIncrement) {
-      audio.volume = expoVolumes.speechVolume.actualVolume / 100;
-      audio.play().catch((_error) => noop);
+      audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
+      audioRef.play().catch((_error) => noop);
     }
 
     return () => {
-      audio.currentTime = 0;
-      audio.pause();
+      // TODO now should be not required!
+      audioRef.currentTime = 0;
+      audioRef.pause();
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewScreen, audioSrc]);
+  }, [viewScreen, audioSrc, audioRef]);
 
   /* Effect which handles muting of the music and audio when e.g mute button is pressed */
   useEffect(() => {
-    if (musicRef.current) {
-      const music = musicRef.current;
-      music.volume = expoVolumes.musicVolume.actualVolume / 100;
+    if (musicRef) {
+      musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
     }
-    if (audioRef.current) {
-      const audio = audioRef.current;
-      audio.volume = expoVolumes.speechVolume.actualVolume / 100;
+    if (audioRef) {
+      audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
     }
-  }, [expoVolumes]);
+  }, [expoVolumes, audioRef, musicRef]);
 
   /* Effect which handles pausing / start playing of the music and audio when e.g pause button is pressed */
   useEffect(() => {
-    if (musicRef.current) {
-      const music = musicRef.current;
+    if (musicRef) {
       if (shouldIncrement && !isMusicDisabled) {
-        music.play();
+        musicRef.play();
       }
       if (!shouldIncrement && !isMusicDisabled) {
-        music.pause();
+        musicRef.pause();
       }
     }
 
-    if (audioRef.current) {
-      const audio = audioRef.current;
+    if (audioRef) {
       if (shouldIncrement) {
-        audio.play();
+        audioRef.play().catch((_error) => noop);
       } else {
-        audio.pause();
+        audioRef.pause();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldIncrement]);
+  }, [shouldIncrement, audioRef, musicRef]);
 
   // - -
 
   return (
     <ScreenAutoNavigator>
       {/* If rendered -- <audio> will always have source of the current screen audio!!! */}
-      {musicSrc && <audio src={musicSrc} ref={musicRef} />}
-      {audioSrc && <audio src={audioSrc} ref={audioRef} />}
+      {musicSrc && (
+        <audio
+          key={musicSrc}
+          src={musicSrc}
+          ref={(musicRef) => setMusicRef(musicRef)}
+        />
+      )}
+      {audioSrc && (
+        <audio
+          key={audioSrc}
+          src={audioSrc}
+          ref={(audioRef) => setAudioRef(audioRef)}
+        />
+      )}
       <Viewers
         isScreenLoading={isScreenLoading}
         screenPreloadedFiles={screenPreloadedFiles}
+        areScreenFilesLoading={areScreenFilesLoading}
         isMusicLoading={isMusicLoading}
         chapterMusicRef={musicRef}
         audioRef={audioRef}
@@ -278,22 +290,22 @@ const ScreenAutoNavigator = ({ children }: { children: ReactNode }) => {
       ? viewScreen.nextScreenReference ?? null
       : null;
 
-  const { referenceUrl: signpostReferenceUrl } =
-    useScreenCoordinatesById(signpostNavigate) ?? {};
+  const { screenReferenceUrl: signpostScreenReferenceUrl } =
+    useScreenDataByScreenId(signpostNavigate) ?? {};
 
   // - -
 
   useEffect(() => {
     if (shouldRedirect && timeRanOut) {
-      if (signpostReferenceUrl) {
-        history.push(signpostReferenceUrl);
+      if (signpostScreenReferenceUrl) {
+        history.push(signpostScreenReferenceUrl);
       } else {
         navigateForward();
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRanOut, shouldRedirect, signpostReferenceUrl]);
+  }, [timeRanOut, shouldRedirect, signpostScreenReferenceUrl]);
 
   return <>{children}</>;
 };

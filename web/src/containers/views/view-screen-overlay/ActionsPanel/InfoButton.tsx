@@ -28,9 +28,12 @@ const InfoButton = ({
         getTutorialEclipseClassnameByStepkeys(["screen-info"])
       )}
     >
-      <Button color="expoTheme" onClick={openDrawer}>
-        <Icon name="info" />
-      </Button>
+      <Button
+        iconBefore={<Icon name="info" />}
+        color="primary"
+        onClick={openDrawer}
+        style={{ width: "38px", height: "31px", border: "2px solid white" }}
+      />
     </div>
   );
 };

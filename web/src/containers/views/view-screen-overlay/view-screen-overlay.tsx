@@ -63,8 +63,8 @@ const statesSelector = createSelector(
 // - - - - - -
 
 type ViewScreenOverlayProps = {
-  chapterMusicRef: React.RefObject<HTMLAudioElement>;
-  audioRef: React.RefObject<HTMLAudioElement>;
+  chapterMusicRef: HTMLAudioElement | null;
+  audioRef: HTMLAudioElement | null;
   children:
     | ReactNode
     | ((
@@ -134,7 +134,8 @@ export const ViewScreenOverlay = ({
 
   const { isDrawerPanelOpen, openDrawer, closeDrawer } = useDrawerPanel();
 
-  const { setIsGlassMagnifierEnabled } = useGlassMagnifierConfig();
+  const { isGlassMagnifierEnabled, setIsGlassMagnifierEnabled } =
+    useGlassMagnifierConfig();
 
   // Animations
   const { overlayOpacity } = useSpring({
@@ -208,13 +209,21 @@ export const ViewScreenOverlay = ({
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (_e) => {
-      if (amIGameScreen || isPhotogalleryLightboxOpened) {
+      if (
+        amIGameScreen ||
+        isPhotogalleryLightboxOpened ||
+        isGlassMagnifierEnabled
+      ) {
         return;
       }
       navigateForward();
     },
     onSwipedRight: (_e) => {
-      if (amIGameScreen || isPhotogalleryLightboxOpened) {
+      if (
+        amIGameScreen ||
+        isPhotogalleryLightboxOpened ||
+        isGlassMagnifierEnabled
+      ) {
         return;
       }
       navigateBack();
@@ -385,8 +394,8 @@ export const ViewScreenOverlay = ({
         <ActionsPanel
           actionsPanelRef={actionsPanelRef}
           isMobileOverlay={isMobileOverlay}
-          isScreenAudioPresent={audioRef.current !== null}
-          isChapterMusicPresent={chapterMusicRef.current !== null}
+          isScreenAudioPresent={audioRef !== null}
+          isChapterMusicPresent={chapterMusicRef !== null}
           openDrawer={openDrawer}
           play={play}
           pause={pause}

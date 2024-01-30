@@ -11,7 +11,7 @@ import TextField from "./TextField";
 
 // Models
 import { AppDispatch } from "store/store";
-import { OAuthConfigObj } from "containers/landing-page/Authentication";
+import { OAuthConfigObj } from "../LandingPage";
 
 // Utils and actions
 import * as Yup from "yup";

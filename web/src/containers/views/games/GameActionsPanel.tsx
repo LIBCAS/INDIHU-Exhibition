@@ -1,9 +1,11 @@
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { BasicTooltip } from "components/tooltip/tooltip";
+import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 import { useTranslation } from "react-i18next";
 
 type GameActionsPanelProps = {
+  isMobileOverlay: boolean;
   isGameFinished?: boolean;
   onGameFinish?: () => void;
   onGameReset?: () => void;
@@ -15,12 +17,30 @@ export const GameActionsPanel = ({
   onGameFinish,
   onGameReset,
   gameActions,
+  isMobileOverlay,
 }: GameActionsPanelProps) => {
   const { t } = useTranslation("view-screen");
+  const { openDrawer } = useDrawerPanel();
 
   return (
     <div className="flex flex-row-reverse gap-2">
       <div className="flex gap-2">
+        {/* Info of game screen in mobile */}
+        {isMobileOverlay && (
+          <div className="pointer-events-auto">
+            <Button
+              iconBefore={<Icon name="info" />}
+              color="primary"
+              onClick={openDrawer}
+              style={{
+                width: "38px",
+                height: "31px",
+                border: "2px solid white",
+              }}
+            />
+          </div>
+        )}
+
         {/* Play again button */}
         <div
           className="pointer-events-auto"

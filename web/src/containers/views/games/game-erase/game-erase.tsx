@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useTranslation } from "react-i18next";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
@@ -41,16 +41,17 @@ export const GameErase = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
   const { expoDesignData, palette } = useExpoDesignData();
 
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // current mouse position of the cursor
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-
-  const [containerRef, containerSize] = useElementSize();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [setContainerRef, containerSize] = useResizeObserver();
+
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // current mouse position of the cursor
+
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
   // - -
 
@@ -60,6 +61,17 @@ export const GameErase = ({
   );
 
   // - -
+
+  useEffect(() => {
+    if (!canvasRef.current) {
+      return;
+    }
+    canvasRef.current.width = window.innerWidth;
+    canvasRef.current.height = window.innerHeight;
+    setCtx(canvasRef.current.getContext("2d"));
+  }, []);
+
+  //
 
   // Upper image orig data, the one which will erase into the bottom image
   const upperImageOrigData = useMemo(
@@ -82,27 +94,14 @@ export const GameErase = ({
     [containerSize, upperImageOrigData]
   );
 
-  // - -
-
-  const updateMousePosition = useCallback(
-    (e: MouseEvent<HTMLCanvasElement>) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    },
-    []
-  );
-
+  //
   const fillCanvas = useCallback(() => {
-    if (!ctx) {
+    if (!ctx || !canvasRef.current) {
       return;
     }
 
     ctx.globalCompositeOperation = "source-over";
-    ctx.fillRect(
-      0,
-      0,
-      canvasRef.current?.width ?? 0,
-      canvasRef.current?.height ?? 0
-    );
+    ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     const imageElement = document.createElement("img");
     imageElement.src = screenPreloadedFiles.image1 ?? "";
     imageElement.onload = () => {
@@ -125,36 +124,51 @@ export const GameErase = ({
     containedImage1Width,
   ]);
 
-  // - -
-
+  //
   const clearCanvas = useCallback(() => {
-    if (!ctx) {
+    if (!ctx || !canvasRef.current) {
       return;
     }
 
     ctx.globalCompositeOperation = "destination-out";
-    ctx.fillRect(
-      0,
-      0,
-      canvasRef.current?.width ?? 0,
-      canvasRef.current?.height ?? 0
-    );
+    ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   }, [ctx]);
 
+  const resizeCanvas = useCallback(() => {
+    if (!canvasRef.current) return;
+    canvasRef.current.width = window.innerWidth;
+    canvasRef.current.height = window.innerHeight;
+    setCtx(canvasRef.current.getContext("2d"));
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeCanvas);
+    return () => window.removeEventListener("resize", resizeCanvas);
+  }, [resizeCanvas]);
+
   // - -
+
+  //
+  const updateMousePosition = useCallback(
+    (e: MouseEvent<HTMLCanvasElement>) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    },
+    []
+  );
 
   const erase = useCallback(
     (e: MouseEvent<HTMLCanvasElement>) => {
       if (!ctx || e.buttons !== 1 || isGameFinished) {
-        setMousePosition({ x: e.clientX, y: e.clientY });
+        //setMousePosition({ x: e.clientX, y: e.clientY });
         return;
       }
 
       ctx.beginPath();
       ctx.moveTo(mousePosition.x, mousePosition.y);
-      setMousePosition({ x: e.clientX, y: e.clientY });
       ctx.lineTo(e.clientX, e.clientY);
       ctx.stroke();
+
+      setMousePosition({ x: e.clientX, y: e.clientY });
     },
     [ctx, isGameFinished, mousePosition.x, mousePosition.y]
   );
@@ -170,17 +184,6 @@ export const GameErase = ({
     setIsGameFinished(false);
     fillCanvas();
   }, [fillCanvas]);
-
-  // - -
-
-  useEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    canvasRef.current.height = window.innerHeight;
-    canvasRef.current.width = window.innerWidth;
-    setCtx(canvasRef.current.getContext("2d"));
-  }, []);
 
   useEffect(() => {
     if (!ctx) {
@@ -215,9 +218,9 @@ export const GameErase = ({
   });
 
   return (
-    <div className="w-full h-full relative" ref={containerRef}>
+    <div className="relative w-full h-full" ref={setContainerRef}>
       <img
-        className="w-full h-full absolute object-contain"
+        className="absolute w-full h-full object-contain"
         src={screenPreloadedFiles.image2}
         alt="solution-image"
       />
@@ -257,6 +260,7 @@ export const GameErase = ({
       {actionsPanelRef.current &&
         ReactDOM.createPortal(
           <GameActionsPanel
+            isMobileOverlay={isMobileOverlay}
             isGameFinished={isGameFinished}
             onGameFinish={onFinish}
             onGameReset={onReset}

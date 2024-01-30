@@ -1,12 +1,9 @@
-import { MouseEvent } from "react";
 import { calculateObjectFit } from "utils/object-fit";
 
 export const calculatePositions = (
   imageContainerEl: HTMLDivElement,
   containedImgEl: HTMLImageElement,
-  mouseMoveEvent:
-    | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
-    | globalThis.MouseEvent,
+  mouseMoveEvent: globalThis.MouseEvent | globalThis.TouchEvent,
   glassMagnifierPxSize: number
 ) => {
   // 1. imageContainerElSize - retrieve the size of the image container div element
@@ -60,10 +57,24 @@ export const calculatePositions = (
 
   // 5. Container Cursor position - calculate the px left and top position of cursor from the image container
   // (set as the cursor is in the middle of glass magnifier)
-  const newContainerCursorPositionX =
-    mouseMoveEvent.clientX - imageContainerRect.left;
-  const newContainerCursorPositionY =
-    mouseMoveEvent.clientY - imageContainerRect.top;
+  let newContainerCursorPositionX = 0;
+  let newContainerCursorPositionY = 0;
+
+  if ("changedTouches" in mouseMoveEvent) {
+    const touchClientX = mouseMoveEvent.changedTouches.item(0)?.clientX;
+    const touchClientY = mouseMoveEvent.changedTouches.item(0)?.clientY;
+    newContainerCursorPositionX = touchClientX
+      ? touchClientX - imageContainerRect.left
+      : 0;
+    newContainerCursorPositionY = touchClientY
+      ? touchClientY - imageContainerRect.top
+      : 0;
+  } else {
+    newContainerCursorPositionX =
+      mouseMoveEvent.clientX - imageContainerRect.left;
+    newContainerCursorPositionY =
+      mouseMoveEvent.clientY - imageContainerRect.top;
+  }
 
   const newContainerCursorPosition = {
     left: newContainerCursorPositionX,

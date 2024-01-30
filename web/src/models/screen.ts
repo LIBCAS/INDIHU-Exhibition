@@ -1,4 +1,4 @@
-import { MutableRefObject, RefObject } from "react";
+import { MutableRefObject } from "react";
 
 // Enums
 import { screenType } from "enums/screen-type";
@@ -36,7 +36,7 @@ export type ScreenProps = {
   screenPreloadedFiles: ScreenPreloadedFiles;
   infoPanelRef: MutableRefObject<HTMLDivElement | null>;
   actionsPanelRef: MutableRefObject<HTMLDivElement | null>;
-  chapterMusicRef: RefObject<HTMLAudioElement>;
+  chapterMusicRef: HTMLAudioElement | null;
   isMobileOverlay: boolean;
 };
 

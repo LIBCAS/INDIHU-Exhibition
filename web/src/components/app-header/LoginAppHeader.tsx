@@ -158,7 +158,9 @@ const LoginAppHeader = ({
         )}
 
         <div
-          onClick={() => openInNewTab("https://nnis.github.io/indihu-manual/")}
+          onClick={() =>
+            openInNewTab("https://libcas.github.io/indihu-manual/")
+          }
           className="text-white !font-['Work_Sans'] cursor-pointer hover:text-[#bbddfe]"
         >
           {t("manual")}
@@ -240,7 +242,7 @@ const LoginAppHeader = ({
 
           <MenuItem
             onClick={() =>
-              openInNewTab("https://nnis.github.io/indihu-manual/")
+              openInNewTab("https://libcas.github.io/indihu-manual/")
             }
           >
             {t("manual")}

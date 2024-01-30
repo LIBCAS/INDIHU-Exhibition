@@ -119,6 +119,11 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
     };
   }, [currAnchor, isTutorialOpen]);
 
+  // Reset back to first step if tutorial key changes (e.g mobile to mobile landscape)
+  useEffect(() => {
+    setCurrStepIndex(0);
+  }, [tutorialKey]);
+
   // 1.
   const nextTutorialStep = useCallback(() => {
     if (currStepIndex + 1 === steps.length) {

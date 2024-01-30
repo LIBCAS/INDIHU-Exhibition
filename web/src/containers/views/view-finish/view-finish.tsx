@@ -118,11 +118,11 @@ export const ViewFinish = ({
   // - - - - - - - -
 
   useEffect(() => {
-    if (!chapterMusicRef.current) {
+    if (!chapterMusicRef) {
       return;
     }
-    chapterMusicRef.current.pause();
-    chapterMusicRef.current.currentTime = 0;
+    chapterMusicRef.pause();
+    chapterMusicRef.currentTime = 0;
   }, [dispatch, chapterMusicRef]);
 
   const viewStart = useMemo(
@@ -211,7 +211,7 @@ export const ViewFinish = ({
 
               {isLg && (
                 <ViewFinishButton
-                  label={"Hodnotiť výstavu"}
+                  label={t("rate-expo")}
                   icon={<Icon color="white" name="star" />}
                   onClick={openRatingDialog}
                 />
