@@ -1,7 +1,7 @@
 {
-  "title": "Tvůrci",
-  "allUsersLabel": "Všichni tvůrci",
-  "usersToAcceptLabel": "Tvůrci ke schválení",
+  "title": "Uživatelé",
+  "allUsersLabel": "Všichni uživatelé",
+  "usersToAcceptLabel": "Uživatelé ke schválení",
 
   "usersState": {
     "accepted": "Akceptován",
@@ -11,10 +11,10 @@
     "deleted": "Smazán"
   },
   "usersAction": {
-    "reactivate": "Reaktivovat tvůrce",
-    "accept": "Akceptovat tvůrce",
-    "reject": "Zamítnout tvůrce",
-    "delete": "Vymazat tvůrce"
+    "reactivate": "Reaktivovat uživatele",
+    "accept": "Akceptovat uživatele",
+    "reject": "Zamítnout uživatele",
+    "delete": "Vymazat uživatele"
   },
   "usersSort": {
     "updated": "Datum poslední aktualizace",
@@ -39,23 +39,23 @@
   "pagesizeLabel": "Záznamů na stránku:",
 
   "acceptUserDialog": {
-    "title": "Schválení tvůrce",
+    "title": "Schválení uživatele",
     "submitLabel": "Akceptovat",
-    "content": "Tvůrce \"{{userName}}\" bude schválen. \nPOZOR! Akce je nevratná"
+    "content": "Uživatel \"{{userName}}\" bude schválen. \nPOZOR! Akce je nevratná"
   },
   "deleteUserDialog": {
-    "title": "Odstranit tvůrce",
+    "title": "Odstranit uživatele",
     "submitLabel": "Odstranit",
-    "content": "Tvůrcel \"{{userName}}\" bude odstraněn."
+    "content": "Uživatel \"{{userName}}\" bude odstraněn."
   },
   "reactivateUserDialog": {
-    "title": "Reaktivace tvůrce",
+    "title": "Reaktivace uživatele",
     "submitLabel": "Reaktivovat",
-    "content": "Tvůrce \"{{userName}}\" bude reaktivován."
+    "content": "Uživatel \"{{userName}}\" bude reaktivován."
   },
   "rejectUserDialog": {
-    "title": "Zamítnutí tvůrce",
+    "title": "Zamítnutí uživatele",
     "submitLabel": "Zamítnout",
-    "content": "Tvůrce \"{{userName}}\" bude zamítnut. \nPOZOR! Akce je nevratná"
+    "content": "Uživatel \"{{userName}}\" bude zamítnut. \nPOZOR! Akce je nevratná"
   }
 }

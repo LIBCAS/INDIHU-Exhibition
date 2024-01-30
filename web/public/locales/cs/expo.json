@@ -175,7 +175,15 @@
     "exportLabel": "Exportovat",
     "importLabel": "Importovat",
     "resetSettingsLabel": "Resetovat nastavení",
-    "saveChangesLabel": "Uložit změny"
+    "saveChangesLabel": "Uložit změny",
+    "saveThemeFailureDialog": {
+      "title": "Uložení změn nebylo úspěšné",
+      "text": "Při ukládání změn motivu nastala chyba."
+    },
+    "saveThemeSuccessDialog": {
+      "title": "Uložení změn proběhlo úspěšné",
+      "text": "Změny motivu byly úspěšně uloženy."
+    }
   },
   "tags": {
     "exhibitionTopicGroupLabel": "Vyberte 1 téma, kterým se vaše výstava zabývá",

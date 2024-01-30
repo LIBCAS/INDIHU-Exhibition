@@ -84,9 +84,9 @@
   },
 
   "loginResponseErrors": {
-    "publicEmailError": "V nastavení profilu u poskytovatele ({{providerName}}) je potřeba nastavit verejnú emailovou adresu.",
+    "publicEmailError": "V nastavení profilu u poskytovatele ({{providerName}}) je potřeba nastavit veřejnou e-mailovou adresu.",
     "waitingForAdminAcceptInfo": "Registrace proběhla úspěšně, avšak čeká se na schválení od administrátora.",
-    "stillNotAcceptedError": "Už jste registrováni a stále neproběhlo potvrzení administrátorem.",
+    "stillNotAcceptedError": "Už jste registrováni, ale stále neproběhlo potvrzení administrátorem.",
     "otherUnknownError": "Při pokusu o přihlášení došlo k neočekávané chybě."
   }
 }

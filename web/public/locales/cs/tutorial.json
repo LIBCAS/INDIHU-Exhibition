@@ -75,42 +75,42 @@
   "gameDraw": {
     "help-tutorial": {
       "label": "Hra dokresli",
-      "text": "Jak používat obrazovku Dokresli."
+      "text": "Na této obrazovce můžete pomocí kurzoru (event. prstu) kreslit, malovat, vybarvovat."
     }
   },
 
   "gameFind": {
     "help-tutorial": {
       "label": "Hra najdi na obrázku",
-      "text": "Jak používat obrazovku Najdi na obrázku."
+      "text": "Na této obrazovce budete hledat vybrané předměty či detaily."
     }
   },
 
   "gameMove": {
     "help-tutorial": {
       "label": "Hra posuň na správné místo",
-      "text": "Jak používat obrazovku Posuň na správné místo."
+      "text": "Na této obrazovce budete posouvat předměty pomocí kurzoru (event. prstu) na místo, kam patří."
     }
   },
 
   "gameOptions": {
     "help-tutorial": {
       "label": "Hra Kvíz",
-      "text": "Jak používat obrazovku Kvíz."
+      "text": "Na této obrazovce budete vyplňovat kvíz."
     }
   },
 
   "gameSizing": {
     "help-tutorial": {
       "label": "Hra hádej velikost",
-      "text": "Jak používat obrazovku Hádej velikost."
+      "text": "Na této obrazovce budete hádat velikost předmětů."
     }
   },
 
   "gameWipe": {
     "help-tutorial": {
       "label": "Hra stírací los",
-      "text": "Jak používat obrazovku Stírací los."
+      "text": "Na této obrazovce budete kurzorem (event. prstem) stírat vrstvy obrázku."
     }
   }
 }

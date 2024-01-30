@@ -7,6 +7,7 @@
     "stopButtonTooltip": "Stop the exhibition",
     "audioButtonTooltip": "Adjust the volume",
     "chaptersButton": "Chapters",
+    "signpostNextButton": "Next screen",
 
     "settingsDialog": {
       "title": "Settings",

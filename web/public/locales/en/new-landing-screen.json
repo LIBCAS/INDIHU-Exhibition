@@ -84,7 +84,7 @@
   },
 
   "loginResponseErrors": {
-    "publicEmailError": "In the profile settings at the provider ({{providerName}}), you need to set a public email address.",
+    "publicEmailError": "In the profile settings at the provider ({{providerName}}), you need to set a public e-mail address.",
     "waitingForAdminAcceptInfo": "Registration was successful, but approval from the administrator is pending.",
     "stillNotAcceptedError": "You are already registered and still haven't been confirmed by the administrator.",
     "otherUnknownError": "An unexpected error occurred while trying to sign in."

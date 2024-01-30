@@ -175,7 +175,15 @@
     "exportLabel": "Export",
     "importLabel": "Import",
     "resetSettingsLabel": "Reset settings",
-    "saveChangesLabel": "Save changes"
+    "saveChangesLabel": "Save changes",
+    "saveThemeFailureDialog": {
+      "title": "Saving changes was not successful",
+      "text": "An error occurred while saving theme changes."
+    },
+    "saveThemeSuccessDialog": {
+      "title": "Saving of changes was successful",
+      "text": "Theme changes have been successfully saved."
+    }
   },
   "tags": {
     "exhibitionTopicGroupLabel": "Choose the main topic of your exhibition",

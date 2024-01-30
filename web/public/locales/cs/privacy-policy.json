@@ -1,13 +1,13 @@
 {
   "title": "INDIHU Exhibition - Zásady práce s osobními údaji",
-  "paragraph1": "Jsme Knihovna AV ČR, v. v. i., se sídlem Národní 1009/3, Praha 1, 110 00. Kontakt: <mailLink>sekretariat@knav.cz</mailLink>, 221 403 260.",
-  "paragraph2": "Provozujeme webové stránky <externalLink>https://exhibition.indihu.cz</externalLink>, na kterých se můžete zaregistrovat do aplikace INDIHU Exhibition, která umožňuje vytvořit a zpřístupnit vaše virtuální výstavy veřejnosti.",
+  "paragraph1": "Jsme Knihovna AV ČR, v. v. i., se sídlem Národní 1009/3, Praha 1, 110 00. Kontakt: <mailLink>sekretariat@knav.cz</mailLink>, +420 221 403 260.",
+  "paragraph2": "Provozujeme webové stránky <externalLink>https://exhibition.indihu.cz</externalLink>, kde se můžete zaregistrovat do aplikace INDIHU Exhibition, která umožňuje vytvořit a zpřístupnit vaše virtuální výstavy veřejnosti.",
   "paragraph3": "Pro poskytnutí naší služby zpracováváme některé vaše osobní údaje.",
   "whatPersonalDataSection": {
     "title": "S jakými osobními údaji pracujeme?",
     "paragraph1": "Pokud se chcete zaregistrovat a používat nástroj INDIHU Exhibition, budeme zpracovávat vaše registrační údaje. Jsou to jméno, příjmení, název instituce, pod kterou vystupujete, a e-mailová adresa.",
     "paragraph2": "Proč?",
-    "paragraph3": "na e-mail vám zašleme potvrzení, že jste poptali náš nástroj, ověříme, že splňujete podmínky pro registraci, pokud podmínky splňujete, zřídíme vám přes tyto údaje váš přístupový účet, přes e-mail s vámi budeme komunikovat."
+    "paragraph3": "Na e-mail vám zašleme potvrzení, že jste poptali náš nástroj a ověříme, že splňujete podmínky pro registraci. Pokud podmínky splňujete, zřídíme vám přes tyto údaje váš přístupový účet. Přes e-mail s vámi budeme dále komunikovat."
   },
   "whoAccessPersonalDataSection": {
     "title": "Kdo se k datům dostane?",
@@ -20,8 +20,8 @@
   },
   "youShouldAlsoKnowSection": {
     "title": "Ještě byste měli vědět:",
-    "paragraph1": "Pokud byste potřebovali ohledně osobních údajů cokoliv probrat, napište nám na e-mail <mailLink>info@indihu.cz</mailLink> nebo zavolejte na číslo 221 403 260. Rádi vám pomůžeme.",
-    "paragraph2": "Máme pověřence pro oblast zpracování osobních údajů: Mgr. Radek Lomnický, tel. č. 221 403 466, 605 416 493, <mailLink>poverenec@ssc.cascz</mailLink>.",
+    "paragraph1": "Pokud byste potřebovali ohledně osobních údajů cokoliv probrat, napište nám na e-mail <mailLink>info@indihu.cz</mailLink> nebo zavolejte na číslo +420 221 403 260. Rádi vám pomůžeme.",
+    "paragraph2": "Máme pověřence pro oblast zpracování osobních údajů: Mgr. Radek Lomnický, tel. č. +420 221 403 466, +420 605 416 493, <mailLink>poverenec@ssc.cascz</mailLink>.",
     "paragraph3": "Nařízení GDPR (nařízení Evropského parlamentu a Rady (EU) č. 2016/679 o ochraně fyzických osob v souvislosti se zpracováním osobních údajů a o volném pohybu těchto údajů a o zrušení směrnice 95/46/ES), které oblast osobních údajů upravuje, vám dává mimo jiné právo obrátit se na nás a chtít informace, jaké vaše osobní údaje zpracováváme, vyžádat si u nás přístup k těmto údajům a nechat je aktualizovat nebo opravit, popřípadě požadovat omezení zpracování, můžete požadovat kopii zpracovávaných osobních údajů, požadovat po nás v určitých situacích výmaz osobních údajů a v určitých případech máte právo na jejich přenositelnost. Pokud si myslíte, že s daty nenakládáme správně, máte právo podat stížnost u Úřadu pro ochranu osobních údajů, případně se se svými nároky obrátit na soud."
   }
 }
