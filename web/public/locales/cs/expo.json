@@ -108,7 +108,7 @@
       "redirectUrl": "URL pro přesměrování",
       "redirectUrlTooltip": "URL adresa, kam je návštěvníkovi doporučeno pokračovat. Např. další výstava nebo webové stránky instituce, která výstavu realizovala.",
       "infoForVisitor": "Oznámení návštevníkovi",
-      "infoForVisitorTooltip": "Stručný informační text, který se zobrazí uživateli."
+      "infoForVisitorTooltip": "Stručný informační text, který se zobrazí návštěvníkovi."
     },
     "shareWithUsers": "Sdíleno s ostatními tvůrci",
     "nameCol": "Jméno",
@@ -241,23 +241,23 @@
     "readOnlyOption": "Jen pro čtení",
     "editOption": "Pro čtení a zápis",
     "selectTypeFieldLabel": "Vyberte typ",
-    "userEmailField": "E-mail uživatele",
-    "ifUserDoesNotExistSendEmailInvite": "Pokud uživatel neexistuje, odeslat e-mailovou pozvánku",
+    "userEmailField": "E-mail tvůrce",
+    "ifUserDoesNotExistSendEmailInvite": "Pokud tvůrce neexistuje, odeslat e-mailovou pozvánku",
     "responseUserAdded": {
-      "title": "Uživatel přidaný",
-      "text": "Výstava byla sdílena uživateli {{userName}}."
+      "title": "Tvůrce přidaný",
+      "text": "Výstava byla sdílena tvůrci {{userName}}."
     },
     "responseIndihuUserInvitedByEmail": {
-      "title": "Uživatel pozvaný",
-      "text": "Uživateli {{userName}} byla zaslána pozvánka na e-mail."
+      "title": "Tvůrce pozvaný",
+      "text": "Tvůrci {{userName}} byla zaslána pozvánka na e-mail."
     },
     "responseNotIndihuUser": {
-      "title": "Pozvat uživatele",
-      "text": "{{userName}} není uživatel INDIHU Exhibition. Prosím vyberte možnost \"odeslat e-mailovou pozvánku\""
+      "title": "Pozvat tvůrce",
+      "text": "{{userName}} není tvůrce INDIHU Exhibition. Prosím vyberte možnost \"odeslat e-mailovou pozvánku\""
     },
     "responseUserIsAlreadyShared": {
-      "title": "Uživatel již spolupracuje",
-      "text": "Výstava je již sdílena s uživatelem {{userName}}."
+      "title": "Tvůrce již spolupracuje",
+      "text": "Výstava je již sdílena s tvůrcem {{userName}}."
     }
   },
   "expoStateDialog": {
