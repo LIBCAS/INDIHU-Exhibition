@@ -1,6 +1,7 @@
 package cz.inqool.uas.indihu.entity.indexed;
 
 import cz.inqool.uas.index.IndexedDatedObject;
+import cz.inqool.uas.index.IndexedDomainObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.*;
@@ -12,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.*;
 @Setter
 @Document(indexName = "indihu", type = "user")
 @Setting(settingPath = "/es_settings.json")
-public class IndexedUser extends IndexedDatedObject {
+public class IndexedUser extends IndexedDatedObject{
 
     @Field(type = FieldType.String, analyzer = "folding")
     private String userName;

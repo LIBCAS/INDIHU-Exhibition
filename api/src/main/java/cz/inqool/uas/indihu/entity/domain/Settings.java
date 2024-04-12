@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Setter
 @Table(name = "in_settings")
 @NoArgsConstructor
-public class Settings extends DomainObject {
+public class Settings extends DomainObject{
 
     /**
      * flag whether registration is allowed

@@ -1,3 +1,6 @@
+/**
+ * Text for help icon tooltips
+ */
 export const helpIconText = {
   EDITOR_DOCUMENTS:
     "Dokumenty a soubory k výstavě, které budou zobrazeny na úvodní a závěrečné obrazovce.",
@@ -94,8 +97,8 @@ export const helpIconText = {
     "Nejspodnější vrstva obrázku. Představuje nejvzdálenější objekty vůči divákovi. Je animována nejpomaleji.",
   EDITOR_PARALLAX_IMAGE_TOP:
     "Nejvrchnější vrstva obrázku. Představuje nejbližší objekty vůči divákovi. Je animována nejrychleji.",
-  EDITOR_PHOTOGALLERY_ANIMATION: "Typ přechodu mezi jednotlivými obrázky.",
-  EDITOR_PHOTOGALLERY_IMAGE: "Vybraný obrázek ve fotogalerii.",
+  EDITOR_SLIDESHOW_ANIMATION: "Typ přechodu mezi jednotlivými obrázky.",
+  EDITOR_SLIDESHOW_IMAGE: "Vybraný obrázek ve slideshow.",
   EDITOR_START_AUTHORS:
     "Položka tiráže. Obvykle osoba a její role v projektu nebo jiný doprovodný text.",
   EDITOR_START_DESCRIPTION_ANIMATION:
@@ -141,10 +144,12 @@ export const helpIconText = {
   EXPO_STRUCTURE_SCREEN_NEW_IMAGE_ZOOM:
     "Obrazovka nejprve zobrazí celkový obrázek a poté animuje sekvenci pohybů, ve kterých se přiblíží k vybraným detailům obrázku s infopointy.",
   EXPO_STRUCTURE_SCREEN_NEW_PHOTOGALERY: "Obrazovka se sérií obrázků.",
+  EXPO_STRUCTURE_SCREEN_NEW_PHOTOGALLERY_NEW: "Obrazovka fotogalerie.",
   EXPO_STRUCTURE_SCREEN_NEW_IMAGE_CHANGE:
     "Obrazovka zobrazí dvě vzájemně se překrývající fotografie, kdy pomocí táhla odkrýváme jednu a zakrýváme druhou fotografii. Táhlo může být vertikální a  horizontální. Přechod jednoho obrázku v druhý lze nastavit také na kliknutí myši nebo jako prolínání.",
   EXPO_STRUCTURE_SCREEN_NEW_EXTERNAL:
     "Obrazovka, která vám umožňuje vložit pomocí embed kódu obsah uveřejněný na internetu (např. Video z YouTube nebo mapu z Mapy.cz).",
+  EXPO_STRUCTURE_SCREEN_NEW_SIGNPOST: "Obrazovka rozcestníku.",
   EXPO_STRUCTURE_SCREEN_NEW_GAME_FIND:
     "Minihra, kde má návštěvník označit místo v obrázku.",
   EXPO_STRUCTURE_SCREEN_NEW_GAME_DRAW:

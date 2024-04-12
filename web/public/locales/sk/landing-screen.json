@@ -1,0 +1,27 @@
+{
+  "title": "Kreatívny nástroj na tvorbu virtuálnych výstav",
+  "description": "Vytvárajte pôsobivé online výstavy na ľubovoľné témy, ktoré budú návštevníkom dostupné na webe. INDIHU Exhibition umožňuje vtiahnuť návštevníka do deja prostredníctvom multimediálneho materiálu s interaktívnych hier.",
+  "formular": {
+    "login": "Prihlásenie",
+    "userNameLabel": "Užívateľské meno/e-mail",
+    "passwordLabel": "Heslo",
+    "loginButton": "Prihlásiť",
+    "resetPasswordButton": "Resetovať heslo",
+
+    "startCreatingExhibitions": "Začnite vytvárať výstavy",
+    "appIsFree": "Nástroj je úplne zadarmo",
+    "loadingRegistrationFormular": "Načíta sa registračný formulár.",
+    "firstNameLabel": "Meno",
+    "surnameLabel": "Priezvisko",
+    "institutionLabel": "Inštitúcia",
+    "emailLabel": "E-mail",
+    "newPasswordLabel": "Heslo (min 5 znakov)",
+    "acceptTermsOfUsePart1": "Súhlasím s",
+    "acceptTermsOfUsePart2": "podmienkami použitia",
+    "registerButton": "Registrovať",
+    "registrationNotAllowed": "Registrácie nie sú v súčasnej dobe povolené."
+  },
+
+  "chromeOptimization": "Aplikácia je optimalizovaná pre prehliadač Google Chrome.",
+  "chromeOptimizationShort": "Optimalizované pre Google Chrome."
+}

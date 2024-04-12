@@ -1,0 +1,61 @@
+{
+  "title": "Users",
+  "allUsersLabel": "All users",
+  "usersToAcceptLabel": "Users pending approval",
+  "viewDeleted": "View deleted",
+  "usersState": {
+    "accepted": "Accepted",
+    "not_verified": "Not verified",
+    "to_accept": "Pending approval",
+    "rejected": "Rejected",
+    "deleted": "Deleted"
+  },
+  "usersAction": {
+    "reactivate": "Reactivate user",
+    "accept": "Accept user",
+    "reject": "Reject user",
+    "delete": "Delete user"
+  },
+  "usersSort": {
+    "updated": "Date last updated",
+    "created": "Creation date",
+    "userName": "Username",
+    "firstName": "First name",
+    "surname": "Surname",
+    "email": "Email",
+    "institution": "Institution"
+  },
+
+  "searchLabel": "Search",
+  "table": {
+    "username": "Username",
+    "firstname": "Firstname",
+    "surname": "Surname",
+    "email": "E-mail",
+    "institution": "Institution",
+    "state": "Status",
+    "action": "Action"
+  },
+  "pagesizeLabel": "Entries per page:",
+
+  "acceptUserDialog": {
+    "title": "Accept user",
+    "submitLabel": "Accept",
+    "content": "User \"{{userName}}\" will be accepted. \nCAREFUL! This action can not be reverted."
+  },
+  "deleteUserDialog": {
+    "title": "Delete user",
+    "submitLabel": "Delete",
+    "content": "User \"{{userName}}\" will be deleted."
+  },
+  "reactivateUserDialog": {
+    "title": "Reactivate user",
+    "submitLabel": "Reactivate",
+    "content": "User \"{{userName}}\" will be reactivated."
+  },
+  "rejectUserDialog": {
+    "title": "Reject user",
+    "submitLabel": "Reject",
+    "content": "User \"{{userName}}\" will be rejected. \nCAREFUL! This action can not be reverted."
+  }
+}

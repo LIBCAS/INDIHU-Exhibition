@@ -6,7 +6,7 @@ import cz.inqool.uas.store.DomainStore;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ExpositionUrlRepository extends DomainStore<ExpositionUrl, QExpositionUrl> {
+public class ExpositionUrlRepository extends DomainStore<ExpositionUrl, QExpositionUrl>{
 
     public ExpositionUrlRepository() {
         super(ExpositionUrl.class, QExpositionUrl.class);

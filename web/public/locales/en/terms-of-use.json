@@ -1,0 +1,27 @@
+{
+  "pageTitle": "INDIHU Exhibition - Information and Terms of Use",
+  "informationSection": {
+    "title": "Information:",
+    "paragraph1": "The application for creating virtual exhibitions INDIHU Exhibition is operated by the Library of the Academy of Sciences of the Czech Republic, v. v. i. It is primarily intended for employees of institutes of the Academy of Sciences of the Czech Republic, universities, students and memory institutions. Use is free and subject to registration, which is subsequently approved by the administrator.",
+    "paragraph2": "The Library of the Academy of Sciences of the Czech Republic undertakes to operate this application in the long term at the address <externalLink>https://exhibition.indihu.cz/</externalLink>. In the event that the operating conditions change, users will be informed. Technical details and description of use are given in the user manual <externalLink>https://libcas.github.io/indihu-manual/</externalLink>.",
+    "paragraph3": "The INDIHU Exhibition software was developed as open source under the GNU GPL v3 license within the project \"INDIHU - development of tools and infrastructure for digital humanities\" supported by the NAKI program of the Ministry of the Czech Republic in 2016-2020 under the designation DG16P02B039. More about the project at <externalLink>https://indihu.cz/</externalLink>.",
+    "paragraph4": "More information is available in the development environment at <externalLink>https://github.com/LIBCAS/INDIHU-Exhibition</externalLink>.",
+    "paragraph5": "Contact e-mail: <mailLink>info@indihu.cz</mailLink>."
+  },
+  "termsOfUseSection": {
+    "title": "Terms of use:",
+    "paragraph1": "The application for creating virtual exhibitions INDIHU Exhibition is operated by the Library of the Academy of Sciences of the Czech Republic, v. v. i., with headquarters at Národní 1009/3, Prague 1, 110 00. Contact: <mailLink>info@indihu.cz</mailLink>.",
+    "paragraph2": "The application is a creative tool for creating virtual exhibitions. It allows you to make the content of your exhibitions available to the public. Any content that you upload to the application or make available through it must not violate the rights of third parties, in particular the protection of personality or copyright.",
+    "paragraph3": "The application is primarily intended for institutes of the Academy of Sciences of the Czech Republic, universities and memory institutions, i.e. also their employees, scientists and students. Use is free and subject to registration, which is subsequently approved by the administrator. Registration is required to verify the organization's identity and create an account.",
+    "paragraph4": "The Library of the Academy of Sciences of the Czech Republic runs this application at <externalLink>https://exhibition.indihu.cz/</externalLink>.",
+    "paragraph5": "In the event that the operating conditions change, users will be informed. If you do not agree with the new conditions, you have the option to unsubscribe from the service within 30 days, otherwise we consider that you agree to the change in the terms of service provision.",
+    "paragraph6": "Technical details and description of use are given in the user manual <externalLink>https://libcas.github.io/indihu-manual/</externalLink>.",
+    "paragraph7": "Since 2021, it has been developed within the framework of the Loaded - Open project. Digitisation, accessibility and educational use of art collections in memory institutions supported by the EEA Grants, Culture Programme. More about the project at <externalLink>https://loaded-open.eu/en/</externalLink>.",
+    "paragraph8": "More information is available in the development environment at <externalLink>https://github.com/LIBCAS/INDIHU-Exhibition</externalLink>.",
+    "paragraph9": "By agreeing to these terms and conditions, you undertake to use the INDIHU Exhibition platform for non-commercial purposes only. The user is obliged to settle with the owners and administrators all rights to the materials used in the exhibitions prepared by him.",
+    "paragraph10": "Keep in mind that all copyrighted content that you make available as part of the exhibition must be covered by the appropriate licenses.",
+    "paragraph11": "The operator reserves the right, without prior notice, to disable or completely remove exhibitions and materials for which copyright and ownership rights are not sufficiently settled by the user, or if they otherwise violate legal regulations or are not suitable from an ethical point of view.",
+    "paragraph12": "In the event that you discover a violation of the rights of third parties or any other violation of legal regulations, please contact us at the above contact details, we will deal with the report. Thank you.",
+    "paragraph13": "By registering to the INDIHU Exhibition platform at <externalLink>https://exhibition.indihu.cz/</externalLink>, the user agrees to these terms and undertakes to comply with them."
+  }
+}

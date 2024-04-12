@@ -1,0 +1,124 @@
+{
+  "next": "Next",
+  "skip": "Skip tutorial",
+  "finish": "Finish",
+
+  "overlay": {
+    "info": {
+      "label": "Information",
+      "text": "Click to view additional information about the screen and its text."
+    },
+    "navigation": {
+      "label": "Navigation",
+      "text": "The arrows on each sides of the screen move you either forward (right) or backward (left) in the exhibition."
+    },
+    "chapters": {
+      "label": "Chapters",
+      "text": "Click to view a list of all chapters and screens of the exhibition. Navigate to individual screens by clicking them."
+    },
+    "audio": {
+      "label": "Audio",
+      "text": "This button allows you to control audio settings."
+    },
+    "play": {
+      "label": "Playback",
+      "text": "Pause the exhibition by either clicking this button or by pressing the space bar. Resume the exhibition by the same button or by pressing enter."
+    },
+    "glass-magnifier": {
+      "label": "Glass magnifier",
+      "text": "On some types of screens, it is possible to use the magnifying glass button, which can be used to enlarge a part of the screen content that is located under the cursor."
+    },
+    "reactivate-tutorial": {
+      "label": "Recall tutorial",
+      "text": "Use this button to recall this help."
+    },
+    "settings": {
+      "label": "Settings",
+      "text": "Click to view and change the settings available while viewing the exhibition."
+    },
+    "editor": {
+      "label": "Screen editing",
+      "text": "As an exhibition creator, clicking this button will redirect you to the edit page for the current screen."
+    },
+    "progressbar": {
+      "label": "Rewind",
+      "text": "Some types of screens (such as video or photo gallery screens) have a special bar to help you fast forward in the current screen."
+    },
+    "keyboard": {
+      "label": "Keyboard control",
+      "text": "The exhibition can also be controlled using the keyboard. \nPress 'M' to mute all audio tracks. \nBy pressing the space bar, you can pause the exhibition. \nBy pressing ESC, you can close all interactive elements displayed on the screen. \nBy Move forward or backwards using the arrows. \nStart the exhibition by pressing Enter."
+    }
+  },
+
+  "mobile-overlay": {
+    "play": {
+      "label": "Playback",
+      "text": "The exhibition can be paused with this button. Pressing the button again will then resume playback."
+    },
+    "reactivate-tutorial": {
+      "label": "Recall tutorial",
+      "text": "Use this button to recall this help."
+    },
+    "screen-info": {
+      "label": "Information",
+      "text": "Click to view additional information about the screen and its text."
+    },
+    "help-tutorial-button": {
+      "label": "Help",
+      "text": "Some screen types have this help button, which can be used to display additional information or help on how to work with that particular screen."
+    },
+    "overlay-button": {
+      "label": "Overlay",
+      "text": "Clicking this button will open additional settings and functionalities for the current exhibition."
+    }
+  },
+
+  "screenChange": {
+    "dragThumb": {
+      "label": "Slider",
+      "text": "Drag to reveal the background image."
+    }
+  },
+
+  "gameDraw": {
+    "help-tutorial": {
+      "label": "Game Draw",
+      "text": "An explanation to the user about how to work with the game draw type screen."
+    }
+  },
+
+  "gameFind": {
+    "help-tutorial": {
+      "label": "Game Find",
+      "text": "An explanation to the user about how to work with the game find type screen."
+    }
+  },
+
+  "gameMove": {
+    "help-tutorial": {
+      "label": "Game Move",
+      "text": "An explanation to the user about how to work with the game movetype screen."
+    }
+  },
+
+  "gameOptions": {
+    "help-tutorial": {
+      "label": "Game Options",
+      "text": "An explanation to the user about how to work with the game optionstype screen."
+    }
+  },
+
+  "gameSizing": {
+    "help-tutorial": {
+      "label": "Game Sizing",
+      "text": "An explanation to the user about how to work with the game sizing type screen."
+    }
+  },
+
+  "gameWipe": {
+    "help-tutorial": {
+      "label": "Game Wipe",
+      "text": "An explanation to the user about how to work with the game wipe type screen."
+    }
+  }
+}

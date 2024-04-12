@@ -1,0 +1,400 @@
+{
+  "expoState": {
+    "prepare": "In preparation",
+    "opened": "Published",
+    "ended": "Finished",
+    "prepareTooltip": "The exhibition is in progress. The content of the exhibition can be freely edited. The exhibition is only accessible to logged users with whom the exhibition is shared.",
+    "openedTooltip": "The exhibition is publicly available via its URL. It is not possible to edit the exhibition.",
+    "endedTooltip": "The exhibition has been closed and is neither publicly available nor intended for further modifications. It is possible to set a notification to the user with a link to another website on its original URL. The exhibition can be changed again to the status 'In preparation' or 'Published'."
+  },
+  "structure": {
+    "tab": "Exhibition structure",
+    "screenCategoryLabels": {
+      "chapter": "Chapter",
+      "content_screen": "Content screen",
+      "interactive_screen": "Interactive screen",
+      "game_screen": "Game screen"
+    },
+    "screenLabels": {
+      "start": "Start screen",
+      "intro": "Chapter introduction",
+      "image": "Image screen",
+      "video": "Video screen",
+      "text": "Text screen",
+      "parallax": "Parallax",
+      "image_zoom": "Image with zoom animation",
+      "slideshow": "Slideshow",
+      "photogallery_new": "Photogallery",
+      "image_change": "Image before and after",
+      "external": "Screen with external content",
+      "signpost": "Directory screen",
+      "game_find": "Find in the picture",
+      "game_draw": "Draw screen",
+      "game_wipe": "Wipe screen",
+      "game_sizing": "Guess the size screen",
+      "game_move": "Move to the right place",
+      "game_options": "Quiz",
+      "finish": "Finish screen"
+    },
+    "screenTooltips": {
+      "intro": "It presents a series of screens that connect to each other in one thematic unit. For each chapter, an entry is created in the list of the exhibition's chapters.",
+      "image": "A screen centered around an image that you can animate and add infopoints to.",
+      "video": "A screen that is used to play a video from a document library. To share a video on the Internet, use the 'External Content Screen.'",
+      "text": "The screen will display text with a maximum range of 300 characters.",
+      "parallax": "The screen will display an image with a parallax effect including an imitation of its spatial movement, see https://www.youtube.com/watch?v=cUfmUPhApJ0.",
+      "image_zoom": "The screen first displays the overall image and then animates a sequence of movements zooming in on selected details of the image with infopoints.",
+      "slideshow": "A screen with a series of images.",
+      "photogallery_new": "Photo gallery screen.",
+      "image_change": "The screen will show two overlapping photos. The slider can be used to reveal one and cover the other photo. The slider can be vertical or horizontal. The transition from one image to another can also be set to a mouse click or as a blend.",
+      "external": "A screen that allows you to use an embed code to insert content published on the Internet (e.g. a video from YouTube or a map from Mapy.cz).",
+      "signpost": "The directory screen.",
+      "game_find": "A game where the visitor has to mark a place in the picture.",
+      "game_draw": "A game where the visitor completes the missing part of the picture.",
+      "game_wipe": "A game where the visitor reveals a hidden picture",
+      "game_sizing": "The visitor needs to find the right size of the object in the image so that it is in the same proportion as the reference object",
+      "game_move": "A game where the visitor moves the object above the image to the correct target position by dragging mouse.",
+      "game_options": "The visitor chooses the correct answer to a question from 3 answers. Each answer consists of text and an image."
+    }
+  },
+  "files": {
+    "tab": "Files",
+    "newFolder": "NEW FOLDER",
+    "uploadFile": "UPLOAD FILE",
+    "uploadFileTooltip": "The maximum file size is 250MB. When uploading multiple files, the limit is 260MB.",
+    "sorting": {
+      "created": "Created",
+      "name": "Name"
+    },
+    "sortingTooltip": "Sorting",
+    "orderASC": "Ascending",
+    "orderDESC": "Descending",
+    "fileActions": {
+      "rename": "Rename",
+      "move": "Move",
+      "edit": "Edit",
+      "download": "Download",
+      "delete": "Delete"
+    },
+    "filePreview": "Preview the file",
+    "fileMetadata": "Metadata",
+    "nameCol": "Name:",
+    "typeCol": "Type:",
+    "sizeCol": "Size:",
+    "durationCol": "Duration:",
+    "dimensionsCol": "Dimensions:",
+    "widthCol": "Width:",
+    "heightCol": "Height:"
+  },
+  "settingsAndSharing": {
+    "tab": "Settings and sharing",
+    "expoState": "Exhibition status",
+    "expoUrl": "Exhibition URL",
+    "copyUrlLabel": "Copy URL",
+    "copyUrlMessage": "The URL of the exhibition was copied to the clipboard.",
+    "actualizeLabel": "Update",
+    "expoEmbedCode": "Embed code for the exhibition",
+    "embedCodeWidth": "Width",
+    "embedCodeHeight": "Height",
+    "generateEmbedCode": "Generate the embed code",
+    "generateEmbedCodeMessage": "The generated embed code has been copied to the clipboard.",
+    "expoTags": "Exhibition tags",
+    "tagsInfoLabel": "Selected tags for the exhibition",
+    "saveLabel": "Save",
+    "selectLabel": "Select",
+    "expoEndedInfo": {
+      "info": "Information to the visitor in case the exhibition has ended",
+      "backgroundImage": "Background image",
+      "backgroundImageTooltip": "An image selected from the document library to be displayed in the background of the page.",
+      "redirectUrl": "URL to redirect",
+      "redirectUrlTooltip": "URL address where the visitor is advised to continue. E.g. another exhibition or the website of the institution that implemented the exhibition.",
+      "infoForVisitor": "Notice to visitor",
+      "infoForVisitorTooltip": "Brief informational text that is displayed to the user."
+    },
+    "shareWithUsers": "Shared with users",
+    "nameCol": "Name",
+    "emailCol": "E-mail",
+    "privilegesCol": "Privileges",
+    "actionCol": "Actions",
+    "owner": "Owner",
+    "reading": "Reading",
+    "readWrite": "Reading and writing"
+  },
+  "rating": {
+    "tab": "Rating and views",
+    "expoRating": "Rating of the exhibition",
+    "expoNoRatingYet": "This exhibition has not yet been rated",
+    "ratingTable": {
+      "rateCount": "Number of ratings",
+      "avgRate": "Average rating",
+      "peopleTopicLikeCount": "Number of people who liked the theme of the exhibition:",
+      "peopleMediaLikeCount": "Number of people who liked the exhibition media:",
+      "peopleTextLikeCount": "Number of people who liked the texts of the exhibition:",
+      "peopleGameLikeCount": "Number of people who liked the exhibition games:"
+    },
+    "numberOfViews": "Number of views:",
+    "expoComments": "Comments",
+    "expoNoCommentsYet": "This exhibition has no comments yet.",
+    "created": "Created:",
+    "rating": "Rating:",
+    "ratingNotSpecified": "Not specified",
+    "emailContact": "Reviewer's email:"
+  },
+  "theming": {
+    "tab": "Theme",
+    "generalThemeSettings": {
+      "title": "1. Exhibition color scheme",
+      "expoThemeLabel": "Exhibition theme",
+      "expoThemeLight": "Light",
+      "expoThemeDark": "Dark",
+      "expoBackgroundColorLabel": "Background color",
+      "expoIconsColorLabel": "Icons color",
+      "expoTagsColorLabel": "Tags color"
+    },
+    "logoAndWatermarkSettings": {
+      "title": "2. Setting of the logo and watermark",
+      "expoLogoTypeLabel": "Exhibition logo type",
+      "expoLogoTypeLogo": "Logo",
+      "expoLogoTypeWatermark": "Watermark",
+      "expoLogoPositionLabel": "Logo position",
+      "expoLogoPositionUpLeft": "Top left",
+      "expoLogoPositionUpRight": "Top right",
+      "expoLogoPositionDownLeft": "Bottom left",
+      "expoLogoFileLabel": "Logo / watermark file"
+    },
+    "defaultInfopointSettings": {
+      "title": "3. Default theme for infopoints",
+      "infopointShapeLabel": "Infopoint shape",
+      "infopointShapeSquare": "Square",
+      "infopointShapeCircle": "Circle",
+      "infopointShapeIcon": "Icon",
+      "infopointPxSizeLabel": "Infopoint size in pixels",
+      "infopointColorLabel": "Infopoint color",
+      "infopointIconFileLabel": "Infopoint icon file"
+    },
+    "selectLabel": "Select",
+    "exportLabel": "Export",
+    "importLabel": "Import",
+    "resetSettingsLabel": "Reset settings",
+    "saveChangesLabel": "Save changes",
+    "saveThemeFailureDialog": {
+      "title": "Saving changes was not successful",
+      "text": "An error occurred while saving theme changes."
+    },
+    "saveThemeSuccessDialog": {
+      "title": "Saving of changes was successful",
+      "text": "Theme changes have been successfully saved."
+    }
+  },
+  "tags": {
+    "exhibitionTopicGroupLabel": "Choose the main topic of your exhibition",
+    "historyAndPeople": "History and people",
+    "nature": "Nature",
+    "society": "Society",
+    "art": "Art",
+    "scienceAndTechnique": "Science and technology",
+
+    "exhibitionFormalPropertyGroupLabel": "Select max. 2 formal characteristics of your exhibition",
+    "englishFriendly": "English friendly",
+    "aesthetic": "Aesthetic",
+    "informative": "Informative",
+    "interactive": "Interactive",
+    "forMobiles": "For mobiles",
+    "educational": "Educational",
+    "funny": "Entertaining",
+
+    "exhibitionIntendedForGroupLabel": "Choose target audience of the exhibition",
+    "children": "Children",
+    "adults": "Adults",
+    "experts": "Experts",
+    "family": "Family",
+    "seniors": "Seniors",
+    "students": "Students",
+    "teenagers": "Teenagers"
+  },
+  "expoUnauthorizedAccessTitle": "Unauthorized access",
+  "expoUnauthorizedAccessText": "You are not authorized to access this exhibition",
+  "expoNotFoundTitle": "Exhibition not found",
+  "expoNotFoundText": "The exhibition located under this URL was not found.",
+
+  "expoForbiddenEditActionPerformed": "You do not have permission to edit this exhibition. The exhibition is in read-only mode.",
+
+  "expoDeleteDialog": {
+    "submitLabel": "Delete",
+    "expoWillBeDeleted": "The selected exhibition named <strong>{{expoName}}</strong> will be deleted.",
+    "actionIsPermanent": "Deletion of the exhibition is irreversible and deletes the exhibition including all documents and materials!"
+  },
+  "expoDuplicateDialog": {
+    "title": "Duplication of the exhibition",
+    "submitLabel": "Duplicate",
+    "newDuplicatedExpoNameFieldLabel": "Name of the exhibition"
+  },
+  "expoRenameDialog": {
+    "title": "New exhibition name",
+    "submitLabel": "Rename",
+    "nameFieldLabel": "Name of the exhibition"
+  },
+  "expoShareChangeOwnerDialog": {
+    "title": "Change the owner of the exhibition",
+    "submitLabelChange": "Change",
+    "submitLabelOk": "OK",
+    "userNameFieldLabel": "Username",
+    "expoIsNotSharedWithAnyone": "The exhibition is not shared with anyone."
+  },
+  "expoShareRemoveCollaboratorDialog": {
+    "title": "Remove collaborator",
+    "submitLabel": "Remove",
+    "collaboratorWillBeRemoved": "Collaborator {{collaboratorName}} will be removed."
+  },
+  "expoShareDialog": {
+    "title": "Share with",
+    "submitLabel": "Share",
+    "readOnlyOption": "Read only",
+    "editOption": "Read and write",
+    "selectTypeFieldLabel": "Select share type",
+    "userEmailField": "E-mail of user",
+    "ifUserDoesNotExistSendEmailInvite": "If the user does not exist, send an e-mail invitation",
+    "responseUserAdded": {
+      "title": "User added",
+      "text": "The exhibition was shared with the user {{userName}}."
+    },
+    "responseIndihuUserInvitedByEmail": {
+      "title": "User invited",
+      "text": "An e-mail invitation has been sent to the user {{userName}}."
+    },
+    "responseNotIndihuUser": {
+      "title": "Invite user",
+      "text": "{{userName}} is not user of INDIHU Exhibition. Please select \"send e-mail invitation\" checkbox option."
+    },
+    "responseUserIsAlreadyShared": {
+      "title": "The user is already cooperating",
+      "text": "The exhibition is already shared with user {{userName}}."
+    }
+  },
+  "expoStateDialog": {
+    "title": "Change of exhibition status",
+    "submitLabel": "Change"
+  },
+  "fileDeleteFolderDialog": {
+    "submitLabel": "Delete",
+    "warningText": "The selected folder <strong>{{folderName}}</strong> and all its contents will be deleted.",
+    "actionIsIrreversible": "The action is irreversible.",
+    "folderFilesAreUsedInFollowingScreens": "Files from the folder are used in screens:"
+  },
+  "fileDeleteDialog": {
+    "submitLabel": "Delete",
+    "warningText": "The selected file <strong>{{fileName}}</strong> will be deleted.",
+    "actionIsIrreversible": "The action is irreversible.",
+    "fileIsUsedInScreen": "The file is used in the screen"
+  },
+  "fileMoveDialog": {
+    "title": "File move",
+    "submitLabel": "Move",
+    "whereToMoveFile": "Where do you want to move the file {{fileName}} ?",
+    "uncategorized": "Uncategorized"
+  },
+  "fileNewFolderDialog": {
+    "title": "New folder",
+    "submitLabel": "Create ",
+    "folderNameField": "Folder name",
+    "folderWithThisNameAlreadyExists": "Folder with this name already exists."
+  },
+  "fileRenameFolderDialog": {
+    "title": "Rename folder",
+    "submitLabel": "Rename",
+    "newFolderNameField": "New name of folder",
+    "folderWithThisNameAlreadyExists": "Folder with this name already exists."
+  },
+  "fileRenameDialog": {
+    "title": "Rename file",
+    "submitLabel": "Rename",
+    "newFileNameField": "New file name"
+  },
+  "imageEditorSaveDialog": {
+    "title": "Save as",
+    "submitLabel": "Save",
+    "fileNameField": "File name",
+    "stornoActionLabel": "Storno",
+    "confirmActionLabel": "Confirm"
+  },
+  "screenAuthorsAddDialog": {
+    "title": "Add exhibition authors or collaborators",
+    "submitLabel": "Save",
+    "roleField": "Role",
+    "textField": "People or text"
+  },
+  "screenAuthorsChangeDialog": {
+    "title": "Change exhibition authors or collaborators",
+    "submitLabel": "Save",
+    "roleField": "Role",
+    "textField": "People or text"
+  },
+  "screenDeleteDialog": {
+    "submitLabel": "Delete",
+    "introChapterScreenDeletion": "The <strong>Chapter Introduction</strong> screen will be deleted.",
+    "introChapterWholeChapterDeletionWarning": "Be careful, this will delete the entire chapter. The action is irreversible.",
+    "introChapterDocumentsStay": "Documents and files will remain in the editor.",
+    "otherScreenDeletion": "The selected screen <strong>{{screenName}}</strong> will be deleted.",
+    "otherScreenDocumentsStay": "The action is irreversible. You only delete the screen, but the documents and background will remain on the server!"
+  },
+  "screenDocumentChangeDialog": {
+    "title": "Change document",
+    "submitLabel": "Change",
+    "documentNameField": "Name of document",
+    "urlAdressField": "URL address",
+    "fileTypeField": "File type",
+    "fileField": "File",
+    "selectActionLabel": "Choose",
+    "typeOfChosenFile": "The type of the selected file"
+  },
+  "screenDocumentChooseDialog": {
+    "title": "Choose file",
+    "submitLabel": "Choose",
+    "errorText": "*Choose file"
+  },
+  "screenDocumentNewDialog": {
+    "title": "New document",
+    "submitLabel": "Create",
+    "fileNameField": "Document name",
+    "urlAddressField": "URL address",
+    "urlTypeField": "File type",
+    "fileField": "File",
+    "chooseActionLabel": "Choose",
+    "documentFileTypeField": "Type of the selected file",
+    "fileAlreadyExistsError": "*File already exists"
+  },
+  "screenDuplicateDialog": {
+    "titleScreen": "Duplicate screen position",
+    "titleChapter": "Duplicate chapter position",
+    "submitLabel": "Duplicate",
+    "chapterLabel": "Chapter",
+    "screenLabel": "Screen",
+    "positionLabel": "Position"
+  },
+  "screenFileChooseDialog": {
+    "title": "Choose file",
+    "submitLabel": "Choose",
+    "chooseFileErrorText": "*Choose file"
+  },
+  "screenLinkDialog": {
+    "title": "Screen link",
+    "submitLabel": "Close",
+    "copied": "Copied!",
+    "copyToClipboardLabel": "Copy to clipboard"
+  },
+  "screenMoveDialog": {
+    "titleScreen": "New screen position",
+    "titleChapter": "New chapter position",
+    "submitLabel": "Move",
+    "separateScreenFieldLabel": "Separate screen",
+    "chapterFieldLabel": "Chapter",
+    "screenFieldLabel": "Screen",
+    "positionFieldLabel": "Position"
+  },
+  "viewWrapChapterDialog": {
+    "title": "Chapters"
+  },
+  "warningDialog": {
+    "title": "Warning",
+    "submitLabel": "OK"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "header": {
+    "title": "Výstavy",
+    "filterLabel": "Filtr projektů:",
+    "sortLabel": "Řazení projektů: ",
+    "searchPlaceholder": "Hledat",
+    "sortTooltipASC": "Sestupně",
+    "sortTooltipDESC": "Vzestupně",
+    "tooltipList": "Seznam",
+    "tooltipGrid": "Mřížka",
+    "showOnlyPinnedLabel": "Zobrazit pouze připnuté výstavy",
+    "filterOptions": {
+      "all": "Vše",
+      "authorship": "Jsem autor/ka",
+      "readOnly": "Sdíleno pro čtení",
+      "readWrite": "Sdíleno pro zápis"
+    },
+    "sortOptions": {
+      "title": "Název",
+      "state": "Stav",
+      "created": "Datum vytvoření",
+      "edited": "Datum poslední aktualizace",
+      "isEditing": "Naposledy upravil/a"
+    }
+  },
+  "expoCard": {
+    "createNewExpo": "Vytvořit novou výstavu",
+    "state": "Stav:",
+    "created": "Vytvořeno:",
+    "updated": "Upraveno:",
+    "numberOfViews": "Počet zhlédnutí:",
+    "noNumberOfViewsYet": "Zatím žádná zhlédnutí",
+    "averageRating": "Průměrné hodnocení:",
+    "noAverageRatingYet": "Zatím nehodnoceno",
+    "ratingRedirectLabel": "Přesměrovat na kartu s hodnocením",
+    "commentsCount": "Počet komentářů:",
+    "bestRatedPreference": "Nejlépe hodnocený prvek:",
+    "noBestRatedPreferenceYet": "Zatím žádný",
+    "preferenceTopic": "Téma",
+    "preferenceGame": "Hry",
+    "preferenceText": "Texty",
+    "preferenceMedia": "Média",
+    "edit": "Upravit",
+    "preview": "Náhled",
+    "pinTooltip": "Připnout tuto výstavu",
+    "unpinTooltip": "Odepnout tuto výstavu",
+    "editErrDialogTitle": "Nelze upravovat",
+    "editErrDialogText": "Výstavu nelze upravovat."
+  },
+  "expoTable": {
+    "createNewExpo": "Vytvořit novou výstavu",
+    "name": "Název",
+    "state": "Stav",
+    "created": "Vytvořeno",
+    "author": "Autor",
+    "updated": "Upraveno",
+    "lastEditedBy": "Naposledy upravil/a",
+    "averageRating": "Průměrné hodnocení",
+    "commentsCount": "Počet komentářů",
+    "bestRatedPreference": "Nejlépe hodnocený prvek",
+    "actions": "Akce"
+  },
+  "expoCardActions": {
+    "update": "Upravit",
+    "preview": "Náhled",
+    "stateChange": "Změnit stav",
+    "rename": "Přejmenovat",
+    "share": "Sdílet",
+    "duplicate": "Duplikovat",
+    "delete": "Smazat"
+  },
+  "pager": {
+    "entriesPerPage": "Záznamů na stránku:"
+  },
+  "dialog": {
+    "newExpoTitle": "Nová výstava",
+    "newExpoLabel": "Název výstavy",
+    "submitLabel": "Vytvořit"
+  }
+}

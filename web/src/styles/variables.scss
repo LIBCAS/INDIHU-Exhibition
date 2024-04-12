@@ -1,0 +1,42 @@
+// Text sizes
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.875rem;
+$text-4xl: 2.25rem;
+
+// Colors
+$c-background: #393d41;
+$c-muted: #6c757d;
+$c-muted-400: #a6acb3;
+$c-muted-200: #ced4da;
+$c-muted-100: rgb(222, 228, 233);
+$c-blue: #2298ee;
+$c-success: #35c07d;
+$c-danger: #e0293e;
+$c-primary: #d2a473;
+$c-black-100: rgba(
+  $color: #000000,
+  $alpha: 0.1,
+);
+$c-black-200: rgba(
+  $color: #000000,
+  $alpha: 0.2,
+);
+$c-black-700: rgba(
+  $color: #000000,
+  $alpha: 0.7,
+);
+
+// Screen sizes from MUI `https://mui.com/material-ui/customization/breakpoints/`
+$screen-xs: 0px;
+$screen-sm: 600px;
+$screen-md: 900px;
+$screen-lg: 1200px;
+$screen-xl: 1536px;
+
+// Shapes
+$rounded: 5px;

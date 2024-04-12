@@ -1,0 +1,63 @@
+@import "../../new-landing-page/variables.scss";
+
+.creators-carousel {
+  &.slick-slider {
+    width: 100%;
+  }
+
+  // Paging of the bottom (dots)
+  .slick-dots li.slick-active button:before,
+  .slick-dots li button:before {
+    margin-top: 30px;
+    font-size: 14px;
+    color: white;
+  }
+
+  // Arrows
+  .slick-prev,
+  .slick-next {
+    z-index: 2;
+    background: white;
+    border-radius: 60px;
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 10px 15px #00000054;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+  }
+
+  .slick-prev {
+    left: 0px;
+  }
+
+  .slick-next {
+    right: 0px;
+  }
+
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 1.5rem;
+    color: $primary-color;
+    font-weight: 600;
+    font-family: bootstrap-icons;
+  }
+
+  .slick-prev:before {
+    content: "\f12F"; // left arrow code point
+  }
+
+  .slick-next:before {
+    content: "\f138"; // right arrow code point
+  }
+
+  .slick-prev:hover,
+  .slick-next:hover {
+    background: $primary-color;
+    box-shadow: 0 5px 5px #00000070;
+  }
+
+  .slick-prev:hover:before,
+  .slick-next:hover:before {
+    color: white;
+  }
+}

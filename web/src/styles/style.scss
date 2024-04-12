@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   min-height: 10vh;
   height: 100vh;
@@ -7,14 +11,17 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: "Raleway";
   -webkit-font-smoothing: antialiased;
   min-height: 10vh;
   height: 100vh;
   max-height: 100vh;
 }
 
-@import "./fonts.scss";
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+}
 
 /* COLORS */
 
@@ -32,6 +39,7 @@ $c-error: #ea5d5d;
 $c-positive: #e4f1e4;
 $c-maroon: #85144b;
 $c-red: #ff4136;
+$c-warning: #ffa136;
 
 /* BREAKPOINTS */
 
@@ -44,6 +52,13 @@ $breakpoint-mobile: 400px;
 $breakpoint-mini: 300px;
 $breakpoint-200: 200px;
 
+/* Tailwind breakpoints */
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
 /* MD */
 
 @import "../../node_modules/react-md/src/scss/react-md";
@@ -54,7 +69,6 @@ $md-colors-warn-md: false;
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 @import "components/main.scss";
-@import "components/loader.scss";
 @import "components/dialogs.scss";
 @import "components/toolbar.scss";
 @import "components/exposition.scss";
@@ -65,9 +79,11 @@ $md-colors-warn-md: false;
 @import "components/scrollbar.scss";
 @import "components/viewer.scss";
 @import "components/image-editor.scss";
+@import "components/infopoint.scss";
+@import "components/loader.scss";
 
 *:not(i) {
-  font-family: "Raleway";
+  font-family: "Work Sans";
 }
 
 .__react_component_tooltip {
@@ -79,7 +95,7 @@ $md-colors-warn-md: false;
   z-index: 10000000;
   position: fixed;
   left: 0;
-  bottom: 0;
+  top: 0;
   background: $c-red;
   color: $c-white;
   font-size: 11px;

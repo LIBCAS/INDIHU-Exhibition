@@ -1,0 +1,64 @@
+@import "../variables.scss";
+
+/* -- Functionality section -- */
+
+.functionality-section {
+  position: relative;
+  background-color: white;
+  overflow: hidden;
+  color: $primary-color;
+}
+
+.functionality-section::before {
+  content: "";
+  background-image: url("../../../assets/img/landing-page/main-symbol-color.svg");
+  background-repeat: no-repeat;
+  width: 1000px;
+  height: 700px;
+  position: absolute;
+  top: 15vh;
+  right: -300px;
+  opacity: 0.03;
+}
+
+.functionality-section div:first-child {
+  position: relative;
+}
+
+.functionality-section h2 {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+@media (min-width: 576px) {
+  .functionality-section h2 {
+    font-size: 40px;
+    line-height: 58px;
+  }
+}
+
+@media (min-width: 768px) {
+  .functionality-section h2 {
+    font-size: 48px;
+    line-height: 58px;
+  }
+}
+
+.functionality-section p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.functionality-section .external-link {
+  color: #3366cc;
+}
+
+.functionality-section .external-link:visited {
+  color: #6c40c9;
+}
+
+.functionality-section .external-link:hover {
+  text-decoration: underline;
+}

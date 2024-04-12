@@ -1,0 +1,12 @@
+{
+  "title": "Nastavení",
+  "registrationAllowed": "Registrace povolena",
+  "automaticRegistration": "Automatická registrace",
+  "lockExhibition": "Zamknutí výstavy",
+  "seconds": "vteřin",
+  "editActionLabel": "Upravit",
+  "cancelActionLabel": "Zrušit",
+  "confirmActionLabel": "Potvrdit",
+  "yes": "Ano",
+  "no": "Ne"
+}

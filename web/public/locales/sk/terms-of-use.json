@@ -1,0 +1,27 @@
+{
+  "pageTitle": "INDIHU Exhibition - Informácie a podmienky použitia",
+  "informationSection": {
+    "title": "Informácie:",
+    "paragraph1": "Aplikácia na vytváranie virtuálnych výstav INDIHU Exhibition je prevádzkovaná Knižnicou AV ČR, v. v. i. Určená je predovšetkým pracovníkom ústavov AV ČR, vysokých škôl, študentom a pamäťových inštitúcií. Využitie je bezplatné a je podmienené registráciou, ktorá je následne schválená administrátorom.",
+    "paragraph2": "Knižnica Akadémie vied SR sa zaväzuje túto aplikáciu dlhodobo prevádzkovať na adrese <externalLink>https://exhibition.indihu.cz/</externalLink>. V prípade, že by sa menili podmienky prevádzkovania, budú užívatelia informovaní. Technické podrobnosti a popis použitia sú uvedené v užívateľskom manuáli <externalLink>https://libcas.github.io/indihu-manual/</externalLink>.",
+    "paragraph3": "Od roku 2021 bol rozvíjaný v rámci projektu projektu Nahrané - Otvorené. Digitalizácia, sprístupnenie a edukatívne využitie umeleckých zbierok v pamäťových inštitúciách podporeného prostredníctvom Fondov EHP, program Kultúra. Viac o projekte naViac o projekte na <externalLink>https:/ /loaded-open.eu/sk/</externalLink>.",
+    "paragraph4": "Ďalšie informácie sú k dispozícii vo vývojovom prostredí na <externalLink>https://github.com/LIBCAS/INDIHU-Exhibition</externalLink>.",
+    "paragraph5": "Kontaktný e-mail: <mailLink>info@indihu.cz</mailLink>."
+  },
+  "termsOfUseSection": {
+    "title": "Podmienky použitia:",
+    "paragraph1": "Aplikácia na vytváranie virtuálnych výstav INDIHU Exhibition je prevádzkovaná Knižnicou AV ČR, v. v. i., so sídlom Národná 1009/3, Praha 1, 110 00. Kontakt: <mailLink>info@indihu.cz</mailLink>.",
+    "paragraph2": "Aplikácia je kreatívnym nástrojom pre tvorbu virtuálnych výstav. Umožňuje vám sprístupniť obsah vašich výstav verejnosti. Žiadny obsah, ktorý do aplikácie nahráte alebo prostredníctvom nej sprístupníte, nesmie porušovať práva tretích osôb, najmä ochranu osobnosti alebo autorské práva.",
+    "paragraph3": "Aplikácia je určená predovšetkým ústavom AV SR, vysokým školám a pamäťovým inštitúciám, teda aj ich zamestnancom, vedcom a študentom. Využitie je bezplatné a je podmienené registráciou, ktorá je následne schválená administrátorom. Registrácia je nutná z dôvodu overenia totožnosti organizácie a zriadenie účtu.",
+    "paragraph4": "Knižnica Akadémie vied SR túto aplikáciu prevádzkuje na adrese <externalLink>https://exhibition.indihu.cz/</externalLink>.",
+    "paragraph5": "V prípade, že by sa menili podmienky prevádzkovania, budú užívatelia informovaní. Ak by ste s novými podmienkami nesúhlasili, máte možnosť sa zo služby do 30 dní odhlásiť, v opačnom prípade sa domnievame, že so zmenou podmienok poskytovania služby súhlasíte .",
+    "paragraph6": "Technické podrobnosti a popis použitia sú uvedené v užívateľskom manuáli <externalLink>https://libcas.github.io/indihu-manual/</externalLink>.",
+    "paragraph7": "Od roku 2021 bol rozvíjaný v rámci projektu projektu Nahrané - Otvorené. Digitalizácia, sprístupnenie a edukatívne využitie umeleckých zbierok v pamäťových inštitúciách podporeného prostredníctvom Fondov EHP, program Kultúra. Viac o projekte na <externalLink>https://loaded- open.eu/sk/</externalLink>.",
+    "paragraph8": "Ďalšie informácie sú k dispozícii vo vývojovom prostredí na <externalLink>https://github.com/LIBCAS/INDIHU-Exhibition</externalLink>.",
+    "paragraph9": "Súhlasom s týmito podmienkami sa zaväzujete využívať platformu INDIHU Exhibition iba na nekomerčné účely. Užívateľ je povinný vysporiadať s vlastníkmi a správcami všetky práva k materiálom využitým v ním pripravených výstavách.",
+    "paragraph10": "Majte na pamäti, že všetok autorskoprávny obsah, ktorý v rámci výstavy sprístupníte, musíte mať ošetrený príslušnými licenciami.",
+    "paragraph11": "Prevádzkovateľ si vyhradzuje právo bez predchádzajúceho upozornenia zneprístupniť, prípadne úplne odstrániť, výstavy a materiály, pri ktorých nie sú užívateľom dostatočne vysporiadané autorské a vlastnícke práva alebo pokiaľ inak porušujú právne predpisy alebo nie sú vhodné z etického hľadiska.",
+    "paragraph12": "V prípade, že zistíte porušenie práv tretích osôb alebo akékoľvek iné porušenie právnych predpisov, kontaktujte nás na vyššie uvedených kontaktných údajoch, nahlásením sa budeme zaoberať. Ďakujeme.",
+    "paragraph13": "Registráciou do platformy INDIHU Exhibition na adrese <externalLink>https://exhibition.indihu.sk/</externalLink> užívateľ s týmito podmienkami súhlasí a zaväzuje sa ich dodržiavať."
+  }
+}

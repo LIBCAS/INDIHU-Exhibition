@@ -10,7 +10,7 @@ import cz.inqool.uas.indihu.entity.dto.ExpoFile;
 import cz.inqool.uas.indihu.repository.ExpositionRepository;
 import cz.inqool.uas.indihu.repository.FileExpositionMapperRepository;
 import cz.inqool.uas.indihu.service.CollaboratorService;
-import cz.inqool.uas.indihu.service.ExpositionFileService;
+import cz.inqool.uas.indihu.service.exposition.ExpositionFileService;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.exception.TikaException;
@@ -75,7 +75,6 @@ public class ExpoFileController {
         Exposition exposition = expositionRepository.find(expositionId);
         notNull(exposition, () -> new MissingObject("exposition", expositionId));
         if (collaboratorService.canEdit(expositionId)) {
-
             try (InputStream stream = uploadFile.getInputStream()) {
                 String filename = uploadFile.getOriginalFilename();
 
@@ -113,7 +112,6 @@ public class ExpoFileController {
                     mapper1.setSize((long) baos.size());
                     expoFile.setThumbnailId(mapper1.getFile().getId());
                     fileExpositionMapperRepository.save(mapper1);
-
                 }
                 try (InputStream stream2 = uploadFile.getInputStream()) {
                     FileRef ref = repository.create(stream2, filename, contentType, index);

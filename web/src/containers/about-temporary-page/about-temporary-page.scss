@@ -1,0 +1,18 @@
+.about-temporary-page *,
+.about-temporary-page *::before,
+.about-temporary-page *::after {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.about-temporary-page h1,
+.about-temporary-page h2,
+.about-temporary-page h3,
+.about-temporary-page h4,
+.about-temporary-page h5,
+.about-temporary-page h6,
+.about-temporary-page p {
+  color: inherit;
+}

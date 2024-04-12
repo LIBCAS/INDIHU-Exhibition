@@ -16,6 +16,9 @@ import javax.transaction.Transactional;
 @Service
 public class LdapCredentialsHandler {
 
+    @Value("${security.ldap.enabled:false}")
+    private boolean enabled;
+
     @Value("${security.ldap.hostname}")
     private String endpoint;
 
@@ -45,6 +48,10 @@ public class LdapCredentialsHandler {
      * checks if user is in ldap server
      */
     public boolean exists(String userName){
+        if (!enabled) {
+            return false;
+        }
+
         LDAPConnection searchConnection;
         try {
             Filter filter = Filter.create(filterString.replace("{0}", userName));
@@ -68,6 +75,9 @@ public class LdapCredentialsHandler {
      */
     @Transactional
     public User validateCredential(String userName, String password, User user) {
+        if (!enabled) {
+            return null;
+        }
 
         LDAPConnection connection = null;
         LDAPConnection searchConnection = null;

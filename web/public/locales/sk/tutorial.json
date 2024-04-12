@@ -1,0 +1,124 @@
+{
+  "next": "Ďalší",
+  "skip": "Preskočiť prehliadku",
+  "finish": "Dokončiť",
+
+  "overlay": {
+    "info": {
+      "label": "Informácie",
+      "text": "Kliknutím zobrazíte podrobnejšie informácie k obrazovke a jej text."
+    },
+    "navigation": {
+      "label": "Navigácia",
+      "text": "Navigačné tlačidlá umožňujú voľný pohyb po výstave. Tlačidlom na pravej strane obrazovky sa pohybujete smerom dopredu a tlačidlom na ľavej strane obrazovky sa vraciate vo výstave späť."
+    },
+    "chapters": {
+      "label": "Kapitoly",
+      "text": "Tlačidlo otvorí menu so všetkými kapitolami a obrazovkami výstavy. Na jednotlivé obrazovky je možné prejsť následným kliknutím."
+    },
+    "audio": {
+      "label": "Zvuk",
+      "text": "Tlačidlom je možné ovládať nastavenie zvuku."
+    },
+    "play": {
+      "label": "Prehrávanie",
+      "text": "Výstavu je možné pozastaviť týmto tlačidlom alebo medzerníkom. Opätovným stlačením tlačidla alebo stlačením enteru na klávesnici sa potom prehrávanie obnoví."
+    },
+    "glass-magnifier": {
+      "label": "Lupa",
+      "text": "Na niektorých typoch obrazoviek je možné použiť tlačidlo lupy, pomocou ktorého je možné si zväčšiť časť obsahu obrazovky, ktorý sa nachádza pod kurzorom."
+    },
+    "reactivate-tutorial": {
+      "label": "Znovuvyvolanie infoprehliadky",
+      "text": "Pomocou tohto tlačidla je možné znovuvyvolať túto infoprehliadku."
+    },
+    "settings": {
+      "label": "Nastavenie",
+      "text": "Kliknutím je možné zobraziť a zmeniť nastavenia dostupné počas prezerania výstavy."
+    },
+    "editor": {
+      "label": "Editácia obrazovky",
+      "text": "Pre tvorcov výstavy: po kliknutí na toto tlačidlo budete presmerovaní na stránku editácie aktuálnej obrazovky."
+    },
+    "progressbar": {
+      "label": "Pretáčanie",
+      "text": "V prípade obrazovky s videom alebo slideshow je možné pomocou tohto prúžku aktuálnu obrazovku pretáčať."
+    },
+    "keyboard": {
+      "label": "Klávesové ovládanie",
+      "text": "Výstavu je možné ovládať aj pomocou klávesnice. \nStlačením 'M' je možné stlmiť všetky zvukové stopy. \nStlačením medzerníka je možné pozastavovať výstavu. \nStlačením ESC je možné zavrieť všetky interaktívne prvky zobrazené na obrazovke. \nStlačením šípok dopredu, resp. dozadu , je možné sa posúvať po výstave. \nStlačením Enter je tiež možné výstavu spustiť."
+    }
+  },
+
+  "mobile-overlay": {
+    "play": {
+      "label": "Prehrávanie",
+      "text": "Výstavu je možné pozastaviť týmto tlačidlom. Opätovným stlačením tlačidla sa potom prehrávanie obnoví."
+    },
+    "reactivate-tutorial": {
+      "label": "Znovuvyvolanie infoprehliadky",
+      "text": "Pomocou tohto tlačidla je možné znovuvyvolať túto infoprehliadku."
+    },
+    "screen-info": {
+      "label": "Informácie",
+      "text": "Kliknutím zobrazíte podrobnejšie informácie k obrazovke a jej text."
+    },
+    "help-tutorial-button": {
+      "label": "Pomoc",
+      "text": "U niektorých typov obrazoviek sa nachádza toto tlačidlo pomocníka, ktoré je možné použiť na zobrazenie dodatočných informácií alebo pomocníka o možnostiach práce s obrazovkou."
+    },
+    "overlay-button": {
+      "label": "Rozhranie",
+      "text": "Stlačením tlačidla otvoríte dodatočné nastavenia a funkcionality k aktuálnej výstave."
+    }
+  },
+
+  "screenChange": {
+    "dragThumb": {
+      "label": "Tiahlo",
+      "text": "Posunutím odhalíte obrázok v pozadí."
+    }
+  },
+
+  "gameDraw": {
+    "help-tutorial": {
+      "label": "Hra dokresli",
+      "text": "Na tejto obrazovke môžete pomocou kurzora (event. prsta) kresliť, maľovať, vyfarbovať."
+    }
+  },
+
+  "gameFind": {
+    "help-tutorial": {
+      "label": "Hra nájdi na obrázku",
+      "text": "Na tejto obrazovke budete hľadať vybrané predmety či detaily."
+    }
+  },
+
+  "gameMove": {
+    "help-tutorial": {
+      "label": "Hra posuň na správne miesto",
+      "text": "Na tejto obrazovke budete posúvať predmety pomocou kurzora (event. prsta) na miesto, kam patrí."
+    }
+  },
+
+  "gameOptions": {
+    "help-tutorial": {
+      "label": "Hra Kvíz",
+      "text": "Na tejto obrazovke budete vyplňovať kvíz."
+    }
+  },
+
+  "gameSizing": {
+    "help-tutorial": {
+      "label": "Hra hádaj veľkosť",
+      "text": "Na tejto obrazovke budete hádať veľkosť predmetov."
+    }
+  },
+
+  "gameWipe": {
+    "help-tutorial": {
+      "label": "Hra stierací žreb",
+      "text": "Na tejto obrazovke budete kurzorom (event. prstom) stierať vrstvy obrázku."
+    }
+  }
+}

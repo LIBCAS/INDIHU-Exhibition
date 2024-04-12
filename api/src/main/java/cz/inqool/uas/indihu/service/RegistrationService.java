@@ -10,11 +10,11 @@ import cz.inqool.uas.indihu.entity.enums.UserState;
 import cz.inqool.uas.indihu.repository.RegistrationRepository;
 import cz.inqool.uas.indihu.repository.UserRepository;
 import cz.inqool.uas.indihu.security.service.LdapCredentialsHandler;
+import cz.inqool.uas.indihu.service.notification.IndihuNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,16 +34,13 @@ import static cz.inqool.uas.util.Utils.notNull;
 @Service
 public class RegistrationService {
 
-    @Value("${security.ldap.enabled}")
-    private boolean ldapEnabled;
-
     private SettingsService settings;
 
     private RegistrationRepository repository;
 
     private UserRepository userRepository;
 
-    private IndihuNotificationService indihuNotificationService;
+    private IndihuNotificationService notificationSerivce;
 
     private PasswordEncoder passwordEncoder;
 
@@ -80,7 +77,7 @@ public class RegistrationService {
         User toAccept = registration.getToAccept();
         toAccept.setAccepted(true);
         toAccept.setState(UserState.ACCEPTED);
-        indihuNotificationService.notifyAccepted(toAccept.getEmail());
+        notificationSerivce.notifyAccepted(toAccept.getEmail());
         toAccept = userRepository.save(toAccept);
         registration.setToAccept(null);
         repository.delete(registration);
@@ -101,22 +98,20 @@ public class RegistrationService {
             log.info(MARKER, "Registration: User or registration with email: " + email + " already exists in system.");
             return RegistrationStatusEnum.EMAIL_EXISTS;
         }
-        if (ldapEnabled) {
-            if (ldapCredentialsHandler.exists(userName)) {
-                log.info(MARKER, "Registration: User with email: " + email + " found in LDAP.");
-                return RegistrationStatusEnum.IN_LDAP;
-            }
+        if (ldapCredentialsHandler.exists(userName)) {
+            log.info(MARKER, "Registration: User with email: " + email + " found in LDAP.");
+            return RegistrationStatusEnum.IN_LDAP;
         }
         if (settings.isRegistrationAllowed()) {
             registration.setSecret(UUID.randomUUID().toString());
-            indihuNotificationService.verifyEmail(registration);
+            notificationSerivce.verifyEmail(registration);
             registration.getToAccept().setState(UserState.NOT_VERIFIED);
             userRepository.save(registration.getToAccept());
             repository.save(registration);
             log.info(MARKER, "Registration: Created registration with email: " + email);
             return RegistrationStatusEnum.CREATED;
         }
-        log.warn(MARKER, "Registration is not allowed.");
+        log.warn(MARKER, "Registration is not allowed." );
         return RegistrationStatusEnum.FORBIDDEN;
     }
 
@@ -159,6 +154,25 @@ public class RegistrationService {
     public RegistrationStatusEnum verify(String secret, HttpServletResponse response) {
         Registration registration = repository.findBySecret(secret);
         notNull(registration, () -> new MissingObject(Registration.class, "Secret: " + secret));
+
+        if (registration.getToAccept() == null) {
+            throw new MissingObject(User.class, secret);
+        }
+
+        UserState userState = registration.getToAccept().getState();
+        if (!userState.equals(UserState.NOT_VERIFIED)) {
+            switch (userState) {
+                case ACCEPTED:
+                    return RegistrationStatusEnum.ALREADY_ACCEPTED;
+                case REJECTED:
+                    return RegistrationStatusEnum.REJECTED;
+                case TO_ACCEPT:
+                    return RegistrationStatusEnum.ALREADY_VERIFIED;
+                default:
+                    throw new IllegalStateException("User is in the wrong state: " + userState);
+            }
+        }
+
         if (settings.isRegistrationAutomatic()) {
             User user = registration.getToAccept();
             user.setVerifiedEmail(true);
@@ -177,7 +191,7 @@ public class RegistrationService {
             userRepository.save(user);
             registration.setToAccept(user);
             registration = repository.save(registration);
-            indihuNotificationService.notifyNewRegistration(registration);
+            notificationSerivce.notifyNewRegistration(registration);
             return RegistrationStatusEnum.IN_QUEUED;
         }
     }
@@ -193,8 +207,8 @@ public class RegistrationService {
     }
 
     @Inject
-    public void setNotificationService(IndihuNotificationService indihuNotificationService) {
-        this.indihuNotificationService = indihuNotificationService;
+    public void setNotificationService(IndihuNotificationService notificationSerivce) {
+        this.notificationSerivce = notificationSerivce;
     }
 
     @Inject

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ExpositionByUrlDto extends ExpositionEndedDto {
+public class ExpositionByUrlDto extends ExpositionClosedDto {
 
     @JsonSerialize(using = SimpleUserSerializer.class)
     private User author;

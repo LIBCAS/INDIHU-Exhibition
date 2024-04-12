@@ -1,0 +1,27 @@
+{
+  "title": "INDIHU Exhibition - Zásady práce s osobnými údajmi",
+  "paragraph1": "Sme Knižnica AV SR, v. v. i., so sídlom Národná 1009/3, Praha 1, 110 00. Kontakt: <mailLink>sekretariat@knav.cz</mailLink>, +420 221 403 260.",
+  "paragraph2": "Prevádzkujeme webové stránky <externalLink>https://exhibition.indihu.cz</externalLink>, kde sa môžete zaregistrovať do aplikácie INDIHU Exhibition, ktorá umožňuje vytvoriť a sprístupniť vaše virtuálne výstavy verejnosti.",
+  "paragraph3": "Pre poskytnutie našej služby spracovávame niektoré vaše osobné údaje.",
+  "whatPersonalDataSection": {
+    "title": "S akými osobnými údajmi pracujeme?",
+    "paragraph1": "Ak sa chcete zaregistrovať a používať nástroj INDIHU Exhibition, budeme spracovávať vaše registračné údaje. Sú to meno, priezvisko, názov inštitúcie, pod ktorou vystupujete, a e-mailová adresa.",
+    "paragraph2": "Prečo?",
+    "paragraph3": "Na e-mail vám zašleme potvrdenie, že ste spýtali náš nástroj a overíme, že spĺňate podmienky pre registráciu. Ak podmienky spĺňate, zriadime vám cez tieto údaje váš prístupový účet. Cez e-mail s vami budeme ďalej komunikovať. "
+  },
+  "whoAccessPersonalDataSection": {
+    "title": "Kto sa k dátam dostane?",
+    "paragraph1": "Vaše dáta zostanú u nás, dostanú sa k nim iba naši zamestnanci."
+  },
+  "howLongWorkWithPersonalDataSection": {
+    "title": "Ako dlho s dátami pracujeme a na základe čoho?",
+    "paragraph1": "Ak vám zriadime účet, budeme vaše dáta spracovávať počas vášho aktívneho využívania účtu. Účet môžete zrušiť, prípadne vám účet zrušíme, ak ho nebudete používať dlhšie ako 3 roky. Takéto spracovanie je nutné pre poskytnutie služby a umožňuje ho nariadenie GDPR – pretože plníme svoje záväzky a ďalej povinnosti podľa právnych predpisov.",
+    "paragraph2": "Ak ste nás kontaktovali, ale služby nakoniec nebudete využívať, vaše dáta budeme spracovávať najdlhšie 6 mesiacov od našej poslednej komunikácie. Takúto prácu s dátami nám umožňuje nariadenie GDPR – pretože rokujeme o zmluve."
+  },
+  "youShouldAlsoKnowSection": {
+    "title": "Ešte by ste mali vedieť:",
+    "paragraph1": "Ak by ste potrebovali ohľadom osobných údajov čokoľvek prebrať, napíšte nám na e-mail <mailLink>info@indihu.cz</mailLink> alebo zavolajte na číslo +420 221 403 260. Radi vám pomôžeme.",
+    "paragraph2": "Máme poverencov pre oblasť spracovania osobných údajov: Mgr. Radek Lomnický, tel. č. +420 221 403 466, +420 605 416 493, <mailLink>poverenec@ssc.cascz</mailLink>.",
+    "paragraph3": "Nariadenie GDPR (nariadenie Európskeho parlamentu a Rady (EÚ) č. 2016/679 o ochrane fyzických osôb v súvislosti so spracovaním osobných údajov a o voľnom pohybe týchto údajov a o zrušení smernice 95/46/ES), ktoré oblasť osobných údajov upravuje, vám dáva okrem iného právo obrátiť sa na nás a chcieť informácie, aké vaše osobné údaje spracovávame, vyžiadať si u nás prístup k týmto údajom a nechať ich aktualizovať alebo opraviť, poprípade požadovať obmedzenie spracovania, môžete požadovať kópiu spracovávaných osobných údajov, požadovať po nás v určitých situáciách výmaz osobných údajov av určitých prípadoch máte právo na ich prenosnosť. Ak si myslíte, že s dátami nenakladáme správne, máte právo podať sťažnosť na Úrade pre ochranu osobných údajov, prípadne sa so svojimi nárokmi obrátiť na súd."
+  }
+}

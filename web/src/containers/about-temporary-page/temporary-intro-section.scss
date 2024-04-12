@@ -1,0 +1,53 @@
+@import "../new-landing-page/variables.scss";
+
+.temporary-intro-section {
+  position: relative;
+  width: 100%;
+  height: 65vh;
+}
+
+.temporary-intro-section .background-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-color;
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.temporary-intro-section .page-title {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.temporary-intro-section .page-title {
+  color: white;
+}
+
+.temporary-intro-section .page-title h1 {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 48px;
+}
+
+@media (min-width: 576px) {
+  .temporary-intro-section .page-title h1 {
+    font-size: 56px;
+    line-height: 68px;
+  }
+}
+
+@media (min-width: 768px) {
+  .temporary-intro-section .page-title h1 {
+    font-size: 64px;
+    line-height: 72px;
+  }
+}

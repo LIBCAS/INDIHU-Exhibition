@@ -1,0 +1,32 @@
+.externalContainer {
+  overflow: auto;
+}
+
+.externalContainer > div:first-child,
+.externalContainer > iframe:first-child,
+.externalContainer > *:first-child {
+  overflow: auto;
+}
+
+// When expanded with checkbox from administration
+
+// 1. Directly when iframe is the first child
+.externalContainerExpanded > iframe {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+// 2. When first child is div and then iframe
+.externalContainerExpanded > *:first-child {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.externalContainerExpanded iframe {
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,40 @@
+@import "../variables.scss";
+
+/* -- Selected exhibitions section -- */
+
+.selected-exhibitions-section {
+  background-color: $primary-color;
+  color: white;
+
+  .section__title {
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  @media (min-width: 576px) {
+    .section__title {
+      font-size: 40px;
+      line-height: 58px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .section__title {
+      font-size: 48px;
+      line-height: 58px;
+    }
+  }
+
+  .section__description {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .section__description {
+      max-width: 75%;
+    }
+  }
+}

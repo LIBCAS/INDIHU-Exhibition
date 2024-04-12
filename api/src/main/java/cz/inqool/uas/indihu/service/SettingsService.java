@@ -14,24 +14,24 @@ public class SettingsService {
 
     private SettingsRepository repository;
 
-    public Settings getSettings() {
+    public Settings getSettings(){
         return repository.findAny();
     }
 
     @Transactional
-    public Settings update(Settings settings) {
+    public Settings update(Settings settings){
         return repository.save(settings);
     }
 
-    public boolean isRegistrationAutomatic() {
+    public boolean isRegistrationAutomatic(){
         return repository.findAny().isAutomaticRegistration();
     }
 
-    public boolean isRegistrationAllowed() {
+    public boolean isRegistrationAllowed(){
         return repository.findAny().isAllowedRegistration();
     }
 
-    public int getLockDuration() {
+    public int getLockDuration(){
         return repository.findAny().getLockDuration();
     }
 

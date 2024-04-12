@@ -18,7 +18,7 @@ public class UserDelegate implements UserDetails {
 
     private User user;
 
-    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private final Set<GrantedAuthority> authorities = new HashSet<>();
 
     public UserDelegate(User user) {
         this(user, null);
@@ -28,7 +28,8 @@ public class UserDelegate implements UserDetails {
         this.user = user;
 
         authorities.add(new SimpleGrantedAuthority("ROLE_EDITOR"));
-        if (user.getRole().equals(UserRole.ROLE_ADMIN)) {
+        if (user.getRole().equals(UserRole.ROLE_ADMIN)){
+            authorities.add(new SimpleGrantedAuthority("ROLE_DELETED"));
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
@@ -38,13 +39,11 @@ public class UserDelegate implements UserDetails {
 
     }
 
-    public User getUser() {
+    public User getUser(){
         return this.user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setUser(User user){this.user = user;}
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
@@ -89,6 +88,6 @@ public class UserDelegate implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getState().equals(UserState.ACCEPTED);
+        return user.getState().equals(UserState.ACCEPTED) && user.getDeleted() == null;
     }
 }

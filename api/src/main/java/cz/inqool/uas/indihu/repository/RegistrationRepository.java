@@ -20,6 +20,7 @@ public class RegistrationRepository extends IndexedDatedStore<Registration, QReg
     @Override
     public IndexedRegistration toIndexObject(Registration registration) {
         IndexedRegistration result = super.toIndexObject(registration);
+        result.setDeletedUser(registration.getToAccept().isDeletedUser());
         result.setIssued(registration.getIssued());
         result.setUserdId(registration.getToAccept().getId());
         result.setVerifiedEmail(registration.getToAccept().getVerifiedEmail());
@@ -34,5 +35,15 @@ public class RegistrationRepository extends IndexedDatedStore<Registration, QReg
         return query().select(registration)
                 .where(registration.secret.eq(secret))
                 .fetchFirst();
+    }
+
+    public void remove(Registration registration) {
+        if (!entityManager.contains(registration) && registration != null) {
+            registration = entityManager.find(type, registration.getId());
+        }
+
+        entityManager.remove(registration);
+        entityManager.flush();
+        removeIndex(registration);
     }
 }

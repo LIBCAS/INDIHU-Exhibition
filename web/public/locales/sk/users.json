@@ -1,0 +1,61 @@
+{
+  "title": "Používatelia",
+  "allUsersLabel": "Všetci používatelia",
+  "usersToAcceptLabel": "Používatelia na schválenie",
+  "viewDeleted": "Zobraziť zmazaných",
+  "usersState": {
+    "accepted": "Akceptovaný",
+    "not_verified": "Neoverený",
+    "to_accept": "Na schválenie",
+    "rejected": "Zamietnutý",
+    "deleted": "Zmazaný"
+  },
+  "usersAction": {
+    "reactivate": "Reaktivovať používateľa",
+    "accept": "Akceptovať používateľa",
+    "reject": "Zamietnuť používateľa",
+    "delete": "Vymazať používateľa"
+  },
+  "usersSort": {
+    "updated": "Dátum poslednej aktualizácie",
+    "created": "Dátum vytvorenia",
+    "userName": "Užívateľské meno",
+    "firstName": "Meno",
+    "surname": "Priezvisko",
+    "email": "Email",
+    "institution": "Inštitúcia"
+  },
+
+  "searchLabel": "Hľadať",
+  "table": {
+    "username": "Užívateľské meno",
+    "firstname": "Meno",
+    "surname": "Priezvisko",
+    "email": "E-mail",
+    "inštitúcia": "Inštitúcia",
+    "state": "Stav",
+    "action": "Akcia"
+  },
+  "pagesizeLabel": "Záznamov na stránku:",
+
+  "acceptUserDialog": {
+    "title": "Schválenie používateľa",
+    "submitLabel": "Akceptovať",
+    "content": "Používateľ \"{{userName}}\" bude schválený. \nPOZOR! Akcia je nevratná"
+  },
+  "deleteUserDialog": {
+    "title": "Odstrániť používateľa",
+    "submitLabel": "Odstrániť",
+    "content": "Používateľ \"{{userName}}\" bude odstránený."
+  },
+  "reactivateUserDialog": {
+    "title": "Reaktivácia užívateľa",
+    "submitLabel": "Reaktivovať",
+    "content": "Užívateľ \"{{userName}}\" bude reaktivovaný."
+  },
+  "rejectUserDialog": {
+    "title": "Zamietnutie užívateľa",
+    "submitLabel": "Zamietnuť",
+    "content": "Používateľ \"{{userName}}\" bude zamietnutý. \nPOZOR! Akcia je nevratná"
+  }
+}

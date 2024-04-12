@@ -1,0 +1,48 @@
+@import "../../new-landing-page/variables.scss";
+
+/* -- Projects section -- */
+
+.projects-section {
+  background-color: $primary-color;
+  color: white;
+}
+
+.projects-section h2 {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+@media (min-width: 576px) {
+  .projects-section h2 {
+    font-size: 40px;
+    line-height: 58px;
+  }
+}
+
+@media (min-width: 768px) {
+  .projects-section h2 {
+    font-size: 48px;
+    line-height: 58px;
+  }
+}
+
+.projects-section p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (min-width: 576px) {
+  .projects-section p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .projects-section p {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}

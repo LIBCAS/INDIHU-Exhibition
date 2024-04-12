@@ -1,0 +1,80 @@
+{
+  "header": {
+    "title": "Výstavy",
+    "filterLabel": "Filter projektov:",
+    "sortLabel": "Radenie projektov: ",
+    "searchPlaceholder": "Hľadať",
+    "sortTooltipASC": "Zostupne",
+    "sortTooltipDESC": "Vzostupne",
+    "tooltipList": "Zoznam",
+    "tooltipGrid": "Mriežka",
+    "showOnlyPinnedLabel": "Zobraziť iba pripnuté výstavy",
+    "filterOptions": {
+      "all": "Všetko",
+      "authorship": "Som autor/ka",
+      "readOnly": "Zdieľané na čítanie",
+      "readWrite": "Zdieľané na zápis"
+    },
+    "sortOptions": {
+      "title": "Názov",
+      "state": "Stav",
+      "created": "Dátum vytvorenia",
+      "edited": "Dátum poslednej aktualizácie",
+      "isEditing": "Naposledy upravil/a"
+    }
+  },
+  "expoCard": {
+    "createNewExpo": "Vytvoriť novú výstavu",
+    "state": "Stav:",
+    "created": "Vytvorené:",
+    "updated": "Upravené:",
+    "numberOfViews": "Počet prehratí:",
+    "noNumberOfViewsYet": "Zatiaľ žiadne prezretie",
+    "averageRating": "Priemerné hodnotenie:",
+    "noAverageRatingYet": "Zatiaľ nehodnotené",
+    "ratingRedirectLabel": "Presmerovať na kartu s hodnotením",
+    "commentsCount": "Počet komentárov:",
+    "bestRatedPreference": "Najlepšie hodnotený prvok:",
+    "noBestRatedPreferenceYet": "Zatiaľ žiadny",
+    "preferenciaTopic": "Téma",
+    "preferenciaGame": "Hry",
+    "preferenceText": "Texty",
+    "preferencieMedia": "Médiá",
+    "edit": "Upraviť",
+    "preview": "Náhľad",
+    "pinTooltip": "Pripnúť túto výstavu",
+    "unpinTooltip": "Odopnúť túto výstavu",
+    "editErrDialogTitle": "Nedá sa upravovať",
+    "editErrDialogText": "Výstavu nie je možné upravovať."
+  },
+  "expoTable": {
+    "createNewExpo": "Vytvoriť novú výstavu",
+    "name": "Názov",
+    "state": "Stav",
+    "created": "Vytvorené",
+    "author": "Autor",
+    "updated": "Upravené",
+    "lastEditedBy": "Naposledy upravil/a",
+    "averageRating": "Priemerné hodnotenie",
+    "commentsCount": "Počet komentárov",
+    "bestRatedPreference": "Najlepšie hodnotený prvok",
+    "actions": "Akcia"
+  },
+  "expoCardActions": {
+    "update": "Upraviť",
+    "preview": "Náhľad",
+    "stateChange": "Zmeniť stav",
+    "rename": "Premenovať",
+    "share": "Zdieľať",
+    "duplicate": "Duplikovať",
+    "delete": "Zmazať"
+  },
+  "pager": {
+    "entriesPerPage": "Záznamov na stránku:"
+  },
+  "dialóg": {
+    "newExpoTitle": "Nová výstava",
+    "newExpoLabel": "Názov výstavy",
+    "submitLabel": "Vytvoriť"
+  }
+}

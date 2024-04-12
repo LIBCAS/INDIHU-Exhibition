@@ -1,1 +1,1 @@
-export { default as withKeyShortcuts } from "./WithKeyShortcuts";
+export { default as withKeyShortcuts } from "./with-key-shortcuts";

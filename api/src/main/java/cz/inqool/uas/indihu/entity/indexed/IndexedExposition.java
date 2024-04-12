@@ -8,6 +8,8 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.time.Instant;
+
 
 @Getter
 @Setter
@@ -31,4 +33,10 @@ public class IndexedExposition extends IndexedDatedObject {
 
     @Field(type = FieldType.String, analyzer = "folding")
     private String writeRights;
+
+    @Field(type = FieldType.Double, index = FieldIndex.not_analyzed)
+    private Double averageRating;
+
+    @Field(type = FieldType.Date, index = FieldIndex.not_analyzed)
+    protected Instant edited;
 }

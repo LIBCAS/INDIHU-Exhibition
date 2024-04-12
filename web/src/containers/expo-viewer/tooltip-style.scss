@@ -1,0 +1,7 @@
+// Overriding injected react-tooltip library styles
+// https://react-tooltip.com/docs/getting-started
+
+:root {
+  --rt-color-white: #fff;
+  --rt-color-dark: #202326;
+}

@@ -115,4 +115,13 @@ public class CollaboratorRepository extends DomainStore<Collaborator, QCollabora
 
         return emails;
     }
+
+    public void removeUserCollaborations(String userId) {
+        query().select(qObject).from(qObject)
+                .where(qObject.collaborator.id.eq(userId))
+                .fetch()
+                .forEach(this::delete);
+
+        entityManager.flush();
+    }
 }

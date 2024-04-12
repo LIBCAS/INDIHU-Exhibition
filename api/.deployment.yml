@@ -1,0 +1,147 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: indihu-api
+  labels:
+    name: indihu-api
+    app: indihu-api
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: indihu-api
+  template:
+    metadata:
+      labels:
+        name: indihu-api
+        app: indihu-api
+    spec:
+      containers:
+        - name: indihu-api
+          image: eu.gcr.io/inqool-1301/cz.inqool.indihu/api:latest
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "32Mi"
+            limits:
+              cpu: "1500m"
+              memory: "2248Mi"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: console
+              containerPort: 8081
+              protocol: TCP
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /usr/src/data
+              subPath: indihu-api/files/data
+            - name: shared-storage
+              mountPath: /usr/src/files
+              subPath: indihu-api/files/files
+
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: shared-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: indihu-database
+  labels:
+    name: indihu-database
+    app: indihu-api
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: indihu-database
+  template:
+    metadata:
+      labels:
+        name: indihu-database
+        app: indihu-database
+    spec:
+      containers:
+        - name: indihu-database
+          image: postgres:11.20-alpine
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+          ports:
+            - name: http
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: indihu-database
+              mountPath: /var/lib/postgresql/data/
+          env:
+            - name: POSTGRES_PASSWORD
+              value: rechNelmOogeu
+            - name: POSTGRES_USER
+              value: indihu
+            - name: POSTGRES_DB
+              value: indihu
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdb
+      volumes:
+        - name: indihu-database
+          persistentVolumeClaim:
+            claimName: indihu-database
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: indihu-database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: indihu-api
+  labels:
+    name: indihu-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 8081
+    targetPort: 8081
+    protocol: TCP
+    name: console
+  selector:
+    name: indihu-api
+  clusterIP:
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: indihu-database
+  labels:
+    name: indihu-database
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+      name: http
+  selector:
+    name: indihu-database
+  clusterIP:

@@ -1,0 +1,114 @@
+{
+  "overlay": {
+    "no-title": "Obrazovka bez názvu",
+    "editorButtonTooltip": "Upravit aktuální obrazovku",
+    "settingsButtonTooltip": "Otevřít nastavení",
+    "reactivateTooltipButtonTooltip": "Znovuvyvolání infoprohlídky",
+    "playButtonTooltip": "Přehrát výstavu",
+    "stopButtonTooltip": "Pozastavit výstavu",
+    "audioButtonTooltip": "Nastavení hlasitosti",
+    "chaptersButton": "Kapitoly",
+    "signpostNextButton": "Další obrazovka",
+
+    "settingsDialog": {
+      "title": "Nastavení",
+      "languageSelectLabel": "Výběr jazyka:"
+    },
+
+    "glassMagnifier": {
+      "title": "Nastavení lupy",
+      "magnifierTurningOn": "Zapnutí lupy",
+      "magnifierType": "Typ lupy",
+      "squareOption": "Čtverec",
+      "circleOption": "Kruh",
+      "magnifierSize": "Velikost lupy",
+      "zoomSize": "Velikost zoomu"
+    },
+
+    "audioDialog": {
+      "title": "Nastavení zvuku",
+      "speechIconTooltip": "Zvuková stopa mluvené řeči",
+      "backgroundMusicIconTooltip": "Zvuková stopa podkresové hudby",
+      "muteEverythingLabel": "Ztlumit vše",
+      "amplifyEverythingLabel": "Zesílit vše"
+    }
+  },
+
+  "overlayDialog": {
+    "title": "Rozhraní",
+    "editCurrentScreen": "Upravit aktuální obrazovku",
+    "openSettings": "Otevřít nastavení",
+    "openGlassMagnifierSettings": "Otevřít nastavení lupy",
+    "openAudioVolumeSettings": "Otevřít nastavení zvuku",
+    "openChaptersOverview": "Otevřít seznam kapitol",
+    "pause": "Pozastavit",
+    "play": "Přehrát"
+  },
+
+  "overlayDrawer": {
+    "no-title": "Obrazovka bez názvu",
+    "no-text": "Obrazovka neobsahuje žádný text",
+    "relatedDocuments": "Související dokumenty:"
+  },
+
+  "rating": {
+    "title": "Jak se vám líbila výstava?",
+    "expoRating": "Hodnocení výstavy",
+    "overallRating": "Celkové hodnocení",
+    "whatYouLikedMost": "Co se vám nejvíce líbilo?",
+    "max2Options": "(max. 2 možnosti)",
+    "topicOption": "Téma",
+    "mediaOption": "Obrázky a videa",
+    "textOption": "Texty",
+    "gameOption": "Hry",
+    "messageToTheExpoCreator": "Vzkaz tvůrci",
+    "messageToTheExpoCreatorPlaceholder": "V případě zájmu zanechte autorovi výstavy vzkaz (volitelné).",
+    "linkToReviewer": "Kontakt na vás",
+    "linkToReviewerPlaceholder": "Vaše e-mailová adresa",
+    "sendWithoutRatingCheckboxLabel": "Odeslat komentář bez hodnocení",
+    "sendActionButtonLabel": "Odeslat",
+    "expoAlreadyRatedTitle": "Výstava již byla ohodnocena",
+    "expoAlreadyRatedText": "Výstava již byla vámi v minulosti ohodnocena!",
+    "ratingFailureTitle": "Hodnocení výstavy selhalo",
+    "ratingFailureText": "Odeslání vašeho hodnocení selhalo."
+  },
+
+  "photogalleryScreen": {
+    "zoomInTooltip": "Přiblížit",
+    "resetZoomTooltip": "Resetovat přiblížení",
+    "zoomOutTooltip": "Oddálit",
+    "openDescTooltip": "Otevřít popis fotografie",
+    "closeTooltip": "Zavřít"
+  },
+
+  "game": {
+    "solution": "Správné řešení",
+    "controls": {
+      "finished": "Hotovo",
+      "play-again": "Zahrát znovu"
+    }
+  },
+
+  "game-find": {
+    "task": "Najdi na obrázku"
+  },
+  "game-draw": {
+    "task": "Dokresli obrázek",
+    "switchToPencilAction": "Přepnout na tužku",
+    "switchToEraserAction": "Přepnout na gumu",
+    "thicknessChooserAction": "Výběr tloušťky",
+    "colorChooserAction": "Výběr barvy"
+  },
+  "game-erase": {
+    "task": "Vymaž obrázek"
+  },
+  "game-sizing": {
+    "task": "Uhodni správnou velikost"
+  },
+  "game-move": {
+    "task": "Posuň na správné místo"
+  },
+  "game-quiz": {
+    "task": "Vyber správné možnosti"
+  }
+}

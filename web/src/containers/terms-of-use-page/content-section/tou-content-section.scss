@@ -1,0 +1,59 @@
+@import "../../new-landing-page/variables.scss";
+
+.tou-content-section {
+  background-color: white;
+  color: $primary-color;
+}
+
+.tou-content-section h2 {
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 40px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 576px) {
+  .tou-content-section h2 {
+    font-size: 40px;
+    line-height: 44px;
+  }
+}
+
+@media (min-width: 768px) {
+  .tou-content-section h2 {
+    font-size: 44px;
+    line-height: 48px;
+  }
+}
+
+.tou-content-section p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (min-width: 576px) {
+  .tou-content-section p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .tou-content-section p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.tou-content-section .tou-link {
+  color: #3366cc;
+}
+
+.tou-content-section .tou-link:visited {
+  color: #6c40c9;
+}
+
+.tou-content-section .tou-link:hover {
+  text-decoration: underline;
+}

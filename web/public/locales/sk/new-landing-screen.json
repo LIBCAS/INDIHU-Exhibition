@@ -1,0 +1,92 @@
+{
+  "header": {
+    "introduction": "Úvod",
+    "about": "O aplikácii",
+    "termsOfUse": "Podmienky použitia",
+    "manual": "Manuál",
+    "login": "Prihlásiť sa",
+    "register": "Registrácia"
+  },
+  "introSection": {
+    "title": "Kreatívny nástroj na tvorbu virtuálnych výstav",
+    "subtitle": "INDIHU Exhibition je online nástroj pre tvorbu virtuálnych multimediálnych výstav s interaktívnymi prvkami. Výstavy môžu na ľubovoľné témy vytvárať ako jednotlivci, tak celé tvorivé tímy. Nástroj má širokú škálu využitia pre inštitúcie sprostredkovávajúce kultúrne dedičstvo, vedeckých pracovníkov i širokú verejnosť. ",
+    "startCreatingLabel": "Začať vytvárať",
+    "scrollDown": "POSUNÚŤ DOLE"
+  },
+  "functionalitySection": {
+    "title": "Funkcionalita",
+    "subtitle": "Vytvárajte ľahko pôsobivé virtuálne výstavy, ktoré budú návštevníkom dostupné online kedykoľvek a odkiaľkoľvek. INDIHU Exhibition umožňuje kombinovať textové, vizuálne aj zvukové materiály s interaktívnymi hrami, ktoré návštevníka ešte viac vtiahnu do deja.",
+    "func1Text": "Umožňuje vytvárať virtuálne výstavy bez toho, aby ste museli rozumieť webdizajnu.",
+    "func2Text": "Ponúka multimediálny obsah – videá, obrázky, animácie, hudbu, hry a ďalšie.",
+    "func3Text": "Umožňuje spolupracovať na vytváraní výstavy s viacerými tvorcami.",
+    "func4Text": "Hosťovanie výstavy na adrese <externalLink>https://exhibition.indihu.cz/</externalLink> prevádzkované Knižnicou Akadémie vied SR.",
+    "func5Text": "Jednoduché zdieľanie výstavy s možnosťou personalizácie url kódu.",
+    "func6Text": "Vytvárajte interaktívne výstavy počas niekoľkých kliknutí."
+  },
+  "selectedExhibitionsSection": {
+    "title": "Vybrané výstavy",
+    "subtitle": "Inšpirujte sa výstavami, ktoré vytvorili iní tvorcovia. Nájdite nápady pre svoju vlastnú prácu a uvidíte, ako môžu byť výsledky pestré. Ukážky sú priebežne aktualizované.",
+    "openOnlineExhibition": "Otvoriť online výstavu"
+  },
+  "registrationSection": {
+    "title": "Začnite vytvárať výstavy!",
+    "subtitle": "Vytvárajte ľahko pôsobivé virtuálne výstavy, ktoré budú návštevníkom dostupné online kedykoľvek a odkiaľkoľvek. INDIHU Exhibition umožňuje kombinovať textové, vizuálne aj zvukové materiály s interaktívnymi hrami, ktoré návštevníka ešte viac vtiahnu do deja.",
+    "toolIsFree": "Nástroj je úplne zadarmo!",
+    "registerForm": {
+      "formTitle": "Registrácia",
+      "formSubtitle": "Začnite vytvárať vizuálne výstavy zadarmo!",
+      "or": "alebo",
+      "nameFieldLabel": "Meno",
+      "surnameFieldLabel": "Priezvisko",
+      "institutionFieldLabel": "Inštitúcia",
+      "emailFieldLabel": "E-mail",
+      "passwordFieldLabel": "Heslo",
+      "createAccountButton": "Vytvoriť účet",
+      "alreadyHaveAccount": "Máte už účet?",
+      "login": "Prihlásiť sa"
+    },
+    "loginForm": {
+      "usernameFieldLabel": "Užívateľské meno/e-mail",
+      "passwordFieldLabel": "Heslo",
+      "login": "Prihlásiť sa",
+      "forgetPassword": "Zabudnuté heslo?",
+      "remindPassword": "Pripomenúť heslo"
+    }
+  },
+  "footer": {
+    "about": {
+      "title": "O aplikácii",
+      "creation": "Vznik",
+      "projects": "Projekty",
+      "history": "História",
+      "creators": "Tím tvorcov",
+      "devInformation": "Informácie o vývoji"
+    },
+    "indihu": {
+      "title": "INDIHU Exhibition",
+      "termsOfUse": "Podmienky použitia",
+      "manual": "Manuál",
+      "events": "Udalosti",
+      "adminContact": "Kontakt na správcu",
+      "githubSourceCode": "Github (zdrojový kód)"
+    },
+    "language": {
+      "title": "Jazyk",
+      "sk": "Slovensky",
+      "en": "English"
+    },
+    "privacyPolicy": "Zásady ochrany osobných údajov",
+    "cookiesPolicy": "Zásady použitia cookies"
+  },
+
+  "oauth": {
+    "login": "Prihlásiť sa"
+  },
+
+  "loginResponseErrors": {
+    "publicEmailError": "V nastavení profilu u poskytovateľa ({{providerName}}) je potrebné nastaviť verejnú e-mailovú adresu.",
+    "waitingForAdminAcceptInfo": "Registrácia prebehla úspešne, avšak čaká sa na schválenie od administrátora.",
+    "stillNotAcceptedError": "Už ste zaregistrovaní, ale stále neprebehlo potvrdenie administrátorom.",
+    "otherUnknownError": "Pri pokuse o prihlásenie došlo k neočakávanej chybe."
+  }
+}

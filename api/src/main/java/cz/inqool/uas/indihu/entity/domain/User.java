@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -39,11 +40,18 @@ public class User extends DatedObject {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @NotNull
+    private boolean registrationNotifications = true;
+
     @Enumerated(EnumType.STRING)
     private UserState state;
 
     private boolean accepted;
 
+    @OneToOne(mappedBy = "toAccept")
+    private Registration registration;
+
+    @Column(columnDefinition = "boolean default false")
     private boolean ldapUser;
 
     @Transient

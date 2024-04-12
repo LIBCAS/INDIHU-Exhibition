@@ -8,9 +8,9 @@ public enum UserState implements Labeled {
     NOT_VERIFIED("Neověřen"),
     TO_ACCEPT("Ke schválení"),
     ACCEPTED("Akceptován"),
-    DELETED("Zmazán");
+    REJECTED("Zamítnut");
 
-    private String label;
+    private final String label;
 
     UserState(String label) {
         this.label = label;

@@ -1,7 +1,7 @@
 package cz.inqool.uas.indihu.controller;
 
 import cz.inqool.uas.indihu.entity.domain.ExpositionOpening;
-import cz.inqool.uas.indihu.service.ExpositionOpeningService;
+import cz.inqool.uas.indihu.service.exposition.ExpositionOpeningService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -51,8 +51,8 @@ public class ExpositionOpeningController {
     }
 
     @RolesAllowed("ROLE_EDITOR")
-    @RequestMapping(method = DELETE, value = "/{id}")
-    public void delete(@PathVariable("id") String oppeningId) {
+    @RequestMapping(method = DELETE, value= "/{id}")
+    public void delete(@PathVariable("id")String oppeningId){
         service.delete(oppeningId);
     }
 

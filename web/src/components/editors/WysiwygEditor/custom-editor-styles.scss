@@ -1,0 +1,94 @@
+/* EDITOR STYLES */
+
+/* Custom bug fixes */
+.ql-editor strong {
+  font-weight: bold;
+}
+
+.ql-editor em {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+.ql-editor u {
+  text-decoration: underline;
+  font-weight: inherit;
+}
+
+/* Custom styles */
+.ql-editor {
+  min-height: 140px;
+  /* font-size: 16px; */
+}
+
+/* Translation of font size dropdown labels in toolbar */
+.ql-toolbar .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+.ql-toolbar .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+  content: "Malý";
+}
+
+.ql-toolbar .ql-picker.ql-size .ql-picker-label::before,
+.ql-toolbar .ql-picker.ql-size .ql-picker-item::before {
+  content: "Střední";
+}
+
+.ql-toolbar .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+.ql-toolbar .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+  content: "Velký";
+}
+
+.ql-toolbar .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+.ql-toolbar .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+  content: "Obrovský";
+}
+
+// - - - -
+
+/* EDITOR PREVIEW STYLES */
+
+.ql-editor.preview {
+  min-height: auto;
+  padding: 0;
+}
+
+.ql-editor.preview.scroll-padding-right {
+  padding-right: 12px;
+}
+
+.ql-editor.preview.sm-font-size {
+  font-size: 14px;
+  .ql-size-small {
+    font-size: 10px;
+  }
+  .ql-size-large {
+    font-size: 18px;
+  }
+}
+
+.ql-editor.preview.xl-font-size {
+  font-size: 20px;
+  .ql-size-small {
+    font-size: 14px;
+  }
+  .ql-size-large {
+    font-size: 26px;
+  }
+}
+
+.ql-editor.preview.white-font {
+  color: white;
+}
+
+.ql-editor.preview.black-font {
+  color: black;
+}
+
+.ql-editor.preview * {
+  font-size: inherit; // do not use important here
+  color: inherit !important; // could be omitted
+}
+
+.ql-editor.preview a {
+  color: #06c;
+  text-decoration: underline;
+}
