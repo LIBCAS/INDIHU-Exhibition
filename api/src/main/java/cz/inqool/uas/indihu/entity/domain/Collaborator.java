@@ -7,6 +7,7 @@ import cz.inqool.uas.indihu.entity.enums.CollaborationType;
 import cz.inqool.uas.indihu.entity.serializer.SimpleUserSerializer;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -18,7 +19,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Table(name = "in_collaborator")
-public class Collaborator extends DomainObject {
+public class Collaborator extends DomainObject{
 
     /**
      * user email of collaborator for notifications

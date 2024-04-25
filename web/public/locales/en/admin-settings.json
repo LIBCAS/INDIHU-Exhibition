@@ -1,0 +1,12 @@
+{
+  "title": "Settings",
+  "registrationAllowed": "Registration allowed",
+  "automaticRegistration": "Automatic registration",
+  "lockExhibition": "Lock exhibition",
+  "seconds": "seconds",
+  "editActionLabel": "Edit",
+  "cancelActionLabel": "Cancel",
+  "confirmActionLabel": "Confirm",
+  "yes": "Yes",
+  "no": "No"
+}

@@ -11,13 +11,16 @@
         <class>com.github.marschall.threeten.jpa.InstantConverter</class>
         <class>cz.inqool.uas.indihu.entity.domain.Collaborator</class>
         <class>cz.inqool.uas.indihu.entity.domain.Exposition</class>
+        <class>cz.inqool.uas.indihu.entity.domain.ExpositionRating</class>
         <class>cz.inqool.uas.indihu.entity.domain.ExpositionOpening</class>
         <class>cz.inqool.uas.indihu.entity.domain.Registration</class>
         <class>cz.inqool.uas.indihu.entity.domain.User</class>
         <class>cz.inqool.uas.indihu.entity.domain.FileExpositionMapper</class>
         <class>cz.inqool.uas.indihu.entity.domain.Settings</class>
         <class>cz.inqool.uas.indihu.entity.domain.ExpositionUrl</class>
+        <class>cz.inqool.uas.indihu.entity.domain.Message</class>
         <class>cz.inqool.uas.file.FileRef</class>
+        <class>cz.inqool.uas.indihu.entity.domain.Pin</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>

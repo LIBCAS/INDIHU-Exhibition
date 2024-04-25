@@ -56,10 +56,8 @@ public class IndihuAuthenticationProvider extends AbstractUserDetailsAuthenticat
             //overenie noveho v ldape
             User found = handler.validateCredential(username, authentication.getCredentials().toString(), null);
             if (found != null) {
-
                 return detailService.loadUserById(found.getId());
             }
-
         }
         throw new UsernameNotFoundException(username);
     }

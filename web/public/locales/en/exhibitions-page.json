@@ -1,0 +1,80 @@
+{
+  "header": {
+    "title": "Exhibitions",
+    "filterLabel": "Project filter:",
+    "sortLabel": "Project view:",
+    "searchPlaceholder": "Search",
+    "sortTooltipASC": "Descending",
+    "sortTooltipDESC": "Ascending",
+    "tooltipList": "List",
+    "tooltipGrid": "Grid",
+    "showOnlyPinnedLabel": "Show only pinned exhibitions",
+    "filterOptions": {
+      "all": "All",
+      "authorship": "I am the author",
+      "readOnly": "Shared for reading",
+      "readWrite": "Shared for editing"
+    },
+    "sortOptions": {
+      "title": "Name",
+      "state": "Status",
+      "created": "Creation date",
+      "edited": "Last updated date",
+      "isEditing": "Last edited by"
+    }
+  },
+  "expoCard": {
+    "createNewExpo": "Create a new exhibition",
+    "state": "Status:",
+    "created": "Created:",
+    "updated": "Updated:",
+    "numberOfViews": "Number of views:",
+    "noNumberOfViewsYet": "No views yet",
+    "averageRating": "Average rating:",
+    "noAverageRatingYet": "Not rated yet",
+    "ratingRedirectLabel": "Redirect to the rating tab",
+    "commentsCount": "Number of comments:",
+    "bestRatedPreference": "Top rated feature:",
+    "noBestRatedPreferenceYet": "None yet",
+    "preferenceTopic": "Topic",
+    "preferenceGame": "Games",
+    "preferenceText": "Text",
+    "preferenceMedia": "Media",
+    "edit": "Edit",
+    "preview": "Preview",
+    "pinTooltip": "Pin this exhibition",
+    "unpinTooltip": "Unpin this exhibition",
+    "editErrDialogTitle": "Cannot edit",
+    "editErrDialogText": "The exhibition cannot be edited."
+  },
+  "expoTable": {
+    "createNewExpo": "Create a new exhibition",
+    "name": "Name",
+    "state": "Status",
+    "created": "Created",
+    "author": "Author",
+    "updated": "Updated",
+    "lastEditedBy": "Last edited by",
+    "averageRating": "Average rating",
+    "commentsCount": "Number of comments",
+    "bestRatedPreference": "Top rated feature",
+    "actions": "Actions"
+  },
+  "expoCardActions": {
+    "update": "Update",
+    "preview": "Preview",
+    "stateChange": "Change status",
+    "rename": "Rename",
+    "share": "Share",
+    "duplicate": "Duplicate",
+    "delete": "Delete"
+  },
+  "pager": {
+    "entriesPerPage": "Entries per page:"
+  },
+  "dialog": {
+    "newExpoTitle": "New exhibition",
+    "newExpoLabel": "Name of the exhibition",
+    "submitLabel": "Create"
+  }
+}

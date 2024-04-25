@@ -6,7 +6,7 @@ import cz.inqool.uas.store.DomainStore;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SettingsRepository extends DomainStore<Settings, QSettings> {
+public class SettingsRepository extends DomainStore<Settings,QSettings> {
     public SettingsRepository() {
         super(Settings.class, QSettings.class);
     }

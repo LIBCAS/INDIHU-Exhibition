@@ -1,0 +1,114 @@
+{
+  "overlay": {
+    "no-title": "Untitled screen",
+    "editorButtonTooltip": "Edit current screen",
+    "settingsButtonTooltip": "Open settings",
+    "reactivateTooltipButtonTooltip": "Reactivate tutorial",
+    "playButtonTooltip": "Start the exhibition",
+    "stopButtonTooltip": "Stop the exhibition",
+    "audioButtonTooltip": "Adjust the volume",
+    "chaptersButton": "Chapters",
+    "signpostNextButton": "Next screen",
+
+    "settingsDialog": {
+      "title": "Settings",
+      "languageSelectLabel": "Language selection:"
+    },
+
+    "glassMagnifier": {
+      "title": "Magnifier settings",
+      "magnifierTurningOn": "Turn on the magnifier",
+      "magnifierType": "Magnifier type",
+      "squareOption": "Square",
+      "circleOption": "Circle",
+      "magnifierSize": "Magnifier size",
+      "zoomSize": "Zoom size"
+    },
+
+    "audioDialog": {
+      "title": "Audio settings",
+      "speechIconTooltip": "Commentary soundtrack",
+      "backgroundMusicIconTooltip": "Background music soundtrack",
+      "muteEverythingLabel": "Reduce the volume",
+      "amplifyEverythingLabel": "Increase the volume"
+    }
+  },
+
+  "overlayDialog": {
+    "title": "Overlay",
+    "editCurrentScreen": "Edit current screen",
+    "openSettings": "Open settings",
+    "openGlassMagnifierSettings": "Open glass magnifier settings",
+    "openAudioVolumeSettings": "Open audio settings",
+    "openChaptersOverview": "Open chapters overview",
+    "pause": "Pause",
+    "play": "Play"
+  },
+
+  "overlayDrawer": {
+    "no-title": "Untitled screen",
+    "no-text": "Screen doesn't contain any text",
+    "relatedDocuments": "Related documents:"
+  },
+
+  "rating": {
+    "title": "How did you like the exhibition?",
+    "expoRating": "Rating of the exhibition",
+    "overallRating": "Overall rating",
+    "whatYouLikedMost": "What did you like the most?",
+    "max2Options": "(max. 2 options)",
+    "topicOption": "Topic",
+    "mediaOption": "Images and videos",
+    "textOption": "Texts",
+    "gameOption": "Games",
+    "messageToTheExpoCreator": "Message to the creator",
+    "messageToTheExpoCreatorPlaceholder": "In case of interest, leave a note to the author of the exhibition (optional).",
+    "linkToReviewer": "Your contact info",
+    "linkToReviewerPlaceholder": "Your e-mail adress",
+    "sendWithoutRatingCheckboxLabel": "Submit a comment without rating",
+    "sendActionButtonLabel": "Send",
+    "expoAlreadyRatedTitle": "The exhibition has already been rated",
+    "expoAlreadyRatedText": "The exhibition has already been rated by you in the past!",
+    "ratingFailureTitle": "Failure in exhibition's rating",
+    "ratingFailureText": "Failed to submit your rating."
+  },
+
+  "photogalleryScreen": {
+    "zoomInTooltip": "Zoom in",
+    "resetZoomTooltip": "Reset zoom",
+    "zoomOutTooltip": "Zoom out",
+    "openDescTooltip": "Open image description",
+    "closeTooltip": "Close"
+  },
+
+  "game": {
+    "solution": "The correct solution",
+    "controls": {
+      "finished": "Finished",
+      "play-again": "Play again"
+    }
+  },
+
+  "game-find": {
+    "task": "Find in the image"
+  },
+  "game-draw": {
+    "task": "Draw in the image",
+    "switchToPencilAction": "Switch to pencil",
+    "switchToEraserAction": "Switch to eraser",
+    "thicknessChooserAction": "Choice of thickness",
+    "colorChooserAction": "Choice of color"
+  },
+  "game-erase": {
+    "task": "Erase the image"
+  },
+  "game-sizing": {
+    "task": "Guess the right size"
+  },
+  "game-move": {
+    "task": "Move to the correct position"
+  },
+  "game-quiz": {
+    "task": "Select the correct option(s)"
+  }
+}

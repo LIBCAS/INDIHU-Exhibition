@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: indihu-web
+  labels:
+    name: indihu-web
+    app: indihu-web
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: indihu-web
+  template:
+    metadata:
+      labels:
+        name: indihu-web
+        app: indihu-web
+    spec:
+      containers:
+        - name: indihu-web
+          image: eu.gcr.io/inqool-1301/cz.inqool.indihu/web:latest
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: indihu-web
+  labels:
+    name: indihu-web
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    name: indihu-web
+  clusterIP:
+

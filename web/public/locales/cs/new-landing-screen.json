@@ -1,0 +1,92 @@
+{
+  "header": {
+    "introduction": "Úvod",
+    "about": "O aplikaci",
+    "termsOfUse": "Podmínky užití",
+    "manual": "Manuál",
+    "login": "Přihlásit se",
+    "register": "Registrace"
+  },
+  "introSection": {
+    "title": "Kreativní nástroj pro tvorbu virtuálních výstav",
+    "subtitle": "INDIHU Exhibition je online nástroj pro tvorbu virtuálních multimediálních výstav s interaktivními prvky. Výstavy mohou na libovolná témata vytvářet jak jednotlivci, tak celé tvůrčí týmy. Nástroj má širokou škálu využití pro instituce zprostředkovávající kulturní dědictví, vědecké pracovníky i širokou veřejnost.",
+    "startCreatingLabel": "Začít vytvářet",
+    "scrollDown": "POSUNOUT DOLŮ"
+  },
+  "functionalitySection": {
+    "title": "Funkcionalita",
+    "subtitle": "Vytvářejte snadno působivé virtuální výstavy, které budou návštěvníkům dostupné online kdykoli a odkudkoli. INDIHU Exhibition umožňuje kombinovat textové, vizuální i zvukové materiály s interaktivními hrami, které návštěvníka ještě více vtáhnou do děje.",
+    "func1Text": "Umožňuje vytvářet virtuální výstavy, aniž byste museli rozumět webdesignu.",
+    "func2Text": "Nabízí multimediální obsah – videa, obrázky, animace, hudbu, hry a další.",
+    "func3Text": "Umožňuje spolupracovat na vytváření výstavy s více tvůrci.",
+    "func4Text": "Hostování výstavy na adrese <externalLink>https://exhibition.indihu.cz/</externalLink> provozované Knihovnou Akademie věd ČR.",
+    "func5Text": "Snadné sdílení výstavy s možností personalizace url kódu.",
+    "func6Text": "Vytvářejte interaktivní výstavy během několika kliknutí."
+  },
+  "selectedExhibitionsSection": {
+    "title": "Vybrané výstavy",
+    "subtitle": "Inspirujte se výstavami, které vytvořili jiní tvůrci. Najděte nápady pro svou vlastní práci a uvidíte, jak mohou být výsledky pestré. Ukázky jsou průběžně aktualizovány.",
+    "openOnlineExhibition": "Otevřít online výstavu"
+  },
+  "registrationSection": {
+    "title": "Začněte vytvářet výstavy!",
+    "subtitle": "Vytvářejte snadno působivé virtuální výstavy, které budou návštěvníkům dostupné online kdykoli a odkudkoli. INDIHU Exhibition umožňuje kombinovat textové, vizuální i zvukové materiály s interaktivními hrami, které návštěvníka ještě více vtáhnou do děje.",
+    "toolIsFree": "Nástroj je zcela zdarma!",
+    "registerForm": {
+      "formTitle": "Registrace",
+      "formSubtitle": "Začněte vytvářet vizuální výstavy zdarma!",
+      "or": "nebo",
+      "nameFieldLabel": "Jméno",
+      "surnameFieldLabel": "Příjmení",
+      "institutionFieldLabel": "Instituce",
+      "emailFieldLabel": "E-mail",
+      "passwordFieldLabel": "Heslo",
+      "createAccountButton": "Vytvořit účet",
+      "alreadyHaveAccount": "Máte již účet?",
+      "login": "Přihlásit se"
+    },
+    "loginForm": {
+      "usernameFieldLabel": "Uživatelské jméno/e-mail",
+      "passwordFieldLabel": "Heslo",
+      "login": "Přihlásit se",
+      "forgetPassword": "Zapomenuté heslo?",
+      "remindPassword": "Připomenout heslo"
+    }
+  },
+  "footer": {
+    "about": {
+      "title": "O aplikaci",
+      "creation": "Vznik",
+      "projects": "Projekty",
+      "history": "Historie",
+      "creators": "Tým tvůrců",
+      "devInformation": "Informace o vývoji"
+    },
+    "indihu": {
+      "title": "INDIHU Exhibition",
+      "termsOfUse": "Podmínky užití",
+      "manual": "Manuál",
+      "events": "Události",
+      "adminContact": "Kontakt na správce",
+      "githubSourceCode": "Github (zdrojový kód)"
+    },
+    "language": {
+      "title": "Jazyk",
+      "cs": "Česky",
+      "en": "English"
+    },
+    "privacyPolicy": "Zásady ochrany osobních údajů",
+    "cookiesPolicy": "Zásady použití cookies"
+  },
+
+  "oauth": {
+    "login": "Přihlásit se"
+  },
+
+  "loginResponseErrors": {
+    "publicEmailError": "V nastavení profilu u poskytovatele ({{providerName}}) je potřeba nastavit veřejnou e-mailovou adresu.",
+    "waitingForAdminAcceptInfo": "Registrace proběhla úspěšně, avšak čeká se na schválení od administrátora.",
+    "stillNotAcceptedError": "Už jste registrováni, ale stále neproběhlo potvrzení administrátorem.",
+    "otherUnknownError": "Při pokusu o přihlášení došlo k neočekávané chybě."
+  }
+}

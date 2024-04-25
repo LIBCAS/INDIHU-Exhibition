@@ -1,10 +1,9 @@
-import React from "react";
 import { connect } from "react-redux";
 import { compose, withHandlers, lifecycle } from "recompose";
 import { reduxForm } from "redux-form";
 import { get } from "lodash";
 
-import Dialog from "./DialogWrap";
+import Dialog from "./dialog-wrap";
 
 const Info = ({ handleSubmit, data }) => (
   <Dialog
@@ -15,6 +14,8 @@ const Info = ({ handleSubmit, data }) => (
     noDialogMenu={get(data, "noDialogMenu")}
     noToolbar={get(data, "noToolbar")}
     big={get(data, "big")}
+    large={get(data, "large")}
+    noStornoButton={get(data, "noStornoButton")}
   >
     {get(data, "content") ? data.content : <p>{get(data, "text", "")}</p>}
   </Dialog>
@@ -23,25 +24,25 @@ const Info = ({ handleSubmit, data }) => (
 export default compose(
   connect(
     ({ dialog: { data } }) => ({
-      data
+      data,
     }),
     null
   ),
   withHandlers({
-    onSubmit: dialog => async () => {
+    onSubmit: (dialog) => async () => {
       dialog.closeDialog();
-    }
+    },
   }),
   lifecycle({
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       if (get(nextProps, "data.autoClose")) {
         setTimeout(() => {
           nextProps.onSubmit();
         }, get(nextProps, "data.autoCloseTime", 2000));
       }
-    }
+    },
   }),
   reduxForm({
-    form: "infoForm"
+    form: "infoForm",
   })
 )(Info);

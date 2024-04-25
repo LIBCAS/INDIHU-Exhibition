@@ -1,0 +1,25 @@
+{
+  "logout": {
+    "conditionsOfUse": "Podmienky použitia",
+    "personalData": "Zásady práce s osobnými údajmi",
+    "projectIndihu": "Projekt INDIHU",
+    "registration": "Registrácia",
+    "login": "Prihlásenie"
+  },
+  "logged": {
+    "settings": "Nastavenia",
+    "users": "Používatelia",
+    "exhibitions": "Výstavy",
+    "accountManagement": "Správa účtu",
+    "logout": "Odhlásiť",
+    "expositionState": "stav:"
+  },
+  "manual": "Manuál",
+  "languageSelect": {
+    "czech": "Česky",
+    "english": "Anglicky",
+    "slovak": "Slovensky"
+  },
+  "read-write-permission-tooltip": "Oprávnenie pre čítanie aj zápis",
+  "read-only-permission-tooltip": "Oprávnenie len pre čítanie"
+}

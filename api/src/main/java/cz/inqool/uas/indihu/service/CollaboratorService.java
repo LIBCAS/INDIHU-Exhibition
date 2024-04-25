@@ -7,9 +7,11 @@ import cz.inqool.uas.indihu.entity.domain.Exposition;
 import cz.inqool.uas.indihu.entity.domain.User;
 import cz.inqool.uas.indihu.entity.enums.CollaborationType;
 import cz.inqool.uas.indihu.entity.enums.CollaboratorCreateState;
+import cz.inqool.uas.indihu.entity.enums.UserRole;
 import cz.inqool.uas.indihu.repository.CollaboratorRepository;
 import cz.inqool.uas.indihu.repository.ExpositionRepository;
 import cz.inqool.uas.indihu.repository.UserRepository;
+import cz.inqool.uas.indihu.service.notification.IndihuNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -35,7 +37,7 @@ public class CollaboratorService {
 
     private UserRepository userRepository;
 
-    private IndihuNotificationService indihuNotificationService;
+    private IndihuNotificationService notificationSerivce;
 
     private CollaboratorRepository collaboratorRepository;
 
@@ -58,14 +60,14 @@ public class CollaboratorService {
     public CollaboratorCreateState addCollaborator(String userEmail, String expositionId, CollaborationType type, boolean allowNotPersisted) {
         CollaboratorCreateState collaboratorCreateState = addCollaboratorWithoutMailNotification(userEmail, expositionId, type, allowNotPersisted);
         Exposition exposition = expositionRepository.find(expositionId);
-        expositionRepository.index(exposition);
         User found = userRepository.findByEmail(userEmail);
         if (collaboratorCreateState.equals(CollaboratorCreateState.CREATED)) {
-            indihuNotificationService.notifyAddedToCollaborate(found.getEmail(), helperService.getCurrent(), exposition);
+            notificationSerivce.notifyAddedToCollaborate(found.getEmail(), helperService.getCurrent(), exposition);
         }
         if (collaboratorCreateState.equals(CollaboratorCreateState.EMAIL_SENT)) {
-            indihuNotificationService.notifyAddedToCollaborate(userEmail, helperService.getCurrent(), exposition);
+            notificationSerivce.notifyAddedToCollaborate(userEmail, helperService.getCurrent(), exposition);
         }
+        expositionRepository.index(exposition);
         return collaboratorCreateState;
     }
 
@@ -149,7 +151,7 @@ public class CollaboratorService {
                 log.info(MARKER, "Removing collaborator " + collaborator.getId() + " from exposition " + exposition.getTitle() + " by " + helperService.getCurrent().getUserName());
             });
             if (sendMail) {
-                emails.forEach(s -> indihuNotificationService.notifyRemovedFromCollaboration(s, helperService.getCurrent(), exposition));
+                emails.forEach(s -> notificationSerivce.notifyRemovedFromCollaboration(s, helperService.getCurrent(), exposition));
             }
             expositionRepository.save(exposition);
         }
@@ -162,12 +164,18 @@ public class CollaboratorService {
      */
     @Transactional
     public void removeCurrentCollaborator(String expositionId) {
+        Exposition exposition = expositionRepository.find(expositionId);
+        notNull(exposition, () -> new MissingObject(Exposition.class, expositionId));
         Collaborator collaborator = collaboratorRepository.findExpositionCollaborator(helperService.getCurrent().getId(), expositionId);
         if (collaborator != null) {
+            if (exposition.getCollaborators() != null) {
+                exposition.getCollaborators().remove(collaborator);
+                expositionRepository.save(exposition);
+            }
             collaboratorRepository.delete(collaborator);
-            log.info(MARKER, "Collaborator " + collaborator.getUserEmail() + " removed himself from exposition with id:" + expositionId);
+            log.info(MARKER, "Collaborator "+collaborator.getUserEmail()+" removed himself from exposition with id:" + expositionId);
 
-            expositionRepository.index(expositionRepository.find(expositionId));
+            expositionRepository.index(exposition);
         }
     }
 
@@ -183,9 +191,11 @@ public class CollaboratorService {
         Collaborator collaborator = collaboratorRepository.find(collaboratorId);
         notNull(collaborator, () -> new MissingObject("Collaborator with id: ", collaboratorId));
         if (collaborator.getExposition() != null) {
-            if (helperService.getCurrent().equals(collaborator.getExposition().getAuthor())) {
+            if (helperService.getCurrent().equals(collaborator.getExposition().getAuthor()) ||
+                    helperService.getCurrent().getRole().equals(UserRole.ROLE_ADMIN)) {
                 collaborator.setCollaborationType(newType);
                 collaboratorRepository.save(collaborator);
+                expositionRepository.index(collaborator.getExposition());
                 return true;
             }
         }
@@ -203,7 +213,8 @@ public class CollaboratorService {
         Exposition exposition = expositionRepository.find(expositionId);
 
         Collaborator collaborator = collaboratorRepository.findExpositionCollaborator(current.getId(), expositionId);
-        if ((exposition.getAuthor().equals(current)) || ((collaborator != null) && (collaborator.getCollaborationType().equals(CollaborationType.EDIT)))
+        if ((exposition.getAuthor().equals(current)) ||
+                ((collaborator != null) && (collaborator.getCollaborationType().equals(CollaborationType.EDIT)))
                 || helperService.isAdmin()) {
             return true;
         }
@@ -212,7 +223,6 @@ public class CollaboratorService {
 
     /**
      * Method that says if currently logged in user can view an exposition
-     *
      * @param expositionId
      * @return
      */
@@ -254,7 +264,6 @@ public class CollaboratorService {
 
     /**
      * Returns emails list of collaborators for given exposition
-     *
      * @param expositionId id of exposition
      */
     public List<String> getCollaboratorsEmailsForExposition(String expositionId) {
@@ -282,8 +291,8 @@ public class CollaboratorService {
     }
 
     @Inject
-    public void setNotificationService(IndihuNotificationService indihuNotificationService) {
-        this.indihuNotificationService = indihuNotificationService;
+    public void setNotificationService(IndihuNotificationService notificationSerivce) {
+        this.notificationSerivce = notificationSerivce;
     }
 
     @Inject

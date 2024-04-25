@@ -9,11 +9,14 @@ import cz.inqool.uas.indihu.entity.enums.CollaborationType;
 import cz.inqool.uas.indihu.entity.enums.ExpositionState;
 import cz.inqool.uas.indihu.entity.enums.UserRole;
 import cz.inqool.uas.indihu.entity.enums.UserState;
+import cz.inqool.uas.indihu.entity.mapper.ExpositionDesignMapper;
 import cz.inqool.uas.indihu.repository.*;
 import cz.inqool.uas.indihu.security.UserDelegate;
 import cz.inqool.uas.indihu.security.jwt.IndihuJwtHandler;
 import cz.inqool.uas.indihu.security.service.LdapCredentialsHandler;
 import cz.inqool.uas.indihu.service.*;
+import cz.inqool.uas.indihu.service.exposition.*;
+import cz.inqool.uas.indihu.service.notification.IndihuNotificationServiceImpl;
 import cz.inqool.uas.mail.AsyncMailSender;
 import cz.inqool.uas.security.UserDetails;
 import cz.inqool.uas.security.password.GoodPasswordGenerator;
@@ -55,7 +58,7 @@ public class SetUpTests extends DbTest {
     protected SettingsService settingsService = new SettingsService();
 
     @InjectMocks
-    protected IndihuNotificationService indihuNotificationService = new IndihuNotificationService();
+    protected IndihuNotificationServiceImpl indihuNotificationService = new IndihuNotificationServiceImpl();
 
     @InjectMocks
     protected RegistrationService registrationService = new RegistrationService();
@@ -72,6 +75,15 @@ public class SetUpTests extends DbTest {
     @InjectMocks
     protected ExpositionFileService expositionFileService = new ExpositionFileService();
 
+    @InjectMocks
+    protected ExpositionPinService expositionPinService = new ExpositionPinService();
+
+    @InjectMocks
+    protected ExpositionTransferService expositionTransferService;
+
+    @InjectMocks
+    protected ExpositionRemovalService expositionRemovalService;
+
     protected GoodPasswordGenerator passwordGenerator = new GoodPasswordGenerator(8,true,true);
 
     @Mock
@@ -86,6 +98,9 @@ public class SetUpTests extends DbTest {
     @Mock
     protected FileRepository fileRepository;
 
+    @Mock
+    protected MessageRepository messageRepository;
+
     protected CollaboratorRepository collaboratorRepository;
 
     protected ExpositionOpeningRepository expositionOpeningRepository;
@@ -99,6 +114,8 @@ public class SetUpTests extends DbTest {
     protected RegistrationRepository registrationRepository;
 
     protected SettingsRepository settingsRepository;
+
+    protected PinRepository pinRepository;
 
     protected PasswordEncoderProducer passwordEncoderProducer = new PasswordEncoderProducer();
 
@@ -146,7 +163,6 @@ public class SetUpTests extends DbTest {
         Templater templater = new Templater();
         templater.setEngine(new VelocityEngine());
 
-
         sender.setSender(mockMailSender);
         collaboratorRepository = new CollaboratorRepository();
         collaboratorRepository.setEntityManager(getEm());
@@ -183,6 +199,14 @@ public class SetUpTests extends DbTest {
         settingsRepository = new SettingsRepository();
         settingsRepository.setEntityManager(getEm());
         settingsRepository.setQueryFactory(new JPAQueryFactory(getEm()));
+
+        pinRepository = new PinRepository();
+        pinRepository.setEntityManager(getEm());
+        pinRepository.setQueryFactory(new JPAQueryFactory(getEm()));
+
+        messageRepository = new MessageRepository();
+        messageRepository.setEntityManager(getEm());
+        messageRepository.setQueryFactory(new JPAQueryFactory(getEm()));
 
         Settings settings = new Settings();
         settings.setAllowedRegistration(true);
@@ -355,6 +379,9 @@ public class SetUpTests extends DbTest {
 
         indihuService.setUserRepository(userRepository);
 
+        expositionTransferService = new ExpositionTransferService(userRepository, expositionRepository, helperService);
+        expositionRemovalService = new ExpositionRemovalService(expositionRepository, fileExpositionMapperRepository, fileRepository, pinRepository, collaboratorRepository);
+
         registrationService.setHelperService(helperService);
         registrationService.setPasswordEncoder(passwordEncoder);
         registrationService.setRepository(registrationRepository);
@@ -368,6 +395,7 @@ public class SetUpTests extends DbTest {
 
         indihuNotificationService.setEmailSender(mockMailSender);
         indihuNotificationService.setUserRepository(userRepository);
+        indihuNotificationService.setUrl("test-url.com");
 
         userService.setGoodPasswordGenerator(passwordGenerator);
         userService.setHelperService(helperService);
@@ -375,6 +403,8 @@ public class SetUpTests extends DbTest {
         userService.setUserRepository(userRepository);
         userService.setPasswordEncoder(passwordEncoder);
         userService.setGoodPasswordGenerator(passwordGenerator);
+        userService.setRegistrationRepository(registrationRepository);
+        userService.setExpositionRemovalService(expositionRemovalService);
 
         settingsService.setSettingsRepository(settingsRepository);
 
@@ -387,6 +417,9 @@ public class SetUpTests extends DbTest {
         expositionService.setSettingsService(settingsService);
         expositionService.setExpositionUrlRepository(expositionUrlRepository);
         expositionService.setNotificationService(indihuNotificationService);
+        expositionService.setPinRepository(pinRepository);
+        expositionService.setExpositionDesignMapper(new ExpositionDesignMapper());
+        expositionService.setMessageRepository(messageRepository);
 
         registrationService.setUserRepository(userRepository);
         registrationService.setRepository(registrationRepository);
@@ -394,16 +427,17 @@ public class SetUpTests extends DbTest {
         registrationService.setHelperService(helperService);
         registrationService.setNotificationService(indihuNotificationService);
 
-        expositionFileService.setFileExpositionMapperRepository(fileExpositionMapperRepository);
+        expositionPinService.setPinRepository(pinRepository);
+        expositionPinService.setExpositionRepository(expositionRepository);
+        expositionPinService.setHelperService(helperService);
 
+        expositionFileService.setFileExpositionMapperRepository(fileExpositionMapperRepository);
         Authentication authentication = Mockito.mock(Authentication.class);
         UserDetails details = new UserDelegate(editor);
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication().getPrincipal()).thenReturn(details);
-
-
     }
 
 }

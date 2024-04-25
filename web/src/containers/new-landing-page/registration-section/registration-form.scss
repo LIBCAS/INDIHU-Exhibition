@@ -1,0 +1,49 @@
+@import "../variables.scss";
+
+.registration-form {
+  box-shadow: 0 15px 30px #0000001a;
+  font-family: $inter-font-family;
+  color: $primary-color;
+}
+
+.registration-form * {
+  font-family: inherit;
+  color: inherit;
+}
+
+.registration-form .reg-form__header {
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+}
+
+.registration-form .reg-form__p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+}
+
+.registration-form .create-account-button,
+#login-form .login-button {
+  color: white;
+  background-color: #142e54;
+  border-color: #142e54;
+  border-radius: 60px;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.registration-form .dialog__footer {
+  width: 100%;
+  border-top: 1px solid #dee2e6;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}

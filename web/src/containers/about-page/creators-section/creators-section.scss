@@ -1,0 +1,66 @@
+@import "../../new-landing-page/variables.scss";
+
+/* -- Creators section -- */
+
+.creators-section {
+  position: relative;
+  overflow: hidden;
+  background-color: $primary-color;
+  color: white;
+}
+
+.creators-section::before {
+  content: "";
+  background-image: url("../../../assets/img/landing-page/main-symbol-white.svg");
+  background-repeat: no-repeat;
+  width: 1000px;
+  height: 700px;
+  position: absolute;
+  top: 2.5vh;
+  right: -100px;
+  opacity: 0.03;
+}
+
+.creators-section div:first-child {
+  position: relative;
+}
+
+.creators-section .title {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+@media (min-width: 576px) {
+  .creators-section .title {
+    font-size: 40px;
+    line-height: 58px;
+  }
+}
+
+@media (min-width: 768px) {
+  .creators-section .title {
+    font-size: 48px;
+    line-height: 58px;
+  }
+}
+
+.creators-section .description {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (min-width: 576px) {
+  .creators-section .description {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .creators-section .description {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}

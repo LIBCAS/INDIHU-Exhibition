@@ -1,6 +1,7 @@
 package cz.inqool.uas.indihu.entity.dto;
 
 import cz.inqool.uas.indihu.entity.enums.ExpositionState;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.time.Instant;
  */
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class ExpositionDto {
 
     private String id;
@@ -18,6 +20,8 @@ public class ExpositionDto {
     private String title;
 
     private String url;
+
+    private String authorUsername;
 
     private boolean inProgress;
 
@@ -33,4 +37,17 @@ public class ExpositionDto {
 
     private ExpositionState state;
 
+    private boolean isPinned;
+
+    private Instant pinnedAt;
+
+    private Double rating;
+
+    private Long ratingCount;
+
+    private Long messageCount;
+
+    private Long viewCount;
+
+    private Preferences preferences;
 }

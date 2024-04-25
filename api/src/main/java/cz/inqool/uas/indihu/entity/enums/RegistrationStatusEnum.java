@@ -7,5 +7,9 @@ public enum RegistrationStatusEnum {
     IN_QUEUED,
     EMAIL_EXISTS,
     IN_LDAP,
-    CREATED
+    CREATED,
+    ALREADY_ACCEPTED,
+    ALREADY_VERIFIED,
+    REJECTED,
+    DEACTIVATED
 }

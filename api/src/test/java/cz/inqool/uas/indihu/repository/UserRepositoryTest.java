@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 
 public class UserRepositoryTest extends SetUpTests{
 
-
     @Test
     public void getByUser(){
         User found = userRepository.findByLogin("joker");
@@ -49,9 +48,8 @@ public class UserRepositoryTest extends SetUpTests{
     }
 
     @Test
-    public void findByEmilNonExistent(){
+    public void findByEmailNonExistent(){
         User user = userRepository.findByEmail("321as65df4@afasdf.ok");
         assertNull(user);
     }
-
 }

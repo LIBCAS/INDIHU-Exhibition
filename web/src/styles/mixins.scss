@@ -1,0 +1,14 @@
+@use "./variables.scss" as *;
+
+@mixin tooltip {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 4px 4px 2px $c-black-200;
+}
+
+@mixin snackbar {
+  box-shadow: 2px 4px 4px 2px $c-black-200;
+  background-color: white;
+  color: black;
+}

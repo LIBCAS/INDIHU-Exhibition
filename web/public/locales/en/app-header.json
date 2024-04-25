@@ -1,0 +1,25 @@
+{
+  "logout": {
+    "conditionsOfUse": "Terms of use",
+    "personalData": "Principles of data protection",
+    "projectIndihu": "Project INDIHU",
+    "registration": "Registration",
+    "login": "Log in"
+  },
+  "logged": {
+    "settings": "Settings",
+    "users": "Users",
+    "exhibitions": "Exhibitions",
+    "accountManagement": "Account settings",
+    "logout": "Log out",
+    "expositionState": "status:"
+  },
+  "manual": "Manual",
+  "languageSelect": {
+    "czech": "Czech",
+    "english": "English",
+    "slovak": "Slovak"
+  },
+  "read-write-permission-tooltip": "Permission for both reading and writing",
+  "read-only-permission-tooltip": "Permission only for reading"
+}

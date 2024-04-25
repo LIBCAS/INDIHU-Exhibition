@@ -1,0 +1,61 @@
+{
+  "title": "Tvůrci",
+  "allUsersLabel": "Všichni tvůrci",
+  "usersToAcceptLabel": "Tvůrci ke schválení",
+  "viewDeleted": "Zobrazit smazané",
+  "usersState": {
+    "accepted": "Akceptován",
+    "not_verified": "Neověřen",
+    "to_accept": "Ke schválení",
+    "rejected": "Zamítnutý",
+    "deleted": "Smazán"
+  },
+  "usersAction": {
+    "reactivate": "Reaktivovat tvůrce",
+    "accept": "Akceptovat tvůrce",
+    "reject": "Zamítnout tvůrce",
+    "delete": "Vymazat tvůrce"
+  },
+  "usersSort": {
+    "updated": "Datum poslední aktualizace",
+    "created": "Datum vytvoření",
+    "userName": "Uživatelské jméno",
+    "firstName": "Jméno",
+    "surname": "Příjmení",
+    "email": "Email",
+    "institution": "Instituce"
+  },
+
+  "searchLabel": "Hledat",
+  "table": {
+    "username": "Uživatelské jméno",
+    "firstname": "Jméno",
+    "surname": "Příjmení",
+    "email": "E-mail",
+    "institution": "Instituce",
+    "state": "Stav",
+    "action": "Akce"
+  },
+  "pagesizeLabel": "Záznamů na stránku:",
+
+  "acceptUserDialog": {
+    "title": "Schválení tvůrce",
+    "submitLabel": "Akceptovat",
+    "content": "Tvůrce \"{{userName}}\" bude schválen. \nPOZOR! Akce je nevratná"
+  },
+  "deleteUserDialog": {
+    "title": "Odstranit tvůrce",
+    "submitLabel": "Odstranit",
+    "content": "Tvůrce \"{{userName}}\" bude odstraněn."
+  },
+  "reactivateUserDialog": {
+    "title": "Reaktivace tvůrce",
+    "submitLabel": "Reaktivovat",
+    "content": "Tvůrce \"{{userName}}\" bude reaktivován."
+  },
+  "rejectUserDialog": {
+    "title": "Zamítnutí tvůrce",
+    "submitLabel": "Zamítnout",
+    "content": "Tvůrce \"{{userName}}\" bude zamítnut. \nPOZOR! Akce je nevratná"
+  }
+}

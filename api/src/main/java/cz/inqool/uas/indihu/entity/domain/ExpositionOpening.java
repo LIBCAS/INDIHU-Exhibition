@@ -22,7 +22,7 @@ import java.time.Instant;
 @Table(name = "in_exposition_opening")
 @NoArgsConstructor
 //currently not in use
-public class ExpositionOpening extends DomainObject {
+public class ExpositionOpening extends DomainObject{
 
     private Instant opening;
 

@@ -31,7 +31,7 @@ public class IndihuJwtHandler implements JwtHandler {
      */
     @Override
     public UserDetails parseClaims(Map<String, Object> claims) {
-        String userId = (String) claims.get("sub");
+        String userId = (String)claims.get("sub");
         @SuppressWarnings("unchecked") ArrayList<String> authorityNames = (ArrayList<String>) claims.get("aut");
 
         Set<GrantedAuthority> authorities = null;
@@ -61,7 +61,7 @@ public class IndihuJwtHandler implements JwtHandler {
             Map<String, Object> claims = new LinkedHashMap<>();
             claims.put("sub", ((UserDelegate) userDetails).getUser().getId());
             claims.put("email", user.getEmail());
-            claims.put("userName", user.getUserName());
+            claims.put("userName",user.getUserName());
 
 
             Collection<GrantedAuthority> authorities = delegate.getAuthorities();

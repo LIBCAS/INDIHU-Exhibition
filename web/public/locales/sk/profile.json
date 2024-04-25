@@ -1,0 +1,27 @@
+{
+  "title": "Nastavenie",
+
+  "editProfileSubtitle": "Editácia profilu",
+  "usernameLabel": "Užívateľské meno",
+  "firstnameLabel": "Meno",
+  "lastnameLabel": "Priezvisko",
+  "institutionLabel": "Inštitúcia",
+  "emailLabel": "E-mail",
+  "emailNotificationsLabel": "Zasielať notifikácie",
+  "editProfileActionButtonLabel": "Upraviť profil",
+
+  "changePasswordSubtitle": "Zmena hesla",
+  "newPasswordLabel": "Nové heslo",
+  "confirmPasswordLabel": "Potvrdiť heslo",
+  "changePasswordActionButtonLabel": "Zmeniť heslo",
+
+  "deleteAccountActionButtonLabel": "Zrušiť účet",
+
+  "deactivateAccountDialog": {
+    "title": "Zrušiť účet",
+    "submitLabel": "Zrušiť účet",
+    "reallyWantToDeactivateAccount": "Naozaj chcete zrušiť účet?",
+    "deactivateConsequences": "Zrušením účtu dôjde k uzamknutiu všetkých výstav, ktoré vlastníte, a nebude možné s nimi ďalej pracovať!",
+    "failedToDeactivate": "Nepodarilo sa odstrániť účet!"
+  }
+}

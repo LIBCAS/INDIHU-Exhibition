@@ -7,7 +7,6 @@ import cz.inqool.uas.index.dto.Result;
 import cz.inqool.uas.indihu.entity.domain.User;
 import cz.inqool.uas.indihu.repository.UserRepository;
 import cz.inqool.uas.indihu.service.HelperService;
-import cz.inqool.uas.indihu.service.IndihuNotificationService;
 import cz.inqool.uas.indihu.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,8 +30,6 @@ public class UserController {
 
     private HelperService helperService;
 
-    private IndihuNotificationService indihuNotificationService;
-
     @ApiOperation("Gets all users for admin list")
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.GET, value = "/")
@@ -53,7 +50,7 @@ public class UserController {
     public Result<User> searchAllUsers(@ModelAttribute Params params,
                                        @ApiParam("String to look for in attributes")
                                        @PathVariable("q") String value) {
-        params.setFilter(asList(createFilters(value)));
+        params.getFilter().addAll(asList(createFilters(value)));
         Result<User> result = userRepository.findAll(params);
         result.getItems().forEach(user -> {
             user.setPassword(null);
@@ -107,15 +104,34 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @ApiParam("Allows user to delete himself. Role required: editor.")
+    @ApiOperation("Deletes user with specified id. Role required: admin.")
+    @RolesAllowed("ROLE_ADMIN")
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}")
+    @Transactional
+    public void restoreUser(@ApiParam("id of user to restore") @PathVariable("id") String id) {
+        userService.restore(id);
+    }
+
+    @ApiParam("Endpoint for user data deletion")
     @RolesAllowed("ROLE_EDITOR")
     @RequestMapping(method = RequestMethod.DELETE, value = "/me")
-    @Transactional
-    public void deleteCurrent() {
-        User user = helperService.getCurrent();
-        indihuNotificationService.notifyDeleted(user.getEmail());
-        userRepository.delete(user);
-        helperService.setCurrent(null);
+    public void removeUser() {
+        userService.removeCurrentUser();
+    }
+
+    @ApiOperation("Accepts user into state ACCEPTED")
+    @RolesAllowed("ROLE_ADMIN")
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}/accept")
+    public void accept(@ApiParam("id of user to accept")
+                       @PathVariable("id") String id) {
+        userService.accept(id);
+    }
+
+    @ApiOperation("Rejects a registration")
+    @RolesAllowed("ROLE_ADMIN")
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}/reject")
+    public void reject(@ApiParam("Id of registration to reject") @PathVariable("id") String id) {
+        userService.reject(id);
     }
 
     @ApiOperation("Allows to reactivate account of specified user. Role required: admin.")
@@ -152,11 +168,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Inject
-    public void setNotificationService(IndihuNotificationService indihuNotificationService) {
-        this.indihuNotificationService = indihuNotificationService;
-    }
-
     private Filter createFilters(String value) {
         Filter filter = new Filter();
         filter.setOperation(FilterOperation.OR);
@@ -165,7 +176,7 @@ public class UserController {
         Filter surname = new Filter("surname", FilterOperation.CONTAINS, value, null);
         Filter email = new Filter("email", FilterOperation.CONTAINS, value, null);
         Filter institution = new Filter("institution", FilterOperation.CONTAINS, value, null);
-        Filter state = new Filter("state", FilterOperation.EQ, value, null);
+        Filter state = new Filter("state",FilterOperation.EQ,value,null);
         filter.setFilter(asList(userName, firstName, surname, email, institution, state));
         return filter;
     }

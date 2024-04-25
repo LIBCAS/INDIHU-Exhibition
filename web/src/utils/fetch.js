@@ -21,7 +21,7 @@ const serialize = (obj = {}) =>
     })
     .join("&");
 
-export default async (url, { params, ...options } = {}) => {
+const customFetch = async (url, { params, ...options } = {}) => {
   const queryString = serialize(params);
   const questionMark = isEmpty(queryString) ? "" : "?";
   const token = storage.get("token");
@@ -42,3 +42,5 @@ export default async (url, { params, ...options } = {}) => {
 
   return fetch(`${context}${url}${questionMark}${queryString}`, opts);
 };
+
+export default customFetch;

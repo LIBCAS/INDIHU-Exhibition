@@ -73,7 +73,7 @@ $height-card-new: $height-actions + $height-card-text;
 }
 
 .expositions-container {
-  margin-top: 4em;
+  margin-top: 5em;
   width: 100%;
   min-width: 100%;
   max-width: 100%;
@@ -91,10 +91,11 @@ $height-card-new: $height-actions + $height-card-text;
     max-height: 100vh;
     margin-top: -5em;
     padding-top: 5em;
+    padding-bottom: 60px;
   }
 
   &-inner {
-    max-width: 1340px;
+    max-width: 1450px;
     margin: 0 auto;
     padding-left: 0.5em;
     padding-right: 0.5em;
