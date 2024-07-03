@@ -152,10 +152,10 @@
     },
     "logoAndWatermarkSettings": {
       "title": "2. Nastavení loga a vodoznaku",
-      "expoLogoTypeLabel": "Typ loga expozice",
+      "expoLogoTypeLabel": "Typ loga",
       "expoLogoTypeLogo": "Logo",
       "expoLogoTypeWatermark": "Vodoznak",
-      "expoLogoPositionLabel": "Pozice loga expozice",
+      "expoLogoPositionLabel": "Pozice loga",
       "expoLogoPositionUpLeft": "Nahoře vlevo",
       "expoLogoPositionUpRight": "Nahoře vpravo",
       "expoLogoPositionDownLeft": "Dole vevo",
