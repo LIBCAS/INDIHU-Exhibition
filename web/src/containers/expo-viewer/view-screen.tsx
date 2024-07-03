@@ -1,18 +1,9 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { useHistory } from "react-router-dom";
 
 // Custom Hooks
 import { useFilePreloader } from "context/file-preloader/file-preloader-provider";
-import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
-import { useScreenDataByScreenId } from "hooks/view-hooks/useScreenDataByScreenId";
 
 // Components
 import { Viewers } from "../views";
@@ -30,6 +21,7 @@ import {
   musicEnabled,
 } from "enums/screen-type";
 import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
+import ScreenAutoNavigatorManager from "./expo-managers/ScreenAutoNavigatorManager";
 
 // - - - - - - - -
 
@@ -229,7 +221,7 @@ export const NewViewScreen = ({
   // - -
 
   return (
-    <ScreenAutoNavigator>
+    <ScreenAutoNavigatorManager>
       {/* If rendered -- <audio> will always have source of the current screen audio!!! */}
       {musicSrc && (
         <audio
@@ -253,59 +245,6 @@ export const NewViewScreen = ({
         chapterMusicRef={musicRef}
         audioRef={audioRef}
       />
-    </ScreenAutoNavigator>
+    </ScreenAutoNavigatorManager>
   );
-};
-
-// - - - -
-
-const navigatorSelector = createSelector(
-  ({ expo }: AppState) => expo.viewScreen,
-  ({ expo }: AppState) => expo.viewProgress,
-  (viewScreen, viewProgress) => ({
-    viewScreen,
-    viewProgress,
-  })
-);
-
-/* All screens other than START, FINISH and Game Screens are shouldRedirect = true */
-/* This component, if the time of the screen is passed && shouldRedirect => auto switch to the next screen! */
-const ScreenAutoNavigator = ({ children }: { children: ReactNode }) => {
-  const { viewProgress, viewScreen } = useSelector(navigatorSelector);
-  const { totalTime, timeElapsed, shouldRedirect } = viewProgress;
-
-  const { navigateForward } = useExpoNavigation();
-
-  const timeRanOut = useMemo(
-    () => timeElapsed >= totalTime,
-    [timeElapsed, totalTime]
-  );
-
-  // - -
-
-  const history = useHistory();
-
-  const signpostNavigate =
-    viewScreen?.type === "SIGNPOST"
-      ? viewScreen.nextScreenReference ?? null
-      : null;
-
-  const { screenReferenceUrl: signpostScreenReferenceUrl } =
-    useScreenDataByScreenId(signpostNavigate) ?? {};
-
-  // - -
-
-  useEffect(() => {
-    if (shouldRedirect && timeRanOut) {
-      if (signpostScreenReferenceUrl) {
-        history.push(signpostScreenReferenceUrl);
-      } else {
-        navigateForward();
-      }
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRanOut, shouldRedirect, signpostScreenReferenceUrl]);
-
-  return <>{children}</>;
 };
