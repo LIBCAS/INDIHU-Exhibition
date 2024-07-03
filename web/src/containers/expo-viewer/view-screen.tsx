@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 // Custom Hooks
@@ -9,14 +9,12 @@ import { useFilePreloader } from "context/file-preloader/file-preloader-provider
 import { Viewers } from "../views";
 
 // Actions and utils
-import { setViewProgress } from "actions/expoActions/viewer-actions";
 import { noop } from "lodash";
 
 // Types and Enums
 import { AppState } from "store/store";
 import {
   audioEnabled,
-  automaticRouting,
   mapScreenTypeValuesToKeys,
   musicEnabled,
 } from "enums/screen-type";
@@ -48,7 +46,6 @@ export const NewViewScreen = ({
 }: NewViewScreenProps) => {
   const { viewScreen, shouldIncrement, expoVolumes } =
     useSelector(stateSelector);
-  const dispatch = useDispatch();
 
   const { section, screen } = useSectionScreenParams();
 
@@ -101,20 +98,6 @@ export const NewViewScreen = ({
   useEffect(() => {
     handleMount();
   }, [handleMount]);
-
-  // 2.) According to the viewScreen.type ("INTRO", "START", ... ) set appropriate viewProgress.shouldRedirect
-  // shouldRedirect is false only for START and FINISH + PHOTOGALLERY screens (GAME screen are true after upgrade)
-  // This shouldRedirect is then used in the wrappering ScreenAutoNavigator component below, at the bottom of this file
-  useEffect(() => {
-    if (!viewScreen?.type) {
-      return;
-    }
-
-    const shouldRedirect =
-      !!automaticRouting[mapScreenTypeValuesToKeys[viewScreen.type]];
-
-    dispatch(setViewProgress({ shouldRedirect }));
-  }, [dispatch, viewScreen?.type]);
 
   // - - -
 

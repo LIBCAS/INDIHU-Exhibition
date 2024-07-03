@@ -1,12 +1,16 @@
 import { FC, useEffect, useMemo } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useScreenDataByScreenId } from "hooks/view-hooks/useScreenDataByScreenId";
 
-import { AppState } from "store/store";
+import { AppDispatch, AppState } from "store/store";
+
+import { mapScreenTypeValuesToKeys } from "enums/screen-type";
+import { automaticRouting } from "enums/screen-type";
+import { setViewProgress } from "actions/expoActions/viewer-actions";
 // - - -
 
 const navigatorSelector = createSelector(
@@ -22,11 +26,12 @@ const navigatorSelector = createSelector(
 
 /**
  * All screens other than START, FINISH and Game screens are set with shouldRedirect = true.
- * That means, if time of the screen elapsed && shouldRedirect == true, then move to the next screen.
+ * That means, if time of the screen elapsed && shouldRedirect == true, then move to the next screen automatically.
  *
  * Also, the SIGNPOST screen has a special behavior, its next screen is set in the administration.
  */
 const ScreenAutoNavigatorManager: FC = ({ children }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { viewScreen, viewProgress } = useSelector(navigatorSelector);
   const { totalTime, timeElapsed, shouldRedirect } = viewProgress;
 
@@ -36,6 +41,20 @@ const ScreenAutoNavigatorManager: FC = ({ children }) => {
     () => timeElapsed >= totalTime,
     [timeElapsed, totalTime]
   );
+
+  // - -
+
+  // Handle settings of the viewProgress.shouldRedirect, based on current viewScreen type
+  useEffect(() => {
+    if (!viewScreen?.type) {
+      return;
+    }
+
+    const shouldRedirect =
+      !!automaticRouting[mapScreenTypeValuesToKeys[viewScreen.type]];
+
+    dispatch(setViewProgress({ shouldRedirect }));
+  }, [dispatch, viewScreen?.type]);
 
   // - -
 
