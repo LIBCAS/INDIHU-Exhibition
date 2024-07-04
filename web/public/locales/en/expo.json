@@ -152,7 +152,7 @@
     },
     "logoAndWatermarkSettings": {
       "title": "2. Setting of the logo and watermark",
-      "expoLogoTypeLabel": "Exhibition logo type",
+      "expoLogoTypeLabel": "Logo type",
       "expoLogoTypeLogo": "Logo",
       "expoLogoTypeWatermark": "Watermark",
       "expoLogoPositionLabel": "Logo position",

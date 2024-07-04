@@ -327,7 +327,7 @@ const ActionsPanel = ({
                 getTutorialEclipseClassnameByStepkeys
               }
             />
-            {(step?.stepKey === "screen-info" || hasAudio) && (
+            {(step?.stepKey === "audio" || hasAudio) && (
               <AudioButton
                 isAudioMuted={isAudioMuted}
                 bind={bind}
