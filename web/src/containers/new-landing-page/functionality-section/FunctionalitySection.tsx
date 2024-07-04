@@ -3,12 +3,12 @@ import { useTranslation, Trans } from "react-i18next";
 
 import ExternalLink from "i18n/ExternalLink";
 
-import f1Icon from "../../../assets/img/landing-page/functionality-section/png/icon-f-1.png";
-import f2Icon from "../../../assets/img/landing-page/functionality-section/png/icon-f-2.png";
-import f3Icon from "../../../assets/img/landing-page/functionality-section/png/icon-f-3.png";
-import f4Icon from "../../../assets/img/landing-page/functionality-section/png/icon-f-4.png";
-import f5Icon from "../../../assets/img/landing-page/functionality-section/png/icon-f-5.png";
-import f6Icon from "../../../assets/img/landing-page/functionality-section/png/icon-f-6.png";
+import f1Icon from "../../../assets/img/landing-page/functionality-section/png/blue/icon-f-1.png";
+import f2Icon from "../../../assets/img/landing-page/functionality-section/png/blue/icon-f-2.png";
+import f3Icon from "../../../assets/img/landing-page/functionality-section/png/blue/icon-f-3.png";
+import f4Icon from "../../../assets/img/landing-page/functionality-section/png/blue/icon-f-4.png";
+import f5Icon from "../../../assets/img/landing-page/functionality-section/png/blue/icon-f-5.png";
+import f6Icon from "../../../assets/img/landing-page/functionality-section/png/blue/icon-f-6.png";
 
 // - -
 
