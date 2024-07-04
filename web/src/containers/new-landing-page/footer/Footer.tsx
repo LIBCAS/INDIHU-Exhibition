@@ -1,9 +1,9 @@
 import "./footer.scss";
 import { useTranslation } from "react-i18next";
 
-import indihuLogo from "../../../assets/img/landing-page/indihu-logo-white.png";
-import nahranoOtevrenoLogo from "../../../assets/img/landing-page/nahrano-otevreno-logo-white.png";
-import knihovnaLogo from "../../../assets/img/landing-page/knihovna-logo-white.png";
+import indihuLogo from "../../../assets/img/landing-page/footer/white/indihu-logo-white.png";
+import nahranoOtevrenoLogo from "../../../assets/img/landing-page/footer/white/nahrano-otevreno-logo-white.png";
+import knihovnaLogo from "../../../assets/img/landing-page/footer/white/knihovna-logo-white.png";
 
 import { BsBoxArrowUpRight } from "react-icons/bs";
 // import { BsFacebook } from "react-icons/bs";

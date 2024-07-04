@@ -2,6 +2,8 @@ import "./temporary-text-section.scss";
 
 import { useTranslation, Trans } from "react-i18next";
 
+import eeaGrangImg from "../../assets/img/about-page/eea_grant_black_2x.png";
+
 import ExternalLink from "i18n/ExternalLink";
 import MailLink from "i18n/MailLink";
 
@@ -59,6 +61,14 @@ const TemporaryTextSection = () => {
               }}
             />
           </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-start">
+          <img
+            alt="test"
+            src={eeaGrangImg}
+            className="w-3/5 h-auto sm:w-2/5 lg:w-1/4"
+          />
         </div>
       </div>
     </section>

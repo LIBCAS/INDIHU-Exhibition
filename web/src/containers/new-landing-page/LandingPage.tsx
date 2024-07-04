@@ -7,6 +7,7 @@ import { useTranslation, Trans } from "react-i18next";
 
 // Components
 import Header from "./header/Header";
+import PreviewVideoSection from "./preview-video-section/PreviewVideoSection";
 import IntroSection from "./intro-section/IntroSection";
 import FunctionalitySection from "./functionality-section/FunctionalitySection";
 import SelectedExhibitionsSection from "./selected-exhibitions-section/SelectedExhibitionsSection";
@@ -67,6 +68,7 @@ const LandingPage = ({ oauthConfigs }: LandingPageProps) => {
       <Header oauthConfigs={oauthConfigs} />
       <IntroSection />
 
+      <PreviewVideoSection />
       <FunctionalitySection />
       <SelectedExhibitionsSection />
       <RegistrationSection oauthConfigs={oauthConfigs} />
