@@ -107,6 +107,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
 
             <InfopointsTable
+              key="infopoints-table-before"
               title={t("descFields.imageChangeScreen.infopointsBeforeTitle")}
               infopoints={activeScreen.image1Infopoints ?? []}
               onInfopointAdd={(dialogFormData) => {
@@ -136,6 +137,21 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   updateScreenData({
                     image1Infopoints: activeScreen.image1Infopoints?.filter(
                       (_ip, ipIndex) => ipIndex !== infopointIndexToDelete
+                    ),
+                  })
+                );
+              }}
+              onInfopointAlwaysVisibleChange={(
+                infopointIndexToEdit: number,
+                newIsAlwaysVisibleValue: boolean
+              ) => {
+                dispatch(
+                  updateScreenData({
+                    image1Infopoints: activeScreen.image1Infopoints?.map(
+                      (ip, ipIndex) =>
+                        ipIndex === infopointIndexToEdit
+                          ? { ...ip, alwaysVisible: newIsAlwaysVisibleValue }
+                          : ip
                     ),
                   })
                 );
@@ -188,6 +204,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
 
             <InfopointsTable
+              key="infopoints-table-after"
               title={t("descFields.imageChangeScreen.infopointsAfterTitle")}
               infopoints={activeScreen.image2Infopoints ?? []}
               onInfopointAdd={(dialogFormData) => {
@@ -217,6 +234,21 @@ const Images = ({ activeScreen }: ImagesProps) => {
                   updateScreenData({
                     image2Infopoints: activeScreen.image2Infopoints?.filter(
                       (_ip, ipIndex) => ipIndex !== infopointIndexToDelete
+                    ),
+                  })
+                );
+              }}
+              onInfopointAlwaysVisibleChange={(
+                infopointIndexToEdit: number,
+                newIsAlwaysVisibleValue: boolean
+              ) => {
+                dispatch(
+                  updateScreenData({
+                    image2Infopoints: activeScreen.image2Infopoints?.map(
+                      (ip, ipIndex) =>
+                        ipIndex === infopointIndexToEdit
+                          ? { ...ip, alwaysVisible: newIsAlwaysVisibleValue }
+                          : ip
                     ),
                   })
                 );

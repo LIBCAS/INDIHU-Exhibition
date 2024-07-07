@@ -441,6 +441,30 @@ const AnswerItem = ({
                   })
                 );
               }}
+              onInfopointAlwaysVisibleChange={(
+                infopointIndexToEdit: number,
+                newIsAlwaysVisibleValue: boolean
+              ) => {
+                dispatch(
+                  updateScreenData({
+                    answers: activeScreen.answers?.map((ans, ansIdx) =>
+                      currAnswerIndex === ansIdx
+                        ? {
+                            ...ans,
+                            infopoints: ans.infopoints?.map((ip, ipIndex) =>
+                              ipIndex === infopointIndexToEdit
+                                ? {
+                                    ...ip,
+                                    alwaysVisible: newIsAlwaysVisibleValue,
+                                  }
+                                : { ...ip }
+                            ),
+                          }
+                        : ans
+                    ),
+                  })
+                );
+              }}
             />
           )}
         </div>

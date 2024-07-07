@@ -325,6 +325,35 @@ const Slideshow = ({ activeScreen, sumOfPhotosTimes }: SlideshowProps) => {
                         })
                       );
                     }}
+                    onInfopointAlwaysVisibleChange={(
+                      infopointIndexToEdit: number,
+                      newIsAlwaysVisibleValue: boolean
+                    ) => {
+                      if (!activeScreen.images) {
+                        return;
+                      }
+                      dispatch(
+                        updateScreenData({
+                          images: activeScreen.images.map((img, imgIndex) =>
+                            imgIndex === activeImageIndex
+                              ? {
+                                  ...img,
+                                  infopoints: img.infopoints.map(
+                                    (ip, ipIndex) =>
+                                      ipIndex === infopointIndexToEdit
+                                        ? {
+                                            ...ip,
+                                            alwaysVisible:
+                                              newIsAlwaysVisibleValue,
+                                          }
+                                        : { ...ip }
+                                  ),
+                                }
+                              : img
+                          ),
+                        })
+                      );
+                    }}
                   />
                 )}
               </div>
