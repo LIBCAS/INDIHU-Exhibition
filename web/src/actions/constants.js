@@ -26,7 +26,7 @@ export const TAB_FOLDER = "TAB_FOLDER";
 export const TAB_FILE = "TAB_FILE";
 
 // Expo part of the redux store
-export const EXPOSITIONS = "EXPOSITIONS"; // setActiveScreenEdited from screen-actions.js, getExpositions from expo-actions.js
+export const EXPOSITIONS = "EXPOSITIONS";
 
 export const EXPO_SET = "EXPO_SET"; // loadExpo (store.expo.activeExpo), updateExpo, changeExpositionsViewType (store.expo.cardsList) from expo-actions.js
 export const EXPO_UPDATE = "EXPO_UPDATE";
