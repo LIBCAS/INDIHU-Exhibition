@@ -120,7 +120,8 @@ export const ViewScreenOverlayDrawer = ({
                   <WysiwygPreview htmlMarkup={screenText} />
                 </div>
               ) : (
-                <div className="italic">{t("no-text")}</div>
+                // No text
+                <></>
               )}
             </div>
 
