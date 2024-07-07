@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import { FontIcon, Checkbox, Button } from "react-md";
+import { FontIcon, Button } from "react-md";
+import Checkbox from "@mui/material/Checkbox";
 import { setDialog } from "actions/dialog-actions";
 import { Infopoint } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
@@ -18,6 +19,10 @@ interface InfopointsTableProps {
   onInfopointAdd: (dialogFormData: any) => void;
   onInfopointEdit: (infopointIndexToEdit: number, dialogFormData: any) => void;
   onInfopointDelete: (infopointIndexToDelete: number) => void;
+  onInfopointAlwaysVisibleChange: (
+    infopointIndexToEdit: number,
+    newIsAlwaysVisibleValue: boolean
+  ) => void;
 }
 
 interface InfopointEditDialogStatus {
@@ -34,6 +39,7 @@ const InfopointsTable = ({
   onInfopointAdd,
   onInfopointEdit,
   onInfopointDelete,
+  onInfopointAlwaysVisibleChange,
 }: InfopointsTableProps) => {
   const { t } = useTranslation("expo-editor");
 
@@ -86,10 +92,15 @@ const InfopointsTable = ({
             </div>
             <div className="table-col small">
               <Checkbox
-                id={`checkbox-infopoint-${infopointIndex}`}
-                name="checkbox-infopoint"
                 checked={infopoint.alwaysVisible ?? false}
-                disabled
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  const newAlwaysVisibleValue = event.target.checked;
+                  onInfopointAlwaysVisibleChange(
+                    infopointIndex,
+                    newAlwaysVisibleValue
+                  );
+                }}
+                sx={{ "& .MuiSvgIcon-root": { fontSize: 24 } }}
               />
             </div>
             <div className="table-col very-small flex-right">
