@@ -1,4 +1,4 @@
-import { isEmpty, findIndex, get, filter } from "lodash";
+import { isEmpty, findIndex, get, filter, isEqual } from "lodash";
 
 import { saveExpo, loadExpo } from "./index";
 import { showLoader } from "../app-actions";
@@ -21,8 +21,8 @@ import {
   EXPO_SCREEN_DB_UPDATE,
 } from "../constants";
 
-import { objectsEqual } from "../../utils";
 import { screenType } from "../../enums/screen-type";
+import { alignObject } from "utils";
 
 export const loadScreen = (url) => async (dispatch, getState) => {
   const expo = getState().expo.activeExpo;
@@ -140,7 +140,6 @@ export const updateScreenData = (data) => async (dispatch, getState) => {
       type: EXPO_SCREEN_UPDATE,
       payload: null,
     });
-    console.log("data nullish, setting false");
     dispatch(setActiveScreenEdited(false));
     return;
   }
@@ -159,15 +158,17 @@ export const updateScreenData = (data) => async (dispatch, getState) => {
   });
 
   //
-  if (
-    activeScreenDb &&
-    !isEmpty(activeScreenDb) &&
-    !objectsEqual(activeScreenDb, newActiveScreen)
-  ) {
-    console.log("change from db, setting true");
+  if (!activeScreenDb || isEmpty(activeScreenDb)) {
+    dispatch(setActiveScreenEdited(false));
+    return;
+  }
+
+  //
+  const alignedActiveScreenDb = alignObject(activeScreenDb, activeScreen);
+
+  if (!isEqual(alignedActiveScreenDb, newActiveScreen)) {
     dispatch(setActiveScreenEdited(true));
   } else {
-    console.log("no change from db, setting false");
     dispatch(setActiveScreenEdited(false));
   }
 };
