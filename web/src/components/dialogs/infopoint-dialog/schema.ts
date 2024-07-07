@@ -11,7 +11,7 @@ export const infopointSchema = Yup.object({
   text: Yup.string().when("bodyContentType", {
     is: (bodyContentType: InfopointBodyType) => bodyContentType === "TEXT",
     then: (schema) =>
-      schema.required("*Povinné").max(150, "*Maximálně 150 znaků."),
+      schema.optional().max(150, "*Maximálně 150 znaků."),
   }),
   imageName: Yup.string().when("bodyContentType", {
     is: (bodyContentType: InfopointBodyType) => bodyContentType === "IMAGE",
