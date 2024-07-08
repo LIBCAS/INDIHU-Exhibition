@@ -42,6 +42,14 @@
   content: "Obrovský";
 }
 
+// All default quill font sizes are displayed but this one is manually hidden
+.ql-toolbar
+  .ql-picker.ql-size
+  .ql-picker-options
+  .ql-picker-item[data-value="huge"] {
+  display: none;
+}
+
 // - - - -
 
 /* EDITOR PREVIEW STYLES */
