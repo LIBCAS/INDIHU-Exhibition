@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { get, isEmpty, isArray } from "lodash";
+import { get, isEmpty, isArray, cloneDeep } from "lodash";
 import { Screen, CollaboratorObj } from "models";
 export * from "./routing";
 
@@ -330,4 +330,30 @@ export const asyncForEach = async (array: any, callback: any) => {
   }
 
   return true;
+};
+
+// - - - - - -
+
+/**
+ * Accepts two object arguments and matches the missing keys of the first object against the second with false values
+ * E.q. obj1 = { name: 'John' }, obj2 = { name: 'John', isStudent: true }
+ * return value will be following object: { name: 'John', isStudent: false }
+ */
+export const alignObject = (objA: any, objB: any) => {
+  const clonedObjA = cloneDeep(objA);
+  alignClonedObject(clonedObjA, objB);
+  return clonedObjA;
+};
+
+const alignClonedObject = (objA: any, objB: any) => {
+  const bKeys = Object.keys(objB);
+  for (const keyOfB of bKeys) {
+    if (typeof objA[keyOfB] === "object") {
+      alignClonedObject(objA[keyOfB], objB[keyOfB]);
+    }
+
+    if (objA[keyOfB] === undefined) {
+      objA[keyOfB] = false;
+    }
+  }
 };

@@ -1,4 +1,4 @@
-import { isEmpty, findIndex, get, filter } from "lodash";
+import { isEmpty, findIndex, get, filter, isEqual } from "lodash";
 
 import { saveExpo, loadExpo } from "./index";
 import { showLoader } from "../app-actions";
@@ -21,8 +21,8 @@ import {
   EXPO_SCREEN_DB_UPDATE,
 } from "../constants";
 
-import { objectsEqual } from "../../utils";
 import { screenType } from "../../enums/screen-type";
+import { alignObject } from "utils";
 
 export const loadScreen = (url) => async (dispatch, getState) => {
   const expo = getState().expo.activeExpo;
@@ -48,9 +48,14 @@ export const loadScreen = (url) => async (dispatch, getState) => {
       ? structure[sfType]
       : structure.screens[position[1]][position[2]];
 
+    // Current screen load means that the current screen is being set to redux store.activeScreen
+    // and also to store.activeScreenDb.. so i can later compare whether there were some changes made do original screen mount
     dispatch({
       type: EXPO_SCREEN_SET,
-      payload: { activeScreen: activeScreen, activeScreenDb: activeScreen },
+      payload: {
+        activeScreen: activeScreen,
+        activeScreenDb: activeScreen,
+      },
     });
   }
 };
@@ -97,7 +102,7 @@ export const saveScreen =
 
     const expo = getState().expo.activeExpo;
 
-    const ret =
+    const wasExpoSavedSucc =
       activeScreen.type === screenType.START
         ? await saveExpo({
             ...expo,
@@ -105,15 +110,15 @@ export const saveScreen =
           })
         : await saveExpo(expo);
 
-    if (ret) {
+    if (wasExpoSavedSucc) {
       dispatch(setActiveScreenEdited(false));
-      dispatch(setActiveScreenDb(activeScreen)); //
+      dispatch(setActiveScreenDb(activeScreen));
     }
 
     loadExpo(expo.id);
     await dispatch(showLoader(false));
 
-    return ret;
+    return wasExpoSavedSucc;
   };
 
 export const setActiveScreenEdited = (activeScreenEdited = true) => {
@@ -129,6 +134,7 @@ const setActiveScreenDb = (newActiveScreenDb) => ({
 });
 
 export const updateScreenData = (data) => async (dispatch, getState) => {
+  // Data to update are empty or nullish
   if (isEmpty(data) || data === null || data === undefined) {
     dispatch({
       type: EXPO_SCREEN_UPDATE,
@@ -138,21 +144,30 @@ export const updateScreenData = (data) => async (dispatch, getState) => {
     return;
   }
 
-  const activeScreenDb = get(getState(), "expo.activeScreenDb"); // state from last save, as stored in DB
-  const activeScreen = get(getState(), "expo.activeScreen"); // state with current changes being made from last save
+  // state from last screen save or from screen mount, state of screen as it is currently stored in DB
+  const activeScreenDb = get(getState(), "expo.activeScreenDb");
+
+  // state with screen with current changes, not stored in database yet
+  const activeScreen = get(getState(), "expo.activeScreen");
   const newActiveScreen = { ...activeScreen, ...data };
 
-  // Reflect change to the redux store (if previous change is different from current change)
-  if (activeScreen && !objectsEqual(newActiveScreen, activeScreen)) {
-    dispatch({
-      type: EXPO_SCREEN_UPDATE,
-      payload: { ...data },
-    });
+  // Execute the change with non-nullish data
+  dispatch({
+    type: EXPO_SCREEN_UPDATE,
+    payload: { ...data },
+  });
+
+  //
+  if (!activeScreenDb || isEmpty(activeScreenDb)) {
+    dispatch(setActiveScreenEdited(false));
+    return;
   }
 
-  // Reflect the change according to DB
-  if (activeScreenDb && !objectsEqual(newActiveScreen, activeScreenDb)) {
-    dispatch(setActiveScreenEdited());
+  //
+  const alignedActiveScreenDb = alignObject(activeScreenDb, activeScreen);
+
+  if (!isEqual(alignedActiveScreenDb, newActiveScreen)) {
+    dispatch(setActiveScreenEdited(true));
   } else {
     dispatch(setActiveScreenEdited(false));
   }
