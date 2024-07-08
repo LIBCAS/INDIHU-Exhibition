@@ -36,6 +36,9 @@ const ScreenSlideshow = (props: ScreenEditorProps) => {
   const slideshowProps = props as ScreenEditorSlideshowProps;
   const { activeScreen } = slideshowProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   const timePhotosManual = useMemo(
     () => activeScreen.timePhotosManual,
     [activeScreen.timePhotosManual]
@@ -99,6 +102,8 @@ const ScreenSlideshow = (props: ScreenEditorProps) => {
           <ScreenDescription
             activeScreen={activeScreen}
             sumOfPhotosTimes={sumOfPhotosTimes}
+            rowNum={rowNum}
+            colNum={colNum}
           />
         )}
       />
@@ -118,8 +123,8 @@ const ScreenSlideshow = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         noActions={
           !!find(activeScreen.images, (image) =>
             find(image?.infopoints, (item) => item.edit)

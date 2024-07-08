@@ -15,16 +15,27 @@ import { File as IndihuFile } from "models";
 
 // Utils
 import { getFileById } from "actions/file-actions";
-import { updateScreenData } from "actions/expoActions/screen-actions";
+import {
+  saveScreen,
+  updateScreenData,
+} from "actions/expoActions/screen-actions";
+import { wrapTextInParagraph } from "components/editors/WysiwygEditor/utils";
 
 // - -
 
-const Description = (props: ScreenEditorPhotogalleryProps) => {
+type DescriptionProps = ScreenEditorPhotogalleryProps & {
+  rowNum: string | undefined;
+  colNum: string | undefined;
+};
+
+const Description = (props: DescriptionProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
-  const { activeScreen } = props;
+  const { activeScreen, rowNum, colNum } = props;
   const audio = dispatch(getFileById(props.activeScreen.audio)) as IndihuFile;
+
+  const text = activeScreen.text ?? "";
 
   return (
     <div className="container container-tabMenu">
@@ -35,9 +46,17 @@ const Description = (props: ScreenEditorPhotogalleryProps) => {
             <TitleTextField titleValue={activeScreen.title ?? ""} />
             <WysiwygEditor
               controlType="uncontrolled"
-              defaultValue={activeScreen.text ?? ""}
-              onChange={(newContent: string) => {
-                dispatch(updateScreenData({ text: newContent }));
+              defaultValue={text}
+              onChange={(newText: string) => {
+                const wrappedOldText = wrapTextInParagraph(text.trimEnd());
+                dispatch(updateScreenData({ text: newText }));
+
+                // NOTE: Additional check
+                // Means that the new text is just wrapped old text
+                // We do not want this change to act as a change done from user, so immediately save it
+                if (newText === wrappedOldText) {
+                  dispatch(saveScreen(activeScreen, rowNum, colNum));
+                }
               }}
             />
           </div>

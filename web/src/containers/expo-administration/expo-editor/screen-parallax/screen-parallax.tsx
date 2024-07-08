@@ -29,6 +29,9 @@ const ScreenParallax = (props: ScreenEditorProps) => {
   const parallaxScreenProps = props as ScreenEditorParallaxProps;
   const { activeScreen, url } = parallaxScreenProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   return (
     <div>
       <TabMenu
@@ -49,7 +52,13 @@ const ScreenParallax = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <ScreenDescription activeScreen={activeScreen} />}
+        render={() => (
+          <ScreenDescription
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
+        )}
       />
       <Route
         path={`${match.url}/parallax`}
@@ -62,8 +71,8 @@ const ScreenParallax = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         history={history}
         url={url}
       />

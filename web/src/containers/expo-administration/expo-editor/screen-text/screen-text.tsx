@@ -28,6 +28,9 @@ const ScreenText = (props: ScreenEditorProps) => {
 
   const textProps = props as ScreenEditorTextProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   return (
     <div>
       <TabMenu
@@ -40,12 +43,22 @@ const ScreenText = (props: ScreenEditorProps) => {
       <Route
         path={`${match.url}/description`}
         render={() => (
-          <ScreenDescription activeScreen={textProps.activeScreen} />
+          <ScreenDescription
+            activeScreen={textProps.activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
         )}
       />
       <Route
         path={`${match.url}/text`}
-        render={() => <Text activeScreen={textProps.activeScreen} />}
+        render={() => (
+          <Text
+            activeScreen={textProps.activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
+        )}
       />
       <Route
         path={`${match.url}/documents`}
@@ -55,8 +68,8 @@ const ScreenText = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={props.activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         history={history}
         url={props.url}
       />

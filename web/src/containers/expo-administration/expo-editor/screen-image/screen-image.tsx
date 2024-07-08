@@ -30,6 +30,9 @@ const ScreenImage = (props: ScreenEditorProps) => {
   const imageScreenProps = props as ScreenEditorImageProps;
   const { activeScreen, url } = imageScreenProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   return (
     <div>
       <TabMenu
@@ -50,7 +53,13 @@ const ScreenImage = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <ScreenDescription activeScreen={activeScreen} />}
+        render={() => (
+          <ScreenDescription
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
+        )}
       />
       <Route
         path={`${match.url}/image`}
@@ -63,8 +72,8 @@ const ScreenImage = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         noActions={!!find(activeScreen.infopoints, (item) => item.edit)}
         history={history}
         url={url}
