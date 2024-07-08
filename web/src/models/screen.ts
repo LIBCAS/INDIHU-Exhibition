@@ -91,13 +91,11 @@ export type SlideshowImages = {
   imageOrigData: ImageOrigData;
   infopoints: Infopoint[];
   time?: number;
-  active?: boolean;
 }[];
 
 export type ParallaxImages = string[];
 export type PhotogalleryImages = {
   id: string;
-  active?: boolean;
   photoTitle?: string;
   photoDescription?: string;
 }[];

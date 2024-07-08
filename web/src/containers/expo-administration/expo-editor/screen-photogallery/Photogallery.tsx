@@ -74,11 +74,10 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
                   ? [
                       ...activeScreen.images.map((currImg) => ({
                         ...currImg,
-                        active: false,
                       })),
-                      { active: true },
+                      {}, // add new image object, currently being empty!
                     ]
-                  : [{ active: true }],
+                  : [{}], // create array with one first image object which is empty
               })
             );
             //
@@ -90,17 +89,6 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
           }}
           onClickCard={(i) => {
             setActiveImageIndex(activeImageIndex === i ? -1 : i);
-            dispatch(
-              updateScreenData({
-                images: activeScreen.images?.map((currImage, currImageIndex) =>
-                  i === currImageIndex
-                    ? activeImageIndex === i
-                      ? { ...currImage, active: false }
-                      : { ...currImage, active: true }
-                    : { ...currImage, active: false }
-                ),
-              })
-            );
           }}
           onClickLeft={(i) => {
             if (activeScreen.images) {
