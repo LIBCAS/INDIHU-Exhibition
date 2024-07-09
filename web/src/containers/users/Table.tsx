@@ -146,9 +146,11 @@ const Table = ({ usersAll, userTableState }: TableProps) => {
                             <Icon
                               useMaterialUiIcon
                               name="done"
-                              tooltipId="accept-user-icon"
-                              tooltipText={t("usersAction.accept")}
-                              tooltipVariant="dark"
+                              tooltip={{
+                                id: "accept-user-icon",
+                                content: t("usersAction.accept"),
+                                variant: "dark",
+                              }}
                             />
                           </Button>
 
@@ -163,9 +165,11 @@ const Table = ({ usersAll, userTableState }: TableProps) => {
                             <Icon
                               useMaterialUiIcon
                               name="highlight_off"
-                              tooltipId="reject-user-icon"
-                              tooltipText={t("usersAction.reject")}
-                              tooltipVariant="dark"
+                              tooltip={{
+                                id: "reject-user-icon",
+                                content: t("usersAction.reject"),
+                                variant: "dark",
+                              }}
                             />
                           </Button>
                         </>
@@ -183,9 +187,11 @@ const Table = ({ usersAll, userTableState }: TableProps) => {
                             <Icon
                               useMaterialUiIcon
                               name="highlight_off"
-                              tooltipId="reject-user-icon"
-                              tooltipText={t("usersAction.reject")}
-                              tooltipVariant="dark"
+                              tooltip={{
+                                id: "reject-user-icon",
+                                content: t("usersAction.reject"),
+                                variant: "dark",
+                              }}
                             />
                           </Button>
                         </>
@@ -202,9 +208,11 @@ const Table = ({ usersAll, userTableState }: TableProps) => {
                           <Icon
                             useMaterialUiIcon
                             name="done"
-                            tooltipId="accept-user-icon"
-                            tooltipText={t("usersAction.accept")}
-                            tooltipVariant="dark"
+                            tooltip={{
+                              id: "accept-user-icon",
+                              content: t("usersAction.accept"),
+                              variant: "dark",
+                            }}
                           />
                         </Button>
                       )}
@@ -227,9 +235,11 @@ const Table = ({ usersAll, userTableState }: TableProps) => {
                           <Icon
                             useMaterialUiIcon
                             name="refresh"
-                            tooltipId="reactivate-user-icon"
-                            tooltipText={t("usersAction.reactivate")}
-                            tooltipVariant="dark"
+                            tooltip={{
+                              id: "reactivate-user-icon",
+                              content: t("usersAction.reactivate"),
+                              variant: "dark",
+                            }}
                           />
                         </Button>
                       )}
@@ -307,9 +317,11 @@ const DeleteUserButton = ({
       <Icon
         useMaterialUiIcon
         name="delete"
-        tooltipId="delete-user-icon"
-        tooltipText={t("usersAction.delete")}
-        tooltipVariant="dark"
+        tooltip={{
+          id: "delete-user-icon",
+          content: t("usersAction.delete"),
+          variant: "dark",
+        }}
       />
     </Button>
   );

@@ -8,7 +8,7 @@ import { BasicTooltip } from "components/tooltip/tooltip";
 type TooltipOption = {
   id: string;
   content: string;
-  variant?: "light" | "dark";
+  variant?: "light" | "dark"; // if undefined, based on selected theme
 };
 
 interface ButtonProps {

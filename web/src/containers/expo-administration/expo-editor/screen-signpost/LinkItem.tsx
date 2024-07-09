@@ -62,9 +62,11 @@ export const LinkItem = ({
             <Icon
               useMaterialUiIcon
               name="close"
-              tooltipId="link-close-icon-tooltip"
-              tooltipText={t("closeIconTooltip")}
-              tooltipVariant="dark"
+              tooltip={{
+                id: "link-close-icon-tooltip",
+                content: t("closeIconTooltip"),
+                variant: "dark",
+              }}
             />
           </Button>
         }
@@ -201,9 +203,11 @@ export const LinkItem = ({
                 useMaterialUiIcon
                 name="delete"
                 style={{ fontSize: "24px" }}
-                tooltipId="link-delete-icon-tooltip"
-                tooltipText={t("deleteIconTooltip")}
-                tooltipVariant="dark"
+                tooltip={{
+                  id: "link-delete-icon-tooltip",
+                  content: t("deleteIconTooltip"),
+                  variant: "dark",
+                }}
               />
             </Button>
           </div>
