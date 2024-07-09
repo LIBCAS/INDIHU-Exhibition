@@ -9,13 +9,13 @@ import SearchTextField from "./filters/old/SearchTextField";
 
 import { Button, FontIcon } from "react-md";
 import { Checkbox, FormControlLabel } from "@mui/material";
-import { Tooltip } from "react-tooltip";
 
 import { AppDispatch } from "store/store";
 import { ExpositionsFilterStateObj } from "./Expositions";
 
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import CardListViewButton from "./filters/CardListViewButton";
 
 // - -
 
@@ -94,28 +94,9 @@ const Header = ({
             label={t("header.showOnlyPinnedLabel")}
           />
 
-          <Button
-            icon
-            onClick={() => {
-              setExpositionsFilterState((prev) => ({
-                ...prev,
-                isCardList: !isCardList,
-                page: 0,
-              })); // reset back to first page
-            }}
-            data-tooltip-id="expositions-filter-react-tooltip-order"
-            data-tooltip-content={
-              isCardList ? t("header.tooltipList") : t("header.tooltipGrid")
-            }
-          >
-            {isCardList ? "view_list" : "view_module"}
-          </Button>
-          <Tooltip
-            id="expositions-filter-react-tooltip-order"
-            className="infopoint-tooltip"
-            variant="dark"
-            float={false}
-            place="bottom"
+          <CardListViewButton
+            setExpositionsFilterState={setExpositionsFilterState}
+            isCardList={isCardList}
           />
         </div>
       </div>
