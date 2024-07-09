@@ -91,6 +91,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             className
           )}
           style={style}
+          data-tooltip-id={tooltip?.id ?? undefined}
         >
           {iconBefore}
           {children}
