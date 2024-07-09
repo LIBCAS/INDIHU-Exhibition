@@ -2,10 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
+import FilterSelectField from "./filters/old/FilterSelectField";
+import SortSelectField from "./filters/old/SortSelectField";
+import SortButton from "./filters/SortButton";
+import SearchTextField from "./filters/old/SearchTextField";
+
 import { Button, FontIcon } from "react-md";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { Tooltip } from "react-tooltip";
-import Filter from "./Filter";
 
 import { AppDispatch } from "store/store";
 import { ExpositionsFilterStateObj } from "./Expositions";
@@ -36,10 +40,27 @@ const Header = ({
     <div className="flex-header">
       <h2 className="flex-header-title">{t("header.title")}</h2>
       {!showOnlyPinned && (
-        <Filter
-          expositionsFilterState={expositionsFilterState}
-          setExpositionsFilterState={setExpositionsFilterState}
-        />
+        <div className="flex-header-actions gap-4">
+          <FilterSelectField
+            expositionsFilterState={expositionsFilterState}
+            setExpositionsFilterState={setExpositionsFilterState}
+          />
+
+          <SortSelectField
+            expositionsFilterState={expositionsFilterState}
+            setExpositionsFilterState={setExpositionsFilterState}
+          />
+
+          <SortButton
+            expositionsFilterState={expositionsFilterState}
+            setExpositionsFilterState={setExpositionsFilterState}
+          />
+
+          <SearchTextField
+            expositionsFilterState={expositionsFilterState}
+            setExpositionsFilterState={setExpositionsFilterState}
+          />
+        </div>
       )}
 
       {/* New expo button if table + Cardslist icon button */}
