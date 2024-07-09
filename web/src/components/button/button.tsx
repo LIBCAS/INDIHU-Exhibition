@@ -4,11 +4,13 @@ import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import cx from "classnames";
 import { BasicTooltip } from "components/tooltip/tooltip";
+import { PlacesType } from "react-tooltip";
 
 type TooltipOption = {
   id: string;
   content: string;
   variant?: "light" | "dark"; // if undefined, based on selected theme
+  place?: PlacesType;
 };
 
 interface ButtonProps {

@@ -6,6 +6,7 @@ import { Icon as MuiIcon } from "@mui/material";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
 import { BasicTooltip } from "components/tooltip/tooltip";
+import { PlacesType } from "react-tooltip";
 
 import cx from "classnames";
 
@@ -13,6 +14,7 @@ type TooltipOption = {
   id: string;
   content: string;
   variant?: "light" | "dark"; // if undefined, based on selected theme
+  place?: PlacesType;
 };
 
 interface IconProps {
