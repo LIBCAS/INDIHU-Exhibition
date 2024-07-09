@@ -7,10 +7,10 @@ import SortSelectField from "./filters/old/SortSelectField";
 import SortButton from "./filters/SortButton";
 import SearchTextField from "./filters/old/SearchTextField";
 
-import { Checkbox, FormControlLabel } from "@mui/material";
-
-import CardListViewButton from "./filters/CardListViewButton";
 import NewExpoButton from "./filters/NewExpoButton";
+
+import ViewOnlyPinnedCheckbox from "./filters/ViewOnlyPinnedCheckbox";
+import CardListViewButton from "./filters/CardListViewButton";
 
 // - -
 
@@ -62,20 +62,9 @@ const Header = ({
         <NewExpoButton isCardList={isCardList} />
 
         <div className="flex items-center gap-2">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={expositionsFilterState.showOnlyPinned}
-                onChange={(e) => {
-                  const newValue = e.target.checked;
-                  setExpositionsFilterState((prev) => ({
-                    ...prev,
-                    showOnlyPinned: newValue,
-                  }));
-                }}
-              />
-            }
-            label={t("header.showOnlyPinnedLabel")}
+          <ViewOnlyPinnedCheckbox
+            expositionsFilterState={expositionsFilterState}
+            setExpositionsFilterState={setExpositionsFilterState}
           />
 
           <CardListViewButton
