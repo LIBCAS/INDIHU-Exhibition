@@ -88,12 +88,12 @@ export const ExpoInfoDialog = ({
           <Button color="primary" onClick={openChaptersDialog}>
             <Icon color="white" name="layers" />
           </Button>
-          {startWorksheetFiles?.length !== 0 && (
+          {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
             <Button color="primary" onClick={openWorksheetDialog}>
               <Icon color="white" name="description" />
             </Button>
           )}
-          {startExpoFiles?.length !== 0 && (
+          {startExpoFiles && startExpoFiles.length !== 0 && (
             <Button color="primary" onClick={openFilesDialog}>
               <Icon color="white" name="folder" />
             </Button>
