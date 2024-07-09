@@ -1,16 +1,16 @@
 import { Dispatch, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { ExpositionsFilterStateObj } from "./Expositions";
+import { ExpositionsFilterStateObj } from "../Expositions";
 
-import FilterSelectField from "./filters/old/FilterSelectField";
-import SortSelectField from "./filters/old/SortSelectField";
-import SortButton from "./filters/SortButton";
-import SearchTextField from "./filters/old/SearchTextField";
+import FilterSelectField from "./fields/old/FilterSelectField";
+import SortSelectField from "./fields/old/SortSelectField";
+import SortButton from "./fields/SortButton";
+import SearchTextField from "./fields/old/SearchTextField";
 
-import NewExpoButton from "./filters/NewExpoButton";
+import NewExpoButton from "./fields/NewExpoButton";
 
-import ViewOnlyPinnedCheckbox from "./filters/ViewOnlyPinnedCheckbox";
-import CardListViewButton from "./filters/CardListViewButton";
+import ViewOnlyPinnedCheckbox from "./fields/ViewOnlyPinnedCheckbox";
+import CardListViewButton from "./fields/CardListViewButton";
 
 // - -
 
