@@ -1,8 +1,16 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { calculatePositions } from "./calculate-positions";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
+
 import GlassMagnifier from "./GlassMagnifier";
-import { Position } from "models";
+
+import { Position, Size } from "models";
+import { calculatePositions } from "./calculate-positions";
+
+type PositionsInfoObj = {
+  containedImgSize: Size;
+  cursorPosition: Position;
+  targetPosition: Position;
+};
 
 export const useGlassMagnifier = (
   imageContainerEl: HTMLDivElement | null,
@@ -11,56 +19,45 @@ export const useGlassMagnifier = (
   const { isGlassMagnifierEnabled, glassMagnifierPxSize } =
     useGlassMagnifierConfig();
 
-  // Cursor position (left and top from image container)
-  // Cursor is in the middle of the glass magnifier
-  const [cursorPosition, setCursorPosition] = useState<Position>({
-    left: 0,
-    top: 0,
-  });
-
-  // Position (left and top) in the natural dimensions of contained img
-  const [targetPosition, setTargetPosition] = useState<Position>({
-    left: 0,
-    top: 0,
-  });
-
-  const [containedImgSize, setContainedImgSize] = useState({
-    width: 0,
-    height: 0,
-  });
-
   const containedImgSrc = useMemo(
     () => containedImageEl?.src,
     [containedImageEl]
   );
 
-  // - -
-  // ImageContainerOnMouseMoveHandler
+  const [positionsInfo, setPositionsInfo] = useState<PositionsInfoObj>({
+    // Size of the contained image
+    containedImgSize: { width: 0, height: 0 },
+
+    // Current position of the cursor relative to the image container (e.g. whole screen)
+    // Cursor is located in the middle of the glass magnifier and is not visible when glass magnifier is enabled
+    cursorPosition: { left: 0, top: 0 },
+
+    // Represents current position of the left-top corner of the lens -> relative to the natural dimensions of contained img
+    targetPosition: { left: 0, top: 0 },
+  });
+
+  // - - - - - - - - - - - -
+  // Event Handlers
+  // - - - - - - - - - - - -
+
   const imageContainerOnMouseMoveHandler = useCallback(
     (event: globalThis.MouseEvent | globalThis.TouchEvent) => {
       if (!isGlassMagnifierEnabled) {
         return;
       }
+
       if (!imageContainerEl || !containedImageEl || !containedImgSrc) {
         return;
       }
 
-      const {
-        containedImgSize,
-        newContainerCursorPosition,
-        newTargetPosition,
-      } = calculatePositions(
+      const newPositionsInfo = calculatePositions(
         imageContainerEl,
         containedImageEl,
         event,
         glassMagnifierPxSize
       );
 
-      setContainedImgSize(containedImgSize);
-      setCursorPosition(newContainerCursorPosition);
-      setTargetPosition(newTargetPosition);
-
-      return;
+      setPositionsInfo(newPositionsInfo);
     },
     [
       containedImageEl,
@@ -71,17 +68,61 @@ export const useGlassMagnifier = (
     ]
   );
 
-  // Disable default browser behavior, like saving image when long touch and other..
-  // const imageContainerElOnTouchStart = useCallback(
-  //   (e: TouchEvent) => {
-  //     if (isGlassMagnifierEnabled) {
-  //       e.preventDefault();
-  //     }
-  //   },
-  //   [isGlassMagnifierEnabled]
-  // );
+  // Handler responsible for disabling the default browser behavior, e.g. saving image pop-up when long touch
+  /*
+  const imageContainerOnTouchStart = useCallback(
+    (e: TouchEvent) => {
+      if (isGlassMagnifierEnabled) {
+        e.preventDefault();
+      }
+    },
+    [isGlassMagnifierEnabled]
+  );
+  */
 
-  // Apply the required styles for the imageContainer
+  // - - - - - - - - - - - -
+  // Effects
+  // - - - - - - - - - - - -
+
+  // Effect responsible for registration/unregistration of event handlers for imageContainer element
+  useEffect(() => {
+    if (!imageContainerEl) {
+      return;
+    }
+    imageContainerEl.addEventListener(
+      "mousemove",
+      imageContainerOnMouseMoveHandler
+    );
+
+    imageContainerEl.addEventListener(
+      "touchmove",
+      imageContainerOnMouseMoveHandler
+    );
+
+    // imageContainerEl.addEventListener(
+    //   "touchstart",
+    //   imageContainerOnTouchStart
+    // );
+
+    return () => {
+      imageContainerEl.removeEventListener(
+        "mousemove",
+        imageContainerOnMouseMoveHandler
+      );
+
+      imageContainerEl.removeEventListener(
+        "touchmove",
+        imageContainerOnMouseMoveHandler
+      );
+
+      // imageContainerEl.removeEventListener(
+      //   "touchstart",
+      //   imageContainerOnTouchStart
+      // );
+    };
+  }, [imageContainerEl, imageContainerOnMouseMoveHandler]);
+
+  // Effect responsible for applying all necessary styles for the imageContainer element
   useEffect(() => {
     if (!imageContainerEl) {
       return;
@@ -95,47 +136,11 @@ export const useGlassMagnifier = (
       : "auto";
   }, [imageContainerEl, isGlassMagnifierEnabled]);
 
-  // Add the onMouseMove handler for the imageContainer
-  useEffect(() => {
-    if (!imageContainerEl) {
-      return;
-    }
-    imageContainerEl.addEventListener(
-      "mousemove",
-      imageContainerOnMouseMoveHandler
-    );
+  // - - - - - - - - - - - -
+  // Prepared GlassMagnifier component
+  // - adding this component into viewScreen will render "glass magnifier lens" at the current cursor position
+  // - - - - - - - - - - - -
 
-    // imageContainerEl.addEventListener(
-    //   "touchstart",
-    //   imageContainerElOnTouchStart
-    // );
-
-    imageContainerEl.addEventListener(
-      "touchmove",
-      imageContainerOnMouseMoveHandler
-    );
-
-    return () => {
-      imageContainerEl.removeEventListener(
-        "mousemove",
-        imageContainerOnMouseMoveHandler
-      );
-
-      // imageContainerEl.removeEventListener(
-      //   "touchstart",
-      //   imageContainerElOnTouchStart
-      // );
-
-      imageContainerEl.removeEventListener(
-        "touchmove",
-        imageContainerOnMouseMoveHandler
-      );
-    };
-  }, [imageContainerEl, imageContainerOnMouseMoveHandler]);
-
-  // - -
-  // Glass Magnifier component with current cursor positions
-  // Adding this component into viewScreen will render "lens" at the current cursor position
   type CalculatedGlassMagnifierProps = {
     lensContainerStyle?: React.CSSProperties;
     lensStyle?: React.CSSProperties;
@@ -147,10 +152,10 @@ export const useGlassMagnifier = (
   }: CalculatedGlassMagnifierProps) => {
     return (
       <GlassMagnifier
-        cursorPosition={cursorPosition}
-        targetPosition={targetPosition}
         containedImgSrc={containedImgSrc}
-        containedImgSize={containedImgSize}
+        containedImgSize={positionsInfo.containedImgSize}
+        cursorPosition={positionsInfo.cursorPosition}
+        targetPosition={positionsInfo.targetPosition}
         lensContainerStyle={lensContainerStyle}
         lensStyle={lensStyle}
       />

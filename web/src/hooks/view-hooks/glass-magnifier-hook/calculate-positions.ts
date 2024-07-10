@@ -139,7 +139,7 @@ export const calculatePositions = (
 
   return {
     containedImgSize,
-    newContainerCursorPosition,
-    newTargetPosition,
+    cursorPosition: newContainerCursorPosition,
+    targetPosition: newTargetPosition,
   };
 };
