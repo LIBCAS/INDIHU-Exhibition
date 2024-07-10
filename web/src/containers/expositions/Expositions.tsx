@@ -8,7 +8,7 @@ import { useIsFirstRender } from "hooks/first-render-hook";
 
 // Components
 import AppHeader from "components/app-header/AppHeader";
-import Header from "./Header";
+import Header from "./header/Header";
 import ExpoNewCard from "./ExpoNewCard";
 
 import ExpoCard from "./ExpoCard";

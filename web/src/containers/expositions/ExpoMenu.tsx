@@ -3,7 +3,6 @@ import { createSelector } from "reselect";
 
 // Components
 import { Button } from "components/button/button";
-import { Icon } from "components/icon/icon";
 import { MoreVert } from "@mui/icons-material";
 
 // Models
@@ -57,7 +56,7 @@ const ExpoMenu = ({
         );
       }}
     >
-      <Icon useMaterialUiIcon name={<MoreVert />} />
+      <MoreVert />
     </Button>
   );
 };
