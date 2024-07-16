@@ -9,3 +9,7 @@ export const getTextFromHtml = (htmlMarkup: string) => {
 
   return plainText;
 };
+
+export const wrapTextInParagraph = (text: string) => {
+  return `<p>${text}</p>`;
+};

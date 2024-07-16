@@ -11,23 +11,31 @@ import { Screen } from "models";
 import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions";
+import { saveScreen, updateScreenData } from "actions/expoActions";
 import { helpIconText } from "enums/text";
 import { ScreenCompletedCheckbox } from "./Checkboxes";
+import { wrapTextInParagraph } from "./WysiwygEditor/utils";
 
 type ScreenDescriptionProps = {
   activeScreen: Screen;
+  rowNum: string | undefined;
+  colNum: string | undefined;
   sumOfPhotosTimes?: number | null; // in case of slideshow description
   totalZoomScreenTime?: number;
 };
 
 const ScreenDescription = ({
   activeScreen,
+  rowNum,
+  colNum,
   sumOfPhotosTimes,
   totalZoomScreenTime,
 }: ScreenDescriptionProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
+
+  const text =
+    "text" in activeScreen && activeScreen.text ? activeScreen.text : "";
 
   const audioFile =
     "audio" in activeScreen && activeScreen.audio
@@ -47,13 +55,17 @@ const ScreenDescription = ({
             <TitleTextField titleValue={activeScreen.title ?? ""} />
             <WysiwygEditor
               controlType="uncontrolled"
-              defaultValue={
-                "text" in activeScreen && activeScreen.text
-                  ? activeScreen.text
-                  : ""
-              }
-              onChange={(newContent: string) => {
-                dispatch(updateScreenData({ text: newContent }));
+              defaultValue={text}
+              onChange={(newText: string) => {
+                const wrappedOldText = wrapTextInParagraph(text.trimEnd());
+                dispatch(updateScreenData({ text: newText }));
+
+                // NOTE: Additional check
+                // Means that the new text is just wrapped old text
+                // We do not want this change to act as a change done from user, so immediately save it
+                if (newText === wrappedOldText) {
+                  dispatch(saveScreen(activeScreen, rowNum, colNum));
+                }
               }}
             />
           </div>

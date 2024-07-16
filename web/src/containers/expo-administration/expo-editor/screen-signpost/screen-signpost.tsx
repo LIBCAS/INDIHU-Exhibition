@@ -30,6 +30,9 @@ const ScreenSignpost = (props: ScreenEditorProps) => {
   const signpostProps = props as ScreenEditorSignpostProps;
   const { activeScreen, url } = signpostProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   return (
     <div>
       <TabMenu
@@ -50,7 +53,13 @@ const ScreenSignpost = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <ScreenDescription activeScreen={activeScreen} />}
+        render={() => (
+          <ScreenDescription
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
+        )}
       />
       <Route
         path={`${match.url}/references`}
@@ -64,8 +73,8 @@ const ScreenSignpost = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         history={history}
         url={url}
       />

@@ -29,6 +29,9 @@ const ScreenExternal = (props: ScreenEditorProps) => {
   const externalScreenProps = props as ScreenEditorExternalProps;
   const { activeScreen, url } = externalScreenProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   return (
     <div>
       <TabMenu
@@ -49,7 +52,13 @@ const ScreenExternal = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <ScreenDescription activeScreen={activeScreen} />}
+        render={() => (
+          <ScreenDescription
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
+        )}
       />
       <Route
         path={`${match.url}/externalData`}
@@ -62,8 +71,8 @@ const ScreenExternal = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         history={history}
         url={url}
       />

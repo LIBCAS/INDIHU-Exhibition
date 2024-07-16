@@ -29,6 +29,9 @@ const ScreenPhotogallery = (props: ScreenEditorProps) => {
 
   const photogalleryProps = props as ScreenEditorPhotogalleryProps;
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   return (
     <div>
       <TabMenu
@@ -43,7 +46,9 @@ const ScreenPhotogallery = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <Description {...photogalleryProps} />}
+        render={() => (
+          <Description {...photogalleryProps} rowNum={rowNum} colNum={colNum} />
+        )}
       />
       <Route
         path={`${match.url}/photogallery`}
@@ -59,8 +64,8 @@ const ScreenPhotogallery = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={props.activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         history={history}
         url={props.url}
       />

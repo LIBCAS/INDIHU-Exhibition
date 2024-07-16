@@ -30,6 +30,9 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
   const match = useRouteMatch<{ position: string }>();
   const history = useHistory();
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   const zoomInProps = props as ScreenEditorZoomInProps;
   const { activeScreen, url } = zoomInProps;
 
@@ -63,6 +66,8 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
           <ScreenDescription
             activeScreen={activeScreen}
             totalZoomScreenTime={totalZoomScreenTime}
+            rowNum={rowNum}
+            colNum={colNum}
           />
         )}
       />
@@ -83,8 +88,8 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         noActions={
           !!find(activeScreen.sequences, (item) => item.edit || item.timeError)
         }

@@ -8,7 +8,7 @@ import "react-quill/dist/quill.snow.css";
 
 import "./custom-editor-styles.scss";
 import CustomToolbar from "./CustomToolbar";
-import { getTextFromHtml } from "./getTextFromHtml";
+import { getTextFromHtml } from "./utils";
 
 // Other components
 import CharacterCount from "../character-count";
