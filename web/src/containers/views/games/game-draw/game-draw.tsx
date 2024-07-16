@@ -239,7 +239,6 @@ export const GameDraw = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
-            text={t("game-draw.task")}
             bindTutorial={bind("drawing")}
           />,
           infoPanelRef.current

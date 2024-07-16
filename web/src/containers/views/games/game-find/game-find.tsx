@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom";
-import { useTranslation } from "react-i18next";
 import { MouseEvent, useCallback, useEffect, useState } from "react";
 import { animated, useTransition } from "react-spring";
 import { ScreenProps } from "models";
@@ -30,7 +29,6 @@ export const GameFind = ({
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [pin, setPin] = useState<{ x: number; y: number }>();
-  const { t } = useTranslation("view-screen");
 
   const onFinish = useCallback(() => {
     setFinished(true);
@@ -132,7 +130,6 @@ export const GameFind = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            text={t("game-find.task")}
             isGameFinished={finished}
             bindTutorial={bind("finding")}
           />,

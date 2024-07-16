@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { useTranslation } from "react-i18next";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { animated, useSpring, useTransition } from "react-spring";
 import { useDrag } from "@use-gesture/react";
@@ -32,7 +31,6 @@ export const GameMove = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
   const [containerRef, { width: containerWidth, height: containerHeight }] =
@@ -161,7 +159,6 @@ export const GameMove = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
-            text={t("game-move.task")}
             bindTutorial={bindTutorial("moving")}
           />,
           infoPanelRef.current

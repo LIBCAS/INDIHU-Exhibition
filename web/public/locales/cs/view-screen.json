@@ -89,26 +89,15 @@
     }
   },
 
-  "game-find": {
-    "task": "Najdi na obrázku"
-  },
+  "game-find": {},
   "game-draw": {
-    "task": "Dokresli obrázek",
     "switchToPencilAction": "Přepnout na tužku",
     "switchToEraserAction": "Přepnout na gumu",
     "thicknessChooserAction": "Výběr tloušťky",
     "colorChooserAction": "Výběr barvy"
   },
-  "game-erase": {
-    "task": "Vymaž obrázek"
-  },
-  "game-sizing": {
-    "task": "Uhodni správnou velikost"
-  },
-  "game-move": {
-    "task": "Posuň na správné místo"
-  },
-  "game-quiz": {
-    "task": "Vyber správné možnosti"
-  }
+  "game-erase": {},
+  "game-sizing": {},
+  "game-move": {},
+  "game-quiz": {}
 }

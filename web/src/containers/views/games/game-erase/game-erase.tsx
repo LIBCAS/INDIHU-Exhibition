@@ -10,7 +10,6 @@ import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-import { useTranslation } from "react-i18next";
 import useResizeObserver from "hooks/use-resize-observer";
 
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -41,7 +40,6 @@ export const GameErase = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
   const { expoDesignData, palette } = useExpoDesignData();
 
@@ -251,7 +249,6 @@ export const GameErase = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
-            text={t("game-erase.task")}
             bindTutorial={bind("wiping")}
           />,
           infoPanelRef.current

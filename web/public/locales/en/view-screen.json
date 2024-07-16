@@ -89,26 +89,15 @@
     }
   },
 
-  "game-find": {
-    "task": "Find in the image"
-  },
+  "game-find": {},
   "game-draw": {
-    "task": "Draw in the image",
     "switchToPencilAction": "Switch to pencil",
     "switchToEraserAction": "Switch to eraser",
     "thicknessChooserAction": "Choice of thickness",
     "colorChooserAction": "Choice of color"
   },
-  "game-erase": {
-    "task": "Erase the image"
-  },
-  "game-sizing": {
-    "task": "Guess the right size"
-  },
-  "game-move": {
-    "task": "Move to the correct position"
-  },
-  "game-quiz": {
-    "task": "Select the correct option(s)"
-  }
+  "game-erase": {},
+  "game-sizing": {},
+  "game-move": {},
+  "game-quiz": {}
 }

@@ -89,26 +89,15 @@
     }
   },
 
-  "game-find": {
-    "task": "Nájdi na obrázku"
-  },
+  "game-find": {},
   "game-draw": {
-    "task": "Dokresli obrázok",
     "switchToPencilAction": "Prepnúť na ceruzku",
     "switchToEraserAction": "Prepnúť na gumu",
     "thicknessChooserAction": "Výber hrúbky",
     "colorChooserAction": "Výber farby"
   },
-  "game-erase": {
-    "task": "Vymaž obrázok"
-  },
-  "game-sizing": {
-    "task": "Uhádni správnu veľkosť"
-  },
-  "game-move": {
-    "task": "Posuň na správne miesto"
-  },
-  "game-quiz": {
-    "task": "Vyber správne možnosti"
-  }
+  "game-erase": {},
+  "game-sizing": {},
+  "game-move": {},
+  "game-quiz": {}
 }

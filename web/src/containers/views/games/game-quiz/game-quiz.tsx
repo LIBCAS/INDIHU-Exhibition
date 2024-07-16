@@ -3,7 +3,6 @@ import { useCallback, useState, useMemo, useEffect } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 
-import { useTranslation } from "react-i18next";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
@@ -38,7 +37,6 @@ export const GameQuiz = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const { t } = useTranslation("view-screen");
 
   const { isSm, isMobileLandscape } = useMediaDevice();
 
@@ -150,7 +148,6 @@ export const GameQuiz = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isFinished}
-            text={t("game-quiz.task")}
             bindTutorial={bind("options")}
           />,
           infoPanelRef.current

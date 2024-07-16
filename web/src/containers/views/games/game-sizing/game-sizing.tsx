@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { ScreenProps } from "models";
 import { GameSizingScreen } from "models";
 import { AppState } from "store/store";
-import { useTranslation } from "react-i18next";
 import useElementSize from "hooks/element-size-hook";
 
 import expand from "../../../../assets/img/expand.png";
@@ -30,7 +29,6 @@ export const GameSizing = ({
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [ref, containerSize] = useElementSize();
-  const { t } = useTranslation("view-screen");
 
   const onFinish = useCallback(() => {
     setFinished(true);
@@ -164,7 +162,6 @@ export const GameSizing = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={finished}
-            text={t("game-sizing.task")}
             bindTutorial={bindTutorial("sizing")}
           />,
           infoPanelRef.current
