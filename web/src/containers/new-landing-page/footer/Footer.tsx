@@ -13,6 +13,7 @@ import { BsGithub } from "react-icons/bs";
 import Flag from "react-flagkit";
 
 import { palette } from "palette";
+import { appVersion } from "version";
 import cx from "classnames";
 
 import { HashLink } from "react-router-hash-link";
@@ -175,7 +176,7 @@ const Footer = ({ useWhiteVariant = false }: FooterProps) => {
 
       {/* Bottom */}
       <div className="bottom-footer px-[30px] py-[26px] flex flex-col gap-5 md:w-full md:flex-row md:justify-between">
-        <p className="flex gap-4">© INDIHU Exhibition - v2.0</p>
+        <p className="flex gap-4">© INDIHU Exhibition - v{appVersion}</p>
 
         <div className="flex gap-1">
           <a href="/privacy-policy" title="Zásady ochrany osobních údajů">
