@@ -240,6 +240,7 @@ export const GameDraw = ({
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
             bindTutorial={bind("drawing")}
+            solutionText={t("game-draw.solution")}
           />,
           infoPanelRef.current
         )}

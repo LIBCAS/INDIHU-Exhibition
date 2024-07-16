@@ -14,6 +14,7 @@ import expand from "../../../../assets/img/expand.png";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useTranslation } from "react-i18next";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameSizingScreen,
@@ -29,6 +30,7 @@ export const GameSizing = ({
   const { viewScreen } = useSelector(stateSelector);
   const [finished, setFinished] = useState(false);
   const [ref, containerSize] = useElementSize();
+  const { t } = useTranslation("view-screen");
 
   const onFinish = useCallback(() => {
     setFinished(true);
@@ -163,6 +165,7 @@ export const GameSizing = ({
             gameScreen={viewScreen}
             isGameFinished={finished}
             bindTutorial={bindTutorial("sizing")}
+            solutionText={t("game-sizing.solution")}
           />,
           infoPanelRef.current
         )}

@@ -22,6 +22,7 @@ import {
 
 import cx from "classnames";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -37,6 +38,7 @@ export const GameQuiz = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
+  const { t } = useTranslation("view-screen");
 
   const { isSm, isMobileLandscape } = useMediaDevice();
 
@@ -149,6 +151,7 @@ export const GameQuiz = ({
             gameScreen={viewScreen}
             isGameFinished={isFinished}
             bindTutorial={bind("options")}
+            solutionText={t("game-quiz.solution")}
           />,
           infoPanelRef.current
         )}

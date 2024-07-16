@@ -14,6 +14,7 @@ import classes from "./game-find.module.scss";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useTranslation } from "react-i18next";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
@@ -27,6 +28,8 @@ export const GameFind = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
+  const { t } = useTranslation("view-screen");
+
   const [finished, setFinished] = useState(false);
   const [pin, setPin] = useState<{ x: number; y: number }>();
 
@@ -132,6 +135,7 @@ export const GameFind = ({
             gameScreen={viewScreen}
             isGameFinished={finished}
             bindTutorial={bind("finding")}
+            solutionText={t("game-find.solution")}
           />,
           infoPanelRef.current
         )}

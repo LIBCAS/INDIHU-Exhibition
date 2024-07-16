@@ -82,22 +82,32 @@
   },
 
   "game": {
-    "solution": "The correct solution",
     "controls": {
       "finished": "Finished",
       "play-again": "Play again"
     }
   },
 
-  "game-find": {},
+  "game-find": {
+    "solution": "The correct solution"
+  },
   "game-draw": {
+    "solution": "Great! You completed the assignment and this is the result",
     "switchToPencilAction": "Switch to pencil",
     "switchToEraserAction": "Switch to eraser",
     "thicknessChooserAction": "Choice of thickness",
     "colorChooserAction": "Choice of color"
   },
-  "game-erase": {},
-  "game-sizing": {},
-  "game-move": {},
-  "game-quiz": {}
+  "game-erase": {
+    "solution": "Great! You completed the assignment and this is the result"
+  },
+  "game-sizing": {
+    "solution": "The correct solution"
+  },
+  "game-move": {
+    "solution": "The correct solution"
+  },
+  "game-quiz": {
+    "solution": "The correct solution"
+  }
 }

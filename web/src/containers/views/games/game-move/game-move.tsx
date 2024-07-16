@@ -7,6 +7,7 @@ import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { animated, useSpring, useTransition } from "react-spring";
 import { useDrag } from "@use-gesture/react";
 import useResizeObserver from "hooks/use-resize-observer";
+import { useTranslation } from "react-i18next";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -32,6 +33,7 @@ export const GameMove = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
+  const { t } = useTranslation("view-screen");
 
   const [containerRef, { width: containerWidth, height: containerHeight }] =
     useResizeObserver();
@@ -160,6 +162,7 @@ export const GameMove = ({
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
             bindTutorial={bindTutorial("moving")}
+            solutionText={t("game-move.solution")}
           />,
           infoPanelRef.current
         )}

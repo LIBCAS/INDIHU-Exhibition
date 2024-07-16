@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { Icon } from "components/icon/icon";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
@@ -9,14 +8,15 @@ type GameInfoPanelProps = {
   gameScreen: { title?: string; task?: string };
   isGameFinished?: boolean;
   bindTutorial: { ref: RefCallback };
+  solutionText: string;
 };
 
 export const GameInfoPanel = ({
   gameScreen,
   isGameFinished,
   bindTutorial,
+  solutionText,
 }: GameInfoPanelProps) => {
-  const { t } = useTranslation("view-screen");
   const { bgFgTheming } = useExpoDesignData();
   const { title, task } = gameScreen;
 
@@ -31,7 +31,7 @@ export const GameInfoPanel = ({
         <div className="flex items-center gap-2">
           <Icon name="info" />
           <span className="font-bold">
-            {isGameFinished ? t("game.solution") : title}
+            {isGameFinished ? solutionText : title}
           </span>
         </div>
         {task && <span className="text-gray pointer-events-auto">{task}</span>}

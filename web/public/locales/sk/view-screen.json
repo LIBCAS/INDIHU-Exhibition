@@ -82,22 +82,32 @@
   },
 
   "game": {
-    "solution": "Správne riešenie",
     "controls": {
       "finished": "Hotovo",
       "play-again": "Zahrať znova"
     }
   },
 
-  "game-find": {},
+  "game-find": {
+    "solution": "Správne riešenie"
+  },
   "game-draw": {
+    "solution": "Výborne! Splnil si zadanie a toto je výsledok",
     "switchToPencilAction": "Prepnúť na ceruzku",
     "switchToEraserAction": "Prepnúť na gumu",
     "thicknessChooserAction": "Výber hrúbky",
     "colorChooserAction": "Výber farby"
   },
-  "game-erase": {},
-  "game-sizing": {},
-  "game-move": {},
-  "game-quiz": {}
+  "game-erase": {
+    "solution": "Výborne! Splnil si zadanie a toto je výsledok"
+  },
+  "game-sizing": {
+    "solution": "Správne riešenie"
+  },
+  "game-move": {
+    "solution": "Správne riešenie"
+  },
+  "game-quiz": {
+    "solution": "Správne riešenie"
+  }
 }
