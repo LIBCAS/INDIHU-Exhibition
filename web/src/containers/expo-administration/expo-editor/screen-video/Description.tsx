@@ -14,19 +14,24 @@ import { AppDispatch } from "store/store";
 
 // Actions and utils
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions";
+import { saveScreen, updateScreenData } from "actions/expoActions";
+import { wrapTextInParagraph } from "components/editors/WysiwygEditor/utils";
 
 // - -
 
 type DescriptionProps = {
   activeScreen: VideoScreen;
+  rowNum: string | undefined;
+  colNum: string | undefined;
 };
 
-const Description = ({ activeScreen }: DescriptionProps) => {
+const Description = ({ activeScreen, rowNum, colNum }: DescriptionProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("expo-editor");
 
   const music = dispatch(getFileById(activeScreen.music));
+
+  const text = activeScreen.text ?? "";
 
   return (
     <div className="container container-tabMenu">
@@ -47,9 +52,17 @@ const Description = ({ activeScreen }: DescriptionProps) => {
 
             <WysiwygEditor
               controlType="uncontrolled"
-              defaultValue={activeScreen.text ?? ""}
-              onChange={(newContent) => {
-                dispatch(updateScreenData({ text: newContent }));
+              defaultValue={text}
+              onChange={(newText: string) => {
+                const wrappedOldText = wrapTextInParagraph(text.trimEnd());
+                dispatch(updateScreenData({ text: newText }));
+
+                // NOTE: Additional check
+                // Means that the new text is just wrapped old text
+                // We do not want this change to act as a change done from user, so immediately save it
+                if (newText === wrappedOldText) {
+                  dispatch(saveScreen(activeScreen, rowNum, colNum));
+                }
               }}
             />
           </div>

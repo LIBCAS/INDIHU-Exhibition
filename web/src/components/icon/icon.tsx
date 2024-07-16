@@ -6,8 +6,16 @@ import { Icon as MuiIcon } from "@mui/material";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
 import { BasicTooltip } from "components/tooltip/tooltip";
+import { PlacesType } from "react-tooltip";
 
 import cx from "classnames";
+
+type TooltipOption = {
+  id: string;
+  content: string;
+  variant?: "light" | "dark"; // if undefined, based on selected theme
+  place?: PlacesType;
+};
 
 interface IconProps {
   name: string | ReactNode; // name either for FontIcon from 'react-md' or Icon from 'material-ui'
@@ -24,9 +32,7 @@ interface IconProps {
   noCenterPlace?: boolean; // by default, icon should be inside some container and centered
   className?: string;
   style?: CSSProperties;
-  tooltipId?: string;
-  tooltipText?: string;
-  tooltipVariant?: "light" | "dark"; // if undefined, based on selected theme
+  tooltip?: TooltipOption;
 }
 
 export const Icon = ({
@@ -37,9 +43,7 @@ export const Icon = ({
   style,
   onClick,
   noCenterPlace = false,
-  tooltipId,
-  tooltipText,
-  tooltipVariant,
+  tooltip,
 }: IconProps) => {
   const { expoDesignData, fgThemingIf } = useExpoDesignData();
 
@@ -66,7 +70,7 @@ export const Icon = ({
       style={{
         color: themeEnabledIconsColor,
       }}
-      data-tooltip-id={tooltipId ? tooltipId : undefined}
+      data-tooltip-id={tooltip?.id ?? undefined}
     >
       {/* Icon color either inherited from Button parent or div if some color prop is used */}
       {useMaterialUiIcon ? (
@@ -79,14 +83,7 @@ export const Icon = ({
         </FontIcon>
       )}
 
-      {/* Tooltip if tooltip text is provided */}
-      {tooltipId && tooltipText && (
-        <BasicTooltip
-          id={tooltipId}
-          content={tooltipText}
-          variant={tooltipVariant}
-        />
-      )}
+      {tooltip && <BasicTooltip {...tooltip} />}
     </div>
   );
 };

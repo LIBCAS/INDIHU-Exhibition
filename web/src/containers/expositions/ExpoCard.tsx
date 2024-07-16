@@ -149,9 +149,11 @@ const ExpoCard = ({
                       <Icon
                         name="launch"
                         style={{ fontSize: "12px" }}
-                        tooltipId="rating-redirect-icon"
-                        tooltipVariant="dark"
-                        tooltipText={t("expoCard.ratingRedirectLabel")}
+                        tooltip={{
+                          id: "rating-redirect-icon",
+                          content: t("expoCard.ratingRedirectLabel"),
+                          variant: "dark",
+                        }}
                       />
                     </Button>
                   </div>
@@ -188,21 +190,17 @@ const ExpoCard = ({
 
         <CardActions>
           <div className="w-full flex items-center gap-1">
-            <div>
-              <EditButton
-                expoId={expositionItem.id}
-                canAccessTheExpo={canAccessTheExpo}
-              />
-            </div>
-            <div>
-              <PreviewButton expoUrl={expositionItem.url} />
-            </div>
-            <div>
-              <PinButton
-                isExpoPinned={expositionItem.pinned}
-                expoId={expositionItem.id}
-              />
-            </div>
+            <EditButton
+              expoId={expositionItem.id}
+              canAccessTheExpo={canAccessTheExpo}
+            />
+
+            <PreviewButton expoUrl={expositionItem.url} />
+
+            <PinButton
+              isExpoPinned={expositionItem.pinned}
+              expoId={expositionItem.id}
+            />
 
             <div className="ml-auto">
               <ExpoMenu
@@ -299,27 +297,31 @@ const PinButton = ({ isExpoPinned, expoId }: PinButtonProps) => {
 
   if (isExpoPinned) {
     return (
-      <Button onClick={handleUnpin} key="unpin-button">
-        <Icon
-          useMaterialUiIcon
-          name={<PushPin />}
-          tooltipId="unpin-action-button-tooltip"
-          tooltipVariant="dark"
-          tooltipText={t("expoCard.unpinTooltip")}
-        />
+      <Button
+        onClick={handleUnpin}
+        key="unpin-button"
+        tooltip={{
+          id: "unpin-action-button-tooltip",
+          content: t("expoCard.unpinTooltip"),
+          variant: "dark",
+        }}
+      >
+        <PushPin />
       </Button>
     );
   }
 
   return (
-    <Button onClick={handlePin} key="pin-button">
-      <Icon
-        useMaterialUiIcon
-        name={<PushPinOutlined />}
-        tooltipId={"pin-action-button-tooltip"}
-        tooltipVariant="dark"
-        tooltipText={t("expoCard.pinTooltip")}
-      />
+    <Button
+      onClick={handlePin}
+      key="pin-button"
+      tooltip={{
+        id: "pin-action-button-tooltip",
+        content: t("expoCard.pinTooltip"),
+        variant: "dark",
+      }}
+    >
+      <PushPinOutlined />
     </Button>
   );
 };

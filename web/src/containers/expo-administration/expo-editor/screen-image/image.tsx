@@ -179,6 +179,24 @@ const Image = ({ activeScreen }: ImageProps) => {
                     })
                   );
                 }}
+                onInfopointAlwaysVisibleChange={(
+                  infopointIndexToEdit: number,
+                  newIsAlwaysVisibleValue: boolean
+                ) => {
+                  dispatch(
+                    updateScreenData({
+                      infopoints: activeScreen.infopoints?.map(
+                        (infopoint, infopointIndex) =>
+                          infopointIndex === infopointIndexToEdit
+                            ? {
+                                ...infopoint,
+                                alwaysVisible: newIsAlwaysVisibleValue,
+                              }
+                            : infopoint
+                      ),
+                    })
+                  );
+                }}
               />
             )}
           </div>

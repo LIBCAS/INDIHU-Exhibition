@@ -1,35 +1,20 @@
-import { useTranslation } from "react-i18next";
 import { useRef, useState, Dispatch, SetStateAction } from "react";
 import { useSpring, animated } from "react-spring";
+import { useTranslation } from "react-i18next";
 
+// react-quill stuff
 import ReactQuill from "react-quill";
-
 import "react-quill/dist/quill.snow.css";
-import "./custom-editor-styles.scss";
 
+import "./custom-editor-styles.scss";
+import CustomToolbar from "./CustomToolbar";
+import { getTextFromHtml } from "./utils";
+
+// Other components
 import CharacterCount from "../character-count";
 import HelpIcon from "components/help-icon";
 
-import { getTextFromHtml } from "./getTextFromHtml";
-
-// - -
-
-// https://quilljs.com/docs/modules/toolbar/
-const modules = {
-  toolbar: [
-    [{ size: ["small", "", "large"] }], // possible to add 'huge'
-    // [{ header: "1" }, { header: "2" }, { font: [] }],
-    ["bold", "italic", "underline", "strike"],
-    // [{ color: [] }, { background: [] }],
-    [{ script: "sub" }, { script: "super" }],
-    [{ align: [] }],
-    // ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    // ["link", "image", "video"],
-    ["link"],
-    ["clean"],
-  ],
-};
+// - - - - - -
 
 // https://quilljs.com/docs/formats/
 const formats = [
@@ -41,11 +26,11 @@ const formats = [
   "script",
   "align",
   "list",
-  // "bullet",
+  "bullet",
   "link",
 ];
 
-// --
+// - - - - - -
 
 type ControlledWysiwygEditorProps = {
   controlType: "controlled";
@@ -68,11 +53,13 @@ type WysiwygEditorProps =
   | (ControlledWysiwygEditorProps & CommonWysiwygEditorProps)
   | (UncontrolledWysiwygEditorProps & CommonWysiwygEditorProps);
 
+// - - - - - -
+
 const WysiwygEditor = (props: WysiwygEditorProps) => {
   const { t } = useTranslation("expo-editor");
 
   const [isEditorFocused, setIsEditorFocused] = useState<boolean>(false);
-  const quillRef = useRef<ReactQuill>(null);
+  const quillRef = useRef<ReactQuill | null>(null);
 
   const widthSpring = useSpring({
     width: isEditorFocused ? "100%" : "0%",
@@ -92,9 +79,11 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
 
         <div className="flex flex-col gap-1">
           <div>
+            <CustomToolbar />
             <ReactQuill
               ref={quillRef}
               theme="snow"
+              // Uncontrolled defaultValue
               defaultValue={
                 props.controlType === "uncontrolled"
                   ? props.defaultValue
@@ -114,9 +103,9 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
               }}
               onFocus={() => setIsEditorFocused(true)}
               onBlur={() => setIsEditorFocused(false)}
-              //className, style applies to whole quill box containg toolbar + container
-              modules={modules}
+              modules={{ toolbar: "#custom-toolbar-container" }} // using custom toolbar react component
               formats={formats}
+              //className, style applies to whole quill box containg toolbar + container
             />
 
             <animated.hr

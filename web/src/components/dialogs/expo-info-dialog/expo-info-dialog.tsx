@@ -76,33 +76,35 @@ export const ExpoInfoDialog = ({
         closeOnEsc
         applyTheming
       >
-        <div className="pb-5 border-b border-b-black border-opacity-10">
+        <div className="pb-3 border-b border-b-black border-opacity-10">
           {expoPerexLines}
         </div>
 
         {/* Dialog opening buttons */}
-        <div className="flex justify-end items-center gap-2">
+        <div className="flex justify-end items-center gap-2 my-2">
           <Button color="primary" onClick={openAuthorsDialog}>
             <Icon color="white" name="account_box" />
           </Button>
           <Button color="primary" onClick={openChaptersDialog}>
             <Icon color="white" name="layers" />
           </Button>
-          {startWorksheetFiles?.length !== 0 && (
+          {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
             <Button color="primary" onClick={openWorksheetDialog}>
               <Icon color="white" name="description" />
             </Button>
           )}
-          {startExpoFiles?.length !== 0 && (
+          {startExpoFiles && startExpoFiles.length !== 0 && (
             <Button color="primary" onClick={openFilesDialog}>
               <Icon color="white" name="folder" />
             </Button>
           )}
         </div>
 
-        <div className="mt-5 flex justify-between items-center gap-6">
-          {tags && <TagsList tags={tags} />}
-        </div>
+        {tags && (
+          <div className="mt-4 flex justify-between items-center gap-6">
+            <TagsList tags={tags} />
+          </div>
+        )}
       </DialogWrap>
     </>
   );

@@ -426,9 +426,11 @@ const SettingsPanel = ({
           onClick={() => {
             setCurrZoom((prevZoom) => prevZoom + 0.2);
           }}
-          tooltipId="zoom-in-icon-button"
-          tooltipText={t("imageBox.zoomInTooltip")}
-          tooltipVariant="dark"
+          tooltip={{
+            id: "zoom-in-icon-button",
+            content: t("imageBox.zoomInTooltip"),
+            variant: "dark",
+          }}
         />
 
         <Icon
@@ -438,9 +440,11 @@ const SettingsPanel = ({
           onClick={() => {
             setCurrZoom(1);
           }}
-          tooltipId="reset-zoom-icon-button"
-          tooltipText={t("imageBox.zoomResetTooltip")}
-          tooltipVariant="dark"
+          tooltip={{
+            id: "reset-zoom-icon-button",
+            content: t("imageBox.zoomResetTooltip"),
+            variant: "dark",
+          }}
         />
 
         <Icon
@@ -452,9 +456,11 @@ const SettingsPanel = ({
               prevZoom <= 1 ? prevZoom : prevZoom - 0.2
             );
           }}
-          tooltipId="zoom-out-icon-button"
-          tooltipText={t("imageBox.zoomOutTooltip")}
-          tooltipVariant="dark"
+          tooltip={{
+            id: "zoom-out-icon-button",
+            content: t("imageBox.zoomOutTooltip"),
+            variant: "dark",
+          }}
         />
       </div>
 
@@ -467,9 +473,11 @@ const SettingsPanel = ({
           onClick={() => {
             changeImage();
           }}
-          tooltipId="explorer-icon-button"
-          tooltipText={t("imageBox.openFileExplorerTooltip")}
-          tooltipVariant="dark"
+          tooltip={{
+            id: "zoom-out-icon-explorer-icon-button",
+            content: t("imageBox.openFileExplorerTooltip"),
+            variant: "dark",
+          }}
         />
 
         <Icon
@@ -485,9 +493,11 @@ const SettingsPanel = ({
             };
             dispatch(setImageEditor(imageEditorObj));
           }}
-          tooltipId="image-editor-icon-button"
-          tooltipText={t("imageBox.openImageEditorTooltip")}
-          tooltipVariant="dark"
+          tooltip={{
+            id: "image-editor-icon-button",
+            content: t("imageBox.openImageEditorTooltip"),
+            variant: "dark",
+          }}
         />
 
         <Icon
@@ -503,9 +513,11 @@ const SettingsPanel = ({
               })
             );
           }}
-          tooltipId="delete-icon-button"
-          tooltipText={t("imageBox.deleteImageFromBox")}
-          tooltipVariant="dark"
+          tooltip={{
+            id: "delete-icon-button",
+            content: t("imageBox.deleteImageFromBox"),
+            variant: "dark",
+          }}
         />
       </div>
     </div>

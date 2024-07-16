@@ -25,6 +25,9 @@ const ScreenVideo = (props: ScreenEditorProps) => {
   const match = useRouteMatch<{ position: string }>();
   const history = useHistory();
 
+  const rowNum = match.params.position.match(/^(\d*)/)?.[0];
+  const colNum = match.params.position.match(/(\d*)$/)?.[0];
+
   const videoScreenProps = props as ScreenEditorVideoProps;
   const { activeScreen, url } = videoScreenProps;
 
@@ -48,7 +51,13 @@ const ScreenVideo = (props: ScreenEditorProps) => {
       />
       <Route
         path={`${match.url}/description`}
-        render={() => <Description activeScreen={activeScreen} />}
+        render={() => (
+          <Description
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
+        )}
       />
       <Route
         path={`${match.url}/video`}
@@ -61,8 +70,8 @@ const ScreenVideo = (props: ScreenEditorProps) => {
       <Footer
         activeExpo={props.activeExpo}
         activeScreen={activeScreen}
-        rowNum={match.params.position.match(/^(\d*)/)?.[0]}
-        colNum={match.params.position.match(/(\d*)$/)?.[0]}
+        rowNum={rowNum}
+        colNum={colNum}
         history={history}
         url={url}
       />

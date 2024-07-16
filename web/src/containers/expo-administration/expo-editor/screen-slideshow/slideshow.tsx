@@ -75,17 +75,6 @@ const Slideshow = ({ activeScreen, sumOfPhotosTimes }: SlideshowProps) => {
           activeImageIndex={activeImageIndex}
           onClickCard={(i) => {
             setActiveImageIndex(activeImageIndex === i ? -1 : i);
-            dispatch(
-              updateScreenData({
-                images: activeScreen.images?.map((img, imgIndex) =>
-                  imgIndex === i
-                    ? activeImageIndex === i
-                      ? { ...img, active: false }
-                      : { ...img, active: true }
-                    : { ...img, active: false }
-                ),
-              })
-            );
           }}
           onClickLeft={(i) => {
             if (!activeScreen.images) {
@@ -144,7 +133,7 @@ const Slideshow = ({ activeScreen, sumOfPhotosTimes }: SlideshowProps) => {
             if (!activeScreen.images) {
               dispatch(
                 updateScreenData({
-                  images: [{ active: true }],
+                  images: [{}], // add array with one empty object
                 })
               );
               setActiveImageIndex(0);
@@ -156,9 +145,8 @@ const Slideshow = ({ activeScreen, sumOfPhotosTimes }: SlideshowProps) => {
                   images: [
                     ...activeScreen.images.map((img) => ({
                       ...img,
-                      active: false,
                     })),
-                    { active: true },
+                    {}, // add one new empty object
                   ],
                 })
               );
@@ -318,6 +306,35 @@ const Slideshow = ({ activeScreen, sumOfPhotosTimes }: SlideshowProps) => {
                                   infopoints: img.infopoints.filter(
                                     (_ip, ipIndex) =>
                                       ipIndex !== infopointIndexToDelete
+                                  ),
+                                }
+                              : img
+                          ),
+                        })
+                      );
+                    }}
+                    onInfopointAlwaysVisibleChange={(
+                      infopointIndexToEdit: number,
+                      newIsAlwaysVisibleValue: boolean
+                    ) => {
+                      if (!activeScreen.images) {
+                        return;
+                      }
+                      dispatch(
+                        updateScreenData({
+                          images: activeScreen.images.map((img, imgIndex) =>
+                            imgIndex === activeImageIndex
+                              ? {
+                                  ...img,
+                                  infopoints: img.infopoints.map(
+                                    (ip, ipIndex) =>
+                                      ipIndex === infopointIndexToEdit
+                                        ? {
+                                            ...ip,
+                                            alwaysVisible:
+                                              newIsAlwaysVisibleValue,
+                                          }
+                                        : { ...ip }
                                   ),
                                 }
                               : img

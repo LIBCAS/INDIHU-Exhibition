@@ -64,9 +64,11 @@ const AnswerItem = ({
             <Icon
               useMaterialUiIcon
               name="close"
-              tooltipId="answer-close-icon-tooltip"
-              tooltipText={t("closeAnswerTooltip")}
-              tooltipVariant="dark"
+              tooltip={{
+                id: "answer-close-icon-tooltip",
+                content: t("closeAnswerTooltip"),
+                variant: "dark",
+              }}
             />
           </Button>
         }
@@ -259,9 +261,11 @@ const AnswerItem = ({
                 useMaterialUiIcon
                 name="delete"
                 style={{ fontSize: "24px" }}
-                tooltipId="delete-answer-icon-tooltip"
-                tooltipText={t("deleteAnswerTooltip")}
-                tooltipVariant="dark"
+                tooltip={{
+                  id: "delete-answer-icon-tooltip",
+                  content: t("deleteAnswerTooltip"),
+                  variant: "dark",
+                }}
               />
             </Button>
           </div>
@@ -434,6 +438,30 @@ const AnswerItem = ({
                             infopoints: ans.infopoints?.filter(
                               (inf, infIndex) =>
                                 infopointIndexToDelete !== infIndex
+                            ),
+                          }
+                        : ans
+                    ),
+                  })
+                );
+              }}
+              onInfopointAlwaysVisibleChange={(
+                infopointIndexToEdit: number,
+                newIsAlwaysVisibleValue: boolean
+              ) => {
+                dispatch(
+                  updateScreenData({
+                    answers: activeScreen.answers?.map((ans, ansIdx) =>
+                      currAnswerIndex === ansIdx
+                        ? {
+                            ...ans,
+                            infopoints: ans.infopoints?.map((ip, ipIndex) =>
+                              ipIndex === infopointIndexToEdit
+                                ? {
+                                    ...ip,
+                                    alwaysVisible: newIsAlwaysVisibleValue,
+                                  }
+                                : { ...ip }
                             ),
                           }
                         : ans
