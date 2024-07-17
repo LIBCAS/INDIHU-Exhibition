@@ -17,7 +17,6 @@ import { Button } from "components/button/button";
 import { useBoolean } from "hooks/boolean-hook";
 import { Popper } from "components/popper/popper";
 import { GameActionsPanel } from "../GameActionsPanel";
-import { BasicTooltip } from "components/tooltip/BasicTooltip";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { configureContext } from "./configureContext";
 
@@ -253,48 +252,41 @@ export const GameDraw = ({
             onGameFinish={onGameFinish}
             onGameReset={onGameReset}
             gameActions={[
-              <div
-                key="tool-button"
-                data-tooltip-id="game-overlay-tool-button-tooltip"
-              >
+              <div key="tool-button">
                 <Button
                   color="expoTheme"
                   onClick={toggleTool}
                   iconBefore={<Icon name={isErasing ? "draw" : "healing"} />}
-                />
-                <BasicTooltip
-                  id="game-overlay-tool-button-tooltip"
-                  content={
-                    isErasing
+                  tooltip={{
+                    id: "game-overlay-tool-button-tooltip",
+                    content: isErasing
                       ? t("game-draw.switchToPencilAction")
-                      : t("game-draw.switchToEraserAction")
-                  }
+                      : t("game-draw.switchToEraserAction"),
+                  }}
                 />
               </div>,
 
-              <div
-                className="relative"
-                key="thickness-button"
-                data-tooltip-id="game-overlay-thickness-button-tooltip"
-              >
+              <div className="relative" key="thickness-button">
                 <Button
                   ref={(ref) => setThicknessAnchor(ref)}
                   color="expoTheme"
                   onClick={toggleThicknessPopover}
                   iconBefore={<Icon name="line_weight" />}
-                />
-                <BasicTooltip
-                  id="game-overlay-thickness-button-tooltip"
-                  content={t("game-draw.thicknessChooserAction")}
+                  tooltip={{
+                    id: "game-overlay-thickness-button-tooltip",
+                    content: t("game-draw.thicknessChooserAction"),
+                  }}
                 />
               </div>,
 
-              <div
-                className="relative"
-                key="color-picker-button"
-                data-tooltip-id="game-overlay-color-picker-button-tooltip"
-              >
-                <Button color="expoTheme">
+              <div className="relative" key="color-picker-button">
+                <Button
+                  color="expoTheme"
+                  tooltip={{
+                    id: "game-overlay-color-picker-button-tooltip",
+                    content: t("game-draw.colorChooserAction"),
+                  }}
+                >
                   <Icon name="palette" />
                   <input
                     type="color"
@@ -303,10 +295,6 @@ export const GameDraw = ({
                     onChange={(e) => setColor(e.target.value)}
                   />
                 </Button>
-                <BasicTooltip
-                  id="game-overlay-color-picker-button-tooltip"
-                  content={t("game-draw.colorChooserAction")}
-                />
               </div>,
             ]}
           />,
