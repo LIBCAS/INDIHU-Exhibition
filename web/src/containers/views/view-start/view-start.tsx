@@ -79,8 +79,10 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
     ignoreUpdate: true,
   });
 
-  const [isLandscapeRecommendationOpen, setIsLandscapeRecommendationOpen] =
-    useState<boolean>(isMobile ? true : false);
+  const [
+    isLandscapeRecommendationSnackbarOpen,
+    setIsLandscapeRecommendationSnackbarOpen,
+  ] = useState<boolean>(isMobile ? true : false);
 
   const [isAudioWarningSnackbarOpen, setIsAudioWarningSnackbarOpen] =
     useState<boolean>(isMobile ? true : false);
@@ -327,14 +329,14 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* Mobile snackbar for recommendation to turn the mobile into landscape mode */}
       <Snackbar
-        open={isLandscapeRecommendationOpen}
+        open={isLandscapeRecommendationSnackbarOpen}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
       >
         <Alert
           severity="info"
-          onClose={() => setIsLandscapeRecommendationOpen(false)}
+          onClose={() => setIsLandscapeRecommendationSnackbarOpen(false)}
         >
-          {t("landscapeModeRecommendation")}
+          {t("landscapeModeRecommendationSnackbarText")}
         </Alert>
       </Snackbar>
 
@@ -343,7 +345,9 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
       <Snackbar
         open={isAudioWarningSnackbarOpen}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
-        style={{ top: isLandscapeRecommendationOpen ? "76px" : undefined }}
+        style={{
+          top: isLandscapeRecommendationSnackbarOpen ? "76px" : undefined,
+        }}
       >
         <Alert
           severity="info"

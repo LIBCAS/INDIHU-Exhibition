@@ -27,6 +27,6 @@
   "untitled-chapter": "Nepomenovaná kapitola",
   "untitled-screen": "Nepomenovaná obrazovka",
   "rate-expo": "Hodnotiť výstavu",
-  "landscapeModeRecommendation": " Odporúčame prezeranie výstavy v režime na šírku.",
+  "landscapeModeRecommendationSnackbarText": " Odporúčame prezeranie výstavy v režime na šírku.",
   "audioWarningSnackbarText": "Z dôvodu obmedzenia iOS môže byť expozícia prerušená, pretože prehrávanie zvuku vyžaduje interakciu užívateľa. Ak sa tak stane, kliknite na tlačidlo prehrávania."
 }
