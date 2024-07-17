@@ -82,6 +82,9 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const [isLandscapeRecommendationOpen, setIsLandscapeRecommendationOpen] =
     useState<boolean>(isMobile ? true : false);
 
+  const [isAudioWarningSnackbarOpen, setIsAudioWarningSnackbarOpen] =
+    useState<boolean>(isMobile ? true : false);
+
   // - -
 
   const imageOrigData = useMemo(() => {
@@ -332,6 +335,21 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
           onClose={() => setIsLandscapeRecommendationOpen(false)}
         >
           {t("landscapeModeRecommendation")}
+        </Alert>
+      </Snackbar>
+
+      {/* Mobile snackbar for warning that after every screen change, the expo needs to be stopped, 
+      because without user interaction, the audio tracks can not start playing */}
+      <Snackbar
+        open={isAudioWarningSnackbarOpen}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+        style={{ top: isLandscapeRecommendationOpen ? "76px" : undefined }}
+      >
+        <Alert
+          severity="info"
+          onClose={() => setIsAudioWarningSnackbarOpen(false)}
+        >
+          {t("audioWarningSnackbarText")}
         </Alert>
       </Snackbar>
     </>

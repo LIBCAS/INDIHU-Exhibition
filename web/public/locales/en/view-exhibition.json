@@ -27,5 +27,6 @@
   "untitled-chapter": "Untitled chapter",
   "untitled-screen": "Untitled screen",
   "rate-expo": "Rate the exhibition",
-  "landscapeModeRecommendation": "We recommend viewing the exhibition in landscape mode."
+  "landscapeModeRecommendation": "We recommend viewing the exhibition in landscape mode.",
+  "audioWarningSnackbarText": "Due to iOS restrictions, the exposition may be interrupted because audio playback requires user interaction. If that happens, please tap the play button to continue."
 }
