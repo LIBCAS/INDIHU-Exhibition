@@ -1,13 +1,6 @@
-import { Tooltip as ReactTooltip, PlacesType } from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
-
-type TooltipProps = {
-  id: string;
-  content: string;
-  variant?: "light" | "dark";
-  place?: PlacesType;
-  className?: string;
-};
+import { BasicTooltipProps } from "./tooltip-props";
 
 /**
  * Basic tooltip which listens to theme changes if variant is not overridden by prop
@@ -18,7 +11,7 @@ export const BasicTooltip = ({
   variant,
   place,
   className,
-}: TooltipProps) => {
+}: BasicTooltipProps) => {
   const { isLightMode } = useExpoDesignData();
   return (
     <ReactTooltip

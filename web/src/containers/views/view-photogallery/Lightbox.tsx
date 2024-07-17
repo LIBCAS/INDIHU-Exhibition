@@ -11,7 +11,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { BasicTooltip } from "components/tooltip/tooltip";
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
 
 import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 

@@ -12,7 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { MdEdit } from "react-icons/md";
 import { MdEditOff } from "react-icons/md";
 
-import { BasicTooltip } from "components/tooltip/tooltip";
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
 
 // Models
 import { ActiveExpo, Screen } from "models";

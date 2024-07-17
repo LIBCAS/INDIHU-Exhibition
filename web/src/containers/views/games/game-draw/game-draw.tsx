@@ -17,7 +17,7 @@ import { Button } from "components/button/button";
 import { useBoolean } from "hooks/boolean-hook";
 import { Popper } from "components/popper/popper";
 import { GameActionsPanel } from "../GameActionsPanel";
-import { BasicTooltip } from "components/tooltip/tooltip";
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { configureContext } from "./configureContext";
 

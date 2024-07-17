@@ -1,6 +1,6 @@
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { BasicTooltip } from "components/tooltip/tooltip";
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 import { useTranslation } from "react-i18next";
 
