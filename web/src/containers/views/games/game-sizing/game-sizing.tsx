@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { animated, useSpring, useTransition } from "react-spring";
 import { createSelector } from "reselect";
 import { useDrag } from "@use-gesture/react";
@@ -99,26 +99,9 @@ export const GameSizing = ({
 
   // - -
 
-  const {
-    bind: bindTutorial,
-    TutorialTooltip,
-    escapeTutorial,
-  } = useTutorial("gameSizing", {
+  const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameSizing", {
     shouldOpen: !isMobileOverlay,
-  });
-
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+    closeOnEsc: true,
   });
 
   return (

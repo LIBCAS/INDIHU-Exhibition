@@ -165,22 +165,9 @@ export const GameDraw = ({
 
   // - - Tutorial stuff - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial("gameDraw", {
+  const { bind, TutorialTooltip } = useTutorial("gameDraw", {
     shouldOpen: !isMobileOverlay,
-  });
-
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+    closeOnEsc: true,
   });
 
   return (
