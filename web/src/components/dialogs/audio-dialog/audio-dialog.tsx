@@ -12,8 +12,6 @@ import { Icon } from "components/icon/icon";
 import { Divider } from "components/divider/divider";
 import { Slider } from "@mui/material";
 
-import { Tooltip } from "react-tooltip";
-
 // Actions
 import {
   setExpoVolumes,
@@ -160,17 +158,12 @@ const AudioSlider = ({
             })
           );
         }}
+        tooltip={{
+          id: `tooltip-${volumeKey}`,
+          content: tooltipContent ?? "",
+        }}
       >
-        <div
-          data-tooltip-id={`tooltip-${volumeKey}`}
-          data-tooltip-content={tooltipContent}
-        >
-          <Icon
-            name={iconName}
-            useMaterialUiIcon
-            style={{ fontSize: "26px" }}
-          />
-        </div>
+        <Icon name={iconName} useMaterialUiIcon style={{ fontSize: "26px" }} />
       </Button>
 
       <Slider
@@ -219,7 +212,6 @@ const AudioSlider = ({
       />
 
       <div className="text-2xl font-bold">{volumeObj.actualVolume}</div>
-      <Tooltip id={`tooltip-${volumeKey}`} />
     </div>
   );
 };
