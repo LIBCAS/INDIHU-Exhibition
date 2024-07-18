@@ -1,25 +1,34 @@
 import ReactDOM from "react-dom";
-import { useCallback, useMemo, useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { animated, useSpring, useTransition } from "react-spring";
-import { createSelector } from "reselect";
 import { useDrag } from "@use-gesture/react";
 import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
 
+import { useTranslation } from "react-i18next";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useElementSize from "hooks/element-size-hook";
+
+// Components
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
+
+// Models
 import { ScreenProps } from "models";
 import { GameSizingScreen } from "models";
 import { AppState } from "store/store";
-import useElementSize from "hooks/element-size-hook";
 
+// Assets
 import expand from "../../../../assets/img/expand.png";
-import { GameInfoPanel } from "../GameInfoPanel";
-import { GameActionsPanel } from "../GameActionsPanel";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useTranslation } from "react-i18next";
+
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameSizingScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - - - -
 
 export const GameSizing = ({
   screenPreloadedFiles,
