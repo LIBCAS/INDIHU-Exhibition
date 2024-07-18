@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { MouseEvent, useCallback, useEffect, useState } from "react";
+import { MouseEvent, useCallback, useState } from "react";
 import { animated, useTransition } from "react-spring";
 import { ScreenProps } from "models";
 import cx from "classnames";
@@ -68,23 +68,9 @@ export const GameFind = ({
 
   //
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameFind",
-    !isMobileOverlay
-  );
-
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+  const { bind, TutorialTooltip } = useTutorial("gameFind", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
   });
 
   return (

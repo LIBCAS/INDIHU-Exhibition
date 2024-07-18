@@ -198,23 +198,9 @@ export const GameErase = ({
 
   // - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameWipe",
-    !isMobileOverlay
-  );
-
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+  const { bind, TutorialTooltip } = useTutorial("gameWipe", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
   });
 
   return (

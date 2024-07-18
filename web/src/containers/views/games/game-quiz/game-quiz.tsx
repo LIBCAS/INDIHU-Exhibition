@@ -76,19 +76,18 @@ export const GameQuiz = ({
 
   // - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameOptions",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip } = useTutorial("gameOptions", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
 
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeAllInfopoints(viewScreen)();
-        escapeTutorial();
       }
     },
-    [closeAllInfopoints, escapeTutorial, viewScreen]
+    [closeAllInfopoints, viewScreen]
   );
 
   useEffect(() => {

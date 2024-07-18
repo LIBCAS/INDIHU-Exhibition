@@ -145,10 +145,11 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
     bind: bindTutorial,
     TutorialTooltip,
     isTutorialOpen,
-  } = useTutorial(
-    "screenChange",
-    animation !== "GRADUAL_TRANSITION" && animation !== "FADE_IN_OUT_TWO_IMAGES"
-  );
+  } = useTutorial("screenChange", {
+    shouldOpen:
+      animation !== "GRADUAL_TRANSITION" &&
+      animation !== "FADE_IN_OUT_TWO_IMAGES",
+  });
 
   // - - -
 

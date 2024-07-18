@@ -5,17 +5,10 @@ import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { Icon as MuiIcon } from "@mui/material";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
-import { BasicTooltip } from "components/tooltip/tooltip";
-import { PlacesType } from "react-tooltip";
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
+import { BasicTooltipProps } from "components/tooltip/tooltip-props";
 
 import cx from "classnames";
-
-type TooltipOption = {
-  id: string;
-  content: string;
-  variant?: "light" | "dark"; // if undefined, based on selected theme
-  place?: PlacesType;
-};
 
 interface IconProps {
   name: string | ReactNode; // name either for FontIcon from 'react-md' or Icon from 'material-ui'
@@ -32,7 +25,7 @@ interface IconProps {
   noCenterPlace?: boolean; // by default, icon should be inside some container and centered
   className?: string;
   style?: CSSProperties;
-  tooltip?: TooltipOption;
+  tooltip?: BasicTooltipProps;
 }
 
 export const Icon = ({

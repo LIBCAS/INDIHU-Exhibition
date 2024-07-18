@@ -17,7 +17,17 @@ export type RefCallback = (ref: HTMLElement | null) => void;
 
 // - - - - - - - -
 
-export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
+type UseTutorialOptions = {
+  shouldOpen?: boolean;
+  closeOnEsc?: boolean;
+};
+
+export const useTutorial = (
+  tutorialKey: TutorialKey,
+  options?: UseTutorialOptions
+) => {
+  const { shouldOpen = true, closeOnEsc = false } = options ?? {};
+
   // Whole object will all tutorials and their info + helper functions to manipulate with them
   const {
     store,
@@ -223,6 +233,23 @@ export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
     },
     [currStepObj?.stepKey, isTutorialOpen]
   );
+
+  // - -
+  // Register escape tutorial on Esc button press
+
+  const onKeydownAction = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape" && closeOnEsc) {
+        escapeTutorial();
+      }
+    },
+    [closeOnEsc, escapeTutorial]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeydownAction);
+    return () => document.removeEventListener("keydown", onKeydownAction);
+  }, [onKeydownAction]);
 
   // - -
 

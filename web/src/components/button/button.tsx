@@ -3,15 +3,8 @@ import { CSSProperties, forwardRef } from "react";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import cx from "classnames";
-import { BasicTooltip } from "components/tooltip/tooltip";
-import { PlacesType } from "react-tooltip";
-
-type TooltipOption = {
-  id: string;
-  content: string;
-  variant?: "light" | "dark"; // if undefined, based on selected theme
-  place?: PlacesType;
-};
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
+import { BasicTooltipProps } from "components/tooltip/tooltip-props";
 
 interface ButtonProps {
   color?: "default" | "primary" | "secondary" | "white" | "expoTheme";
@@ -27,7 +20,7 @@ interface ButtonProps {
   shadow?: boolean;
   iconBefore?: React.ReactNode;
   iconAfter?: React.ReactNode;
-  tooltip?: TooltipOption;
+  tooltip?: BasicTooltipProps;
   children?: React.ReactNode;
 }
 

@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -92,24 +92,9 @@ export const GameMove = ({
 
   // - -
 
-  const {
-    bind: bindTutorial,
-    TutorialTooltip,
-    escapeTutorial,
-  } = useTutorial("gameMove", !isMobileOverlay);
-
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+  const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
   });
 
   return (

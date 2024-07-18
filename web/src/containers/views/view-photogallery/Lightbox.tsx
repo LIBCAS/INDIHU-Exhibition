@@ -11,7 +11,6 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { BasicTooltip } from "components/tooltip/tooltip";
 
 import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
@@ -138,8 +137,14 @@ const Toolbar = ({
         style={{ opacity: overlayOpacityAnimation.opacity }}
       >
         <div className="flex gap-1">
-          <div data-tooltip-id="photogallery-zoom-in-button-tooltip">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-zoom-in-button-tooltip",
+                content: t("zoomInTooltip"),
+              }}
+            >
               <Icon
                 name="zoom_in"
                 useMaterialUiIcon
@@ -148,14 +153,16 @@ const Toolbar = ({
                 style={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip
-              id="photogallery-zoom-in-button-tooltip"
-              content={t("zoomInTooltip")}
-            />
           </div>
 
-          <div data-tooltip-id="photogallery-zoom-reset-button-tooltip">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-zoom-reset-button-tooltip",
+                content: t("resetZoomTooltip"),
+              }}
+            >
               <Icon
                 name="search"
                 useMaterialUiIcon
@@ -164,14 +171,16 @@ const Toolbar = ({
                 style={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip
-              id="photogallery-zoom-reset-button-tooltip"
-              content={t("resetZoomTooltip")}
-            />
           </div>
 
-          <div data-tooltip-id="photogallery-zoom-out-button-tooltip">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-zoom-out-button-tooltip",
+                content: t("zoomOutTooltip"),
+              }}
+            >
               <Icon
                 name="zoom_out"
                 useMaterialUiIcon
@@ -180,15 +189,17 @@ const Toolbar = ({
                 style={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip
-              id="photogallery-zoom-out-button-tooltip"
-              content={t("zoomOutTooltip")}
-            />
           </div>
 
           {currPhotoObj.photoDescription && (
-            <div data-tooltip-id="photogallery-photo-description-button-tooltip">
-              <Button noPadding>
+            <div>
+              <Button
+                noPadding
+                tooltip={{
+                  id: "photogallery-photo-description-button-tooltip",
+                  content: t("openDescTooltip"),
+                }}
+              >
                 <Icon
                   name="article"
                   useMaterialUiIcon
@@ -197,17 +208,19 @@ const Toolbar = ({
                   style={{ fontSize: "24px" }}
                 />
               </Button>
-              <BasicTooltip
-                id="photogallery-photo-description-button-tooltip"
-                content={t("openDescTooltip")}
-              />
             </div>
           )}
         </div>
 
         <div>
-          <div data-tooltip-id="photogallery-close">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-close",
+                content: t("closeTooltip"),
+              }}
+            >
               <Icon
                 color="white"
                 useMaterialUiIcon
@@ -216,7 +229,6 @@ const Toolbar = ({
                 style={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip id="photogallery-close" content={t("closeTooltip")} />
           </div>
         </div>
       </animated.div>

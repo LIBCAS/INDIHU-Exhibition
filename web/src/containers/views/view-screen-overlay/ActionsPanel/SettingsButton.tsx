@@ -4,7 +4,6 @@ import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { BasicTooltip } from "components/tooltip/tooltip";
 
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 
@@ -25,28 +24,24 @@ const SettingsButton = ({
   const { t } = useTranslation("view-screen", { keyPrefix: "overlay" });
 
   return (
-    <>
-      <div
-        {...bind("settings")}
-        className={cx(
-          "pointer-events-auto",
-          getTutorialEclipseClassnameByStepkeys([""])
-        )}
-        data-tooltip-id="overlay-settings-button-tooltip"
+    <div
+      {...bind("settings")}
+      className={cx(
+        "pointer-events-auto",
+        getTutorialEclipseClassnameByStepkeys([""])
+      )}
+    >
+      <Button
+        color="expoTheme"
+        onClick={() => openNewTopDialog(DialogRefType.SettingsDialog)}
+        tooltip={{
+          id: "overlay-settings-button-tooltip",
+          content: t("settingsButtonTooltip"),
+        }}
       >
-        <Button
-          color="expoTheme"
-          onClick={() => openNewTopDialog(DialogRefType.SettingsDialog)}
-        >
-          <Icon name="settings" />
-        </Button>
-      </div>
-
-      <BasicTooltip
-        id="overlay-settings-button-tooltip"
-        content={t("settingsButtonTooltip")}
-      />
-    </>
+        <Icon name="settings" />
+      </Button>
+    </div>
   );
 };
 
