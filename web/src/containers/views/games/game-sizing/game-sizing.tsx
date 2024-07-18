@@ -37,16 +37,16 @@ export const GameSizing = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
-  const [finished, setFinished] = useState(false);
+  const [isGameFinished, setIsGameFinished] = useState(false);
   const [ref, containerSize] = useElementSize();
   const { t } = useTranslation("view-screen");
 
-  const onFinish = useCallback(() => {
-    setFinished(true);
+  const onGameFinish = useCallback(() => {
+    setIsGameFinished(true);
   }, []);
 
-  const onReset = useCallback(() => {
-    setFinished(false);
+  const onGameReset = useCallback(() => {
+    setIsGameFinished(false);
   }, []);
 
   const { height: originalHeight = 0, width: originalWidth = 0 } =
@@ -99,7 +99,7 @@ export const GameSizing = ({
     }
   );
 
-  const transition = useTransition(finished, {
+  const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -157,7 +157,7 @@ export const GameSizing = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            isGameFinished={finished}
+            isGameFinished={isGameFinished}
             bindTutorial={bindTutorial("sizing")}
             solutionText={t("game-sizing.solution")}
           />,
@@ -168,9 +168,9 @@ export const GameSizing = ({
         ReactDOM.createPortal(
           <GameActionsPanel
             isMobileOverlay={isMobileOverlay}
-            isGameFinished={finished}
-            onGameFinish={onFinish}
-            onGameReset={onReset}
+            isGameFinished={isGameFinished}
+            onGameFinish={onGameFinish}
+            onGameReset={onGameReset}
           />,
           actionsPanelRef.current
         )}
