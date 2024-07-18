@@ -9,9 +9,6 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { MdEdit } from "react-icons/md";
-import { MdEditOff } from "react-icons/md";
-
 // Models
 import { ActiveExpo, Screen } from "models";
 import { AppDispatch } from "store/store";
@@ -115,12 +112,14 @@ const LoginAppHeader = ({
             </div>
             <div className="self-center border-[1px] border-solid border-white rounded-full p-[1px]">
               {isReadWriteAccess ? (
-                <div data-tooltip-id="md-edit-on">
+                <div>
                   <Icon
                     useMaterialUiIcon
-                    name={
-                      <MdEdit style={{ fontSize: "14px", color: "#cccccc" }} />
-                    }
+                    name="edit-on"
+                    style={{
+                      fontSize: "14px",
+                      color: "#cccccc",
+                    }}
                     tooltip={{
                       id: "md-edit-on",
                       content: t("read-write-permission-tooltip"),
@@ -129,14 +128,14 @@ const LoginAppHeader = ({
                   />
                 </div>
               ) : (
-                <div data-tooltip-id="md-edit-off">
+                <div>
                   <Icon
                     useMaterialUiIcon
-                    name={
-                      <MdEditOff
-                        style={{ fontSize: "14px", color: "#cccccc" }}
-                      />
-                    }
+                    name="edit-off"
+                    style={{
+                      fontSize: "14px",
+                      color: "#cccccc",
+                    }}
                     tooltip={{
                       id: "md-edit-off",
                       content: t("read-only-permission-tooltip"),
