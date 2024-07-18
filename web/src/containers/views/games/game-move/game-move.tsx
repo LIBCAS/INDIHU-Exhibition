@@ -96,7 +96,7 @@ export const GameMove = ({
     bind: bindTutorial,
     TutorialTooltip,
     escapeTutorial,
-  } = useTutorial("gameMove", !isMobileOverlay);
+  } = useTutorial("gameMove", { shouldOpen: !isMobileOverlay });
 
   const onKeydownAction = useCallback(
     (event) => {

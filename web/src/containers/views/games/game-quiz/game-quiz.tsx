@@ -76,10 +76,9 @@ export const GameQuiz = ({
 
   // - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameOptions",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial("gameOptions", {
+    shouldOpen: !isMobileOverlay,
+  });
 
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {

@@ -68,10 +68,9 @@ export const GameFind = ({
 
   //
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameFind",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial("gameFind", {
+    shouldOpen: !isMobileOverlay,
+  });
 
   const onKeydownAction = useCallback(
     (event) => {

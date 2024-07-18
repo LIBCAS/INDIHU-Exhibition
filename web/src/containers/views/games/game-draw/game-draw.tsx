@@ -165,10 +165,9 @@ export const GameDraw = ({
 
   // - - Tutorial stuff - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameDraw",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial("gameDraw", {
+    shouldOpen: !isMobileOverlay,
+  });
 
   const onKeydownAction = useCallback(
     (event) => {

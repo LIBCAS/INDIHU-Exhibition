@@ -17,7 +17,16 @@ export type RefCallback = (ref: HTMLElement | null) => void;
 
 // - - - - - - - -
 
-export const useTutorial = (tutorialKey: TutorialKey, shouldOpen = true) => {
+type UseTutorialOptions = {
+  shouldOpen?: boolean;
+};
+
+export const useTutorial = (
+  tutorialKey: TutorialKey,
+  options?: UseTutorialOptions
+) => {
+  const { shouldOpen = true } = options ?? {};
+
   // Whole object will all tutorials and their info + helper functions to manipulate with them
   const {
     store,

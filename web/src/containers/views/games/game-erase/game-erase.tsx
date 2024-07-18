@@ -198,10 +198,9 @@ export const GameErase = ({
 
   // - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameWipe",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip, escapeTutorial } = useTutorial("gameWipe", {
+    shouldOpen: !isMobileOverlay,
+  });
 
   const onKeydownAction = useCallback(
     (event) => {

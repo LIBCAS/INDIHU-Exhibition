@@ -103,7 +103,9 @@ export const GameSizing = ({
     bind: bindTutorial,
     TutorialTooltip,
     escapeTutorial,
-  } = useTutorial("gameSizing", !isMobileOverlay);
+  } = useTutorial("gameSizing", {
+    shouldOpen: !isMobileOverlay,
+  });
 
   const onKeydownAction = useCallback(
     (event) => {
