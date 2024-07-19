@@ -7,6 +7,7 @@ import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useResizeObserver from "hooks/use-resize-observer";
+import { useElementResize } from "./use-element-resize";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -19,7 +20,6 @@ import { AppState } from "store/store";
 
 // Assets
 import expandImg from "../../../../assets/img/expand.png";
-import { useElementResize } from "./use-element-resize";
 
 // - - - - - -
 
@@ -40,17 +40,17 @@ export const GameSizing = ({
   const { viewScreen } = useSelector(stateSelector);
 
   const {
-    image1OrigData: referenceImgOrigData,
-    image2OrigData: comparisonImgOrigData,
-  } = viewScreen;
-
-  const {
     image1: referenceImgSrc,
     image2: comparisonImgSrc,
     image3: resultingImgSrc,
   } = screenPreloadedFiles;
 
-  const [isGameFinished, setIsGameFinished] = useState(false);
+  // - - Resizing functinality - -
+
+  const {
+    image1OrigData: referenceImgOrigData,
+    image2OrigData: comparisonImgOrigData,
+  } = viewScreen;
 
   const [rightContainerRef, rightContainerSize] = useResizeObserver();
   const [leftContainerRef, leftContainerSize] = useResizeObserver();
@@ -67,10 +67,16 @@ export const GameSizing = ({
       containerSize: leftContainerSize,
     });
 
+  // - - Tutorial - -
+
   const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameSizing", {
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
+
+  // - - - -
+
+  const [isGameFinished, setIsGameFinished] = useState(false);
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -89,6 +95,7 @@ export const GameSizing = ({
 
   return (
     <div className="w-full h-full flex px-12">
+      {/* Left container */}
       <div
         className="flex-grow m-4 flex justify-center items-center relative"
         ref={leftContainerRef}
@@ -111,6 +118,7 @@ export const GameSizing = ({
         </div>
       </div>
 
+      {/* Right container */}
       <div
         className="flex-grow m-4 flex justify-center items-center relative"
         ref={rightContainerRef}
