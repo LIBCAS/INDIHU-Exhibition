@@ -32,26 +32,61 @@ export const GameMove = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
 
-  const [containerRef, { width: containerWidth, height: containerHeight }] =
-    useResizeObserver();
-  const [dragRef, { width: dragWidth, height: dragHeight }] =
-    useResizeObserver(); // dragTarget as a container with the object img
+  const {
+    image1: assignmentImgSrc,
+    image2: resultingImgSrc,
+    object: objectImgSrc,
+  } = screenPreloadedFiles;
 
   // - -
 
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+  const [containerRef, { width: containerWidth, height: containerHeight }] =
+    useResizeObserver();
+
+  const [objectDragRef, { width: objectDragWidth, height: objectDragHeight }] =
+    useResizeObserver(); // dragTarget as a container with the object img
 
   // Initialize the position for drag object image, it will be reset back to [0, 0] whenever the width or height of the container changes
-  const [{ dragLeft, dragTop }, dragApi] = useSpring(
+  const [dragSpring, dragApi] = useSpring(
     () => ({
-      dragLeft: 0,
-      dragTop: 0,
+      left: 0,
+      top: 0,
     }),
     [containerWidth, containerHeight]
   );
+
+  const bindDrag = useDrag(
+    ({ down, offset: [x, y] }) => {
+      if (!down) {
+        return;
+      }
+
+      dragApi.start({ left: x, top: y, immediate: true });
+    },
+    {
+      from: () => [dragSpring.left.get(), dragSpring.top.get()],
+      bounds: {
+        left: 0,
+        top: 0,
+        right: containerWidth - objectDragWidth,
+        bottom: containerHeight - objectDragHeight,
+      },
+    }
+  );
+
+  // - - Tutorial - -
+
+  const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - - -
+
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -59,29 +94,8 @@ export const GameMove = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    dragApi.start({ dragLeft: 0, dragTop: 0 });
+    dragApi.start({ left: 0, top: 0 });
   }, [dragApi]);
-
-  // - -
-
-  const bind = useDrag(
-    ({ down, offset: [x, y] }) => {
-      if (!down) {
-        return;
-      }
-
-      dragApi.start({ dragLeft: x, dragTop: y, immediate: true });
-    },
-    {
-      from: () => [dragLeft.get(), dragTop.get()],
-      bounds: {
-        left: 0,
-        top: 0,
-        right: containerWidth - dragWidth,
-        bottom: containerHeight - dragHeight,
-      },
-    }
-  );
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -90,52 +104,38 @@ export const GameMove = ({
     leave: { opacity: 0 },
   });
 
-  // - -
-
-  const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
-    shouldOpen: !isMobileOverlay,
-    closeOnEsc: true,
-  });
-
   return (
     <div className="relative w-[100svw] h-[100svh]" ref={containerRef}>
       {transition(({ opacity }, isGameFinished) =>
         isGameFinished ? (
-          // Image2 is result image
           <animated.img
-            src={screenPreloadedFiles.image2}
+            src={resultingImgSrc}
             className="w-full h-full absolute object-contain"
             style={{ opacity }}
             alt="result image"
           />
         ) : (
           <>
-            {/* Image1 is background image (zadanie) */}
             <animated.img
-              src={screenPreloadedFiles.image1}
+              src={assignmentImgSrc}
               className="touch-none w-full h-full absolute object-contain"
               style={{ opacity }}
               alt="assignment-background-image"
             />
 
-            {/* Object */}
             <animated.div
               className="touch-none absolute p-2 border-2 border-white border-opacity-50 border-dashed hover:cursor-move"
               style={{
-                left: dragLeft,
-                top: dragTop,
+                left: dragSpring.left,
+                top: dragSpring.top,
                 opacity,
                 WebkitUserSelect: "none",
                 WebkitTouchCallout: "none",
               }}
-              ref={dragRef}
-              {...bind()}
+              ref={objectDragRef}
+              {...bindDrag()}
             >
-              <img
-                src={screenPreloadedFiles.object}
-                draggable={false}
-                alt="drag content"
-              />
+              <img src={objectImgSrc} draggable={false} alt="drag content" />
             </animated.div>
           </>
         )
