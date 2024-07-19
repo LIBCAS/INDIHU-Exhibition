@@ -45,7 +45,7 @@ export const GameSizing = ({
     image3: resultingImgSrc,
   } = screenPreloadedFiles;
 
-  // - - Resizing functinality - -
+  // - - Resizing functionality - -
 
   const {
     image1OrigData: referenceImgOrigData,

@@ -1,13 +1,13 @@
 import ReactDOM from "react-dom";
 import { useState, useCallback } from "react";
-import { animated, useSpring, useTransition } from "react-spring";
-import { useDrag } from "@use-gesture/react";
+import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useTranslation } from "react-i18next";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useResizeObserver from "hooks/use-resize-observer";
+import { useElementMove } from "./use-element-move";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -41,41 +41,16 @@ export const GameMove = ({
     object: objectImgSrc,
   } = screenPreloadedFiles;
 
-  // - -
+  // - - Move functionality - -
 
-  const [containerRef, { width: containerWidth, height: containerHeight }] =
-    useResizeObserver();
+  const [containerRef, containerSize] = useResizeObserver();
 
-  const [objectDragRef, { width: objectDragWidth, height: objectDragHeight }] =
-    useResizeObserver(); // dragTarget as a container with the object img
+  const [objectDragRef, objectDragSize] = useResizeObserver();
 
-  // Initialize the position for drag object image, it will be reset back to [0, 0] whenever the width or height of the container changes
-  const [dragSpring, dragApi] = useSpring(
-    () => ({
-      left: 0,
-      top: 0,
-    }),
-    [containerWidth, containerHeight]
-  );
-
-  const bindDrag = useDrag(
-    ({ down, offset: [x, y] }) => {
-      if (!down) {
-        return;
-      }
-
-      dragApi.start({ left: x, top: y, immediate: true });
-    },
-    {
-      from: () => [dragSpring.left.get(), dragSpring.top.get()],
-      bounds: {
-        left: 0,
-        top: 0,
-        right: containerWidth - objectDragWidth,
-        bottom: containerHeight - objectDragHeight,
-      },
-    }
-  );
+  const { dragSpring, dragApi, bindDrag } = useElementMove({
+    containerSize: containerSize,
+    draggingObjectSize: objectDragSize,
+  });
 
   // - - Tutorial - -
 
