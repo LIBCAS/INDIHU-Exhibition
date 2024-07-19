@@ -39,7 +39,10 @@ export const GameSizing = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { image2OrigData: comparisonImgOrigData } = viewScreen;
+  const {
+    image1OrigData: referenceImgOrigData,
+    image2OrigData: comparisonImgOrigData,
+  } = viewScreen;
 
   const {
     image1: referenceImgSrc,
@@ -50,11 +53,18 @@ export const GameSizing = ({
   const [isGameFinished, setIsGameFinished] = useState(false);
 
   const [rightContainerRef, rightContainerSize] = useResizeObserver();
+  const [leftContainerRef, leftContainerSize] = useResizeObserver();
 
   const { spring: comparisonImgSpring, bindDrag: comparisongImgBindDrag } =
     useElementResize({
       imageOrigData: comparisonImgOrigData ?? { width: 0, height: 0 },
       containerSize: rightContainerSize,
+    });
+
+  const { spring: referenceImgSpring, bindDrag: referenceImgBindDrag } =
+    useElementResize({
+      imageOrigData: referenceImgOrigData ?? { width: 0, height: 0 },
+      containerSize: leftContainerSize,
     });
 
   const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameSizing", {
@@ -79,11 +89,26 @@ export const GameSizing = ({
 
   return (
     <div className="w-full h-full flex px-12">
-      <div className="flex-grow m-4 flex justify-center items-center relative">
-        <img
-          className="w-full h-full absolute object-contain"
-          src={referenceImgSrc}
-        />
+      <div
+        className="flex-grow m-4 flex justify-center items-center relative"
+        ref={leftContainerRef}
+      >
+        <div className="absolute p-2 border-2 border-white border-opacity-50 border-dashed">
+          <animated.img
+            src={referenceImgSrc}
+            style={{
+              width: referenceImgSpring.width,
+              height: referenceImgSpring.height,
+            }}
+          />
+          <img
+            className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
+            src={expandImg}
+            draggable={false}
+            {...referenceImgBindDrag()}
+            alt="expand image icon left"
+          />
+        </div>
       </div>
 
       <div
@@ -114,7 +139,7 @@ export const GameSizing = ({
                 src={expandImg}
                 draggable={false}
                 {...comparisongImgBindDrag()}
-                alt="expand image icon"
+                alt="expand image icon right"
               />
             </animated.div>
           )
