@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom";
-import { useState, useMemo, useCallback } from "react";
-import { animated, useSpring, useTransition } from "react-spring";
-import { useDrag } from "@use-gesture/react";
+import { useState, useCallback } from "react";
+import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
@@ -20,6 +19,7 @@ import { AppState } from "store/store";
 
 // Assets
 import expandImg from "../../../../assets/img/expand.png";
+import { useElementResize } from "./use-element-resize";
 
 // - - - - - -
 
@@ -41,14 +41,6 @@ export const GameSizing = ({
 
   const { image2OrigData: comparisonImgOrigData } = viewScreen;
 
-  const { width: comparisonImgWidth = 0, height: comparisonImgHeight = 0 } =
-    comparisonImgOrigData ?? {};
-
-  const comparisonImgRatio = useMemo(
-    () => comparisonImgWidth / comparisonImgHeight,
-    [comparisonImgWidth, comparisonImgHeight]
-  );
-
   const {
     image1: referenceImgSrc,
     image2: comparisonImgSrc,
@@ -58,6 +50,12 @@ export const GameSizing = ({
   const [isGameFinished, setIsGameFinished] = useState(false);
 
   const [rightContainerRef, rightContainerSize] = useResizeObserver();
+
+  const { spring: comparisonImgSpring, bindDrag: comparisongImgBindDrag } =
+    useElementResize({
+      imageOrigData: comparisonImgOrigData ?? { width: 0, height: 0 },
+      containerSize: rightContainerSize,
+    });
 
   const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameSizing", {
     shouldOpen: !isMobileOverlay,
@@ -71,50 +69,6 @@ export const GameSizing = ({
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
   }, []);
-
-  const [{ width, height }, api] = useSpring(() => ({
-    width: comparisonImgWidth,
-    height: comparisonImgHeight,
-  }));
-
-  const bindDrag = useDrag(
-    ({ down, offset: [x, y], lastOffset: [xp, yp] }) => {
-      if (!down) {
-        return;
-      }
-
-      // we double the increments since the container is centered (grows on both sides)
-      const width = 2 * x - xp;
-      const height = 2 * y - yp;
-
-      const widthBased = width > height * comparisonImgRatio;
-
-      api.start({
-        width: widthBased ? width : height * comparisonImgRatio,
-        height: widthBased ? width / comparisonImgRatio : height,
-        immediate: true,
-      });
-    },
-    {
-      from: () => [width.get(), height.get()],
-      bounds: (state) => {
-        const [xp = 0, yp = 0] = state?.lastOffset ?? [];
-
-        const maxWidth = (rightContainerSize.width - 100 + xp) / 2;
-        const maxHeight = (rightContainerSize.height - 100 + yp) / 2;
-        const widthBased =
-          rightContainerSize.width <
-          rightContainerSize.height * comparisonImgRatio;
-
-        return {
-          left: (50 + xp) / 2,
-          top: (50 + yp) / 2,
-          right: widthBased ? maxWidth : maxHeight * comparisonImgRatio,
-          bottom: widthBased ? maxWidth / comparisonImgRatio : maxHeight,
-        };
-      },
-    }
-  );
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -148,12 +102,18 @@ export const GameSizing = ({
               className="absolute p-2 border-2 border-white border-opacity-50 border-dashed"
               style={{ opacity }}
             >
-              <animated.img src={comparisonImgSrc} style={{ height, width }} />
+              <animated.img
+                src={comparisonImgSrc}
+                style={{
+                  width: comparisonImgSpring.width,
+                  height: comparisonImgSpring.height,
+                }}
+              />
               <img
                 className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
                 src={expandImg}
                 draggable={false}
-                {...bindDrag()}
+                {...comparisongImgBindDrag()}
                 alt="expand image icon"
               />
             </animated.div>
