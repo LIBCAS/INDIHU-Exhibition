@@ -1,13 +1,13 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState } from "react";
-
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useState, useCallback } from "react";
 import { animated, useSpring, useTransition } from "react-spring";
 import { useDrag } from "@use-gesture/react";
-import useResizeObserver from "hooks/use-resize-observer";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+
 import { useTranslation } from "react-i18next";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useResizeObserver from "hooks/use-resize-observer";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -17,14 +17,14 @@ import { GameActionsPanel } from "../GameActionsPanel";
 import { AppState } from "store/store";
 import { ScreenProps, GameMoveScreen } from "models";
 
-// - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameMoveScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-// - - -
+// - - - - - -
 
 export const GameMove = ({
   screenPreloadedFiles,
