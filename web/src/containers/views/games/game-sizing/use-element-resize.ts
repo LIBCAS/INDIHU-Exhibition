@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, CSSProperties } from "react";
 import { useSpring } from "react-spring";
 import { useDrag } from "@use-gesture/react";
 
@@ -11,6 +11,16 @@ type UseElementResizeProps = {
   additionalCallback?: (width: number, height: number) => void;
 };
 
+/**
+ * This hook enables an element (e.g. image) to be resized within a defined container boundary.
+ * Object being resized should be positioned 'absolute', while its container should be positioned 'relative'.
+ * NOTE: Add `draggable={false}` html property to the element being resized
+ *
+ * @param containerSize size of the container which acts as a boundary when resizing our element
+ * @param dragResizingImgOrigData needed for aspect ratio of the element which is being resized
+ * @param initialSize first size of the object which is being resized inside container boundary
+ * @param additionalCallback function which is called when new width and height size is being assigned
+ */
 export const useElementResize = ({
   containerSize,
   dragResizingImgOrigData,
@@ -83,4 +93,16 @@ export const useElementResize = ({
     resizeSpringApi,
     bindResizeDrag,
   };
+};
+
+export const resizeContainerStyle: CSSProperties = {
+  position: "relative",
+};
+
+// NOTE: also add 'hover:cursor-se-resize'
+export const dragResizingObjectStyle: CSSProperties = {
+  position: "absolute",
+  touchAction: "none",
+  // WebkitUserSelect: "none",
+  // WebkitTouchCallout: "none",
 };
