@@ -17,6 +17,9 @@ import { GameActionsPanel } from "../GameActionsPanel";
 import { AppState } from "store/store";
 import { ScreenProps, GameMoveScreen } from "models";
 
+// Utils
+import { calculateObjectInitialPosition } from "./utils";
+
 // - - - - - -
 
 const stateSelector = createSelector(
@@ -47,9 +50,15 @@ export const GameMove = ({
 
   const [objectDragRef, objectDragSize] = useResizeObserver();
 
+  const { objInitialLeft, objInitialTop } = calculateObjectInitialPosition(
+    viewScreen,
+    containerSize
+  );
+
   const { moveSpring, moveSpringApi, bindMoveDrag } = useElementMove({
     containerSize: containerSize,
     dragMovingObjectSize: objectDragSize,
+    initialPosition: { left: objInitialLeft, top: objInitialTop },
   });
 
   // - - Tutorial - -
