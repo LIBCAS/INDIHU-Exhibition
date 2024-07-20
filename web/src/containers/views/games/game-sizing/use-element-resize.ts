@@ -5,31 +5,32 @@ import { useDrag } from "@use-gesture/react";
 import { ImageOrigData, Size } from "models";
 
 type UseElementResizeProps = {
-  imageOrigData: ImageOrigData;
   containerSize: Size;
+  dragResizingImgOrigData: ImageOrigData;
   initialSize?: Size;
   additionalCallback?: (width: number, height: number) => void;
 };
 
 export const useElementResize = ({
-  imageOrigData,
   containerSize,
+  dragResizingImgOrigData,
   initialSize,
   additionalCallback,
 }: UseElementResizeProps) => {
-  const { width: origImgWidth, height: origImgHeight } = imageOrigData;
+  const { width: origImgWidth, height: origImgHeight } =
+    dragResizingImgOrigData;
 
   const origImgRatio = useMemo(
     () => origImgWidth / origImgHeight,
     [origImgHeight, origImgWidth]
   );
 
-  const [spring, springApi] = useSpring(() => ({
+  const [resizeSpring, resizeSpringApi] = useSpring(() => ({
     width: initialSize?.width ?? origImgWidth,
     height: initialSize?.height ?? origImgHeight,
   }));
 
-  const bindDrag = useDrag(
+  const bindResizeDrag = useDrag(
     (state) => {
       const { down, offset, lastOffset } = state;
       const [x, y] = offset;
@@ -48,7 +49,7 @@ export const useElementResize = ({
       const finalWidth = widthBased ? width : height * origImgRatio;
       const finalHeight = widthBased ? width / origImgRatio : height;
 
-      springApi.start({
+      resizeSpringApi.start({
         width: finalWidth,
         height: finalHeight,
         immediate: true,
@@ -57,7 +58,7 @@ export const useElementResize = ({
       additionalCallback?.(finalWidth, finalHeight);
     },
     {
-      from: () => [spring.width.get(), spring.height.get()],
+      from: () => [resizeSpring.width.get(), resizeSpring.height.get()],
       bounds: (state) => {
         const [xp = 0, yp = 0] = state?.lastOffset ?? [];
 
@@ -78,7 +79,8 @@ export const useElementResize = ({
   );
 
   return {
-    spring,
-    bindDrag,
+    resizeSpring,
+    resizeSpringApi,
+    bindResizeDrag,
   };
 };

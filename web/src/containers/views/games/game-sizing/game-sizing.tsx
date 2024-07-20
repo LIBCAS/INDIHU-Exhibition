@@ -55,17 +55,21 @@ export const GameSizing = ({
   const [rightContainerRef, rightContainerSize] = useResizeObserver();
   const [leftContainerRef, leftContainerSize] = useResizeObserver();
 
-  const { spring: comparisonImgSpring, bindDrag: comparisongImgBindDrag } =
-    useElementResize({
-      imageOrigData: comparisonImgOrigData ?? { width: 0, height: 0 },
-      containerSize: rightContainerSize,
-    });
+  const {
+    resizeSpring: comparisonImgResizeSpring,
+    bindResizeDrag: comparisongImgBindResizeDrag,
+  } = useElementResize({
+    containerSize: rightContainerSize,
+    dragResizingImgOrigData: comparisonImgOrigData ?? { width: 0, height: 0 },
+  });
 
-  const { spring: referenceImgSpring, bindDrag: referenceImgBindDrag } =
-    useElementResize({
-      imageOrigData: referenceImgOrigData ?? { width: 0, height: 0 },
-      containerSize: leftContainerSize,
-    });
+  const {
+    resizeSpring: referenceImgResizeSpring,
+    bindResizeDrag: referenceImgBindResizeDrag,
+  } = useElementResize({
+    containerSize: leftContainerSize,
+    dragResizingImgOrigData: referenceImgOrigData ?? { width: 0, height: 0 },
+  });
 
   // - - Tutorial - -
 
@@ -104,15 +108,15 @@ export const GameSizing = ({
           <animated.img
             src={referenceImgSrc}
             style={{
-              width: referenceImgSpring.width,
-              height: referenceImgSpring.height,
+              width: referenceImgResizeSpring.width,
+              height: referenceImgResizeSpring.height,
             }}
           />
           <img
             className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
             src={expandImg}
             draggable={false}
-            {...referenceImgBindDrag()}
+            {...referenceImgBindResizeDrag()}
             alt="expand image icon left"
           />
         </div>
@@ -138,15 +142,15 @@ export const GameSizing = ({
               <animated.img
                 src={comparisonImgSrc}
                 style={{
-                  width: comparisonImgSpring.width,
-                  height: comparisonImgSpring.height,
+                  width: comparisonImgResizeSpring.width,
+                  height: comparisonImgResizeSpring.height,
                 }}
               />
               <img
                 className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
                 src={expandImg}
                 draggable={false}
-                {...comparisongImgBindDrag()}
+                {...comparisongImgBindResizeDrag()}
                 alt="expand image icon right"
               />
             </animated.div>

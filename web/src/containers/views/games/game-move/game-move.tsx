@@ -47,9 +47,9 @@ export const GameMove = ({
 
   const [objectDragRef, objectDragSize] = useResizeObserver();
 
-  const { dragSpring, dragApi, bindDrag } = useElementMove({
+  const { moveSpring, moveSpringApi, bindMoveDrag } = useElementMove({
     containerSize: containerSize,
-    draggingObjectSize: objectDragSize,
+    dragMovingObjectSize: objectDragSize,
   });
 
   // - - Tutorial - -
@@ -69,8 +69,8 @@ export const GameMove = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    dragApi.start({ left: 0, top: 0 });
-  }, [dragApi]);
+    moveSpringApi.start({ left: 0, top: 0 });
+  }, [moveSpringApi]);
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -101,14 +101,14 @@ export const GameMove = ({
             <animated.div
               className="touch-none absolute p-2 border-2 border-white border-opacity-50 border-dashed hover:cursor-move"
               style={{
-                left: dragSpring.left,
-                top: dragSpring.top,
+                left: moveSpring.left,
+                top: moveSpring.top,
                 opacity,
                 WebkitUserSelect: "none",
                 WebkitTouchCallout: "none",
               }}
               ref={objectDragRef}
-              {...bindDrag()}
+              {...bindMoveDrag()}
             >
               <img src={objectImgSrc} draggable={false} alt="drag content" />
             </animated.div>

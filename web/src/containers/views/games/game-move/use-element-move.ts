@@ -5,20 +5,20 @@ import { Position, Size } from "models";
 
 type UseElementMoveProps = {
   containerSize: Size;
-  draggingObjectSize: Size;
+  dragMovingObjectSize: Size;
   initialPosition?: Position;
   additionalCallback?: (left: number, top: number) => void;
 };
 
 export const useElementMove = ({
   containerSize,
-  draggingObjectSize,
+  dragMovingObjectSize,
   initialPosition,
   additionalCallback,
 }: UseElementMoveProps) => {
   // Initial position of image being dragged
   // It will be also reset back to [0, 0] whenever the container size changes (because of the deps array)
-  const [dragSpring, dragApi] = useSpring(
+  const [moveSpring, moveSpringApi] = useSpring(
     () => ({
       left: initialPosition?.left ?? 0,
       top: initialPosition?.top ?? 0,
@@ -26,29 +26,25 @@ export const useElementMove = ({
     [containerSize.width, containerSize.height]
   );
 
-  const bindDrag = useDrag(
+  const bindMoveDrag = useDrag(
     ({ down, offset: [x, y] }) => {
       if (!down) {
         return;
       }
 
-      dragApi.start({ left: x, top: y, immediate: true });
+      moveSpringApi.start({ left: x, top: y, immediate: true });
       additionalCallback?.(x, y);
     },
     {
-      from: () => [dragSpring.left.get(), dragSpring.top.get()],
+      from: () => [moveSpring.left.get(), moveSpring.top.get()],
       bounds: {
         left: 0,
         top: 0,
-        right: containerSize.width - draggingObjectSize.width,
-        bottom: containerSize.height - draggingObjectSize.height,
+        right: containerSize.width - dragMovingObjectSize.width,
+        bottom: containerSize.height - dragMovingObjectSize.height,
       },
     }
   );
 
-  return {
-    dragSpring,
-    dragApi,
-    bindDrag,
-  };
+  return { moveSpring, moveSpringApi, bindMoveDrag };
 };

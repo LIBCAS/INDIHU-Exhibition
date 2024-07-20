@@ -48,46 +48,43 @@ const ObjectImagePreview = ({
     child: image1OrigData,
   });
 
-  const { dragSpring: moveDragSpring, bindDrag: bindMoveDrag } = useElementMove(
-    {
-      containerSize: containerSize,
-      draggingObjectSize: objectSize,
-      initialPosition: activeScreen.objectPositionProps?.containerPosition,
-      additionalCallback: (left, top) => {
-        dispatch(
-          updateScreenData({
-            objectPositionProps: {
-              containerPosition: { left: left, top: top },
-              containedImgPosition: {
-                left: left - fromLeft,
-                top: top - fromTop,
-              },
+  const { moveSpring, bindMoveDrag } = useElementMove({
+    containerSize: containerSize,
+    dragMovingObjectSize: objectSize,
+    initialPosition: activeScreen.objectPositionProps?.containerPosition,
+    additionalCallback: (left, top) => {
+      dispatch(
+        updateScreenData({
+          objectPositionProps: {
+            containerPosition: { left: left, top: top },
+            containedImgPosition: {
+              left: left - fromLeft,
+              top: top - fromTop,
             },
-          })
-        );
-      },
-    }
-  );
+          },
+        })
+      );
+    },
+  });
 
-  const { spring: resizeDragSpring, bindDrag: bindResizeDrag } =
-    useElementResize({
-      imageOrigData: objectOrigData,
-      containerSize: containerSize,
-      initialSize: activeScreen.objectSizeProps?.inContainerSize,
-      additionalCallback: (width, height) => {
-        dispatch(
-          updateScreenData({
-            objectSizeProps: {
-              inContainerSize: { width: width, height: height },
-              inContainedImgFractionSize: {
-                width: containedImg1Width / width,
-                height: containedImg1Height / height,
-              },
+  const { resizeSpring, bindResizeDrag } = useElementResize({
+    containerSize: containerSize,
+    dragResizingImgOrigData: objectOrigData,
+    initialSize: activeScreen.objectSizeProps?.inContainerSize,
+    additionalCallback: (width, height) => {
+      dispatch(
+        updateScreenData({
+          objectSizeProps: {
+            inContainerSize: { width: width, height: height },
+            inContainedImgFractionSize: {
+              width: containedImg1Width / width,
+              height: containedImg1Height / height,
             },
-          })
-        );
-      },
-    });
+          },
+        })
+      );
+    },
+  });
 
   return (
     <div className="mt-16 mb-32 flex justify-center">
@@ -104,10 +101,10 @@ const ObjectImagePreview = ({
         <animated.div
           className="touch-none absolute p-2 border-2 border-white border-opacity-50 border-dashed hover:cursor-move"
           style={{
-            left: moveDragSpring.left,
-            top: moveDragSpring.top,
-            width: resizeDragSpring.width,
-            height: resizeDragSpring.height,
+            left: moveSpring.left,
+            top: moveSpring.top,
+            width: resizeSpring.width,
+            height: resizeSpring.height,
             WebkitUserSelect: "none",
             WebkitTouchCallout: "none",
           }}
