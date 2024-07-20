@@ -7,11 +7,15 @@ import { ImageOrigData, Size } from "models";
 type UseElementResizeProps = {
   imageOrigData: ImageOrigData;
   containerSize: Size;
+  initialSize?: Size;
+  additionalCallback?: (width: number, height: number) => void;
 };
 
 export const useElementResize = ({
   imageOrigData,
   containerSize,
+  initialSize,
+  additionalCallback,
 }: UseElementResizeProps) => {
   const { width: origImgWidth, height: origImgHeight } = imageOrigData;
 
@@ -21,8 +25,8 @@ export const useElementResize = ({
   );
 
   const [spring, springApi] = useSpring(() => ({
-    width: origImgWidth,
-    height: origImgHeight,
+    width: initialSize?.width ?? origImgWidth,
+    height: initialSize?.height ?? origImgHeight,
   }));
 
   const bindDrag = useDrag(
@@ -41,11 +45,16 @@ export const useElementResize = ({
 
       const widthBased = width > height * origImgRatio;
 
+      const finalWidth = widthBased ? width : height * origImgRatio;
+      const finalHeight = widthBased ? width / origImgRatio : height;
+
       springApi.start({
-        width: widthBased ? width : height * origImgRatio,
-        height: widthBased ? width / origImgRatio : height,
+        width: finalWidth,
+        height: finalHeight,
         immediate: true,
       });
+
+      additionalCallback?.(finalWidth, finalHeight);
     },
     {
       from: () => [spring.width.get(), spring.height.get()],
