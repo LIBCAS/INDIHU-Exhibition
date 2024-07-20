@@ -37,3 +37,40 @@ export const calculateObjectInitialPosition = (
 
   return { objInitialLeft, objInitialTop };
 };
+
+export const calculateObjectSize = (
+  viewScreen: GameMoveScreen,
+  containerSize: Size
+) => {
+  const assignmentImgOrigData = viewScreen.image1OrigData ?? {
+    width: 0,
+    height: 0,
+  };
+
+  const { width: assignmentImgWidth, height: assignmentImgHeight } =
+    calculateObjectFit({
+      type: "contain",
+      parent: containerSize,
+      child: assignmentImgOrigData,
+    });
+
+  const objectImgOrigData = viewScreen.objectOrigData ?? {
+    width: 0,
+    height: 0,
+  };
+
+  const inContainedImgFractionSize =
+    viewScreen.objectSizeProps?.inContainedImgFractionSize;
+
+  if (inContainedImgFractionSize === undefined) {
+    return {
+      objectWidth: objectImgOrigData.width,
+      objectHeight: objectImgOrigData.height,
+    };
+  }
+
+  const objectWidth = inContainedImgFractionSize.width * assignmentImgWidth;
+  const objectHeight = inContainedImgFractionSize.height * assignmentImgHeight;
+
+  return { objectWidth, objectHeight };
+};

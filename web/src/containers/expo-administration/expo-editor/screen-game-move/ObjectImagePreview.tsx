@@ -77,8 +77,8 @@ const ObjectImagePreview = ({
           objectSizeProps: {
             inContainerSize: { width: width, height: height },
             inContainedImgFractionSize: {
-              width: containedImg1Width / width,
-              height: containedImg1Height / height,
+              width: width / containedImg1Width,
+              height: height / containedImg1Height,
             },
           },
         })

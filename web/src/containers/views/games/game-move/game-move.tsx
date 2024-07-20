@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useState, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -18,7 +18,7 @@ import { AppState } from "store/store";
 import { ScreenProps, GameMoveScreen } from "models";
 
 // Utils
-import { calculateObjectInitialPosition } from "./utils";
+import { calculateObjectInitialPosition, calculateObjectSize } from "./utils";
 
 // - - - - - -
 
@@ -50,9 +50,9 @@ export const GameMove = ({
 
   const [objectDragRef, objectDragSize] = useResizeObserver();
 
-  const { objInitialLeft, objInitialTop } = calculateObjectInitialPosition(
-    viewScreen,
-    containerSize
+  const { objInitialLeft, objInitialTop } = useMemo(
+    () => calculateObjectInitialPosition(viewScreen, containerSize),
+    [containerSize, viewScreen]
   );
 
   const { moveSpring, moveSpringApi, bindMoveDrag } = useElementMove({
@@ -60,6 +60,13 @@ export const GameMove = ({
     dragMovingObjectSize: objectDragSize,
     initialPosition: { left: objInitialLeft, top: objInitialTop },
   });
+
+  // - - Size calculation of object, based on administration settings - -
+
+  const { objectWidth, objectHeight } = useMemo(
+    () => calculateObjectSize(viewScreen, containerSize),
+    [containerSize, viewScreen]
+  );
 
   // - - Tutorial - -
 
@@ -94,7 +101,7 @@ export const GameMove = ({
         isGameFinished ? (
           <animated.img
             src={resultingImgSrc}
-            className="w-full h-full absolute object-contain"
+            className="absolute w-full h-full object-contain"
             style={{ opacity }}
             alt="result image"
           />
@@ -102,24 +109,31 @@ export const GameMove = ({
           <>
             <animated.img
               src={assignmentImgSrc}
-              className="touch-none w-full h-full absolute object-contain"
+              className="absolute touch-none w-full h-full object-contain"
               style={{ opacity }}
               alt="assignment-background-image"
             />
 
             <animated.div
-              className="touch-none absolute p-2 border-2 border-white border-opacity-50 border-dashed hover:cursor-move"
+              className="absolute touch-none hover:cursor-move p-2 border-2 border-white border-opacity-50 border-dashed"
               style={{
                 left: moveSpring.left,
                 top: moveSpring.top,
                 opacity,
                 WebkitUserSelect: "none",
                 WebkitTouchCallout: "none",
+                width: objectWidth,
+                height: objectHeight,
               }}
               ref={objectDragRef}
               {...bindMoveDrag()}
             >
-              <img src={objectImgSrc} draggable={false} alt="drag content" />
+              <img
+                src={objectImgSrc}
+                className="w-full h-full object-contain"
+                draggable={false}
+                alt="drag content"
+              />
             </animated.div>
           </>
         )
