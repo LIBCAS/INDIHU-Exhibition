@@ -62,6 +62,7 @@ export const GameMove = ({
   });
 
   // - - Size calculation of object, based on administration settings - -
+  // once at mount assigned through CSS and then used by `objectDragSize`
 
   const { objectWidth, objectHeight } = useMemo(
     () => calculateObjectSize(viewScreen, containerSize),
@@ -85,8 +86,8 @@ export const GameMove = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    moveSpringApi.start({ left: 0, top: 0 });
-  }, [moveSpringApi]);
+    moveSpringApi.start({ left: objInitialLeft, top: objInitialTop });
+  }, [moveSpringApi, objInitialLeft, objInitialTop]);
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
