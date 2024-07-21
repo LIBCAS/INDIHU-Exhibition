@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
 import useElementSize from "hooks/element-size-hook";
 
 import { Checkbox, Radio } from "@mui/material";
-import ScreenAnchorInfopoint from "components/infopoint/ScreenAnchorInfopoint";
-import TooltipInfoPoint from "components/infopoint/TooltipInfopoint";
+import ScreenAnchorInfopoint from "components/infopoint/components/ScreenAnchorInfopoint";
+import TooltipInfoPoint from "components/infopoint/components/TooltipInfopoint";
 
 import {
   GameQuizAnswer,

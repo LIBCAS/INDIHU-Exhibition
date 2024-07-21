@@ -4,8 +4,8 @@ import { useMobileInfopointAutoClosing } from "./hooks/useMobileInfopointAutoClo
 import { useInfopointClosing } from "./hooks/useInfopointClosing";
 
 // Components
-import ScreenAnchorInfopoint from "./ScreenAnchorInfopoint";
-import TooltipInfoPoint from "./TooltipInfopoint";
+import ScreenAnchorInfopoint from "./components/ScreenAnchorInfopoint";
+import TooltipInfoPoint from "./components/TooltipInfopoint";
 
 // Utils
 import { parseScreenToInfopointStatusMap } from "./screen-to-map-parsers";
