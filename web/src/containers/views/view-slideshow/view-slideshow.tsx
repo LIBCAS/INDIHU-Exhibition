@@ -82,8 +82,8 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - - -
 
   const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints,
     ScreenAnchorInfopoint,
     TooltipInfoPoint,
@@ -344,8 +344,8 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
                         key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
                         id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
                         infopoint={infopoint}
-                        infopointOpenStatusMap={infopointOpenStatusMap}
-                        setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                        infopointStatusMap={infopointStatusMap}
+                        setInfopointStatusMap={setInfopointStatusMap}
                         primaryKey={photoIndex.toString()}
                         secondaryKey={infopointIndex.toString()}
                         canBeOpen={!isAnimationRunning}

@@ -13,8 +13,8 @@ import { getTooltipArrowBorderClassName } from "utils/view-utils";
 type TooltipInfoPointProps = {
   id: string;
   infopoint: Infopoint;
-  infopointOpenStatusMap: Record<string, InfopointStatusObject>;
-  setInfopointOpenStatusMap: Dispatch<
+  infopointStatusMap: Record<string, InfopointStatusObject>;
+  setInfopointStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
   >;
   primaryKey: string;
@@ -38,8 +38,8 @@ export default TooltipInfoPoint;
 interface Props {
   id: string;
   infopoint: Infopoint;
-  infopointOpenStatusMap: Record<string, InfopointStatusObject>;
-  setInfopointOpenStatusMap: Dispatch<
+  infopointStatusMap: Record<string, InfopointStatusObject>;
+  setInfopointStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
   >;
   keyMap: string;
@@ -49,8 +49,8 @@ interface Props {
 const BasicTooltipInfopoint = ({
   id,
   infopoint,
-  infopointOpenStatusMap,
-  setInfopointOpenStatusMap,
+  infopointStatusMap,
+  setInfopointStatusMap,
   keyMap,
   canBeOpen = true,
 }: Props) => {
@@ -89,7 +89,7 @@ const BasicTooltipInfopoint = ({
       openOnClick
       render={() => {
         const closeThisInfopoint = () => {
-          setInfopointOpenStatusMap((prevMap) => ({
+          setInfopointStatusMap((prevMap) => ({
             ...prevMap,
             [keyMap]: { ...prevMap[keyMap], isOpen: false },
           }));
@@ -102,10 +102,10 @@ const BasicTooltipInfopoint = ({
           setIsVideoLoaded,
         });
       }}
-      isOpen={infopointOpenStatusMap[keyMap].isOpen && canBeOpen}
+      isOpen={infopointStatusMap[keyMap].isOpen && canBeOpen}
       setIsOpen={(isOpen) => {
         if (isOpen) {
-          setInfopointOpenStatusMap((prevMap) => ({
+          setInfopointStatusMap((prevMap) => ({
             ...prevMap,
             [keyMap]: { ...prevMap[keyMap], isOpen: !prevMap[keyMap].isOpen },
           }));

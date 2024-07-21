@@ -94,8 +94,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - -
 
   const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints,
     ScreenAnchorInfopoint,
     TooltipInfoPoint,
@@ -519,8 +519,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
             <TooltipInfoPoint
               id={`infopoint-tooltip-${0}-${infopointIndex}`}
               infopoint={infopoint}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
               primaryKey="0"
               secondaryKey={infopointIndex.toString()}
               // canBeOpen // optional
@@ -593,8 +593,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
             <TooltipInfoPoint
               id={`infopoint-tooltip-${1}-${infopointIndex}`}
               infopoint={infopoint}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
               primaryKey="1"
               secondaryKey={infopointIndex.toString()}
               // canBeOpen // optional

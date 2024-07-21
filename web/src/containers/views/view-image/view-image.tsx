@@ -94,8 +94,8 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - - -
 
   const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints,
     ScreenAnchorInfopoint,
     TooltipInfoPoint,
@@ -202,8 +202,8 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
                   key={`infopoint-tooltip-${infopointIndex}`}
                   id={`infopoint-tooltip-${infopointIndex}`}
                   infopoint={infopoint}
-                  infopointOpenStatusMap={infopointOpenStatusMap}
-                  setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                  infopointStatusMap={infopointStatusMap}
+                  setInfopointStatusMap={setInfopointStatusMap}
                   primaryKey={infopointIndex.toString()}
                 />
               </React.Fragment>

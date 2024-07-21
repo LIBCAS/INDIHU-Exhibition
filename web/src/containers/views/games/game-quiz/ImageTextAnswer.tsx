@@ -32,8 +32,8 @@ type ImageTextAnswerProps = {
   answersTextDisplayType: GameQuizAnswerDisplayType;
 
   // Infopoint stuff
-  infopointOpenStatusMap: Record<string, InfopointStatusObject>;
-  setInfopointOpenStatusMap: Dispatch<
+  infopointStatusMap: Record<string, InfopointStatusObject>;
+  setInfopointStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
   >;
 };
@@ -48,8 +48,8 @@ const ImageTextAnswer = ({
   setMarkedAnswers,
   quizType,
   answersTextDisplayType,
-  infopointOpenStatusMap,
-  setInfopointOpenStatusMap,
+  infopointStatusMap,
+  setInfopointStatusMap,
 }: ImageTextAnswerProps) => {
   const { isSm, isMobileLandscape } = useMediaDevice();
 
@@ -169,8 +169,8 @@ const ImageTextAnswer = ({
                   key={`quiz-infopoint-tooltip-${answerIndex}-${infopointIndex}`}
                   id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
                   infopoint={infopoint}
-                  infopointOpenStatusMap={infopointOpenStatusMap}
-                  setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                  infopointStatusMap={infopointStatusMap}
+                  setInfopointStatusMap={setInfopointStatusMap}
                   primaryKey={answerIndex.toString()}
                   secondaryKey={infopointIndex.toString()}
                 />

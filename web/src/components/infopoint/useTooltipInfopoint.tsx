@@ -65,7 +65,7 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
 
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
   // isAlwaysVisible is the mark for each infopoint, set in the slideshow administration
-  const [infopointOpenStatusMap, setInfopointOpenStatusMap] =
+  const [infopointStatusMap, setInfopointStatusMap] =
     useState<InfopointStatusMap>(() => {
       const parsedInfopointMap = parseScreenToInfopointStatusMap(viewScreen);
       setIsMapParsingDone(true);
@@ -77,7 +77,7 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
   // On small (mobile) screens, all infopoint, even the alwaysVisible, are by default first closed and then could be opened
   useEffect(() => {
     if (!isSm) {
-      setInfopointOpenStatusMap((prevMap) => {
+      setInfopointStatusMap((prevMap) => {
         if (!prevMap) {
           return prevMap;
         }
@@ -99,7 +99,7 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
       return;
     }
 
-    setInfopointOpenStatusMap((prevMap) => {
+    setInfopointStatusMap((prevMap) => {
       if (!prevMap) {
         return prevMap;
       }
@@ -120,25 +120,25 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
 
   // Iterates through whole map and close all of the infopoints
   const closeAllInfopoints = useCallback(() => {
-    if (!infopointOpenStatusMap) {
+    if (!infopointStatusMap) {
       return;
     }
-    const entries = Object.entries(infopointOpenStatusMap);
+    const entries = Object.entries(infopointStatusMap);
     const closedEntries = entries.map(([key, infopoint]) => {
       return [key, { ...infopoint, isOpen: false }];
     });
 
     const newMap = Object.fromEntries(closedEntries);
-    setInfopointOpenStatusMap(newMap);
-  }, [infopointOpenStatusMap]);
+    setInfopointStatusMap(newMap);
+  }, [infopointStatusMap]);
 
   // Iterates through whole map, but close only infopoints of current photo
   const closePhotoInfopoints = useCallback(
     (photoIndex: number) => {
-      if (!infopointOpenStatusMap) {
+      if (!infopointStatusMap) {
         return;
       }
-      const entries = Object.entries(infopointOpenStatusMap);
+      const entries = Object.entries(infopointStatusMap);
       const closedEntries = entries.map(([key, infopoint]) => {
         const parsedPhotoKey = parseInt(key.charAt(0));
         if (!isNaN(parsedPhotoKey) && parsedPhotoKey === photoIndex) {
@@ -148,9 +148,9 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
       });
 
       const newMap = Object.fromEntries(closedEntries);
-      setInfopointOpenStatusMap(newMap);
+      setInfopointStatusMap(newMap);
     },
-    [infopointOpenStatusMap]
+    [infopointStatusMap]
   );
 
   // - - -
@@ -172,8 +172,8 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
   }
 
   return {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints,
     ScreenAnchorInfopoint,
     TooltipInfoPoint,
