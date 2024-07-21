@@ -4,7 +4,7 @@ import { Tooltip } from "react-tooltip";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import InfopointBody from "./InfopointBody";
 
-import { InfopointStatusObject } from "./parseScreenMaps";
+import { InfopointStatusObject } from "./screen-to-map-parsers";
 import { Infopoint } from "models";
 
 import cx from "classnames";

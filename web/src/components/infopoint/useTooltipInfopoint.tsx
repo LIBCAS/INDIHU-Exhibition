@@ -1,20 +1,13 @@
 import { useState, useCallback, useEffect } from "react";
 
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
+
 // Components
 import ScreenAnchorInfopoint from "./ScreenAnchorInfopoint";
 import TooltipInfoPoint from "./TooltipInfopoint";
 
-import { useMediaQuery } from "@mui/material";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
-
 // Utils
-import {
-  parseImageScreenMap,
-  parseSlideshowScreenMap,
-  parseImageChangeScreenMap,
-  parseGameQuizScreenMap,
-  InfopointStatusObject,
-} from "./parseScreenMaps";
+import { parseScreenToInfopointStatusMap } from "./screen-to-map-parsers";
 
 // Models
 import {
@@ -23,11 +16,13 @@ import {
   ImageChangeScreen,
   GameQuizScreen,
 } from "models";
+import { InfopointStatusObject } from "./screen-to-map-parsers";
+
 import { screenType } from "enums/screen-type";
 
 // - - - - -
 
-type InfopointSupportedScreens =
+export type InfopointSupportedScreens =
   | ImageScreen
   | SlideshowScreen
   | ImageChangeScreen
@@ -58,29 +53,16 @@ type InfopointSupportedScreens =
  * EXAMPLES: SLIDESHOW screen or IMAGE screen
  */
 const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
-  const isSm = useMediaQuery(breakpoints.down("sm"));
+  const { isSm } = useMediaDevice();
 
   const [isMapParsingDone, setIsMapParsingDone] = useState<boolean>(false);
 
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
   // isAlwaysVisible is the mark for each infopoint, set in the slideshow administration
   const [infopointOpenStatusMap, setInfopointOpenStatusMap] = useState(() => {
-    let parsedInfopointStatusMap: Record<string, InfopointStatusObject> | null =
-      null;
-
-    if (viewScreen.type === screenType.GAME_OPTIONS) {
-      parsedInfopointStatusMap = parseGameQuizScreenMap(viewScreen);
-    } else if (viewScreen.type === screenType.SLIDESHOW) {
-      parsedInfopointStatusMap = parseSlideshowScreenMap(viewScreen);
-    } else if (viewScreen.type === screenType.IMAGE_CHANGE) {
-      parsedInfopointStatusMap = parseImageChangeScreenMap(viewScreen);
-    } else {
-      // TODO - improve structure
-      parsedInfopointStatusMap = parseImageScreenMap(viewScreen);
-    }
-
+    const parsedInfopointMap = parseScreenToInfopointStatusMap(viewScreen);
     setIsMapParsingDone(true);
-    return parsedInfopointStatusMap;
+    return parsedInfopointMap;
   });
 
   // - - -
