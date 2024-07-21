@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/useGlassMagnifier";
 
@@ -36,7 +36,7 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
 
   /* Wrapper is the whole <div> of this screen */
   /* Container is <div> without tooltip */
-  const [wrapperRef, parentSize] = useElementSize();
+  const [wrapperRef, parentSize] = useResizeObserver();
   const containerRef = useRef<HTMLDivElement>(null);
   const [containedImgEl, setContainedImgEl] = useState<HTMLImageElement | null>(
     null

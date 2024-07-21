@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { animated, useSpring } from "react-spring";
 import { useGesture } from "@use-gesture/react";
 
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
@@ -41,7 +41,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   const { image1, image2 } = screenPreloadedFiles;
 
   // Hook up with reference to screen container div, provide its current width and height
-  const [screenContainerRef, screenContainerSize] = useElementSize();
+  const [screenContainerRef, screenContainerSize] = useResizeObserver();
 
   const [imageBeforeEl, setImageBeforeEl] = useState<HTMLImageElement | null>(
     null

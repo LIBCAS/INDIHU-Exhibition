@@ -9,7 +9,7 @@ import { GlassMagnifierDialog } from "components/dialogs/glass-magnifier-dialog/
 import { SettingsDialog } from "components/dialogs/settings-dialog/settings-dialog";
 import { ChaptersDialog } from "components/dialogs/chapters-dialog/chapters-dialog";
 
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 
 // Components
@@ -108,7 +108,7 @@ const ActionsPanel = ({
 
   const sectionScreen = useSectionScreenParams();
   const { section, screen } = sectionScreen;
-  const [actionsBoxRef, actionsBoxSize] = useElementSize();
+  const [actionsBoxRef, actionsBoxSize] = useResizeObserver();
 
   const {
     openNewTopDialog,

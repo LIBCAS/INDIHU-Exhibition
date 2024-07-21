@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 
 import { Checkbox, Radio } from "@mui/material";
 import AnchorInfopoint from "components/infopoint/components/anchor-infopoint";
@@ -54,7 +54,7 @@ const ImageTextAnswer = ({
   const { isSm, isMobileLandscape } = useMediaDevice();
 
   const [imageContainerRef, imageContainerSize] =
-    useElementSize<HTMLImageElement>();
+    useResizeObserver<HTMLImageElement>();
 
   const answerImageOrigData = useMemo(
     () => answer.imageOrigData ?? { width: 0, height: 0 },

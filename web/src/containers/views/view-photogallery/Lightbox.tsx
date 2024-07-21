@@ -5,7 +5,7 @@ import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -32,7 +32,7 @@ const LightBox = ({
   closeLightBox,
   overlayOpacityAnimation,
 }: LightBoxProps) => {
-  const [imgContainerRef, imgContainerSize] = useElementSize();
+  const [imgContainerRef, imgContainerSize] = useResizeObserver();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [containedImageSize, setContainedImageSize] = useState<Size>({
     width: 0,

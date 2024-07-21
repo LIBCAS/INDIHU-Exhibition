@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 
 import { animated, useTransition } from "react-spring";
 import { useCountdown } from "hooks/countdown-hook";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/useGlassMagnifier";
 
@@ -43,7 +43,7 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - -
 
   // Container here is parent, { width, height } in pixels of the whole available screen container
-  const [containerRef, containerSize, containerEl] = useElementSize();
+  const [containerRef, containerSize, containerEl] = useResizeObserver();
   const [photoImgEl, setPhotoImgEl] = useState<HTMLImageElement | null>(null);
 
   const { GlassMagnifier } = useGlassMagnifier(containerEl, photoImgEl);
