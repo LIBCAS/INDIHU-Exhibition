@@ -97,7 +97,7 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
     infopointStatusMap,
     setInfopointStatusMap,
     closeInfopoints,
-    ScreenAnchorInfopoint,
+    AnchorInfopoint,
     TooltipInfoPoint,
   } = useTooltipInfopoint(viewScreen);
 
@@ -186,7 +186,7 @@ export const ViewImage = ({ screenPreloadedFiles }: ScreenProps) => {
 
             return (
               <React.Fragment key={`infopoint-tooltip-${infopointIndex}`}>
-                <ScreenAnchorInfopoint
+                <AnchorInfopoint
                   id={`infopoint-tooltip-${infopointIndex}`}
                   left={adjustedLeft}
                   top={adjustedTop}

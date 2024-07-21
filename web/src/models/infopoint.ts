@@ -17,7 +17,7 @@ export type Infopoint = {
   isScreenIdIncluded: boolean;
   screenIdReference?: string; // id of the screen, present only if isScreenIdIncluded is set to true
   screenNameReference?: string; // present only if isScreenIdIncluded is set to true
-  shape: InfopointShape;
+  shape?: InfopointShape;
   pxSize: number; // number representing size of infopoint in pixels
   color?: string; // present only if shape !== "ICON", hexa string (3B or 4B.. depends if alpha is not 100%)
   iconFile?: File; // present only if shape === "ICON"

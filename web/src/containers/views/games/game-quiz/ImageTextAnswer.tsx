@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
 import useElementSize from "hooks/element-size-hook";
 
 import { Checkbox, Radio } from "@mui/material";
-import ScreenAnchorInfopoint from "components/infopoint/components/ScreenAnchorInfopoint";
+import AnchorInfopoint from "components/infopoint/components/anchor-infopoint";
 import TooltipInfoPoint from "components/infopoint/components/TooltipInfopoint";
 
 import {
@@ -159,7 +159,7 @@ const ImageTextAnswer = ({
               <Fragment
                 key={`quiz-infopoint-anchor-${answerIndex}-${infopointIndex}`}
               >
-                <ScreenAnchorInfopoint
+                <AnchorInfopoint
                   id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
                   left={adjustedLeft}
                   top={adjustedTop}

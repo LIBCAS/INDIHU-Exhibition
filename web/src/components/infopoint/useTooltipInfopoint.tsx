@@ -4,7 +4,7 @@ import { useMobileInfopointAutoClosing } from "./hooks/useMobileInfopointAutoClo
 import { useInfopointClosing } from "./hooks/useInfopointClosing";
 
 // Components
-import ScreenAnchorInfopoint from "./components/ScreenAnchorInfopoint";
+import AnchorInfopoint from "./components/anchor-infopoint";
 import TooltipInfoPoint from "./components/TooltipInfopoint";
 
 // Utils
@@ -43,13 +43,13 @@ export type InfopointStatusMap = Record<string, InfopointStatusObject>;
  *       the infopoint is currently opened or closed
  *     - alwaysVisible in czech "stale zobrazen", is a checkbox in screen administration
  *     - alwaysVisible infopoint is at the beginning open, thats the only difference from another infopoint
- * 3. Use ScreenAnchorInfopoint component in your screen
+ * 3. Use AnchorInfopoint component in your screen
  *     - requires top and left props as absolute offset positioning
  *     - requires id and content prop, which is used as data-tooltip-id, data-tooltip-content
  *     - id of SquareInfopoint must be the same as the id prop of TooltipInfopoint
  *     - content of SquareInfopoint will be through id linked and used in TooltipInfopoint
  * 4. Apply TooltipInfopoint component
- *     - requires id props which must be the same as the supplied id in ScreenAnchorInfopoint
+ *     - requires id props which must be the same as the supplied id in AnchorInfopoint
  *     - requires information whether this infopoint is marked as alwaysVisible from administration
  *     - requires infopointOpenStatusMap and setter of this map.. created in first step and returned by this hook
  *     - requires primary and optionally secondary key, they will be combined into one mapKey
@@ -87,7 +87,7 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
     infopointStatusMap,
     setInfopointStatusMap,
     closeInfopoints,
-    ScreenAnchorInfopoint,
+    AnchorInfopoint,
     TooltipInfoPoint,
   };
 };

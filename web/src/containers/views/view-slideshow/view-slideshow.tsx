@@ -85,7 +85,7 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
     infopointStatusMap,
     setInfopointStatusMap,
     closeInfopoints,
-    ScreenAnchorInfopoint,
+    AnchorInfopoint,
     TooltipInfoPoint,
   } = useTooltipInfopoint(viewScreen);
 
@@ -334,7 +334,7 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
                     <Fragment
                       key={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
                     >
-                      <ScreenAnchorInfopoint
+                      <AnchorInfopoint
                         id={`infopoint-tooltip-${photoIndex}-${infopointIndex}`}
                         left={adjustedLeft}
                         top={adjustedTop}
