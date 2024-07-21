@@ -1,25 +1,34 @@
 import ReactDOM from "react-dom";
-import { useCallback, useMemo, useState } from "react";
-import { animated, useSpring, useTransition } from "react-spring";
-import { createSelector } from "reselect";
-import { useDrag } from "@use-gesture/react";
+import { useState, useCallback } from "react";
+import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
 
+import { useTranslation } from "react-i18next";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useResizeObserver from "hooks/use-resize-observer";
+import { useElementResize } from "../../../../hooks/spring-hooks/use-element-resize";
+
+// Components
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
+
+// Models
 import { ScreenProps } from "models";
 import { GameSizingScreen } from "models";
 import { AppState } from "store/store";
-import useElementSize from "hooks/element-size-hook";
 
-import expand from "../../../../assets/img/expand.png";
-import { GameInfoPanel } from "../GameInfoPanel";
-import { GameActionsPanel } from "../GameActionsPanel";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useTranslation } from "react-i18next";
+// Assets
+import expandImg from "../../../../assets/img/expand.png";
+
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameSizingScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - - - -
 
 export const GameSizing = ({
   screenPreloadedFiles,
@@ -27,100 +36,102 @@ export const GameSizing = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
-  const [finished, setFinished] = useState(false);
-  const [ref, containerSize] = useElementSize();
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
 
-  const onFinish = useCallback(() => {
-    setFinished(true);
-  }, []);
+  const {
+    image1: referenceImgSrc,
+    image2: comparisonImgSrc,
+    image3: resultingImgSrc,
+  } = screenPreloadedFiles;
 
-  const onReset = useCallback(() => {
-    setFinished(false);
-  }, []);
+  // - - Resizing functionality - -
 
-  const { height: originalHeight = 0, width: originalWidth = 0 } =
-    viewScreen.image2OrigData ?? {};
+  const {
+    image1OrigData: referenceImgOrigData,
+    image2OrigData: comparisonImgOrigData,
+  } = viewScreen;
 
-  const [{ width, height }, api] = useSpring(() => ({
-    width: originalWidth,
-    height: originalHeight,
-  }));
+  const [rightContainerRef, rightContainerSize] = useResizeObserver();
+  const [leftContainerRef, leftContainerSize] = useResizeObserver();
 
-  const ratio = useMemo(
-    () => originalWidth / originalHeight,
-    [originalHeight, originalWidth]
-  );
-
-  const bind = useDrag(
-    ({ down, offset: [x, y], lastOffset: [xp, yp] }) => {
-      if (!down) {
-        return;
-      }
-
-      // we double the increments since the container is centered (grows on both sides)
-      const width = 2 * x - xp;
-      const height = 2 * y - yp;
-
-      const widthBased = width > height * ratio;
-
-      api.start({
-        width: widthBased ? width : height * ratio,
-        height: widthBased ? width / ratio : height,
-        immediate: true,
-      });
-    },
-    {
-      from: () => [width.get(), height.get()],
-      bounds: (state) => {
-        const [xp = 0, yp = 0] = state?.lastOffset ?? [];
-
-        const maxWidth = (containerSize.width - 100 + xp) / 2;
-        const maxHeight = (containerSize.height - 100 + yp) / 2;
-        const widthBased = containerSize.width < containerSize.height * ratio;
-
-        return {
-          left: (50 + xp) / 2,
-          top: (50 + yp) / 2,
-          right: widthBased ? maxWidth : maxHeight * ratio,
-          bottom: widthBased ? maxWidth / ratio : maxHeight,
-        };
-      },
-    }
-  );
-
-  const transition = useTransition(finished, {
-    initial: { opacity: 1 },
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
+  const {
+    resizeSpring: comparisonImgResizeSpring,
+    bindResizeDrag: comparisongImgBindResizeDrag,
+  } = useElementResize({
+    containerSize: rightContainerSize,
+    dragResizingImgOrigData: comparisonImgOrigData ?? { width: 0, height: 0 },
   });
 
-  // - -
+  const {
+    resizeSpring: referenceImgResizeSpring,
+    bindResizeDrag: referenceImgBindResizeDrag,
+  } = useElementResize({
+    containerSize: leftContainerSize,
+    dragResizingImgOrigData: referenceImgOrigData ?? { width: 0, height: 0 },
+  });
+
+  // - - Tutorial - -
 
   const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameSizing", {
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
 
+  // - - - -
+
+  const [isGameFinished, setIsGameFinished] = useState(false);
+
+  const onGameFinish = useCallback(() => {
+    setIsGameFinished(true);
+  }, []);
+
+  const onGameReset = useCallback(() => {
+    setIsGameFinished(false);
+  }, []);
+
+  const transition = useTransition(isGameFinished, {
+    initial: { opacity: 1 },
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  });
+
   return (
     <div className="w-full h-full flex px-12">
-      <div className="flex-grow m-4 flex justify-center items-center relative">
-        <img
-          className="w-full h-full absolute object-contain"
-          src={screenPreloadedFiles.image1}
-        />
-      </div>
+      {/* Left container */}
       <div
         className="flex-grow m-4 flex justify-center items-center relative"
-        ref={ref}
+        ref={leftContainerRef}
       >
-        {transition(({ opacity }, finished) =>
-          finished ? (
+        <div className="absolute p-2 border-2 border-white border-opacity-50 border-dashed">
+          <animated.img
+            src={referenceImgSrc}
+            style={{
+              width: referenceImgResizeSpring.width,
+              height: referenceImgResizeSpring.height,
+            }}
+          />
+          <img
+            className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
+            src={expandImg}
+            draggable={false}
+            {...referenceImgBindResizeDrag()}
+            alt="expand image icon left"
+          />
+        </div>
+      </div>
+
+      {/* Right container */}
+      <div
+        className="flex-grow m-4 flex justify-center items-center relative"
+        ref={rightContainerRef}
+      >
+        {transition(({ opacity }, isGameFinished) =>
+          isGameFinished ? (
             <animated.img
               className="w-full h-full absolute object-contain"
-              src={screenPreloadedFiles.image3}
+              src={resultingImgSrc}
               style={{ opacity }}
             />
           ) : (
@@ -129,15 +140,18 @@ export const GameSizing = ({
               style={{ opacity }}
             >
               <animated.img
-                src={screenPreloadedFiles.image2}
-                style={{ height, width }}
+                src={comparisonImgSrc}
+                style={{
+                  width: comparisonImgResizeSpring.width,
+                  height: comparisonImgResizeSpring.height,
+                }}
               />
               <img
                 className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
-                src={expand}
+                src={expandImg}
                 draggable={false}
-                {...bind()}
-                alt="expand icon"
+                {...comparisongImgBindResizeDrag()}
+                alt="expand image icon right"
               />
             </animated.div>
           )
@@ -148,7 +162,7 @@ export const GameSizing = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            isGameFinished={finished}
+            isGameFinished={isGameFinished}
             bindTutorial={bindTutorial("sizing")}
             solutionText={t("game-sizing.solution")}
           />,
@@ -159,9 +173,9 @@ export const GameSizing = ({
         ReactDOM.createPortal(
           <GameActionsPanel
             isMobileOverlay={isMobileOverlay}
-            isGameFinished={finished}
-            onGameFinish={onFinish}
-            onGameReset={onReset}
+            isGameFinished={isGameFinished}
+            onGameFinish={onGameFinish}
+            onGameReset={onGameReset}
           />,
           actionsPanelRef.current
         )}

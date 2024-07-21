@@ -8,6 +8,7 @@ import { Document } from "./document";
 import { Infopoint } from "./infopoint";
 import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
 import { ActiveExpo } from "./exposition";
+import { Position, Size } from "models";
 
 // NEW
 import {
@@ -468,6 +469,14 @@ export type GameMoveScreen = {
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
   objectOrigData?: ImageOrigData;
+  objectPositionProps?: {
+    containerPosition: Position;
+    containedImgPosition: Position;
+  };
+  objectSizeProps?: {
+    inContainerSize: Size;
+    inContainedImgFractionSize: Size;
+  };
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;

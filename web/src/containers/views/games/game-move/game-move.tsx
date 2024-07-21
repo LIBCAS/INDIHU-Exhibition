@@ -1,13 +1,13 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState } from "react";
-
+import { useState, useMemo, useCallback } from "react";
+import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { animated, useSpring, useTransition } from "react-spring";
-import { useDrag } from "@use-gesture/react";
-import useResizeObserver from "hooks/use-resize-observer";
+
 import { useTranslation } from "react-i18next";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useResizeObserver from "hooks/use-resize-observer";
+import { useElementMove } from "../../../../hooks/spring-hooks/use-element-move";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -17,14 +17,17 @@ import { GameActionsPanel } from "../GameActionsPanel";
 import { AppState } from "store/store";
 import { ScreenProps, GameMoveScreen } from "models";
 
-// - - -
+// Utils
+import { calculateObjectInitialPosition, calculateObjectSize } from "./utils";
+
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameMoveScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-// - - -
+// - - - - - -
 
 export const GameMove = ({
   screenPreloadedFiles,
@@ -32,26 +35,50 @@ export const GameMove = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
 
-  const [containerRef, { width: containerWidth, height: containerHeight }] =
-    useResizeObserver();
-  const [dragRef, { width: dragWidth, height: dragHeight }] =
-    useResizeObserver(); // dragTarget as a container with the object img
+  const {
+    image1: assignmentImgSrc,
+    image2: resultingImgSrc,
+    object: objectImgSrc,
+  } = screenPreloadedFiles;
 
-  // - -
+  // - - Move functionality - -
+
+  const [containerRef, containerSize] = useResizeObserver();
+
+  const [objectDragRef, objectDragSize] = useResizeObserver();
+
+  const { objInitialLeft, objInitialTop } = useMemo(
+    () => calculateObjectInitialPosition(viewScreen, containerSize),
+    [containerSize, viewScreen]
+  );
+
+  const { moveSpring, moveSpringApi, bindMoveDrag } = useElementMove({
+    containerSize: containerSize,
+    dragMovingObjectSize: objectDragSize,
+    initialPosition: { left: objInitialLeft, top: objInitialTop },
+  });
+
+  // - - Size calculation of object, based on administration settings - -
+  // once at mount assigned through CSS and then used by `objectDragSize`
+
+  const { objectWidth, objectHeight } = useMemo(
+    () => calculateObjectSize(viewScreen, containerSize),
+    [containerSize, viewScreen]
+  );
+
+  // - - Tutorial - -
+
+  const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - - -
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
-
-  // Initialize the position for drag object image, it will be reset back to [0, 0] whenever the width or height of the container changes
-  const [{ dragLeft, dragTop }, dragApi] = useSpring(
-    () => ({
-      dragLeft: 0,
-      dragTop: 0,
-    }),
-    [containerWidth, containerHeight]
-  );
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -59,29 +86,8 @@ export const GameMove = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    dragApi.start({ dragLeft: 0, dragTop: 0 });
-  }, [dragApi]);
-
-  // - -
-
-  const bind = useDrag(
-    ({ down, offset: [x, y] }) => {
-      if (!down) {
-        return;
-      }
-
-      dragApi.start({ dragLeft: x, dragTop: y, immediate: true });
-    },
-    {
-      from: () => [dragLeft.get(), dragTop.get()],
-      bounds: {
-        left: 0,
-        top: 0,
-        right: containerWidth - dragWidth,
-        bottom: containerHeight - dragHeight,
-      },
-    }
-  );
+    moveSpringApi.start({ left: objInitialLeft, top: objInitialTop });
+  }, [moveSpringApi, objInitialLeft, objInitialTop]);
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -90,49 +96,42 @@ export const GameMove = ({
     leave: { opacity: 0 },
   });
 
-  // - -
-
-  const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
-    shouldOpen: !isMobileOverlay,
-    closeOnEsc: true,
-  });
-
   return (
     <div className="relative w-[100svw] h-[100svh]" ref={containerRef}>
       {transition(({ opacity }, isGameFinished) =>
         isGameFinished ? (
-          // Image2 is result image
           <animated.img
-            src={screenPreloadedFiles.image2}
-            className="w-full h-full absolute object-contain"
+            src={resultingImgSrc}
+            className="absolute w-full h-full object-contain"
             style={{ opacity }}
             alt="result image"
           />
         ) : (
           <>
-            {/* Image1 is background image (zadanie) */}
             <animated.img
-              src={screenPreloadedFiles.image1}
-              className="touch-none w-full h-full absolute object-contain"
+              src={assignmentImgSrc}
+              className="absolute touch-none w-full h-full object-contain"
               style={{ opacity }}
               alt="assignment-background-image"
             />
 
-            {/* Object */}
             <animated.div
-              className="touch-none absolute p-2 border-2 border-white border-opacity-50 border-dashed hover:cursor-move"
+              className="absolute touch-none hover:cursor-move p-2 border-2 border-white border-opacity-50 border-dashed"
               style={{
-                left: dragLeft,
-                top: dragTop,
+                left: moveSpring.left,
+                top: moveSpring.top,
                 opacity,
                 WebkitUserSelect: "none",
                 WebkitTouchCallout: "none",
+                width: objectWidth,
+                height: objectHeight,
               }}
-              ref={dragRef}
-              {...bind()}
+              ref={objectDragRef}
+              {...bindMoveDrag()}
             >
               <img
-                src={screenPreloadedFiles.object}
+                src={objectImgSrc}
+                className="w-full h-full object-contain"
                 draggable={false}
                 alt="drag content"
               />
