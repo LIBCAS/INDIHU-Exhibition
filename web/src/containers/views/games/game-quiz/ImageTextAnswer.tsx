@@ -3,7 +3,7 @@ import useElementSize from "hooks/element-size-hook";
 
 import { Checkbox, Radio } from "@mui/material";
 import AnchorInfopoint from "components/infopoint/components/anchor-infopoint";
-import TooltipInfoPoint from "components/infopoint/components/TooltipInfopoint";
+import TooltipInfoPoint from "components/infopoint/components/tooltip-infopoint/TooltipInfopoint";
 
 import {
   GameQuizAnswer,

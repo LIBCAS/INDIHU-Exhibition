@@ -5,7 +5,7 @@ import { useInfopointClosing } from "./hooks/useInfopointClosing";
 
 // Components
 import AnchorInfopoint from "./components/anchor-infopoint";
-import TooltipInfoPoint from "./components/TooltipInfopoint";
+import TooltipInfoPoint from "./components/tooltip-infopoint/TooltipInfopoint";
 
 // Utils
 import { parseScreenToInfopointStatusMap } from "./screen-to-map-parsers";
