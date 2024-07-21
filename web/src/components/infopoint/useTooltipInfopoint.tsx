@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 
-import { useMediaDevice } from "context/media-device-provider/media-device-provider";
+import { useMobileInfopointAutoClosing } from "./hooks/useMobileInfopointAutoClosing";
 
 // Components
 import ScreenAnchorInfopoint from "./ScreenAnchorInfopoint";
@@ -59,8 +59,6 @@ export type InfopointStatusMap = Record<string, InfopointStatusObject>;
  * EXAMPLES: SLIDESHOW screen or IMAGE screen
  */
 const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
-  const { isSm } = useMediaDevice();
-
   const [isMapParsingDone, setIsMapParsingDone] = useState<boolean>(false);
 
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
@@ -74,47 +72,10 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
 
   // - - -
 
-  // On small (mobile) screens, all infopoint, even the alwaysVisible, are by default first closed and then could be opened
-  useEffect(() => {
-    if (!isSm) {
-      setInfopointStatusMap((prevMap) => {
-        if (!prevMap) {
-          return prevMap;
-        }
-        const entries = Object.entries(prevMap);
-        const nextMap = entries.reduce(
-          (acc, [key, infopointStatus]) => ({
-            ...acc,
-            [key]: {
-              ...infopointStatus,
-              isOpen: infopointStatus.isAlwaysVisible,
-            },
-          }),
-          {} as Record<string, InfopointStatusObject>
-        );
-
-        return nextMap;
-      });
-
-      return;
-    }
-
-    setInfopointStatusMap((prevMap) => {
-      if (!prevMap) {
-        return prevMap;
-      }
-      const entries = Object.entries(prevMap);
-      const nextMapWithClosedInfopoints = entries.reduce(
-        (acc, [key, infopointStatus]) => ({
-          ...acc,
-          [key]: { ...infopointStatus, isOpen: false },
-        }),
-        {} as Record<string, InfopointStatusObject>
-      );
-
-      return nextMapWithClosedInfopoints;
-    });
-  }, [isSm, isMapParsingDone]);
+  useMobileInfopointAutoClosing({
+    setInfopointStatusMap,
+    isMapParsingDone,
+  });
 
   // - - -
 
