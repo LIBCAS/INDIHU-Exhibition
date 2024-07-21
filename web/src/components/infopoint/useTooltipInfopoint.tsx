@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 import { useMobileInfopointAutoClosing } from "./hooks/useMobileInfopointAutoClosing";
+import { useInfopointClosing } from "./hooks/useInfopointClosing";
 
 // Components
 import ScreenAnchorInfopoint from "./ScreenAnchorInfopoint";
@@ -16,8 +17,6 @@ import {
   ImageChangeScreen,
   GameQuizScreen,
 } from "models";
-
-import { screenType } from "enums/screen-type";
 
 // - - - - -
 
@@ -79,58 +78,10 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
 
   // - - -
 
-  // Iterates through whole map and close all of the infopoints
-  const closeAllInfopoints = useCallback(() => {
-    if (!infopointStatusMap) {
-      return;
-    }
-    const entries = Object.entries(infopointStatusMap);
-    const closedEntries = entries.map(([key, infopoint]) => {
-      return [key, { ...infopoint, isOpen: false }];
-    });
-
-    const newMap = Object.fromEntries(closedEntries);
-    setInfopointStatusMap(newMap);
-  }, [infopointStatusMap]);
-
-  // Iterates through whole map, but close only infopoints of current photo
-  const closePhotoInfopoints = useCallback(
-    (photoIndex: number) => {
-      if (!infopointStatusMap) {
-        return;
-      }
-      const entries = Object.entries(infopointStatusMap);
-      const closedEntries = entries.map(([key, infopoint]) => {
-        const parsedPhotoKey = parseInt(key.charAt(0));
-        if (!isNaN(parsedPhotoKey) && parsedPhotoKey === photoIndex) {
-          return [key, { ...infopoint, isOpen: false }];
-        }
-        return [key, { ...infopoint }];
-      });
-
-      const newMap = Object.fromEntries(closedEntries);
-      setInfopointStatusMap(newMap);
-    },
-    [infopointStatusMap]
-  );
-
-  // - - -
-
-  // Function which will close infopoints
-  // Called e.g on ESC press + clicking on the image as outside any infopoint
-  // Typescript method overloading
-  function closeInfopoints(screen: GameQuizScreen): () => void;
-  function closeInfopoints(screen: ImageScreen): () => void;
-  function closeInfopoints(screen: ImageChangeScreen): () => void;
-  function closeInfopoints(
-    screen: SlideshowScreen
-  ): (photoIndex: number) => void;
-  function closeInfopoints(screen: InfopointSupportedScreens) {
-    if (screen.type === screenType.SLIDESHOW) {
-      return closePhotoInfopoints;
-    }
-    return closeAllInfopoints;
-  }
+  const { closeInfopoints } = useInfopointClosing({
+    infopointStatusMap: infopointStatusMap,
+    setInfopointStatusMap: setInfopointStatusMap,
+  });
 
   return {
     infopointStatusMap,
