@@ -1,14 +1,18 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { Tooltip } from "react-tooltip";
-
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
+import { Tooltip } from "react-tooltip";
 import InfopointBody from "./InfopointBody";
 
+// Models
 import { InfopointStatusObject } from "../../useTooltipInfopoint";
 import { Infopoint } from "models";
 
+// Utils
 import cx from "classnames";
 import { getTooltipArrowBorderClassName } from "utils/view-utils";
+
+// - - - -
 
 type TooltipInfoPointProps = {
   id: string;
