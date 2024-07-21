@@ -278,7 +278,8 @@
       "imageResultTooltip": "Select the complete image from the document library.",
       "object": "Object",
       "objectSelectLabel": "Select",
-      "objectTooltip": "From the document library, select an image with parts for the user to select from."
+      "objectTooltip": "From the document library, select an image with parts for the user to select from.",
+      "screenPreviewText": "Screen preview"
     },
     "gameQuizScreen": {
       "nameLabel": "Title",

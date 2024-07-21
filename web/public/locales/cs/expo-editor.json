@@ -278,7 +278,8 @@
       "imageResultTooltip": "Z knihovny dokumentů vyberte výsledný kompletní obrázek.",
       "object": "Objekt",
       "objectSelectLabel": "Vybrat",
-      "objectTooltip": "Z knihovny dokumentů vyberte obrázek s částmi, ze kterých budou návštěvníci vybírat."
+      "objectTooltip": "Z knihovny dokumentů vyberte obrázek s částmi, ze kterých budou návštěvníci vybírat.",
+      "screenPreviewText": "Náhled obrazovky"
     },
     "gameQuizScreen": {
       "nameLabel": "Název",

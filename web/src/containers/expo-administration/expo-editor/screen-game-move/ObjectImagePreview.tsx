@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { animated } from "react-spring";
 
 import useResizeObserver from "hooks/use-resize-observer";
@@ -30,6 +31,9 @@ const ObjectImagePreview = ({
   objectImgSrc,
 }: ObjectImagePreviewProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameMoveScreen",
+  });
 
   const image1OrigData = activeScreen.image1OrigData ?? { width: 0, height: 0 };
   const objectOrigData = activeScreen.objectOrigData ?? { width: 0, height: 0 };
@@ -87,7 +91,11 @@ const ObjectImagePreview = ({
   });
 
   return (
-    <div className="mt-16 mb-32 flex justify-center">
+    <div className="mt-16 mb-32 flex flex-col justify-center items-center gap-6">
+      <div className="self-start font-['Work_Sans'] text-lg">
+        {t("screenPreviewText")}
+      </div>
+
       <div
         ref={containerRef}
         className="w-[450px] h-[350px] relative overflow-hidden border-solid border-2 border-black"
