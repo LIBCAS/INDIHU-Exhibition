@@ -3,20 +3,16 @@ import { parseImageChangeScreenMap } from "./image-change-parser";
 import { parseImageScreenMap } from "./image-parser";
 import { parseSlideshowScreenMap } from "./slideshow-parser";
 
-import { InfopointSupportedScreens } from "../useTooltipInfopoint";
+import {
+  InfopointStatusMap,
+  InfopointSupportedScreens,
+} from "../useTooltipInfopoint";
 
 import { screenType } from "enums/screen-type";
 
-// - - - -
-
-export type InfopointStatusObject = {
-  isOpen: boolean;
-  isAlwaysVisible: boolean;
-};
-
 export const parseScreenToInfopointStatusMap = (
   viewScreen: InfopointSupportedScreens
-) => {
+): InfopointStatusMap => {
   switch (viewScreen.type) {
     case screenType.GAME_OPTIONS:
       return parseGameQuizScreenMap(viewScreen);

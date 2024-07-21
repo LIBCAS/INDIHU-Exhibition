@@ -1,5 +1,5 @@
 import { ImageChangeScreen } from "models";
-import { InfopointStatusObject } from ".";
+import { InfopointStatusMap } from "../useTooltipInfopoint";
 
 export const parseImageChangeScreenMap = (viewScreen: ImageChangeScreen) => {
   const infopointsMapFirst = viewScreen?.image1Infopoints?.reduce(
@@ -29,5 +29,5 @@ export const parseImageChangeScreenMap = (viewScreen: ImageChangeScreen) => {
   );
 
   const infopointsMap = { ...infopointsMapFirst, ...infopointsMapSecond };
-  return infopointsMap as Record<string, InfopointStatusObject>;
+  return infopointsMap as InfopointStatusMap;
 };

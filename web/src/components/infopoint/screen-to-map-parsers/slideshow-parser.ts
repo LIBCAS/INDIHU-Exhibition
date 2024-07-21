@@ -1,5 +1,5 @@
 import { SlideshowScreen } from "models";
-import { InfopointStatusObject } from ".";
+import { InfopointStatusMap } from "../useTooltipInfopoint";
 
 export const parseSlideshowScreenMap = (viewScreen: SlideshowScreen) => {
   const infopointsMap = viewScreen.images?.reduce(
@@ -22,5 +22,5 @@ export const parseSlideshowScreenMap = (viewScreen: SlideshowScreen) => {
     {}
   );
 
-  return infopointsMap as Record<string, InfopointStatusObject>;
+  return infopointsMap as InfopointStatusMap;
 };

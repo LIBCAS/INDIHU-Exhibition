@@ -1,5 +1,5 @@
 import { GameQuizScreen } from "models";
-import { InfopointStatusObject } from ".";
+import { InfopointStatusMap } from "../useTooltipInfopoint";
 
 export const parseGameQuizScreenMap = (viewScreen: GameQuizScreen) => {
   const infopointsMap = viewScreen.answers?.reduce(
@@ -22,5 +22,5 @@ export const parseGameQuizScreenMap = (viewScreen: GameQuizScreen) => {
     {}
   );
 
-  return infopointsMap as Record<string, InfopointStatusObject>;
+  return infopointsMap as InfopointStatusMap;
 };

@@ -11,7 +11,7 @@ import {
   GameQuizType,
   Size,
 } from "models";
-import { InfopointStatusObject } from "components/infopoint/screen-to-map-parsers";
+import { InfopointStatusObject } from "components/infopoint/useTooltipInfopoint";
 
 import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";

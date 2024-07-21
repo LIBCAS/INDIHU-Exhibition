@@ -16,7 +16,6 @@ import {
   ImageChangeScreen,
   GameQuizScreen,
 } from "models";
-import { InfopointStatusObject } from "./screen-to-map-parsers";
 
 import { screenType } from "enums/screen-type";
 
@@ -27,6 +26,13 @@ export type InfopointSupportedScreens =
   | SlideshowScreen
   | ImageChangeScreen
   | GameQuizScreen;
+
+export type InfopointStatusObject = {
+  isOpen: boolean;
+  isAlwaysVisible: boolean;
+};
+
+export type InfopointStatusMap = Record<string, InfopointStatusObject>;
 
 /**
  * 1. Import this hook into screen where you want to use Infopoints
@@ -59,11 +65,12 @@ const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
 
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
   // isAlwaysVisible is the mark for each infopoint, set in the slideshow administration
-  const [infopointOpenStatusMap, setInfopointOpenStatusMap] = useState(() => {
-    const parsedInfopointMap = parseScreenToInfopointStatusMap(viewScreen);
-    setIsMapParsingDone(true);
-    return parsedInfopointMap;
-  });
+  const [infopointOpenStatusMap, setInfopointOpenStatusMap] =
+    useState<InfopointStatusMap>(() => {
+      const parsedInfopointMap = parseScreenToInfopointStatusMap(viewScreen);
+      setIsMapParsingDone(true);
+      return parsedInfopointMap;
+    });
 
   // - - -
 
