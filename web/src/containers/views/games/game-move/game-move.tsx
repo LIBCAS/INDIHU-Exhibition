@@ -7,7 +7,7 @@ import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useResizeObserver from "hooks/use-resize-observer";
-import { useElementMove } from "./use-element-move";
+import { useElementMove } from "../../../../hooks/spring-hooks/use-element-move";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";

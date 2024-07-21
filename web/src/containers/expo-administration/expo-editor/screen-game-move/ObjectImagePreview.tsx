@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { animated } from "react-spring";
 
 import useResizeObserver from "hooks/use-resize-observer";
-import { useElementMove } from "containers/views/games/game-move/use-element-move";
-import { useElementResize } from "containers/views/games/game-sizing/use-element-resize";
+import { useElementMove } from "hooks/spring-hooks/use-element-move";
+import { useElementResize } from "hooks/spring-hooks/use-element-resize";
 
 // Models
 import { AppDispatch } from "store/store";
