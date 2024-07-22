@@ -137,11 +137,11 @@ export const ViewSlideshow = ({ screenPreloadedFiles }: ScreenProps) => {
   }, [photosTimes, dispatch]);
 
   // One countdown for each photo in slideshow.. after finished, setIndex to next photo
-  const { reset } = useCountdown(photosTimesArr[photoIndex], {
-    paused: !viewProgress.shouldIncrement,
+  const { resetCountdown } = useCountdown(photosTimesArr[photoIndex], {
+    isPaused: !viewProgress.shouldIncrement,
     onFinish: () => {
       setPhotoIndex((prev) => (prev + 1) % (viewScreen.images?.length ?? 1));
-      reset();
+      resetCountdown();
     },
   });
 
