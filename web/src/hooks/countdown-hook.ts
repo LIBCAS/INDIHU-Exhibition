@@ -6,6 +6,9 @@ type Options = {
   tick?: number;
 };
 
+/**
+ * NOTE: onFinish function should be wrapped within useCallback
+ */
 export const useCountdown = (time: number, options?: Options) => {
   const { onFinish, isPaused = false, tick = 250 } = options ?? {};
 
