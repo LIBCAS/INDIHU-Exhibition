@@ -12,7 +12,7 @@ import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
 
 // Models
-import { ScreenProps } from "models";
+import { ScreenProps, Position } from "models";
 import { GameFindScreen } from "models";
 import { AppState } from "store/store";
 
@@ -42,7 +42,7 @@ export const GameFind = ({
   const { t } = useTranslation("view-screen");
 
   const [isGameFinished, setIsGameFinished] = useState(false);
-  const [pin, setPin] = useState<{ x: number; y: number }>();
+  const [pin, setPin] = useState<Position | undefined>(undefined);
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -59,10 +59,19 @@ export const GameFind = ({
         return;
       }
 
-      setPin({ x: e.clientX, y: e.clientY });
+      setPin({ left: e.clientX, top: e.clientY });
     },
     [pin]
   );
+
+  // - - Tutorial - -
+
+  const { bind, TutorialTooltip } = useTutorial("gameFind", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - Transitions - -
 
   const imageTransition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -75,13 +84,6 @@ export const GameFind = ({
     from: { x: 0 },
     enter: { x: 1 },
     leave: { x: 1 },
-  });
-
-  //
-
-  const { bind, TutorialTooltip } = useTutorial("gameFind", {
-    shouldOpen: !isMobileOverlay,
-    closeOnEsc: true,
   });
 
   return (
@@ -115,10 +117,10 @@ export const GameFind = ({
               alt="pin icon"
               style={{
                 position: "fixed",
-                x: pin.x - 25,
+                x: pin.left - 25,
                 y: x.to(
                   [0, 0.9, 0.95, 1],
-                  [pin.y - 50, pin.y - 80, pin.y - 45, pin.y - 50]
+                  [pin.top - 50, pin.top - 80, pin.top - 45, pin.top - 50]
                 ),
                 rotateZ: x.to([0, 0.9, 0.95, 1], [0, 10, 0, 0]),
               }}
