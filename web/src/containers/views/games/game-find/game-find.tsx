@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { useCornerInfoBox } from "hooks/spring-hooks/use-corner-info-box";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -53,6 +54,12 @@ export const GameFind = ({
     numberOfPins = GAME_FIND_DEFAULT_NUMBER_OF_PINS,
     pinsTexts,
   } = viewScreen;
+
+  // NOTE: pinsTexts - can store more than numberOfPins texts
+  const slicedPinsTexts = useMemo(
+    () => pinsTexts?.slice(0, numberOfPins),
+    [numberOfPins, pinsTexts]
+  );
 
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
@@ -134,6 +141,14 @@ export const GameFind = ({
     leave: { x: 1 },
   });
 
+  // NOTE: return value of this hook is transition as well
+  const CornerPinInfoBox = useCornerInfoBox<string>({
+    items: slicedPinsTexts,
+    currIndex: currentPinIndex,
+    textExtractor: (pinText) => pinText,
+    position: "left",
+  });
+
   return (
     <div className="w-full h-full relative">
       {imageTransition(({ opacity }, isGameFinished) =>
@@ -163,6 +178,7 @@ export const GameFind = ({
           shouldDisplayPin && (
             <>
               <animated.img
+                key={`pin-icon-${trIndex}`}
                 data-tooltip-id={`pin-icon-${trIndex}`}
                 src={pinIcon}
                 alt="pin icon"
@@ -184,11 +200,13 @@ export const GameFind = ({
 
               <BasicTooltip
                 id={`pin-icon-${trIndex}`}
-                content={pinsTexts?.[trIndex] ?? ""}
+                content={slicedPinsTexts?.[trIndex] ?? ""}
               />
             </>
           )
       )}
+
+      {CornerPinInfoBox}
 
       {infoPanelRef.current &&
         ReactDOM.createPortal(
