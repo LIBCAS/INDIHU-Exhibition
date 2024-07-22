@@ -38,8 +38,11 @@ export const GameFind = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
+
+  const { image1: assignmentImgSrc, image2: resultingImgSrc } =
+    screenPreloadedFiles;
 
   const [isGameFinished, setIsGameFinished] = useState(false);
   const [pin, setPin] = useState<Position | undefined>(undefined);
@@ -96,15 +99,15 @@ export const GameFind = ({
               [classes.pinningCursor]: !pin,
             })}
             onClick={pinImage}
-            src={screenPreloadedFiles.image1}
-            alt="find game background"
+            src={assignmentImgSrc}
+            alt="assignment image"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="w-full h-full absolute object-contain"
-            src={screenPreloadedFiles.image2}
-            alt="solution"
+            src={resultingImgSrc}
+            alt="result image"
           />
         )
       )}
