@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { animated, easings, useSpring } from "react-spring";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 
 // Models
 import { ScreenProps, ParallaxScreeen } from "models";
@@ -56,7 +56,7 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
   const [
     viewContainerRef,
     { width: viewContainerWidth, height: viewContainerHeight },
-  ] = useElementSize();
+  ] = useResizeObserver();
 
   const totalDistance = useMemo(
     () =>

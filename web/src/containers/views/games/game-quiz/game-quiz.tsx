@@ -43,8 +43,8 @@ export const GameQuiz = ({
   const { isSm, isMobileLandscape } = useMediaDevice();
 
   const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints: closeAllInfopoints,
   } = useTooltipInfopoint(viewScreen);
 
@@ -137,8 +137,8 @@ export const GameQuiz = ({
               quizType={quizType}
               answersTextDisplayType={answersTextDisplayType}
               setMarkedAnswers={setMarkedAnswers}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
             />
           );
         })}

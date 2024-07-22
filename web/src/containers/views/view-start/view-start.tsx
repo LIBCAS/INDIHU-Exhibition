@@ -8,7 +8,6 @@ import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
-import useElementSize from "hooks/element-size-hook";
 import useResizeObserver from "hooks/use-resize-observer";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useViewStartAnimation } from "./view-start-animation-hook";
@@ -74,7 +73,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const [isInfoPanelOpen, setIsInfoPanelOpen] = useState<boolean>(false);
   const [isDetailPanelOpen, setIsDetailPanelOpen] = useState<boolean>(false);
 
-  const [screenContainerRef, screenContainerSize] = useElementSize();
+  const [screenContainerRef, screenContainerSize] = useResizeObserver();
   const [infoPanelRef, infoPanelSize] = useResizeObserver({
     ignoreUpdate: true,
   });

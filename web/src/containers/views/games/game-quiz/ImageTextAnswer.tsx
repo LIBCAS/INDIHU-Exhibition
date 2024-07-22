@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 
 import { Checkbox, Radio } from "@mui/material";
-import ScreenAnchorInfopoint from "components/infopoint/ScreenAnchorInfopoint";
-import TooltipInfoPoint from "components/infopoint/TooltipInfopoint";
+import AnchorInfopoint from "components/infopoint/components/anchor-infopoint";
+import TooltipInfoPoint from "components/infopoint/components/tooltip-infopoint/TooltipInfopoint";
 
 import {
   GameQuizAnswer,
@@ -11,7 +11,7 @@ import {
   GameQuizType,
   Size,
 } from "models";
-import { InfopointStatusObject } from "components/infopoint/parseScreenMaps";
+import { InfopointStatusObject } from "components/infopoint/useTooltipInfopoint";
 
 import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
@@ -32,8 +32,8 @@ type ImageTextAnswerProps = {
   answersTextDisplayType: GameQuizAnswerDisplayType;
 
   // Infopoint stuff
-  infopointOpenStatusMap: Record<string, InfopointStatusObject>;
-  setInfopointOpenStatusMap: Dispatch<
+  infopointStatusMap: Record<string, InfopointStatusObject>;
+  setInfopointStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
   >;
 };
@@ -48,13 +48,13 @@ const ImageTextAnswer = ({
   setMarkedAnswers,
   quizType,
   answersTextDisplayType,
-  infopointOpenStatusMap,
-  setInfopointOpenStatusMap,
+  infopointStatusMap,
+  setInfopointStatusMap,
 }: ImageTextAnswerProps) => {
   const { isSm, isMobileLandscape } = useMediaDevice();
 
   const [imageContainerRef, imageContainerSize] =
-    useElementSize<HTMLImageElement>();
+    useResizeObserver<HTMLImageElement>();
 
   const answerImageOrigData = useMemo(
     () => answer.imageOrigData ?? { width: 0, height: 0 },
@@ -159,7 +159,7 @@ const ImageTextAnswer = ({
               <Fragment
                 key={`quiz-infopoint-anchor-${answerIndex}-${infopointIndex}`}
               >
-                <ScreenAnchorInfopoint
+                <AnchorInfopoint
                   id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
                   left={adjustedLeft}
                   top={adjustedTop}
@@ -169,8 +169,8 @@ const ImageTextAnswer = ({
                   key={`quiz-infopoint-tooltip-${answerIndex}-${infopointIndex}`}
                   id={`quiz-infopoint-${answerIndex}-${infopointIndex}`}
                   infopoint={infopoint}
-                  infopointOpenStatusMap={infopointOpenStatusMap}
-                  setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+                  infopointStatusMap={infopointStatusMap}
+                  setInfopointStatusMap={setInfopointStatusMap}
                   primaryKey={answerIndex.toString()}
                   secondaryKey={infopointIndex.toString()}
                 />
