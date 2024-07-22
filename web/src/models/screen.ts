@@ -398,7 +398,7 @@ export type GameFindScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  showTip: boolean;
+  showTip?: boolean;
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;

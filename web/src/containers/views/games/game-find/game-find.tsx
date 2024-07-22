@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useState, useCallback, MouseEvent } from "react";
+import { useState, useMemo, useCallback, MouseEvent } from "react";
 import { useTransition, animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -43,7 +43,8 @@ export const GameFind = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME, showTip = false } =
+    viewScreen;
 
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
@@ -69,6 +70,12 @@ export const GameFind = ({
       setPin({ left: e.clientX, top: e.clientY });
     },
     [pin]
+  );
+
+  // When game is not finished, display always and when game is finished, it depends on showTip prop
+  const shouldDisplayPin = useMemo(
+    () => !isGameFinished || (isGameFinished && showTip),
+    [isGameFinished, showTip]
   );
 
   // - - Tutorial - -
@@ -125,7 +132,8 @@ export const GameFind = ({
 
       {pinTransition(
         ({ x }, pin) =>
-          pin && (
+          pin &&
+          shouldDisplayPin && (
             <animated.img
               src={pinIcon}
               alt="pin icon"
