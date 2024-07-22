@@ -41,15 +41,15 @@ export const GameFind = ({
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
 
-  const [finished, setFinished] = useState(false);
+  const [isGameFinished, setIsGameFinished] = useState(false);
   const [pin, setPin] = useState<{ x: number; y: number }>();
 
-  const onFinish = useCallback(() => {
-    setFinished(true);
+  const onGameFinish = useCallback(() => {
+    setIsGameFinished(true);
   }, []);
 
-  const onReset = useCallback(() => {
-    setFinished(false);
+  const onGameReset = useCallback(() => {
+    setIsGameFinished(false);
     setPin(undefined);
   }, []);
 
@@ -64,7 +64,7 @@ export const GameFind = ({
     [pin]
   );
 
-  const imageTransition = useTransition(finished, {
+  const imageTransition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -86,8 +86,8 @@ export const GameFind = ({
 
   return (
     <div className="w-full h-full relative">
-      {imageTransition(({ opacity }, finished) =>
-        !finished ? (
+      {imageTransition(({ opacity }, isGameFinished) =>
+        !isGameFinished ? (
           <animated.img
             style={{ opacity }}
             className={cx("w-full h-full absolute object-contain", {
@@ -130,7 +130,7 @@ export const GameFind = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            isGameFinished={finished}
+            isGameFinished={isGameFinished}
             bindTutorial={bind("finding")}
             solutionText={t("game-find.solution")}
           />,
@@ -141,9 +141,9 @@ export const GameFind = ({
         ReactDOM.createPortal(
           <GameActionsPanel
             isMobileOverlay={isMobileOverlay}
-            isGameFinished={finished}
-            onGameFinish={onFinish}
-            onGameReset={onReset}
+            isGameFinished={isGameFinished}
+            onGameFinish={onGameFinish}
+            onGameReset={onGameReset}
           />,
           actionsPanelRef.current
         )}
