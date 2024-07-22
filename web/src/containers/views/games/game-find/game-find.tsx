@@ -1,25 +1,36 @@
 import ReactDOM from "react-dom";
-import { MouseEvent, useCallback, useState } from "react";
-import { animated, useTransition } from "react-spring";
-import { ScreenProps } from "models";
-import cx from "classnames";
+import { useState, useCallback, MouseEvent } from "react";
+import { useTransition, animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
-import { AppState } from "store/store";
-import { GameFindScreen } from "models";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
-import pinIcon from "assets/img/pin.png";
-import classes from "./game-find.module.scss";
+// Components
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useTranslation } from "react-i18next";
+
+// Models
+import { ScreenProps } from "models";
+import { GameFindScreen } from "models";
+import { AppState } from "store/store";
+
+// Utils
+import cx from "classnames";
+import classes from "./game-find.module.scss";
+
+// Assets
+import pinIcon from "assets/img/pin.png";
+
+// - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - -
 
 export const GameFind = ({
   screenPreloadedFiles,
