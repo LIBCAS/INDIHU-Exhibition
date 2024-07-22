@@ -6,6 +6,7 @@ import { createSelector } from "reselect";
 
 import { useTranslation } from "react-i18next";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import useResizeObserver from "hooks/use-resize-observer";
 import { useElementMove } from "../../../../hooks/spring-hooks/use-element-move";
 
@@ -19,6 +20,7 @@ import { ScreenProps, GameMoveScreen } from "models";
 
 // Utils
 import { calculateObjectInitialPosition, calculateObjectSize } from "./utils";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - - - - - -
 
@@ -37,6 +39,8 @@ export const GameMove = ({
 }: ScreenProps) => {
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
+
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const {
     image1: assignmentImgSrc,
@@ -94,6 +98,13 @@ export const GameMove = ({
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
+  });
+
+  // - - - -
+
+  useGameAutoNavigationOnResultTimeElapsed({
+    gameResultTime: resultTime * 1000,
+    isGameFinished: isGameFinished,
   });
 
   return (

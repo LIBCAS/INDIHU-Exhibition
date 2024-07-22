@@ -1,25 +1,38 @@
 import ReactDOM from "react-dom";
-import { MouseEvent, useCallback, useState } from "react";
-import { animated, useTransition } from "react-spring";
-import { ScreenProps } from "models";
-import cx from "classnames";
+import { useState, useCallback, MouseEvent } from "react";
+import { useTransition, animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
-import { AppState } from "store/store";
-import { GameFindScreen } from "models";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 
-import pinIcon from "assets/img/pin.png";
-import classes from "./game-find.module.scss";
+// Components
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useTranslation } from "react-i18next";
+
+// Models
+import { ScreenProps, Position } from "models";
+import { GameFindScreen } from "models";
+import { AppState } from "store/store";
+
+// Utils
+import cx from "classnames";
+import classes from "./game-find.module.scss";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+
+// Assets
+import pinIcon from "assets/img/pin.png";
+
+// - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - -
 
 export const GameFind = ({
   screenPreloadedFiles,
@@ -27,18 +40,23 @@ export const GameFind = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
 
-  const [finished, setFinished] = useState(false);
-  const [pin, setPin] = useState<{ x: number; y: number }>();
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
-  const onFinish = useCallback(() => {
-    setFinished(true);
+  const { image1: assignmentImgSrc, image2: resultingImgSrc } =
+    screenPreloadedFiles;
+
+  const [isGameFinished, setIsGameFinished] = useState(false);
+  const [pin, setPin] = useState<Position | undefined>(undefined);
+
+  const onGameFinish = useCallback(() => {
+    setIsGameFinished(true);
   }, []);
 
-  const onReset = useCallback(() => {
-    setFinished(false);
+  const onGameReset = useCallback(() => {
+    setIsGameFinished(false);
     setPin(undefined);
   }, []);
 
@@ -48,12 +66,28 @@ export const GameFind = ({
         return;
       }
 
-      setPin({ x: e.clientX, y: e.clientY });
+      setPin({ left: e.clientX, top: e.clientY });
     },
     [pin]
   );
 
-  const imageTransition = useTransition(finished, {
+  // - - Tutorial - -
+
+  const { bind, TutorialTooltip } = useTutorial("gameFind", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - - -
+
+  useGameAutoNavigationOnResultTimeElapsed({
+    gameResultTime: resultTime * 1000,
+    isGameFinished: isGameFinished,
+  });
+
+  // - - Transitions - -
+
+  const imageTransition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -66,32 +100,25 @@ export const GameFind = ({
     leave: { x: 1 },
   });
 
-  //
-
-  const { bind, TutorialTooltip } = useTutorial("gameFind", {
-    shouldOpen: !isMobileOverlay,
-    closeOnEsc: true,
-  });
-
   return (
     <div className="w-full h-full relative">
-      {imageTransition(({ opacity }, finished) =>
-        !finished ? (
+      {imageTransition(({ opacity }, isGameFinished) =>
+        !isGameFinished ? (
           <animated.img
             style={{ opacity }}
             className={cx("w-full h-full absolute object-contain", {
               [classes.pinningCursor]: !pin,
             })}
             onClick={pinImage}
-            src={screenPreloadedFiles.image1}
-            alt="find game background"
+            src={assignmentImgSrc}
+            alt="assignment image"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="w-full h-full absolute object-contain"
-            src={screenPreloadedFiles.image2}
-            alt="solution"
+            src={resultingImgSrc}
+            alt="result image"
           />
         )
       )}
@@ -104,10 +131,10 @@ export const GameFind = ({
               alt="pin icon"
               style={{
                 position: "fixed",
-                x: pin.x - 25,
+                x: pin.left - 25,
                 y: x.to(
                   [0, 0.9, 0.95, 1],
-                  [pin.y - 50, pin.y - 80, pin.y - 45, pin.y - 50]
+                  [pin.top - 50, pin.top - 80, pin.top - 45, pin.top - 50]
                 ),
                 rotateZ: x.to([0, 0.9, 0.95, 1], [0, 10, 0, 0]),
               }}
@@ -119,7 +146,7 @@ export const GameFind = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            isGameFinished={finished}
+            isGameFinished={isGameFinished}
             bindTutorial={bind("finding")}
             solutionText={t("game-find.solution")}
           />,
@@ -130,9 +157,9 @@ export const GameFind = ({
         ReactDOM.createPortal(
           <GameActionsPanel
             isMobileOverlay={isMobileOverlay}
-            isGameFinished={finished}
-            onGameFinish={onFinish}
-            onGameReset={onReset}
+            isGameFinished={isGameFinished}
+            onGameFinish={onGameFinish}
+            onGameReset={onGameReset}
           />,
           actionsPanelRef.current
         )}
