@@ -6,8 +6,7 @@ import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useCountdown } from "hooks/countdown-hook";
-import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -80,16 +79,9 @@ export const GameFind = ({
 
   // - - - -
 
-  const { navigateForward } = useExpoNavigation();
-
-  const onCountdownFinish = useCallback(() => {
-    navigateForward();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useCountdown(resultTime * 1000, {
-    isPaused: !isGameFinished,
-    onFinish: onCountdownFinish,
+  useGameAutoNavigationOnResultTimeElapsed({
+    gameResultTime: resultTime * 1000,
+    isGameFinished: isGameFinished,
   });
 
   // - - Transitions - -
