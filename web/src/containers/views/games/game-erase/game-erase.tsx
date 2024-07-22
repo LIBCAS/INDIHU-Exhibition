@@ -26,6 +26,7 @@ import { calculateObjectFit } from "utils/object-fit";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameWipeScreen,
@@ -46,7 +47,7 @@ export const GameErase = ({
   const { expoDesignData, palette } = useExpoDesignData();
   const { t } = useTranslation("view-screen");
 
-  const { resultTime = 4 } = viewScreen;
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [setContainerRef, containerSize] = useResizeObserver();

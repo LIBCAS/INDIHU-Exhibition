@@ -20,6 +20,7 @@ import { AppState } from "store/store";
 // Utils
 import cx from "classnames";
 import classes from "./game-find.module.scss";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // Assets
 import pinIcon from "assets/img/pin.png";
@@ -42,7 +43,7 @@ export const GameFind = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = 4 } = viewScreen;
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;

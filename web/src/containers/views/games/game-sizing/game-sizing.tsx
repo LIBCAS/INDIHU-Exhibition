@@ -21,6 +21,7 @@ import { AppState } from "store/store";
 
 // Assets
 import expandImg from "../../../../assets/img/expand.png";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - - - - - -
 
@@ -40,7 +41,7 @@ export const GameSizing = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = 4 } = viewScreen;
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const {
     image1: referenceImgSrc,

@@ -20,6 +20,7 @@ import { GameActionsPanel } from "../GameActionsPanel";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { configureContext } from "./configureContext";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - -
 
@@ -43,7 +44,7 @@ export const GameDraw = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = 4 } = viewScreen;
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);

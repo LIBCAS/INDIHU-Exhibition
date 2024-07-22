@@ -20,6 +20,7 @@ import { ScreenProps, GameMoveScreen } from "models";
 
 // Utils
 import { calculateObjectInitialPosition, calculateObjectSize } from "./utils";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - - - - - -
 
@@ -39,7 +40,7 @@ export const GameMove = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = 4 } = viewScreen;
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const {
     image1: assignmentImgSrc,
