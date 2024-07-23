@@ -67,11 +67,11 @@ export const Icon = ({
     >
       {/* Icon color either inherited from Button parent or div if some color prop is used */}
       {useMaterialUiIcon ? (
-        <MuiIcon onClick={onClick} className="!text-inherit" sx={style}>
+        <MuiIcon onClick={onClick} sx={{ color: "inherit", ...style }}>
           {name}
         </MuiIcon>
       ) : (
-        <FontIcon onClick={onClick} className="!text-inherit" style={style}>
+        <FontIcon onClick={onClick} style={{ color: "inherit", ...style }}>
           {name}
         </FontIcon>
       )}
