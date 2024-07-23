@@ -1,39 +1,47 @@
+import ReactDOM from "react-dom";
 import { useCallback, useState, MouseEvent, useRef, useEffect } from "react";
 import { animated, useTransition } from "react-spring";
-import ReactDOM from "react-dom";
-import cx from "classnames";
 import { useTranslation } from "react-i18next";
-import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+
+// Custom hooks
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { useBoolean } from "hooks/boolean-hook";
+
+// Components
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
+
+import { Popper } from "components/popper/popper";
+import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { Position, ScreenProps } from "models";
+// Models
+import { GameDrawScreen, Position, ScreenProps } from "models";
 import { AppState } from "store/store";
-import { GameDrawScreen } from "models";
 
+// Utils
+import cx from "classnames";
 import classes from "./game-draw.module.scss";
-import { GameInfoPanel } from "../GameInfoPanel";
-import { Button } from "components/button/button";
-import { useBoolean } from "hooks/boolean-hook";
-import { Popper } from "components/popper/popper";
-import { GameActionsPanel } from "../GameActionsPanel";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { configureContext } from "./configureContext";
-import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+import { configureContext } from "./configureContext";
 
-// - -
+// - - - -
 
 export const DEFAULT_COLOR = "#000000";
 export const DEFAULT_THICKNESS = 5;
 export const DEFAULT_IS_ERASING = false;
 
-// - -
+// - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - -
 
 export const GameDraw = ({
   screenPreloadedFiles,
