@@ -1,16 +1,18 @@
 import { CSSProperties, ReactNode } from "react";
-
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
+// Components
 import { Icon as MuiIcon } from "@mui/material";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
-
 import { BasicTooltip } from "components/tooltip/BasicTooltip";
 import { BasicTooltipProps } from "components/tooltip/tooltip-props";
 
+// Utils
 import cx from "classnames";
 
-interface IconProps {
+// - - - -
+
+type IconProps = {
   name: string | ReactNode; // name either for FontIcon from 'react-md' or Icon from 'material-ui'
   useMaterialUiIcon?: boolean;
   color?:
@@ -26,16 +28,18 @@ interface IconProps {
   className?: string;
   style?: CSSProperties;
   tooltip?: BasicTooltipProps;
-}
+};
+
+// - - - -
 
 export const Icon = ({
   name,
   useMaterialUiIcon = false,
   color = "inheritFromParents",
-  className,
-  style,
   onClick,
   noCenterPlace = false,
+  className,
+  style,
   tooltip,
 }: IconProps) => {
   const { expoDesignData, fgThemingIf } = useExpoDesignData();
