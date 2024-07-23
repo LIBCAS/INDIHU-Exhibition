@@ -148,7 +148,7 @@ const ExpoCard = ({
                     >
                       <Icon
                         name="launch"
-                        style={{ fontSize: "12px" }}
+                        iconStyle={{ fontSize: "12px" }}
                         tooltip={{
                           id: "rating-redirect-icon",
                           content: t("expoCard.ratingRedirectLabel"),

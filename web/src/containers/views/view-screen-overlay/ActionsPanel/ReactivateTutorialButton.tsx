@@ -37,7 +37,7 @@ const ReactivateTutorialButton = ({
           content: t("reactivateTooltipButtonTooltip"),
         }}
       >
-        <Icon name="quiz" useMaterialUiIcon style={{ fontSize: "24px" }} />
+        <Icon name="quiz" useMaterialUiIcon iconStyle={{ fontSize: "24px" }} />
       </Button>
     </div>
   );

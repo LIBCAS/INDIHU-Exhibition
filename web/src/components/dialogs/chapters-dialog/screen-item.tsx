@@ -85,7 +85,7 @@ export const ScreenItem = ({
           <Icon
             name="arrow_right"
             color={shouldHighlight ? "expoThemeIcons" : "muted-400"}
-            //className={shouldHighlight ? "text-primary" : "text-muted-400"}
+            //containerClassName={shouldHighlight ? "text-primary" : "text-muted-400"}
           />
         )}
 

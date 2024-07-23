@@ -116,7 +116,7 @@ const LoginAppHeader = ({
                   <Icon
                     useMaterialUiIcon
                     name="edit-on"
-                    style={{
+                    iconStyle={{
                       fontSize: "14px",
                       color: "#cccccc",
                     }}
@@ -132,7 +132,7 @@ const LoginAppHeader = ({
                   <Icon
                     useMaterialUiIcon
                     name="edit-off"
-                    style={{
+                    iconStyle={{
                       fontSize: "14px",
                       color: "#cccccc",
                     }}

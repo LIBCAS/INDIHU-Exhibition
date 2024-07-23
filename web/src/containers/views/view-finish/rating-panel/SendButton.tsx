@@ -34,7 +34,7 @@ const SendButton = ({ disabled, onClick, isSubmitting }: SendButtonProps) => {
     >
       {t("sendActionButtonLabel")}
       {!isSubmitting && (
-        <Icon name="send" useMaterialUiIcon style={{ fontSize: "24px" }} />
+        <Icon name="send" useMaterialUiIcon iconStyle={{ fontSize: "24px" }} />
       )}
       {isSubmitting && (
         <Spinner
