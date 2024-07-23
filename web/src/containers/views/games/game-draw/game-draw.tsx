@@ -54,27 +54,32 @@ export const GameDraw = ({
 
   const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+  const { image1: assignmentImgSrc, image2: resultingImgSrc } =
+    screenPreloadedFiles;
 
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [mousePosition, setMousePosition] = useState<Position | null>(null); // setting always, even when the pen or erase is not down
+  // - - States - -
 
-  const [color, setColor] = useState(DEFAULT_COLOR);
+  const [color, setColor] = useState<string>(DEFAULT_COLOR);
+  const [thickness, setThickness] = useState<number>(DEFAULT_THICKNESS);
+  const [isErasing, { toggle: toggleTool }] = useBoolean(DEFAULT_IS_ERASING);
 
-  const [thickness, setThickness] = useState(DEFAULT_THICKNESS);
   const [thicknessAnchor, setThicknessAnchor] =
     useState<HTMLButtonElement | null>(null);
+
   const [
     isThicknessPopoverOpen,
     { toggle: toggleThicknessPopover, setFalse: closeThicknessPopover },
   ] = useBoolean(false);
 
-  const [isErasing, { toggle: toggleTool }] = useBoolean(DEFAULT_IS_ERASING);
+  const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [mousePosition, setMousePosition] = useState<Position | null>(null); // setting always, even when the pen or erase is not down
 
-  const [isGameFinished, setIsGameFinished] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
-  // - -
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+  // - - - -
 
   useEffect(() => {
     if (!canvasRef.current) return; // should not happen
@@ -98,7 +103,7 @@ export const GameDraw = ({
     return () => window.removeEventListener("resize", resizeCanvas);
   }, [resizeCanvas]);
 
-  // - -
+  // - - - -
 
   useEffect(() => {
     if (!ctx) return;
@@ -113,7 +118,7 @@ export const GameDraw = ({
     canvasRef.current?.height,
   ]);
 
-  // - -
+  // - - - -
 
   const startDrawing = useCallback((e: MouseEvent<HTMLCanvasElement>) => {
     setMousePosition({ left: e.clientX, top: e.clientY });
@@ -140,7 +145,7 @@ export const GameDraw = ({
     [isDrawing, isGameFinished, mousePosition, ctx]
   );
 
-  // - -
+  // - - - -
 
   const clearCanvas = useCallback(() => {
     if (!canvasRef.current) return;
@@ -154,7 +159,7 @@ export const GameDraw = ({
     );
   }, [ctx]);
 
-  // - -
+  // - - - -
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -191,20 +196,20 @@ export const GameDraw = ({
 
   return (
     <div className="relative w-full h-full">
-      {transition(({ opacity }, finished) =>
-        !finished ? (
+      {transition(({ opacity }, isGameFinished) =>
+        !isGameFinished ? (
           <animated.img
             style={{ opacity }}
             className="absolute w-full h-full object-contain"
-            src={screenPreloadedFiles.image1}
-            alt="background drawing image"
+            src={assignmentImgSrc}
+            alt="assignment img"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="absolute w-full h-full object-contain"
-            src={screenPreloadedFiles.image2}
-            alt="solution image"
+            src={resultingImgSrc}
+            alt="result image"
           />
         )
       )}
