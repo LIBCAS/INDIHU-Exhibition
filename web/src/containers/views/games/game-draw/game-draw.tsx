@@ -27,12 +27,11 @@ import cx from "classnames";
 import classes from "./game-draw.module.scss";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 import { configureContext } from "./configureContext";
-
-// - - - -
-
-export const DEFAULT_COLOR = "#000000";
-export const DEFAULT_THICKNESS = 5;
-export const DEFAULT_IS_ERASING = false;
+import {
+  GAME_DRAW_DEFAULT_COLOR,
+  GAME_DRAW_DEFAULT_THICKNESS,
+  GAME_DRAW_DEFAULT_IS_ERASING,
+} from "constants/screen";
 
 // - - - -
 
@@ -60,9 +59,15 @@ export const GameDraw = ({
 
   // - - States - -
 
-  const [color, setColor] = useState<string>(DEFAULT_COLOR);
-  const [thickness, setThickness] = useState<number>(DEFAULT_THICKNESS);
-  const [isErasing, { toggle: toggleTool }] = useBoolean(DEFAULT_IS_ERASING);
+  const [color, setColor] = useState<string>(GAME_DRAW_DEFAULT_COLOR);
+
+  const [thickness, setThickness] = useState<number>(
+    GAME_DRAW_DEFAULT_THICKNESS
+  );
+
+  const [isErasing, { toggle: toggleTool }] = useBoolean(
+    GAME_DRAW_DEFAULT_IS_ERASING
+  );
 
   const [thicknessAnchor, setThicknessAnchor] =
     useState<HTMLButtonElement | null>(null);
