@@ -423,6 +423,8 @@ export type GameDrawScreen = {
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  initialColor?: string;
+  initialThickness?: number;
 };
 
 export type GameWipeScreen = {

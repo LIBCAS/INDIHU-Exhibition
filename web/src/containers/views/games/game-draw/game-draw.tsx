@@ -51,19 +51,21 @@ export const GameDraw = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME, showDrawing = false } =
-    viewScreen;
+  const {
+    resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME,
+    showDrawing = false,
+    initialColor = GAME_DRAW_DEFAULT_COLOR,
+    initialThickness = GAME_DRAW_DEFAULT_THICKNESS,
+  } = viewScreen;
 
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
 
   // - - States - -
 
-  const [color, setColor] = useState<string>(GAME_DRAW_DEFAULT_COLOR);
+  const [color, setColor] = useState<string>(initialColor);
 
-  const [thickness, setThickness] = useState<number>(
-    GAME_DRAW_DEFAULT_THICKNESS
-  );
+  const [thickness, setThickness] = useState<number>(initialThickness);
 
   const [isErasing, { toggle: toggleTool }] = useBoolean(
     GAME_DRAW_DEFAULT_IS_ERASING

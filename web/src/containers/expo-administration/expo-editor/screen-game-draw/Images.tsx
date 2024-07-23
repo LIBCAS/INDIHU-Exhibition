@@ -1,7 +1,9 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 // Components
+import Button from "react-md/lib/Buttons/Button";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import ImageBox from "components/editors/ImageBox";
 import HelpIcon from "components/help-icon";
@@ -13,6 +15,10 @@ import { AppDispatch } from "store/store";
 // Actions and utils
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
+import {
+  GAME_DRAW_DEFAULT_COLOR,
+  GAME_DRAW_DEFAULT_THICKNESS,
+} from "constants/screen";
 
 // - -
 
@@ -36,6 +42,15 @@ const Images = ({ activeScreen }: ImagesProps) => {
   const setImage2 = (img: IndihuFile) => {
     dispatch(updateScreenData({ image2: img.id }));
   };
+
+  const resetInitialDrawingSettings = useCallback(() => {
+    dispatch(
+      updateScreenData({
+        initialColor: GAME_DRAW_DEFAULT_COLOR,
+        initialThickness: GAME_DRAW_DEFAULT_THICKNESS,
+      })
+    );
+  }, [dispatch]);
 
   return (
     <div className="container container-tabMenu">
@@ -80,6 +95,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
           </div>
         </div>
+
         <div className="flex-row-nowrap flex-centered full-width">
           <Checkbox
             id="game-draw-checkbox-show-user"
@@ -94,6 +110,64 @@ const Images = ({ activeScreen }: ImagesProps) => {
             label={t("showUsersDrawingTooltip")}
             id="editor-game-draw-show-drawing"
           />
+        </div>
+
+        {/* Initial settings (color and thickness) */}
+        <div className="mt-6 mb-1">
+          <div className="text-lg">{t("initialDrawingSettingsTitle")}</div>
+
+          <div className="flex flex-col gap-1 w-fit">
+            <div className="flex items-center gap-3">
+              <div>{t("initialDrawingColorLabel")}</div>
+              <input
+                type="color"
+                className="hover:cursor-pointer"
+                defaultValue={
+                  activeScreen.initialColor ?? GAME_DRAW_DEFAULT_COLOR
+                }
+                onChange={(e) => {
+                  const newInitialColor = e.target.value;
+                  dispatch(updateScreenData({ initialColor: newInitialColor }));
+                }}
+              />
+              <div>
+                ({activeScreen.initialColor ?? GAME_DRAW_DEFAULT_COLOR})
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div>{t("initialDrawingThicknessLabel")}</div>
+              <input
+                type="range"
+                draggable={false}
+                min={1}
+                max={50}
+                defaultValue={
+                  activeScreen.initialThickness ?? GAME_DRAW_DEFAULT_THICKNESS
+                }
+                onChange={(e) => {
+                  const newInitialThickness = parseInt(e.target.value);
+                  dispatch(
+                    updateScreenData({
+                      initialThickness: newInitialThickness,
+                    })
+                  );
+                }}
+              />
+              <div>
+                ({activeScreen.initialThickness ?? GAME_DRAW_DEFAULT_THICKNESS})
+              </div>
+            </div>
+
+            <div className="mt-2">
+              <Button
+                raised
+                label={t("resetInitialDrawingSettingsBtnLabel")}
+                className="btn"
+                onClick={resetInitialDrawingSettings}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
