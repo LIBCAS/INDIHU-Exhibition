@@ -12,6 +12,7 @@ export const BasicTooltip = ({
   variant,
   place,
   className,
+  style,
 }: BasicTooltipProps) => {
   const { isLightMode } = useExpoDesignData();
   const { isMobile, isMobileLandscape } = useMediaDevice();
@@ -27,6 +28,7 @@ export const BasicTooltip = ({
       variant={variant ? variant : isLightMode ? "light" : "dark"}
       place={place}
       className={className}
+      style={style}
     />
   );
 };

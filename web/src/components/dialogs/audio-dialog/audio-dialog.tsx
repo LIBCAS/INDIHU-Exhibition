@@ -161,6 +161,8 @@ const AudioSlider = ({
         tooltip={{
           id: `tooltip-${volumeKey}`,
           content: tooltipContent ?? "",
+          place: "top",
+          style: { zIndex: 1 },
         }}
       >
         <Icon

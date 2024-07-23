@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { PlacesType } from "react-tooltip";
 
 export type BasicTooltipProps = {
@@ -6,4 +7,5 @@ export type BasicTooltipProps = {
   variant?: "light" | "dark";
   place?: PlacesType;
   className?: string;
+  style?: CSSProperties;
 };
