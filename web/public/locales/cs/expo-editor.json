@@ -234,7 +234,9 @@
       "imageResultLabel": "Výsledek",
       "imageResultTooltip": "Z knihovny dokumentů vyberte obrázek, kde je znázorněno správné místo, které měli návštěvníci najít.",
       "showUsersTip": "Zobrazit tipy návštěvníků",
-      "showUsersTipTooltip": "Pokud chcete, aby návštěvníci viděli správné řešení i svůj tip, zaškrtněte toto pole."
+      "showUsersTipTooltip": "Pokud chcete, aby návštěvníci viděli správné řešení i svůj tip, zaškrtněte toto pole.",
+      "numberOfPinsLabel": "Počet bodů k nalezení",
+      "numberOfPinsTooltip": "Zadejte počet bodů, které chcete, aby návštěvník našel. Každý bod bude moci mít následně přidělen svůj vlastní jedinečný text."
     },
     "gameDrawScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Dokreslete do grafu, jak se vyvíjela těžba uhlí po roce 1950).",

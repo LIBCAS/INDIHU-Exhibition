@@ -1,10 +1,15 @@
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
+import { useNumberOfPinsListener } from "./useNumberOfPinsListener";
+
 // Components
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import ImageBox from "components/editors/ImageBox";
 import HelpIcon from "components/help-icon";
+
+import { NumberOfPinsField } from "./NumberOfPinsField";
+import { PinTextField } from "./PinTextField";
 
 // Models
 import { GameFindScreen, File as IndihuFile } from "models";
@@ -13,6 +18,7 @@ import { AppDispatch } from "store/store";
 // Actions and utils
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
+import { GAME_FIND_DEFAULT_NUMBER_OF_PINS } from "constants/screen";
 
 // - -
 
@@ -26,6 +32,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
     keyPrefix: "descFields.gameFindScreen",
   });
 
+  const { numberOfPins = GAME_FIND_DEFAULT_NUMBER_OF_PINS, pinsTexts } =
+    activeScreen;
+
   const image1 = dispatch(getFileById(activeScreen.image1));
   const image2 = dispatch(getFileById(activeScreen.image2));
 
@@ -36,6 +45,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
   const setImage2 = (img: IndihuFile) => {
     dispatch(updateScreenData({ image2: img.id }));
   };
+
+  //
+  useNumberOfPinsListener(activeScreen);
 
   return (
     <div className="container container-tabMenu">
@@ -80,12 +92,13 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
           </div>
         </div>
+
         <div className="flex-row-nowrap flex-centered full-width">
           <Checkbox
             id="game-find-checkbox-show-user"
             name="simple-checkboxes"
             label={t("showUsersTip")}
-            value={activeScreen.showTip ?? false}
+            checked={activeScreen.showTip ?? false}
             onChange={(value: boolean) =>
               dispatch(updateScreenData({ showTip: value }))
             }
@@ -94,6 +107,39 @@ const Images = ({ activeScreen }: ImagesProps) => {
             label={t("showUsersTipTooltip")}
             id="editor-game-find-show-tip"
           />
+        </div>
+
+        {/* Pins */}
+        <div className="ml-10 mt-6 flex flex-col justify-center items-start gap-4">
+          <div className="w-52">
+            <NumberOfPinsField numberOfPinsValue={numberOfPins} />
+          </div>
+
+          <div className="ml-5 flex flex-col justify-center items-center gap-2">
+            {pinsTexts?.map((pinText: string, index: number) => {
+              if (index >= numberOfPins) {
+                return null;
+              }
+
+              const onPinTextUpdate = (newPinText: string) =>
+                dispatch(
+                  updateScreenData({
+                    pinsTexts: pinsTexts.map((pinText, idx) =>
+                      index === idx ? newPinText : pinText
+                    ),
+                  })
+                );
+
+              return (
+                <PinTextField
+                  key={index}
+                  pinTextValue={pinText}
+                  index={index}
+                  onPinTextUpdate={onPinTextUpdate}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

@@ -404,6 +404,8 @@ export type GameFindScreen = {
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  numberOfPins?: number;
+  pinsTexts?: string[];
 };
 
 export type GameDrawScreen = {
