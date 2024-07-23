@@ -417,7 +417,7 @@ export type GameDrawScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  showDrawing: boolean;
+  showDrawing?: boolean;
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;

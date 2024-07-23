@@ -85,7 +85,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             id="game-draw-checkbox-show-user"
             name="simple-checkboxes"
             label={t("showUsersDrawing")}
-            value={activeScreen.showDrawing}
+            checked={activeScreen.showDrawing ?? false}
             onChange={(value: boolean) =>
               dispatch(updateScreenData({ showDrawing: value }))
             }
