@@ -15,7 +15,7 @@ export const PinTextField = ({
     <div className="flex-row-nowrap">
       <TextField
         id={`game-find-pin-text-field-${index}`}
-        label={"Test label"}
+        label={`${index + 1}.`}
         defaultValue={pinTextValue}
         onChange={(newPinTextValue: string) => {
           onPinTextUpdate(newPinTextValue);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 // Components
 import TextField from "react-md/lib/TextFields";
@@ -20,6 +21,10 @@ type NumberOfPinsFieldProps = {
 export const NumberOfPinsField = ({
   numberOfPinsValue,
 }: NumberOfPinsFieldProps) => {
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameFindScreen",
+  });
+
   const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +34,7 @@ export const NumberOfPinsField = ({
         <div className="form-input">
           <TextField
             id="game-find-number-of-pins-field"
-            label="Počet pinov"
+            label={t("numberOfPinsLabel")}
             type="number"
             defaultValue={numberOfPinsValue}
             onChange={(newNumberOfPinsValue: number) => {
@@ -60,7 +65,7 @@ export const NumberOfPinsField = ({
       </div>
 
       <HelpIcon
-        label="Test label for help icon"
+        label={t("numberOfPinsTooltip")}
         id="game-find-number-of-pins-help"
       />
     </div>

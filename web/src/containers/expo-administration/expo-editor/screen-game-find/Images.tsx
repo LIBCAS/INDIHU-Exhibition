@@ -111,7 +111,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
 
         {/* Pins */}
         <div className="ml-10 mt-6 flex flex-col justify-center items-start gap-4">
-          <div className="w-48">
+          <div className="w-52">
             <NumberOfPinsField numberOfPinsValue={numberOfPins} />
           </div>
 

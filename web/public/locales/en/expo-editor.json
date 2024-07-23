@@ -234,7 +234,9 @@
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select an image from the document library that shows the correct location that the user should have found.",
       "showUsersTip": "View user's guess",
-      "showUsersTipTooltip": "Check this box if you want the user to see both the correct solution and their guess."
+      "showUsersTipTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
+      "numberOfPinsLabel": "Number of points to find",
+      "numberOfPinsTooltip": "Enter the number of points you want the visitor to find. Each point will then be able to have its own unique text assigned."
     },
     "gameDrawScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. complete the graph of how coal mining developed after 1950).",
