@@ -127,7 +127,7 @@ const OverlayDialog = ({
             <Icon
               color="expoThemeMode"
               name="chevron_left"
-              style={{ fontSize: "32px" }}
+              iconStyle={{ fontSize: "32px" }}
             />
           </Button>
 
@@ -137,7 +137,7 @@ const OverlayDialog = ({
               <Icon
                 color="expoThemeMode"
                 name={shouldIncrement ? "pause" : "play_arrow"}
-                style={{ fontSize: "32px" }}
+                iconStyle={{ fontSize: "32px" }}
               />
             }
             onClick={shouldIncrement ? pause : play}
@@ -149,7 +149,7 @@ const OverlayDialog = ({
             <Icon
               color="expoThemeMode"
               name="chevron_right"
-              style={{ fontSize: "32px" }}
+              iconStyle={{ fontSize: "32px" }}
             />
           </Button>
         </div>

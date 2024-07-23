@@ -422,7 +422,7 @@ const SettingsPanel = ({
         <Icon
           useMaterialUiIcon
           name="zoom_in"
-          style={{ fontSize: "24px", opacity: 0.6 }}
+          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             setCurrZoom((prevZoom) => prevZoom + 0.2);
           }}
@@ -436,7 +436,7 @@ const SettingsPanel = ({
         <Icon
           useMaterialUiIcon
           name="search"
-          style={{ fontSize: "24px", opacity: 0.6 }}
+          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             setCurrZoom(1);
           }}
@@ -450,7 +450,7 @@ const SettingsPanel = ({
         <Icon
           useMaterialUiIcon
           name="zoom_out"
-          style={{ fontSize: "24px", opacity: 0.6 }}
+          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             setCurrZoom((prevZoom) =>
               prevZoom <= 1 ? prevZoom : prevZoom - 0.2
@@ -469,7 +469,7 @@ const SettingsPanel = ({
         <Icon
           useMaterialUiIcon
           name="folder"
-          style={{ fontSize: "24px", opacity: 0.6 }}
+          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             changeImage();
           }}
@@ -483,7 +483,7 @@ const SettingsPanel = ({
         <Icon
           useMaterialUiIcon
           name="palette"
-          style={{ fontSize: "24px", opacity: 0.6 }}
+          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             const imageEditorObj = {
               expoId: expoId,
@@ -503,7 +503,7 @@ const SettingsPanel = ({
         <Icon
           useMaterialUiIcon
           name="delete"
-          style={{ fontSize: "24px", opacity: 0.6 }}
+          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
           onClick={() => {
             dispatch(
               setDialog(DialogType.ConfirmDialog, {

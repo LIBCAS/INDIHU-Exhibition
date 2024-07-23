@@ -150,7 +150,7 @@ const Toolbar = ({
                 useMaterialUiIcon
                 color="white"
                 onClick={zoomInside}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
           </div>
@@ -168,7 +168,7 @@ const Toolbar = ({
                 useMaterialUiIcon
                 color="white"
                 onClick={reset}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
           </div>
@@ -186,7 +186,7 @@ const Toolbar = ({
                 useMaterialUiIcon
                 color="white"
                 onClick={zoomOutside}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
           </div>
@@ -205,7 +205,7 @@ const Toolbar = ({
                   useMaterialUiIcon
                   color="white"
                   onClick={openInformationDialog}
-                  style={{ fontSize: "24px" }}
+                  iconStyle={{ fontSize: "24px" }}
                 />
               </Button>
             </div>
@@ -226,7 +226,7 @@ const Toolbar = ({
                 useMaterialUiIcon
                 name="close"
                 onClick={closeLightBox}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
           </div>

@@ -163,7 +163,11 @@ const AudioSlider = ({
           content: tooltipContent ?? "",
         }}
       >
-        <Icon name={iconName} useMaterialUiIcon style={{ fontSize: "26px" }} />
+        <Icon
+          name={iconName}
+          useMaterialUiIcon
+          iconStyle={{ fontSize: "26px" }}
+        />
       </Button>
 
       <Slider

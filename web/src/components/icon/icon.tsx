@@ -25,8 +25,10 @@ type IconProps = {
     | "inheritFromParents";
   onClick?: () => void;
   noCenterPlace?: boolean; // by default, icon should be inside some container and centered
-  className?: string;
-  style?: CSSProperties;
+  containerClassName?: string;
+  containerStyle?: CSSProperties;
+  iconClassName?: string;
+  iconStyle?: CSSProperties;
   tooltip?: BasicTooltipProps;
 };
 
@@ -38,8 +40,10 @@ export const Icon = ({
   color = "inheritFromParents",
   onClick,
   noCenterPlace = false,
-  className,
-  style,
+  containerClassName,
+  containerStyle,
+  iconClassName,
+  iconStyle,
   tooltip,
 }: IconProps) => {
   const { expoDesignData, fgThemingIf } = useExpoDesignData();
@@ -62,20 +66,29 @@ export const Icon = ({
           "text-muted-400": color === "muted-400",
           "hover:cursor-pointer": !!onClick,
         },
-        className
+        containerClassName
       )}
       style={{
+        ...containerStyle,
         color: themeEnabledIconsColor,
       }}
       data-tooltip-id={tooltip?.id ?? undefined}
     >
       {/* Icon color either inherited from Button parent or div if some color prop is used */}
       {useMaterialUiIcon ? (
-        <MuiIcon onClick={onClick} sx={{ color: "inherit", ...style }}>
+        <MuiIcon
+          onClick={onClick}
+          className={cx(iconClassName)}
+          sx={{ color: "inherit", ...iconStyle }}
+        >
           {name}
         </MuiIcon>
       ) : (
-        <FontIcon onClick={onClick} style={{ color: "inherit", ...style }}>
+        <FontIcon
+          onClick={onClick}
+          className={cx(iconClassName)}
+          style={{ color: "inherit", ...iconStyle }}
+        >
           {name}
         </FontIcon>
       )}

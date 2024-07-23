@@ -260,7 +260,7 @@ const AnswerItem = ({
               <Icon
                 useMaterialUiIcon
                 name="delete"
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
                 tooltip={{
                   id: "delete-answer-icon-tooltip",
                   content: t("deleteAnswerTooltip"),

@@ -143,7 +143,7 @@ const VideoContentBody = ({
                 useMaterialUiIcon
                 name={isVideoPlaying ? "pause" : "play_arrow"}
                 onClick={() => playPauseVideo()}
-                style={{ fontSize: "22px" }}
+                iconStyle={{ fontSize: "22px" }}
               />
             </div>
 
@@ -176,8 +176,8 @@ const VideoContentBody = ({
                       setVideoVolume(prevVideoVolume);
                     }
                   }}
-                  style={{ fontSize: "22px" }}
-                  className="ml-auto"
+                  iconStyle={{ fontSize: "22px" }}
+                  containerClassName="ml-auto"
                 />
               </div>
 
