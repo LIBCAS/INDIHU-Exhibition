@@ -10,7 +10,9 @@ export const configureContext = (
   thickness?: number,
   isErasing?: boolean
 ) => {
-  if (ctx === null) return;
+  if (ctx === null) {
+    return;
+  }
 
   const erasing = isErasing ?? GAME_DRAW_DEFAULT_IS_ERASING;
 

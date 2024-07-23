@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState, MouseEvent, useRef, useEffect } from "react";
+import { useCallback, useState, useRef } from "react";
 import { animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { createSelector } from "reselect";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useBoolean } from "hooks/boolean-hook";
+import { useGameDraw } from "./useGameDraw";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -19,14 +20,13 @@ import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
 // Models
-import { GameDrawScreen, Position, ScreenProps } from "models";
+import { GameDrawScreen, ScreenProps } from "models";
 import { AppState } from "store/store";
 
 // Utils
 import cx from "classnames";
 import classes from "./game-draw.module.scss";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
-import { configureContext } from "./configureContext";
 import {
   GAME_DRAW_DEFAULT_COLOR,
   GAME_DRAW_DEFAULT_THICKNESS,
@@ -79,93 +79,19 @@ export const GameDraw = ({
     { toggle: toggleThicknessPopover, setFalse: closeThicknessPopover },
   ] = useBoolean(false);
 
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [mousePosition, setMousePosition] = useState<Position | null>(null); // setting always, even when the pen or erase is not down
-
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
-  // - - - -
+  // - - Draw functionality - -
 
-  useEffect(() => {
-    if (!canvasRef.current) return; // should not happen
-
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-
-    const context = canvasRef.current.getContext("2d");
-    setCtx(context);
-  }, []);
-
-  const resizeCanvas = useCallback(() => {
-    if (!canvasRef.current) return;
-
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
-  }, [resizeCanvas]);
-
-  // - - - -
-
-  useEffect(() => {
-    if (!ctx) return;
-
-    configureContext(ctx, color, thickness, isErasing);
-  }, [
+  const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
+    canvasRef,
+    isGameFinished,
     color,
     thickness,
     isErasing,
-    ctx,
-    canvasRef.current?.width,
-    canvasRef.current?.height,
-  ]);
-
-  // - - - -
-
-  const startDrawing = useCallback((e: MouseEvent<HTMLCanvasElement>) => {
-    setMousePosition({ left: e.clientX, top: e.clientY });
-    setIsDrawing(true);
-  }, []);
-
-  const stopDrawing = useCallback(() => {
-    setIsDrawing(false);
-  }, []);
-
-  const draw = useCallback(
-    (e: MouseEvent<HTMLCanvasElement>) => {
-      if (!isDrawing || isGameFinished || !ctx || !mousePosition) {
-        return;
-      }
-
-      ctx.beginPath();
-      ctx.moveTo(mousePosition.left, mousePosition.top);
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
-
-      setMousePosition({ left: e.clientX, top: e.clientY });
-    },
-    [isDrawing, isGameFinished, mousePosition, ctx]
-  );
-
-  // - - - -
-
-  const clearCanvas = useCallback(() => {
-    if (!canvasRef.current) return;
-    if (!ctx) return;
-
-    ctx.clearRect(
-      0,
-      0,
-      canvasRef.current.width ?? 0,
-      canvasRef.current.height ?? 0
-    );
-  }, [ctx]);
+  });
 
   // - - - -
 
