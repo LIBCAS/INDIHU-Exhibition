@@ -245,7 +245,11 @@
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select a complete image from the document library.",
       "showUsersDrawing": "View user's drawing",
-      "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess."
+      "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
+      "initialDrawingSettingsTitle": "Initial settings for drawing",
+      "initialDrawingColorLabel": "Initial color",
+      "initialDrawingThicknessLabel": "Initial thickness",
+      "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. see how the building looked before its renovation).",

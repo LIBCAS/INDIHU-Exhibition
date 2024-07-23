@@ -245,7 +245,11 @@
       "imageResultLabel": "Výsledek",
       "imageResultTooltip": "Z knihovny dokumentů vyberte kompletní obrázek.",
       "showUsersDrawing": "Zobrazit kresbu návštěvníků",
-      "showUsersDrawingTooltip": "Pokud chcete, aby návštěvníci viděli správné řešení i svoje tipy, zaškrtněte toto pole."
+      "showUsersDrawingTooltip": "Pokud chcete, aby návštěvníci viděli správné řešení i svoje tipy, zaškrtněte toto pole.",
+      "initialDrawingSettingsTitle": "Počáteční nastavení pro kreslení",
+      "initialDrawingColorLabel": "Počáteční barva",
+      "initialDrawingThicknessLabel": "Počáteční tloušťka",
+      "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Podívejte se, jak vypadala budova před její rekonstrukcí). ",
