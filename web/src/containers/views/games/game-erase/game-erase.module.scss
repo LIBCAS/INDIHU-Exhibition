@@ -29,3 +29,12 @@
 .eraserWipetowel {
   cursor: url("../../../../assets/img/erasers/wipe_towel.png") 10 20, auto;
 }
+
+// - - - -
+
+.erase-container {
+  user-select: none; /* Disables text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

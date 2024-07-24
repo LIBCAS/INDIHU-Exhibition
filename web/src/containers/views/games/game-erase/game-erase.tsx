@@ -215,7 +215,10 @@ export const GameErase = ({
   });
 
   return (
-    <div className="relative w-full h-full" ref={setContainerRef}>
+    <div
+      className={cx("relative w-full h-full", classes["erase-container"])}
+      ref={setContainerRef}
+    >
       <img
         className="absolute w-full h-full object-contain"
         src={screenPreloadedFiles.image2}
@@ -223,7 +226,7 @@ export const GameErase = ({
       />
 
       <canvas
-        className={cx("absolute touch-none", {
+        className={cx("absolute touch-none outline-none", {
           [classes.eraserEraser]:
             !isGameFinished && eraserToolType === "eraser",
           [classes.eraserBroom]: !isGameFinished && eraserToolType === "broom",
