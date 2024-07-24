@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 import { animated, useSpring, useTransition, easings } from "react-spring";
 
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import { useZoomPhase, calculateSequenceParameters } from "./useZoomPhase";
 
 // Models
@@ -58,7 +58,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - -
 
-  const [containerRef, containerSize] = useElementSize();
+  const [containerRef, containerSize] = useResizeObserver();
 
   const { width: containedImgWidth, height: containedImgHeight } = useMemo(
     () =>

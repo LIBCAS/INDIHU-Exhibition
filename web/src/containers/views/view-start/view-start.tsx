@@ -8,7 +8,6 @@ import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
-import useElementSize from "hooks/element-size-hook";
 import useResizeObserver from "hooks/use-resize-observer";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useViewStartAnimation } from "./view-start-animation-hook";
@@ -74,12 +73,17 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const [isInfoPanelOpen, setIsInfoPanelOpen] = useState<boolean>(false);
   const [isDetailPanelOpen, setIsDetailPanelOpen] = useState<boolean>(false);
 
-  const [screenContainerRef, screenContainerSize] = useElementSize();
+  const [screenContainerRef, screenContainerSize] = useResizeObserver();
   const [infoPanelRef, infoPanelSize] = useResizeObserver({
     ignoreUpdate: true,
   });
 
-  const [isLandscapeRecommendationOpen, setIsLandscapeRecommendationOpen] =
+  const [
+    isLandscapeRecommendationSnackbarOpen,
+    setIsLandscapeRecommendationSnackbarOpen,
+  ] = useState<boolean>(isMobile ? true : false);
+
+  const [isAudioWarningSnackbarOpen, setIsAudioWarningSnackbarOpen] =
     useState<boolean>(isMobile ? true : false);
 
   // - -
@@ -324,14 +328,31 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* Mobile snackbar for recommendation to turn the mobile into landscape mode */}
       <Snackbar
-        open={isLandscapeRecommendationOpen}
+        open={isLandscapeRecommendationSnackbarOpen}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
       >
         <Alert
           severity="info"
-          onClose={() => setIsLandscapeRecommendationOpen(false)}
+          onClose={() => setIsLandscapeRecommendationSnackbarOpen(false)}
         >
-          {t("landscapeModeRecommendation")}
+          {t("landscapeModeRecommendationSnackbarText")}
+        </Alert>
+      </Snackbar>
+
+      {/* Mobile snackbar for warning that after every screen change, the expo needs to be stopped, 
+      because without user interaction, the audio tracks can not start playing */}
+      <Snackbar
+        open={isAudioWarningSnackbarOpen}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+        style={{
+          top: isLandscapeRecommendationSnackbarOpen ? "76px" : undefined,
+        }}
+      >
+        <Alert
+          severity="info"
+          onClose={() => setIsAudioWarningSnackbarOpen(false)}
+        >
+          {t("audioWarningSnackbarText")}
         </Alert>
       </Snackbar>
     </>

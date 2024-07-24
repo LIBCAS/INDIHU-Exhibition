@@ -79,17 +79,17 @@ const ColorPicker = ({ name, color, setColor, label }: ColorPickerProps) => {
           <div className="w-1/6 self-center flex justify-end mr-2 gap-2">
             <Icon
               name={isColorEditModeOn ? "done" : "edit"}
-              className="cursor-pointer"
+              containerClassName="cursor-pointer"
               useMaterialUiIcon
-              style={{ fontSize: "24px" }}
+              iconStyle={{ fontSize: "24px" }}
               onClick={() => setIsColorEditModeOn((prev) => !prev)}
             />
             <div ref={paletteIconContainerRef}>
               <Icon
                 name="palette"
-                className="cursor-pointer"
+                containerClassName="cursor-pointer"
                 useMaterialUiIcon
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
                 onClick={() => !isColorEditModeOn && openColorPicker()}
               />
             </div>

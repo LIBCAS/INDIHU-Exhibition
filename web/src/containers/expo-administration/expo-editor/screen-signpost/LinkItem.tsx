@@ -202,7 +202,7 @@ export const LinkItem = ({
               <Icon
                 useMaterialUiIcon
                 name="delete"
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
                 tooltip={{
                   id: "link-delete-icon-tooltip",
                   content: t("deleteIconTooltip"),

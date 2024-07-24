@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 // Custom Hooks
@@ -8,11 +8,8 @@ import { useFilePreloader } from "context/file-preloader/file-preloader-provider
 // Components
 import { Viewers } from "../views";
 
-// Actions and utils
-import { noop } from "lodash";
-
 // Types and Enums
-import { AppState } from "store/store";
+import { AppDispatch, AppState } from "store/store";
 import {
   audioEnabled,
   mapScreenTypeValuesToKeys,
@@ -20,6 +17,7 @@ import {
 } from "enums/screen-type";
 import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 import ScreenAutoNavigatorManager from "./expo-managers/ScreenAutoNavigatorManager";
+import { setViewProgress } from "actions/expoActions/viewer-actions";
 
 // - - - - - - - -
 
@@ -46,6 +44,8 @@ export const NewViewScreen = ({
 }: NewViewScreenProps) => {
   const { viewScreen, shouldIncrement, expoVolumes } =
     useSelector(stateSelector);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const { section, screen } = useSectionScreenParams();
 
@@ -126,7 +126,11 @@ export const NewViewScreen = ({
     musicRef.loop = true;
     musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
     if (shouldIncrement) {
-      musicRef.play();
+      musicRef.play().catch((error) => {
+        if (error instanceof Error && error.name === "NotAllowedError") {
+          dispatch(setViewProgress({ shouldIncrement: false }));
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicSrc, musicRef]);
@@ -158,7 +162,11 @@ export const NewViewScreen = ({
 
     if (shouldIncrement) {
       audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
-      audioRef.play().catch((_error) => noop);
+      audioRef.play().catch((error) => {
+        if (error instanceof Error && error.name === "NotAllowedError") {
+          dispatch(setViewProgress({ shouldIncrement: false }));
+        }
+      });
     }
 
     return () => {
@@ -184,7 +192,11 @@ export const NewViewScreen = ({
   useEffect(() => {
     if (musicRef) {
       if (shouldIncrement && !isMusicDisabled) {
-        musicRef.play();
+        musicRef.play().catch((error) => {
+          if (error instanceof Error && error.name === "NotAllowedError") {
+            dispatch(setViewProgress({ shouldIncrement: false }));
+          }
+        });
       }
       if (!shouldIncrement && !isMusicDisabled) {
         musicRef.pause();
@@ -193,7 +205,11 @@ export const NewViewScreen = ({
 
     if (audioRef) {
       if (shouldIncrement) {
-        audioRef.play().catch((_error) => noop);
+        audioRef.play().catch((error) => {
+          if (error instanceof Error && error.name === "NotAllowedError") {
+            dispatch(setViewProgress({ shouldIncrement: false }));
+          }
+        });
       } else {
         audioRef.pause();
       }

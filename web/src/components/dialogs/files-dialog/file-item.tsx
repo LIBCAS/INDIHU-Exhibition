@@ -44,7 +44,7 @@ export const FileItem = ({
       )}
     >
       <Icon
-        className="text-gray"
+        containerClassName="text-gray"
         name={getDocumentIconName(
           "name" in file
             ? file.type

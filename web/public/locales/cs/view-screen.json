@@ -82,7 +82,6 @@
   },
 
   "game": {
-    "solution": "Správné řešení",
     "controls": {
       "finished": "Hotovo",
       "play-again": "Zahrát znovu"
@@ -90,25 +89,25 @@
   },
 
   "game-find": {
-    "task": "Najdi na obrázku"
+    "solution": "Správne riešenie"
   },
   "game-draw": {
-    "task": "Dokresli obrázek",
+    "solution": "Výborně! Splnil jsi zadání a toto je výsledek",
     "switchToPencilAction": "Přepnout na tužku",
     "switchToEraserAction": "Přepnout na gumu",
     "thicknessChooserAction": "Výběr tloušťky",
     "colorChooserAction": "Výběr barvy"
   },
   "game-erase": {
-    "task": "Vymaž obrázek"
+    "solution": "Výborně! Splnil jsi zadání a toto je výsledek"
   },
   "game-sizing": {
-    "task": "Uhodni správnou velikost"
+    "solution": "Správne riešenie"
   },
   "game-move": {
-    "task": "Posuň na správné místo"
+    "solution": "Správne riešenie"
   },
   "game-quiz": {
-    "task": "Vyber správné možnosti"
+    "solution": "Správne riešenie"
   }
 }

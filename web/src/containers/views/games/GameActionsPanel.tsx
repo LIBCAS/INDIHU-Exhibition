@@ -1,6 +1,5 @@
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { BasicTooltip } from "components/tooltip/tooltip";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 import { useTranslation } from "react-i18next";
 
@@ -42,37 +41,31 @@ export const GameActionsPanel = ({
         )}
 
         {/* Play again button */}
-        <div
-          className="pointer-events-auto"
-          data-tooltip-id="game-overlay-replay-button-tooltip"
-        >
+        <div className="pointer-events-auto">
           <Button
             iconBefore={<Icon name="replay" />}
             color="primary"
             style={{ width: "38px", height: "31px", border: "2px solid white" }}
             onClick={onGameReset}
-          />
-          <BasicTooltip
-            id="game-overlay-replay-button-tooltip"
-            content={t("game.controls.play-again")}
+            tooltip={{
+              id: "game-overlay-replay-button-tooltip",
+              content: t("game.controls.play-again"),
+            }}
           />
         </div>
 
         {/* Done button */}
-        <div
-          className="pointer-events-auto"
-          data-tooltip-id="game-overlay-done-button-tooltip"
-        >
+        <div className="pointer-events-auto">
           <Button
             disabled={isGameFinished}
             iconBefore={<Icon name="done" />}
             color="primary"
             style={{ width: "38px", height: "31px", border: "2px solid white" }}
             onClick={onGameFinish}
-          />
-          <BasicTooltip
-            id="game-overlay-done-button-tooltip"
-            content={t("game.controls.finished")}
+            tooltip={{
+              id: "game-overlay-done-button-tooltip",
+              content: t("game.controls.finished"),
+            }}
           />
         </div>
       </div>

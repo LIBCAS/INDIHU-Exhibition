@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import Snackbar from "react-md/lib/Snackbars";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Tooltip } from "react-tooltip";
 
 import { Icon } from "components/icon/icon";
 import { useBoolean } from "hooks/boolean-hook";
@@ -32,11 +31,7 @@ export const CopyClipboardBox = ({
         <span style={{ color: isLightMode ? undefined : palette["black"] }}>
           {text}
         </span>
-        <div
-          data-tooltip-content={tooltipText}
-          data-tooltip-id="copy-clipboard-box-tooltip"
-          style={{ color: isLightMode ? undefined : palette["black"] }}
-        >
+        <div style={{ color: isLightMode ? undefined : palette["black"] }}>
           <CopyToClipboard
             text={text}
             onCopy={() => {
@@ -44,20 +39,20 @@ export const CopyClipboardBox = ({
               onCopy?.();
             }}
           >
-            <Icon name="link" />
+            <Icon
+              name="link"
+              tooltip={{
+                id: "copy-clipboard-box-tooltip",
+                content: tooltipText ?? "",
+                place: "left",
+                variant: "dark",
+                className:
+                  "!pointer-events-auto !opacity-100 !rounded-none shadow-md",
+              }}
+            />
           </CopyToClipboard>
         </div>
       </div>
-
-      {tooltipText && (
-        <Tooltip
-          id="copy-clipboard-box-tooltip"
-          place="left"
-          variant="dark"
-          float={false}
-          className="!pointer-events-auto !opacity-100 !rounded-none shadow-md"
-        />
-      )}
 
       <Snackbar
         id="copy-clipboard-box-snackbar"

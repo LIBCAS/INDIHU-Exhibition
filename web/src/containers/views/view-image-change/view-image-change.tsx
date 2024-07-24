@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { animated, useSpring } from "react-spring";
 import { useGesture } from "@use-gesture/react";
 
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
@@ -41,7 +41,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   const { image1, image2 } = screenPreloadedFiles;
 
   // Hook up with reference to screen container div, provide its current width and height
-  const [screenContainerRef, screenContainerSize] = useElementSize();
+  const [screenContainerRef, screenContainerSize] = useResizeObserver();
 
   const [imageBeforeEl, setImageBeforeEl] = useState<HTMLImageElement | null>(
     null
@@ -94,10 +94,10 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - -
 
   const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints,
-    ScreenAnchorInfopoint,
+    AnchorInfopoint,
     TooltipInfoPoint,
   } = useTooltipInfopoint(viewScreen);
 
@@ -145,10 +145,11 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
     bind: bindTutorial,
     TutorialTooltip,
     isTutorialOpen,
-  } = useTutorial(
-    "screenChange",
-    animation !== "GRADUAL_TRANSITION" && animation !== "FADE_IN_OUT_TWO_IMAGES"
-  );
+  } = useTutorial("screenChange", {
+    shouldOpen:
+      animation !== "GRADUAL_TRANSITION" &&
+      animation !== "FADE_IN_OUT_TWO_IMAGES",
+  });
 
   // - - -
 
@@ -509,7 +510,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
         // Render the anchor infopoints
         return (
           <React.Fragment key={`infopoint-tooltip-${0}-${infopointIndex}`}>
-            <ScreenAnchorInfopoint
+            <AnchorInfopoint
               id={`infopoint-tooltip-${0}-${infopointIndex}`}
               left={adjustedLeft}
               top={adjustedTop}
@@ -518,8 +519,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
             <TooltipInfoPoint
               id={`infopoint-tooltip-${0}-${infopointIndex}`}
               infopoint={infopoint}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
               primaryKey="0"
               secondaryKey={infopointIndex.toString()}
               // canBeOpen // optional
@@ -583,7 +584,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
 
         return (
           <React.Fragment key={`infopoint-tooltip-${1}-${infopointIndex}`}>
-            <ScreenAnchorInfopoint
+            <AnchorInfopoint
               id={`infopoint-tooltip-${1}-${infopointIndex}`}
               left={adjustedLeft}
               top={adjustedTop}
@@ -592,8 +593,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
             <TooltipInfoPoint
               id={`infopoint-tooltip-${1}-${infopointIndex}`}
               infopoint={infopoint}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
               primaryKey="1"
               secondaryKey={infopointIndex.toString()}
               // canBeOpen // optional

@@ -73,7 +73,7 @@ const ReferenceItem = ({
               <Icon
                 useMaterialUiIcon
                 name="launch"
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </div>
           </div>
@@ -86,7 +86,7 @@ const ReferenceItem = ({
               <Icon
                 useMaterialUiIcon
                 name="launch"
-                style={{ color: `${palette["blue"]} !important` }}
+                iconStyle={{ color: `${palette["blue"]} !important` }}
               />
             )}
 

@@ -6,10 +6,10 @@ import { Position } from "models";
 // Thats why image container should be positioned relatively and this absolutel
 
 type GlassMagnifierProps = {
+  containedImgSrc: string | undefined;
   containedImgSize: { width: number; height: number };
   cursorPosition: Position;
   targetPosition: Position;
-  containedImgSrc: string | undefined;
   lensContainerStyle?: React.CSSProperties;
   lensStyle?: React.CSSProperties;
 };

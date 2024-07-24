@@ -24,35 +24,32 @@ const GlassMagnifierButton = ({
   const { isLightMode } = useExpoDesignData();
 
   return (
-    <>
-      <div
-        {...bind("glass-magnifier")}
-        className={cx(
-          "pointer-events-auto",
-          getTutorialEclipseClassnameByStepkeys([""])
-        )}
-        data-tooltip-id="glass-magnifier-button-tooltip"
-      >
-        <div>
-          <Button
-            color="expoTheme"
-            onClick={() => {
-              setIsGlassMagnifierEnabled((prev) => !prev);
-            }}
-          >
-            <Icon name={isGlassMagnifierEnabled ? "zoom_out" : "zoom_in"} />
-          </Button>
-        </div>
-
-        <Tooltip
-          id="glass-magnifier-button-tooltip"
-          className="p-0"
-          variant={isLightMode ? "light" : "dark"}
-          clickable
-          render={() => <GlassMagnifierSettings />}
-        />
+    <div
+      {...bind("glass-magnifier")}
+      className={cx(
+        "pointer-events-auto",
+        getTutorialEclipseClassnameByStepkeys([""])
+      )}
+    >
+      <div data-tooltip-id="glass-magnifier-button-tooltip">
+        <Button
+          color="expoTheme"
+          onClick={() => {
+            setIsGlassMagnifierEnabled((prev) => !prev);
+          }}
+        >
+          <Icon name={isGlassMagnifierEnabled ? "zoom_out" : "zoom_in"} />
+        </Button>
       </div>
-    </>
+
+      <Tooltip
+        id="glass-magnifier-button-tooltip"
+        className="p-0"
+        variant={isLightMode ? "light" : "dark"}
+        clickable
+        render={() => <GlassMagnifierSettings />}
+      />
+    </div>
   );
 };
 

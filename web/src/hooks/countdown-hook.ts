@@ -2,38 +2,45 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Options = {
   onFinish?: () => void;
-  paused?: boolean;
+  isPaused?: boolean;
   tick?: number;
 };
 
+/**
+ * NOTE: onFinish function should be wrapped within useCallback
+ */
 export const useCountdown = (time: number, options?: Options) => {
-  const { onFinish, paused = false, tick = 250 } = options ?? {};
+  const { onFinish, isPaused = false, tick = 250 } = options ?? {};
 
-  const [elapsed, setElapsed] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
-  const finished = useMemo(() => elapsed >= time, [elapsed, time]);
+  const isFinished = useMemo(() => elapsedTime >= time, [elapsedTime, time]);
 
-  useEffect(() => setElapsed(0), [time]);
+  const resetCountdown = useCallback(() => setElapsedTime(0), []);
+
+  // Restart countdown on input time change
+  useEffect(() => setElapsedTime(0), [time]);
 
   useEffect(() => {
-    if (paused) {
+    if (isPaused) {
       return;
     }
 
-    const interval = setInterval(() => setElapsed((prev) => prev + tick), tick);
+    const interval = setInterval(
+      () => setElapsedTime((prev) => prev + tick),
+      tick
+    );
 
     return () => clearInterval(interval);
-  }, [paused, tick]);
-
-  const reset = useCallback(() => setElapsed(0), []);
+  }, [isPaused, tick]);
 
   useEffect(() => {
-    if (!finished) {
+    if (!isFinished) {
       return;
     }
 
     onFinish?.();
-  }, [finished, onFinish]);
+  }, [isFinished, onFinish]);
 
-  return { reset, elapsed, finished };
+  return { resetCountdown, elapsedTime, isFinished };
 };

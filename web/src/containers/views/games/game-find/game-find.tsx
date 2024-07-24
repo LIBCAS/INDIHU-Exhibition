@@ -1,25 +1,43 @@
 import ReactDOM from "react-dom";
-import { useTranslation } from "react-i18next";
-import { MouseEvent, useCallback, useEffect, useState } from "react";
-import { animated, useTransition } from "react-spring";
-import { ScreenProps } from "models";
-import cx from "classnames";
+import { useState, useMemo, useCallback, MouseEvent } from "react";
+import { useTransition, animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
 
-import { AppState } from "store/store";
-import { GameFindScreen } from "models";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { useCornerInfoBox } from "hooks/spring-hooks/use-corner-info-box";
 
-import pinIcon from "assets/img/pin.png";
-import classes from "./game-find.module.scss";
+// Components
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { BasicTooltip } from "components/tooltip/BasicTooltip";
+
+// Models
+import { ScreenProps, Position } from "models";
+import { GameFindScreen } from "models";
+import { AppState } from "store/store";
+
+// Utils
+import cx from "classnames";
+import classes from "./game-find.module.scss";
+import {
+  GAME_FIND_DEFAULT_NUMBER_OF_PINS,
+  GAME_SCREEN_DEFAULT_RESULT_TIME,
+} from "constants/screen";
+
+// Assets
+import pinIcon from "assets/img/pin.png";
+
+// - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - -
 
 export const GameFind = ({
   screenPreloadedFiles,
@@ -27,114 +45,176 @@ export const GameFind = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
-  const [finished, setFinished] = useState(false);
-  const [pin, setPin] = useState<{ x: number; y: number }>();
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
 
-  const onFinish = useCallback(() => {
-    setFinished(true);
+  const {
+    resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME,
+    showTip = false,
+    numberOfPins = GAME_FIND_DEFAULT_NUMBER_OF_PINS,
+    pinsTexts,
+  } = viewScreen;
+
+  // NOTE: pinsTexts - can store more than numberOfPins texts
+  const slicedPinsTexts = useMemo(
+    () => pinsTexts?.slice(0, numberOfPins),
+    [numberOfPins, pinsTexts]
+  );
+
+  const { image1: assignmentImgSrc, image2: resultingImgSrc } =
+    screenPreloadedFiles;
+
+  // - - - -
+
+  const [isGameFinished, setIsGameFinished] = useState(false);
+
+  const [currentPinIndex, setCurrentPinIndex] = useState<number>(0);
+
+  const [pinPositions, setPinPositions] = useState<(Position | undefined)[]>(
+    new Array(numberOfPins).fill(undefined)
+  );
+
+  const areAllPinPositionsFilled = useMemo(
+    () => pinPositions.every((pos) => pos !== undefined),
+    [pinPositions]
+  );
+
+  const onGameFinish = useCallback(() => {
+    setIsGameFinished(true);
   }, []);
 
-  const onReset = useCallback(() => {
-    setFinished(false);
-    setPin(undefined);
+  const onGameReset = useCallback(() => {
+    setPinPositions((prev) => prev.map((_position) => undefined));
+    setCurrentPinIndex(0);
+    setIsGameFinished(false);
   }, []);
 
   const pinImage = useCallback(
     (e: MouseEvent<HTMLImageElement>) => {
-      if (pin) {
+      if (areAllPinPositionsFilled || currentPinIndex === pinPositions.length) {
         return;
       }
 
-      setPin({ x: e.clientX, y: e.clientY });
+      setPinPositions((prevPositions) =>
+        prevPositions.map((pos, posIdx) =>
+          posIdx === currentPinIndex ? { left: e.clientX, top: e.clientY } : pos
+        )
+      );
+
+      setCurrentPinIndex((prev) => prev + 1);
     },
-    [pin]
+    [areAllPinPositionsFilled, currentPinIndex, pinPositions.length]
   );
 
-  const imageTransition = useTransition(finished, {
+  // When game is not finished, display always and when game is finished, it depends on showTip prop
+  const shouldDisplayPin = useMemo(
+    () => !isGameFinished || (isGameFinished && showTip),
+    [isGameFinished, showTip]
+  );
+
+  // - - Tutorial - -
+
+  const { bind, TutorialTooltip } = useTutorial("gameFind", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - - -
+
+  useGameAutoNavigationOnResultTimeElapsed({
+    gameResultTime: resultTime * 1000,
+    isGameFinished: isGameFinished,
+  });
+
+  // - - Transitions - -
+
+  const imageTransition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
   });
 
-  const pinTransition = useTransition(pin, {
+  const pinPositionsTransition = useTransition(pinPositions, {
     from: { x: 0 },
     enter: { x: 1 },
     leave: { x: 1 },
   });
 
-  //
-
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameFind",
-    !isMobileOverlay
-  );
-
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+  // NOTE: return value of this hook is transition as well
+  const CornerPinInfoBox = useCornerInfoBox<string>({
+    items: slicedPinsTexts,
+    currIndex: currentPinIndex,
+    textExtractor: (pinText) => pinText,
+    position: "left",
   });
 
   return (
     <div className="w-full h-full relative">
-      {imageTransition(({ opacity }, finished) =>
-        !finished ? (
+      {imageTransition(({ opacity }, isGameFinished) =>
+        !isGameFinished ? (
           <animated.img
             style={{ opacity }}
             className={cx("w-full h-full absolute object-contain", {
-              [classes.pinningCursor]: !pin,
+              [classes.pinningCursor]: !areAllPinPositionsFilled,
             })}
             onClick={pinImage}
-            src={screenPreloadedFiles.image1}
-            alt="find game background"
+            src={assignmentImgSrc}
+            alt="assignment image"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="w-full h-full absolute object-contain"
-            src={screenPreloadedFiles.image2}
-            alt="solution"
+            src={resultingImgSrc}
+            alt="result image"
           />
         )
       )}
 
-      {pinTransition(
-        ({ x }, pin) =>
-          pin && (
-            <animated.img
-              src={pinIcon}
-              alt="pin icon"
-              style={{
-                position: "fixed",
-                x: pin.x - 25,
-                y: x.to(
-                  [0, 0.9, 0.95, 1],
-                  [pin.y - 50, pin.y - 80, pin.y - 45, pin.y - 50]
-                ),
-                rotateZ: x.to([0, 0.9, 0.95, 1], [0, 10, 0, 0]),
-              }}
-            />
+      {pinPositionsTransition(
+        ({ x }, pinPos, _trState, trIndex) =>
+          pinPos &&
+          shouldDisplayPin && (
+            <>
+              <animated.img
+                key={`pin-icon-${trIndex}`}
+                data-tooltip-id={`pin-icon-${trIndex}`}
+                src={pinIcon}
+                alt="pin icon"
+                style={{
+                  position: "fixed",
+                  x: pinPos.left - 25,
+                  y: x.to(
+                    [0, 0.9, 0.95, 1],
+                    [
+                      pinPos.top - 50,
+                      pinPos.top - 80,
+                      pinPos.top - 45,
+                      pinPos.top - 50,
+                    ]
+                  ),
+                  rotateZ: x.to([0, 0.9, 0.95, 1], [0, 10, 0, 0]),
+                }}
+              />
+
+              <BasicTooltip
+                id={`pin-icon-${trIndex}`}
+                content={slicedPinsTexts?.[trIndex] ?? ""}
+              />
+            </>
           )
       )}
+
+      {CornerPinInfoBox}
 
       {infoPanelRef.current &&
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            text={t("game-find.task")}
-            isGameFinished={finished}
+            isGameFinished={isGameFinished}
             bindTutorial={bind("finding")}
+            solutionText={t("game-find.solution")}
           />,
           infoPanelRef.current
         )}
@@ -143,9 +223,9 @@ export const GameFind = ({
         ReactDOM.createPortal(
           <GameActionsPanel
             isMobileOverlay={isMobileOverlay}
-            isGameFinished={finished}
-            onGameFinish={onFinish}
-            onGameReset={onReset}
+            isGameFinished={isGameFinished}
+            onGameFinish={onGameFinish}
+            onGameReset={onGameReset}
           />,
           actionsPanelRef.current
         )}
