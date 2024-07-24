@@ -216,7 +216,10 @@ export const GameErase = ({
 
   return (
     <div
-      className={cx("relative w-full h-full", classes["erase-container"])}
+      className={cx(
+        "relative w-[100svw] h-[100svh]",
+        classes["erase-container"]
+      )}
       ref={setContainerRef}
     >
       <img

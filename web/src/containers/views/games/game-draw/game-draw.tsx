@@ -131,7 +131,7 @@ export const GameDraw = ({
   });
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-[100svw] h-[100svh]">
       {transition(({ opacity }, isGameFinished) =>
         !isGameFinished ? (
           <animated.img
