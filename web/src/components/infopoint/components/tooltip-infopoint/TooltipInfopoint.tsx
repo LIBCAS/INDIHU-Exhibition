@@ -1,20 +1,24 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { Tooltip } from "react-tooltip";
-
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+
+import { Tooltip } from "react-tooltip";
 import InfopointBody from "./InfopointBody";
 
-import { InfopointStatusObject } from "./parseScreenMaps";
+// Models
+import { InfopointStatusObject } from "../../useTooltipInfopoint";
 import { Infopoint } from "models";
 
+// Utils
 import cx from "classnames";
 import { getTooltipArrowBorderClassName } from "utils/view-utils";
+
+// - - - -
 
 type TooltipInfoPointProps = {
   id: string;
   infopoint: Infopoint;
-  infopointOpenStatusMap: Record<string, InfopointStatusObject>;
-  setInfopointOpenStatusMap: Dispatch<
+  infopointStatusMap: Record<string, InfopointStatusObject>;
+  setInfopointStatusMap: Dispatch<
     SetStateAction<Record<string, InfopointStatusObject>>
   >;
   primaryKey: string;
@@ -22,38 +26,15 @@ type TooltipInfoPointProps = {
   canBeOpen?: boolean;
 };
 
-const TooltipInfoPoint = (props: TooltipInfoPointProps) => {
-  const keyMap =
-    props.secondaryKey === undefined
-      ? `${props.primaryKey}`
-      : `${props.primaryKey}-${props.secondaryKey}`;
-
-  return <BasicTooltipInfopoint {...props} keyMap={keyMap} />;
-};
-
-export default TooltipInfoPoint;
-
-// - - - -
-
-interface Props {
-  id: string;
-  infopoint: Infopoint;
-  infopointOpenStatusMap: Record<string, InfopointStatusObject>;
-  setInfopointOpenStatusMap: Dispatch<
-    SetStateAction<Record<string, InfopointStatusObject>>
-  >;
-  keyMap: string;
-  canBeOpen?: boolean;
-}
-
-const BasicTooltipInfopoint = ({
+const TooltipInfoPoint = ({
   id,
   infopoint,
-  infopointOpenStatusMap,
-  setInfopointOpenStatusMap,
-  keyMap,
+  infopointStatusMap,
+  setInfopointStatusMap,
+  primaryKey,
+  secondaryKey,
   canBeOpen = true,
-}: Props) => {
+}: TooltipInfoPointProps) => {
   const { isLightMode } = useExpoDesignData();
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false); // infopoints's video if video type
 
@@ -69,6 +50,11 @@ const BasicTooltipInfopoint = ({
     : currTooltipEl?.classList.contains("react-tooltip__place-right")
     ? "right"
     : undefined;
+
+  const keyMap =
+    secondaryKey === undefined
+      ? `${primaryKey}`
+      : `${primaryKey}-${secondaryKey}`;
 
   return (
     <Tooltip
@@ -89,7 +75,7 @@ const BasicTooltipInfopoint = ({
       openOnClick
       render={() => {
         const closeThisInfopoint = () => {
-          setInfopointOpenStatusMap((prevMap) => ({
+          setInfopointStatusMap((prevMap) => ({
             ...prevMap,
             [keyMap]: { ...prevMap[keyMap], isOpen: false },
           }));
@@ -102,10 +88,10 @@ const BasicTooltipInfopoint = ({
           setIsVideoLoaded,
         });
       }}
-      isOpen={infopointOpenStatusMap[keyMap].isOpen && canBeOpen}
+      isOpen={infopointStatusMap[keyMap].isOpen && canBeOpen}
       setIsOpen={(isOpen) => {
         if (isOpen) {
-          setInfopointOpenStatusMap((prevMap) => ({
+          setInfopointStatusMap((prevMap) => ({
             ...prevMap,
             [keyMap]: { ...prevMap[keyMap], isOpen: !prevMap[keyMap].isOpen },
           }));
@@ -115,3 +101,5 @@ const BasicTooltipInfopoint = ({
     />
   );
 };
+
+export default TooltipInfoPoint;

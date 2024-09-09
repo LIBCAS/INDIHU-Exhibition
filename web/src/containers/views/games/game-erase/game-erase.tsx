@@ -25,6 +25,8 @@ import classes from "./game-erase.module.scss";
 import { calculateObjectFit } from "utils/object-fit";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameWipeScreen,
@@ -41,9 +43,11 @@ export const GameErase = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
   const { expoDesignData, palette } = useExpoDesignData();
+  const { t } = useTranslation("view-screen");
+
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [setContainerRef, containerSize] = useResizeObserver();
@@ -198,27 +202,26 @@ export const GameErase = ({
 
   // - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameWipe",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip } = useTutorial("gameWipe", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
 
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
+  // - -
 
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+  useGameAutoNavigationOnResultTimeElapsed({
+    gameResultTime: resultTime * 1000,
+    isGameFinished: isGameFinished,
   });
 
   return (
-    <div className="relative w-full h-full" ref={setContainerRef}>
+    <div
+      className={cx(
+        "relative w-[100svw] h-[100svh]",
+        classes["erase-container"]
+      )}
+      ref={setContainerRef}
+    >
       <img
         className="absolute w-full h-full object-contain"
         src={screenPreloadedFiles.image2}
@@ -226,7 +229,7 @@ export const GameErase = ({
       />
 
       <canvas
-        className={cx("absolute touch-none", {
+        className={cx("absolute touch-none outline-none", {
           [classes.eraserEraser]:
             !isGameFinished && eraserToolType === "eraser",
           [classes.eraserBroom]: !isGameFinished && eraserToolType === "broom",
@@ -251,8 +254,8 @@ export const GameErase = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
-            text={t("game-erase.task")}
             bindTutorial={bind("wiping")}
+            solutionText={t("game-erase.solution")}
           />,
           infoPanelRef.current
         )}

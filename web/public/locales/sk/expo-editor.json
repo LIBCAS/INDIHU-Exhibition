@@ -234,7 +234,9 @@
       "imageResultLabel": "Výsledok",
       "imageResultTooltip": "Z knižnice dokumentov vyberte obrázok, kde je znázornené správne miesto, ktoré mali návštevníci nájsť.",
       "showUsersTip": "Zobraziť tipy návštevníkov",
-      "showUsersTipTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoj tip, zaškrtnite toto pole."
+      "showUsersTipTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoj tip, zaškrtnite toto pole.",
+      "numberOfPinsLabel": "Počet bodov na nájdenie",
+      "numberOfPinsTooltip": "Zadajte počet bodov, ktoré chcete aby návštevník našiel. Každý bod bude môcť mať následne pridelený svoj vlastný jedinečný text."
     },
     "gameDrawScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. dokreslite do grafu, ako sa vyvíjala ťažba uhlia po roku 1950).",
@@ -243,7 +245,11 @@
       "imageResultLabel": "Výsledok",
       "imageResultTooltip": "Z knižnice dokumentov vyberte kompletný obrázok.",
       "showUsersDrawing": "Zobraziť kresbu návštevníkov",
-      "showUsersDrawingTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoje tipy, zaškrtnite toto pole."
+      "showUsersDrawingTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoje tipy, zaškrtnite toto pole.",
+      "initialDrawingSettingsTitle": "Počiatočné nastavenia pre kreslenie",
+      "initialDrawingColorLabel": "Počiatočná farba",
+      "initialDrawingThicknessLabel": "Počiatočná hrúbka",
+      "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. Pozrite sa, ako vyzerala budova pred jej rekonštrukciou). ",
@@ -278,7 +284,8 @@
       "imageResultTooltip": "Z knižnice dokumentov vyberte výsledný kompletný obrázok.",
       "object": "Objekt",
       "objectSelectLabel": "Vybrať",
-      "objectTooltip": "Z knižnice dokumentov vyberte obrázok s časťami, z ktorých budú návštevníci vyberať."
+      "objectTooltip": "Z knižnice dokumentov vyberte obrázok s časťami, z ktorých budú návštevníci vyberať.",
+      "screenPreviewText": "Náhľad obrazovky"
     },
     "gameQuizScreen": {
       "nameLabel": "Názov",

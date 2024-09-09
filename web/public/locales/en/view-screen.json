@@ -82,7 +82,6 @@
   },
 
   "game": {
-    "solution": "The correct solution",
     "controls": {
       "finished": "Finished",
       "play-again": "Play again"
@@ -90,25 +89,25 @@
   },
 
   "game-find": {
-    "task": "Find in the image"
+    "solution": "The correct solution"
   },
   "game-draw": {
-    "task": "Draw in the image",
+    "solution": "Great! You completed the assignment and this is the result",
     "switchToPencilAction": "Switch to pencil",
     "switchToEraserAction": "Switch to eraser",
     "thicknessChooserAction": "Choice of thickness",
     "colorChooserAction": "Choice of color"
   },
   "game-erase": {
-    "task": "Erase the image"
+    "solution": "Great! You completed the assignment and this is the result"
   },
   "game-sizing": {
-    "task": "Guess the right size"
+    "solution": "The correct solution"
   },
   "game-move": {
-    "task": "Move to the correct position"
+    "solution": "The correct solution"
   },
   "game-quiz": {
-    "task": "Select the correct option(s)"
+    "solution": "The correct solution"
   }
 }

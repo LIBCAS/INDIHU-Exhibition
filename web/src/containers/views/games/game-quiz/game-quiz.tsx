@@ -3,7 +3,6 @@ import { useCallback, useState, useMemo, useEffect } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 
-import { useTranslation } from "react-i18next";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
@@ -23,6 +22,7 @@ import {
 
 import cx from "classnames";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useTranslation } from "react-i18next";
 
 // - -
 
@@ -43,8 +43,8 @@ export const GameQuiz = ({
   const { isSm, isMobileLandscape } = useMediaDevice();
 
   const {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints: closeAllInfopoints,
   } = useTooltipInfopoint(viewScreen);
 
@@ -76,19 +76,18 @@ export const GameQuiz = ({
 
   // - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameOptions",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip } = useTutorial("gameOptions", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
 
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeAllInfopoints(viewScreen)();
-        escapeTutorial();
       }
     },
-    [closeAllInfopoints, escapeTutorial, viewScreen]
+    [closeAllInfopoints, viewScreen]
   );
 
   useEffect(() => {
@@ -138,8 +137,8 @@ export const GameQuiz = ({
               quizType={quizType}
               answersTextDisplayType={answersTextDisplayType}
               setMarkedAnswers={setMarkedAnswers}
-              infopointOpenStatusMap={infopointOpenStatusMap}
-              setInfopointOpenStatusMap={setInfopointOpenStatusMap}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
             />
           );
         })}
@@ -150,8 +149,8 @@ export const GameQuiz = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isFinished}
-            text={t("game-quiz.task")}
             bindTutorial={bind("options")}
+            solutionText={t("game-quiz.solution")}
           />,
           infoPanelRef.current
         )}

@@ -8,6 +8,8 @@ import TextField from "react-md/lib/TextFields";
 import ImageBox from "components/editors/ImageBox";
 import HelpIcon from "components/help-icon";
 
+import ObjectImagePreview from "./ObjectImagePreview";
+
 // Models
 import { GameMoveScreen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
@@ -89,6 +91,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
           </div>
         </div>
+
         <div className="flex-row-nowrap flex-centered full-width">
           {t("object")}
           <FontIcon className="small-margin">image</FontIcon>
@@ -139,6 +142,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             <HelpIcon label={t("objectTooltip")} id="editor-game-move-object" />
           </div>
         </div>
+
         {object && (
           <img
             src={`/api/files/${object.fileId}`}
@@ -155,6 +159,14 @@ const Images = ({ activeScreen }: ImagesProps) => {
             }}
             className="hidden"
             alt=""
+          />
+        )}
+
+        {image1 && object && (
+          <ObjectImagePreview
+            activeScreen={activeScreen}
+            image1Src={`/api/files/${image1.fileId}`}
+            objectImgSrc={`/api/files/${object.fileId}`}
           />
         )}
       </div>

@@ -13,6 +13,7 @@ import { Screen } from "models";
 
 import { getFileById } from "actions/file-actions-typed";
 import { helpIconText } from "enums/text";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - -
 
@@ -49,7 +50,9 @@ const GameDescription = ({
           <div className="part margin-bottom margin-horizontal">
             <GameResultTimeTextField
               resultTimeValue={
-                "resultTime" in activeScreen ? activeScreen.resultTime ?? 4 : 4
+                "resultTime" in activeScreen
+                  ? activeScreen.resultTime ?? GAME_SCREEN_DEFAULT_RESULT_TIME
+                  : GAME_SCREEN_DEFAULT_RESULT_TIME
               }
             />
 

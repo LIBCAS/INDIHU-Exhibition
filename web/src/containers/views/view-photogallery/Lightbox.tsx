@@ -5,13 +5,12 @@ import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
-import useElementSize from "hooks/element-size-hook";
+import useResizeObserver from "hooks/use-resize-observer";
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { BasicTooltip } from "components/tooltip/tooltip";
 
 import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
@@ -33,7 +32,7 @@ const LightBox = ({
   closeLightBox,
   overlayOpacityAnimation,
 }: LightBoxProps) => {
-  const [imgContainerRef, imgContainerSize] = useElementSize();
+  const [imgContainerRef, imgContainerSize] = useResizeObserver();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [containedImageSize, setContainedImageSize] = useState<Size>({
     width: 0,
@@ -138,85 +137,98 @@ const Toolbar = ({
         style={{ opacity: overlayOpacityAnimation.opacity }}
       >
         <div className="flex gap-1">
-          <div data-tooltip-id="photogallery-zoom-in-button-tooltip">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-zoom-in-button-tooltip",
+                content: t("zoomInTooltip"),
+              }}
+            >
               <Icon
                 name="zoom_in"
                 useMaterialUiIcon
                 color="white"
                 onClick={zoomInside}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip
-              id="photogallery-zoom-in-button-tooltip"
-              content={t("zoomInTooltip")}
-            />
           </div>
 
-          <div data-tooltip-id="photogallery-zoom-reset-button-tooltip">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-zoom-reset-button-tooltip",
+                content: t("resetZoomTooltip"),
+              }}
+            >
               <Icon
                 name="search"
                 useMaterialUiIcon
                 color="white"
                 onClick={reset}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip
-              id="photogallery-zoom-reset-button-tooltip"
-              content={t("resetZoomTooltip")}
-            />
           </div>
 
-          <div data-tooltip-id="photogallery-zoom-out-button-tooltip">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-zoom-out-button-tooltip",
+                content: t("zoomOutTooltip"),
+              }}
+            >
               <Icon
                 name="zoom_out"
                 useMaterialUiIcon
                 color="white"
                 onClick={zoomOutside}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip
-              id="photogallery-zoom-out-button-tooltip"
-              content={t("zoomOutTooltip")}
-            />
           </div>
 
           {currPhotoObj.photoDescription && (
-            <div data-tooltip-id="photogallery-photo-description-button-tooltip">
-              <Button noPadding>
+            <div>
+              <Button
+                noPadding
+                tooltip={{
+                  id: "photogallery-photo-description-button-tooltip",
+                  content: t("openDescTooltip"),
+                }}
+              >
                 <Icon
                   name="article"
                   useMaterialUiIcon
                   color="white"
                   onClick={openInformationDialog}
-                  style={{ fontSize: "24px" }}
+                  iconStyle={{ fontSize: "24px" }}
                 />
               </Button>
-              <BasicTooltip
-                id="photogallery-photo-description-button-tooltip"
-                content={t("openDescTooltip")}
-              />
             </div>
           )}
         </div>
 
         <div>
-          <div data-tooltip-id="photogallery-close">
-            <Button noPadding>
+          <div>
+            <Button
+              noPadding
+              tooltip={{
+                id: "photogallery-close",
+                content: t("closeTooltip"),
+              }}
+            >
               <Icon
                 color="white"
                 useMaterialUiIcon
                 name="close"
                 onClick={closeLightBox}
-                style={{ fontSize: "24px" }}
+                iconStyle={{ fontSize: "24px" }}
               />
             </Button>
-            <BasicTooltip id="photogallery-close" content={t("closeTooltip")} />
           </div>
         </div>
       </animated.div>

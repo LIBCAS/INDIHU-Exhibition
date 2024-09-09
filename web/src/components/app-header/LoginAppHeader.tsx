@@ -9,11 +9,6 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { MdEdit } from "react-icons/md";
-import { MdEditOff } from "react-icons/md";
-
-import { BasicTooltip } from "components/tooltip/tooltip";
-
 // Models
 import { ActiveExpo, Screen } from "models";
 import { AppDispatch } from "store/store";
@@ -24,6 +19,7 @@ import { signOut } from "actions/user-actions";
 import { openInNewTab } from "utils";
 import { mapScreenTypeValuesToKeys } from "enums/screen-type";
 import { useActiveExpoAccess } from "context/active-expo-access-provider/active-expo-access-provider";
+import { Icon } from "components/icon/icon";
 
 // - -
 
@@ -116,26 +112,39 @@ const LoginAppHeader = ({
             </div>
             <div className="self-center border-[1px] border-solid border-white rounded-full p-[1px]">
               {isReadWriteAccess ? (
-                <div data-tooltip-id="md-edit-on">
-                  <MdEdit style={{ fontSize: "14px", color: "#cccccc" }} />
+                <div>
+                  <Icon
+                    useMaterialUiIcon
+                    name="edit-on"
+                    iconStyle={{
+                      fontSize: "14px",
+                      color: "#cccccc",
+                    }}
+                    tooltip={{
+                      id: "md-edit-on",
+                      content: t("read-write-permission-tooltip"),
+                      variant: "dark",
+                    }}
+                  />
                 </div>
               ) : (
-                <div data-tooltip-id="md-edit-off">
-                  <MdEditOff style={{ fontSize: "14px", color: "#cccccc" }} />
+                <div>
+                  <Icon
+                    useMaterialUiIcon
+                    name="edit-off"
+                    iconStyle={{
+                      fontSize: "14px",
+                      color: "#cccccc",
+                    }}
+                    tooltip={{
+                      id: "md-edit-off",
+                      content: t("read-only-permission-tooltip"),
+                      variant: "dark",
+                    }}
+                  />
                 </div>
               )}
             </div>
-
-            <BasicTooltip
-              id="md-edit-on"
-              content={t("read-write-permission-tooltip")}
-              variant="dark"
-            />
-            <BasicTooltip
-              id="md-edit-off"
-              content={t("read-only-permission-tooltip")}
-              variant="dark"
-            />
           </div>
         )}
       </div>

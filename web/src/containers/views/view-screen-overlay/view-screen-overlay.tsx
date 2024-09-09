@@ -127,10 +127,10 @@ export const ViewScreenOverlay = ({
     getTutorialEnhanceClassnameByStepkeys,
     reactivateTutorial,
     isTutorialCompleted,
-  } = useTutorial(
-    isMobileOverlay ? "mobile-overlay" : "overlay",
-    isOverlayActive === true && (isMobileOverlay ? true : !amIGameScreen)
-  );
+  } = useTutorial(isMobileOverlay ? "mobile-overlay" : "overlay", {
+    shouldOpen:
+      isOverlayActive === true && (isMobileOverlay ? true : !amIGameScreen),
+  });
 
   const isAnyTutorialOpen = useIsAnyTutorialOpened();
 

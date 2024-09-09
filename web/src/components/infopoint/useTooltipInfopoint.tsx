@@ -1,20 +1,14 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
+
+import { useMobileInfopointAutoClosing } from "./hooks/useMobileInfopointAutoClosing";
+import { useInfopointClosing } from "./hooks/useInfopointClosing";
 
 // Components
-import ScreenAnchorInfopoint from "./ScreenAnchorInfopoint";
-import TooltipInfoPoint from "./TooltipInfopoint";
-
-import { useMediaQuery } from "@mui/material";
-import { breakpoints } from "hooks/media-query-hook/breakpoints";
+import AnchorInfopoint from "./components/anchor-infopoint";
+import TooltipInfoPoint from "./components/tooltip-infopoint/TooltipInfopoint";
 
 // Utils
-import {
-  parseImageScreenMap,
-  parseSlideshowScreenMap,
-  parseImageChangeScreenMap,
-  parseGameQuizScreenMap,
-  InfopointStatusObject,
-} from "./parseScreenMaps";
+import { parseScreenToInfopointStatusMap } from "./screen-to-map-parsers";
 
 // Models
 import {
@@ -23,15 +17,21 @@ import {
   ImageChangeScreen,
   GameQuizScreen,
 } from "models";
-import { screenType } from "enums/screen-type";
 
 // - - - - -
 
-type InfopointSupportedScreens =
+export type InfopointSupportedScreens =
   | ImageScreen
   | SlideshowScreen
   | ImageChangeScreen
   | GameQuizScreen;
+
+export type InfopointStatusObject = {
+  isOpen: boolean;
+  isAlwaysVisible: boolean;
+};
+
+export type InfopointStatusMap = Record<string, InfopointStatusObject>;
 
 /**
  * 1. Import this hook into screen where you want to use Infopoints
@@ -43,13 +43,13 @@ type InfopointSupportedScreens =
  *       the infopoint is currently opened or closed
  *     - alwaysVisible in czech "stale zobrazen", is a checkbox in screen administration
  *     - alwaysVisible infopoint is at the beginning open, thats the only difference from another infopoint
- * 3. Use ScreenAnchorInfopoint component in your screen
+ * 3. Use AnchorInfopoint component in your screen
  *     - requires top and left props as absolute offset positioning
  *     - requires id and content prop, which is used as data-tooltip-id, data-tooltip-content
  *     - id of SquareInfopoint must be the same as the id prop of TooltipInfopoint
  *     - content of SquareInfopoint will be through id linked and used in TooltipInfopoint
  * 4. Apply TooltipInfopoint component
- *     - requires id props which must be the same as the supplied id in ScreenAnchorInfopoint
+ *     - requires id props which must be the same as the supplied id in AnchorInfopoint
  *     - requires information whether this infopoint is marked as alwaysVisible from administration
  *     - requires infopointOpenStatusMap and setter of this map.. created in first step and returned by this hook
  *     - requires primary and optionally secondary key, they will be combined into one mapKey
@@ -58,135 +58,36 @@ type InfopointSupportedScreens =
  * EXAMPLES: SLIDESHOW screen or IMAGE screen
  */
 const useTooltipInfopoint = (viewScreen: InfopointSupportedScreens) => {
-  const isSm = useMediaQuery(breakpoints.down("sm"));
-
   const [isMapParsingDone, setIsMapParsingDone] = useState<boolean>(false);
 
   // Object containing information (isOpen, isAlwaysVisible) for each infopoint present in supported screen
   // isAlwaysVisible is the mark for each infopoint, set in the slideshow administration
-  const [infopointOpenStatusMap, setInfopointOpenStatusMap] = useState(() => {
-    let parsedInfopointStatusMap: Record<string, InfopointStatusObject> | null =
-      null;
+  const [infopointStatusMap, setInfopointStatusMap] =
+    useState<InfopointStatusMap>(() => {
+      const parsedInfopointMap = parseScreenToInfopointStatusMap(viewScreen);
+      setIsMapParsingDone(true);
+      return parsedInfopointMap;
+    });
 
-    if (viewScreen.type === screenType.GAME_OPTIONS) {
-      parsedInfopointStatusMap = parseGameQuizScreenMap(viewScreen);
-    } else if (viewScreen.type === screenType.SLIDESHOW) {
-      parsedInfopointStatusMap = parseSlideshowScreenMap(viewScreen);
-    } else if (viewScreen.type === screenType.IMAGE_CHANGE) {
-      parsedInfopointStatusMap = parseImageChangeScreenMap(viewScreen);
-    } else {
-      // TODO - improve structure
-      parsedInfopointStatusMap = parseImageScreenMap(viewScreen);
-    }
+  // - - -
 
-    setIsMapParsingDone(true);
-    return parsedInfopointStatusMap;
+  useMobileInfopointAutoClosing({
+    setInfopointStatusMap,
+    isMapParsingDone,
   });
 
   // - - -
 
-  // On small (mobile) screens, all infopoint, even the alwaysVisible, are by default first closed and then could be opened
-  useEffect(() => {
-    if (!isSm) {
-      setInfopointOpenStatusMap((prevMap) => {
-        if (!prevMap) {
-          return prevMap;
-        }
-        const entries = Object.entries(prevMap);
-        const nextMap = entries.reduce(
-          (acc, [key, infopointStatus]) => ({
-            ...acc,
-            [key]: {
-              ...infopointStatus,
-              isOpen: infopointStatus.isAlwaysVisible,
-            },
-          }),
-          {} as Record<string, InfopointStatusObject>
-        );
-
-        return nextMap;
-      });
-
-      return;
-    }
-
-    setInfopointOpenStatusMap((prevMap) => {
-      if (!prevMap) {
-        return prevMap;
-      }
-      const entries = Object.entries(prevMap);
-      const nextMapWithClosedInfopoints = entries.reduce(
-        (acc, [key, infopointStatus]) => ({
-          ...acc,
-          [key]: { ...infopointStatus, isOpen: false },
-        }),
-        {} as Record<string, InfopointStatusObject>
-      );
-
-      return nextMapWithClosedInfopoints;
-    });
-  }, [isSm, isMapParsingDone]);
-
-  // - - -
-
-  // Iterates through whole map and close all of the infopoints
-  const closeAllInfopoints = useCallback(() => {
-    if (!infopointOpenStatusMap) {
-      return;
-    }
-    const entries = Object.entries(infopointOpenStatusMap);
-    const closedEntries = entries.map(([key, infopoint]) => {
-      return [key, { ...infopoint, isOpen: false }];
-    });
-
-    const newMap = Object.fromEntries(closedEntries);
-    setInfopointOpenStatusMap(newMap);
-  }, [infopointOpenStatusMap]);
-
-  // Iterates through whole map, but close only infopoints of current photo
-  const closePhotoInfopoints = useCallback(
-    (photoIndex: number) => {
-      if (!infopointOpenStatusMap) {
-        return;
-      }
-      const entries = Object.entries(infopointOpenStatusMap);
-      const closedEntries = entries.map(([key, infopoint]) => {
-        const parsedPhotoKey = parseInt(key.charAt(0));
-        if (!isNaN(parsedPhotoKey) && parsedPhotoKey === photoIndex) {
-          return [key, { ...infopoint, isOpen: false }];
-        }
-        return [key, { ...infopoint }];
-      });
-
-      const newMap = Object.fromEntries(closedEntries);
-      setInfopointOpenStatusMap(newMap);
-    },
-    [infopointOpenStatusMap]
-  );
-
-  // - - -
-
-  // Function which will close infopoints
-  // Called e.g on ESC press + clicking on the image as outside any infopoint
-  // Typescript method overloading
-  function closeInfopoints(screen: GameQuizScreen): () => void;
-  function closeInfopoints(screen: ImageScreen): () => void;
-  function closeInfopoints(screen: ImageChangeScreen): () => void;
-  function closeInfopoints(
-    screen: SlideshowScreen
-  ): (photoIndex: number) => void;
-  function closeInfopoints(screen: InfopointSupportedScreens) {
-    if (screen.type === screenType.SLIDESHOW) {
-      return closePhotoInfopoints;
-    }
-    return closeAllInfopoints;
-  }
+  const { closeInfopoints } = useInfopointClosing({
+    infopointStatusMap: infopointStatusMap,
+    setInfopointStatusMap: setInfopointStatusMap,
+  });
 
   return {
-    infopointOpenStatusMap,
-    setInfopointOpenStatusMap,
+    infopointStatusMap,
+    setInfopointStatusMap,
     closeInfopoints,
-    ScreenAnchorInfopoint,
+    AnchorInfopoint,
     TooltipInfoPoint,
   };
 };

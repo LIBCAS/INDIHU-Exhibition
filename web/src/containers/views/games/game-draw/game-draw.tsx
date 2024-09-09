@@ -1,38 +1,46 @@
-import { useCallback, useState, MouseEvent, useRef, useEffect } from "react";
-import { animated, useTransition } from "react-spring";
 import ReactDOM from "react-dom";
-import cx from "classnames";
+import { useCallback, useState, useRef } from "react";
+import { animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
-import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+
+// Custom hooks
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { useBoolean } from "hooks/boolean-hook";
+import { useGameDraw } from "./useGameDraw";
+
+// Components
+import { GameInfoPanel } from "../GameInfoPanel";
+import { GameActionsPanel } from "../GameActionsPanel";
+
+import { Popper } from "components/popper/popper";
+import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
-import { Position, ScreenProps } from "models";
+// Models
+import { GameDrawScreen, ScreenProps } from "models";
 import { AppState } from "store/store";
-import { GameDrawScreen } from "models";
 
+// Utils
+import cx from "classnames";
 import classes from "./game-draw.module.scss";
-import { GameInfoPanel } from "../GameInfoPanel";
-import { Button } from "components/button/button";
-import { useBoolean } from "hooks/boolean-hook";
-import { Popper } from "components/popper/popper";
-import { GameActionsPanel } from "../GameActionsPanel";
-import { BasicTooltip } from "components/tooltip/tooltip";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { configureContext } from "./configureContext";
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+import {
+  GAME_DRAW_DEFAULT_COLOR,
+  GAME_DRAW_DEFAULT_THICKNESS,
+  GAME_DRAW_DEFAULT_IS_ERASING,
+} from "constants/screen";
 
-// - -
-
-export const DEFAULT_COLOR = "#000000";
-export const DEFAULT_THICKNESS = 5;
-export const DEFAULT_IS_ERASING = false;
-
-// - -
+// - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - -
 
 export const GameDraw = ({
   screenPreloadedFiles,
@@ -43,112 +51,56 @@ export const GameDraw = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+  const {
+    resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME,
+    showDrawing = false,
+    initialColor = GAME_DRAW_DEFAULT_COLOR,
+    initialThickness = GAME_DRAW_DEFAULT_THICKNESS,
+  } = viewScreen;
 
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [mousePosition, setMousePosition] = useState<Position | null>(null); // setting always, even when the pen or erase is not down
+  const { image1: assignmentImgSrc, image2: resultingImgSrc } =
+    screenPreloadedFiles;
 
-  const [color, setColor] = useState(DEFAULT_COLOR);
+  // - - States - -
 
-  const [thickness, setThickness] = useState(DEFAULT_THICKNESS);
+  const [color, setColor] = useState<string>(initialColor);
+
+  const [thickness, setThickness] = useState<number>(initialThickness);
+
+  const [isErasing, { toggle: toggleTool }] = useBoolean(
+    GAME_DRAW_DEFAULT_IS_ERASING
+  );
+
   const [thicknessAnchor, setThicknessAnchor] =
     useState<HTMLButtonElement | null>(null);
+
   const [
     isThicknessPopoverOpen,
     { toggle: toggleThicknessPopover, setFalse: closeThicknessPopover },
   ] = useBoolean(false);
 
-  const [isErasing, { toggle: toggleTool }] = useBoolean(DEFAULT_IS_ERASING);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const [isGameFinished, setIsGameFinished] = useState(false);
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
-  // - -
+  // - - Draw functionality - -
 
-  useEffect(() => {
-    if (!canvasRef.current) return; // should not happen
-
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-
-    const context = canvasRef.current.getContext("2d");
-    setCtx(context);
-  }, []);
-
-  const resizeCanvas = useCallback(() => {
-    if (!canvasRef.current) return;
-
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
-  }, [resizeCanvas]);
-
-  // - -
-
-  useEffect(() => {
-    if (!ctx) return;
-
-    configureContext(ctx, color, thickness, isErasing);
-  }, [
+  const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
+    canvasRef,
+    isGameFinished,
     color,
     thickness,
     isErasing,
-    ctx,
-    canvasRef.current?.width,
-    canvasRef.current?.height,
-  ]);
+  });
 
-  // - -
-
-  const startDrawing = useCallback((e: MouseEvent<HTMLCanvasElement>) => {
-    setMousePosition({ left: e.clientX, top: e.clientY });
-    setIsDrawing(true);
-  }, []);
-
-  const stopDrawing = useCallback(() => {
-    setIsDrawing(false);
-  }, []);
-
-  const draw = useCallback(
-    (e: MouseEvent<HTMLCanvasElement>) => {
-      if (!isDrawing || isGameFinished || !ctx || !mousePosition) {
-        return;
-      }
-
-      ctx.beginPath();
-      ctx.moveTo(mousePosition.left, mousePosition.top);
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
-
-      setMousePosition({ left: e.clientX, top: e.clientY });
-    },
-    [isDrawing, isGameFinished, mousePosition, ctx]
-  );
-
-  // - -
-
-  const clearCanvas = useCallback(() => {
-    if (!canvasRef.current) return;
-    if (!ctx) return;
-
-    ctx.clearRect(
-      0,
-      0,
-      canvasRef.current.width ?? 0,
-      canvasRef.current.height ?? 0
-    );
-  }, [ctx]);
-
-  // - -
+  // - - - -
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
-    clearCanvas();
-  }, [clearCanvas]);
+    if (!showDrawing) {
+      clearCanvas();
+    }
+  }, [clearCanvas, showDrawing]);
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
@@ -166,41 +118,34 @@ export const GameDraw = ({
 
   // - - Tutorial stuff - -
 
-  const { bind, TutorialTooltip, escapeTutorial } = useTutorial(
-    "gameDraw",
-    !isMobileOverlay
-  );
+  const { bind, TutorialTooltip } = useTutorial("gameDraw", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
 
-  const onKeydownAction = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        escapeTutorial();
-      }
-    },
-    [escapeTutorial]
-  );
+  // - -
 
-  useEffect(() => {
-    document.addEventListener("keydown", onKeydownAction);
-    return () => document.removeEventListener("keydown", onKeydownAction);
+  useGameAutoNavigationOnResultTimeElapsed({
+    gameResultTime: resultTime * 1000,
+    isGameFinished: isGameFinished,
   });
 
   return (
-    <div className="relative w-full h-full">
-      {transition(({ opacity }, finished) =>
-        !finished ? (
+    <div className="relative w-[100svw] h-[100svh]">
+      {transition(({ opacity }, isGameFinished) =>
+        !isGameFinished ? (
           <animated.img
             style={{ opacity }}
             className="absolute w-full h-full object-contain"
-            src={screenPreloadedFiles.image1}
-            alt="background drawing image"
+            src={assignmentImgSrc}
+            alt="assignment img"
           />
         ) : (
           <animated.img
             style={{ opacity }}
             className="absolute w-full h-full object-contain"
-            src={screenPreloadedFiles.image2}
-            alt="solution image"
+            src={resultingImgSrc}
+            alt="result image"
           />
         )
       )}
@@ -239,8 +184,8 @@ export const GameDraw = ({
           <GameInfoPanel
             gameScreen={viewScreen}
             isGameFinished={isGameFinished}
-            text={t("game-draw.task")}
             bindTutorial={bind("drawing")}
+            solutionText={t("game-draw.solution")}
           />,
           infoPanelRef.current
         )}
@@ -253,48 +198,41 @@ export const GameDraw = ({
             onGameFinish={onGameFinish}
             onGameReset={onGameReset}
             gameActions={[
-              <div
-                key="tool-button"
-                data-tooltip-id="game-overlay-tool-button-tooltip"
-              >
+              <div key="tool-button">
                 <Button
                   color="expoTheme"
                   onClick={toggleTool}
                   iconBefore={<Icon name={isErasing ? "draw" : "healing"} />}
-                />
-                <BasicTooltip
-                  id="game-overlay-tool-button-tooltip"
-                  content={
-                    isErasing
+                  tooltip={{
+                    id: "game-overlay-tool-button-tooltip",
+                    content: isErasing
                       ? t("game-draw.switchToPencilAction")
-                      : t("game-draw.switchToEraserAction")
-                  }
+                      : t("game-draw.switchToEraserAction"),
+                  }}
                 />
               </div>,
 
-              <div
-                className="relative"
-                key="thickness-button"
-                data-tooltip-id="game-overlay-thickness-button-tooltip"
-              >
+              <div className="relative" key="thickness-button">
                 <Button
                   ref={(ref) => setThicknessAnchor(ref)}
                   color="expoTheme"
                   onClick={toggleThicknessPopover}
                   iconBefore={<Icon name="line_weight" />}
-                />
-                <BasicTooltip
-                  id="game-overlay-thickness-button-tooltip"
-                  content={t("game-draw.thicknessChooserAction")}
+                  tooltip={{
+                    id: "game-overlay-thickness-button-tooltip",
+                    content: t("game-draw.thicknessChooserAction"),
+                  }}
                 />
               </div>,
 
-              <div
-                className="relative"
-                key="color-picker-button"
-                data-tooltip-id="game-overlay-color-picker-button-tooltip"
-              >
-                <Button color="expoTheme">
+              <div className="relative" key="color-picker-button">
+                <Button
+                  color="expoTheme"
+                  tooltip={{
+                    id: "game-overlay-color-picker-button-tooltip",
+                    content: t("game-draw.colorChooserAction"),
+                  }}
+                >
                   <Icon name="palette" />
                   <input
                     type="color"
@@ -303,10 +241,6 @@ export const GameDraw = ({
                     onChange={(e) => setColor(e.target.value)}
                   />
                 </Button>
-                <BasicTooltip
-                  id="game-overlay-color-picker-button-tooltip"
-                  content={t("game-draw.colorChooserAction")}
-                />
               </div>,
             ]}
           />,

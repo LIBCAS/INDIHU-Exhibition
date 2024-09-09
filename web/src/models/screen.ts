@@ -8,6 +8,7 @@ import { Document } from "./document";
 import { Infopoint } from "./infopoint";
 import { ScreenPreloadedFiles } from "context/file-preloader/file-preloader-provider";
 import { ActiveExpo } from "./exposition";
+import { Position, Size } from "models";
 
 // NEW
 import {
@@ -397,12 +398,14 @@ export type GameFindScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  showTip: boolean;
+  showTip?: boolean;
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  numberOfPins?: number;
+  pinsTexts?: string[];
 };
 
 export type GameDrawScreen = {
@@ -414,12 +417,14 @@ export type GameDrawScreen = {
   image2?: string;
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
-  showDrawing: boolean;
+  showDrawing?: boolean;
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  initialColor?: string;
+  initialThickness?: number;
 };
 
 export type GameWipeScreen = {
@@ -468,6 +473,14 @@ export type GameMoveScreen = {
   image1OrigData?: ImageOrigData;
   image2OrigData?: ImageOrigData;
   objectOrigData?: ImageOrigData;
+  objectPositionProps?: {
+    containerPosition: Position;
+    containedImgPosition: Position;
+  };
+  objectSizeProps?: {
+    inContainerSize: Size;
+    inContainedImgFractionSize: Size;
+  };
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
