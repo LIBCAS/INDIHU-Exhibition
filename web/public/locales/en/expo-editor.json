@@ -344,7 +344,10 @@
   "infopointsTable": {
     "defaultTitle": "Infopoints",
     "descCol": "Description",
-    "alwaysVisibleCol": "Always visible"
+    "alwaysVisibleCol": "Always visible",
+    "unknownImagePreviewText": "Unknown image title",
+    "unknownVideoPreviewText": "Unknown video title",
+    "unknownTextPreview": "Not specified"
   },
   "infopointsForm": {
     "addInfopointTitle": "Create",

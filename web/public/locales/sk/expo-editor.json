@@ -344,7 +344,10 @@
   "infopointsTable": {
     "defaultTitle": "Infopointy",
     "descCol": "Popis",
-    "alwaysVisibleCol": "Stále zobrazený"
+    "alwaysVisibleCol": "Stále zobrazený",
+    "unknownImagePreviewText": "Neuvedený názov obrázku",
+    "unknownVideoPreviewText": "Neuvedený názov videa",
+    "unknownTextPreview": "Neuvedené"
   },
   "infopointsForm": {
     "addInfopointTitle": "Vytvoriť",
