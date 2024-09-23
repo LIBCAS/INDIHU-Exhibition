@@ -224,7 +224,12 @@
       "linkScreenLabel": "Selected link screen",
       "deleteIconTooltip": "Delete link",
       "closeIconTooltip": "Close link",
-      "addNewReferenceLabel": "Add a new link"
+      "addNewReferenceLabel": "Add a new link",
+      "deleteLinkDialog": {
+        "titleErrLessThanOne": "Cannot delete more links!",
+        "textErrLessThanOne": "The minimum number of allowed responses has been reached, that is one.",
+        "textConfirm": "Are you sure you want to remove this reference? The action is non-refundable!"
+      }
     },
 
     "gameFindScreen": {
@@ -312,7 +317,12 @@
       "answerImageTooltip": "Select an image from the document library.",
       "answerTextLabel": "Answer text",
       "answerTextTooltip": "Please enter a reasonably long text for this answer option.",
-      "addNewAnswer": "Add a new answer"
+      "addNewAnswer": "Add a new answer",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "It is not possible to delete more options!",
+        "textErrorLessThanThree": "The minimum number of allowed answers was reached, namely three.",
+        "textConfirm:": "Are you sure you want to remove this option? The action is non-refundable!"
+      }
     }
   },
   "documentsTable": {

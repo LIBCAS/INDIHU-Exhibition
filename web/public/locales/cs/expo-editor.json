@@ -224,7 +224,12 @@
       "linkScreenLabel": "Zvolená odkazová obrazovka",
       "deleteIconTooltip": "Vymazat odkaz",
       "closeIconTooltip": "Zavřít odkaz",
-      "addNewReferenceLabel": "Přidat nový odkaz"
+      "addNewReferenceLabel": "Přidat nový odkaz",
+      "deleteLinkDialog": {
+        "titleErrLessThanOne": "Nelze smazat více odkazov!",
+        "textErrLessThanOne": "Bylo dosaženo minimálního počtu povolených odpovědí a to jedna.",
+        "textConfirm": "Opravdu chcete odstranit tuto referenci? Akce je nevratná!"
+      }
     },
 
     "gameFindScreen": {
@@ -312,7 +317,12 @@
       "answerImageTooltip": "Vyberte ilustrační obrázek z knihovny dokumentů.",
       "answerTextLabel": "Text odpovědi",
       "answerTextTooltip": "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi.",
-      "addNewAnswer": "Přidat novou odpověď"
+      "addNewAnswer": "Přidat novou odpověď",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Nelze smazat více možností!",
+        "textErrorLessThanThree": "Bylo dosaženo minimálního počtu povolených odpovědí a to tři.",
+        "textConfirm:": "Opravdu chcete odstranit tuto možnost? Akce je nevratná!"
+      }
     }
   },
   "documentsTable": {

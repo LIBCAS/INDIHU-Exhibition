@@ -69,8 +69,8 @@ const ClosedExpoSettings = ({ activeExpo }: ClosedExpoSettingsProps) => {
     if (!isSucc) {
       dispatch(
         setDialog(DialogType.InfoDialog, {
-          title: "Neúspešné uloženie",
-          text: "Nepodařilo se uložit změny.",
+          title: t("closedExpoSettingsFailureDialog.title") as string,
+          text: t("closedExpoSettingsFailureDialog.text"),
         })
       );
     }

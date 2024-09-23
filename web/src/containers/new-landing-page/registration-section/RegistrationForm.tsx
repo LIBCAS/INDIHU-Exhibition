@@ -111,8 +111,10 @@ const RegistrationForm = ({
               //setCaptcha
               dispatch(
                 setDialog(DialogType.InfoDialog, {
-                  title: "Potvrzení registrace",
-                  text: `Potvrďte svou registraci linkem zaslaným na adresu ${formData.email}`,
+                  title: t("registrationResponse.201Dialog.title") as string,
+                  text: t("registrationResponse.201Dialog.text", {
+                    email: formData.email,
+                  }),
                 })
               );
             } else if (respStatus === 412) {
@@ -120,17 +122,15 @@ const RegistrationForm = ({
               //setCaptcha
               dispatch(
                 setDialog(DialogType.InfoDialog, {
-                  title: "E-mailová adresa nalezena",
-                  text: "Účet s Vaší e-mailovou adresou byl již nalezen. Zkuste se přihlásit svými korporátními přihlašovacími údaji.",
+                  title: t("registrationResponse.412Dialog.title") as string,
+                  text: t("registrationResponse.412Dialog.text"),
                 })
               );
             } else if (respStatus === 409) {
-              formik.setFieldError(
-                "email",
-                "*Účet s danou emailovou adresou již existuje"
-              );
+              formik.setFieldError("email", t("registrationResponse.409text"));
             } else {
-              formik.setFieldError("password", "*Registrace neúspešná");
+              const errText = t("registrationResponse.otherErrText");
+              formik.setFieldError("password", errText);
             }
           }}
           validationSchema={Yup.object({

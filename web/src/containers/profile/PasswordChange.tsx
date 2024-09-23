@@ -47,15 +47,15 @@ const PasswordChange = ({ userInfo }: PasswordChangeProps) => {
         if (isSucc) {
           dispatch(
             setDialog(DialogType.InfoDialog, {
-              title: "Změna hesla",
-              text: "Heslo bylo úspěšně změněno.",
+              title: t("passwordChangeDialog.title") as string,
+              text: t("passwordChangeDialog.textSuccess"),
             })
           );
         } else {
           dispatch(
             setDialog(DialogType.InfoDialog, {
-              title: "Změna hesla",
-              text: "Při změně hesla došlo k chybě.",
+              title: t("passwordChangeDialog.title") as string,
+              text: t("passwordChangeDialog.textFailure"),
             })
           );
         }

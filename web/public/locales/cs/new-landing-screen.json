@@ -51,6 +51,18 @@
       "login": "Přihlásit se",
       "forgetPassword": "Zapomenuté heslo?",
       "remindPassword": "Připomenout heslo"
+    },
+    "registrationResponse": {
+      "201Dialog": {
+        "title": "Potvrzení registrace",
+        "text": "Potvrďte svou registraci linkem zaslaným na adresu {{email}}"
+      },
+      "412Dialog": {
+        "title": "E-mailová adresa nalezena",
+        "text": "Účet s Vaší e-mailovou adresou byl již nalezen. Zkuste se přihlásit svými korporátními přihlašovacími údaji."
+      },
+      "409text": "*Účet s danou emailovou adresou již existuje",
+      "otherErrText": "*Registrace neúspešná"
     }
   },
   "footer": {

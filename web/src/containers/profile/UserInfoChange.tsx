@@ -62,15 +62,15 @@ const UserInfoChange = ({ userInfo, isAdmin }: UserInfoChangeProps) => {
         if (isSucc) {
           dispatch(
             setDialog(DialogType.InfoDialog, {
-              title: "Úprava profilu",
-              text: "Provedené změny v profilu byly uloženy.",
+              title: t("editProfileDialog.title") as string,
+              text: t("editProfileDialog.textSuccess"),
             })
           );
         } else {
           dispatch(
             setDialog(DialogType.InfoDialog, {
-              title: "Úprava profilu",
-              text: "Při provádění změn v profilu došlo k chybě.",
+              title: t("editProfileDialog.title") as string,
+              text: t("editProfileDialog.textFailure"),
             })
           );
         }

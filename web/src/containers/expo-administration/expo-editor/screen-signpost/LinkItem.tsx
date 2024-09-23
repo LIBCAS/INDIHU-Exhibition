@@ -169,13 +169,12 @@ export const LinkItem = ({
                   dispatch(
                     setDialog(DialogType.InfoDialog, {
                       noStornoButton: false,
-                      title: "Nelze smazat více odkazov!",
+                      title: t(
+                        "deleteLinkDialog.titleErrLessThanOne"
+                      ) as string,
                       content: (
                         <div>
-                          <p>
-                            Bol dosiahnutý minimálny počet povolených odpovedí a
-                            to jedna.
-                          </p>
+                          <p>{t("deleteLinkDialog.textErrLessThanOne")}</p>
                         </div>
                       ),
                     })
@@ -186,7 +185,7 @@ export const LinkItem = ({
                 dispatch(
                   setDialog(DialogType.ConfirmDialog, {
                     title: <FontIcon className="color-black">delete</FontIcon>,
-                    text: "Opravdu chcete odstránit túto referenciu? Akcia je nevratná!",
+                    text: t("deleteLinkDialog.textConfirm"),
                     onSubmit: () =>
                       dispatch(
                         updateScreenData({

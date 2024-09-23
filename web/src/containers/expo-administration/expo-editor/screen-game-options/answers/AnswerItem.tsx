@@ -224,15 +224,18 @@ const AnswerItem = ({
                 e.stopPropagation();
                 const answersLength = activeScreen.answers.length;
                 if (answersLength <= 3) {
+                  const dialogErrTitle = t(
+                    "deleteAnswerDialog.titleErrorLessThanThree"
+                  );
+
                   dispatch(
                     setDialog(DialogType.InfoDialog, {
                       noStornoButton: false,
-                      title: "Nelze smazat více možností!",
+                      title: dialogErrTitle,
                       content: (
                         <div>
                           <p>
-                            Bol dosiahnutý minimálny počet povolených odpovedí a
-                            to tri.
+                            {t("deleteAnswerDialog.textErrorLessThanThree")}
                           </p>
                         </div>
                       ),
@@ -244,7 +247,7 @@ const AnswerItem = ({
                 dispatch(
                   setDialog(DialogType.ConfirmDialog, {
                     title: <FontIcon className="color-black">delete</FontIcon>,
-                    text: "Opravdu chcete odstránit túto možnosť? Akcia je nevratná!",
+                    text: t("deleteAnswerDialog.textConfirm"),
                     onSubmit: () =>
                       dispatch(
                         updateScreenData({

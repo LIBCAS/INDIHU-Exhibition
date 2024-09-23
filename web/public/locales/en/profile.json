@@ -23,5 +23,17 @@
     "reallyWantToDeactivateAccount": "Are you sure you want to deactivate your account?",
     "deactivateConsequences": "By deactivating this account, all exhibitions you own will be locked and it will not be possible to work with them any further!",
     "failedToDeactivate": "Failed to deactivate account!"
+  },
+
+  "passwordChangeDialog": {
+    "title": "Password change",
+    "textSuccess": "Password was successfully changed.",
+    "textFailure": "An error occurred while changing the password."
+  },
+
+  "editProfileDialog": {
+    "title": "Edit profile",
+    "textSuccess": "The changes made to the profile have been saved.",
+    "textFailure": "An error occurred while making changes to the profile."
   }
 }
