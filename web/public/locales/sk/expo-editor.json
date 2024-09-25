@@ -208,9 +208,9 @@
     },
     "signpostScreen": {
       "headerLabel": "Rozcestník",
-      "headerTooltip": "Test header tooltip",
+      "headerTooltip": "Text, ktorý sa zobrazí ako nadpis tejto obrazovky",
       "subheaderLabel": "Sub hlavička rázcestníka",
-      "subheaderTooltip": "Test subheader tooltip",
+      "subheaderTooltip": "Text, ktorý sa zobrazí ako podnadpis tejto obrazovky",
       "referenceTypeLabel": "Vyberte formu odkazovania",
       "onlyTextOption": "Len text",
       "onlyImageOption": "Len obrázok",
@@ -218,9 +218,9 @@
       "nextScreenChooserLabel": "Odkaz na nasledujúcu obrazovku",
       "referencie": "Odkaz",
       "imageLabel": "Obrázok odkazu",
-      "imageTooltip": "Test image tooltip",
+      "imageTooltip": "Obrázok priradený k tejto referencii",
       "linkTextLabel": "Text odkazu",
-      "linkTextTooltip": "Test text tooltip",
+      "linkTextTooltip": "Text priradený k tejto referencii",
       "linkScreenLabel": "Zvolená odkazová obrazovka",
       "deleteIconTooltip": "Vymazať odkaz",
       "closeIconTooltip": "Zavrieť odkaz",
@@ -229,7 +229,8 @@
         "titleErrLessThanOne": "Nie je možné odstrániť ďalšie odkazy!",
         "textErrLessThanOne": "Bol dosiahnutý minimálny počet povolených odpovedí, a to jedna.",
         "textConfirm": "Naozaj chcete odstrániť túto referenciu? Akcia je nevratná!"
-      }
+      },
+      "linkNotSufficientlyFilled": "Táto referencia nie je dostatočne vyplnený, preto bude na výstave ignorovaný!"
     },
 
     "gameFindScreen": {

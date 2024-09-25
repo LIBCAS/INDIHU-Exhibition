@@ -64,7 +64,7 @@ const LinkReferences = ({ activeScreen }: LinkReferencesProps) => {
         </div>
 
         {/* Accordions */}
-        <div className="mt-6 max-w-full flex flex-col gap-2">
+        <div className="mt-6 max-w-full flex flex-col gap-4">
           {activeScreen?.links?.map((currLink, currLinkIndex) => {
             const currLinkImageId = activeScreen?.links?.[currLinkIndex]?.image;
             const currLinkImage = dispatch(getFileById(currLinkImageId));

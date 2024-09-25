@@ -21,6 +21,20 @@ import { DialogType } from "components/dialogs/dialog-types";
 
 import cx from "classnames";
 import EditableTextField from "components/editable-text-field/EditableTextField";
+import { palette } from "palette";
+
+// - - -
+
+export const isReferenceObjFilledSufficiently = (
+  linkObj: ReferenceObj
+): boolean => {
+  return (
+    !!linkObj.reference &&
+    !!linkObj.text &&
+    !!linkObj.image &&
+    !!linkObj.imageOrigData
+  );
+};
 
 // - - -
 
@@ -49,10 +63,19 @@ export const LinkItem = ({
     [activeScreen.referenceType]
   );
 
+  const isNotFilledEnough = useMemo(
+    () => !isReferenceObjFilledSufficiently(currLinkObj),
+    [currLinkObj]
+  );
+
   return (
     <Accordion
       sx={{
         "& .MuiAccordionSummary-content": { overflowX: "auto" },
+
+        borderStyle: isNotFilledEnough ? "solid" : undefined,
+        borderWidth: isNotFilledEnough ? "1px" : undefined,
+        borderColor: isNotFilledEnough ? palette.danger : undefined,
       }}
     >
       <AccordionSummary
@@ -81,60 +104,81 @@ export const LinkItem = ({
         }}
       >
         <div className="w-full flex justify-between items-center">
-          <div className="flex flex-col">
-            <Button
-              className={currLinkIndex === 0 ? "invisible" : undefined}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (currLinkIndex === 0) {
-                  return;
+          <div className="flex gap-0">
+            <div className="flex flex-col">
+              <Button
+                className={currLinkIndex === 0 ? "invisible" : undefined}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (currLinkIndex === 0) {
+                    return;
+                  }
+
+                  const prevAnswerIndex = currLinkIndex - 1;
+                  dispatch(
+                    updateScreenData({
+                      links: activeScreen.links.map((link, linkIndex) =>
+                        linkIndex === prevAnswerIndex
+                          ? activeScreen.links[currLinkIndex]
+                          : linkIndex === currLinkIndex
+                          ? activeScreen.links[prevAnswerIndex]
+                          : link
+                      ),
+                    })
+                  );
+                }}
+              >
+                <Icon useMaterialUiIcon name="keyboard_arrow_up" />
+              </Button>
+
+              <Button
+                className={
+                  currLinkIndex === activeScreen.links.length - 1
+                    ? "invisible"
+                    : undefined
                 }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (currLinkIndex === activeScreen.links.length - 1) {
+                    return;
+                  }
 
-                const prevAnswerIndex = currLinkIndex - 1;
-                dispatch(
-                  updateScreenData({
-                    links: activeScreen.links.map((link, linkIndex) =>
-                      linkIndex === prevAnswerIndex
-                        ? activeScreen.links[currLinkIndex]
-                        : linkIndex === currLinkIndex
-                        ? activeScreen.links[prevAnswerIndex]
-                        : link
-                    ),
-                  })
-                );
-              }}
-            >
-              <Icon useMaterialUiIcon name="keyboard_arrow_up" />
-            </Button>
+                  const nextAnswerIndex = currLinkIndex + 1;
+                  dispatch(
+                    updateScreenData({
+                      links: activeScreen.links.map((link, linkIndex) =>
+                        linkIndex === currLinkIndex
+                          ? activeScreen.links[nextAnswerIndex]
+                          : linkIndex === nextAnswerIndex
+                          ? activeScreen.links[currLinkIndex]
+                          : link
+                      ),
+                    })
+                  );
+                }}
+              >
+                <Icon useMaterialUiIcon name="keyboard_arrow_down" />
+              </Button>
+            </div>
 
-            <Button
-              className={
-                currLinkIndex === activeScreen.links.length - 1
-                  ? "invisible"
-                  : undefined
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                if (currLinkIndex === activeScreen.links.length - 1) {
-                  return;
-                }
-
-                const nextAnswerIndex = currLinkIndex + 1;
-                dispatch(
-                  updateScreenData({
-                    links: activeScreen.links.map((link, linkIndex) =>
-                      linkIndex === currLinkIndex
-                        ? activeScreen.links[nextAnswerIndex]
-                        : linkIndex === nextAnswerIndex
-                        ? activeScreen.links[currLinkIndex]
-                        : link
-                    ),
-                  })
-                );
-              }}
-            >
-              <Icon useMaterialUiIcon name="keyboard_arrow_down" />
-            </Button>
+            {isNotFilledEnough && (
+              <div className="flex items-center">
+                <Button
+                  className="h-min"
+                  tooltip={{
+                    id: "error-link-reference-item",
+                    content: t("linkNotSufficientlyFilled"),
+                    variant: "dark",
+                  }}
+                >
+                  <Icon
+                    useMaterialUiIcon
+                    name="error"
+                    iconStyle={{ fontSize: "24px", color: palette.danger }}
+                  />
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="mx-4 w-full flex justify-center items-center">

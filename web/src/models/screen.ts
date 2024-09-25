@@ -135,6 +135,7 @@ export type EraserToolType =
 export type ReferenceObj = {
   reference: string | null; // string as screen.id
   image?: string;
+  imageOrigData?: ImageOrigData;
   text?: string;
   customUserLabel?: string;
 };

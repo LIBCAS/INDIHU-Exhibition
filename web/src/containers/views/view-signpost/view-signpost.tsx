@@ -6,6 +6,7 @@ import ReferenceItem from "./ReferenceItem";
 
 import { ScreenProps, SignpostScreen } from "models";
 import { AppState } from "store/store";
+import { isReferenceObjFilledSufficiently } from "containers/expo-administration/expo-editor/screen-signpost/LinkItem";
 
 // - -
 
@@ -33,18 +34,24 @@ export const ViewSignpost = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {/* Links */}
       <div className="mt-6 w-full flex flex-wrap justify-evenly items-center gap-8 overflow-auto expo-scrollbar pb-32">
-        {viewScreen.links?.map((reference, referenceIndex) => (
-          <ReferenceItem
-            key={referenceIndex}
-            referenceObj={reference}
-            referenceIndex={referenceIndex}
-            preloadedReferenceImgSrc={
-              screenPreloadedFiles.links?.[referenceIndex]?.image ?? ""
-            }
-            referenceType={referenceType}
-            numberOfTotalReferences={viewScreen.links.length}
-          />
-        ))}
+        {viewScreen?.links?.map((reference, referenceIndex) => {
+          if (!isReferenceObjFilledSufficiently(reference)) {
+            return null;
+          }
+
+          return (
+            <ReferenceItem
+              key={referenceIndex}
+              referenceObj={reference}
+              referenceIndex={referenceIndex}
+              preloadedReferenceImgSrc={
+                screenPreloadedFiles.links?.[referenceIndex]?.image ?? ""
+              }
+              referenceType={referenceType}
+              numberOfTotalReferences={viewScreen.links.length}
+            />
+          );
+        })}
       </div>
     </div>
   );
