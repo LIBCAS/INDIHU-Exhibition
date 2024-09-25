@@ -108,6 +108,8 @@
     "solution": "The correct solution"
   },
   "game-quiz": {
-    "solution": "The correct solution"
+    "solution": "The correct solution",
+    "missingTaskText": "Not specified",
+    "answerTextWhenDisplayNotAllowed": "Tap to select this option"
   }
 }

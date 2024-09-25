@@ -108,6 +108,8 @@
     "solution": "Správne riešenie"
   },
   "game-quiz": {
-    "solution": "Správne riešenie"
+    "solution": "Správne riešenie",
+    "missingTaskText": "Neuvedeno",
+    "answerTextWhenDisplayNotAllowed": "Kliknutím zvolíte túto možnosť"
   }
 }

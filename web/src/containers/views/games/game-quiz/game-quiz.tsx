@@ -59,18 +59,18 @@ export const GameQuiz = ({
     viewScreen.answersTextDisplayType ??
     GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY;
 
-  const [isFinished, setIsFinished] = useState<boolean>(false); // true after done button clicked
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false); // true after done button clicked
   const [markedAnswers, setMarkedAnswers] = useState<boolean[]>(() => {
     const answersLength = viewScreen.answers.length; // should be max 8
     return Array(answersLength).fill(false);
   });
 
   const onFinish = useCallback(() => {
-    setIsFinished(true);
+    setIsGameFinished(true);
   }, []);
 
   const onReset = useCallback(() => {
-    setIsFinished(false);
+    setIsGameFinished(false);
     setMarkedAnswers((prevMarks) => prevMarks.map(() => false));
   }, []);
 
@@ -113,7 +113,7 @@ export const GameQuiz = ({
           "mt-4": isSm || isMobileLandscape,
         })}
       >
-        {viewScreen.task ?? "Neuvedeno"}
+        {viewScreen.task || t("game-quiz.missingTaskText")}
       </span>
 
       {/* Answers */}
@@ -131,7 +131,7 @@ export const GameQuiz = ({
               preloadedImgSrc={
                 screenPreloadedFiles.answers?.[answerIndex]?.image ?? ""
               }
-              isFinished={isFinished}
+              isGameFinished={isGameFinished}
               isMultipleChoice={isMultipleChoice}
               markedAnswers={markedAnswers}
               quizType={quizType}
@@ -148,7 +148,7 @@ export const GameQuiz = ({
         ReactDOM.createPortal(
           <GameInfoPanel
             gameScreen={viewScreen}
-            isGameFinished={isFinished}
+            isGameFinished={isGameFinished}
             bindTutorial={bind("options")}
             solutionText={t("game-quiz.solution")}
           />,
@@ -159,7 +159,7 @@ export const GameQuiz = ({
         ReactDOM.createPortal(
           <GameActionsPanel
             isMobileOverlay={isMobileOverlay}
-            isGameFinished={isFinished}
+            isGameFinished={isGameFinished}
             onGameFinish={onFinish}
             onGameReset={onReset}
           />,

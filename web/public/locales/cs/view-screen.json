@@ -89,7 +89,7 @@
   },
 
   "game-find": {
-    "solution": "Správne riešenie"
+    "solution": "Správné řešení"
   },
   "game-draw": {
     "solution": "Výborně! Splnil jsi zadání a toto je výsledek",
@@ -102,12 +102,14 @@
     "solution": "Výborně! Splnil jsi zadání a toto je výsledek"
   },
   "game-sizing": {
-    "solution": "Správne riešenie"
+    "solution": "Správné řešení"
   },
   "game-move": {
-    "solution": "Správne riešenie"
+    "solution": "Správné řešení"
   },
   "game-quiz": {
-    "solution": "Správne riešenie"
+    "solution": "Správné řešení",
+    "missingTaskText": "Neuvedeno",
+    "answerTextWhenDisplayNotAllowed": "Klepnutím zvolíte tuto možnost"
   }
 }
