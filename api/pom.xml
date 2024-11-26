@@ -27,7 +27,7 @@
         <postgresql.version>9.4-1206-jdbc42</postgresql.version>
         <liquibase.version>3.6.3</liquibase.version>
         <lombok.version>1.18.6</lombok.version>
-        <swagger.version>2.5.0</swagger.version>
+        <swagger.version>2.10.0</swagger.version>
     </properties>
 
     <repositories>
