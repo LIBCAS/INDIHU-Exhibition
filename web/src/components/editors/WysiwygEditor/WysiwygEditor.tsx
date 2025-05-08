@@ -10,6 +10,9 @@ import "./custom-editor-styles.scss";
 import CustomToolbar from "./CustomToolbar";
 import { getTextFromHtml } from "./utils";
 
+// Hooks
+import { useCzechQuotation } from "./useCzechQuotation";
+
 // Other components
 import CharacterCount from "../character-count";
 import HelpIcon from "components/help-icon";
@@ -64,6 +67,9 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
   const widthSpring = useSpring({
     width: isEditorFocused ? "100%" : "0%",
   });
+
+  // Register custom handler on custom button for czech quoting feature
+  useCzechQuotation(quillRef);
 
   return (
     <div className="mt-3 flex">

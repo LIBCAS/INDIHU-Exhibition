@@ -1,5 +1,8 @@
 import "react-quill/dist/quill.snow.css";
 
+// NOTE: For basic tooltips, you can use title prop
+// e.g. <button title="Bold">
+
 // https://quilljs.com/docs/modules/toolbar/
 const CustomToolbar = () => {
   return (
@@ -16,6 +19,7 @@ const CustomToolbar = () => {
       </span>
 
       <span className="ql-formats">
+        <CustomQuoteButton />
         <button className="ql-script" value="sub"></button>
         <button className="ql-script" value="super"></button>
       </span>
@@ -31,9 +35,6 @@ const CustomToolbar = () => {
 
       <span className="ql-formats">
         <button className="ql-link"></button>
-      </span>
-
-      <span className="ql-formats">
         <button className="ql-clean"></button>
       </span>
     </div>
@@ -41,3 +42,13 @@ const CustomToolbar = () => {
 };
 
 export default CustomToolbar;
+
+// - - -
+
+const CustomQuoteButton = () => {
+  return (
+    <button id="custom-cz-quote-button" type="button">
+      <i className="bi bi-quote" />
+    </button>
+  );
+};
