@@ -326,6 +326,20 @@
       }
     }
   },
+  "wysiwygTooltips": {
+    "bold": "Tučné písmo",
+    "italic": "Kurzíva",
+    "underline": "Podčiarknuté",
+    "strike": "Prečiarknuté",
+    "czechQuotation": "Úvodzovky („“)",
+    "subScript": "Dolný index",
+    "superScript": "Horný index",
+    "align": "Zarovnanie textu",
+    "listOrdered": "Číslovaný zoznam",
+    "listBullet": "Odrážkový zoznam",
+    "link": "Vložiť odkaz",
+    "clean": "Odstrániť formátovanie"
+  },
   "documentsTable": {
     "startScreenTableTooltip": "Dokumenty a súbory k výstave, ktoré budú zobrazené na úvodnej a záverečnej obrazovke.",
     "otherScreenTableTooltip": "",
