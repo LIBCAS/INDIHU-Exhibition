@@ -13,6 +13,7 @@ import { XIcon } from "./XIcon";
 import { CopyClipboardBox } from "./CopyClipboardBox";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 import { getEmailContent } from "./getEmailContent";
+import { LanguageKey } from "i18n";
 
 // - -
 
@@ -27,9 +28,10 @@ export const ShareExpoDialog = ({
   url,
   expoTitle,
 }: ShareExpoDialogProps) => {
-  const { t } = useTranslation("view-exhibition");
+  const { t, i18n } = useTranslation("view-exhibition");
+  const language = i18n.language as LanguageKey;
 
-  const emailContent = getEmailContent(expoTitle ?? "", url);
+  const emailContent = getEmailContent(language, expoTitle ?? "", url);
 
   return (
     <DialogWrap
