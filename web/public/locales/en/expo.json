@@ -91,6 +91,7 @@
     "expoUrl": "Exhibition URL",
     "copyUrlLabel": "Copy URL",
     "copyUrlMessage": "The URL of the exhibition was copied to the clipboard.",
+    "urlAlreadyTakenErr": "*This URL address is already taken.",
     "actualizeLabel": "Update",
     "expoEmbedCode": "Embed code for the exhibition",
     "embedCodeWidth": "Width",
@@ -183,6 +184,14 @@
     "saveThemeSuccessDialog": {
       "title": "Saving of changes was successful",
       "text": "Theme changes have been successfully saved."
+    },
+    "importThemeFailureDialog": {
+      "title": "Import was successful!",
+      "text": "The import was successful. Don't forget to click the 'Save Changes' button to save your changes"
+    },
+    "importThemeSuccessDialog": {
+      "title": "Import failed!",
+      "text": "Invalid import file format."
     }
   },
   "tags": {
@@ -309,6 +318,19 @@
     "submitLabel": "Rename",
     "newFileNameField": "New file name"
   },
+  "passwordResetDialog": {
+    "title": "Reset password",
+    "submitLabel": "Reset",
+    "emailField": "E-mail",
+    "responseSuccess": {
+      "title": "Password reset was successful",
+      "text": "A new password has been sent to the specified email."
+    },
+    "responseFailure": {
+      "title": "Password reset failed",
+      "text": "Password reset was unsuccessful."
+    }
+  },
   "imageEditorSaveDialog": {
     "title": "Save as",
     "submitLabel": "Save",
@@ -396,5 +418,13 @@
   "warningDialog": {
     "title": "Warning",
     "submitLabel": "OK"
+  },
+  "closedExpoSettingsFailureDialog": {
+    "title": "Failed to save",
+    "text": "Failed to save changes."
+  },
+  "expoUrlChangeFieldDialog": {
+    "titleSuccess": "Successful change of the exhibition url",
+    "textSuccess": "The URL of the exhibition has been successfully changed."
   }
 }

@@ -208,9 +208,9 @@
     },
     "signpostScreen": {
       "headerLabel": "Rozcestník",
-      "headerTooltip": "Test header tooltip",
+      "headerTooltip": "Text, který se zobrazí jako nadpis této obrazovky",
       "subheaderLabel": "Sub hlavička rozcestníku",
-      "subheaderTooltip": "Test subheader tooltip",
+      "subheaderTooltip": "Text, který se zobrazí jako podnadpis této obrazovky",
       "referenceTypeLabel": "Vyberte formu odkazování",
       "onlyTextOption": "Jen text",
       "onlyImageOption": "Jen obrázek",
@@ -218,13 +218,19 @@
       "nextScreenChooserLabel": "Odkaz na nasledující obrazovku",
       "reference": "Odkaz",
       "imageLabel": "Obrázek odkazu",
-      "imageTooltip": "Test image tooltip",
+      "imageTooltip": "Obrázek přiřazený k této referenci",
       "linkTextLabel": "Text odkazu",
-      "linkTextTooltip": "Test text tooltip",
+      "linkTextTooltip": "Text přiřazený k této referenci",
       "linkScreenLabel": "Zvolená odkazová obrazovka",
       "deleteIconTooltip": "Vymazat odkaz",
       "closeIconTooltip": "Zavřít odkaz",
-      "addNewReferenceLabel": "Přidat nový odkaz"
+      "addNewReferenceLabel": "Přidat nový odkaz",
+      "deleteLinkDialog": {
+        "titleErrLessThanOne": "Nelze smazat více odkazov!",
+        "textErrLessThanOne": "Bylo dosaženo minimálního počtu povolených odpovědí a to jedna.",
+        "textConfirm": "Opravdu chcete odstranit tuto referenci? Akce je nevratná!"
+      },
+      "linkNotSufficientlyFilled": "Tato reference není dostatečně vyplněna, proto bude ve výstavě ignorována!"
     },
 
     "gameFindScreen": {
@@ -312,8 +318,27 @@
       "answerImageTooltip": "Vyberte ilustrační obrázek z knihovny dokumentů.",
       "answerTextLabel": "Text odpovědi",
       "answerTextTooltip": "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi.",
-      "addNewAnswer": "Přidat novou odpověď"
+      "addNewAnswer": "Přidat novou odpověď",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Nelze smazat více možností!",
+        "textErrorLessThanThree": "Bylo dosaženo minimálního počtu povolených odpovědí a to tři.",
+        "textConfirm:": "Opravdu chcete odstranit tuto možnost? Akce je nevratná!"
+      }
     }
+  },
+  "wysiwygTooltips": {
+    "bold": "Tučné písmo",
+    "italic": "Kurzíva",
+    "underline": "Podtržené",
+    "strike": "Přeškrtnuté",
+    "czechQuotation": "Uvozovky („“)",
+    "subScript": "Dolní index",
+    "superScript": "Horní index",
+    "align": "Zarovnání textu",
+    "listOrdered": "Číslovaný seznam",
+    "listBullet": "Odrážkový seznam",
+    "link": "Vložit odkaz",
+    "clean": "Odebrat formátování"
   },
   "documentsTable": {
     "startScreenTableTooltip": "Dokumenty a soubory k výstavě, které budou zobrazeny na úvodní a závěrečné obrazovce.",
@@ -344,7 +369,10 @@
   "infopointsTable": {
     "defaultTitle": "Infopointy",
     "descCol": "Popis",
-    "alwaysVisibleCol": "Stále zobrazen"
+    "alwaysVisibleCol": "Stále zobrazen",
+    "unknownImagePreviewText": "Neuveden název obrázku",
+    "unknownVideoPreviewText": "Neuveden název videa",
+    "unknownTextPreview": "Neuvedeno"
   },
   "infopointsForm": {
     "addInfopointTitle": "Vytvořit",

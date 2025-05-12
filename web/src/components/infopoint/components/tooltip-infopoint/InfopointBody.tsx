@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { useScreenDataByScreenId } from "hooks/view-hooks/useScreenDataByScreenId";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
@@ -22,6 +23,8 @@ const InfopointBody = ({
   isVideoLoaded,
   setIsVideoLoaded,
 }: InputArguments) => {
+  const { isLightMode } = useExpoDesignData();
+
   const { screenReferenceUrl } =
     useScreenDataByScreenId(infopoint.screenIdReference ?? null) ?? {};
 
@@ -52,9 +55,10 @@ const InfopointBody = ({
         (infopoint.bodyContentType === "TEXT" && infopoint.text)) && (
         <div
           className={cx({
-            "expo-scrollbar pr-1 max-h-[70px] font-['Work_Sans'] text-[14px] leading-[22px] font-normal":
+            "expo-scrollbar pr-1 max-h-[115px] font-['Work_Sans'] text-[14px] leading-[22px] font-normal":
               infopoint.bodyContentType === "TEXT",
-            "text-gray": !!infopoint.header,
+            "text-gray": !!infopoint.header && isLightMode,
+            "text-light-gray": !!infopoint.header && !isLightMode,
           })}
         >
           {infopoint.text}

@@ -23,5 +23,17 @@
     "reallyWantToDeactivateAccount": "Naozaj chcete zrušiť účet?",
     "deactivateConsequences": "Zrušením účtu dôjde k uzamknutiu všetkých výstav, ktoré vlastníte, a nebude možné s nimi ďalej pracovať!",
     "failedToDeactivate": "Nepodarilo sa odstrániť účet!"
+  },
+
+  "passwordChangeDialog": {
+    "title": "Zmena hesla",
+    "textSuccess": "Heslo bolo úspešne zmenené",
+    "textFailure": "Pri zmene hesla došlo k chybe"
+  },
+
+  "editProfileDialog": {
+    "title": "Úprava profilu",
+    "textSuccess": "Vykonané zmeny v profile boli uložené.",
+    "textFailure": "Pri vykonávaní zmien v profile došlo k chybe."
   }
 }

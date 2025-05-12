@@ -53,6 +53,16 @@ const InfoPanel = ({
     [viewScreen?.type]
   );
 
+  const isDrawerOpeningDisabled = useMemo(() => {
+    if (viewScreen?.type === "INTRO") {
+      const documentsLength = viewScreen.documents?.length ?? 0;
+      if (documentsLength <= 0) {
+        return true;
+      }
+    }
+    return false;
+  }, [viewScreen]);
+
   const isVideoOrSlideshowScreen = useMemo(() => {
     return (
       viewScreen?.type === "VIDEO" || viewScreen?.type === screenType.SLIDESHOW
@@ -111,10 +121,10 @@ const InfoPanel = ({
                 ...bgFgTheming,
               }
             )}
-            onClick={openDrawer}
+            onClick={!isDrawerOpeningDisabled ? openDrawer : undefined}
           >
             <span>{viewScreen?.title ?? t("overlay.no-title")}</span>
-            <Icon name="info" />
+            {!isDrawerOpeningDisabled && <Icon name="info" />}
           </div>
         </div>
       </div>

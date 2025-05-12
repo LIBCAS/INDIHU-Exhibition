@@ -11,6 +11,8 @@ import { DialogType } from "components/dialogs/dialog-types";
 import InfopointDialogNew from "components/dialogs/infopoint-dialog/InfopointDialogNew";
 import InfopointDialogEdit from "components/dialogs/infopoint-dialog/InfopointDialogEdit";
 
+import cx from "classnames";
+
 // - - - - - - - -
 
 interface InfopointsTableProps {
@@ -44,6 +46,7 @@ const InfopointsTable = ({
   const { t } = useTranslation("expo-editor");
 
   const dispatch = useDispatch();
+
   const [isInfopointDialogNewOpen, setIsInfopointDialogNewOpen] =
     useState<boolean>(false);
 
@@ -82,12 +85,27 @@ const InfopointsTable = ({
         {infopoints.map((infopoint, infopointIndex) => (
           <div key={infopointIndex} className="table-row">
             <div className="table-col">
-              <div className="infopoint-edit-description">
+              <div
+                className={cx("infopoint-edit-description", {
+                  italic:
+                    infopoint.bodyContentType === "TEXT" &&
+                    !infopoint.text &&
+                    !infopoint.header,
+                })}
+              >
                 {infopoint.bodyContentType === "IMAGE"
-                  ? infopoint.imageFile?.name ?? "Neuveden název obrázku"
+                  ? infopoint.imageFile?.name ??
+                    t("infopointsTable.unknownImagePreviewText")
                   : infopoint.bodyContentType === "VIDEO"
-                  ? infopoint.videoFile?.name ?? "Neuveden název videa"
-                  : infopoint.text ?? "Neuvedeno"}
+                  ? infopoint.videoFile?.name ??
+                    t("infopointsTable.unknownVideoPreviewText")
+                  : infopoint.bodyContentType === "TEXT"
+                  ? infopoint.text
+                    ? infopoint.text
+                    : infopoint.header
+                    ? infopoint.header
+                    : t("infopointsTable.unknownTextPreview")
+                  : ""}
               </div>
             </div>
             <div className="table-col small">

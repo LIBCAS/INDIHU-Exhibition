@@ -51,6 +51,18 @@
       "login": "Log in",
       "forgetPassword": "Forgotten password?",
       "remindPassword": "Remind password"
+    },
+    "registrationResponse": {
+      "201Dialog": {
+        "title": "Confirm registartion",
+        "text": "Confirm your registration with the link sent to {{email}}"
+      },
+      "412Dialog": {
+        "title": "Email address found",
+        "text": "The account with your email address has already been found. Try logging in with your corporate credentials."
+      },
+      "409text": "*An account with the given email address already exists",
+      "otherErrText": "*Registration failed"
     }
   },
   "footer": {

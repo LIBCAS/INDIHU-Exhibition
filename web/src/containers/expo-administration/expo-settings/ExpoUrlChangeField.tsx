@@ -53,12 +53,13 @@ const ExpoUrlChangeField = ({ expoUrl }: ExpoUrlChangeFieldProps) => {
     if (checkResult) {
       dispatch(
         setDialog(DialogType.InfoDialog, {
-          title: "Úspešná změna url výstavy",
-          text: "Url výstavy byla úspěšně změněna.",
+          title: t("expoUrlChangeFieldDialog.titleSuccess") as string,
+          text: t("expoUrlChangeFieldDialog.textSuccess"),
         })
       );
     } else {
-      setUrlValueErrMsg("*Tato URL adresa je již obsazena.");
+      const errMessage = t("settingsAndSharing.urlAlreadyTakenErr");
+      setUrlValueErrMsg(errMessage);
     }
   };
 

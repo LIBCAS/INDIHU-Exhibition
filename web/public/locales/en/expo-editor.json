@@ -208,9 +208,9 @@
     },
     "signpostScreen": {
       "headerLabel": "Directory header",
-      "headerTooltip": "Test header tooltip",
+      "headerTooltip": "The text that appears as the title of this screen",
       "subheaderLabel": "Directory subheader",
-      "subheaderTooltip": "Test subheader tooltip",
+      "subheaderTooltip": "The text that appears as the subtitle of this screen",
       "referenceTypeLabel": "Choose the form of links",
       "onlyTextOption": "Only text",
       "onlyImageOption": "Only image",
@@ -218,13 +218,19 @@
       "nextScreenChooserLabel": "Link to the following screen",
       "reference": "Link",
       "imageLabel": "Link image",
-      "imageTooltip": "Test image tooltip",
+      "imageTooltip": "Image associated with this reference",
       "linkTextLabel": "Link text",
-      "linkTextTooltip": "Test text tooltip",
+      "linkTextTooltip": "Text associated with this reference",
       "linkScreenLabel": "Selected link screen",
       "deleteIconTooltip": "Delete link",
       "closeIconTooltip": "Close link",
-      "addNewReferenceLabel": "Add a new link"
+      "addNewReferenceLabel": "Add a new link",
+      "deleteLinkDialog": {
+        "titleErrLessThanOne": "Cannot delete more links!",
+        "textErrLessThanOne": "The minimum number of allowed responses has been reached, that is one.",
+        "textConfirm": "Are you sure you want to remove this reference? The action is non-refundable!"
+      },
+      "linkNotSufficientlyFilled": "This reference is not filled in enough, so it will be ignored in the exhibition!"
     },
 
     "gameFindScreen": {
@@ -312,8 +318,27 @@
       "answerImageTooltip": "Select an image from the document library.",
       "answerTextLabel": "Answer text",
       "answerTextTooltip": "Please enter a reasonably long text for this answer option.",
-      "addNewAnswer": "Add a new answer"
+      "addNewAnswer": "Add a new answer",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "It is not possible to delete more options!",
+        "textErrorLessThanThree": "The minimum number of allowed answers was reached, namely three.",
+        "textConfirm:": "Are you sure you want to remove this option? The action is non-refundable!"
+      }
     }
+  },
+  "wysiwygTooltips": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike": "Strikethrough",
+    "czechQuotation": "Quotation marks („“)",
+    "subScript": "Subscript",
+    "superScript": "Superscript",
+    "align": "Text alignment",
+    "listOrdered": "Ordered list",
+    "listBullet": "Bullet list",
+    "link": "Insert link",
+    "clean": "Remove formatting"
   },
   "documentsTable": {
     "startScreenTableTooltip": "Documents and files for the exhibition that will be displayed on the opening and closing screens.",
@@ -344,7 +369,10 @@
   "infopointsTable": {
     "defaultTitle": "Infopoints",
     "descCol": "Description",
-    "alwaysVisibleCol": "Always visible"
+    "alwaysVisibleCol": "Always visible",
+    "unknownImagePreviewText": "Unknown image title",
+    "unknownVideoPreviewText": "Unknown video title",
+    "unknownTextPreview": "Not specified"
   },
   "infopointsForm": {
     "addInfopointTitle": "Create",

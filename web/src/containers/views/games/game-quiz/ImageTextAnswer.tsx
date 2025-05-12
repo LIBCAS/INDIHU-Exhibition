@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import useResizeObserver from "hooks/use-resize-observer";
 
 import { Checkbox, Radio } from "@mui/material";
@@ -15,7 +16,12 @@ import { InfopointStatusObject } from "components/infopoint/useTooltipInfopoint"
 
 import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
-import { getAnswerCheckboxIcon, getAnswerRadioIcon } from "./utils";
+import {
+  getAnswerCheckboxCheckedIcon,
+  getAnswerCheckboxUncheckedIcon,
+  getAnswerRadioCheckedIcon,
+  getAnswerRadioUncheckedIcon,
+} from "./utils";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
@@ -24,7 +30,7 @@ type ImageTextAnswerProps = {
   answerIndex: number;
   answerImageOrigData?: Size;
   preloadedImgSrc: string;
-  isFinished: boolean;
+  isGameFinished: boolean;
   isMultipleChoice: boolean;
   markedAnswers: boolean[];
   setMarkedAnswers: Dispatch<SetStateAction<boolean[]>>;
@@ -42,7 +48,7 @@ const ImageTextAnswer = ({
   answer,
   answerIndex,
   preloadedImgSrc,
-  isFinished,
+  isGameFinished,
   isMultipleChoice,
   markedAnswers,
   setMarkedAnswers,
@@ -51,6 +57,7 @@ const ImageTextAnswer = ({
   infopointStatusMap,
   setInfopointStatusMap,
 }: ImageTextAnswerProps) => {
+  const { t } = useTranslation("view-screen");
   const { isSm, isMobileLandscape } = useMediaDevice();
 
   const [imageContainerRef, imageContainerSize] =
@@ -87,15 +94,15 @@ const ImageTextAnswer = ({
           "!p-2": quizType === "ONLY_IMAGES",
           "!p-3": quizType === "ONLY_TEXT",
           "border-blue !bg-[#3d7eca4d]":
-            !isFinished && markedAnswers[answerIndex],
+            !isGameFinished && markedAnswers[answerIndex],
           "border-danger !bg-[#e33d514d]":
-            isFinished && markedAnswers[answerIndex] && !answer.correct,
+            isGameFinished && markedAnswers[answerIndex] && !answer.correct,
           "border-success !bg-[#3dca864d]":
-            isFinished && markedAnswers[answerIndex] && answer.correct,
+            isGameFinished && markedAnswers[answerIndex] && answer.correct,
         }
       )}
       onClick={() => {
-        if (isFinished) {
+        if (isGameFinished) {
           return;
         }
 
@@ -189,9 +196,14 @@ const ImageTextAnswer = ({
               size="small"
               checked={markedAnswers[answerIndex]}
               sx={{ color: "white" }}
-              checkedIcon={getAnswerCheckboxIcon(
-                isFinished,
-                markedAnswers[answerIndex],
+              // icon when unchecked
+              icon={getAnswerCheckboxUncheckedIcon(
+                isGameFinished,
+                answer.correct
+              )}
+              // icon when checked
+              checkedIcon={getAnswerCheckboxCheckedIcon(
+                isGameFinished,
                 answer.correct
               )}
             />
@@ -203,9 +215,11 @@ const ImageTextAnswer = ({
               size="small"
               checked={markedAnswers[answerIndex]}
               sx={{ color: "white" }}
-              checkedIcon={getAnswerRadioIcon(
-                isFinished,
-                markedAnswers[answerIndex],
+              // icon when unchecked
+              icon={getAnswerRadioUncheckedIcon(isGameFinished, answer.correct)}
+              // icon when checked
+              checkedIcon={getAnswerRadioCheckedIcon(
+                isGameFinished,
                 answer.correct
               )}
             />
@@ -213,9 +227,11 @@ const ImageTextAnswer = ({
 
           {/* TEXT */}
           {quizType === "TEXT_IMAGES" &&
-          !isFinished &&
+          !isGameFinished &&
           answersTextDisplayType === "QUIZ_TEXT_AFTER_EVALUATION" ? (
-            <div className="italic">Kliknutím zvolíte túto možnosť</div>
+            <div className="italic">
+              {t("game-quiz.answerTextWhenDisplayNotAllowed")}
+            </div>
           ) : (
             <div>{answer.text}</div>
           )}
@@ -224,14 +240,11 @@ const ImageTextAnswer = ({
 
       {/* Icon badges, top right corner */}
       {(quizType === "ONLY_IMAGES" || quizType === "ONLY_TEXT") &&
-        isFinished && (
+        isGameFinished && (
           <div className="absolute top-0 right-0 flex translate-x-1/2 -translate-y-1/2">
-            {getAnswerRadioIcon(
-              isFinished,
-              markedAnswers[answerIndex],
-              answer.correct,
-              { fontSize: "24px" }
-            )}
+            {getAnswerRadioUncheckedIcon(isGameFinished, answer.correct, {
+              fontSize: "24px",
+            })}
           </div>
         )}
     </div>

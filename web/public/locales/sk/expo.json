@@ -91,6 +91,7 @@
     "expoUrl": "URL výstavy",
     "copyUrlLabel": "Kopírovať URL",
     "copyUrlMessage": "URL výstavy bolo skopírované do schránky.",
+    "urlAlreadyTakenErr": "*Tato URL adresa je už obsadená.",
     "actualizeLabel": "Aktualizovať",
     "expoEmbedCode": "Embed kód pre výstavu",
     "embedCodeWidth": "Šírka",
@@ -183,6 +184,14 @@
     "saveThemeSuccessDialog": {
       "title": "Uloženie zmien prebehlo úspešné",
       "text": "Zmeny motívu boli úspešne uložené."
+    },
+    "importThemeFailureDialog": {
+      "title": "Import bol úspešný!",
+      "text": "Import prebehol úspešne. Na uloženie zmien nezabudnite kliknúť na tlačítko 'Uložiť zmeny'"
+    },
+    "importThemeSuccessDialog": {
+      "title": "Import sa nepodaril!",
+      "text": "Neplatný formát importovaného súboru."
     }
   },
   "tags": {
@@ -409,5 +418,13 @@
   "warningDialog": {
     "title": "Varovanie",
     "submit Label": "OK"
+  },
+  "closedExpoSettingsFailureDialog": {
+    "title": "Neúspešné uloženie",
+    "text": "Nepodarilo sa uložiť zmeny."
+  },
+  "expoUrlChangeFieldDialog": {
+    "titleSuccess": "Úspešná zmena url výstavy",
+    "textSuccess": "Url výstavy bola úspešne zmenená."
   }
 }
