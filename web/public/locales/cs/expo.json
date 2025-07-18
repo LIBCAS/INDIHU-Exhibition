@@ -167,7 +167,7 @@
       "infopointShapeLabel": "Tvar infopointu",
       "infopointShapeSquare": "Čtverec",
       "infopointShapeCircle": "Kruh",
-      "infopointShapeIcon": "Ikona",
+      "infopointShapeIcon": "Vlastní ikona",
       "infopointPxSizeLabel": "Velikost infopointu v pixelech",
       "infopointColorLabel": "Barva infopointu",
       "infopointIconFileLabel": "Soubor ikony infopointu"

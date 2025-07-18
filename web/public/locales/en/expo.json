@@ -167,7 +167,7 @@
       "infopointShapeLabel": "Infopoint shape",
       "infopointShapeSquare": "Square",
       "infopointShapeCircle": "Circle",
-      "infopointShapeIcon": "Icon",
+      "infopointShapeIcon": "Custom icon",
       "infopointPxSizeLabel": "Infopoint size in pixels",
       "infopointColorLabel": "Infopoint color",
       "infopointIconFileLabel": "Infopoint icon file"
