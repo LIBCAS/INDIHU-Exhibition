@@ -132,6 +132,7 @@ const WysiwygEditor = (props: WysiwygEditorProps) => {
       <HelpIcon
         label={props.helpIconText ?? t("descFields.textTooltip")}
         id="editor-description-text"
+        enableHtml
       />
     </div>
   );

@@ -62,7 +62,7 @@
     "musicTurnOff": "Vypnout zvukovou stopu kapitoly",
     "screenCompleted": "Obrazovka je dokončená",
     "text": "Text k tématu",
-    "textTooltip": "Doplňující text k tématu poskytující informace a vysvětlení návštěvníkovi.",
+    "textTooltip": "Doplňující text k tématu poskytující informace a vysvětlení návštěvníkovi.<br/><br/>Pro formátování textu (řezy písma, odrážky apod.) použijte jednotlivé možnosti v nabídce editoru. Po označení textu můžete také vybrat velikost písma a zmenšit ho nebo zvětšit. Pro české uvozovky označte příslušnou pasáž a klikněte na uvozovky.",
     "gameName": "Název",
     "gameNameTooltip": "Pojmenování obrazovky, které se zobrazí návštěvníkovi v liště pro textovou verzi. Název se také zobrazí jako pojmenování obrazovek ve výpisu všech obrazovek v editaci. Pokud jej nevyplníte, ve výpisu zůstane uveden jako název typ obrazovky.",
     "gameTask": "Úkol minihry",

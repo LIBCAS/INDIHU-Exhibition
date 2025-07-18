@@ -7,6 +7,7 @@ type HelpIconProps = {
   id?: string;
   place?: PlacesType;
   className?: string;
+  enableHtml?: boolean;
 };
 
 const HelpIcon = ({
@@ -14,9 +15,14 @@ const HelpIcon = ({
   id = "react-tooltip-help-icon",
   place = "left",
   className,
+  enableHtml,
 }: HelpIconProps) => (
   <div className={cx("help-icon", className)}>
-    <FontIcon data-tooltip-id={id} data-tooltip-content={label}>
+    <FontIcon
+      data-tooltip-id={id}
+      data-tooltip-content={enableHtml ? undefined : label}
+      data-tooltip-html={enableHtml ? label : undefined}
+    >
       help
     </FontIcon>
     <Tooltip

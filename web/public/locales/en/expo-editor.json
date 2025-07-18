@@ -62,7 +62,7 @@
     "musicTurnOff": "Turn off the chapter soundtrack",
     "screenCompleted": "The screen is completed",
     "text": "Topic text",
-    "textTooltip": "Addional text providing information to the visitor.",
+    "textTooltip": "Addional text providing information to the visitor.<br/><br/>To format the text (font styles, bullets, etc.), use the individual options in the editor menu. After selecting the text, you can also select the font size and reduce or enlarge it. For Czech quotation marks, select the relevant passage and click on the quotation marks.",
     "gameName": "Title",
     "gameNameTooltip": "Title of screen displayed to the visitor in the text bar. The title will also appear as the name of the screens in the list of all screens in the project. If not filled, the screen will remain listed as the type of the screen.",
     "gameTask": "Game quest",
