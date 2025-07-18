@@ -117,7 +117,7 @@ export const ViewScreenOverlayDrawer = ({
             <div className="flex-grow overflow-y-auto pr-2 expo-scrollbar">
               {screenText ? (
                 <div>
-                  <WysiwygPreview htmlMarkup={screenText} />
+                  <WysiwygPreview htmlMarkup={screenText} forceWhiteFont />
                 </div>
               ) : (
                 // No text
