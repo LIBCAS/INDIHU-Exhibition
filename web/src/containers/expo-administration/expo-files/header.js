@@ -55,6 +55,7 @@ const Header = ({
               <HelpIcon
                 label={t("files.uploadFileTooltip")}
                 id="files-header-upload-file"
+                enableHtml
               />
             </>
           ) : (

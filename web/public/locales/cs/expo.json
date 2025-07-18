@@ -60,7 +60,7 @@
     "tab": "Soubory",
     "newFolder": "NOVÝ ADRESÁŘ",
     "uploadFile": "NAHRÁT SOUBOR",
-    "uploadFileTooltip": "Maximální velikost souboru je 250MB. Při nahrávání více souborů je limit 260MB.",
+    "uploadFileTooltip": "Maximální velikost souboru je 250MB. Při nahrávání více souborů je limit 260MB.<br/><br/>Nahrajte video ve formátu .mp4, kodek H.264.",
     "sorting": {
       "created": "Vytvořeno",
       "name": "Název"

@@ -60,7 +60,7 @@
     "tab": "Files",
     "newFolder": "NEW FOLDER",
     "uploadFile": "UPLOAD FILE",
-    "uploadFileTooltip": "The maximum file size is 250MB. When uploading multiple files, the limit is 260MB.",
+    "uploadFileTooltip": "The maximum file size is 250MB. When uploading multiple files, the limit is 260MB.<br/><br/>Upload video in .mp4 format, H.264 codec.",
     "sorting": {
       "created": "Created",
       "name": "Name"
