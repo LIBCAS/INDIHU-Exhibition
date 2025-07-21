@@ -62,7 +62,7 @@
     "musicTurnOff": "Vypnúť zvukovú stopu kapitoly",
     "screenCompleted": "Obrazovka je dokončená",
     "text": "Text k téme",
-    "textTooltip": "Doplňujúci text k téme poskytujúci informácie a vysvetlenie návštevníkovi.",
+    "textTooltip": "Doplňujúci text k téme poskytujúci informácie a vysvetlenie návštevníkovi.<br/><br/>Pre formátovanie textu (rezy písma, zarážky a pod.) použite jednotlivé možnosti v ponuke editora. Po označení textu môžete tiež vybrať veľkosť písma a zmenšiť ho alebo zväčšiť. Pre slovenské úvodzovky označte príslušnú pasáž a kliknite na úvodzovky.",
     "gameName": "Názov",
     "gameNameTooltip": "Pomenovanie obrazovky, ktoré sa zobrazí návštevníkovi v lište pre textovú verziu. Názov sa tiež zobrazí ako pomenovanie obrazoviek vo výpise všetkých obrazoviek v editácii. Ak ho nevyplníte, vo výpise zostane uvedený ako názov typ obrazovky.",
     "gameTask": "Úloha minihry",

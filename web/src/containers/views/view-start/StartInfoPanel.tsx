@@ -11,6 +11,7 @@ import { Icon } from "components/icon/icon";
 import TagsList from "components/tags-list/TagsList";
 import { Divider } from "components/divider/divider";
 import Paper from "react-md/lib/Papers/Paper";
+import WysiwygPreview from "components/editors/WysiwygEditor/WysiwygPreview";
 
 import { StartScreen, ViewExpo } from "models";
 import { secondsToFormatedTime, giveMeExpoTime } from "utils";
@@ -48,13 +49,8 @@ const StartInfoPanel = ({
     [viewExpo.structure.screens, viewScreen]
   );
 
-  const expoPerexLines = useMemo(
-    () =>
-      viewScreen.perex
-        ? (viewScreen.perex?.split("\n") as string[])
-        : ["Expozice neobsahuje perex"],
-    [viewScreen.perex]
-  );
+  const expoPerexMarkup =
+    viewScreen.perex ?? "<p>Expozice neobsahuje perex</p>";
 
   // -- Animations --
   const { rotateX } = useSpring({
@@ -128,12 +124,7 @@ const StartInfoPanel = ({
                   <Divider />
                   <div className="flex-grow basis-0">
                     <div className="pt-6 pb-3">
-                      {expoPerexLines.map((line, i) => (
-                        <span key={i}>
-                          {line}
-                          <br />
-                        </span>
-                      ))}
+                      <WysiwygPreview htmlMarkup={expoPerexMarkup} scrollbar />
                     </div>
                   </div>
                   <Divider />

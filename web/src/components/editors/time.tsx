@@ -52,18 +52,16 @@ const Time = ({
               ("timePhotosManual" in activeScreen &&
                 activeScreen.timePhotosManual)
             }
-            onChange={(newTime: number) => {
-              if (
-                isNaN(Number(newTime)) ||
-                Number(newTime) < 3 ||
-                Number(newTime) > 1000000
-              ) {
+            onChange={(newTime: string) => {
+              const time = Number(newTime); // empty string is converted to 0
+              if (isNaN(time) || time < 3 || time > 1000000) {
                 setError("Zadejte číslo v rozsahu 3 až 1000000.");
-              } else {
-                setError(null);
+                return;
               }
 
-              dispatch(updateScreenData({ time: Math.abs(newTime) }));
+              setError(null);
+              const finalTime = Math.abs(time);
+              dispatch(updateScreenData({ time: finalTime }));
             }}
           />
           <span className="form-input-suffix">

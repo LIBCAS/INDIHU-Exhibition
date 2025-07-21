@@ -65,12 +65,12 @@ const ScreenChapterStart = (props: ScreenEditorProps) => {
         colNum={match.params.position.match(/(\d*)$/)?.[0]}
         history={history}
         url={url}
-        noActions={
-          isNaN(Number(activeScreen.time)) ||
-          Number(activeScreen.time) > 1000000
-        }
-        noActionTitle="Zadána neplatná hodnota"
-        noActionText="U pole s celkovou dobou zobrazení obrazovky byla zadána neplatná hodnota."
+        // noActions={
+        //   isNaN(Number(activeScreen.time)) ||
+        //   Number(activeScreen.time) > 1000000
+        // }
+        // noActionTitle="Zadána neplatná hodnota"
+        // noActionText="U pole s celkovou dobou zobrazení obrazovky byla zadána neplatná hodnota."
       />
     </div>
   );

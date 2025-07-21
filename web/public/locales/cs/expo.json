@@ -60,7 +60,7 @@
     "tab": "Soubory",
     "newFolder": "NOVÝ ADRESÁŘ",
     "uploadFile": "NAHRÁT SOUBOR",
-    "uploadFileTooltip": "Maximální velikost souboru je 250MB. Při nahrávání více souborů je limit 260MB.",
+    "uploadFileTooltip": "Maximální velikost souboru je 250MB. Při nahrávání více souborů je limit 260MB.<br/><br/>Nahrajte video ve formátu .mp4, kodek H.264.",
     "sorting": {
       "created": "Vytvořeno",
       "name": "Název"
@@ -128,7 +128,7 @@
       "rateCount": "Počet hodnocení",
       "avgRate": "Průměrné hodnocení",
       "peopleTopicLikeCount": "Počet lidí, kterým se líbilo téma výstavy:",
-      "peopleMediaLikeCount": "Počet lidí, kterým se líbila média výstavy:",
+      "peopleMediaLikeCount": "Počet lidí, kterým se líbily obrázky a videa výstavy:",
       "peopleTextLikeCount": "Počet lidí, kterým se líbily texty výstavy:",
       "peopleGameLikeCount": "Počet lidí, kterým se líbily hry výstavy:"
     },
@@ -167,7 +167,7 @@
       "infopointShapeLabel": "Tvar infopointu",
       "infopointShapeSquare": "Čtverec",
       "infopointShapeCircle": "Kruh",
-      "infopointShapeIcon": "Ikona",
+      "infopointShapeIcon": "Vlastní ikona",
       "infopointPxSizeLabel": "Velikost infopointu v pixelech",
       "infopointColorLabel": "Barva infopointu",
       "infopointIconFileLabel": "Soubor ikony infopointu"

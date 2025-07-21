@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { TextField, SelectField, FontIcon, Button, Checkbox } from "react-md";
 import AudioMusic from "components/editors/audio-music";
 import HelpIcon from "components/help-icon";
-import CharacterCount from "components/editors/character-count";
+import WysiwygEditor from "components/editors/WysiwygEditor/WysiwygEditor";
 
 // Models
 import {
@@ -20,10 +20,11 @@ import { AppDispatch } from "store/store";
 // Actions and utils
 import { setDialog } from "actions/dialog-actions";
 import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions";
+import { saveScreen, updateScreenData } from "actions/expoActions";
 import { giveMeExpoTime } from "utils";
 import { ScreenStartAnimationEnum } from "enums/administration-screens";
 import { DialogType } from "components/dialogs/dialog-types";
+import { wrapTextInParagraph } from "components/editors/WysiwygEditor/utils";
 
 // - -
 
@@ -48,6 +49,8 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
     ? "0"
     : Math.round(expoTimeNumber / 60).toString();
 
+  const perexText = activeScreen.perex ?? "";
+
   return (
     <div className="container container-tabMenu">
       <div className="screen">
@@ -67,6 +70,7 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
                 id="editor-start-description-title"
               />
             </div>
+
             <div className="flex-row-nowrap">
               <TextField
                 id="screen-start-textfield-subtitle"
@@ -81,22 +85,22 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
                 id="editor-start-description-subtitle"
               />
             </div>
-            <div className="flex-row-nowrap">
-              <TextField
-                id="screen-start-textfield-perex"
-                label={t("descFields.perex")}
-                rows={5}
-                defaultValue={activeScreen.perex}
-                onChange={(newPerex: string) =>
-                  dispatch(updateScreenData({ perex: newPerex }))
+
+            <WysiwygEditor
+              controlType="uncontrolled"
+              defaultValue={perexText}
+              onChange={(newText: string) => {
+                const wrappedOldText = wrapTextInParagraph(perexText.trimEnd());
+                dispatch(updateScreenData({ perex: newText }));
+
+                // NOTE: Additional check
+                // Means that the new text is just wrapped old text
+                // We do not want this change to act as a change done from user, so immediately save it
+                if (newText === wrappedOldText) {
+                  dispatch(saveScreen(activeScreen));
                 }
-              />
-              <HelpIcon
-                label={t("descFields.perexTooltip")}
-                id="editor-start-description-perex"
-              />
-            </div>
-            <CharacterCount text={activeScreen.perex} />
+              }}
+            />
           </div>
 
           <div className="part margin-horizontal">
