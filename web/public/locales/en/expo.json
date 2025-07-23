@@ -85,7 +85,7 @@
       "download": "Download",
       "delete": "Delete"
     },
-    "filePreview": "Preview the file",
+    "filePreview": "Preview file",
     "fileMetadata": "Metadata",
     "nameCol": "Name:",
     "typeCol": "Type:",
@@ -383,7 +383,9 @@
   "screenDocumentChooseDialog": {
     "title": "Choose file",
     "submitLabel": "Choose",
-    "errorText": "*Choose file"
+    "errorText": "*Choose file",
+    "previewFile": "Preview file",
+    "metadata": "Metadata"
   },
   "screenDocumentNewDialog": {
     "title": "New document",
@@ -407,7 +409,9 @@
   "screenFileChooseDialog": {
     "title": "Choose file",
     "submitLabel": "Choose",
-    "chooseFileErrorText": "*Choose file"
+    "chooseFileErrorText": "*Choose file",
+    "previewFile": "Preview file",
+    "metadata": "Metadata"
   },
   "screenLinkDialog": {
     "title": "Screen link",

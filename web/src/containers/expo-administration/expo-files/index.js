@@ -15,33 +15,40 @@ import FileMeta from "./file-meta";
 import * as fileActions from "../../../actions/file-actions";
 import { setDialog } from "../../../actions/dialog-actions";
 import { keyShortcutsEnhancer, sortFilterFiles } from "./utils";
+import { useTranslation } from "react-i18next";
 
-const Files = ({ setSort, setOrder, containerID, ...props }) => (
-  <div className="container container-tabMenu">
-    <Header
-      sort={props.sort}
-      setSort={setSort}
-      order={props.order}
-      setOrder={setOrder}
-    />
-    <div className="files-row">
-      <div className="files-wrap--manager">
-        <FileManager {...props} id={containerID} />
-      </div>
-      <div className="files-col">
-        <div className="files-wrap--view">
-          <FileView
-            activeFile={props.activeFile}
-            activeFolder={props.activeFolder}
-          />
+const Files = ({ setSort, setOrder, containerID, ...props }) => {
+  const { t } = useTranslation("expo");
+
+  return (
+    <div className="container container-tabMenu">
+      <Header
+        sort={props.sort}
+        setSort={setSort}
+        order={props.order}
+        setOrder={setOrder}
+      />
+      <div className="files-row">
+        <div className="files-wrap--manager">
+          <FileManager {...props} id={containerID} />
         </div>
-        <div className="files-wrap--meta">
-          <FileMeta activeFile={props.activeFile} />
+        <div className="files-col mt-4">
+          <div className="files-wrap--view">
+            <p className="leading-4 text-lg">{t("files.filePreview")}</p>
+            <FileView
+              activeFile={props.activeFile}
+              activeFolder={props.activeFolder}
+            />
+          </div>
+          <div className="files-wrap--meta">
+            <p className="leading-4 text-lg">{t("files.fileMetadata")}</p>
+            <FileMeta activeFile={props.activeFile} />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default compose(
   connect(

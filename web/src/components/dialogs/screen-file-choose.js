@@ -74,9 +74,11 @@ const ScreenFileChoose = ({
         </div>
         <div className="files-col">
           <div className="files-wrap--view">
+            <p className="leading-4 text-lg">{t("previewFile")}</p>
             <FileView activeFile={activeFile} activeFolder={activeFolder} />
           </div>
           <div className="files-wrap--meta">
+            <p className="leading-4 text-lg">{t("metadata")}</p>
             <FileMeta activeFile={activeFile} />
           </div>
         </div>

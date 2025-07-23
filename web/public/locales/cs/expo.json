@@ -383,7 +383,9 @@
   "screenDocumentChooseDialog": {
     "title": "Vybrat soubor",
     "submitLabel": "Vybrat",
-    "errorText": "*Vyber soubor"
+    "errorText": "*Vyber soubor",
+    "previewFile": "Náhled souboru",
+    "metadata": "Metadata"
   },
   "screenDocumentNewDialog": {
     "title": "Nový dokument",
@@ -407,7 +409,9 @@
   "screenFileChooseDialog": {
     "title": "Vybrat soubor",
     "submitLabel": "Vybrat",
-    "chooseFileErrorText": "*Vyber soubor"
+    "chooseFileErrorText": "*Vyber soubor",
+    "previewFile": "Náhled souboru",
+    "metadata": "Metadata"
   },
   "screenLinkDialog": {
     "title": "Odkaz obrazovky",
