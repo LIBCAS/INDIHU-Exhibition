@@ -370,7 +370,14 @@
   },
   "footer": {
     "previewLabel": "Náhľad",
-    "saveLabel": "Uložiť"
+    "saveLabel": "Uložiť",
+    "defaultNoActionTitle": "Ukončite prebiehajúce akcie!",
+    "defaultNoActionText": "Ukončite všetky prebiehajúce akcie pred uložením obrazovky!",
+    "screenSavedSuccess": "Obrazovka bola úspešne uložená.",
+    "screenSaveErrTitle": "Obrazovka nie je uložená!",
+    "screenSaveErrText": "Obrazovku sa nepodarilo uložiť!",
+    "endActionsTitle": "Ukončite prebiehajúce akcie!",
+    "ednActionsText": "Ukončite všetky prebiehajúce akcie pred otvorením náhľadu obrazovky!"
   },
   "infopointsTable": {
     "defaultTitle": "Infopointy",

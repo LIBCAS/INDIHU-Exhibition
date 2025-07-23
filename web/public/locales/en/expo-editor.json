@@ -370,7 +370,14 @@
   },
   "footer": {
     "previewLabel": "Preview",
-    "saveLabel": "Save"
+    "saveLabel": "Save",
+    "defaultNoActionTitle": "Finish ongoing actions!",
+    "defaultNoActionText": "Finish all ongoing actions before saving the screen!",
+    "screenSavedSuccess": "The screen was successfully saved.",
+    "screenSaveErrTitle": "Screen not saved!",
+    "screenSaveErrText": "The screen could not be saved!",
+    "endActionsTitle": "Finish ongoing actions!",
+    "ednActionsText": "Finish all ongoing actions before opening the screen preview!"
   },
   "infopointsTable": {
     "defaultTitle": "Infopoints",
