@@ -438,5 +438,10 @@
   "expoUrlChangeFieldDialog": {
     "titleSuccess": "Úspěšná změna url výstavy",
     "textSuccess": "Url výstavy byla úspěšně změněna."
+  },
+  "expoExportDialog": {
+    "title": "Export výstavy",
+    "submitLabel": "Exportovat",
+    "content": "Export výstavy"
   }
 }

@@ -438,5 +438,10 @@
   "expoUrlChangeFieldDialog": {
     "titleSuccess": "Successful change of the exhibition url",
     "textSuccess": "The URL of the exhibition has been successfully changed."
+  },
+  "expoExportDialog": {
+    "title": "Exhibition export",
+    "submitLabel": "Export",
+    "content": "Exhibition export"
   }
 }
