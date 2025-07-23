@@ -54,7 +54,17 @@
       "game_sizing": "Návštěvník má za úkol zmenšit nebo zvětšit velikost předmětu na obrázku tak, aby byl ve stejném poměru k referenčnímu předmětu na obrázku.",
       "game_move": "Hra, kde návštěvník tažením myši přesouvá objekt nad obrázkem do správné cílové pozice.",
       "game_options": "Návštěvník vybírá správnou odpověď na otázku ze 3 odpovědí. Každá odpověď je tvořena textem a obrázkem."
-    }
+    },
+    "screenMenu": {
+      "edit": "Upravit",
+      "previewWhole": "Náhled celé výstavy",
+      "preview": "Náhled",
+      "move": "Přesunout",
+      "duplicate": "Duplikovat",
+      "retrieveScreenLink": "Získat odkaz obrazovky",
+      "delete": "Smazat"
+    },
+    "newPosition": "Nová pozice"
   },
   "files": {
     "tab": "Soubory",

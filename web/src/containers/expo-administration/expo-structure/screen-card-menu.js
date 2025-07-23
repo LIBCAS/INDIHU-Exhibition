@@ -9,6 +9,7 @@ import FontIcon from "react-md/lib/FontIcons";
 import { setDialog } from "../../../actions/dialog-actions";
 import { openViewer } from "../../../utils";
 import { screenType } from "../../../enums/screen-type";
+import { useTranslation } from "react-i18next";
 
 const ScreenCardMenu = ({
   name,
@@ -24,6 +25,8 @@ const ScreenCardMenu = ({
   aloneScreen,
   position,
 }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "structure.screenMenu" });
+
   return (
     <div className="card-menu">
       <MenuButton
@@ -34,12 +37,12 @@ const ScreenCardMenu = ({
       >
         {type !== screenType.FINISH && (
           <ListItem
-            primaryText="Upravit"
+            primaryText={t("edit")}
             onClick={() => history.push(editUrl)}
           />
         )}
         <ListItem
-          primaryText={type === "START" ? "Náhled celé výstavy" : "Náhled"}
+          primaryText={type === "START" ? t("previewWhole") : t("preview")}
           rightIcon={<FontIcon className="color-black">open_in_new</FontIcon>}
           onClick={() =>
             openViewer(
@@ -52,7 +55,7 @@ const ScreenCardMenu = ({
         {cardType && (
           <div>
             <ListItem
-              primaryText="Přesunout"
+              primaryText={t("move")}
               onClick={() => {
                 change("ScreenMove", "rowNum", rowNum);
                 change("ScreenMove", "colNum", colNum);
@@ -66,7 +69,7 @@ const ScreenCardMenu = ({
               }}
             />
             <ListItem
-              primaryText="Duplikovat"
+              primaryText={t("duplicate")}
               onClick={() => {
                 change("ScreenDuplicate", "rowNum", rowNum);
                 change("ScreenDuplicate", "colNum", colNum);
@@ -76,7 +79,7 @@ const ScreenCardMenu = ({
           </div>
         )}
         <ListItem
-          primaryText="Získat odkaz obrazovky"
+          primaryText={t("retrieveScreenLink")}
           onClick={() =>
             setDialog("ScreenLink", {
               link:
@@ -92,7 +95,7 @@ const ScreenCardMenu = ({
           <div>
             <Divider />
             <ListItem
-              primaryText="Smazat"
+              primaryText={t("delete")}
               rightIcon={<FontIcon className="color-black">delete</FontIcon>}
               onClick={() =>
                 setDialog("ScreenDelete", { name, rowNum, colNum, type })

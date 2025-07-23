@@ -54,7 +54,17 @@
       "game_sizing": "The visitor needs to find the right size of the object in the image so that it is in the same proportion as the reference object",
       "game_move": "A game where the visitor moves the object above the image to the correct target position by dragging mouse.",
       "game_options": "The visitor chooses the correct answer to a question from 3 answers. Each answer consists of text and an image."
-    }
+    },
+    "screenMenu": {
+      "edit": "Edit",
+      "previewWhole": "Preview whole exhibition",
+      "preview": "Preview",
+      "move": "Move",
+      "duplicate": "Duplicate",
+      "retrieveScreenLink": "Get screen link",
+      "delete": "Delete"
+    },
+    "newPosition": "New position"
   },
   "files": {
     "tab": "Files",
