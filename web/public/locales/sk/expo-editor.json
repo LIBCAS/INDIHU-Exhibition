@@ -426,5 +426,9 @@
 
   "confirmDialog": {
     "submitLabel": "Potvrdiť"
+  },
+
+  "carousel": {
+    "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
   }
 }

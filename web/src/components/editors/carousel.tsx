@@ -14,6 +14,7 @@ import { getFileById } from "actions/file-actions-typed";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 import { isEmpty } from "lodash";
+import { useTranslation } from "react-i18next";
 
 type CarouselContainerProps = {
   images?: SlideshowImages | PhotogalleryImages | ParallaxImages;
@@ -35,6 +36,8 @@ const CarouselContainer = ({
   onAdd,
 }: CarouselContainerProps) => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const { t } = useTranslation("expo-editor");
 
   const sliderSettings = {
     dots: false,
@@ -116,7 +119,7 @@ const CarouselContainer = ({
                           title: (
                             <FontIcon className="color-black">delete</FontIcon>
                           ),
-                          text: "Opravdu chcete odstranit zvolený obrázek?",
+                          text: t("carousel.deleteImageConfirm"),
                           onSubmit: () => onDelete(currImageIndex),
                         })
                       );
