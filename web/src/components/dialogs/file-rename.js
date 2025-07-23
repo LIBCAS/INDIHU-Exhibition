@@ -22,7 +22,7 @@ const FileRename = ({ handleSubmit }) => {
         <Field
           component={TextField}
           componentId="filerename-textfield-name"
-          label={t("newNameField")}
+          label={t("newFileNameField")}
           name="name"
           validate={[Validation.required]}
         />
