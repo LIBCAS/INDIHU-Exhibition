@@ -237,6 +237,8 @@
 
   "expoForbiddenEditActionPerformed": "Nemáte oprávnění k editaci této výstavy. Výstava je v režimu pouze pro čtení.",
 
+  "dialogSubmitLabel": "Potvrdit",
+
   "expoDeleteDialog": {
     "submitLabel": "Smazat",
     "expoWillBeDeleted": "Vybraná výstava s názvem <strong>{{expoName}}</strong> bude smazaná.",

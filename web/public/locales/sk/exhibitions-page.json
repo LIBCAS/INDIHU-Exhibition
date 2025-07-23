@@ -67,14 +67,17 @@
     "rename": "Premenovať",
     "share": "Zdieľať",
     "duplicate": "Duplikovať",
-    "delete": "Zmazať"
+    "delete": "Zmazať",
+    "close": "Zavrieť"
   },
   "pager": {
     "entriesPerPage": "Záznamov na stránku:"
   },
-  "dialóg": {
+  "dialog": {
     "newExpoTitle": "Nová výstava",
     "newExpoLabel": "Názov výstavy",
     "submitLabel": "Vytvoriť"
-  }
+  },
+  "noPermissionToEditTitle": "Nie je možné upravovať",
+  "noPermissionToEditText": "Výstavu nie je možné upravovať."
 }

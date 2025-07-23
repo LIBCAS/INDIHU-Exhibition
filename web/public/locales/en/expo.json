@@ -237,6 +237,8 @@
 
   "expoForbiddenEditActionPerformed": "You do not have permission to edit this exhibition. The exhibition is in read-only mode.",
 
+  "dialogSubmitLabel": "Submit",
+
   "expoDeleteDialog": {
     "submitLabel": "Delete",
     "expoWillBeDeleted": "The selected exhibition named <strong>{{expoName}}</strong> will be deleted.",
