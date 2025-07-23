@@ -2,5 +2,8 @@
   "required": "*Povinné",
   "max150Chars": "*Maximálne 150 znakov.",
   "atLeastOnePixel": "*Nemôže byť menšie ako 1 pixel.",
-  "atLeastOne": "*Nemôže byť menší ako jedna."
+  "atLeastOne": "*Nemôže byť menší ako jedna.",
+  "atLeast5Chars": "*Minimálne 5 znakov.",
+  "invalidEmailFormat": "*Neplatný formát e-mailovej adresy.",
+  "passwordsDoNotMatch": "*Heslá sa nezhodujú!"
 }

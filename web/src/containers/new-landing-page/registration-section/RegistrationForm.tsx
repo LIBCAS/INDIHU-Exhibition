@@ -21,8 +21,24 @@ import { registration } from "actions/user-actions";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+import { TFunction } from "i18next";
+import { useMemo } from "react";
 
-// - -
+// - - -
+
+const retrieveRegisterFormSchema = (t: TFunction) => {
+  return Yup.object({
+    firstName: Yup.string().required(t("required")),
+    surname: Yup.string().required(t("required")),
+    institution: Yup.string().required(t("required")),
+    email: Yup.string().email(t("invalidEmailFormat")).required(t("required")),
+    password: Yup.string().min(5, t("atLeast5Chars")).required(t("required")),
+    // accepted: Yup.boolean().required(validationT("required")),
+    // captcha: Yup.string().required(validationT("required")),
+  });
+};
+
+// - - -
 
 type RegisterFormData = {
   firstName: string;
@@ -46,9 +62,17 @@ const RegistrationForm = ({
   const { t } = useTranslation("new-landing-screen", {
     keyPrefix: "registrationSection",
   });
+
+  const { t: validationT } = useTranslation("validation");
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { openNewTopDialog } = useDialogRef();
+
+  const registerFormSchema = useMemo(
+    () => retrieveRegisterFormSchema(validationT),
+    [validationT]
+  );
 
   return (
     <div
@@ -133,17 +157,7 @@ const RegistrationForm = ({
               formik.setFieldError("password", errText);
             }
           }}
-          validationSchema={Yup.object({
-            firstName: Yup.string().required("*Povinné"),
-            surname: Yup.string().required("*Povinné"),
-            institution: Yup.string().required("*Povinné"),
-            email: Yup.string()
-              .email("*Neplatný formát e-mail adresy")
-              .required("*Povinné"),
-            password: Yup.string().min(5, "*Min 5 znaků").required("*Povinné"),
-            // accepted: Yup.boolean().required("*Povinné"),
-            // captcha: Yup.string().required("*Povinné"),
-          })}
+          validationSchema={registerFormSchema}
         >
           <Form className="flex flex-col gap-2">
             <TextField

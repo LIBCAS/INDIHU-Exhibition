@@ -12,6 +12,19 @@ import * as Yup from "yup";
 import { updateCurrentUser } from "actions/user-actions";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import { TFunction } from "i18next";
+import { useMemo } from "react";
+
+// - - -
+
+const retrievePasswordChangeFormSchema = (t: TFunction) => {
+  return Yup.object({
+    password: Yup.string().required(t("required")),
+    passwordSecond: Yup.string()
+      .required(t("required"))
+      .oneOf([Yup.ref("password")], t("passwordsDoNotMatch")),
+  });
+};
 
 // - -
 
@@ -29,6 +42,12 @@ type PasswordChangeProps = {
 const PasswordChange = ({ userInfo }: PasswordChangeProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("profile");
+  const { t: validationT } = useTranslation("validation");
+
+  const passwordChangeSchema = useMemo(
+    () => retrievePasswordChangeFormSchema(validationT),
+    [validationT]
+  );
 
   return (
     <Formik<PasswordChangeFormData>
@@ -60,12 +79,7 @@ const PasswordChange = ({ userInfo }: PasswordChangeProps) => {
           );
         }
       }}
-      validationSchema={Yup.object({
-        password: Yup.string().required("*Povinné"),
-        passwordSecond: Yup.string()
-          .required("*Povinné")
-          .oneOf([Yup.ref("password")], "*Hesla nejsou totožná!"),
-      })}
+      validationSchema={passwordChangeSchema}
     >
       <Form className="flex flex-col justify-center items-center">
         <ReactMdTextField
