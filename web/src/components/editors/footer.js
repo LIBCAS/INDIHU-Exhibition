@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 
 import { connect } from "react-redux";
 import { compose, withState, lifecycle, withHandlers } from "recompose";
@@ -38,6 +38,7 @@ const Footer = ({ save, openView }) => {
 export default compose(
   connect(null, { saveScreen, setDialog }),
   withState("ctrlKeyDown", "setCtrlKeyDown", false),
+  withTranslation("expo-editor", { keyPrefix: "footer" }),
   withHandlers({
     save:
       ({
@@ -49,21 +50,20 @@ export default compose(
         colNum,
         saveScreen,
         setDialog,
+        t,
       }) =>
       async () => {
         if (noActions)
           setDialog("Info", {
-            title: noActionTitle ? noActionTitle : "Ukončete prováděné akce!",
-            text: noActionText
-              ? noActionText
-              : "Ukončete všechny prováděné akce než uložíte obrazovku!",
+            title: noActionTitle ? noActionTitle : t("defaultNoActionTitle"),
+            text: noActionText ? noActionText : t("defaultNoActionText"),
           });
         else {
           if (await saveScreen(activeScreen, rowNum, colNum)) {
             setDialog("Info", {
               content: (
                 <h2 className="text-center margin-none">
-                  Obrazovka byla úspěšně uložena.
+                  {t("screenSavedSuccess")}
                 </h2>
               ),
               autoClose: true,
@@ -74,8 +74,8 @@ export default compose(
             });
           } else {
             setDialog("Info", {
-              title: "Obrazovka není uložena!",
-              text: "Obrazovka nebyla uložena!",
+              title: t("screenSaveErrTitle"),
+              text: t("screenSaveErrText"),
             });
           }
         }
@@ -92,14 +92,13 @@ export default compose(
         type,
         noActionTitle,
         noActionText,
+        t,
       }) =>
       async () => {
         if (noActions)
           setDialog("Info", {
-            title: noActionTitle ? noActionTitle : "Ukončete prováděné akce!",
-            text: noActionText
-              ? noActionText
-              : "Ukončete všechny prováděné akce než otevřete náhled obrazovky!",
+            title: noActionTitle ? noActionTitle : t("endActionsTitle"),
+            text: noActionText ? noActionText : t("endActionsText"),
           });
         else {
           await saveScreen(activeScreen, rowNum, colNum);

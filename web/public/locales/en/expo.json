@@ -54,7 +54,17 @@
       "game_sizing": "The visitor needs to find the right size of the object in the image so that it is in the same proportion as the reference object",
       "game_move": "A game where the visitor moves the object above the image to the correct target position by dragging mouse.",
       "game_options": "The visitor chooses the correct answer to a question from 3 answers. Each answer consists of text and an image."
-    }
+    },
+    "screenMenu": {
+      "edit": "Edit",
+      "previewWhole": "Preview whole exhibition",
+      "preview": "Preview",
+      "move": "Move",
+      "duplicate": "Duplicate",
+      "retrieveScreenLink": "Get screen link",
+      "delete": "Delete"
+    },
+    "newPosition": "New position"
   },
   "files": {
     "tab": "Files",
@@ -75,7 +85,7 @@
       "download": "Download",
       "delete": "Delete"
     },
-    "filePreview": "Preview the file",
+    "filePreview": "Preview file",
     "fileMetadata": "Metadata",
     "nameCol": "Name:",
     "typeCol": "Type:",
@@ -118,7 +128,8 @@
     "actionCol": "Actions",
     "owner": "Owner",
     "reading": "Reading",
-    "readWrite": "Reading and writing"
+    "readWrite": "Reading and writing",
+    "deleteImageConfirm": "Are you sure you want to delete the image?"
   },
   "rating": {
     "tab": "Rating and views",
@@ -226,6 +237,8 @@
   "expoNotFoundText": "The exhibition located under this URL was not found.",
 
   "expoForbiddenEditActionPerformed": "You do not have permission to edit this exhibition. The exhibition is in read-only mode.",
+
+  "dialogSubmitLabel": "Submit",
 
   "expoDeleteDialog": {
     "submitLabel": "Delete",
@@ -371,7 +384,9 @@
   "screenDocumentChooseDialog": {
     "title": "Choose file",
     "submitLabel": "Choose",
-    "errorText": "*Choose file"
+    "errorText": "*Choose file",
+    "previewFile": "Preview file",
+    "metadata": "Metadata"
   },
   "screenDocumentNewDialog": {
     "title": "New document",
@@ -395,7 +410,9 @@
   "screenFileChooseDialog": {
     "title": "Choose file",
     "submitLabel": "Choose",
-    "chooseFileErrorText": "*Choose file"
+    "chooseFileErrorText": "*Choose file",
+    "previewFile": "Preview file",
+    "metadata": "Metadata"
   },
   "screenLinkDialog": {
     "title": "Screen link",
@@ -426,5 +443,10 @@
   "expoUrlChangeFieldDialog": {
     "titleSuccess": "Successful change of the exhibition url",
     "textSuccess": "The URL of the exhibition has been successfully changed."
+  },
+  "expoExportDialog": {
+    "title": "Exhibition export",
+    "submitLabel": "Export",
+    "content": "Exhibition export"
   }
 }

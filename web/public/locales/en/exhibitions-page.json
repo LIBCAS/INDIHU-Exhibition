@@ -67,7 +67,8 @@
     "rename": "Rename",
     "share": "Share",
     "duplicate": "Duplicate",
-    "delete": "Delete"
+    "delete": "Delete",
+    "close": "Close"
   },
   "pager": {
     "entriesPerPage": "Entries per page:"
@@ -76,5 +77,7 @@
     "newExpoTitle": "New exhibition",
     "newExpoLabel": "Name of the exhibition",
     "submitLabel": "Create"
-  }
+  },
+  "noPermissionToEditTitle": "Cannot edit",
+  "noPermissionToEditText": "The exhibition cannot be edited."
 }

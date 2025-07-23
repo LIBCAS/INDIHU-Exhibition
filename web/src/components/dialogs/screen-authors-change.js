@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { compose, withHandlers } from "recompose";
@@ -14,6 +15,15 @@ const ScreenAuthorsChange = ({ handleSubmit }) => {
     keyPrefix: "screenAuthorsChangeDialog",
   });
 
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
+
   return (
     <Dialog
       title={t("title")}
@@ -27,14 +37,14 @@ const ScreenAuthorsChange = ({ handleSubmit }) => {
           componentId="screen-authors-change-textfield-role"
           name="role"
           label={t("roleField")}
-          validate={[Validation.required]}
+          validate={[Validators.required]}
         />
         <Field
           component={TextField}
           componentId="screen-authors-change-textfield-text"
           name="text"
           label={t("textField")}
-          validate={[Validation.required]}
+          validate={[Validators.required]}
           multiLine
         />
       </form>

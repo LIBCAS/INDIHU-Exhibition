@@ -19,6 +19,7 @@ import { Icon } from "components/icon/icon";
 
 // Utils
 import cx from "classnames";
+import { useTranslation } from "react-i18next";
 
 // - - - - - - - -
 
@@ -72,6 +73,8 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
   children,
 }) => {
   const { isLightMode } = useExpoDesignData();
+
+  const { t } = useTranslation("expo");
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -178,7 +181,7 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
                 id={`dialog-submit-button`}
                 raised
                 primary
-                label={submitLabel ?? "Potvrdit"}
+                label={submitLabel ?? t("dialogSubmitLabel")}
                 className="margin-right-small"
                 onClick={() => {
                   if (handleSubmit) {

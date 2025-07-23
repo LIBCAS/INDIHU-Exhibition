@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { compose, withHandlers } from "recompose";
 import { reduxForm, Field, SubmissionError } from "redux-form";
 
@@ -9,6 +10,14 @@ import { useTranslation, withTranslation } from "react-i18next";
 
 const FileNewFolder = ({ handleSubmit }) => {
   const { t } = useTranslation("expo", { keyPrefix: "fileNewFolderDialog" });
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -23,7 +32,7 @@ const FileNewFolder = ({ handleSubmit }) => {
           componentId="expo-new-folder-textfield-name"
           name="name"
           label={t("folderNameField")}
-          validate={[Validation.required]}
+          validate={[Validators.required]}
         />
       </form>
     </Dialog>

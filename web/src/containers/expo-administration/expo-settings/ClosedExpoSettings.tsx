@@ -112,7 +112,7 @@ const ClosedExpoSettings = ({ activeExpo }: ClosedExpoSettingsProps) => {
               dispatch(
                 setDialog(DialogType.ConfirmDialog, {
                   title: <Delete />,
-                  text: "Opravdu chcete odstranit obrázek?",
+                  text: t("settingsAndSharing.deleteImageConfirm"),
                   onSubmit: () => setClosedPicture(null),
                 })
               );

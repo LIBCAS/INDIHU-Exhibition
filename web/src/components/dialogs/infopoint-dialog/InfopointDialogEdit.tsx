@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
 import InfopointForm from "./InfopointForm";
-import { infopointSchema } from "./schema";
+import { retrieveInfopointSchema } from "./schema";
 import { InfopointFormData, InfopointFormDataProcessed } from "./models";
 import { Infopoint } from "models";
 import { createFormDataProcessed } from "./utils";
@@ -28,8 +28,14 @@ const InfopointDialogEdit = ({
   infopointIndex,
 }: InfopointDialogEditProps) => {
   const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
+  const { t: validationT } = useTranslation("validation");
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const infopointSchema = useMemo(
+    () => retrieveInfopointSchema(validationT),
+    [validationT]
+  );
 
   return (
     <Formik<InfopointFormData>

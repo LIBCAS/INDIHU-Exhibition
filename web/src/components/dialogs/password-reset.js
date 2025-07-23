@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { compose, withHandlers } from "recompose";
 import { reduxForm, Field } from "redux-form";
 
@@ -9,6 +10,15 @@ import { useTranslation, withTranslation } from "react-i18next";
 
 const PasswordReset = ({ handleSubmit }) => {
   const { t } = useTranslation("expo", { keyPrefix: "passwordResetDialog" });
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+      email: Validation.email(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -23,7 +33,7 @@ const PasswordReset = ({ handleSubmit }) => {
           componentId="password-reset-textfield-email"
           label={t("emailField")}
           name="email"
-          validate={[Validation.required, Validation.email]}
+          validate={[Validators.required, Validators.email]}
         />
       </form>
     </Dialog>

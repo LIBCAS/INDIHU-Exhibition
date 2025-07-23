@@ -26,6 +26,7 @@ import { closeDialog } from "actions/dialog-actions";
 
 // Utils
 import cx from "classnames";
+import { useTranslation } from "react-i18next";
 
 // - - - - - - - -
 
@@ -72,6 +73,8 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
 }) => {
   const { activeName } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+
+  const { t } = useTranslation("expo");
 
   const { isLightMode } = useExpoDesignData();
 
@@ -155,7 +158,7 @@ const DialogWrap: FC<PropsWithChildren<DialogWrapProps>> = ({
                 id={`dialog-submit-button-${name}`}
                 raised
                 primary
-                label={submitLabel ?? "Potvrdit"}
+                label={submitLabel ?? t("dialogSubmitLabel")}
                 className="margin-right-small"
                 onClick={() => {
                   if (handleSubmit) {

@@ -54,7 +54,17 @@
       "game_sizing": "Návštěvník má za úkol zmenšit nebo zvětšit velikost předmětu na obrázku tak, aby byl ve stejném poměru k referenčnímu předmětu na obrázku.",
       "game_move": "Hra, kde návštěvník tažením myši přesouvá objekt nad obrázkem do správné cílové pozice.",
       "game_options": "Návštěvník vybírá správnou odpověď na otázku ze 3 odpovědí. Každá odpověď je tvořena textem a obrázkem."
-    }
+    },
+    "screenMenu": {
+      "edit": "Upravit",
+      "previewWhole": "Náhled celé výstavy",
+      "preview": "Náhled",
+      "move": "Přesunout",
+      "duplicate": "Duplikovat",
+      "retrieveScreenLink": "Získat odkaz obrazovky",
+      "delete": "Smazat"
+    },
+    "newPosition": "Nová pozice"
   },
   "files": {
     "tab": "Soubory",
@@ -118,7 +128,8 @@
     "actionCol": "Akce",
     "owner": "Vlastník",
     "reading": "Čtení",
-    "readWrite": "Čtení a zápis"
+    "readWrite": "Čtení a zápis",
+    "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
   },
   "rating": {
     "tab": "Hodnocení a návštěvnost",
@@ -226,6 +237,8 @@
   "expoNotFoundText": "Výstava umístěná pod touto URL nebyla nalezena.",
 
   "expoForbiddenEditActionPerformed": "Nemáte oprávnění k editaci této výstavy. Výstava je v režimu pouze pro čtení.",
+
+  "dialogSubmitLabel": "Potvrdit",
 
   "expoDeleteDialog": {
     "submitLabel": "Smazat",
@@ -371,7 +384,9 @@
   "screenDocumentChooseDialog": {
     "title": "Vybrat soubor",
     "submitLabel": "Vybrat",
-    "errorText": "*Vyber soubor"
+    "errorText": "*Vyber soubor",
+    "previewFile": "Náhled souboru",
+    "metadata": "Metadata"
   },
   "screenDocumentNewDialog": {
     "title": "Nový dokument",
@@ -395,7 +410,9 @@
   "screenFileChooseDialog": {
     "title": "Vybrat soubor",
     "submitLabel": "Vybrat",
-    "chooseFileErrorText": "*Vyber soubor"
+    "chooseFileErrorText": "*Vyber soubor",
+    "previewFile": "Náhled souboru",
+    "metadata": "Metadata"
   },
   "screenLinkDialog": {
     "title": "Odkaz obrazovky",
@@ -426,5 +443,10 @@
   "expoUrlChangeFieldDialog": {
     "titleSuccess": "Úspěšná změna url výstavy",
     "textSuccess": "Url výstavy byla úspěšně změněna."
+  },
+  "expoExportDialog": {
+    "title": "Export výstavy",
+    "submitLabel": "Exportovat",
+    "content": "Export výstavy"
   }
 }

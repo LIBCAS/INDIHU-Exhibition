@@ -70,6 +70,9 @@
     "gameResultTime": "Result display time",
     "gameResultTimeTooltip": "The number of seconds that determines how long the user will see the result of the game.",
 
+    "startScreen": {
+      "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+    },
     "introScreen": {
       "horizontalTextPosition": "Horizontal text position",
       "horizontalTextPositionLeftOption": "Left",
@@ -232,6 +235,9 @@
       },
       "linkNotSufficientlyFilled": "This reference is not filled in enough, so it will be ignored in the exhibition!"
     },
+    "finishScreen": {
+      "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+    },
 
     "gameFindScreen": {
       "taskTooltip": "Describe this task to the user as precisely as possible (e.g. find on the map where the Church of the Holy Cross stood).",
@@ -364,7 +370,14 @@
   },
   "footer": {
     "previewLabel": "Preview",
-    "saveLabel": "Save"
+    "saveLabel": "Save",
+    "defaultNoActionTitle": "Finish ongoing actions!",
+    "defaultNoActionText": "Finish all ongoing actions before saving the screen!",
+    "screenSavedSuccess": "The screen was successfully saved.",
+    "screenSaveErrTitle": "Screen not saved!",
+    "screenSaveErrText": "The screen could not be saved!",
+    "endActionsTitle": "Finish ongoing actions!",
+    "ednActionsText": "Finish all ongoing actions before opening the screen preview!"
   },
   "infopointsTable": {
     "defaultTitle": "Infopoints",
@@ -421,10 +434,48 @@
     "zoomOutTooltip": "Zoom out",
     "openFileExplorerTooltip": "Open in file explorer",
     "openImageEditorTooltip": "Open image in image editor",
-    "deleteImageFromBox": "Remove image from box"
+    "deleteImageFromBox": "Remove image from box",
+    "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+  },
+  "imageEditor": {
+    "cropAreaTooSmall": "Crop area is too small!",
+    "saveActionTooltip": "Save",
+    "failedToSaveFile": "Failed to save the file!",
+    "saving": "Saving...",
+    "resetActionTooltip": "Show original image",
+    "resetActionDialogTitle": "Show original image",
+    "resetActionDialogContent1": "Do you really want to show the original image?",
+    "resetActionDialogContent2": "Unsaved changes will be lost!",
+    "hideGuidesActionTooltip": "Hide grid",
+    "showGuidesActionTooltip": "Show grid",
+    "hideGuidesDialogTitle": "Hide grid",
+    "showGuidesDialogTitle": "Show grid",
+    "guidesDialogContent1": "Do you really want to proceed?",
+    "guidesDialogContent2": "Unsaved changes will be lost!",
+    "movementModeTooltip": "Move mode",
+    "cropModeTooltip": "Crop mode",
+    "aspectRatioActionTooltip": "Crop aspect ratio",
+    "cropActionTooltip": "Crop",
+    "zoomInActionTooltip": "Zoom in",
+    "zoomOutActionTooltip": "Zoom out",
+    "rotateLeftActionTooltip": "Rotate left 90°",
+    "rotateRightActionTooltip": "Rotate right 90°",
+    "swapHorizActionTooltip": "Flip horizontally",
+    "swapVertActionTooltip": "Flip vertically",
+    "menuActionTooltip": "Menu",
+    "closeActionTooltip": "Close editor",
+    "closeDialogTitle": "Close editor",
+    "closeDialogContent1": "Do you really want to close the editor?",
+    "closeDialogContent2": "Unsaved changes will be lost!",
+    "imageEditorLabel": "Image Editor",
+    "loadingLabel": "Loading..."
   },
 
   "confirmDialog": {
     "submitLabel": "Confirm"
+  },
+
+  "carousel": {
+    "deleteImageConfirm": "Are you sure you want to delete the selected image?"
   }
 }

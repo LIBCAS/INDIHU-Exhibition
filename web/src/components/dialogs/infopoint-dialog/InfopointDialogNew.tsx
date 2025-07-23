@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ import InfopointForm from "./InfopointForm";
 
 import { AppState } from "store/store";
 import { ActiveExpo } from "models";
-import { infopointSchema } from "./schema";
+import { retrieveInfopointSchema } from "./schema";
 import { InfopointFormData, InfopointFormDataProcessed } from "./models";
 import { createFormDataProcessed } from "./utils";
 
@@ -33,9 +33,15 @@ const InfopointDialogNew = ({
   onDialogSubmit,
 }: InfopointDialogNewProps) => {
   const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
+  const { t: validationT } = useTranslation("validation");
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const { expositionDesignData: expoDesignData } = useSelector(stateSelector);
+
+  const infopointSchema = useMemo(
+    () => retrieveInfopointSchema(validationT),
+    [validationT]
+  );
 
   return (
     <Formik<InfopointFormData>

@@ -70,6 +70,9 @@
     "gameResultTime": "Doba zobrazení výsledku",
     "gameResultTimeTooltip": "Počet sekund určující, jak dlouho návštěvník uvidí výsledek minihry.",
 
+    "startScreen": {
+      "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
+    },
     "introScreen": {
       "horizontalTextPosition": "Horizontální pozice textu",
       "horizontalTextPositionLeftOption": "Vlevo",
@@ -232,6 +235,9 @@
       },
       "linkNotSufficientlyFilled": "Tato reference není dostatečně vyplněna, proto bude ve výstavě ignorována!"
     },
+    "finishScreen": {
+      "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
+    },
 
     "gameFindScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Najděte na mapě, kde stál kostel sv. Kříže).",
@@ -364,7 +370,14 @@
   },
   "footer": {
     "previewLabel": "Náhled",
-    "saveLabel": "Uložit"
+    "saveLabel": "Uložit",
+    "defaultNoActionTitle": "Ukončete prováděné akce!",
+    "defaultNoActionText": "Ukončete všechny prováděné akce než uložíte obrazovku!",
+    "screenSavedSuccess": "Obrazovka byla úspěšně uložena.",
+    "screenSaveErrTitle": "Obrazovka není uložena!",
+    "screenSaveErrText": "Obrazovka nebyla uložena!",
+    "endActionsTitle": "Ukončete prováděné akce!",
+    "ednActionsText": "Ukončete všechny prováděné akce než otevřete náhled obrazovky!"
   },
   "infopointsTable": {
     "defaultTitle": "Infopointy",
@@ -421,10 +434,48 @@
     "zoomOutTooltip": "Oddálit",
     "openFileExplorerTooltip": "Otevřít prohlížeč souborů",
     "openImageEditorTooltip": "Otevřít obrázek v editoru",
-    "deleteImageFromBox": "Odstranit obrázek z boxu"
+    "deleteImageFromBox": "Odstranit obrázek z boxu",
+    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?"
+  },
+  "imageEditor": {
+    "cropAreaTooSmall": "Oblast pro oříznutí je příliš malá!",
+    "saveActionTooltip": "Uložit",
+    "failedToSaveFile": "Soubor se nepodařilo uložit!",
+    "saving": "Ukládá se...",
+    "resetActionTooltip": "Zobrazit původní obrázek",
+    "resetActionDialogTitle": "Zobrazit původní obrázek",
+    "resetActionDialogContent1": "Opravdu chcete zobrazit původní obrázek?",
+    "resetActionDialogContent2": "Provedené změny nebudou uloženy!",
+    "hideGuidesActionTooltip": "Skrýt mřížku",
+    "showGuidesActionTooltip": "Zobrazit mřížku",
+    "hideGuidesDialogTitle": "Skrýt mřížku",
+    "showGuidesDialogTitle": "Zobrazit mřížku",
+    "guidesDialogContent1": "Opravdu chcete akci provést?",
+    "guidesDialogContent2": "Provedené změny nebudou uloženy!",
+    "movementModeTooltip": "Režim pohybu",
+    "cropModeTooltip": "Režim ořezu",
+    "aspectRatioActionTooltip": "Poměr stran ořezu",
+    "cropActionTooltip": "Oříznout",
+    "zoomInActionTooltip": "Zvětšit",
+    "zoomOutActionTooltip": "Zmenšit",
+    "rotateLeftActionTooltip": "Otočit doleva o 90°",
+    "rotateRightActionTooltip": "Otočit doprava o 90°",
+    "swapHorizActionTooltip": "Překlopit horizontálně",
+    "swapVertActionTooltip": "Překlopit vertikálně",
+    "menuActionTooltip": "Menu",
+    "closeActionTooltip": "Zavřít editor",
+    "closeDialogTitle": "Zavření editoru",
+    "closeDialogContent1": "Opravdu chcete zavřít editor?",
+    "closeDialogContent2": "Provedené změny nebudou uloženy!",
+    "imageEditorLabel": "Editor obrázků",
+    "loadingLabel": "Načítá se..."
   },
 
   "confirmDialog": {
     "submitLabel": "Potvrdit"
+  },
+
+  "carousel": {
+    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?"
   }
 }

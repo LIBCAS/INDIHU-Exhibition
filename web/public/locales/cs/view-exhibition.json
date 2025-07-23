@@ -28,5 +28,6 @@
   "untitled-screen": "Nepojmenovaná obrazovka",
   "rate-expo": "Hodnotit výstavu",
   "landscapeModeRecommendationSnackbarText": " Doporučujeme prohlížení výstavy v režimu na šířku.",
-  "audioWarningSnackbarText": "Z důvodu omezení iOS může být expozice přerušena, protože přehrávání zvuku vyžaduje interakci uživatele. Pokud se tak stane, klepněte na tlačítko přehrávání."
+  "audioWarningSnackbarText": "Z důvodu omezení iOS může být expozice přerušena, protože přehrávání zvuku vyžaduje interakci uživatele. Pokud se tak stane, klepněte na tlačítko přehrávání.",
+  "linkWasCopied": "Odkaz zkopírován"
 }

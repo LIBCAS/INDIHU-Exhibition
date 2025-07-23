@@ -13,6 +13,7 @@ import { Button, FontIcon, Card, Divider } from "react-md";
 import { setDialog } from "../actions/dialog-actions";
 import { setImageEditor } from "../actions/app-actions";
 import ComponentLoader from "./loaders/component-loader";
+import { withTranslation } from "react-i18next";
 
 const TOOLTIP_ID = "image-editor-toolbar-icon-tooltip";
 
@@ -81,7 +82,7 @@ class ImageEditor extends Component {
       this.props.setDialog("Info", {
         content: (
           <h2 className="text-center margin-none">
-            Oblast pro oříznutí je příliš malá!
+            {this.props.t("cropAreaTooSmall")}
           </h2>
         ),
         autoClose: true,
@@ -148,6 +149,7 @@ class ImageEditor extends Component {
       setLoading,
       type,
       setImageEditor,
+      t,
     } = this.props;
 
     const close = () => {
@@ -156,7 +158,7 @@ class ImageEditor extends Component {
     };
 
     const saveAction = (className) => ({
-      tooltip: "Uložit",
+      tooltip: t("saveActionTooltip"),
       icon: "save",
       onClick: () => {
         const croppedCavnas = this.cropperRef.current.getCroppedCanvas(
@@ -185,7 +187,7 @@ class ImageEditor extends Component {
                 setDialog("Info", {
                   content: (
                     <h2 className="text-center margin-none invalid">
-                      Soubor se nepodařilo uložit!
+                      {t("failedToSaveFile")}
                     </h2>
                   ),
                   autoClose: true,
@@ -197,7 +199,7 @@ class ImageEditor extends Component {
               },
               onSubmitStart: () => {
                 setMenuOpen(false);
-                setLoading("Ukládá se...");
+                t("saving");
               },
             }),
           type
@@ -206,19 +208,19 @@ class ImageEditor extends Component {
       className,
     });
     const resetAction = (className) => ({
-      tooltip: "Zobrazit původní obrázek",
+      tooltip: t("resetActionTooltip"),
       icon: "cached",
       onClick: () =>
         setDialog("ConfirmDialog", {
-          title: "Zobrazit původní obrázek",
+          title: t("resetActionDialogTitle"),
           content: (
             <div>
-              <p>Opravdu chcete zobrazit původní obrázek?</p>
+              <p>{t("resetActionDialogContent1")}</p>
               <div className="flex-row-nowrap flex-center">
                 <FontIcon className="color-red">priority_high</FontIcon>
                 <p>
                   <strong style={{ fontSize: "0.9em" }}>
-                    Provedené změny nebudou uloženy!
+                    {t("resetActionDialogContent2")}
                   </strong>
                 </p>
               </div>
@@ -234,19 +236,23 @@ class ImageEditor extends Component {
     });
     const guidesAction = (className) => ({
       key: guides,
-      tooltip: guides ? "Skrýt mřížku" : "Zobrazit mřížku",
+      tooltip: guides
+        ? t("hideGuidesActionTooltip")
+        : t("showGuidesActionTooltip"),
       icon: guides ? "grid_off" : "grid_on",
       onClick: () =>
         setDialog("ConfirmDialog", {
-          title: guides ? "Skrýt mřížku" : "Zobrazit mřížku",
+          title: guides
+            ? t("hideGuidesDialogTitle")
+            : t("showGuidesDialogTitle"),
           content: (
             <div>
-              <p>Opravdu chcete akci provést?</p>
+              <p>{t("guidesDialogContent1")}</p>
               <div className="flex-row-nowrap flex-center">
                 <FontIcon className="color-red">priority_high</FontIcon>
                 <p>
                   <strong style={{ fontSize: "0.9em" }}>
-                    Provedené změny nebudou uloženy!
+                    {t("guidesDialogContent2")}
                   </strong>
                 </p>
               </div>
@@ -261,14 +267,14 @@ class ImageEditor extends Component {
       className,
     });
     const cropMoveAction = (className) => ({
-      tooltip: isCrop ? "Režim pohybu" : "Režim ořezu",
+      tooltip: isCrop ? t("movementModeTooltip") : t("cropModeTooltip"),
       icon: isCrop ? "zoom_out_map" : "crop_free",
       onClick: this.cropMove.bind(this),
       className,
     });
     const aspectRatioAction = (className) => ({
       key: aspectRatio,
-      tooltip: "Poměr stran ořezu",
+      tooltip: t("aspectRatioActionTooltip"),
       label: get(
         find(aspectRatioOptions, ({ value }) => aspectRatio === value),
         "label",
@@ -281,67 +287,67 @@ class ImageEditor extends Component {
       containerClassName: "image-editor-aspect-ratio",
     });
     const cropAction = (className) => ({
-      tooltip: "Oříznout",
+      tooltip: t("cropActionTooltip"),
       icon: "crop",
       onClick: this.crop.bind(this),
       className,
     });
     const zoomInAction = (className) => ({
-      tooltip: "Zvětšit",
+      tooltip: t("zoomInActionTooltip"),
       icon: "zoom_in",
       onClick: this.zoomIn.bind(this),
       className,
     });
     const zoomOutAction = (className) => ({
-      tooltip: "Zmenšit",
+      tooltip: t("zoomOutActionTooltip"),
       icon: "zoom_out",
       onClick: this.zoomOut.bind(this),
       className,
     });
     const rotateLeftAction = (className) => ({
-      tooltip: "Otočit doleva o 90°",
+      tooltip: t("rotateLeftActionTooltip"),
       icon: "rotate_left",
       onClick: this.rotateLeft.bind(this),
       className,
     });
     const rotateRightAction = (className) => ({
-      tooltip: "Otočit doprava o 90°",
+      tooltip: t("rotateRightActionTooltip"),
       icon: "rotate_right",
       onClick: this.rotateRight.bind(this),
       className,
     });
     const swapHorizAction = (className) => ({
-      tooltip: "Překlopit horizontálně",
+      tooltip: t("swapHorizActionTooltip"),
       icon: "swap_horiz",
       onClick: this.scaleHoriz.bind(this),
       className,
     });
     const swapVertAction = (className) => ({
-      tooltip: "Překlopit vertikálně",
+      tooltip: t("swapVertActionTooltip"),
       icon: "swap_vert",
       onClick: this.scaleVert.bind(this),
       className,
     });
     const menuAction = (className) => ({
-      tooltip: "Menu",
+      tooltip: t("menuActionTooltip"),
       icon: "menu",
       onClick: () => setMenuOpen(true),
       className,
     });
     const closeAction = (className) => ({
-      tooltip: "Zavřít editor",
+      tooltip: t("closeActionTooltip"),
       icon: "close",
       onClick: () =>
         setDialog("ConfirmDialog", {
-          title: "Zavření editoru",
+          title: t("closeDialogTitle"),
           content: (
             <div>
-              <p>Opravdu chcete zavřít editor?</p>
+              <p>{t("closeDialogContent1")}</p>
               <div className="flex-row-nowrap flex-center">
                 <FontIcon className="color-red">priority_high</FontIcon>
                 <p>
                   <strong style={{ fontSize: "0.9em" }}>
-                    Provedené změny nebudou uloženy!
+                    {t("closeDialogContent2")}
                   </strong>
                 </p>
               </div>
@@ -363,7 +369,7 @@ class ImageEditor extends Component {
               "screen-small-min": !loading,
             })}
           >
-            Editor obrázků
+            {t("imageEditorLabel")}
           </h3>
           {loading
             ? [divider(), closeAction(), divider()].map(menuItem)
@@ -394,7 +400,7 @@ class ImageEditor extends Component {
               ].map(menuItem)}
           {loading && (
             <h3 className="image-editor-loading-title">
-              {isString(loading) ? loading : "Načítá se..."}
+              {isString(loading) ? loading : t("loadingLabel")}
             </h3>
           )}
         </div>
@@ -498,5 +504,6 @@ export default compose(
   withState("guides", "setGuides", true),
   withState("cropperState", "setCropperState", true),
   withState("scale", "setScale", [1, 1]),
-  withState("aspectRatio", "setAspectRatio", 16 / 9)
+  withState("aspectRatio", "setAspectRatio", 16 / 9),
+  withTranslation("expo-editor", { keyPrefix: "imageEditor" })
 )(ImageEditor);
