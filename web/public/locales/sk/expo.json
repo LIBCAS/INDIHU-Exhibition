@@ -128,7 +128,8 @@
     "actionCol": "Akcia",
     "owner": "Vlastník",
     "reading": "Čítanie",
-    "readWrite": "Čítanie a zápis"
+    "readWrite": "Čítanie a zápis",
+    "deleteImageConfirm": "Naozaj chcete odstrániť obrázok?"
   },
   "rating": {
     "tab": "Hodnotenie a návštevnosť",

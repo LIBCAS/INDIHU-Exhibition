@@ -70,6 +70,9 @@
     "gameResultTime": "Result display time",
     "gameResultTimeTooltip": "The number of seconds that determines how long the user will see the result of the game.",
 
+    "startScreen": {
+      "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+    },
     "introScreen": {
       "horizontalTextPosition": "Horizontal text position",
       "horizontalTextPositionLeftOption": "Left",
@@ -231,6 +234,9 @@
         "textConfirm": "Are you sure you want to remove this reference? The action is non-refundable!"
       },
       "linkNotSufficientlyFilled": "This reference is not filled in enough, so it will be ignored in the exhibition!"
+    },
+    "finishScreen": {
+      "deleteImageConfirm": "Are you sure you want to delete the selected image?"
     },
 
     "gameFindScreen": {
@@ -421,7 +427,8 @@
     "zoomOutTooltip": "Zoom out",
     "openFileExplorerTooltip": "Open in file explorer",
     "openImageEditorTooltip": "Open image in image editor",
-    "deleteImageFromBox": "Remove image from box"
+    "deleteImageFromBox": "Remove image from box",
+    "deleteImageConfirm": "Are you sure you want to delete the selected image?"
   },
 
   "confirmDialog": {

@@ -70,6 +70,9 @@
     "gameResultTime": "Doba zobrazení výsledku",
     "gameResultTimeTooltip": "Počet sekund určující, jak dlouho návštěvník uvidí výsledek minihry.",
 
+    "startScreen": {
+      "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
+    },
     "introScreen": {
       "horizontalTextPosition": "Horizontální pozice textu",
       "horizontalTextPositionLeftOption": "Vlevo",
@@ -231,6 +234,9 @@
         "textConfirm": "Opravdu chcete odstranit tuto referenci? Akce je nevratná!"
       },
       "linkNotSufficientlyFilled": "Tato reference není dostatečně vyplněna, proto bude ve výstavě ignorována!"
+    },
+    "finishScreen": {
+      "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
     },
 
     "gameFindScreen": {
@@ -421,7 +427,8 @@
     "zoomOutTooltip": "Oddálit",
     "openFileExplorerTooltip": "Otevřít prohlížeč souborů",
     "openImageEditorTooltip": "Otevřít obrázek v editoru",
-    "deleteImageFromBox": "Odstranit obrázek z boxu"
+    "deleteImageFromBox": "Odstranit obrázek z boxu",
+    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?"
   },
 
   "confirmDialog": {

@@ -128,7 +128,8 @@
     "actionCol": "Actions",
     "owner": "Owner",
     "reading": "Reading",
-    "readWrite": "Reading and writing"
+    "readWrite": "Reading and writing",
+    "deleteImageConfirm": "Are you sure you want to delete the image?"
   },
   "rating": {
     "tab": "Rating and views",
