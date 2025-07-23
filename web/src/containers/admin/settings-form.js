@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, SubmissionError } from "redux-form";
 import { compose, withHandlers, lifecycle, withState } from "recompose";
@@ -22,6 +23,14 @@ const Form = ({
   setAutomaticRegistration,
 }) => {
   const { t } = useTranslation("admin-settings");
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <form className="flex-form" onSubmit={handleSubmit}>
@@ -47,7 +56,7 @@ const Form = ({
         name="lockDuration"
         label={t("lockExhibition")}
         suffix="vteřin"
-        validate={[Validation.required]}
+        validate={[Validators.required]}
       />
       <div className="flex-row flex-centered">
         <Button

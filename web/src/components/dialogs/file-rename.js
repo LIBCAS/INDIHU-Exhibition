@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { compose, withHandlers } from "recompose";
 import { reduxForm, Field } from "redux-form";
@@ -10,6 +11,14 @@ import { useTranslation } from "react-i18next";
 
 const FileRename = ({ handleSubmit }) => {
   const { t } = useTranslation("expo", { keyPrefix: "fileRenameDialog" });
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -24,7 +33,7 @@ const FileRename = ({ handleSubmit }) => {
           componentId="filerename-textfield-name"
           label={t("newFileNameField")}
           name="name"
-          validate={[Validation.required]}
+          validate={[Validators.required]}
         />
       </form>
     </Dialog>

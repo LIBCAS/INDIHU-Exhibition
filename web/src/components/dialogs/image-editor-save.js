@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { get } from "lodash";
 import { compose, withHandlers, withProps } from "recompose";
@@ -19,6 +20,14 @@ const getSuffix = (blob) =>
 
 const ImageEditorSave = ({ handleSubmit, data, closeDialog }) => {
   const { t } = useTranslation("expo", { keyPrefix: "imageEditorSaveDialog" });
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -40,7 +49,7 @@ const ImageEditorSave = ({ handleSubmit, data, closeDialog }) => {
               componentId="imageEditorSave-textfield-name"
               label={t("fileNameField")}
               name="name"
-              validate={[Validation.required]}
+              validate={[Validators.required]}
             />
             <div style={{ marginBottom: 12, marginLeft: 5 }}>
               {getSuffix(get(data, "blob"))}

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field, SubmissionError } from "redux-form";
 import { compose, withHandlers, withState } from "recompose";
@@ -27,6 +28,14 @@ const ScreenDocumentNew = ({
   activeScreen,
 }) => {
   const { t } = useTranslation(["expo", "expo-editor"]);
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -42,7 +51,7 @@ const ScreenDocumentNew = ({
           componentId="screen-document-new-textfield-filename"
           name="fileName"
           label={t("screenDocumentNewDialog.fileNameField")}
-          validate={[Validation.required]}
+          validate={[Validators.required]}
           onChange={(e, value) =>
             addDialogData("ScreenDocumentNew", { fileName: value })
           }
@@ -84,7 +93,7 @@ const ScreenDocumentNew = ({
               componentId="screen-document-new-textfield-url"
               name="url"
               label={t("screenDocumentNewDialog.urlAddressField")}
-              validate={[Validation.required]}
+              validate={[Validators.required]}
               onChange={(e, value) =>
                 addDialogData("ScreenDocumentNew", { url: value })
               }
@@ -95,7 +104,7 @@ const ScreenDocumentNew = ({
               name="urlType"
               label={t("screenDocumentNewDialog.urlTypeField")}
               menuItems={fileTypeOpts}
-              validate={[Validation.required]}
+              validate={[Validators.required]}
               onChange={(e, value) =>
                 addDialogData("ScreenDocumentNew", { urlType: value })
               }
@@ -112,7 +121,7 @@ const ScreenDocumentNew = ({
                 componentId="screen-document-new-textfield-name"
                 name="name"
                 label={t("screenDocumentNewDialog.fileField")}
-                validate={[Validation.required]}
+                validate={[Validators.required]}
                 disabled
               />
               <Button
@@ -147,7 +156,7 @@ const ScreenDocumentNew = ({
                       }),
                     },
                   ]}
-                  validate={[Validation.required]}
+                  validate={[Validators.required]}
                   onChange={(e, value) =>
                     addDialogData("ScreenDocumentNew", {
                       documentFileType: value,

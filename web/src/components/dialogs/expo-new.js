@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { compose, withHandlers } from "recompose";
@@ -10,6 +11,14 @@ import { newExpo } from "../../actions/expoActions";
 
 const ExpoNew = ({ handleSubmit }) => {
   const { t } = useTranslation("exhibitions-page");
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -24,7 +33,7 @@ const ExpoNew = ({ handleSubmit }) => {
           componentId="expo-new-textfield-name"
           name="name"
           label={t("dialog.newExpoLabel")}
-          validate={[Validation.required]}
+          validate={[Validators.required]}
         />
       </form>
     </Dialog>

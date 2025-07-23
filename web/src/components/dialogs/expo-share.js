@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { compose, withHandlers } from "recompose";
 import { reduxForm, Field } from "redux-form";
@@ -14,6 +15,15 @@ import { useTranslation, withTranslation, Trans } from "react-i18next";
 
 const ExpoShare = ({ handleSubmit, change }) => {
   const { t } = useTranslation("expo", { keyPrefix: "expoShareDialog" });
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+      email: Validation.email(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -31,14 +41,14 @@ const ExpoShare = ({ handleSubmit, change }) => {
           { label: t("editOption"), value: "EDIT" },
         ]}
         placeholder={t("selectTypeFieldLabel")}
-        validate={[Validation.required]}
+        validate={[Validators.required]}
       />
       <Field
         component={TextField}
         componentId="expo-share-textfield-name"
         label={t("userEmailField")}
         name="name"
-        validate={[Validation.required, Validation.email]}
+        validate={[Validators.required, Validators.email]}
       />
       <Field
         component={CheckBox}

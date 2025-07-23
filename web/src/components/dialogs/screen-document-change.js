@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field, SubmissionError } from "redux-form";
 import { compose, withHandlers, withState, lifecycle } from "recompose";
@@ -31,6 +32,14 @@ const ScreenDocumentChange = ({
   change,
 }) => {
   const { t } = useTranslation(["expo", "expo-editor"]);
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -46,7 +55,7 @@ const ScreenDocumentChange = ({
           componentId="screen-document-change-textfield-filename"
           name="fileName"
           label={t("screenDocumentChangeDialog.documentNameField")}
-          validate={[Validation.required]}
+          validate={[Validators.required]}
           onChange={(e, value) =>
             addDialogData("ScreenDocumentChange", { fileName: value })
           }
@@ -89,7 +98,7 @@ const ScreenDocumentChange = ({
               componentId="screen-document-change-textfield-url"
               name="url"
               label={t("screenDocumentChangeDialog.urlAdressField")}
-              validate={[Validation.required]}
+              validate={[Validators.required]}
               onChange={(e, value) =>
                 addDialogData("ScreenDocumentChange", { url: value })
               }
@@ -100,7 +109,7 @@ const ScreenDocumentChange = ({
               name="urlType"
               label={t("screenDocumentChangeDialog.fileTypeField")}
               menuItems={fileTypeOpts}
-              validate={[Validation.required]}
+              validate={[Validators.required]}
               onChange={(e, value) =>
                 addDialogData("ScreenDocumentChange", { urlType: value })
               }
@@ -150,7 +159,7 @@ const ScreenDocumentChange = ({
                       }),
                     },
                   ]}
-                  validate={[Validation.required]}
+                  validate={[Validators.required]}
                   onChange={(e, value) =>
                     addDialogData("ScreenDocumentChange", {
                       documentFileType: value,
