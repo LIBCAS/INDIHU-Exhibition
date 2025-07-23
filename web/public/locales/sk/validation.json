@@ -1,0 +1,6 @@
+{
+  "required": "*Povinné",
+  "max150Chars": "*Maximálne 150 znakov.",
+  "atLeastOnePixel": "*Nemôže byť menšie ako 1 pixel.",
+  "atLeastOne": "*Nemôže byť menší ako jedna."
+}

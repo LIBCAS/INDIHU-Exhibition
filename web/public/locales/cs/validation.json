@@ -1,0 +1,6 @@
+{
+  "required": "*Povinné",
+  "max150Chars": "*Maximálně 150 znaků.",
+  "atLeastOnePixel": "*Nemůže být menší než 1 pixel.",
+  "atLeastOne": "*Nemůže být menší než jedna."
+}
