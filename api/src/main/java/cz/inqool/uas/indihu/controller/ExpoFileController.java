@@ -79,6 +79,7 @@ public class ExpoFileController {
                 String filename = uploadFile.getOriginalFilename();
 
                 if (filename != null) {
+                    //filename = filename.replace(",","");
                     filename = FilenameUtils.getName(filename);
                     filename = expositionFileService.ensureUniqueFilename(expositionId, filename);
                 }
