@@ -1,16 +1,20 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 
+// Hooks
+import { useTranslation } from "react-i18next";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
-
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
+// Components
+import ImageTextAnswer from "./ImageTextAnswer";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
-import ImageTextAnswer from "./ImageTextAnswer";
 
+// Types
 import { AppState } from "store/store";
 import { ScreenProps, GameQuizScreen } from "models";
 
@@ -20,11 +24,10 @@ import {
   GameQuizTextDisplayEnum,
 } from "enums/administration-screens";
 
+// Utils
 import cx from "classnames";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useTranslation } from "react-i18next";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameQuizScreen,
@@ -37,16 +40,11 @@ export const GameQuiz = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
-
   const { isSm, isMobileLandscape } = useMediaDevice();
+  const { viewScreen } = useSelector(stateSelector);
 
-  const {
-    infopointStatusMap,
-    setInfopointStatusMap,
-    closeInfopoints: closeAllInfopoints,
-  } = useTooltipInfopoint(viewScreen);
+  // - - - Data about Quiz from administration - - -
 
   const isMultipleChoice = useMemo(
     () => viewScreen.answersType === GameQuizAnswerEnum.MULTIPLE_CHOICE,
@@ -59,11 +57,18 @@ export const GameQuiz = ({
     viewScreen.answersTextDisplayType ??
     GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY;
 
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false); // true after done button clicked
+  // - - - Game State - - -
+
+  // NOTE: set to true after done button has been clicked
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+  // NOTE: maximum length of this array should be max 8 (based on administration settings)
   const [markedAnswers, setMarkedAnswers] = useState<boolean[]>(() => {
-    const answersLength = viewScreen.answers.length; // should be max 8
+    const answersLength = viewScreen.answers.length;
     return Array(answersLength).fill(false);
   });
+
+  // - - - Callbacks - - -
 
   const onFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -74,12 +79,13 @@ export const GameQuiz = ({
     setMarkedAnswers((prevMarks) => prevMarks.map(() => false));
   }, []);
 
-  // - -
+  // - - - Infopoints feature - - -
 
-  const { bind, TutorialTooltip } = useTutorial("gameOptions", {
-    shouldOpen: !isMobileOverlay,
-    closeOnEsc: true,
-  });
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints: closeAllInfopoints,
+  } = useTooltipInfopoint(viewScreen);
 
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
@@ -90,12 +96,21 @@ export const GameQuiz = ({
     [closeAllInfopoints, viewScreen]
   );
 
+  // - - - Tutorial feature - - -
+
+  const { bind, TutorialTooltip } = useTutorial("gameOptions", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - - Effects - - -
+
   useEffect(() => {
     document.addEventListener("keydown", onKeydownAction);
     return () => document.removeEventListener("keydown", onKeydownAction);
   });
 
-  // - -
+  // - - - GUI - - -
 
   return (
     <div
