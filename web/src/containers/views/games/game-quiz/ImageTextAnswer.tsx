@@ -1,11 +1,16 @@
 import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
+import { Checkbox, Radio } from "@mui/material";
+
+// Hooks
 import { useTranslation } from "react-i18next";
+import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 import useResizeObserver from "hooks/use-resize-observer";
 
-import { Checkbox, Radio } from "@mui/material";
+// Components
 import AnchorInfopoint from "components/infopoint/components/anchor-infopoint";
 import TooltipInfoPoint from "components/infopoint/components/tooltip-infopoint/TooltipInfopoint";
 
+// Types
 import {
   GameQuizAnswer,
   GameQuizAnswerDisplayType,
@@ -14,6 +19,7 @@ import {
 } from "models";
 import { InfopointStatusObject } from "components/infopoint/useTooltipInfopoint";
 
+// Utils
 import cx from "classnames";
 import { calculateObjectFit } from "utils/object-fit";
 import {
@@ -23,7 +29,8 @@ import {
   getAnswerRadioUncheckedIcon,
 } from "./utils";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
-import { useMediaDevice } from "context/media-device-provider/media-device-provider";
+
+// - - - - - -
 
 type ImageTextAnswerProps = {
   answer: GameQuizAnswer;
@@ -60,13 +67,17 @@ const ImageTextAnswer = ({
   const { t } = useTranslation("view-screen");
   const { isSm, isMobileLandscape } = useMediaDevice();
 
-  const [imageContainerRef, imageContainerSize] =
-    useResizeObserver<HTMLImageElement>();
+  // - - - Data derived from props
 
   const answerImageOrigData = useMemo(
     () => answer.imageOrigData ?? { width: 0, height: 0 },
     [answer.imageOrigData]
   );
+
+  // - - - Infopoints stuff - - -
+
+  const [imageContainerRef, imageContainerSize] =
+    useResizeObserver<HTMLImageElement>();
 
   const {
     width: containedImageWidth,
