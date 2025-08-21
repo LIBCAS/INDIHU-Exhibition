@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useMemo, Fragment } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useMemo,
+  Fragment,
+  useCallback,
+} from "react";
 import { Checkbox, Radio } from "@mui/material";
 
 // Hooks
@@ -74,6 +80,30 @@ const ImageTextAnswer = ({
     [answer.imageOrigData]
   );
 
+  // - - - Callbacks - - -
+
+  const handleChooseAnswer = useCallback(() => {
+    if (isGameFinished) {
+      return;
+    }
+
+    if (isMultipleChoice) {
+      setMarkedAnswers((prevMarks) =>
+        prevMarks.map((mark, markIndex) =>
+          markIndex === answerIndex ? !mark : mark
+        )
+      );
+    }
+
+    if (!isMultipleChoice) {
+      setMarkedAnswers((prevMarks) =>
+        prevMarks.map((mark, markIndex) =>
+          markIndex === answerIndex ? !mark : false
+        )
+      );
+    }
+  }, [answerIndex, isGameFinished, isMultipleChoice, setMarkedAnswers]);
+
   // - - - Infopoints stuff - - -
 
   const [imageContainerRef, imageContainerSize] =
@@ -100,8 +130,8 @@ const ImageTextAnswer = ({
       className={cx(
         "flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer relative",
         {
-          "w-[380px]": !isSm && isMobileLandscape,
           "w-[260px]": isSm || isMobileLandscape,
+          "w-[380px]": !isSm && !isMobileLandscape,
           "!p-2": quizType === "ONLY_IMAGES",
           "!p-3": quizType === "ONLY_TEXT",
           "border-blue !bg-[#3d7eca4d]":
@@ -112,34 +142,14 @@ const ImageTextAnswer = ({
             isGameFinished && markedAnswers[answerIndex] && answer.correct,
         }
       )}
-      onClick={() => {
-        if (isGameFinished) {
-          return;
-        }
-
-        if (isMultipleChoice) {
-          setMarkedAnswers((prevMarks) =>
-            prevMarks.map((mark, markIndex) =>
-              markIndex === answerIndex ? !mark : mark
-            )
-          );
-        }
-
-        if (!isMultipleChoice) {
-          setMarkedAnswers((prevMarks) =>
-            prevMarks.map((mark, markIndex) =>
-              markIndex === answerIndex ? !mark : false
-            )
-          );
-        }
-      }}
+      onClick={handleChooseAnswer}
     >
-      {/* CONTAINED IMAGE + ITS INFOPOINTS */}
+      {/* A) Render contained image + its infopoints (when allowed) */}
       {(quizType === "TEXT_IMAGES" || quizType === "ONLY_IMAGES") && (
         <div
           className={cx("w-full relative", {
-            "h-[300px]": !isSm && !isMobileLandscape,
             "h-[200px]": isSm || isMobileLandscape,
+            "h-[300px]": !isSm && !isMobileLandscape,
           })}
         >
           <img
@@ -198,21 +208,21 @@ const ImageTextAnswer = ({
         </div>
       )}
 
-      {/* TEXT + CHECKBOX / RADIO */}
+      {/* B) Render answer row - text with checkbox / radio */}
       {(quizType === "ONLY_TEXT" || quizType === "TEXT_IMAGES") && (
-        <div className="w-full flex gap-2 items-center text-white text-start">
+        <div className="w-full flex justify-center items-center text-white">
           {isMultipleChoice && (
             <Checkbox
               color="primary"
               size="small"
               checked={markedAnswers[answerIndex]}
               sx={{ color: "white" }}
-              // icon when unchecked
+              // NOTE: Icon when unchecked
               icon={getAnswerCheckboxUncheckedIcon(
                 isGameFinished,
                 answer.correct
               )}
-              // icon when checked
+              // NOTE: Icon when checked
               checkedIcon={getAnswerCheckboxCheckedIcon(
                 isGameFinished,
                 answer.correct
@@ -226,9 +236,9 @@ const ImageTextAnswer = ({
               size="small"
               checked={markedAnswers[answerIndex]}
               sx={{ color: "white" }}
-              // icon when unchecked
+              // NOTE: Icon when unchecked
               icon={getAnswerRadioUncheckedIcon(isGameFinished, answer.correct)}
-              // icon when checked
+              // NOTE: Icon when checked
               checkedIcon={getAnswerRadioCheckedIcon(
                 isGameFinished,
                 answer.correct
@@ -236,28 +246,27 @@ const ImageTextAnswer = ({
             />
           )}
 
-          {/* TEXT */}
+          {/* B1) Text itself */}
           {quizType === "TEXT_IMAGES" &&
           !isGameFinished &&
           answersTextDisplayType === "QUIZ_TEXT_AFTER_EVALUATION" ? (
-            <div className="italic">
+            <div className="italic pl-2 pr-4 text-start">
               {t("game-quiz.answerTextWhenDisplayNotAllowed")}
             </div>
           ) : (
-            <div>{answer.text}</div>
+            <div className="pl-2 pr-4 text-start">{answer.text}</div>
           )}
         </div>
       )}
 
-      {/* Icon badges, top right corner */}
-      {(quizType === "ONLY_IMAGES" || quizType === "ONLY_TEXT") &&
-        isGameFinished && (
-          <div className="absolute top-0 right-0 flex translate-x-1/2 -translate-y-1/2">
-            {getAnswerRadioUncheckedIcon(isGameFinished, answer.correct, {
-              fontSize: "24px",
-            })}
-          </div>
-        )}
+      {/* C) Render icon badges, located in the top right corner */}
+      {quizType === "ONLY_IMAGES" && isGameFinished && (
+        <div className="absolute top-0 right-0 flex translate-x-1/2 -translate-y-1/2">
+          {getAnswerRadioUncheckedIcon(isGameFinished, answer.correct, {
+            fontSize: "24px",
+          })}
+        </div>
+      )}
     </div>
   );
 };

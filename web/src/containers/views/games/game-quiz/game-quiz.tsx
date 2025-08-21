@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 // Hooks
 import { useTranslation } from "react-i18next";
-import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
@@ -24,9 +23,6 @@ import {
   GameQuizTextDisplayEnum,
 } from "enums/administration-screens";
 
-// Utils
-import cx from "classnames";
-
 // - - - - - -
 
 const stateSelector = createSelector(
@@ -41,7 +37,6 @@ export const GameQuiz = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { t } = useTranslation("view-screen");
-  const { isSm, isMobileLandscape } = useMediaDevice();
   const { viewScreen } = useSelector(stateSelector);
 
   // - - - Data about Quiz from administration - - -
@@ -113,27 +108,14 @@ export const GameQuiz = ({
   // - - - GUI - - -
 
   return (
-    <div
-      className={cx(
-        "w-full h-full flex flex-col justify-center items-center p-4 md:p-8 lg:p-16 xl:p-20",
-        {
-          "gap-10": !isSm && !isMobileLandscape,
-          "gap-5": isSm || isMobileLandscape,
-        }
-      )}
-    >
-      <span
-        className={cx("text-white font-bold text-3xl text-center", {
-          "mt-16": !isSm && !isMobileLandscape,
-          "mt-4": isSm || isMobileLandscape,
-        })}
-      >
+    <div className="w-full h-full p-[5%] flex flex-col justify-center items-center gap-8">
+      {/* 1. Title */}
+      <span className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
         {viewScreen.task || t("game-quiz.missingTaskText")}
       </span>
 
-      {/* Answers */}
-      {/* mb-32 for convinience, pt-4 for icon badges (top right cornet) */}
-      <div className="w-full flex flex-wrap justify-evenly items-center gap-8 overflow-auto expo-scrollbar pb-32 pt-4">
+      {/* 2. Answers */}
+      <div className="flex flex-row flex-wrap justify-center items-center gap-8 overflow-auto expo-scrollbar pb-16 md:pb-32 pt-4">
         {viewScreen.answers.map((answer, answerIndex) => {
           return (
             <ImageTextAnswer

@@ -36,7 +36,8 @@ const CircleIcon = ({ iconStyle }: CircleIconProps) => {
   return (
     <MuiCircleIcon
       sx={{
-        color: "##2298ee",
+        fontSize: "17.5px",
+        color: "#2298ee",
         padding: "1px",
         backgroundColor: "white",
         border: "1px solid #2298ee",
