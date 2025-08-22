@@ -66,11 +66,7 @@ const StartInfoPanel = ({
   return (
     <Paper
       zDepth={3}
-      className={cx({
-        "h-full flex-1 bg-white p-4 cursor-pointer": isSmall,
-        "h-full bg-white p-4 cursor-pointer": !isSmall,
-        ...bgTheming,
-      })}
+      className={cx("h-full bg-white p-4 cursor-pointer", { ...bgTheming })}
       onClick={() =>
         isSmall ? openMobileInfoDialog() : setIsInfoPanelOpen(!isInfoPanelOpen)
       }

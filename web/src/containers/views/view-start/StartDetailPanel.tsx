@@ -2,20 +2,24 @@ import { Dispatch, SetStateAction } from "react";
 import { useSpring, animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
 
+// Hooks
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
+// Components
+import Paper from "react-md/lib/Papers/Paper";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { Divider } from "components/divider/divider";
 import { LabeledItem } from "components/labeled-item/labeled-item";
-import Paper from "react-md/lib/Papers/Paper";
+import { Divider } from "components/divider/divider";
 
+// Types
 import { StartScreen } from "models";
 
+// Utils
 import { isWorksheetFile } from "utils/view-utils";
 import cx from "classnames";
 
-// - -
+// - - - - - -
 
 type StartDetailPanelProps = {
   viewScreen: StartScreen;
@@ -35,6 +39,8 @@ const StartDetailPanel = ({
   const { t } = useTranslation("view-exhibition");
   const { bgTheming, fgTheming } = useExpoDesignData();
 
+  // - - - Derived data - - -
+
   const collaborators = viewScreen.collaborators ?? [];
 
   const startDocuments = viewScreen.documents;
@@ -42,11 +48,13 @@ const StartDetailPanel = ({
   const startExpoFiles = startDocuments?.filter(
     (currFile) => !isWorksheetFile(currFile)
   );
+
   const startWorksheetFiles = startDocuments?.filter((currFile) =>
     isWorksheetFile(currFile)
   );
 
-  // Animations
+  // - - - Animations - - -
+
   const { rotateX } = useSpring({
     rotateX: isDetailPanelOpen ? "180deg" : "0deg",
   });

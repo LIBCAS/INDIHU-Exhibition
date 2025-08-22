@@ -201,11 +201,14 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
         )}
 
       {/* b) Flex container with 2 items, left Info panel, right Detail panel with start button (on top of bg image) */}
-      <div className="fixed top-0 left-0 h-full w-full flex px-4 pt-4 gap-4">
+      <div className="fixed top-0 left-0 w-full h-full flex px-4 pt-4 gap-4">
         {isMobile && (
-          <div className="flex-1 flex flex-col justify-end">
-            <div className="flex flex-col justify-end">
+          <div className="flex-1 flex flex-col justify-end items-start">
+            <div className="ml-auto mb-3">
               <StartButton handleStart={handleStart} />
+            </div>
+
+            <div className="w-full">
               <StartInfoPanel
                 viewExpo={viewExpo}
                 viewScreen={viewScreen}
@@ -219,17 +222,25 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
         )}
 
         {isTablet && (
-          <div className="flex-1 flex flex-col justify-end">
-            <div className="flex justify-self-end gap-4" ref={infoPanelRef}>
-              <StartInfoPanel
-                viewExpo={viewExpo}
-                viewScreen={viewScreen}
-                isInfoPanelOpen={isInfoPanelOpen}
-                setIsInfoPanelOpen={setIsInfoPanelOpen}
-                openMobileInfoDialog={openMobileInfoDialog}
-                openChaptersDialog={openChaptersDialog}
-              />
-              <StartButton handleStart={handleStart} />
+          <div className="flex-1 flex flex-col justify-end items-start">
+            <div
+              className="w-full flex justify-start items-center gap-4"
+              ref={infoPanelRef}
+            >
+              <div className="w-full h-full">
+                <StartInfoPanel
+                  viewExpo={viewExpo}
+                  viewScreen={viewScreen}
+                  isInfoPanelOpen={isInfoPanelOpen}
+                  setIsInfoPanelOpen={setIsInfoPanelOpen}
+                  openMobileInfoDialog={openMobileInfoDialog}
+                  openChaptersDialog={openChaptersDialog}
+                />
+              </div>
+
+              <div className="pb-[6px] pt-[6px]">
+                <StartButton handleStart={handleStart} />
+              </div>
             </div>
           </div>
         )}
@@ -256,9 +267,11 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
             {/* Detail panel + Start button */}
             <div className="flex-1 flex flex-col justify-end">
-              <StartButton handleStart={handleStart} />
+              <div className="h-36" />
+              <div className="ml-auto mb-3">
+                <StartButton handleStart={handleStart} />
+              </div>
               <animated.div
-                className="flex flex-col"
                 style={{ height: detailsHeight, minHeight: "13rem" }}
               >
                 <StartDetailPanel
