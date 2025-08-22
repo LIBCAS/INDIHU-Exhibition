@@ -82,7 +82,7 @@ export type ImageOrigData = {
   height: number;
 };
 
-type Collaborator = {
+export type Collaborator = {
   role: string;
   text: string;
 };
