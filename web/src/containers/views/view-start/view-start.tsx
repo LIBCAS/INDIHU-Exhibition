@@ -25,6 +25,7 @@ import { ExpoInfoDialog } from "components/dialogs/expo-info-dialog/expo-info-di
 import { ChaptersDialog } from "components/dialogs/chapters-dialog/chapters-dialog";
 import { FilesDialog } from "components/dialogs/files-dialog/files-dialog";
 import { WorksheetsDialog } from "components/dialogs/worksheets-dialog/worksheets-dialog";
+import ExpoAuthorsDialog from "components/dialogs/expo-authors-dialog/expo-authors-dialog";
 
 // Models
 import { AppDispatch, AppState } from "store/store";
@@ -34,9 +35,8 @@ import { ViewExpo, StartScreen, ScreenProps } from "models";
 import { setViewProgress } from "actions/expoActions/viewer-actions";
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateLogoPosition } from "./calculateLogoPosition";
-import ExpoAuthorsDialog from "components/dialogs/expo-authors-dialog/expo-authors-dialog";
 
-// - - - - - - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo as ViewExpo,
@@ -44,16 +44,19 @@ const stateSelector = createSelector(
   (viewExpo, viewScreen) => ({ viewExpo, viewScreen })
 );
 
+// - - - - - -
+
 export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const { t } = useTranslation("view-exhibition");
-
-  const { image } = screenPreloadedFiles ?? {}; // background image, if set
-  const { viewExpo, viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
+
+  const { viewExpo, viewScreen } = useSelector(stateSelector);
+  const { image } = screenPreloadedFiles ?? {}; // background image, if set
+
+  // - - - Hooks - - -
 
   const { expoDesignData } = useExpoDesignData();
   const { navigateForward } = useExpoNavigation();
-
   const { isMobile, isTablet, isDesktop } = useMediaDevice();
 
   const {
@@ -70,13 +73,15 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const animationProps = useViewStartAnimation(viewScreen?.animationType);
   const animationStyles = useSpring(animationProps);
 
-  const [isInfoPanelOpen, setIsInfoPanelOpen] = useState<boolean>(false);
-  const [isDetailPanelOpen, setIsDetailPanelOpen] = useState<boolean>(false);
-
   const [screenContainerRef, screenContainerSize] = useResizeObserver();
   const [infoPanelRef, infoPanelSize] = useResizeObserver({
     ignoreUpdate: true,
   });
+
+  // - - - States - - -
+
+  const [isInfoPanelOpen, setIsInfoPanelOpen] = useState<boolean>(false);
+  const [isDetailPanelOpen, setIsDetailPanelOpen] = useState<boolean>(false);
 
   const [
     isLandscapeRecommendationSnackbarOpen,
@@ -86,7 +91,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const [isAudioWarningSnackbarOpen, setIsAudioWarningSnackbarOpen] =
     useState<boolean>(isMobile ? true : false);
 
-  // - -
+  // - - -
 
   const imageOrigData = useMemo(() => {
     const imageOrigData = viewScreen.imageOrigData ?? { width: 0, height: 0 };
@@ -108,7 +113,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
     [imageOrigData, screenContainerSize]
   );
 
-  // - -
+  // - - - Springs -  - -
 
   const { infoHeight } = useSpring({
     infoHeight: isInfoPanelOpen ? "50%" : "0%",
@@ -120,10 +125,10 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
     config: { duration: 250 },
   });
 
-  // - -
+  // - - - Callbacks - - -
 
   const handleStart = useCallback(async () => {
-    await dispatch(setViewProgress({ shouldIncrement: true }));
+    dispatch(setViewProgress({ shouldIncrement: true }));
     navigateForward();
   }, [dispatch, navigateForward]);
 
@@ -231,6 +236,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
         {isDesktop && (
           <>
+            {/* Info panel */}
             <div className="flex-1 flex flex-col justify-end">
               <div className="h-36" />
               <animated.div
@@ -267,6 +273,8 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
           </>
         )}
       </div>
+
+      {/* - - - Dialogs - - - */}
 
       {isExpoInfoDialogOpen && (
         <DialogPortal
