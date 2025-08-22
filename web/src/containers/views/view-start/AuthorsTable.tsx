@@ -3,14 +3,14 @@ import { Collaborator } from "models";
 import { useTranslation } from "react-i18next";
 
 type AuthorsTableProps = {
-  collaborators: Collaborator[];
+  collaborators: Collaborator[] | undefined;
 };
 
 const AuthorsTable = ({ collaborators }: AuthorsTableProps) => {
   const { t } = useTranslation("view-exhibition");
   const { isXl, is2Xl } = useMediaDevice();
 
-  if (collaborators.length === 0) {
+  if (collaborators === undefined || collaborators.length === 0) {
     return (
       <div>
         <span>{t("no-authors")}</span>

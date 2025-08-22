@@ -174,7 +174,7 @@ export type StartScreen = {
   animationType: ScreenStartAnimationType;
   expoTime: number;
   audio: string;
-  collaborators: Collaborator[];
+  collaborators?: Collaborator[];
   documents?: Document[];
   screenCompleted: boolean;
   organization?: string;
