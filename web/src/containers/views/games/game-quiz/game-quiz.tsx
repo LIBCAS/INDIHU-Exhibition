@@ -9,6 +9,7 @@ import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Components
+import { Grid } from "@mui/material";
 import ImageTextAnswer from "./ImageTextAnswer";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
@@ -108,14 +109,18 @@ export const GameQuiz = ({
   // - - - GUI - - -
 
   return (
-    <div className="w-full h-full p-[5%] flex flex-col justify-center items-center gap-8">
+    <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%] flex flex-col justify-center items-center gap-8">
       {/* 1. Title */}
       <span className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
         {viewScreen.task || t("game-quiz.missingTaskText")}
       </span>
 
       {/* 2. Answers */}
-      <div className="flex flex-row flex-wrap justify-center items-center gap-8 overflow-auto expo-scrollbar pb-16 md:pb-32 pt-4">
+      <Grid
+        container
+        spacing={{ xs: 4, md: 4, lg: 6 }}
+        className="overflow-auto expo-scrollbar pb-16 md:pb-32 pt-4"
+      >
         {viewScreen.answers.map((answer, answerIndex) => {
           return (
             <ImageTextAnswer
@@ -139,7 +144,7 @@ export const GameQuiz = ({
             />
           );
         })}
-      </div>
+      </Grid>
 
       {infoPanelRef.current &&
         ReactDOM.createPortal(
