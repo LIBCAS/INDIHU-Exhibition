@@ -110,6 +110,7 @@
   "game-quiz": {
     "solution": "Správné řešení",
     "missingTaskText": "Neuvedeno",
-    "answerTextWhenDisplayNotAllowed": "Klepnutím zvolíte tuto možnost"
+    "answerTextWhenDisplayNotAllowed": "Klepnutím zvolíte tuto možnost",
+    "missingAnswerText": "K odpovědi nebyl přiložen žádný text."
   }
 }

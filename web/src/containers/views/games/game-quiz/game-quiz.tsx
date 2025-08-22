@@ -119,7 +119,7 @@ export const GameQuiz = ({
       <Grid
         container
         spacing={{ xs: 4, md: 4, lg: 6 }}
-        className="overflow-auto expo-scrollbar pb-16 md:pb-32 pt-4"
+        className="overflow-auto expo-scrollbar pt-4 pr-4 pb-16 md:pb-32"
       >
         {viewScreen.answers.map((answer, answerIndex) => {
           return (
@@ -127,17 +127,14 @@ export const GameQuiz = ({
               key={answerIndex}
               answer={answer}
               answerIndex={answerIndex}
-              answerImageOrigData={
-                viewScreen.answers?.[answerIndex]?.imageOrigData
-              }
               preloadedImgSrc={
-                screenPreloadedFiles.answers?.[answerIndex]?.image ?? ""
+                screenPreloadedFiles.answers?.[answerIndex]?.image
               }
               isGameFinished={isGameFinished}
               isMultipleChoice={isMultipleChoice}
-              markedAnswers={markedAnswers}
               quizType={quizType}
               answersTextDisplayType={answersTextDisplayType}
+              isAnswerMarked={markedAnswers[answerIndex]}
               setMarkedAnswers={setMarkedAnswers}
               infopointStatusMap={infopointStatusMap}
               setInfopointStatusMap={setInfopointStatusMap}
