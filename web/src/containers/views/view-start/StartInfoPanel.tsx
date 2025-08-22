@@ -49,10 +49,10 @@ const StartInfoPanel = ({
     [viewExpo.structure.screens, viewScreen]
   );
 
-  const expoPerexMarkup =
-    viewScreen.perex ?? "<p>Expozice neobsahuje perex</p>";
+  const expoPerexMarkup = viewScreen.perex ?? `<p>${t("no-perex")}</p>`;
 
   // - - - Animations - - -
+
   const { rotateX } = useSpring({
     rotateX: isInfoPanelOpen ? "180deg" : "0deg",
   });
