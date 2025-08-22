@@ -103,7 +103,9 @@ const StartDetailPanel = ({
                 className="py-2 flex-1 flex flex-col"
               >
                 <Divider />
-                <AuthorsTable collaborators={collaborators} />
+                <div className="flex-grow basis-0 overflow-y-auto expo-scrollbar pr-1 py-6">
+                  <AuthorsTable collaborators={collaborators} />
+                </div>
                 <Divider />
               </animated.div>
             )

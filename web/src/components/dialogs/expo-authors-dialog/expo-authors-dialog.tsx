@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 
 import DialogWrap from "../dialog-wrap-noredux-typed";
-import { LabeledItem } from "components/labeled-item/labeled-item";
+import AuthorsTable from "containers/views/view-start/AuthorsTable";
 
 import { StartScreen } from "models";
 
-// - - - -
+// - - - - - -
 
 export type ExpoAuthorsDialogProps = {
   closeThisDialog: () => void;
@@ -27,12 +27,8 @@ export const ExpoAuthorsDialog = ({
       closeOnEsc
       applyTheming
     >
-      <div className="flex flex-col justify-start items-start gap-1">
-        {collaboratorsData.map((collab, collabIndex) => (
-          <LabeledItem key={collabIndex} label={collab.role}>
-            {collab.text}
-          </LabeledItem>
-        ))}
+      <div className="max-h-[600px] overflow-y-auto expo-scrollbar">
+        <AuthorsTable collaborators={collaboratorsData} />
       </div>
     </DialogWrap>
   );
