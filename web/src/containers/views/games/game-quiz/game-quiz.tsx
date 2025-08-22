@@ -109,39 +109,39 @@ export const GameQuiz = ({
   // - - - GUI - - -
 
   return (
-    <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%] flex flex-col justify-center items-center gap-8">
-      {/* 1. Title */}
-      <span className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
-        {viewScreen.task || t("game-quiz.missingTaskText")}
-      </span>
+    <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%]">
+      <div className="h-full overflow-auto expo-scrollbar pr-4 pb-16 md:pb-32">
+        <div className="flex flex-col justify-center items-center gap-8">
+          {/* 1. Title */}
+          <div className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
+            {viewScreen.task || t("game-quiz.missingTaskText")}
+          </div>
 
-      {/* 2. Answers */}
-      <Grid
-        container
-        spacing={{ xs: 4, md: 4, lg: 6 }}
-        className="overflow-auto expo-scrollbar pt-4 pr-4 pb-16 md:pb-32"
-      >
-        {viewScreen.answers.map((answer, answerIndex) => {
-          return (
-            <ImageTextAnswer
-              key={answerIndex}
-              answer={answer}
-              answerIndex={answerIndex}
-              preloadedImgSrc={
-                screenPreloadedFiles.answers?.[answerIndex]?.image
-              }
-              isGameFinished={isGameFinished}
-              isMultipleChoice={isMultipleChoice}
-              quizType={quizType}
-              answersTextDisplayType={answersTextDisplayType}
-              isAnswerMarked={markedAnswers[answerIndex]}
-              setMarkedAnswers={setMarkedAnswers}
-              infopointStatusMap={infopointStatusMap}
-              setInfopointStatusMap={setInfopointStatusMap}
-            />
-          );
-        })}
-      </Grid>
+          {/* 2. Answers */}
+          <Grid container spacing={{ xs: 4, md: 4, lg: 6 }}>
+            {viewScreen.answers.map((answer, answerIndex) => {
+              return (
+                <ImageTextAnswer
+                  key={answerIndex}
+                  answer={answer}
+                  answerIndex={answerIndex}
+                  preloadedImgSrc={
+                    screenPreloadedFiles.answers?.[answerIndex]?.image
+                  }
+                  isGameFinished={isGameFinished}
+                  isMultipleChoice={isMultipleChoice}
+                  quizType={quizType}
+                  answersTextDisplayType={answersTextDisplayType}
+                  isAnswerMarked={markedAnswers[answerIndex]}
+                  setMarkedAnswers={setMarkedAnswers}
+                  infopointStatusMap={infopointStatusMap}
+                  setInfopointStatusMap={setInfopointStatusMap}
+                />
+              );
+            })}
+          </Grid>
+        </div>
+      </div>
 
       {infoPanelRef.current &&
         ReactDOM.createPortal(
