@@ -1,16 +1,20 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 
-import { useMediaDevice } from "context/media-device-provider/media-device-provider";
-
+// Hooks
+import { useTranslation } from "react-i18next";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
+// Components
+import { Grid } from "@mui/material";
+import ImageTextAnswer from "./ImageTextAnswer";
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
-import ImageTextAnswer from "./ImageTextAnswer";
 
+// Types
 import { AppState } from "store/store";
 import { ScreenProps, GameQuizScreen } from "models";
 
@@ -20,11 +24,7 @@ import {
   GameQuizTextDisplayEnum,
 } from "enums/administration-screens";
 
-import cx from "classnames";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useTranslation } from "react-i18next";
-
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameQuizScreen,
@@ -37,16 +37,10 @@ export const GameQuiz = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
+  const { viewScreen } = useSelector(stateSelector);
 
-  const { isSm, isMobileLandscape } = useMediaDevice();
-
-  const {
-    infopointStatusMap,
-    setInfopointStatusMap,
-    closeInfopoints: closeAllInfopoints,
-  } = useTooltipInfopoint(viewScreen);
+  // - - - Data about Quiz from administration - - -
 
   const isMultipleChoice = useMemo(
     () => viewScreen.answersType === GameQuizAnswerEnum.MULTIPLE_CHOICE,
@@ -59,11 +53,18 @@ export const GameQuiz = ({
     viewScreen.answersTextDisplayType ??
     GameQuizTextDisplayEnum.QUIZ_TEXT_IMMEDIATELY;
 
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false); // true after done button clicked
+  // - - - Game State - - -
+
+  // NOTE: set to true after done button has been clicked
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+  // NOTE: maximum length of this array should be max 8 (based on administration settings)
   const [markedAnswers, setMarkedAnswers] = useState<boolean[]>(() => {
-    const answersLength = viewScreen.answers.length; // should be max 8
+    const answersLength = viewScreen.answers.length;
     return Array(answersLength).fill(false);
   });
+
+  // - - - Callbacks - - -
 
   const onFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -74,12 +75,13 @@ export const GameQuiz = ({
     setMarkedAnswers((prevMarks) => prevMarks.map(() => false));
   }, []);
 
-  // - -
+  // - - - Infopoints feature - - -
 
-  const { bind, TutorialTooltip } = useTutorial("gameOptions", {
-    shouldOpen: !isMobileOverlay,
-    closeOnEsc: true,
-  });
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints: closeAllInfopoints,
+  } = useTooltipInfopoint(viewScreen);
 
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
@@ -90,58 +92,55 @@ export const GameQuiz = ({
     [closeAllInfopoints, viewScreen]
   );
 
+  // - - - Tutorial feature - - -
+
+  const { bind, TutorialTooltip } = useTutorial("gameOptions", {
+    shouldOpen: !isMobileOverlay,
+    closeOnEsc: true,
+  });
+
+  // - - - Effects - - -
+
   useEffect(() => {
     document.addEventListener("keydown", onKeydownAction);
     return () => document.removeEventListener("keydown", onKeydownAction);
   });
 
-  // - -
+  // - - - GUI - - -
 
   return (
-    <div
-      className={cx(
-        "w-full h-full flex flex-col justify-center items-center p-4 md:p-8 lg:p-16 xl:p-20",
-        {
-          "gap-10": !isSm && !isMobileLandscape,
-          "gap-5": isSm || isMobileLandscape,
-        }
-      )}
-    >
-      <span
-        className={cx("text-white font-bold text-3xl text-center", {
-          "mt-16": !isSm && !isMobileLandscape,
-          "mt-4": isSm || isMobileLandscape,
-        })}
-      >
-        {viewScreen.task || t("game-quiz.missingTaskText")}
-      </span>
+    <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%]">
+      <div className="h-full overflow-auto expo-scrollbar pr-4 pb-16 md:pb-32">
+        <div className="flex flex-col justify-center items-center gap-8">
+          {/* 1. Title */}
+          <div className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
+            {viewScreen.task || t("game-quiz.missingTaskText")}
+          </div>
 
-      {/* Answers */}
-      {/* mb-32 for convinience, pt-4 for icon badges (top right cornet) */}
-      <div className="w-full flex flex-wrap justify-evenly items-center gap-8 overflow-auto expo-scrollbar pb-32 pt-4">
-        {viewScreen.answers.map((answer, answerIndex) => {
-          return (
-            <ImageTextAnswer
-              key={answerIndex}
-              answer={answer}
-              answerIndex={answerIndex}
-              answerImageOrigData={
-                viewScreen.answers?.[answerIndex]?.imageOrigData
-              }
-              preloadedImgSrc={
-                screenPreloadedFiles.answers?.[answerIndex]?.image ?? ""
-              }
-              isGameFinished={isGameFinished}
-              isMultipleChoice={isMultipleChoice}
-              markedAnswers={markedAnswers}
-              quizType={quizType}
-              answersTextDisplayType={answersTextDisplayType}
-              setMarkedAnswers={setMarkedAnswers}
-              infopointStatusMap={infopointStatusMap}
-              setInfopointStatusMap={setInfopointStatusMap}
-            />
-          );
-        })}
+          {/* 2. Answers */}
+          <Grid container spacing={{ xs: 4, md: 4, lg: 6 }}>
+            {viewScreen.answers.map((answer, answerIndex) => {
+              return (
+                <ImageTextAnswer
+                  key={answerIndex}
+                  answer={answer}
+                  answerIndex={answerIndex}
+                  preloadedImgSrc={
+                    screenPreloadedFiles.answers?.[answerIndex]?.image
+                  }
+                  isGameFinished={isGameFinished}
+                  isMultipleChoice={isMultipleChoice}
+                  quizType={quizType}
+                  answersTextDisplayType={answersTextDisplayType}
+                  isAnswerMarked={markedAnswers[answerIndex]}
+                  setMarkedAnswers={setMarkedAnswers}
+                  infopointStatusMap={infopointStatusMap}
+                  setInfopointStatusMap={setInfopointStatusMap}
+                />
+              );
+            })}
+          </Grid>
+        </div>
       </div>
 
       {infoPanelRef.current &&
