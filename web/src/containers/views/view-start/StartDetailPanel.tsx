@@ -2,20 +2,24 @@ import { Dispatch, SetStateAction } from "react";
 import { useSpring, animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
 
+// Hooks
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
+// Components
+import Paper from "react-md/lib/Papers/Paper";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { Divider } from "components/divider/divider";
-import { LabeledItem } from "components/labeled-item/labeled-item";
-import Paper from "react-md/lib/Papers/Paper";
 
+// Types
 import { StartScreen } from "models";
 
+// Utils
 import { isWorksheetFile } from "utils/view-utils";
 import cx from "classnames";
+import AuthorsTable from "./AuthorsTable";
 
-// - -
+// - - - - - -
 
 type StartDetailPanelProps = {
   viewScreen: StartScreen;
@@ -35,6 +39,8 @@ const StartDetailPanel = ({
   const { t } = useTranslation("view-exhibition");
   const { bgTheming, fgTheming } = useExpoDesignData();
 
+  // - - - Derived data - - -
+
   const collaborators = viewScreen.collaborators ?? [];
 
   const startDocuments = viewScreen.documents;
@@ -42,11 +48,13 @@ const StartDetailPanel = ({
   const startExpoFiles = startDocuments?.filter(
     (currFile) => !isWorksheetFile(currFile)
   );
+
   const startWorksheetFiles = startDocuments?.filter((currFile) =>
     isWorksheetFile(currFile)
   );
 
-  // Animations
+  // - - - Animations - - -
+
   const { rotateX } = useSpring({
     rotateX: isDetailPanelOpen ? "180deg" : "0deg",
   });
@@ -65,7 +73,8 @@ const StartDetailPanel = ({
       })}
       onClick={() => setIsDetailPanelOpen(!isDetailPanelOpen)}
     >
-      <div className={cx("h-full flex flex-col", { ...fgTheming })}>
+      <div className={cx("w-full h-full flex flex-col", { ...fgTheming })}>
+        {/* 1. Header */}
         <div className="flex justify-between items-center">
           <span className="text-2xl text-bold">
             {t("authors-and-documents")}
@@ -85,6 +94,7 @@ const StartDetailPanel = ({
           </Button>
         </div>
 
+        {/* 2. Body */}
         {transition(
           ({ opacity }, isOpen) =>
             isOpen && (
@@ -93,19 +103,15 @@ const StartDetailPanel = ({
                 className="py-2 flex-1 flex flex-col"
               >
                 <Divider />
-                <div className="py-6 flex-grow basis-0 overflow-y-auto">
-                  {!collaborators.length && t("no-authors")}
-                  {collaborators.map(({ role, text }: any, i: number) => (
-                    <LabeledItem key={i} label={role}>
-                      {text}
-                    </LabeledItem>
-                  ))}
+                <div className="flex-grow basis-0 overflow-y-auto expo-scrollbar pr-1 py-6">
+                  <AuthorsTable collaborators={collaborators} />
                 </div>
                 <Divider />
               </animated.div>
             )
         )}
 
+        {/* 3. Footer */}
         <div className="flex justify-end items-center mt-auto gap-2">
           {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
             <Button

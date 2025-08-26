@@ -82,7 +82,7 @@ export type ImageOrigData = {
   height: number;
 };
 
-type Collaborator = {
+export type Collaborator = {
   role: string;
   text: string;
 };
@@ -174,7 +174,7 @@ export type StartScreen = {
   animationType: ScreenStartAnimationType;
   expoTime: number;
   audio: string;
-  collaborators: Collaborator[];
+  collaborators?: Collaborator[];
   documents?: Document[];
   screenCompleted: boolean;
   organization?: string;
