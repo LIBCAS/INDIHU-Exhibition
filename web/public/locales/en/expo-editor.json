@@ -328,7 +328,7 @@
       "deleteAnswerDialog": {
         "titleErrorLessThanThree": "It is not possible to delete more options!",
         "textErrorLessThanThree": "The minimum number of allowed answers was reached, namely three.",
-        "textConfirm:": "Are you sure you want to remove this option? The action is non-refundable!"
+        "textConfirm": "Are you sure you want to remove this option? The action is non-refundable!"
       }
     }
   },

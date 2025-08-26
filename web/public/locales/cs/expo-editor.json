@@ -328,7 +328,7 @@
       "deleteAnswerDialog": {
         "titleErrorLessThanThree": "Nelze smazat více možností!",
         "textErrorLessThanThree": "Bylo dosaženo minimálního počtu povolených odpovědí a to tři.",
-        "textConfirm:": "Opravdu chcete odstranit tuto možnost? Akce je nevratná!"
+        "textConfirm": "Opravdu chcete odstranit tuto možnost? Akce je nevratná!"
       }
     }
   },
