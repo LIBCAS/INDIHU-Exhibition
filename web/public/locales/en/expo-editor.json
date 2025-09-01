@@ -323,7 +323,7 @@
       "answerImageLabel": "Supporting image",
       "answerImageTooltip": "Select an image from the document library.",
       "answerTextLabel": "Answer text",
-      "answerTextTooltip": "Please enter a reasonably long text for this answer option.",
+      "answerTextTooltip": "Please enter a reasonably long text for this answer option. We recommend a maximum of 120-160 characters.",
       "addNewAnswer": "Add a new answer",
       "deleteAnswerDialog": {
         "titleErrorLessThanThree": "It is not possible to delete more options!",

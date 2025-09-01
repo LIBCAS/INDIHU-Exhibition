@@ -323,7 +323,7 @@
       "answerImageLabel": "Sprievodný obrázok",
       "answerImageTooltip": "Vyberte ilustračný obrázok z knižnice dokumentov.",
       "answerTextLabel": "Text odpovede",
-      "answerTextTooltip": "Zadajte primerane dlhý text pre tento variant odpovede.",
+      "answerTextTooltip": "Zadajte primerane dlhý text pre tento variant odpovede. Odporúčame max. 120-160 znakov.",
       "addNewAnswer": "Pridať novú odpoveď",
       "deleteAnswerDialog": {
         "titleErrorLessThanThree": "Nie je možné zmazať viac možností!",
