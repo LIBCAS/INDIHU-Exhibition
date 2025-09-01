@@ -128,7 +128,7 @@ const ImageTextAnswer = ({
     <Grid item xs={12} sm={12} md={6} lg={6} xl={4}>
       <div
         className={cx(
-          "flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer relative",
+          "h-full flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer relative",
           {
             "!p-2": quizType === "ONLY_IMAGES",
             "!p-3": quizType === "ONLY_TEXT",
@@ -212,7 +212,10 @@ const ImageTextAnswer = ({
 
         {/* B) Render answer row - text with checkbox / radio */}
         {(quizType === "TEXT_IMAGES" || quizType === "ONLY_TEXT") && (
-          <div className="w-full flex justify-center items-center text-white">
+          <div
+            style={{ flex: 1 }}
+            className="w-full flex justify-center items-center text-white"
+          >
             {isMultipleChoice && (
               <Checkbox
                 color="primary"
