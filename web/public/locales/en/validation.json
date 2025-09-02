@@ -1,0 +1,9 @@
+{
+  "required": "*Required",
+  "max150Chars": "*Maximum 150 characters.",
+  "atLeastOnePixel": "*Cannot be less than 1 pixel.",
+  "atLeastOne": "*Cannot be less than one.",
+  "atLeast5Chars": "*At least 5 characters.",
+  "invalidEmailFormat": "*Invalid email address format.",
+  "passwordsDoNotMatch": "*Passwords do not match!"
+}

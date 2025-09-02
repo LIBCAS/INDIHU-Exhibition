@@ -70,6 +70,9 @@
     "gameResultTime": "Doba zobrazenia výsledku",
     "gameResultTimeTooltip": "Počet sekúnd určujúce, ako dlho návštevník uvidí výsledok minihry.",
 
+    "startScreen": {
+      "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
+    },
     "introScreen": {
       "horizontalTextPosition": "Horizontálna pozícia textu",
       "horizontalTextPositionLeftOption": "Vľavo",
@@ -232,6 +235,9 @@
       },
       "linkNotSufficientlyFilled": "Táto referencia nie je dostatočne vyplnený, preto bude na výstave ignorovaný!"
     },
+    "finishScreen": {
+      "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
+    },
 
     "gameFindScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. Nájdite na mape, kde stál kostol sv. Kríža).",
@@ -317,12 +323,12 @@
       "answerImageLabel": "Sprievodný obrázok",
       "answerImageTooltip": "Vyberte ilustračný obrázok z knižnice dokumentov.",
       "answerTextLabel": "Text odpovede",
-      "answerTextTooltip": "Zadajte primerane dlhý text pre tento variant odpovede.",
+      "answerTextTooltip": "Zadajte primerane dlhý text pre tento variant odpovede. Odporúčame max. 120-160 znakov.",
       "addNewAnswer": "Pridať novú odpoveď",
       "deleteAnswerDialog": {
         "titleErrorLessThanThree": "Nie je možné zmazať viac možností!",
         "textErrorLessThanThree": "Bol dosiahnutý minimálny počet povolených odpovedí a to tri.",
-        "textConfirm:": "Naozaj chcete odstrániť túto možnosť? Akcia je nevratná!"
+        "textConfirm": "Naozaj chcete odstrániť túto možnosť? Akcia je nevratná!"
       }
     }
   },
@@ -364,7 +370,14 @@
   },
   "footer": {
     "previewLabel": "Náhľad",
-    "saveLabel": "Uložiť"
+    "saveLabel": "Uložiť",
+    "defaultNoActionTitle": "Ukončite prebiehajúce akcie!",
+    "defaultNoActionText": "Ukončite všetky prebiehajúce akcie pred uložením obrazovky!",
+    "screenSavedSuccess": "Obrazovka bola úspešne uložená.",
+    "screenSaveErrTitle": "Obrazovka nie je uložená!",
+    "screenSaveErrText": "Obrazovku sa nepodarilo uložiť!",
+    "endActionsTitle": "Ukončite prebiehajúce akcie!",
+    "ednActionsText": "Ukončite všetky prebiehajúce akcie pred otvorením náhľadu obrazovky!"
   },
   "infopointsTable": {
     "defaultTitle": "Infopointy",
@@ -421,10 +434,48 @@
     "zoomOutTooltip": "Oddialiť",
     "openFileExplorerTooltip": "Otvoriť prehliadač súborov",
     "openImageEditorTooltip": "Otvoriť obrázok v editore",
-    "deleteImageFromBox": "Odstrániť obrázok z boxu"
+    "deleteImageFromBox": "Odstrániť obrázok z boxu",
+    "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
+  },
+  "imageEditor": {
+    "cropAreaTooSmall": "Oblasť na orezanie je príliš malá!",
+    "saveActionTooltip": "Uložiť",
+    "failedToSaveFile": "Nepodarilo sa uložiť súbor!",
+    "saving": "Ukladá sa...",
+    "resetActionTooltip": "Zobraziť pôvodný obrázok",
+    "resetActionDialogTitle": "Zobraziť pôvodný obrázok",
+    "resetActionDialogContent1": "Naozaj chcete zobraziť pôvodný obrázok?",
+    "resetActionDialogContent2": "Vykonané zmeny nebudú uložené!",
+    "hideGuidesActionTooltip": "Skryť mriežku",
+    "showGuidesActionTooltip": "Zobraziť mriežku",
+    "hideGuidesDialogTitle": "Skryť mriežku",
+    "showGuidesDialogTitle": "Zobraziť mriežku",
+    "guidesDialogContent1": "Naozaj chcete vykonať túto akciu?",
+    "guidesDialogContent2": "Vykonané zmeny nebudú uložené!",
+    "movementModeTooltip": "Režim pohybu",
+    "cropModeTooltip": "Režim orezania",
+    "aspectRatioActionTooltip": "Pomer strán orezania",
+    "cropActionTooltip": "Orezať",
+    "zoomInActionTooltip": "Priblížiť",
+    "zoomOutActionTooltip": "Oddialiť",
+    "rotateLeftActionTooltip": "Otočiť doľava o 90°",
+    "rotateRightActionTooltip": "Otočiť doprava o 90°",
+    "swapHorizActionTooltip": "Preklopiť horizontálne",
+    "swapVertActionTooltip": "Preklopiť vertikálne",
+    "menuActionTooltip": "Menu",
+    "closeActionTooltip": "Zavrieť editor",
+    "closeDialogTitle": "Zatvorenie editora",
+    "closeDialogContent1": "Naozaj chcete zatvoriť editor?",
+    "closeDialogContent2": "Vykonané zmeny nebudú uložené!",
+    "imageEditorLabel": "Editor obrázkov",
+    "loadingLabel": "Načítava sa..."
   },
 
   "confirmDialog": {
     "submitLabel": "Potvrdiť"
+  },
+
+  "carousel": {
+    "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
   }
 }

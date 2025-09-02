@@ -99,7 +99,8 @@ const InfopointsTable = ({
                   : infopoint.bodyContentType === "VIDEO"
                   ? infopoint.videoFile?.name ??
                     t("infopointsTable.unknownVideoPreviewText")
-                  : infopoint.bodyContentType === "TEXT"
+                  : infopoint.bodyContentType === "TEXT" ||
+                    infopoint.bodyContentType === undefined
                   ? infopoint.text
                     ? infopoint.text
                     : infopoint.header

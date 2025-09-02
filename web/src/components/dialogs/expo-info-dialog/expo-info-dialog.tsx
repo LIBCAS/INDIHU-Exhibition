@@ -1,16 +1,21 @@
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+// Hooks
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+
+// Components
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import TagsList from "components/tags-list/TagsList";
-
-import { StartScreen, ViewExpo } from "models";
-
 import DialogWrap from "../dialog-wrap-noredux-typed";
+import WysiwygPreview from "components/editors/WysiwygEditor/WysiwygPreview";
 
-import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
+// Types
+import { StartScreen, ViewExpo } from "models";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
+
+// Utils
 import { isWorksheetFile } from "utils/view-utils";
 
 // - - - - - - - - -
@@ -30,11 +35,8 @@ export const ExpoInfoDialog = ({
 
   const { openNewTopDialog } = useDialogRef();
 
-  const expoPerexLines = useMemo(
-    () =>
-      viewScreen?.perex
-        ? (viewScreen?.perex?.split("\n") as string[])
-        : [t("no-perex")],
+  const expoPerexMarkup = useMemo(
+    () => viewScreen?.perex ?? `<p>${t("no-perex")}</p>`,
     [t, viewScreen?.perex]
   );
 
@@ -77,7 +79,7 @@ export const ExpoInfoDialog = ({
         applyTheming
       >
         <div className="pb-3 border-b border-b-black border-opacity-10">
-          {expoPerexLines}
+          <WysiwygPreview htmlMarkup={expoPerexMarkup} scrollbar />
         </div>
 
         {/* Dialog opening buttons */}

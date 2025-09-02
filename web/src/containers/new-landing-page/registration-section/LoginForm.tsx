@@ -19,6 +19,17 @@ import { signIn } from "actions/user-actions";
 
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import { TFunction } from "i18next";
+import { useMemo } from "react";
+
+// - - -
+
+const retrieveLoginFormSchema = (t: TFunction) => {
+  return Yup.object({
+    name: Yup.string().required(t("required")),
+    password: Yup.string().required(t("required")),
+  });
+};
 
 // - -
 
@@ -36,8 +47,16 @@ const LoginForm = ({ oauthConfigs, closeLoginDialog }: LoginFormProps) => {
   const { t } = useTranslation("new-landing-screen", {
     keyPrefix: "registrationSection",
   });
+
+  const { t: validationT } = useTranslation("validation");
+
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
+
+  const loginFormSchema = useMemo(
+    () => retrieveLoginFormSchema(validationT),
+    [validationT]
+  );
 
   return (
     <div id="login-form" className="registration-form">
@@ -85,10 +104,7 @@ const LoginForm = ({ oauthConfigs, closeLoginDialog }: LoginFormProps) => {
                 formik.setFieldError("password", "*Chybné přihlašovací údaje");
               }
             }}
-            validationSchema={Yup.object({
-              name: Yup.string().required("*Povinné"),
-              password: Yup.string().required("*Povinné"),
-            })}
+            validationSchema={loginFormSchema}
           >
             <Form className="flex flex-col gap-2">
               <TextField

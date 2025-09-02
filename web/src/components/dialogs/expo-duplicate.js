@@ -8,9 +8,18 @@ import TextField from "../form/redux-form/text-field";
 import * as Validation from "../form/redux-form/validation";
 import { duplicateExpo } from "../../actions/expoActions";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 const ExpoDuplicate = ({ handleSubmit }) => {
   const { t } = useTranslation("expo", { keyPrefix: "expoDuplicateDialog" });
+  const { t: validationT } = useTranslation("validation");
+
+  const Validators = useMemo(
+    () => ({
+      required: Validation.required(validationT),
+    }),
+    [validationT]
+  );
 
   return (
     <Dialog
@@ -25,7 +34,7 @@ const ExpoDuplicate = ({ handleSubmit }) => {
           componentId="expo-duplicate-textfield-name"
           label={t("newDuplicatedExpoNameFieldLabel")}
           name="name"
-          validate={[Validation.required]}
+          validate={[Validators.required]}
         />
       </form>
     </Dialog>

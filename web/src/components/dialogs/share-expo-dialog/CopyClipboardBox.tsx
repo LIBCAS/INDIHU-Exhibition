@@ -5,6 +5,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { Icon } from "components/icon/icon";
 import { useBoolean } from "hooks/boolean-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useTranslation } from "react-i18next";
 
 type CopyClipboardBoxProps = {
   text: string;
@@ -20,9 +21,11 @@ export const CopyClipboardBox = ({
   const [open, { setTrue, setFalse }] = useBoolean(false);
   const { isLightMode, palette } = useExpoDesignData();
 
+  const { t } = useTranslation("view-exhibition");
+
   const toasts = useMemo(
-    () => (open ? [{ text: "Odkaz zkopírován" }] : undefined),
-    [open]
+    () => (open ? [{ text: t("linkWasCopied") }] : undefined),
+    [open, t]
   );
 
   return (

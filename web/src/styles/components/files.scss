@@ -19,19 +19,11 @@
       max-width: calc(100% - 2em);
     }
     &--view {
-      &:before {
-        content: "Náhled souboru";
-        line-height: 1em;
-      }
       margin: 1em;
       margin-top: -0.4em;
       max-width: calc(100% - 2em);
     }
     &--meta {
-      &:before {
-        content: "Metadata";
-        line-height: 1em;
-      }
       margin: 1em;
       margin-top: -0.1em;
       max-width: calc(100% - 2em);

@@ -508,7 +508,7 @@ const SettingsPanel = ({
             dispatch(
               setDialog(DialogType.ConfirmDialog, {
                 title: <FontIcon className="color-black">delete</FontIcon>,
-                text: "Opravdu chcete odstranit obrázek?",
+                text: t("imageBox.deleteImageConfirm"),
                 onSubmit: () => onDelete(),
               })
             );

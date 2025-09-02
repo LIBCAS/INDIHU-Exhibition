@@ -3,8 +3,11 @@ import Card from "react-md/lib/Cards/Card";
 import CardText from "react-md/lib/Cards/CardText";
 
 import ScreenNew from "./screen-new";
+import { useTranslation } from "react-i18next";
 
 const ScreenDraggedCardTargetLocation = ({ last, col }) => {
+  const { t } = useTranslation("expo", { keyPrefix: "structure" });
+
   return (
     <div
       id="screen-dragged-card-target-location"
@@ -20,7 +23,7 @@ const ScreenDraggedCardTargetLocation = ({ last, col }) => {
       )}
       <Card className={classNames("card")}>
         <CardText className="card-text">
-          <p>Nová pozice</p>
+          <p>{t("newPosition")}</p>
         </CardText>
       </Card>
       {!col && (

@@ -27,7 +27,7 @@ const ExpositionMenu = ({
       title={get(dialogData, "title", "Výstava")}
       name="ExpositionMenu"
       handleSubmit={handleSubmit}
-      submitLabel="Zavřít"
+      submitLabel={t("expoCardActions.close")}
       noStornoButton={true}
       style={{ width: 300 }}
     >
@@ -45,8 +45,8 @@ const ExpositionMenu = ({
               history.push(`/expo/${get(dialogData, "id")}/structure`);
             } else {
               setDialog("Info", {
-                title: "Nelze upravovat",
-                text: "Výstavu nelze upravovat.",
+                title: t("noPermissionToEditTitle"),
+                text: t("noPermissionToEditText"),
                 autoClose: true,
               });
             }

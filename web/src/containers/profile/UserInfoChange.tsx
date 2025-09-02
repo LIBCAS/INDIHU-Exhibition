@@ -15,8 +15,22 @@ import * as Yup from "yup";
 import { updateCurrentUser } from "actions/user-actions";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import { TFunction } from "i18next";
+import { useMemo } from "react";
 
-// - -
+// - - -
+
+const retrieveUserInfoChangeFormSchema = (t: TFunction) => {
+  return Yup.object({
+    userName: Yup.string().required(t("required")),
+    firstName: Yup.string().required(t("required")),
+    surname: Yup.string().required(t("required")),
+    institution: Yup.string().required(t("required")),
+    email: Yup.string().required(t("required")),
+  });
+};
+
+// - - -
 
 type UserInfoChangeProps = {
   userInfo: UserInfoObj;
@@ -35,6 +49,12 @@ type UserInfoFormData = {
 const UserInfoChange = ({ userInfo, isAdmin }: UserInfoChangeProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("profile");
+  const { t: validationT } = useTranslation("validation");
+
+  const userInfoChangeSchema = useMemo(
+    () => retrieveUserInfoChangeFormSchema(validationT),
+    [validationT]
+  );
 
   return (
     <Formik<UserInfoFormData>
@@ -75,13 +95,7 @@ const UserInfoChange = ({ userInfo, isAdmin }: UserInfoChangeProps) => {
           );
         }
       }}
-      validationSchema={Yup.object({
-        userName: Yup.string().required("*Povinné"),
-        firstName: Yup.string().required("*Povinné"),
-        surname: Yup.string().required("*Povinné"),
-        institution: Yup.string().required("*Povinné"),
-        email: Yup.string().required("*Povinné"),
-      })}
+      validationSchema={userInfoChangeSchema}
     >
       <Form className="max-w-[600px] m-auto flex flex-col justify-center items-center">
         <ReactMdTextField

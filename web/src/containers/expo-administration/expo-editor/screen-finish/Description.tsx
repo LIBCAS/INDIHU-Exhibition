@@ -71,7 +71,7 @@ const Description = ({ activeScreen }: DescriptionProps) => {
                           title: (
                             <FontIcon className="color-black">delete</FontIcon>
                           ),
-                          text: "Opravdu chcete odstranit obrázek?",
+                          text: t("descFields.finishScreen.deleteImageConfirm"),
                           onSubmit: () =>
                             dispatch(updateScreenData({ image: null })),
                         })
