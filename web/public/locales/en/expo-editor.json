@@ -435,7 +435,8 @@
     "openFileExplorerTooltip": "Open in file explorer",
     "openImageEditorTooltip": "Open image in image editor",
     "deleteImageFromBox": "Remove image from box",
-    "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+    "deleteImageConfirm": "Are you sure you want to delete the selected image?",
+    "defaultImageHelpTooltip": "Image"
   },
   "imageEditor": {
     "cropAreaTooSmall": "Crop area is too small!",

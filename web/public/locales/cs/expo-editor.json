@@ -435,7 +435,8 @@
     "openFileExplorerTooltip": "Otevřít prohlížeč souborů",
     "openImageEditorTooltip": "Otevřít obrázek v editoru",
     "deleteImageFromBox": "Odstranit obrázek z boxu",
-    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?"
+    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?",
+    "defaultImageHelpTooltip": "Obrázek"
   },
   "imageEditor": {
     "cropAreaTooSmall": "Oblast pro oříznutí je příliš malá!",
