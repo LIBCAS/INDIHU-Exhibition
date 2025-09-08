@@ -46,6 +46,8 @@
     "audioChapterTrack": "Zvuková stopa kapitoly",
     "audioChapterTrackTooltip": "Sem nahrajte podkresovou hudbu, která bude ve smyčce přehrávána při prohlížení všech obrazovek této kapitoly.",
     "audioSelectLabel": "Vybrat",
+    "audioDefaultHelpTooltip": "Audio",
+    "musicDefaultHelpTooltip": "Hudba",
     "expoDuration": "Délka trvání výstavy",
     "expoDurationTooltip": "Odhad délky výstavy pro informování návštěvníka.",
     "expoDurationErrMsg": "Zadejte číslo v rozsahu 0 až 1000000.",

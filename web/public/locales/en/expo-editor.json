@@ -46,6 +46,8 @@
     "audioChapterTrack": "Chapter soundtrack",
     "audioChapterTrackTooltip": "Upload background music to be played in a loop while viewing all screens in this chapter.",
     "audioSelectLabel": "Select",
+    "audioDefaultHelpTooltip": "Audio",
+    "musicDefaultHelpTooltip": "Music",
     "expoDuration": "Duration of the exhibition",
     "expoDurationTooltip": "Estimated duration of the exhibition to inform the visitor.",
     "expoDurationErrMsg": "Enter a number between 0 and 1000000.",
