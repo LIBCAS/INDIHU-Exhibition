@@ -26,7 +26,6 @@ import { setDialog } from "actions/dialog-actions";
 import { showLoader, setImageEditor } from "actions/app-actions";
 import cx from "classnames";
 
-import { helpIconText } from "enums/text";
 import { dispatch } from "index";
 import { DialogType } from "components/dialogs/dialog-types";
 import { useTranslation } from "react-i18next";
@@ -78,6 +77,7 @@ const ImageBox = ({
   onInfopointMove,
   infopointTooltipId,
 }: ImageBoxProps) => {
+  const { t } = useTranslation("expo-editor");
   const [currZoom, setCurrZoom] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -125,7 +125,7 @@ const ImageBox = ({
       </div>
 
       <HelpIcon
-        label={helpIconLabel || helpIconText.EDITOR_IMAGE}
+        label={helpIconLabel || t("imageBox.defaultImageHelpTooltip")}
         id={helpIconId}
       />
     </div>

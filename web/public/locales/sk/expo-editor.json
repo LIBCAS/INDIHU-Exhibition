@@ -46,6 +46,9 @@
     "audioChapterTrack": "Zvuková stopa kapitoly",
     "audioChapterTrackTooltip": "Sem nahrajte podkresovú hudbu, ktorá bude v slučke prehrávaná pri prezeraní všetkých obrazoviek tejto kapitoly.",
     "audioSelectLabel": "Vybrať",
+    "audioDefaultHelpTooltip": "Audio",
+    "musicDefaultHelpTooltip": "Hudba",
+    "musicDescriptionHelpTooltip": "Sem nahrajte podkresovú hudbu, ktorá bude v slučke prehrávaná pri prezeraní všetkých obrazoviek tejto kapitoly.",
     "expoDuration": "Dĺžka trvania výstavy",
     "expoDurationTooltip": "Odhad dĺžky výstavy na informovanie návštevníka.",
     "expoDurationErrMsg": "Zadajte číslo v rozsahu 0 až 1000000.",
@@ -435,7 +438,8 @@
     "openFileExplorerTooltip": "Otvoriť prehliadač súborov",
     "openImageEditorTooltip": "Otvoriť obrázok v editore",
     "deleteImageFromBox": "Odstrániť obrázok z boxu",
-    "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
+    "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?",
+    "defaultImageHelpTooltip": "Obrázok"
   },
   "imageEditor": {
     "cropAreaTooSmall": "Oblasť na orezanie je príliš malá!",

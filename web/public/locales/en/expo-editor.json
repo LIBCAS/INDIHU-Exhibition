@@ -46,6 +46,9 @@
     "audioChapterTrack": "Chapter soundtrack",
     "audioChapterTrackTooltip": "Upload background music to be played in a loop while viewing all screens in this chapter.",
     "audioSelectLabel": "Select",
+    "audioDefaultHelpTooltip": "Audio",
+    "musicDefaultHelpTooltip": "Music",
+    "musicDescriptionHelpTooltip": "Upload background music here that will be played in a loop while viewing all screens of this chapter.",
     "expoDuration": "Duration of the exhibition",
     "expoDurationTooltip": "Estimated duration of the exhibition to inform the visitor.",
     "expoDurationErrMsg": "Enter a number between 0 and 1000000.",
@@ -435,7 +438,8 @@
     "openFileExplorerTooltip": "Open in file explorer",
     "openImageEditorTooltip": "Open image in image editor",
     "deleteImageFromBox": "Remove image from box",
-    "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+    "deleteImageConfirm": "Are you sure you want to delete the selected image?",
+    "defaultImageHelpTooltip": "Image"
   },
   "imageEditor": {
     "cropAreaTooSmall": "Crop area is too small!",

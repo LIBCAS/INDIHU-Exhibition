@@ -12,7 +12,6 @@ import { AppDispatch } from "store/store";
 
 import { getFileById } from "actions/file-actions-typed";
 import { saveScreen, updateScreenData } from "actions/expoActions";
-import { helpIconText } from "enums/text";
 import { ScreenCompletedCheckbox } from "./Checkboxes";
 import { wrapTextInParagraph } from "./WysiwygEditor/utils";
 
@@ -109,7 +108,7 @@ const ScreenDescription = ({
                   : false
               }
               musicFile={musicFile}
-              helpIconTitle={helpIconText.EDITOR_DESCRIPTION_MUSIC}
+              helpIconTitle={t("descFields.musicDescriptionHelpTooltip")}
               id="editor-description-music"
             />
 

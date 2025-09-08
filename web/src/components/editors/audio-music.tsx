@@ -13,7 +13,6 @@ import { File as IndihuFile } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
 import { setDialog } from "../../actions/dialog-actions";
 import { updateScreenData } from "actions/expoActions/screen-actions";
-import { helpIconText } from "../../enums/text";
 
 type AudioMusicProps = {
   isAudio: boolean; // whether music or audio is supplied
@@ -101,8 +100,8 @@ const AudioMusic = ({
             helpIconTitle
               ? helpIconTitle
               : isAudio
-              ? helpIconText.EDITOR_AUDIO
-              : helpIconText.EDITOR_MUSIC
+              ? t("descFields.audioDefaultHelpTooltip")
+              : t("descFields.musicDefaultHelpTooltip")
           }
           id={id}
         />
