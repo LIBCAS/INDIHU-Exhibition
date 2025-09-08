@@ -294,7 +294,10 @@
   },
   "expoStateDialog": {
     "title": "Change of exhibition status",
-    "submitLabel": "Change"
+    "submitLabel": "Change",
+    "prepareHelpIconText": "The exhibition is under preparation. The content of the exhibition can be edited at will. The exhibition is only accessible to logged in users with whom the exhibition is shared.",
+    "openedHelpIconText": "The exhibition is publicly available via its URL. The exhibition cannot be edited.",
+    "endedHelpIconText": "The exhibition has been closed and is neither publicly available nor intended for further editing. A notification to the user with a link to another website can be set to its original URL. The exhibition can be re-converted to the status “In preparation” or “Published”."
   },
   "fileDeleteFolderDialog": {
     "submitLabel": "Delete",

@@ -10,7 +10,6 @@ import { changeRadioState } from "../../actions/app-actions";
 import HelpIcon from "../help-icon";
 
 import { expoState } from "../../enums/expo-state";
-import { helpIconText } from "../../enums/text";
 import { useTranslation } from "react-i18next";
 
 const ExpoState = ({ handleSubmit, radio, changeRadioState }) => {
@@ -35,7 +34,7 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) => {
             onChange={() => changeRadioState(expoState.PREPARE)}
           />
           <HelpIcon
-            label={helpIconText.EXPO_STATE_RADIO_PREPARE}
+            label={t("expoStateDialog.prepareHelpIconText")}
             id="react-tooltip-for-help-icon-in-dialog"
           />
         </div>
@@ -50,7 +49,7 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) => {
             onChange={() => changeRadioState(expoState.OPENED)}
           />
           <HelpIcon
-            label={helpIconText.EXPO_STATE_RADIO_OPENED}
+            label={t("expoStateDialog.openedHelpIconText")}
             id="react-tooltip-for-help-icon-in-dialog"
           />
         </div>
@@ -65,7 +64,7 @@ const ExpoState = ({ handleSubmit, radio, changeRadioState }) => {
             onChange={() => changeRadioState(expoState.ENDED)}
           />
           <HelpIcon
-            label={helpIconText.EXPO_STATE_RADIO_ENDED}
+            label={t("expoStateDialog.endedHelpIconText")}
             id="react-tooltip-for-help-icon-in-dialog"
           />
         </div>

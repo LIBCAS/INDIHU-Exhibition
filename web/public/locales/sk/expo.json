@@ -294,7 +294,10 @@
   },
   "expoStateDialog": {
     "title": "Zmena stavu výstavy",
-    "submitLabel": "Zmeniť"
+    "submitLabel": "Zmeniť",
+    "prepareHelpIconText": "Výstava je v príprave. Obsah výstavy je možné ľubovoľne upravovať. Výstava je prístupná iba prihláseným užívateľom, s ktorými je výstava zdieľaná.",
+    "openedHelpIconText": "Výstava je verejne dostupná cez svoje URL. Výstavu nie je možné upravovať.",
+    "endedHelpIconText": "Výstava bola ukončená a nie je ani verejne dostupná ani určená na ďalšie úpravy. Na jej pôvodnú URL je možné nastaviť oznámenie užívateľovi s odkazom na iný web. Výstavu je možné znovu previesť do stavu “V príprave” alebo “Zverejnená”."
   },
   "fileDeleteFolderDialog": {
     "submitLabel": "Zmazať",
