@@ -48,6 +48,7 @@
     "audioSelectLabel": "Select",
     "audioDefaultHelpTooltip": "Audio",
     "musicDefaultHelpTooltip": "Music",
+    "musicDescriptionHelpTooltip": "Upload background music here that will be played in a loop while viewing all screens of this chapter.",
     "expoDuration": "Duration of the exhibition",
     "expoDurationTooltip": "Estimated duration of the exhibition to inform the visitor.",
     "expoDurationErrMsg": "Enter a number between 0 and 1000000.",
@@ -71,7 +72,6 @@
     "gameTaskTooltip": "",
     "gameResultTime": "Result display time",
     "gameResultTimeTooltip": "The number of seconds that determines how long the user will see the result of the game.",
-    "gameDefaultMusicHelpTooltip": "Upload background music here that will be played in a loop while viewing all screens of this chapter.",
 
     "startScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"

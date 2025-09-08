@@ -108,7 +108,7 @@ const ScreenDescription = ({
                   : false
               }
               musicFile={musicFile}
-              helpIconTitle={t("descFields.gameDefaultMusicHelpTooltip")}
+              helpIconTitle={t("descFields.musicDescriptionHelpTooltip")}
               id="editor-description-music"
             />
 
