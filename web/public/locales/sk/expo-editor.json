@@ -20,7 +20,8 @@
     "textTab": "Text",
     "answersTab": "Odpovede",
     "externalTab": "Externé dáta",
-    "referencesTab": "Odkazy"
+    "referencesTab": "Odkazy",
+    "timelineTab": "Časová osa"
   },
   "descFields": {
     "name": "Názov",
@@ -238,6 +239,19 @@
       },
       "linkNotSufficientlyFilled": "Táto referencia nie je dostatočne vyplnený, preto bude na výstave ignorovaný!"
     },
+    "timelineScreen": {
+      "nameFieldLabel": "Názov časovej osi",
+      "nameFieldTooltip": "Napíšte názov časovej osi, príklad 'Vývoj pôrodnosti v 20. storočí,' aby návštevníci vedeli, na čo sa pozerajú",
+      "typeSelectFieldLabel": "Typ časovej osi",
+      "typeSelectFieldTooltip": "Vyberte základný typ časovej osi, ktorá najlepšie zodpovedá vašej téme, a jej sklon a dĺžku",
+      "horizontalOption": "Horizontálne",
+      "verticalOption": "Vertikálne",
+      "diagonalTopToBottomOption": "Diagonála dole",
+      "diagonalBottomToTopOption": "Diagonála hore",
+      "timelineBoxLabel": "Časová os",
+      "timelineBoxTooltip": "Pridajte body na časovú os a umiestnite ich podľa potreby. Vyberte si z rôznych druhov – obrázok, text, video.",
+      "timelinePointsTitle": "Body časovej osi"
+    },
     "finishScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
     },
@@ -419,7 +433,14 @@
     "shapeIconOption": "Vlastná ikona",
     "sizeLabel": "Veľkosť v pixeloch",
     "colorLabel": "Farba infopointu",
-    "iconFileLabel": "Súbor vlastnej ikony"
+    "iconFileLabel": "Súbor vlastnej ikony",
+
+    "timelineType": {
+      "headerLabel": "Názov bodu na časovej osi",
+      "bodyContentTypeLabel": "Typ tela",
+      "textBodyLabel": "Textový popis",
+      "shapeSizeColorSectionSubheader": "Tvar, veľkosť a farba bodu"
+    }
   },
   "sequenceForm": {
     "createNewSequenceTitle": "Vytvoriť novú sekvenciu",

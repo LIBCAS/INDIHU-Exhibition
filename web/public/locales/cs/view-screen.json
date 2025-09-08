@@ -80,6 +80,9 @@
     "openDescTooltip": "Otevřít popis fotografie",
     "closeTooltip": "Zavřít"
   },
+  "timelineScreen": {
+    "missingTimelineName": "Neuvedený název časové osy"
+  },
 
   "game": {
     "controls": {

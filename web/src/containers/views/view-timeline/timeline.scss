@@ -1,0 +1,48 @@
+.timeline-line {
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 24px solid black;
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+  }
+
+  &.horizontal::after {
+    right: 0;
+    top: 50%;
+    transform: translate(24px, -50%);
+  }
+
+  &.vertical::after {
+    left: 50%;
+    bottom: 0;
+    right: auto;
+    top: auto;
+    transform: translate(-50%, 24px) rotate(90deg);
+  }
+
+  // Dot at the beginning
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: black;
+    border-radius: 50%;
+  }
+
+  &.horizontal::before {
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &.vertical::before {
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+}

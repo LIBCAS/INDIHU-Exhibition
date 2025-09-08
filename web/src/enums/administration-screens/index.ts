@@ -7,3 +7,4 @@ export * from "./screen-start";
 export * from "./screen-image";
 export * from "./screen-slideshow";
 export * from "./screen-parallax";
+export * from "./screen-timeline";

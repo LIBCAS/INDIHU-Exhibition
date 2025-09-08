@@ -19,7 +19,11 @@ export const getScreenTime = (screen: Screen, options?: Options) => {
 
   const multipler = unit === "ms" ? 1000 : 1;
 
-  return ("time" in screen ? screen.time : defaultValue) * multipler;
+  return (
+    ("time" in screen && screen.time !== undefined
+      ? screen.time
+      : defaultValue) * multipler
+  );
 };
 
 export const getCumulativeSum = (arr: number[]) => {

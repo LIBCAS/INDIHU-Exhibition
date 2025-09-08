@@ -9,6 +9,7 @@ import {
 } from "../useTooltipInfopoint";
 
 import { screenType } from "enums/screen-type";
+import { parseTimelineScreenMap } from "./timeline-parser";
 
 export const parseScreenToInfopointStatusMap = (
   viewScreen: InfopointSupportedScreens
@@ -22,6 +23,8 @@ export const parseScreenToInfopointStatusMap = (
       return parseImageScreenMap(viewScreen);
     case screenType.SLIDESHOW:
       return parseSlideshowScreenMap(viewScreen);
+    case screenType.TIMELINE:
+      return parseTimelineScreenMap(viewScreen);
     default:
       throw new Error("Unsupported view screen type for infopoint map parser.");
   }

@@ -13,6 +13,7 @@ import {
   ScreenImageAnimationEnum,
   SlideshowScreenAnimationEnum,
   ScreenParallaxAnimationEnum,
+  TimelineTypeEnum,
 } from "enums/administration-screens";
 
 // - - - - - -
@@ -48,3 +49,5 @@ export type SlideshowScreenAnimationType =
 
 export type ScreenParallaxAnimationType =
   keyof typeof ScreenParallaxAnimationEnum;
+
+export type TimelineType = keyof typeof TimelineTypeEnum;

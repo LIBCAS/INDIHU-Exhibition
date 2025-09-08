@@ -12,6 +12,7 @@ import InfopointDialogNew from "components/dialogs/infopoint-dialog/InfopointDia
 import InfopointDialogEdit from "components/dialogs/infopoint-dialog/InfopointDialogEdit";
 
 import cx from "classnames";
+import { InfopointFormType } from "components/dialogs/infopoint-dialog/InfopointForm";
 
 // - - - - - - - -
 
@@ -25,6 +26,7 @@ interface InfopointsTableProps {
     infopointIndexToEdit: number,
     newIsAlwaysVisibleValue: boolean
   ) => void;
+  type?: InfopointFormType;
 }
 
 interface InfopointEditDialogStatus {
@@ -42,6 +44,7 @@ const InfopointsTable = ({
   onInfopointEdit,
   onInfopointDelete,
   onInfopointAlwaysVisibleChange,
+  type,
 }: InfopointsTableProps) => {
   const { t } = useTranslation("expo-editor");
 
@@ -169,6 +172,7 @@ const InfopointsTable = ({
         <InfopointDialogNew
           closeThisDialog={closeInfopointDialogNew}
           onDialogSubmit={onInfopointAdd}
+          type={type}
         />
       )}
 
@@ -180,6 +184,7 @@ const InfopointsTable = ({
             onDialogSubmit={onInfopointEdit}
             infopoint={infopointEditDialog.infopoint}
             infopointIndex={infopointEditDialog.infopointIndex}
+            type={type}
           />
         )}
     </div>

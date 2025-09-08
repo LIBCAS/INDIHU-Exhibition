@@ -29,6 +29,7 @@ import {
   ScreenParallaxAnimationType,
   ScreenChapterIntroTextThemeType,
   ScreenChapterIntroTextHaloEffectOnType,
+  TimelineType,
 } from "./screen-administration";
 
 // - - - - -
@@ -156,6 +157,7 @@ export type Screen =
   | ImageChangeScreen
   | ExternalScreen
   | SignpostScreen
+  | TimelineScreen
   | GameFindScreen
   | GameDrawScreen
   | GameWipeScreen
@@ -388,6 +390,25 @@ export type SignpostScreen = {
   referenceType?: SignpostReferenceType;
   links: ReferenceObj[];
   nextScreenReference?: string; // screen.id as string
+};
+
+export type TimelineScreen = {
+  id: string;
+  type: typeof screenType.TIMELINE;
+  // Description tab
+  title?: string;
+  text?: string;
+  audio?: string;
+  time?: number;
+  timeAuto?: boolean;
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
+  // Documents tab
+  documents?: Document[];
+  // Screen specifics
+  timelineName?: string;
+  timelineType?: TimelineType;
+  infopoints?: Infopoint[];
 };
 
 export type GameFindScreen = {
