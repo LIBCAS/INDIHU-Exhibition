@@ -71,6 +71,7 @@
     "gameTaskTooltip": "",
     "gameResultTime": "Doba zobrazení výsledku",
     "gameResultTimeTooltip": "Počet sekund určující, jak dlouho návštěvník uvidí výsledek minihry.",
+    "gameDefaultMusicHelpTooltip": "Sem nahrajte podkresovou hudbu, která bude ve smyčce přehrávána při prohlížení všech obrazovek této kapitoly.",
 
     "startScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
