@@ -17,6 +17,7 @@ import { updateScreenData } from "actions/expoActions";
 // Utils
 import { TIMELINE_CONTAINER_SIZE, TIMELINE_ITEM_SIZE } from "./TimelineBox";
 import { calculateItemEvenDistributionPosition } from "../hooks/useItemLinearMovement/linear-movement-utils";
+import { DEFAULT_TIMELINE_TYPE } from "../default-values";
 
 // - - - - - -
 
@@ -35,7 +36,7 @@ const EvenDistributionOfPointsButton = ({
   // - - - Derived variables - - -
 
   const timelineType = useMemo(
-    () => activeScreen.timelineType ?? "HORIZONTAL",
+    () => activeScreen.timelineType ?? DEFAULT_TIMELINE_TYPE,
     [activeScreen.timelineType]
   );
 

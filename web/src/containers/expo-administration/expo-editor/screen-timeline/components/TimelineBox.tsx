@@ -14,6 +14,7 @@ import { calculateItemInitialPosition } from "../hooks/useItemLinearMovement/lin
 
 import { FontIcon } from "react-md";
 import { BasicTooltip } from "components/tooltip/BasicTooltip";
+import { DEFAULT_TIMELINE_TYPE } from "../default-values";
 
 // - - - - - -
 
@@ -63,7 +64,7 @@ const TimelineContainer = ({ activeScreen }: TimelineContainerProps) => {
   // - - - Derived variables - - -
 
   const timelineType = useMemo(
-    () => activeScreen.timelineType ?? "HORIZONTAL",
+    () => activeScreen.timelineType ?? DEFAULT_TIMELINE_TYPE,
     [activeScreen.timelineType]
   );
 

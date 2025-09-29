@@ -20,6 +20,7 @@ import {
   calculateLineSizing,
   calculateLineTransformation,
 } from "containers/expo-administration/expo-editor/screen-timeline/hooks/useItemLinearMovement/linear-movement-utils";
+import { DEFAULT_TIMELINE_TYPE } from "containers/expo-administration/expo-editor/screen-timeline/default-values";
 
 // CSS
 import "./timeline.scss";
@@ -27,6 +28,7 @@ import "./timeline.scss";
 // - - - - - -
 
 // NOTE: When changed, it is also required to change border css styles inside 'timeline.scss'
+// TODO - default timeline thickness!
 const LINE_THICKNESS = 4;
 
 // - - - - - -
@@ -70,7 +72,7 @@ export const ViewTimeline = () => {
   // - - - Derived variables - - -
 
   const timelineType = useMemo(
-    () => viewScreen.timelineType ?? "HORIZONTAL",
+    () => viewScreen.timelineType ?? DEFAULT_TIMELINE_TYPE,
     [viewScreen.timelineType]
   );
 

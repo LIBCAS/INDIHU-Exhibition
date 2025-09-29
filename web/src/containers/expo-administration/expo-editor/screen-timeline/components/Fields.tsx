@@ -13,6 +13,12 @@ import { TimelineScreen, TimelineType } from "models";
 // Utils
 import { updateScreenData } from "actions/expoActions";
 import { TimelineTypeEnum } from "enums/administration-screens/screen-timeline";
+import {
+  DEFAULT_TIMELINE_BG_TRANSPARENCY,
+  DEFAULT_TIMELINE_COLOR,
+  DEFAULT_TIMELINE_THICKNESS,
+  DEFAULT_TIMELINE_TYPE,
+} from "../default-values";
 
 // - - - - - -
 
@@ -86,7 +92,7 @@ export const TimelineTypeSelectField = ({
         label={t("typeSelectFieldLabel")}
         position="below"
         id="screen-timeline-timelineType-selectfield"
-        defaultValue={activeScreen.timelineType ?? "HORIZONTAL"}
+        defaultValue={activeScreen.timelineType ?? DEFAULT_TIMELINE_TYPE}
         onChange={(newTimelineType: TimelineType) => {
           dispatch(updateScreenData({ timelineType: newTimelineType }));
         }}
@@ -123,7 +129,10 @@ export const TimelineBgImageTransparencyTextField = ({
         id="screen-timeline-bgimage-transparency-textfield"
         label={t("bgImageTransparencyLabel")}
         lineDirection="center"
-        value={activeScreen.backgroundImageTransparency ?? 100}
+        value={
+          activeScreen.backgroundImageTransparency ??
+          DEFAULT_TIMELINE_BG_TRANSPARENCY
+        }
         onChange={(newValue: string) => {
           const transparency = Number(newValue); // empty string is converted to 0
           if (isNaN(transparency) || transparency < 1 || transparency > 100) {
@@ -165,7 +174,7 @@ export const TimelineColorTextField = ({
       <input
         type="color"
         id="screen-timeline-timelinecolor-textfield"
-        value={activeScreen.timelineColor ?? "#000000"}
+        value={activeScreen.timelineColor ?? DEFAULT_TIMELINE_COLOR}
         onChange={(e) => {
           const newValue = e.target.value;
           dispatch(updateScreenData({ timelineColor: newValue }));
@@ -203,7 +212,7 @@ export const TimelineThicknessTextField = ({
         id="screen-timeline-timelinethickness-textfield"
         label={t("timelineThicknessLabel")}
         lineDirection="center"
-        value={activeScreen.timelineThickness ?? 4}
+        value={activeScreen.timelineThickness ?? DEFAULT_TIMELINE_THICKNESS}
         onChange={(newValue: string) => {
           const thickness = Number(newValue); // empty string is converted to 0
           if (isNaN(thickness) || thickness < 1 || thickness > 25) {
