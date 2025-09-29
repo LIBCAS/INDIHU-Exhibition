@@ -156,8 +156,29 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
           </p>
 
           <div className="mt-0">
-            <p>
-              1. Zvolený obrázok na pozadí: {backgroundImageFile?.name ?? "-"}
+            <EvenDistributionPointsCheckbox activeScreen={activeScreen} />
+          </div>
+
+          <div className="mt-2">
+            <p>Farba časovej osy:</p>
+            <div className="max-w-[400px]">
+              <TimelineColorTextField activeScreen={activeScreen} />
+            </div>
+          </div>
+
+          <div className="mt-2">
+            <div className="max-w-[400px]">
+              <TimelineThicknessTextField activeScreen={activeScreen} />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <p className="mb-2">
+              Zvolený obrázok na pozadí:{" "}
+              <span className="italic">
+                {backgroundImageFile?.name ??
+                  "Zatiaľ nebol zvolený žiaden obrázok"}
+              </span>
             </p>
 
             <ReactMdButton
@@ -168,28 +189,11 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
           </div>
 
           <div className="mt-4">
-            <p>2. Transparentnosť zvoleného obrázku na pozadí:</p>
-
-            <div>
+            <div className="max-w-[400px]">
               <TimelineBgImageTransparencyTextField
                 activeScreen={activeScreen}
               />
             </div>
-          </div>
-
-          <div className="mt-4">
-            <p>3. Rovnomerné rozdelenie bodov na časovej ose:</p>
-            <EvenDistributionPointsCheckbox activeScreen={activeScreen} />
-          </div>
-
-          <div className="mt-4">
-            <p>4. Farba časovej osy:</p>
-            <TimelineColorTextField activeScreen={activeScreen} />
-          </div>
-
-          <div>
-            <p>5. Hrúbka časovej osy:</p>
-            <TimelineThicknessTextField activeScreen={activeScreen} />
           </div>
         </div>
       </div>

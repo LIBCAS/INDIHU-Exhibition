@@ -122,7 +122,7 @@ export const TimelineBgImageTransparencyTextField = ({
       <TextField
         type="number"
         id="screen-timeline-bgimage-transparency-textfield"
-        label="TODO"
+        label="Transparentnosť zvoleného obrázku na pozadí"
         lineDirection="center"
         value={activeScreen.backgroundImageTransparency ?? 100}
         onChange={(newValue: string) => {
@@ -166,7 +166,7 @@ export const EvenDistributionPointsCheckbox = ({
       <Checkbox
         id="screen-timeline-even-distribution-points-checkbox"
         name="timeline-even-distribution-points-checkbox"
-        label="3. Rovnomerné rozdelenie bodov na časovej ose"
+        label="Rovnomerné rozdelenie bodov na časovej ose"
         checked={activeScreen.isEvenDistributionOfPointsEnabled ?? false}
         onChange={(newValue: boolean) => {
           dispatch(
@@ -230,7 +230,7 @@ export const TimelineThicknessTextField = ({
       <TextField
         type="number"
         id="screen-timeline-timelinethickness-textfield"
-        label="TODO"
+        label="Hrúbka časovej osy"
         lineDirection="center"
         value={activeScreen.timelineThickness ?? 4}
         onChange={(newValue: string) => {
