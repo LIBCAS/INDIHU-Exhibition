@@ -9,6 +9,7 @@ import { useFilePreloaderMusic } from "./file-preloader-music-hook";
 // e.g if current screen is 'Slideshow', then preloaded files are 'audio' and 'images'
 // e.g if current screen is 'ImageChange', then preloaded files are 'image1' and 'image2'
 export type ScreenPreloadedFiles = {
+  backgroundImage?: string;
   images?: (string | undefined)[];
   image?: string;
   //music?: string;

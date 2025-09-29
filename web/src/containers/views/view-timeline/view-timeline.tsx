@@ -10,7 +10,7 @@ import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Types
 import { AppState } from "store/store";
-import { TimelineScreen } from "models";
+import { ScreenProps, TimelineScreen } from "models";
 
 // Utils
 import {
@@ -40,7 +40,7 @@ const stateSelector = createSelector(
 
 // - - - - - -
 
-export const ViewTimeline = () => {
+export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen", { keyPrefix: "timelineScreen" });
 
