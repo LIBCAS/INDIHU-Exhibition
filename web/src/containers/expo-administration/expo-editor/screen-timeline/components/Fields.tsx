@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 // Components
 import TextField from "react-md/lib/TextFields";
 import SelectField from "react-md/lib/SelectFields";
+import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import HelpIcon from "components/help-icon";
 
 // Types
@@ -96,6 +97,156 @@ export const TimelineTypeSelectField = ({
         <HelpIcon
           id="screen-timeline-timelinetypehelpIcon"
           label={t("typeSelectFieldTooltip")}
+        />
+      </div>
+    </div>
+  );
+};
+
+// - - - - - -
+
+type TimelineBgImageTransparencyTextFieldProps = {
+  activeScreen: TimelineScreen;
+};
+
+export const TimelineBgImageTransparencyTextField = ({
+  activeScreen,
+}: TimelineBgImageTransparencyTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
+
+  return (
+    <div className="w-full flex">
+      <TextField
+        type="number"
+        id="screen-timeline-bgimage-transparency-textfield"
+        label="TODO"
+        lineDirection="center"
+        value={activeScreen.backgroundImageTransparency ?? 100}
+        onChange={(newValue: string) => {
+          const transparency = Number(newValue); // empty string is converted to 0
+          if (isNaN(transparency) || transparency < 1 || transparency > 100) {
+            return;
+          }
+
+          dispatch(
+            updateScreenData({ backgroundImageTransparency: transparency })
+          );
+        }}
+        style={{ width: "100%" }}
+      />
+      <div className="self-center">
+        <HelpIcon
+          id="screen-timeline-bgimage-transpareancy-helpIcon"
+          label="TODO"
+        />
+      </div>
+    </div>
+  );
+};
+
+// - - - - - -
+
+type EvenDistributionPointsCheckboxProps = {
+  activeScreen: TimelineScreen;
+};
+
+export const EvenDistributionPointsCheckbox = ({
+  activeScreen,
+}: EvenDistributionPointsCheckboxProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
+
+  return (
+    <div>
+      <Checkbox
+        id="screen-timeline-even-distribution-points-checkbox"
+        name="timeline-even-distribution-points-checkbox"
+        label="3. Rovnomerné rozdelenie bodov na časovej ose"
+        checked={activeScreen.isEvenDistributionOfPointsEnabled ?? false}
+        onChange={(newValue: boolean) => {
+          dispatch(
+            updateScreenData({ isEvenDistributionOfPointsEnabled: newValue })
+          );
+        }}
+      />
+    </div>
+  );
+};
+
+// - - - - - -
+
+type TimelineColorTextFieldProps = {
+  activeScreen: TimelineScreen;
+};
+
+export const TimelineColorTextField = ({
+  activeScreen,
+}: TimelineColorTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
+
+  return (
+    <div className="w-full flex">
+      <input
+        type="color"
+        id="screen-timeline-timelinecolor-textfield"
+        value={activeScreen.timelineColor ?? "#000000"}
+        onChange={(e) => {
+          const newValue = e.target.value;
+          dispatch(updateScreenData({ timelineColor: newValue }));
+        }}
+        style={{ width: "100%" }}
+      />
+      <div className="self-center">
+        <HelpIcon id="screen-timeline-timelinecolor-helpIcon" label="TODO" />
+      </div>
+    </div>
+  );
+};
+
+// - - - - - -
+
+type TimelineThicknessTextFieldProps = {
+  activeScreen: TimelineScreen;
+};
+
+export const TimelineThicknessTextField = ({
+  activeScreen,
+}: TimelineThicknessTextFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
+
+  return (
+    <div className="w-full flex">
+      <TextField
+        type="number"
+        id="screen-timeline-timelinethickness-textfield"
+        label="TODO"
+        lineDirection="center"
+        value={activeScreen.timelineThickness ?? 4}
+        onChange={(newValue: string) => {
+          const thickness = Number(newValue); // empty string is converted to 0
+          if (isNaN(thickness) || thickness < 1 || thickness > 25) {
+            return;
+          }
+
+          dispatch(updateScreenData({ timelineThickness: thickness }));
+        }}
+        style={{ width: "100%" }}
+      />
+      <div className="self-center">
+        <HelpIcon
+          id="screen-timeline-timelinethickness-helpIcon"
+          label="TODO"
         />
       </div>
     </div>

@@ -409,6 +409,11 @@ export type TimelineScreen = {
   timelineName?: string;
   timelineType?: TimelineType;
   infopoints?: Infopoint[];
+  backgroundImage?: string;
+  backgroundImageTransparency?: number;
+  isEvenDistributionOfPointsEnabled?: boolean;
+  timelineColor?: string;
+  timelineThickness?: number;
 };
 
 export type GameFindScreen = {

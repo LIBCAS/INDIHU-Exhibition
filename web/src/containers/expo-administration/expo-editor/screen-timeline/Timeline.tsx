@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -5,16 +6,24 @@ import { useTranslation } from "react-i18next";
 import {
   TimelineNameTextField,
   TimelineTypeSelectField,
+  TimelineBgImageTransparencyTextField,
+  EvenDistributionPointsCheckbox,
+  TimelineColorTextField,
+  TimelineThicknessTextField,
 } from "./components/Fields";
 import TimelineBox from "./components/TimelineBox";
 import InfopointsTable from "components/editors/InfopointsTable";
+import ReactMdButton from "react-md/lib/Buttons/Button";
 
 // Types
 import { AppDispatch } from "store/store";
-import { TimelineScreen } from "models";
+import { DialogType } from "components/dialogs/dialog-types";
+import { TimelineScreen, File as IndihuFile } from "models";
 
 // Actions
 import { updateScreenData } from "actions/expoActions";
+import { setDialog } from "actions/dialog-actions";
+import { getFileById } from "actions/file-actions-typed";
 
 // Utils
 import { concat } from "lodash";
@@ -30,6 +39,35 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
   const { t } = useTranslation("expo-editor", {
     keyPrefix: "descFields.timelineScreen",
   });
+
+  // - - - Derived variables - - -
+
+  const backgroundImageFile = activeScreen.backgroundImage
+    ? dispatch(getFileById(activeScreen.backgroundImage))
+    : null;
+
+  // - - - Callbacks - - -
+
+  const setBackgroundImageFile = useCallback(
+    (img: IndihuFile) => {
+      dispatch(updateScreenData({ backgroundImage: img.id }));
+    },
+    [dispatch]
+  );
+
+  const chooseBgImageViaDialog = useCallback(() => {
+    dispatch(
+      setDialog(DialogType.ScreenFileChoose, {
+        onChoose: (chosenImgFile) => {
+          setBackgroundImageFile(chosenImgFile);
+        },
+        typeMatch: new RegExp(/^image\/.*$/),
+        accept: "image/*",
+      })
+    );
+  }, [dispatch, setBackgroundImageFile]);
+
+  // - - - GUI - - -
 
   return (
     <div className="container container-tabMenu">
@@ -109,6 +147,49 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
               }}
               type="timeline"
             />
+          </div>
+        </div>
+
+        <div className="mt-8 lg:mt-6">
+          <p className="font-bold italic underline text-base">
+            Dodatočné nastavenia časovej osy:
+          </p>
+
+          <div className="mt-0">
+            <p>
+              1. Zvolený obrázok na pozadí: {backgroundImageFile?.name ?? "-"}
+            </p>
+
+            <ReactMdButton
+              raised
+              label="Vyberte obrázok na pozadie"
+              onClick={chooseBgImageViaDialog}
+            />
+          </div>
+
+          <div className="mt-4">
+            <p>2. Transparentnosť zvoleného obrázku na pozadí:</p>
+
+            <div>
+              <TimelineBgImageTransparencyTextField
+                activeScreen={activeScreen}
+              />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <p>3. Rovnomerné rozdelenie bodov na časovej ose:</p>
+            <EvenDistributionPointsCheckbox activeScreen={activeScreen} />
+          </div>
+
+          <div className="mt-4">
+            <p>4. Farba časovej osy:</p>
+            <TimelineColorTextField activeScreen={activeScreen} />
+          </div>
+
+          <div>
+            <p>5. Hrúbka časovej osy:</p>
+            <TimelineThicknessTextField activeScreen={activeScreen} />
           </div>
         </div>
       </div>
