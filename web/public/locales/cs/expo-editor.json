@@ -250,7 +250,18 @@
       "diagonalBottomToTopOption": "Diagonála nahoru",
       "timelineBoxLabel": "Časová osa",
       "timelineBoxTooltip": "Přidejte body na časovou osu a umístěte je jak potřebujete. Vyberte z různých druhů - obrázek, text, video.",
-      "timelinePointsTitle": "Body časové osy"
+      "timelinePointsTitle": "Body časové osy",
+      "additionalSettings": "Další nastavení časové osy",
+      "evenDistributionOfPointsBtnLabel": "Rovnoměrně rozložit body na časové ose",
+      "timelineColorLabel": "Barva časové osy:",
+      "timelineColorTooltip": "Vyberte libovolnou barvu pro vaši časovou osu, která bude zobrazena návštěvníkům.",
+      "timelineThicknessLabel": "Tloušťka časové osy",
+      "timelineThicknessTooltip": "Vyberte tloušťku pro vaši časovou osu. Minimální povolená hodnota je 1 a maximální povolená hodnota je 25",
+      "backgroundImageLabel": "Vybraný obrázek na pozadí:",
+      "noBackgroundImage": "Zatím nebyl vybrán žádný obrázek",
+      "chooseBackgroundImageBtnLabel": "Vyberte obrázek na pozadí",
+      "bgImageTransparencyLabel": "Průhlednost vybraného obrázku na pozadí",
+      "bgImageTransparencyTooltip": "Vyberte si úroveň průhlednosti pro váš obrázek na pozadí. Minimální povolená hodnota je 1, maximální povolená hodnota je 100."
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

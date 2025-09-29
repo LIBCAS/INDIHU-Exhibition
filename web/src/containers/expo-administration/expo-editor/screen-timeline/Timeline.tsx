@@ -152,7 +152,7 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
 
         <div className="mt-8 lg:mt-6">
           <p className="font-bold italic underline text-base">
-            Dodatočné nastavenia časovej osy:
+            {t("additionalSettings")}
           </p>
 
           <div className="mt-2">
@@ -160,7 +160,7 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
           </div>
 
           <div className="mt-4">
-            <p>Farba časovej osy:</p>
+            <p>{t("timelineColorLabel")}</p>
             <div className="max-w-[400px]">
               <TimelineColorTextField activeScreen={activeScreen} />
             </div>
@@ -174,16 +174,15 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
 
           <div className="mt-4">
             <p className="mb-2">
-              Zvolený obrázok na pozadí:{" "}
+              {t("backgroundImageLabel")}{" "}
               <span className="italic">
-                {backgroundImageFile?.name ??
-                  "Zatiaľ nebol zvolený žiaden obrázok"}
+                {backgroundImageFile?.name ?? t("noBackgroundImage")}
               </span>
             </p>
 
             <ReactMdButton
               raised
-              label="Vyberte obrázok na pozadie"
+              label={t("chooseBackgroundImageBtnLabel")}
               onClick={chooseBgImageViaDialog}
             />
           </div>

@@ -1,11 +1,22 @@
-import { updateScreenData } from "actions/expoActions";
 import { useCallback, useMemo } from "react";
+
+// Hooks
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "store/store";
-import { TIMELINE_CONTAINER_SIZE, TIMELINE_ITEM_SIZE } from "./TimelineBox";
-import { TimelineScreen } from "models";
-import { calculateItemEvenDistributionPosition } from "../hooks/useItemLinearMovement/linear-movement-utils";
+import { useTranslation } from "react-i18next";
+
+// Components
 import ReactMdButton from "react-md/lib/Buttons/Button";
+
+// Types
+import { AppDispatch } from "store/store";
+import { TimelineScreen } from "models";
+
+// Actions
+import { updateScreenData } from "actions/expoActions";
+
+// Utils
+import { TIMELINE_CONTAINER_SIZE, TIMELINE_ITEM_SIZE } from "./TimelineBox";
+import { calculateItemEvenDistributionPosition } from "../hooks/useItemLinearMovement/linear-movement-utils";
 
 // - - - - - -
 
@@ -17,6 +28,9 @@ const EvenDistributionOfPointsButton = ({
   activeScreen,
 }: EvenDistributionOfPointsButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
 
   // - - - Derived variables - - -
 
@@ -54,7 +68,7 @@ const EvenDistributionOfPointsButton = ({
   return (
     <ReactMdButton
       raised
-      label="Rovnomerne rozdeliť body na časovej ose"
+      label={t("evenDistributionOfPointsBtnLabel")}
       onClick={handleItemEvenDistribution}
     />
   );

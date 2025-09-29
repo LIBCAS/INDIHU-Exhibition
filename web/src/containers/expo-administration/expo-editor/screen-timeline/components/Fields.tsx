@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 // Components
 import TextField from "react-md/lib/TextFields";
 import SelectField from "react-md/lib/SelectFields";
-import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import HelpIcon from "components/help-icon";
 
 // Types
@@ -122,7 +121,7 @@ export const TimelineBgImageTransparencyTextField = ({
       <TextField
         type="number"
         id="screen-timeline-bgimage-transparency-textfield"
-        label="Transparentnosť zvoleného obrázku na pozadí"
+        label={t("bgImageTransparencyLabel")}
         lineDirection="center"
         value={activeScreen.backgroundImageTransparency ?? 100}
         onChange={(newValue: string) => {
@@ -140,7 +139,7 @@ export const TimelineBgImageTransparencyTextField = ({
       <div className="self-center">
         <HelpIcon
           id="screen-timeline-bgimage-transpareancy-helpIcon"
-          label="TODO"
+          label={t("bgImageTransparencyTooltip")}
         />
       </div>
     </div>
@@ -174,7 +173,10 @@ export const TimelineColorTextField = ({
         style={{ width: "100%" }}
       />
       <div className="self-center">
-        <HelpIcon id="screen-timeline-timelinecolor-helpIcon" label="TODO" />
+        <HelpIcon
+          id="screen-timeline-timelinecolor-helpIcon"
+          label={t("timelineColorTooltip")}
+        />
       </div>
     </div>
   );
@@ -199,7 +201,7 @@ export const TimelineThicknessTextField = ({
       <TextField
         type="number"
         id="screen-timeline-timelinethickness-textfield"
-        label="Hrúbka časovej osy"
+        label={t("timelineThicknessLabel")}
         lineDirection="center"
         value={activeScreen.timelineThickness ?? 4}
         onChange={(newValue: string) => {
@@ -215,7 +217,7 @@ export const TimelineThicknessTextField = ({
       <div className="self-center">
         <HelpIcon
           id="screen-timeline-timelinethickness-helpIcon"
-          label="TODO"
+          label={t("timelineThicknessTooltip")}
         />
       </div>
     </div>
