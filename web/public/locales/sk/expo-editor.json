@@ -260,6 +260,7 @@
       "backgroundImageLabel": "Zvolený obrázok na pozadí:",
       "noBackgroundImage": "Zatiaľ nebol zvolený žiaden obrázok",
       "chooseBackgroundImageBtnLabel": "Vyberte obrázok na pozadie",
+      "clearBackgroundImageBtnLabel": "Odstrániť obrázok z pozadia",
       "bgImageTransparencyLabel": "Transparentnosť zvoleného obrázku na pozadí",
       "bgImageTransparencyTooltip": "Zvolte si stupeň transparentnosti pre váš obrázok na pozadí. Minimálna povolená hodnota je 1, kým maximálna povolená hodnota je 100."
     },

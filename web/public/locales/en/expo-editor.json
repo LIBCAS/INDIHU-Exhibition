@@ -260,6 +260,7 @@
       "backgroundImageLabel": "Selected background image:",
       "noBackgroundImage": "No image has been selected yet",
       "chooseBackgroundImageBtnLabel": "Choose a background image",
+      "clearBackgroundImageBtnLabel": "Remove image from background",
       "bgImageTransparencyLabel": "Transparency of the selected background image",
       "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100."
     },

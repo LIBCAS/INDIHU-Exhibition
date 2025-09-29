@@ -67,6 +67,10 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
     );
   }, [dispatch, setBackgroundImageFile]);
 
+  const clearBgImageFile = useCallback(() => {
+    dispatch(updateScreenData({ backgroundImage: null }));
+  }, [dispatch]);
+
   // - - - GUI - - -
 
   return (
@@ -180,11 +184,20 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
               </span>
             </p>
 
-            <ReactMdButton
-              raised
-              label={t("chooseBackgroundImageBtnLabel")}
-              onClick={chooseBgImageViaDialog}
-            />
+            <div className="flex justify-start items-center gap-4">
+              <ReactMdButton
+                raised
+                label={t("chooseBackgroundImageBtnLabel")}
+                onClick={chooseBgImageViaDialog}
+              />
+
+              <ReactMdButton
+                raised
+                label={t("clearBackgroundImageBtnLabel")}
+                onClick={clearBgImageFile}
+                disabled={backgroundImageFile === null}
+              />
+            </div>
           </div>
 
           <div className="mt-4">
