@@ -7,11 +7,11 @@ import {
   TimelineNameTextField,
   TimelineTypeSelectField,
   TimelineBgImageTransparencyTextField,
-  EvenDistributionPointsCheckbox,
   TimelineColorTextField,
   TimelineThicknessTextField,
 } from "./components/Fields";
 import TimelineBox from "./components/TimelineBox";
+import EvenDistributionOfPointsButton from "./components/EvenDistributionOfPointsButton";
 import InfopointsTable from "components/editors/InfopointsTable";
 import ReactMdButton from "react-md/lib/Buttons/Button";
 
@@ -155,11 +155,11 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
             Dodatočné nastavenia časovej osy:
           </p>
 
-          <div className="mt-0">
-            <EvenDistributionPointsCheckbox activeScreen={activeScreen} />
+          <div className="mt-2">
+            <EvenDistributionOfPointsButton activeScreen={activeScreen} />
           </div>
 
-          <div className="mt-2">
+          <div className="mt-4">
             <p>Farba časovej osy:</p>
             <div className="max-w-[400px]">
               <TimelineColorTextField activeScreen={activeScreen} />

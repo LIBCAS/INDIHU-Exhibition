@@ -40,10 +40,8 @@ type Props = {
   itemSize: Size;
   items: Position[];
   timelineType: TimelineType;
-  isEvenDistributionOfPointsEnabled: boolean;
   handleItemUpdateAtPosition: UpdateItemPositionFunc;
   handleItemsReset: () => void;
-  handleItemEvenDistribution: () => void;
   options?: Options;
 };
 
@@ -84,16 +82,13 @@ const useItemLinearMovement = ({
   itemSize,
   items,
   timelineType,
-  isEvenDistributionOfPointsEnabled,
   handleItemUpdateAtPosition,
   handleItemsReset,
-  handleItemEvenDistribution,
   options,
 }: Props) => {
   const { lineThickness = 2 } = options ?? {};
 
-  const isFirstRenderReset = useRef<boolean>(true);
-  const isFirstRenderDistribution = useRef<boolean>(true);
+  const isFirstRender = useRef<boolean>(true);
 
   // - - - States - - -
 
@@ -214,35 +209,14 @@ const useItemLinearMovement = ({
    * Effect responsible mainly for handling the change of timeline type
    */
   useEffect(() => {
-    if (isFirstRenderReset.current) {
-      isFirstRenderReset.current = false;
-      return;
-    }
-
-    if (isEvenDistributionOfPointsEnabled) {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
       return;
     }
 
     handleItemsReset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timelineType]);
-
-  /**
-   * Effect responsible mainly for handling the change of even distribution checkbox
-   */
-  useEffect(() => {
-    if (isFirstRenderDistribution.current) {
-      isFirstRenderDistribution.current = false;
-      return;
-    }
-
-    if (!isEvenDistributionOfPointsEnabled) {
-      return;
-    }
-
-    handleItemEvenDistribution();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEvenDistributionOfPointsEnabled, timelineType]);
 
   // - - - Return Value - - -
 

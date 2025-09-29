@@ -411,7 +411,6 @@ export type TimelineScreen = {
   infopoints?: Infopoint[];
   backgroundImage?: string;
   backgroundImageTransparency?: number;
-  isEvenDistributionOfPointsEnabled?: boolean;
   timelineColor?: string;
   timelineThickness?: number;
 };

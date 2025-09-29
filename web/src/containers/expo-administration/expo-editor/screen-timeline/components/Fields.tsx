@@ -149,37 +149,6 @@ export const TimelineBgImageTransparencyTextField = ({
 
 // - - - - - -
 
-type EvenDistributionPointsCheckboxProps = {
-  activeScreen: TimelineScreen;
-};
-
-export const EvenDistributionPointsCheckbox = ({
-  activeScreen,
-}: EvenDistributionPointsCheckboxProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("expo-editor", {
-    keyPrefix: "descFields.timelineScreen",
-  });
-
-  return (
-    <div>
-      <Checkbox
-        id="screen-timeline-even-distribution-points-checkbox"
-        name="timeline-even-distribution-points-checkbox"
-        label="Rovnomerné rozdelenie bodov na časovej ose"
-        checked={activeScreen.isEvenDistributionOfPointsEnabled ?? false}
-        onChange={(newValue: boolean) => {
-          dispatch(
-            updateScreenData({ isEvenDistributionOfPointsEnabled: newValue })
-          );
-        }}
-      />
-    </div>
-  );
-};
-
-// - - - - - -
-
 type TimelineColorTextFieldProps = {
   activeScreen: TimelineScreen;
 };

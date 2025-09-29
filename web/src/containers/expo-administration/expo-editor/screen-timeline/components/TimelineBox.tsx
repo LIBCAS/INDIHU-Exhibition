@@ -10,10 +10,7 @@ import HelpIcon from "components/help-icon";
 import { AppDispatch } from "store/store";
 import { TimelineScreen, Size } from "models";
 import { updateScreenData } from "actions/expoActions";
-import {
-  calculateItemEvenDistributionPosition,
-  calculateItemInitialPosition,
-} from "../hooks/useItemLinearMovement/linear-movement-utils";
+import { calculateItemInitialPosition } from "../hooks/useItemLinearMovement/linear-movement-utils";
 
 import { FontIcon } from "react-md";
 import { BasicTooltip } from "components/tooltip/BasicTooltip";
@@ -75,11 +72,6 @@ const TimelineContainer = ({ activeScreen }: TimelineContainerProps) => {
     [activeScreen.infopoints]
   );
 
-  const isEvenDistributionOfPointsEnabled = useMemo(
-    () => activeScreen.isEvenDistributionOfPointsEnabled ?? false,
-    [activeScreen.isEvenDistributionOfPointsEnabled]
-  );
-
   // - - - Item Linear Movement Hook - - -
 
   const handleItemUpdateAtPosition = useCallback(
@@ -111,23 +103,6 @@ const TimelineContainer = ({ activeScreen }: TimelineContainerProps) => {
     );
   }, [infopoints, timelineType, dispatch]);
 
-  const handleItemEvenDistribution = useCallback(() => {
-    dispatch(
-      updateScreenData({
-        infopoints: infopoints.map((ip, ipIdx) => ({
-          ...ip,
-          ...calculateItemEvenDistributionPosition(
-            TIMELINE_CONTAINER_SIZE,
-            TIMELINE_ITEM_SIZE,
-            ipIdx,
-            timelineType,
-            infopoints.length
-          ),
-        })),
-      })
-    );
-  }, [infopoints, timelineType, dispatch]);
-
   const {
     handleMouseDown,
     handleMouseUp,
@@ -141,10 +116,8 @@ const TimelineContainer = ({ activeScreen }: TimelineContainerProps) => {
     itemSize: TIMELINE_ITEM_SIZE,
     items: infopoints,
     timelineType: timelineType,
-    isEvenDistributionOfPointsEnabled: isEvenDistributionOfPointsEnabled,
     handleItemUpdateAtPosition: handleItemUpdateAtPosition,
     handleItemsReset: handleItemResets,
-    handleItemEvenDistribution: handleItemEvenDistribution,
   });
 
   // - - - GUI - - -
