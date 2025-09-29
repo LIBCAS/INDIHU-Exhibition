@@ -23,6 +23,7 @@ import {
   calculateInfopointsPosition,
 } from "./view-timeline-utils";
 import {
+  DEFAULT_TIMELINE_BG_TRANSPARENCY,
   DEFAULT_TIMELINE_COLOR,
   DEFAULT_TIMELINE_THICKNESS,
   DEFAULT_TIMELINE_TYPE,
@@ -42,6 +43,7 @@ const stateSelector = createSelector(
 
 export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
+  const { backgroundImage } = screenPreloadedFiles;
   const { t } = useTranslation("view-screen", { keyPrefix: "timelineScreen" });
 
   const [parentRef, parentSize] = useResizeObserver();
@@ -69,6 +71,13 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       arrowThicknessSmal: calculateArrowThickness(timelineThickness, false),
     }),
     [timelineThickness]
+  );
+
+  const bgImageTransparency = useMemo(
+    () =>
+      (viewScreen.backgroundImageTransparency ??
+        DEFAULT_TIMELINE_BG_TRANSPARENCY) / 100,
+    [viewScreen.backgroundImageTransparency]
   );
 
   // - - - Derived variables (styles) - - -
@@ -148,33 +157,43 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
         </div>
 
         {/* 2. Timeline */}
-        <div className="w-full h-full p-[12.5%] xl:p-[5%]">
-          <div
-            ref={parentRef}
-            className="relative w-full h-full flex justify-center items-center"
-          >
-            {/* 2a) Timeline line */}
-            <div style={lineStyle} className={lineArrowClassName} />
+        <div className="relative w-full h-full">
+          {backgroundImage && (
+            <img
+              src={backgroundImage}
+              className="absolute left-0 top-0 w-full h-full object-cover"
+              style={{ opacity: bgImageTransparency }}
+            />
+          )}
 
-            {/* 2b) Timeline Points */}
-            {adjustedInfopoints.map((ip, ipIdx) => (
-              <React.Fragment key={`infopoint-tooltip-${ipIdx}`}>
-                <AnchorInfopoint
-                  id={`infopoint-tooltip-${ipIdx}`}
-                  left={ip.left}
-                  top={ip.top}
-                  infopoint={ip}
-                />
-                <TooltipInfoPoint
-                  key={`infopoint-tooltip-${ipIdx}`}
-                  id={`infopoint-tooltip-${ipIdx}`}
-                  infopoint={ip}
-                  infopointStatusMap={infopointStatusMap}
-                  setInfopointStatusMap={setInfopointStatusMap}
-                  primaryKey={ipIdx.toString()}
-                />
-              </React.Fragment>
-            ))}
+          <div className="w-full h-full p-[12.5%] xl:p-[5%]">
+            <div
+              ref={parentRef}
+              className="relative w-full h-full flex justify-center items-center"
+            >
+              {/* 2a) Timeline line */}
+              <div style={lineStyle} className={lineArrowClassName} />
+
+              {/* 2b) Timeline Points */}
+              {adjustedInfopoints.map((ip, ipIdx) => (
+                <React.Fragment key={`infopoint-tooltip-${ipIdx}`}>
+                  <AnchorInfopoint
+                    id={`infopoint-tooltip-${ipIdx}`}
+                    left={ip.left}
+                    top={ip.top}
+                    infopoint={ip}
+                  />
+                  <TooltipInfoPoint
+                    key={`infopoint-tooltip-${ipIdx}`}
+                    id={`infopoint-tooltip-${ipIdx}`}
+                    infopoint={ip}
+                    infopointStatusMap={infopointStatusMap}
+                    setInfopointStatusMap={setInfopointStatusMap}
+                    primaryKey={ipIdx.toString()}
+                  />
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
       </div>
