@@ -173,3 +173,55 @@ export const calculateItemInitialPosition = (
 
   return { left, top };
 };
+
+// - - - - - -
+
+export const calculateItemEvenDistributionPosition = (
+  containerSize: Size,
+  itemSize: Size,
+  index: number,
+  timelineType: TimelineType,
+  numItems: number
+): Position => {
+  const dir = getDirVector(timelineType, containerSize);
+
+  // Total usable line length
+  const lineLength =
+    timelineType === "HORIZONTAL"
+      ? containerSize.width
+      : timelineType === "VERTICAL"
+      ? containerSize.height
+      : Math.hypot(containerSize.width, containerSize.height);
+
+  // Start point depends on line orientation
+  let start: Position;
+
+  if (timelineType === "HORIZONTAL") {
+    start = { left: 0, top: containerSize.height / 2 };
+  } else if (timelineType === "VERTICAL") {
+    start = { left: containerSize.width / 2, top: 0 };
+  } else if (timelineType === "DIAGONAL_TOP_TO_BOTTOM") {
+    start = { left: 0, top: 0 };
+  } else if (timelineType === "DIAGONAL_BOTTOM_TO_TOP") {
+    start = { left: 0, top: containerSize.height };
+  } else {
+    throw Error(
+      "[calculateItemEvenDistributionPosition]: Unknown timeline type!"
+    );
+  }
+
+  // Number of segments along the line based on the current items count
+  const numOfSegments = numItems + 1;
+
+  // Position factor along line [0..1], for each item (based on its index)
+  const factor = (index + 1) / numOfSegments;
+
+  //
+  const offset = lineLength * factor;
+
+  //
+  const left = start.left + dir.x * offset;
+  const top = start.top + dir.y * offset;
+
+  return { left, top };
+};
