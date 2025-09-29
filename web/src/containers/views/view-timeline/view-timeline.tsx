@@ -20,16 +20,14 @@ import {
   calculateLineSizing,
   calculateLineTransformation,
 } from "containers/expo-administration/expo-editor/screen-timeline/hooks/useItemLinearMovement/linear-movement-utils";
-import { DEFAULT_TIMELINE_TYPE } from "containers/expo-administration/expo-editor/screen-timeline/default-values";
+import {
+  DEFAULT_TIMELINE_COLOR,
+  DEFAULT_TIMELINE_THICKNESS,
+  DEFAULT_TIMELINE_TYPE,
+} from "containers/expo-administration/expo-editor/screen-timeline/default-values";
 
 // CSS
 import "./timeline.scss";
-
-// - - - - - -
-
-// NOTE: When changed, it is also required to change border css styles inside 'timeline.scss'
-// TODO - default timeline thickness!
-const LINE_THICKNESS = 4;
 
 // - - - - - -
 
@@ -63,38 +61,88 @@ const calculateInfopointsPosition = (
 
 // - - - - - -
 
+const calculateArrowThickness = (thickness: number, returnBig: boolean) => {
+  if (thickness <= 1) {
+    const finalThickness = 1;
+    const big = finalThickness * 6;
+    const small = finalThickness * 6;
+    const toReturn = returnBig ? big : small;
+    return toReturn;
+  }
+
+  const big = thickness * 6;
+  const small = (thickness - 1) * 6;
+  const toReturn = returnBig ? big : small;
+  return toReturn;
+};
+
+// - - - - - -
+
 export const ViewTimeline = () => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen", { keyPrefix: "timelineScreen" });
 
   const [parentRef, parentSize] = useResizeObserver();
 
-  // - - - Derived variables - - -
+  // - - - Derived variables (settings ) - - -
 
   const timelineType = useMemo(
     () => viewScreen.timelineType ?? DEFAULT_TIMELINE_TYPE,
     [viewScreen.timelineType]
   );
 
+  const timelineColor = useMemo(
+    () => viewScreen.timelineColor ?? DEFAULT_TIMELINE_COLOR,
+    [viewScreen.timelineColor]
+  );
+
+  const timelineThickness = useMemo(
+    () => viewScreen.timelineThickness ?? DEFAULT_TIMELINE_THICKNESS,
+    [viewScreen.timelineThickness]
+  );
+
+  const { arrowThicknessBig, arrowThicknessSmal } = useMemo(
+    () => ({
+      arrowThicknessBig: calculateArrowThickness(timelineThickness, true),
+      arrowThicknessSmal: calculateArrowThickness(timelineThickness, false),
+    }),
+    [timelineThickness]
+  );
+
+  // - - - Derived variables (styles) - - -
+
   const lineStyle = useMemo<CSSProperties>(
     () => ({
       position: "absolute",
-      backgroundColor: "black",
-      ...calculateLineSizing(timelineType, parentSize, LINE_THICKNESS),
+      ...calculateLineSizing(timelineType, parentSize, timelineThickness),
       ...calculateLinePosition(timelineType),
       ...calculateLineTransformation(timelineType, parentSize),
       borderRadius: "9999px",
+      backgroundColor: timelineColor,
+      // NOTE: for the scss styles (dot and arrow od the straight line)
+      "--timeline-color": timelineColor,
+      "--timeline-thickness-lg": `${arrowThicknessBig}px`,
+      "--timeline-thickness-sm": `${arrowThicknessSmal}px`,
     }),
-    [parentSize, timelineType]
+    [
+      parentSize,
+      timelineType,
+      timelineColor,
+      timelineThickness,
+      arrowThicknessBig,
+      arrowThicknessSmal,
+    ]
   );
 
   const lineArrowClassName = useMemo(() => {
     if (timelineType === "VERTICAL") {
       return "timeline-line vertical";
     }
-    // Also diagonals, for some reason, works well with horizontal arrow setup
+    // NOTE: Also diagonals, for some reason, works well with horizontal arrow setup
     return "timeline-line horizontal";
   }, [timelineType]);
+
+  // - - - Derived variables (others) - - -
 
   const adjustedInfopoints = useMemo(
     () => calculateInfopointsPosition(viewScreen.infopoints, parentSize),

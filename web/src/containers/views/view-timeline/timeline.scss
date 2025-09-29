@@ -1,18 +1,24 @@
 .timeline-line {
+  --timeline-color: black;
+  --timeline-thickness-lg: 24px;
+  --timeline-thickness-sm: 18px;
+
+  // Arrow at the end
+
   &::after {
     content: "";
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 24px solid black;
-    border-top: 18px solid transparent;
-    border-bottom: 18px solid transparent;
+    border-left: var(--timeline-thickness-lg) solid var(--timeline-color);
+    border-top: var(--timeline-thickness-sm) solid transparent;
+    border-bottom: var(--timeline-thickness-sm) solid transparent;
   }
 
   &.horizontal::after {
     right: 0;
     top: 50%;
-    transform: translate(24px, -50%);
+    transform: translate(var(--timeline-thickness-lg), -50%);
   }
 
   &.vertical::after {
@@ -20,7 +26,7 @@
     bottom: 0;
     right: auto;
     top: auto;
-    transform: translate(-50%, 24px) rotate(90deg);
+    transform: translate(-50%, var(--timeline-thickness-lg)) rotate(90deg);
   }
 
   // Dot at the beginning
@@ -28,9 +34,9 @@
   &::before {
     content: "";
     position: absolute;
-    width: 24px;
-    height: 24px;
-    background-color: black;
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-lg);
+    background-color: var(--timeline-color);
     border-radius: 50%;
   }
 
