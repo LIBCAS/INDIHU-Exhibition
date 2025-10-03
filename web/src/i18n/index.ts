@@ -12,9 +12,14 @@ export type LanguageKey = typeof languageKeys[number];
 
 // - - - - - -
 
-const backend = new Backend({
-  loadPath: `/locales/{{lng}}/{{ns}}.json?v=${appVersion}`,
-});
+const backend = new Backend(
+  {
+    loadPath: `/locales/{{lng}}/{{ns}}.json`,
+  },
+  {
+    queryStringParams: { v: appVersion },
+  }
+);
 
 i18n
   .use(backend)
