@@ -20,7 +20,8 @@
     "textTab": "Text",
     "answersTab": "Odpovědi",
     "externalTab": "Externí data",
-    "referencesTab": "Odkazy"
+    "referencesTab": "Odkazy",
+    "timelineTab": "Časová osa"
   },
   "descFields": {
     "name": "Název",
@@ -238,6 +239,31 @@
       },
       "linkNotSufficientlyFilled": "Tato reference není dostatečně vyplněna, proto bude ve výstavě ignorována!"
     },
+    "timelineScreen": {
+      "nameFieldLabel": "Název časové osy",
+      "nameFieldTooltip": "Napište název časové osy, příklad 'Vývoj porodnosti ve 20. století,' aby návštěvníci věděli, na co se dívají",
+      "typeSelectFieldLabel": "Typ časové osy",
+      "typeSelectFieldTooltip": "Vyberte základní typ časové osy, která nejlépe odpovídá vašemu tématu, a její sklon a délku",
+      "horizontalOption": "Horizontální",
+      "verticalOption": "Vertikální",
+      "diagonalTopToBottomOption": "Diagonála dolů",
+      "diagonalBottomToTopOption": "Diagonála nahoru",
+      "timelineBoxLabel": "Časová osa",
+      "timelineBoxTooltip": "Přidejte body na časovou osu a umístěte je jak potřebujete. Vyberte z různých druhů - obrázek, text, video.",
+      "timelinePointsTitle": "Body časové osy",
+      "additionalSettings": "Další nastavení časové osy",
+      "evenDistributionOfPointsBtnLabel": "Rovnoměrně rozložit body na časové ose",
+      "timelineColorLabel": "Barva časové osy:",
+      "timelineColorTooltip": "Vyberte libovolnou barvu pro vaši časovou osu, která bude zobrazena návštěvníkům.",
+      "timelineThicknessLabel": "Tloušťka časové osy",
+      "timelineThicknessTooltip": "Vyberte tloušťku pro vaši časovou osu. Minimální povolená hodnota je 1 a maximální povolená hodnota je 25",
+      "backgroundImageLabel": "Vybraný obrázek na pozadí:",
+      "noBackgroundImage": "Zatím nebyl vybrán žádný obrázek",
+      "chooseBackgroundImageBtnLabel": "Vyberte obrázek na pozadí",
+      "clearBackgroundImageBtnLabel": "Odstranit obrázek z pozadí",
+      "bgImageTransparencyLabel": "Průhlednost vybraného obrázku na pozadí",
+      "bgImageTransparencyTooltip": "Vyberte si úroveň průhlednosti pro váš obrázek na pozadí. Minimální povolená hodnota je 1, maximální povolená hodnota je 100."
+    },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
     },
@@ -419,7 +445,14 @@
     "shapeIconOption": "Vlastní ikona",
     "sizeLabel": "Velikost v pixelech",
     "colorLabel": "Barva infopointu",
-    "iconFileLabel": "Soubor vlastní ikony"
+    "iconFileLabel": "Soubor vlastní ikony",
+
+    "timelineType": {
+      "headerLabel": "Název bodu na časové ose",
+      "bodyContentTypeLabel": "Typ těla",
+      "textBodyLabel": "Textový popis",
+      "shapeSizeColorSectionSubheader": "Tvar, velikost a barva bodu"
+    }
   },
   "sequenceForm": {
     "createNewSequenceTitle": "Vytvořit novou sekvenci",

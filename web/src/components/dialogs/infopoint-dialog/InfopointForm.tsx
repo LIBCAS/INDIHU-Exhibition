@@ -1,6 +1,8 @@
 import { Form, FormikProps } from "formik";
 import { InfopointFormData } from "./models";
 
+import { useTranslation } from "react-i18next";
+
 // FileChooseDialog stuff
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "store/store";
@@ -17,27 +19,47 @@ import {
 import Button from "react-md/lib/Buttons/Button";
 import ColorPicker from "components/form/formik/ColorPicker";
 import ScreenChooser from "containers/expo-administration/expo-editor/screen-signpost/ScreenChooser";
-import { useTranslation } from "react-i18next";
 
 // - - - - - - -
 
-interface InfopointFormProps {
-  formik: FormikProps<InfopointFormData>;
-}
+export type InfopointFormType = "classic" | "timeline";
 
-const InfopointForm = ({ formik }: InfopointFormProps) => {
+type InfopointFormProps = {
+  formik: FormikProps<InfopointFormData>;
+  type?: InfopointFormType;
+};
+
+const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
 
   const isScreenIdReferenceError =
     !!formik.touched.screenIdReference && !!formik.errors.screenIdReference;
 
+  // - - - Translations - - -
+
+  const headerLabel =
+    type === "timeline" ? t("timelineType.headerLabel") : t("headerLabel");
+
+  const bodyContentTypeLabel =
+    type === "timeline"
+      ? t("timelineType.bodyContentTypeLabel")
+      : t("bodyContentTypeLabel");
+
+  const textBodyLabel =
+    type === "timeline" ? t("timelineType.textBodyLabel") : t("textBodyLabel");
+
+  const shapeSizeColorSectionSubheader =
+    type === "timeline"
+      ? t("timelineType.shapeSizeColorSectionSubheader")
+      : t("shapeSizeColorSectionSubheader");
+
   return (
     <Form>
       <div>
         <ReactMdTextField
           name="header"
-          label={t("headerLabel")}
+          label={headerLabel}
           id="infopoint-header-textfield"
         />
       </div>
@@ -59,7 +81,7 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
             },
           ]}
           name="bodyContentType"
-          label={t("bodyContentTypeLabel")}
+          label={bodyContentTypeLabel}
           inline
           className="mt-6"
           labelClassName="mb-0 font-['Work_Sans'] text-[13px] text-black/[.54]"
@@ -70,7 +92,7 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
         <div>
           <ReactMdTextField
             name="text"
-            label={t("textBodyLabel")}
+            label={textBodyLabel}
             multiLine
             maxLength={150}
           />
@@ -181,7 +203,7 @@ const InfopointForm = ({ formik }: InfopointFormProps) => {
 
       <div>
         <div className="mt-8 mb-1 font-['Work_Sans'] text-[15px] text-black/[.83] underline">
-          {t("shapeSizeColorSectionSubheader")}
+          {shapeSizeColorSectionSubheader}
         </div>
 
         <div className="w-full flex items-start gap-2">

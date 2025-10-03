@@ -20,7 +20,8 @@
     "textTab": "Text",
     "answersTab": "Answers",
     "externalTab": "External data",
-    "referencesTab": "Links"
+    "referencesTab": "Links",
+    "timelineTab": "Timeline"
   },
   "descFields": {
     "name": "Title",
@@ -238,6 +239,31 @@
       },
       "linkNotSufficientlyFilled": "This reference is not filled in enough, so it will be ignored in the exhibition!"
     },
+    "timelineScreen": {
+      "nameFieldLabel": "Timeline Name",
+      "nameFieldTooltip": "Enter a name for the timeline, e.g. '20th Century Birth Rate', so visitors know what they are looking at",
+      "typeSelectFieldLabel": "Timeline Type",
+      "typeSelectFieldTooltip": "Select the basic timeline type that best fits your topic, and its slope and length",
+      "horizontalOption": "Horizontal",
+      "verticalOption": "Vertical",
+      "diagonalTopToBottomOption": "Diagonal Down",
+      "diagonalBottomToTopOption": "Diagonal Up",
+      "timelineBoxLabel": "Timeline",
+      "timelineBoxTooltip": "Add points to the timeline and place them as needed. Choose from different types – image, text, video.",
+      "timelinePointsTitle": "Timeline Points",
+      "additionalSettings": "Additional timeline settings",
+      "evenDistributionOfPointsBtnLabel": "Evenly distribute points on the timeline",
+      "timelineColorLabel": "Timeline color:",
+      "timelineColorTooltip": "Choose any color for your timeline that will be visible to visitors.",
+      "timelineThicknessLabel": "Timeline thickness",
+      "timelineThicknessTooltip": "Select the thickness for your timeline. The minimum allowed value is 1 and the maximum allowed value is 25.",
+      "backgroundImageLabel": "Selected background image:",
+      "noBackgroundImage": "No image has been selected yet",
+      "chooseBackgroundImageBtnLabel": "Choose a background image",
+      "clearBackgroundImageBtnLabel": "Remove image from background",
+      "bgImageTransparencyLabel": "Transparency of the selected background image",
+      "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100."
+    },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
     },
@@ -419,7 +445,14 @@
     "shapeIconOption": "Custom icon",
     "sizeLabel": "Size in pixels",
     "colorLabel": "Infopoint color",
-    "iconFileLabel": "File of custom icon"
+    "iconFileLabel": "File of custom icon",
+
+    "timelineType": {
+      "headerLabel": "Timeline Point Title",
+      "bodyContentTypeLabel": "Body Type",
+      "textBodyLabel": "Text Description",
+      "shapeSizeColorSectionSubheader": "Shape, Size, and Color of the Point"
+    }
   },
   "sequenceForm": {
     "createNewSequenceTitle": "Create new sequence",

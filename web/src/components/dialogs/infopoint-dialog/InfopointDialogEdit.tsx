@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
-import InfopointForm from "./InfopointForm";
+import InfopointForm, { InfopointFormType } from "./InfopointForm";
 import { retrieveInfopointSchema } from "./schema";
 import { InfopointFormData, InfopointFormDataProcessed } from "./models";
 import { Infopoint } from "models";
@@ -19,6 +19,7 @@ interface InfopointDialogEditProps {
   ) => void;
   infopoint: Infopoint;
   infopointIndex: number;
+  type?: InfopointFormType;
 }
 
 const InfopointDialogEdit = ({
@@ -26,6 +27,7 @@ const InfopointDialogEdit = ({
   onDialogSubmit,
   infopoint,
   infopointIndex,
+  type,
 }: InfopointDialogEditProps) => {
   const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
   const { t: validationT } = useTranslation("validation");
@@ -80,7 +82,7 @@ const InfopointDialogEdit = ({
           isSubmitSuccessful={isSubmitted}
           closeOnEsc
         >
-          <InfopointForm formik={formik} />
+          <InfopointForm formik={formik} type={type} />
         </DialogWrap>
       )}
     </Formik>
