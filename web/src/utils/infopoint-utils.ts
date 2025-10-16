@@ -1,5 +1,13 @@
 import { Position, Size } from "models";
 
+// - - - - - -
+
+/**
+ * @param infopointPosition - The infopoint position stored in Redux for the given screen, provided by the `ImageBox` component.
+ * @param imgBoxSize - The size dimensions of the selected image as it appears within the image box — used in the new version where `imageOrigData` stores these values.
+ * @param imgNaturalSize - The natural size of the selected image inside image box — used in the old version where `imageOrigData` stores the natural size of the selected image.
+ * @param imgViewSize - The current size of the view screen which is also displaying the image.
+ */
 export const calculateInfopointPosition = (
   infopointPosition: Position,
   imgBoxSize: Size,
@@ -21,9 +29,14 @@ export const calculateInfopointPosition = (
   );
 };
 
+// - - - - - -
+
+/**
+ *
+ */
 export const isInfopointOutsideImageBox = (
   infopointPosition: Position,
-  imgBoxSize: Size // it is imageOrigData
+  imgBoxSize: Size // NOTE: this is the same as 'imageOrigData' field
 ) => {
   const { left, top } = infopointPosition;
   const { width, height } = imgBoxSize;
@@ -35,9 +48,16 @@ export const isInfopointOutsideImageBox = (
   return false;
 };
 
+// - - - - - -
+
 /**
  * NEW VERSION
- * When imageOrigData stores the dimension of the image in the image box component (450 x 350px)
+ *
+ * In newer versions, the `imageOrigData` field stores the size dimension
+ * of the selected image inside image box (container).
+ *
+ * Since the image box and its container has 450px x 350px, there values also represent
+ * the maximum threshold for width and height respectively.
  */
 export const calculateInfopointPositionByImageBoxSize = (
   infopointPosition: Position,
@@ -45,7 +65,7 @@ export const calculateInfopointPositionByImageBoxSize = (
   imgViewSize: Size
 ): Position => {
   const { left, top } = infopointPosition;
-  const { width: boxWidth, height: boxHeight } = imgBoxSize; // imageOrigData
+  const { width: boxWidth, height: boxHeight } = imgBoxSize; // NOTE: this is the same as 'imageOrigData' field
   const { width: viewWidth, height: viewHeight } = imgViewSize;
 
   //
@@ -60,12 +80,18 @@ export const calculateInfopointPositionByImageBoxSize = (
   return newPosition;
 };
 
+// - - - - - -
+
 /**
  * OLD VERSION
- * When imageOrigData attribute was set to natural size of the image in the image box
+ *
+ * In older versions, the `imageOrigData` field has stored the natural size dimension
+ * of the image which was selected to the image container. Thus storing natural
+ * dimension of the selected image and not the size of the image container.
  *
  * Should be used when current infopoint's left and top positions are bigger than the
- * image's imageOrigData (because it stores data of natural size of the img)
+ * image's imageOrigData (because it stores data of natural size of the img). This is
+ * to achieve backward compatibility
  */
 const calculateInfopointPositionByNaturalSize = (
   infopointPosition: Position,
@@ -89,9 +115,13 @@ const calculateInfopointPositionByNaturalSize = (
   return newPosition;
 };
 
-// - -
+// - - - - - -
 
-// Used only for old version, when imageOrigData has natural img width and height
+/**
+ * NOT USED
+ *
+ * Used only for old version, when imageOrigData has natural img width and height
+ */
 export const calculateInfopointPositionForImageBox = (
   infopointPosition: Position,
   imgNaturalSize: Size,
