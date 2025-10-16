@@ -131,7 +131,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
         {image1 && (
           <div className="w-[45%]">
             <InfopointsTable
-              title="Infopointy k podkladovému obrázku"
+              title={t("assignmentInfopointsTableTitle")}
               infopoints={activeScreen.infopoints1 ?? []}
               onInfopointAdd={(dialogFormData) => {
                 dispatch(

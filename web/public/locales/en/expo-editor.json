@@ -287,6 +287,7 @@
       "imageResultTooltip": "Select a complete image from the document library.",
       "showUsersDrawing": "View user's drawing",
       "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
+      "assignmentInfopointsTableTitle": "Infopoints for the underlying image",
       "initialDrawingSettingsTitle": "Initial settings for drawing",
       "initialDrawingColorLabel": "Initial color",
       "initialDrawingThicknessLabel": "Initial thickness",
