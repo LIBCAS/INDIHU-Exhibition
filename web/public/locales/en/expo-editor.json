@@ -288,6 +288,7 @@
       "showUsersDrawing": "View user's drawing",
       "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
       "assignmentInfopointsTableTitle": "Infopoints for the underlying image",
+      "assignmentInfopointsTableTooltip": "Using infopoints and the information in them, you can direct the visitor to think more deeply about the result.",
       "initialDrawingSettingsTitle": "Initial settings for drawing",
       "initialDrawingColorLabel": "Initial color",
       "initialDrawingThicknessLabel": "Initial thickness",

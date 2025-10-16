@@ -288,6 +288,7 @@
       "showUsersDrawing": "Zobraziť kresbu návštevníkov",
       "showUsersDrawingTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoje tipy, zaškrtnite toto pole.",
       "assignmentInfopointsTableTitle": "Infopointy k podkladovému obrázku",
+      "assignmentInfopointsTableTooltip": "Pomocou infopointov a informácií v ňom môžete nasmerovať návštevníka k hlbšiemu premýšľaniu nad výsledkom.",
       "initialDrawingSettingsTitle": "Počiatočné nastavenia pre kreslenie",
       "initialDrawingColorLabel": "Počiatočná farba",
       "initialDrawingThicknessLabel": "Počiatočná hrúbka",
