@@ -73,7 +73,7 @@ export const GameDraw = ({
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
 
-  // - - States - -
+  // - - - States - - -
 
   const [color, setColor] = useState<string>(initialColor);
 
@@ -91,9 +91,11 @@ export const GameDraw = ({
     { toggle: toggleThicknessPopover, setFalse: closeThicknessPopover },
   ] = useBoolean(false);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+  // - - - Ref - - -
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // - - Draw functionality - -
 
@@ -105,7 +107,7 @@ export const GameDraw = ({
     isErasing,
   });
 
-  // - - - -
+  // - - - Game Handling - - -
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -128,14 +130,12 @@ export const GameDraw = ({
     leave: { opacity: 0 },
   });
 
-  // - - Tutorial stuff - -
+  // - - - Tutorial stuff - - -
 
   const { bind, TutorialTooltip } = useTutorial("gameDraw", {
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
-
-  // - -
 
   // - - - Infopoints (assignment image) - - -
 
@@ -170,6 +170,8 @@ export const GameDraw = ({
     [image1OrigData, imageContainerSize]
   );
 
+  // - - - Infopoints (assignment image closing) - - -
+
   // Event handler on key down press
   const onKeyDownAction = useCallback(
     (event: globalThis.KeyboardEvent) => {
@@ -188,7 +190,7 @@ export const GameDraw = ({
     };
   }, [onKeyDownAction]);
 
-  // - - -
+  // - - - Game Auto Navigation - - -
 
   useGameAutoNavigationOnResultTimeElapsed({
     gameResultTime: resultTime * 1000,
