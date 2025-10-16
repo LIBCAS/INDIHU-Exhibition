@@ -451,6 +451,7 @@ export type GameDrawScreen = {
   resultTime?: number;
   initialColor?: string;
   initialThickness?: number;
+  infopoints1?: Infopoint[];
 };
 
 export type GameWipeScreen = {
