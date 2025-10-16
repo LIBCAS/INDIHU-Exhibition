@@ -281,7 +281,7 @@
     },
     "gameDrawScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. complete the graph of how coal mining developed after 1950).",
-      "imageAssignmentLabel": "Assignment",
+      "imageAssignmentLabel": "Background image",
       "imageAssignmentTooltip": "Select an image from the document library, part of which will be missing and the user should draw it.",
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select a complete image from the document library.",

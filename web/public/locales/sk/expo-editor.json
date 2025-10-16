@@ -281,7 +281,7 @@
     },
     "gameDrawScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. dokreslite do grafu, ako sa vyvíjala ťažba uhlia po roku 1950).",
-      "imageAssignmentLabel": "Zadanie",
+      "imageAssignmentLabel": "Podkladový obrázok",
       "imageAssignmentTooltip": "Z knižnice dokumentov vyberte obrázok, ktorého časť bude chýbať a návštevníci ju majú dokresliť.",
       "imageResultLabel": "Výsledok",
       "imageResultTooltip": "Z knižnice dokumentov vyberte kompletný obrázok.",
