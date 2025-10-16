@@ -142,7 +142,7 @@ const Image = ({ activeScreen }: ImageProps) => {
 
             {imageFile && activeScreen.infopoints && (
               <InfopointsTable
-                title="Infopointy"
+                title={t("infopointsTable.defaultTitle")}
                 infopoints={activeScreen.infopoints}
                 onInfopointAdd={(dialogFormData) => {
                   dispatch(
