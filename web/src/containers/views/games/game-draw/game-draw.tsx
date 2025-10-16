@@ -1,5 +1,12 @@
 import ReactDOM from "react-dom";
-import { useCallback, useState, useRef } from "react";
+import {
+  useCallback,
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  Fragment,
+} from "react";
 import { animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -7,9 +14,11 @@ import { createSelector } from "reselect";
 
 // Custom hooks
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useBoolean } from "hooks/boolean-hook";
 import { useGameDraw } from "./useGameDraw";
+import useResizeObserver from "hooks/use-resize-observer";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -32,6 +41,9 @@ import {
   GAME_DRAW_DEFAULT_THICKNESS,
   GAME_DRAW_DEFAULT_IS_ERASING,
 } from "constants/screen";
+
+import { calculateObjectFit } from "utils/object-fit";
+import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
 // - - - -
 
@@ -125,6 +137,59 @@ export const GameDraw = ({
 
   // - -
 
+  // - - - Infopoints (assignment image) - - -
+
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints,
+    AnchorInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  const image1OrigData = useMemo(
+    () => viewScreen.image1OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image1OrigData]
+  );
+
+  const [imageContainerRef, imageContainerSize] =
+    useResizeObserver<HTMLImageElement>();
+
+  const {
+    width: containedImageWidth,
+    height: containedImageHeight,
+    left: fromLeftWidth,
+    top: fromTopHeight,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        type: "contain",
+        parent: imageContainerSize,
+        child: image1OrigData,
+      }),
+    [image1OrigData, imageContainerSize]
+  );
+
+  // Event handler on key down press
+  const onKeyDownAction = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints(viewScreen)();
+      }
+    },
+    [closeInfopoints, viewScreen]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDownAction);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDownAction);
+    };
+  }, [onKeyDownAction]);
+
+  // - - -
+
   useGameAutoNavigationOnResultTimeElapsed({
     gameResultTime: resultTime * 1000,
     isGameFinished: isGameFinished,
@@ -134,12 +199,59 @@ export const GameDraw = ({
     <div className="relative w-[100svw] h-[100svh]">
       {transition(({ opacity }, isGameFinished) =>
         !isGameFinished ? (
-          <animated.img
-            style={{ opacity }}
-            className="absolute w-full h-full object-contain"
-            src={assignmentImgSrc}
-            alt="assignment img"
-          />
+          <div className="relative w-full h-full">
+            <animated.img
+              ref={imageContainerRef}
+              style={{ opacity }}
+              className="absolute w-full h-full object-contain"
+              src={assignmentImgSrc}
+              alt="assignment img"
+            />
+
+            {/* Infopoints */}
+            {viewScreen.infopoints1?.map((infopoint, infopointIndex) => {
+              const infopointPosition = {
+                left: infopoint.left,
+                top: infopoint.top,
+              };
+              const imgBoxSize = {
+                width: image1OrigData.width,
+                height: image1OrigData.height,
+              };
+              const imgViewSize = {
+                width: containedImageWidth,
+                height: containedImageHeight,
+              };
+
+              const { left, top } = calculateInfopointPositionByImageBoxSize(
+                infopointPosition,
+                imgBoxSize,
+                imgViewSize
+              );
+
+              const adjustedLeft = fromLeftWidth + left;
+              const adjustedTop = fromTopHeight + top;
+
+              return (
+                <Fragment key={`draw-infopoint-${infopointIndex}`}>
+                  <AnchorInfopoint
+                    id={`draw-infopoint-tooltip-${infopointIndex}`}
+                    left={adjustedLeft}
+                    top={adjustedTop}
+                    infopoint={infopoint}
+                  />
+                  <TooltipInfoPoint
+                    key={`draw-infopoint-tooltip-${infopointIndex}`}
+                    id={`draw-infopoint-tooltip-${infopointIndex}`}
+                    infopoint={infopoint}
+                    infopointStatusMap={infopointStatusMap}
+                    setInfopointStatusMap={setInfopointStatusMap}
+                    primaryKey={infopointIndex.toString()}
+                  />
+                </Fragment>
+              );
+            })}
+          </div>
         ) : (
           <animated.img
             style={{ opacity }}
