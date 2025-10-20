@@ -201,13 +201,24 @@ export const GameDraw = ({
     <div className="relative w-[100svw] h-[100svh]">
       {transition(({ opacity }, isGameFinished) =>
         !isGameFinished ? (
-          <div className="relative w-full h-full">
+          <div className="absolute w-full h-full">
             <animated.img
               ref={imageContainerRef}
               style={{ opacity }}
               className="absolute w-full h-full object-contain"
               src={assignmentImgSrc}
               alt="assignment img"
+            />
+
+            <canvas
+              className={cx("absolute touch-none", {
+                [classes.drawingCursor]: !isGameFinished && !isErasing,
+                [classes.erasingCursor]: !isGameFinished && isErasing,
+              })}
+              ref={canvasRef}
+              onPointerDown={startDrawing}
+              onPointerUp={stopDrawing}
+              onPointerMove={draw}
             />
 
             {/* Infopoints */}
@@ -263,17 +274,6 @@ export const GameDraw = ({
           />
         )
       )}
-
-      <canvas
-        className={cx("absolute touch-none", {
-          [classes.drawingCursor]: !isGameFinished && !isErasing,
-          [classes.erasingCursor]: !isGameFinished && isErasing,
-        })}
-        ref={canvasRef}
-        onPointerDown={startDrawing}
-        onPointerUp={stopDrawing}
-        onPointerMove={draw}
-      />
 
       <Popper
         anchor={thicknessAnchor}
