@@ -317,7 +317,7 @@
       "imageCompareLabel": "Porovnávaný predmet č. 2.",
       "imageCompareTooltip": "Z knižnice dokumentov vyberte obrázok druhého predmetu na porovnanie.",
       "imageResultLabel": "Výsledný obrázok",
-      "imageResultTooltip": "Z knižnice dokumentov vyberte vopred pripravený obrázok, ktorý názorne ukazuje veľkosť oboch predmetov.",
+      "imageResultTooltip": "Z knižnice dokumentov vyberte vopred pripravený obrázok, ktorý názorne ukazuje veľkosť oboch predmetov. Využite možnosť pridania infopointov pre komentovanie vzťahu medzi predmetmi.",
       "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
     },
     "gameMoveScreen": {
