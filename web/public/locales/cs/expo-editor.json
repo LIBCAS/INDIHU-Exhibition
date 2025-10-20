@@ -314,7 +314,7 @@
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Odhadněte, jak je soška Věstonické Venuše velká v porovnání s krabičkou od sirek).",
       "imageReferenceLabel": "Porovnávaný předmět č. 1.",
       "imageReferenceTooltip": "Z knihovny dokumentů vyberte obrázek hádaného předmětu, jehož velikost mají návštěvníci porovnat s druhým obrázkem",
-      "imageCompareLabel": "Obrázek porovnávaného předmětu",
+      "imageCompareLabel": "Porovnávaný předmět č. 2.",
       "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek referenčního předmětu, jehož velikost je obecně známá (např. krabička od sirek).",
       "imageResultLabel": "Výsledný obrázek",
       "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů."
