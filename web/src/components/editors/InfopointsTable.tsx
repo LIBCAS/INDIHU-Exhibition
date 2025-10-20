@@ -7,6 +7,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { setDialog } from "actions/dialog-actions";
 import { Infopoint } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
+import HelpIcon from "components/help-icon";
 
 import InfopointDialogNew from "components/dialogs/infopoint-dialog/InfopointDialogNew";
 import InfopointDialogEdit from "components/dialogs/infopoint-dialog/InfopointDialogEdit";
@@ -18,6 +19,8 @@ import { InfopointFormType } from "components/dialogs/infopoint-dialog/Infopoint
 
 interface InfopointsTableProps {
   title?: string;
+  helpIconLabel?: string;
+  helpIconId?: string;
   infopoints: Infopoint[];
   onInfopointAdd: (dialogFormData: any) => void;
   onInfopointEdit: (infopointIndexToEdit: number, dialogFormData: any) => void;
@@ -39,6 +42,8 @@ interface InfopointEditDialogStatus {
 
 const InfopointsTable = ({
   title,
+  helpIconLabel,
+  helpIconId,
   infopoints,
   onInfopointAdd,
   onInfopointEdit,
@@ -74,7 +79,13 @@ const InfopointsTable = ({
 
   return (
     <div className="mt-4 min-w-[50%]">
-      <div>{title ?? t("infopointsTable.defaultTitle")}</div>
+      <div className="flex justify-between items-center gap-4">
+        <div>{title ?? t("infopointsTable.defaultTitle")}</div>
+        {helpIconLabel && helpIconId && (
+          <HelpIcon label={helpIconLabel} id={helpIconId} />
+        )}
+      </div>
+
       <div className="w-full flex flex-col px-4 py-2 mb-4">
         {/* Table header */}
         <div className="table-row header">

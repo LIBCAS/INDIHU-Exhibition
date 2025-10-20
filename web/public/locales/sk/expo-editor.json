@@ -281,12 +281,14 @@
     },
     "gameDrawScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. dokreslite do grafu, ako sa vyvíjala ťažba uhlia po roku 1950).",
-      "imageAssignmentLabel": "Zadanie",
+      "imageAssignmentLabel": "Podkladový obrázok",
       "imageAssignmentTooltip": "Z knižnice dokumentov vyberte obrázok, ktorého časť bude chýbať a návštevníci ju majú dokresliť.",
       "imageResultLabel": "Výsledok",
       "imageResultTooltip": "Z knižnice dokumentov vyberte kompletný obrázok.",
       "showUsersDrawing": "Zobraziť kresbu návštevníkov",
       "showUsersDrawingTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoje tipy, zaškrtnite toto pole.",
+      "assignmentInfopointsTableTitle": "Infopointy k podkladovému obrázku",
+      "assignmentInfopointsTableTooltip": "Pomocou infopointov a informácií v ňom môžete nasmerovať návštevníka k hlbšiemu premýšľaniu nad výsledkom.",
       "initialDrawingSettingsTitle": "Počiatočné nastavenia pre kreslenie",
       "initialDrawingColorLabel": "Počiatočná farba",
       "initialDrawingThicknessLabel": "Počiatočná hrúbka",
@@ -310,12 +312,13 @@
     },
     "gameSizingScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. odhadnite, aká je soška Vestonickej Venuše veľká v porovnaní so škatuľkou od zápaliek).",
-      "imageReferenceLabel": "Obrázok referenčného predmetu",
-      "imageReferenceTooltip": "Z knižnice dokumentov vyberte obrázok hádaného predmetu, ktorého veľkosť majú návštevníci porovnať s referenčným obrázkom",
-      "imageCompareLabel": "Obrázok porovnávaného predmetu",
-      "imageCompareTooltip": "Z knižnice dokumentov vyberte obrázok referenčného predmetu, ktorého veľkosť je všeobecne známa (napr. krabička od zápaliek).",
+      "imageReferenceLabel": "Porovnávaný predmet č. 1.",
+      "imageReferenceTooltip": "Z knižnice dokumentov vyberte obrázok hádaného predmetu, ktorého veľkosť majú návštevníci porovnať s druhým obrázkom",
+      "imageCompareLabel": "Porovnávaný predmet č. 2.",
+      "imageCompareTooltip": "Z knižnice dokumentov vyberte obrázok druhého predmetu na porovnanie.",
       "imageResultLabel": "Výsledný obrázok",
-      "imageResultTooltip": "Z knižnice dokumentov vyberte vopred pripravený obrázok, ktorý názorne ukazuje veľkosť oboch predmetov."
+      "imageResultTooltip": "Z knižnice dokumentov vyberte vopred pripravený obrázok, ktorý názorne ukazuje veľkosť oboch predmetov.",
+      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
     },
     "gameMoveScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. vyberte správny črep a zložte rozbitý tanier).",

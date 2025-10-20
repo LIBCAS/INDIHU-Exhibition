@@ -7,6 +7,7 @@ import Button from "react-md/lib/Buttons/Button";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import ImageBox from "components/editors/ImageBox";
 import HelpIcon from "components/help-icon";
+import InfopointsTable from "components/editors/InfopointsTable";
 
 // Models
 import { GameDrawScreen, File as IndihuFile } from "models";
@@ -19,6 +20,7 @@ import {
   GAME_DRAW_DEFAULT_COLOR,
   GAME_DRAW_DEFAULT_THICKNESS,
 } from "constants/screen";
+import { compact, concat } from "lodash";
 
 // - -
 
@@ -73,8 +75,21 @@ const Images = ({ activeScreen }: ImagesProps) => {
               }
               helpIconId="editor-game-draw-image1"
               helpIconLabel={t("imageAssignmentTooltip")}
+              infopoints={activeScreen.infopoints1 ?? []}
+              onInfopointMove={(movedInfopointIdx, newLeft, newTop) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints1: activeScreen.infopoints1?.map((ip, ipIdx) =>
+                      ipIdx === movedInfopointIdx
+                        ? { ...ip, left: newLeft, top: newTop }
+                        : ip
+                    ),
+                  })
+                );
+              }}
             />
           </div>
+
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
               title={t("imageResultLabel")}
@@ -111,6 +126,66 @@ const Images = ({ activeScreen }: ImagesProps) => {
             id="editor-game-draw-show-drawing"
           />
         </div>
+
+        {/* Infopoints Table */}
+        {image1 && (
+          <div className="w-[45%]">
+            <InfopointsTable
+              title={t("assignmentInfopointsTableTitle")}
+              helpIconLabel={t("assignmentInfopointsTableTooltip")}
+              helpIconId="assignment-image-infopoint-table-help"
+              infopoints={activeScreen.infopoints1 ?? []}
+              onInfopointAdd={(dialogFormData) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints1: compact(
+                      concat(activeScreen.infopoints1 ?? [], {
+                        // Add new infopoint object
+                        ...dialogFormData,
+                        left: 17,
+                        top: 17,
+                      })
+                    ),
+                  })
+                );
+              }}
+              onInfopointEdit={(infopointIdxToEdit, dialogFormData) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints1: activeScreen.infopoints1?.map((ip, ipIdx) =>
+                      ipIdx === infopointIdxToEdit
+                        ? { ...ip, ...dialogFormData }
+                        : ip
+                    ),
+                  })
+                );
+              }}
+              onInfopointDelete={(infopointIdxToDelete) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints1: activeScreen.infopoints1?.filter(
+                      (_ip, ipIdx) => ipIdx !== infopointIdxToDelete
+                    ),
+                  })
+                );
+              }}
+              onInfopointAlwaysVisibleChange={(
+                infopointIdxToEdit,
+                newIsAlwaysVisibleValue
+              ) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints1: activeScreen.infopoints1?.map((ip, ipIdx) =>
+                      ipIdx === infopointIdxToEdit
+                        ? { ...ip, alwaysVisible: newIsAlwaysVisibleValue }
+                        : ip
+                    ),
+                  })
+                );
+              }}
+            />
+          </div>
+        )}
 
         {/* Initial settings (color and thickness) */}
         <div className="mt-6 mb-1">

@@ -281,12 +281,14 @@
     },
     "gameDrawScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. complete the graph of how coal mining developed after 1950).",
-      "imageAssignmentLabel": "Assignment",
+      "imageAssignmentLabel": "Background image",
       "imageAssignmentTooltip": "Select an image from the document library, part of which will be missing and the user should draw it.",
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select a complete image from the document library.",
       "showUsersDrawing": "View user's drawing",
       "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
+      "assignmentInfopointsTableTitle": "Infopoints for the underlying image",
+      "assignmentInfopointsTableTooltip": "Using infopoints and the information in them, you can direct the visitor to think more deeply about the result.",
       "initialDrawingSettingsTitle": "Initial settings for drawing",
       "initialDrawingColorLabel": "Initial color",
       "initialDrawingThicknessLabel": "Initial thickness",
@@ -310,12 +312,13 @@
     },
     "gameSizingScreen": {
       "taskTooltip": "Describe the task to the user as precisely as possible (e.g. Estimate how big the Venus from Vestonice statuette is compared to the matchbox).",
-      "imageReferenceLabel": "Reference subject image",
-      "imageReferenceTooltip": "From the document library, select an image of the guessed object, the size of which the user should compare with the reference image.",
-      "imageCompareLabel": "Image of the guessed subject",
-      "imageCompareTooltip": "From the document library, select an image of the reference object whose size is generally known (e.g. a matchbox).",
+      "imageReferenceLabel": "Comparable subject No. 1.",
+      "imageReferenceTooltip": "Select an image of the object to be guessed from the document library, and have visitors compare the size of the image to the second image.",
+      "imageCompareLabel": "Comparable subject no. 2.",
+      "imageCompareTooltip": "From the document library, select an image of the second object to compare.",
       "imageResultLabel": "The result image",
-      "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects."
+      "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects.",
+      "resultInfopointsTableTitle": "Infopoints for the resulting image"
     },
     "gameMoveScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g., select the correct shard and assemble the broken plate).",
