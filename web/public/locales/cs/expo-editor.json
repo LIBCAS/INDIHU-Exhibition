@@ -317,7 +317,8 @@
       "imageCompareLabel": "Porovnávaný předmět č. 2.",
       "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek druhého předmětů na porovnání.",
       "imageResultLabel": "Výsledný obrázek",
-      "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů."
+      "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů.",
+      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
     },
     "gameMoveScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Vyberte správný střep a složte rozbitý talíř).",

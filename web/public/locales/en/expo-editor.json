@@ -317,7 +317,8 @@
       "imageCompareLabel": "Comparable subject no. 2.",
       "imageCompareTooltip": "From the document library, select an image of the second object to compare.",
       "imageResultLabel": "The result image",
-      "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects."
+      "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects.",
+      "resultInfopointsTableTitle": "Infopoints for the resulting image"
     },
     "gameMoveScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g., select the correct shard and assemble the broken plate).",

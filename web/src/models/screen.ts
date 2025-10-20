@@ -487,6 +487,7 @@ export type GameSizingScreen = {
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  infopoints3?: Infopoint[]; // NOTE: for resulting image
 };
 
 export type GameMoveScreen = {
