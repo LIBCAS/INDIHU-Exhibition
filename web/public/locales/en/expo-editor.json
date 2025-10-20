@@ -315,7 +315,7 @@
       "imageReferenceLabel": "Comparable subject No. 1.",
       "imageReferenceTooltip": "Select an image of the object to be guessed from the document library, and have visitors compare the size of the image to the second image.",
       "imageCompareLabel": "Comparable subject no. 2.",
-      "imageCompareTooltip": "From the document library, select an image of the reference object whose size is generally known (e.g. a matchbox).",
+      "imageCompareTooltip": "From the document library, select an image of the second object to compare.",
       "imageResultLabel": "The result image",
       "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects."
     },
