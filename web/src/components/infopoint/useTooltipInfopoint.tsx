@@ -18,6 +18,7 @@ import {
   GameQuizScreen,
   TimelineScreen,
   GameDrawScreen,
+  GameSizingScreen,
 } from "models";
 
 // - - - - -
@@ -28,7 +29,8 @@ export type InfopointSupportedScreens =
   | ImageChangeScreen
   | GameQuizScreen
   | TimelineScreen
-  | GameDrawScreen;
+  | GameDrawScreen
+  | GameSizingScreen;
 
 export type InfopointStatusObject = {
   isOpen: boolean;
