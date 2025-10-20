@@ -1,14 +1,16 @@
 import ReactDOM from "react-dom";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useEffect, Fragment } from "react";
 import { animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
+// Hooks
 import { useTranslation } from "react-i18next";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import useResizeObserver from "hooks/use-resize-observer";
 import { useElementResize } from "../../../../hooks/spring-hooks/use-element-resize";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -19,9 +21,13 @@ import { ScreenProps } from "models";
 import { GameSizingScreen } from "models";
 import { AppState } from "store/store";
 
+// Utils
+import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+import { calculateObjectFit } from "utils/object-fit";
+import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
+
 // Assets
 import expandImg from "../../../../assets/img/expand.png";
-import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - - - - - -
 
@@ -101,7 +107,58 @@ export const GameSizing = ({
   //   leave: { opacity: 0 },
   // });
 
-  // - - - -
+  // - - - Infopoints (result image) - - -
+
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints,
+    AnchorInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  const image3OrigData = useMemo(
+    () => viewScreen.image3OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image3OrigData]
+  );
+
+  const [resultImageRef, resultImageSize] =
+    useResizeObserver<HTMLImageElement>();
+
+  const {
+    width: containedImageWidth,
+    height: containedImageHeight,
+    left: fromLeftWidth,
+    top: fromTopHeight,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        type: "contain",
+        parent: resultImageSize,
+        child: image3OrigData,
+      }),
+    [image3OrigData, resultImageSize]
+  );
+
+  // Event handler on key down press
+  const onKeyDownAction = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints(viewScreen)();
+      }
+    },
+    [closeInfopoints, viewScreen]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDownAction);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDownAction);
+    };
+  }, [onKeyDownAction]);
+
+  // - - - - - -
 
   useGameAutoNavigationOnResultTimeElapsed({
     gameResultTime: resultTime * 1000,
@@ -113,10 +170,57 @@ export const GameSizing = ({
       {isGameFinished ? (
         <div className="relative m-4 flex flex-grow justify-center items-center">
           <img
+            ref={resultImageRef}
             src={resultingImgSrc}
             className="absolute w-full h-full object-contain"
             alt="result image"
           />
+
+          {/* Infopoints */}
+          {viewScreen.infopoints3?.map((infopoint, infopointIndex) => {
+            const infopointPosition = {
+              left: infopoint.left,
+              top: infopoint.top,
+            };
+            const imgBoxSize = {
+              width: image3OrigData.width,
+              height: image3OrigData.height,
+            };
+            const imgViewSize = {
+              width: containedImageWidth,
+              height: containedImageHeight,
+            };
+
+            const { left, top } = calculateInfopointPositionByImageBoxSize(
+              infopointPosition,
+              imgBoxSize,
+              imgViewSize
+            );
+
+            const adjustedLeft = fromLeftWidth + left;
+            const adjustedTop = fromTopHeight + top;
+
+            return (
+              <Fragment
+                key={`infopoint-game-sizing-result-image-${infopointIndex}`}
+              >
+                <AnchorInfopoint
+                  id={`infopoint-game-sizing-result-image-${infopointIndex}`}
+                  left={adjustedLeft}
+                  top={adjustedTop}
+                  infopoint={infopoint}
+                />
+                <TooltipInfoPoint
+                  key={`infopoint-game-sizing-result-image-${infopointIndex}`}
+                  id={`infopoint-game-sizing-result-image-${infopointIndex}`}
+                  infopoint={infopoint}
+                  infopointStatusMap={infopointStatusMap}
+                  setInfopointStatusMap={setInfopointStatusMap}
+                  primaryKey={infopointIndex.toString()}
+                />
+              </Fragment>
+            );
+          })}
         </div>
       ) : (
         <div className="w-full h-full flex">
