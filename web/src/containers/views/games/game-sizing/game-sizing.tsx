@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { useState, useCallback } from "react";
-import { animated, useTransition } from "react-spring";
+import { animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
@@ -94,12 +94,12 @@ export const GameSizing = ({
     setIsGameFinished(false);
   }, []);
 
-  const transition = useTransition(isGameFinished, {
-    initial: { opacity: 1 },
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  });
+  // const transition = useTransition(isGameFinished, {
+  //   initial: { opacity: 1 },
+  //   from: { opacity: 0 },
+  //   enter: { opacity: 1 },
+  //   leave: { opacity: 0 },
+  // });
 
   // - - - -
 
@@ -110,46 +110,45 @@ export const GameSizing = ({
 
   return (
     <div className="w-full h-full flex px-12">
-      {/* Left container */}
-      <div
-        className="flex-grow m-4 flex justify-center items-center relative"
-        ref={leftContainerRef}
-      >
-        <div className="absolute p-2 border-2 border-white border-opacity-50 border-dashed">
-          <animated.img
-            src={referenceImgSrc}
-            style={{
-              width: referenceImgResizeSpring.width,
-              height: referenceImgResizeSpring.height,
-            }}
-          />
+      {isGameFinished ? (
+        <div className="relative m-4 flex flex-grow justify-center items-center">
           <img
-            className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
-            src={expandImg}
-            draggable={false}
-            {...referenceImgBindResizeDrag()}
-            alt="expand image icon left"
+            src={resultingImgSrc}
+            className="absolute w-full h-full object-contain"
+            alt="result image"
           />
         </div>
-      </div>
+      ) : (
+        <div className="w-full h-full flex">
+          {/* Left container */}
+          <div
+            className="relative m-4 flex flex-grow justify-center items-center"
+            ref={leftContainerRef}
+          >
+            <div className="absolute p-2 border-2 border-white border-opacity-50 border-dashed">
+              <animated.img
+                src={referenceImgSrc}
+                style={{
+                  width: referenceImgResizeSpring.width,
+                  height: referenceImgResizeSpring.height,
+                }}
+              />
+              <img
+                className="touch-none hover:cursor-se-resize absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2"
+                src={expandImg}
+                draggable={false}
+                {...referenceImgBindResizeDrag()}
+                alt="expand image icon left"
+              />
+            </div>
+          </div>
 
-      {/* Right container */}
-      <div
-        className="flex-grow m-4 flex justify-center items-center relative"
-        ref={rightContainerRef}
-      >
-        {transition(({ opacity }, isGameFinished) =>
-          isGameFinished ? (
-            <animated.img
-              className="w-full h-full absolute object-contain"
-              src={resultingImgSrc}
-              style={{ opacity }}
-            />
-          ) : (
-            <animated.div
-              className="absolute p-2 border-2 border-white border-opacity-50 border-dashed"
-              style={{ opacity }}
-            >
+          {/* Right container */}
+          <div
+            className="relative m-4 flex flex-grow justify-center items-center"
+            ref={rightContainerRef}
+          >
+            <div className="absolute p-2 border-2 border-white border-opacity-50 border-dashed">
               <animated.img
                 src={comparisonImgSrc}
                 style={{
@@ -164,10 +163,10 @@ export const GameSizing = ({
                 {...comparisongImgBindResizeDrag()}
                 alt="expand image icon right"
               />
-            </animated.div>
-          )
-        )}
-      </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {infoPanelRef.current &&
         ReactDOM.createPortal(
