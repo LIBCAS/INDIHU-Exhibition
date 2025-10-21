@@ -11,6 +11,7 @@ import ScreenText from "./screen-text/screen-text";
 import ScreenVideo from "./screen-video/screen-video";
 import ScreenZoomIn from "./screen-zoom-in/screen-zoom-in";
 import ScreenImageChange from "./screen-image-change/screen-image-change";
+import ScreenTimeline from "./screen-timeline/screen-timeline";
 import ScreenSlideshow from "./screen-slideshow/screen-slideshow";
 import ScreenPhotogallery from "./screen-photogallery/screen-photogallery-new";
 import ScreenParallax from "./screen-parallax/screen-parallax";
@@ -154,6 +155,10 @@ const ExpoEditor = ({ activeExpo }: ExpoEditorProps) => {
       <Route
         path={`${match.url}/${screenUrl.SIGNPOST}/:position`}
         render={() => <ScreenSignpost {...editorProps} />}
+      />
+      <Route
+        path={`${match.url}/${screenUrl.TIMELINE}/:position`}
+        render={() => <ScreenTimeline {...editorProps} />}
       />
     </div>
   );

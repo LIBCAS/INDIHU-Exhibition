@@ -7,16 +7,20 @@ import Checkbox from "@mui/material/Checkbox";
 import { setDialog } from "actions/dialog-actions";
 import { Infopoint } from "models";
 import { DialogType } from "components/dialogs/dialog-types";
+import HelpIcon from "components/help-icon";
 
 import InfopointDialogNew from "components/dialogs/infopoint-dialog/InfopointDialogNew";
 import InfopointDialogEdit from "components/dialogs/infopoint-dialog/InfopointDialogEdit";
 
 import cx from "classnames";
+import { InfopointFormType } from "components/dialogs/infopoint-dialog/InfopointForm";
 
 // - - - - - - - -
 
 interface InfopointsTableProps {
   title?: string;
+  helpIconLabel?: string;
+  helpIconId?: string;
   infopoints: Infopoint[];
   onInfopointAdd: (dialogFormData: any) => void;
   onInfopointEdit: (infopointIndexToEdit: number, dialogFormData: any) => void;
@@ -25,6 +29,7 @@ interface InfopointsTableProps {
     infopointIndexToEdit: number,
     newIsAlwaysVisibleValue: boolean
   ) => void;
+  type?: InfopointFormType;
 }
 
 interface InfopointEditDialogStatus {
@@ -37,11 +42,14 @@ interface InfopointEditDialogStatus {
 
 const InfopointsTable = ({
   title,
+  helpIconLabel,
+  helpIconId,
   infopoints,
   onInfopointAdd,
   onInfopointEdit,
   onInfopointDelete,
   onInfopointAlwaysVisibleChange,
+  type,
 }: InfopointsTableProps) => {
   const { t } = useTranslation("expo-editor");
 
@@ -71,7 +79,13 @@ const InfopointsTable = ({
 
   return (
     <div className="mt-4 min-w-[50%]">
-      <div>{title ?? t("infopointsTable.defaultTitle")}</div>
+      <div className="flex justify-between items-center gap-4">
+        <div>{title ?? t("infopointsTable.defaultTitle")}</div>
+        {helpIconLabel && helpIconId && (
+          <HelpIcon label={helpIconLabel} id={helpIconId} />
+        )}
+      </div>
+
       <div className="w-full flex flex-col px-4 py-2 mb-4">
         {/* Table header */}
         <div className="table-row header">
@@ -169,6 +183,7 @@ const InfopointsTable = ({
         <InfopointDialogNew
           closeThisDialog={closeInfopointDialogNew}
           onDialogSubmit={onInfopointAdd}
+          type={type}
         />
       )}
 
@@ -180,6 +195,7 @@ const InfopointsTable = ({
             onDialogSubmit={onInfopointEdit}
             infopoint={infopointEditDialog.infopoint}
             infopointIndex={infopointEditDialog.infopointIndex}
+            type={type}
           />
         )}
     </div>

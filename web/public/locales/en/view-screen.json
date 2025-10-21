@@ -80,6 +80,9 @@
     "openDescTooltip": "Open image description",
     "closeTooltip": "Close"
   },
+  "timelineScreen": {
+    "missingTimelineName": "No timeline name provided"
+  },
 
   "game": {
     "controls": {

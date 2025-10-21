@@ -48,6 +48,7 @@ type ScreenFileResolverMap = {
 };
 
 const screenFileResolver: ScreenFileResolverMap = {
+  backgroundImage: retrieveFileUrl,
   image: retrieveFileUrl,
   audio: retrieveFileUrl,
   image1: retrieveFileUrl,

@@ -20,7 +20,8 @@
     "textTab": "Text",
     "answersTab": "Answers",
     "externalTab": "External data",
-    "referencesTab": "Links"
+    "referencesTab": "Links",
+    "timelineTab": "Timeline"
   },
   "descFields": {
     "name": "Title",
@@ -46,6 +47,9 @@
     "audioChapterTrack": "Chapter soundtrack",
     "audioChapterTrackTooltip": "Upload background music to be played in a loop while viewing all screens in this chapter.",
     "audioSelectLabel": "Select",
+    "audioDefaultHelpTooltip": "Audio",
+    "musicDefaultHelpTooltip": "Music",
+    "musicDescriptionHelpTooltip": "Upload background music here that will be played in a loop while viewing all screens of this chapter.",
     "expoDuration": "Duration of the exhibition",
     "expoDurationTooltip": "Estimated duration of the exhibition to inform the visitor.",
     "expoDurationErrMsg": "Enter a number between 0 and 1000000.",
@@ -235,6 +239,31 @@
       },
       "linkNotSufficientlyFilled": "This reference is not filled in enough, so it will be ignored in the exhibition!"
     },
+    "timelineScreen": {
+      "nameFieldLabel": "Timeline Name",
+      "nameFieldTooltip": "Enter a name for the timeline, e.g. '20th Century Birth Rate', so visitors know what they are looking at",
+      "typeSelectFieldLabel": "Timeline Type",
+      "typeSelectFieldTooltip": "Select the basic timeline type that best fits your topic, and its slope and length",
+      "horizontalOption": "Horizontal",
+      "verticalOption": "Vertical",
+      "diagonalTopToBottomOption": "Diagonal Down",
+      "diagonalBottomToTopOption": "Diagonal Up",
+      "timelineBoxLabel": "Timeline",
+      "timelineBoxTooltip": "Add points to the timeline and place them as needed. Choose from different types – image, text, video.",
+      "timelinePointsTitle": "Timeline Points",
+      "additionalSettings": "Additional timeline settings",
+      "evenDistributionOfPointsBtnLabel": "Evenly distribute points on the timeline",
+      "timelineColorLabel": "Timeline color:",
+      "timelineColorTooltip": "Choose any color for your timeline that will be visible to visitors.",
+      "timelineThicknessLabel": "Timeline thickness",
+      "timelineThicknessTooltip": "Select the thickness for your timeline. The minimum allowed value is 1 and the maximum allowed value is 25.",
+      "backgroundImageLabel": "Selected background image:",
+      "noBackgroundImage": "No image has been selected yet",
+      "chooseBackgroundImageBtnLabel": "Choose a background image",
+      "clearBackgroundImageBtnLabel": "Remove image from background",
+      "bgImageTransparencyLabel": "Transparency of the selected background image",
+      "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100."
+    },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
     },
@@ -252,12 +281,14 @@
     },
     "gameDrawScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g. complete the graph of how coal mining developed after 1950).",
-      "imageAssignmentLabel": "Assignment",
+      "imageAssignmentLabel": "Background image",
       "imageAssignmentTooltip": "Select an image from the document library, part of which will be missing and the user should draw it.",
       "imageResultLabel": "Result",
       "imageResultTooltip": "Select a complete image from the document library.",
       "showUsersDrawing": "View user's drawing",
       "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
+      "assignmentInfopointsTableTitle": "Infopoints for the underlying image",
+      "assignmentInfopointsTableTooltip": "Using infopoints and the information in them, you can direct the visitor to think more deeply about the result.",
       "initialDrawingSettingsTitle": "Initial settings for drawing",
       "initialDrawingColorLabel": "Initial color",
       "initialDrawingThicknessLabel": "Initial thickness",
@@ -281,12 +312,13 @@
     },
     "gameSizingScreen": {
       "taskTooltip": "Describe the task to the user as precisely as possible (e.g. Estimate how big the Venus from Vestonice statuette is compared to the matchbox).",
-      "imageReferenceLabel": "Reference subject image",
-      "imageReferenceTooltip": "From the document library, select an image of the guessed object, the size of which the user should compare with the reference image.",
-      "imageCompareLabel": "Image of the guessed subject",
-      "imageCompareTooltip": "From the document library, select an image of the reference object whose size is generally known (e.g. a matchbox).",
+      "imageReferenceLabel": "Comparable subject No. 1.",
+      "imageReferenceTooltip": "Select an image of the object to be guessed from the document library, and have visitors compare the size of the image to the second image.",
+      "imageCompareLabel": "Comparable subject no. 2.",
+      "imageCompareTooltip": "From the document library, select an image of the second object to compare.",
       "imageResultLabel": "The result image",
-      "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects."
+      "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects. Use the option to add infopoints to comment on the relationship between objects.",
+      "resultInfopointsTableTitle": "Infopoints for the resulting image"
     },
     "gameMoveScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g., select the correct shard and assemble the broken plate).",
@@ -416,7 +448,14 @@
     "shapeIconOption": "Custom icon",
     "sizeLabel": "Size in pixels",
     "colorLabel": "Infopoint color",
-    "iconFileLabel": "File of custom icon"
+    "iconFileLabel": "File of custom icon",
+
+    "timelineType": {
+      "headerLabel": "Timeline Point Title",
+      "bodyContentTypeLabel": "Body Type",
+      "textBodyLabel": "Text Description",
+      "shapeSizeColorSectionSubheader": "Shape, Size, and Color of the Point"
+    }
   },
   "sequenceForm": {
     "createNewSequenceTitle": "Create new sequence",
@@ -435,7 +474,8 @@
     "openFileExplorerTooltip": "Open in file explorer",
     "openImageEditorTooltip": "Open image in image editor",
     "deleteImageFromBox": "Remove image from box",
-    "deleteImageConfirm": "Are you sure you want to delete the selected image?"
+    "deleteImageConfirm": "Are you sure you want to delete the selected image?",
+    "defaultImageHelpTooltip": "Image"
   },
   "imageEditor": {
     "cropAreaTooSmall": "Crop area is too small!",

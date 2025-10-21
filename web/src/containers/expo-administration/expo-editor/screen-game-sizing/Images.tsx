@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import ImageBox from "components/editors/ImageBox";
+import InfopointsTable from "components/editors/InfopointsTable";
 
 // Models
 import { GameSizingScreen, File as IndihuFile } from "models";
@@ -11,6 +12,7 @@ import { AppDispatch } from "store/store";
 // Actions and utils
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
+import { compact, concat } from "lodash";
 
 // - -
 
@@ -83,6 +85,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
             />
           </div>
         </div>
+
         <div className="flex-row-nowrap flex-centered full-width">
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
@@ -101,9 +104,79 @@ const Images = ({ activeScreen }: ImagesProps) => {
               }
               helpIconId="editor-game-sizing-image3"
               helpIconLabel={t("imageResultTooltip")}
+              infopoints={activeScreen.infopoints3 ?? []}
+              onInfopointMove={(movedInfopointIdx, newLeft, newTop) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints3: activeScreen.infopoints3?.map((ip, ipIdx) =>
+                      ipIdx === movedInfopointIdx
+                        ? { ...ip, left: newLeft, top: newTop }
+                        : ip
+                    ),
+                  })
+                );
+              }}
             />
           </div>
         </div>
+
+        {/* Infopoints Table */}
+        {image3 && (
+          <div className="w-[45%]">
+            <InfopointsTable
+              title={t("resultInfopointsTableTitle")}
+              infopoints={activeScreen.infopoints3 ?? []}
+              onInfopointAdd={(dialogFormData) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints3: compact(
+                      concat(activeScreen.infopoints3 ?? [], {
+                        // Add new infopoints object
+                        ...dialogFormData,
+                        left: 17,
+                        top: 17,
+                      })
+                    ),
+                  })
+                );
+              }}
+              onInfopointEdit={(infopointIdxToEdit, dialogFormData) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints3: activeScreen.infopoints3?.map((ip, ipIdx) =>
+                      ipIdx === infopointIdxToEdit
+                        ? { ...ip, ...dialogFormData }
+                        : ip
+                    ),
+                  })
+                );
+              }}
+              onInfopointDelete={(infopointIdxToDelete) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints3: activeScreen.infopoints3?.filter(
+                      (_ip, ipIdx) => ipIdx !== infopointIdxToDelete
+                    ),
+                  })
+                );
+              }}
+              onInfopointAlwaysVisibleChange={(
+                infopointIdxToEdit,
+                newIsAlwaysVisibleValue
+              ) => {
+                dispatch(
+                  updateScreenData({
+                    infopoints3: activeScreen.infopoints3?.map((ip, ipIdx) =>
+                      ipIdx === infopointIdxToEdit
+                        ? { ...ip, alwaysVisible: newIsAlwaysVisibleValue }
+                        : ip
+                    ),
+                  })
+                );
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

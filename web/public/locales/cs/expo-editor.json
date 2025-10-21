@@ -20,7 +20,8 @@
     "textTab": "Text",
     "answersTab": "Odpovědi",
     "externalTab": "Externí data",
-    "referencesTab": "Odkazy"
+    "referencesTab": "Odkazy",
+    "timelineTab": "Časová osa"
   },
   "descFields": {
     "name": "Název",
@@ -46,6 +47,9 @@
     "audioChapterTrack": "Zvuková stopa kapitoly",
     "audioChapterTrackTooltip": "Sem nahrajte podkresovou hudbu, která bude ve smyčce přehrávána při prohlížení všech obrazovek této kapitoly.",
     "audioSelectLabel": "Vybrat",
+    "audioDefaultHelpTooltip": "Audio",
+    "musicDefaultHelpTooltip": "Hudba",
+    "musicDescriptionHelpTooltip": "Sem nahrajte podkresovou hudbu, která bude ve smyčce přehrávána při prohlížení všech obrazovek této kapitoly.",
     "expoDuration": "Délka trvání výstavy",
     "expoDurationTooltip": "Odhad délky výstavy pro informování návštěvníka.",
     "expoDurationErrMsg": "Zadejte číslo v rozsahu 0 až 1000000.",
@@ -235,6 +239,31 @@
       },
       "linkNotSufficientlyFilled": "Tato reference není dostatečně vyplněna, proto bude ve výstavě ignorována!"
     },
+    "timelineScreen": {
+      "nameFieldLabel": "Název časové osy",
+      "nameFieldTooltip": "Napište název časové osy, příklad 'Vývoj porodnosti ve 20. století,' aby návštěvníci věděli, na co se dívají",
+      "typeSelectFieldLabel": "Typ časové osy",
+      "typeSelectFieldTooltip": "Vyberte základní typ časové osy, která nejlépe odpovídá vašemu tématu, a její sklon a délku",
+      "horizontalOption": "Horizontální",
+      "verticalOption": "Vertikální",
+      "diagonalTopToBottomOption": "Diagonála dolů",
+      "diagonalBottomToTopOption": "Diagonála nahoru",
+      "timelineBoxLabel": "Časová osa",
+      "timelineBoxTooltip": "Přidejte body na časovou osu a umístěte je jak potřebujete. Vyberte z různých druhů - obrázek, text, video.",
+      "timelinePointsTitle": "Body časové osy",
+      "additionalSettings": "Další nastavení časové osy",
+      "evenDistributionOfPointsBtnLabel": "Rovnoměrně rozložit body na časové ose",
+      "timelineColorLabel": "Barva časové osy:",
+      "timelineColorTooltip": "Vyberte libovolnou barvu pro vaši časovou osu, která bude zobrazena návštěvníkům.",
+      "timelineThicknessLabel": "Tloušťka časové osy",
+      "timelineThicknessTooltip": "Vyberte tloušťku pro vaši časovou osu. Minimální povolená hodnota je 1 a maximální povolená hodnota je 25",
+      "backgroundImageLabel": "Vybraný obrázek na pozadí:",
+      "noBackgroundImage": "Zatím nebyl vybrán žádný obrázek",
+      "chooseBackgroundImageBtnLabel": "Vyberte obrázek na pozadí",
+      "clearBackgroundImageBtnLabel": "Odstranit obrázek z pozadí",
+      "bgImageTransparencyLabel": "Průhlednost vybraného obrázku na pozadí",
+      "bgImageTransparencyTooltip": "Vyberte si úroveň průhlednosti pro váš obrázek na pozadí. Minimální povolená hodnota je 1, maximální povolená hodnota je 100."
+    },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
     },
@@ -252,12 +281,14 @@
     },
     "gameDrawScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Dokreslete do grafu, jak se vyvíjela těžba uhlí po roce 1950).",
-      "imageAssignmentLabel": "Zadání",
+      "imageAssignmentLabel": "Podkladový obrázek",
       "imageAssignmentTooltip": "Z knihovny dokumentů vyberte obrázek, jehož část bude chybět a návštěvníci ji mají dokreslit.",
       "imageResultLabel": "Výsledek",
       "imageResultTooltip": "Z knihovny dokumentů vyberte kompletní obrázek.",
       "showUsersDrawing": "Zobrazit kresbu návštěvníků",
       "showUsersDrawingTooltip": "Pokud chcete, aby návštěvníci viděli správné řešení i svoje tipy, zaškrtněte toto pole.",
+      "assignmentInfopointsTableTitle": "Infopointy k podkladovému obrázku",
+      "assignmentInfopointsTableTooltip": "Pomocí infopointů a informací v něm můžete nasměrovat návštěvníka k hlubšímu přemýšlení nad výsledkem.",
       "initialDrawingSettingsTitle": "Počáteční nastavení pro kreslení",
       "initialDrawingColorLabel": "Počáteční barva",
       "initialDrawingThicknessLabel": "Počáteční tloušťka",
@@ -281,12 +312,13 @@
     },
     "gameSizingScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Odhadněte, jak je soška Věstonické Venuše velká v porovnání s krabičkou od sirek).",
-      "imageReferenceLabel": "Obrázek referenčního předmětu",
-      "imageReferenceTooltip": "Z knihovny dokumentů vyberte obrázek hádaného předmětu, jehož velikost mají návštěvníci porovnat s referenčním obrázkem",
-      "imageCompareLabel": "Obrázek porovnávaného předmětu",
-      "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek referenčního předmětu, jehož velikost je obecně známá (např. krabička od sirek).",
+      "imageReferenceLabel": "Porovnávaný předmět č. 1.",
+      "imageReferenceTooltip": "Z knihovny dokumentů vyberte obrázek hádaného předmětu, jehož velikost mají návštěvníci porovnat s druhým obrázkem",
+      "imageCompareLabel": "Porovnávaný předmět č. 2.",
+      "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek druhého předmětů na porovnání.",
       "imageResultLabel": "Výsledný obrázek",
-      "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů."
+      "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů. Využijte možnost přidání infopointů pro komentování vztahu mezi předměty.",
+      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
     },
     "gameMoveScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Vyberte správný střep a složte rozbitý talíř).",
@@ -416,7 +448,14 @@
     "shapeIconOption": "Vlastní ikona",
     "sizeLabel": "Velikost v pixelech",
     "colorLabel": "Barva infopointu",
-    "iconFileLabel": "Soubor vlastní ikony"
+    "iconFileLabel": "Soubor vlastní ikony",
+
+    "timelineType": {
+      "headerLabel": "Název bodu na časové ose",
+      "bodyContentTypeLabel": "Typ těla",
+      "textBodyLabel": "Textový popis",
+      "shapeSizeColorSectionSubheader": "Tvar, velikost a barva bodu"
+    }
   },
   "sequenceForm": {
     "createNewSequenceTitle": "Vytvořit novou sekvenci",
@@ -435,7 +474,8 @@
     "openFileExplorerTooltip": "Otevřít prohlížeč souborů",
     "openImageEditorTooltip": "Otevřít obrázek v editoru",
     "deleteImageFromBox": "Odstranit obrázek z boxu",
-    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?"
+    "deleteImageConfirm": "Opravdu chcete odstranit zvolený obrázek?",
+    "defaultImageHelpTooltip": "Obrázek"
   },
   "imageEditor": {
     "cropAreaTooSmall": "Oblast pro oříznutí je příliš malá!",

@@ -3,14 +3,23 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
-// - -
+import { appVersion } from "version";
+
+// - - - - - -
+
 export const languageKeys = ["cs", "en", "sk"] as const; // as given by "react-i18next"
 export type LanguageKey = typeof languageKeys[number];
-// - -
 
-const backend = new Backend({
-  loadPath: "/locales/{{lng}}/{{ns}}.json",
-});
+// - - - - - -
+
+const backend = new Backend(
+  {
+    loadPath: `/locales/{{lng}}/{{ns}}.json`,
+  },
+  {
+    queryStringParams: { v: appVersion },
+  }
+);
 
 i18n
   .use(backend)

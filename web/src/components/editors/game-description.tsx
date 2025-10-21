@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import {
   GameResultTimeTextField,
@@ -12,7 +13,6 @@ import { AppDispatch } from "store/store";
 import { Screen } from "models";
 
 import { getFileById } from "actions/file-actions-typed";
-import { helpIconText } from "enums/text";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - -
@@ -26,6 +26,7 @@ const GameDescription = ({
   activeScreen,
   taskHelpIconLabel,
 }: GameDescriptionProps) => {
+  const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
   const musicFile =
@@ -68,7 +69,7 @@ const GameDescription = ({
                   : false
               }
               musicFile={musicFile}
-              helpIconTitle={helpIconText.EDITOR_DESCRIPTION_MUSIC}
+              helpIconTitle={t("descFields.musicDescriptionHelpTooltip")}
               id="editor-game-description-music"
             />
 

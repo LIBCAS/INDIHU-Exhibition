@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { Formik } from "formik";
 import DialogWrap from "../dialog-wrap-noredux-typed";
-import InfopointForm from "./InfopointForm";
+import InfopointForm, { InfopointFormType } from "./InfopointForm";
 
 import { AppState } from "store/store";
 import { ActiveExpo } from "models";
@@ -26,11 +26,13 @@ const stateSelector = createSelector(
 interface InfopointDialogNewProps {
   closeThisDialog: () => void;
   onDialogSubmit: (formData: InfopointFormDataProcessed) => void;
+  type?: InfopointFormType;
 }
 
 const InfopointDialogNew = ({
   closeThisDialog,
   onDialogSubmit,
+  type,
 }: InfopointDialogNewProps) => {
   const { t } = useTranslation("expo-editor", { keyPrefix: "infopointsForm" });
   const { t: validationT } = useTranslation("validation");
@@ -85,7 +87,7 @@ const InfopointDialogNew = ({
           isSubmitSuccessful={isSubmitted}
           closeOnEsc
         >
-          <InfopointForm formik={formik} />
+          <InfopointForm formik={formik} type={type} />
         </DialogWrap>
       )}
     </Formik>
