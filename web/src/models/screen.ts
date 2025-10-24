@@ -163,6 +163,7 @@ export type Screen =
   | ImageChangeScreen
   | ExternalScreen
   | SignpostScreen
+  | SurveyScreen
   | TimelineScreen
   | GameFindScreen
   | GameDrawScreen
@@ -437,6 +438,13 @@ export type TimelineScreen = {
   timelineLeftBoundary?: TimelineLeftBoundary;
   timelineRightBoundary?: TimelineRightBoundary;
   screenBgColor?: string | null;
+};
+
+export type SurveyScreen = {
+  id: string;
+  type: typeof screenType.SURVEY;
+  // Description tab
+  title?: string;
 };
 
 export type GameFindScreen = {
