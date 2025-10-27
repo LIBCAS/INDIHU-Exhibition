@@ -4,6 +4,7 @@ import SurveyAnswerDisplayCheckbox from "./components/SurveyAnswerDisplayCheckbo
 
 // Types
 import { SurveyScreen } from "models";
+import SurveyAnswers from "./components/survey-answers/SurveyAnswers";
 
 // - - - - - -
 
@@ -20,7 +21,7 @@ const Survey = ({ activeScreen }: SurveyProps) => {
           <SurveyAnswerDisplayCheckbox activeScreen={activeScreen} />
         </div>
 
-        <div></div>
+        <SurveyAnswers activeScreen={activeScreen} />
       </div>
     </div>
   );

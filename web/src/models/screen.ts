@@ -148,6 +148,13 @@ export type ReferenceObj = {
   customUserLabel?: string;
 };
 
+export type SurveyAnswer = {
+  text: string;
+  image: string | null; // NOTE: imageId or null if image was not loaded
+  imageOrigData?: ImageOrigData; // NOTE: Optional if image was not loaded
+  customUserLabel?: string; // NOTE: Optional as creator can but does not have to use custom label
+};
+
 // - - - - -
 
 export type Screen =
@@ -452,6 +459,7 @@ export type SurveyScreen = {
   // Answers
   surveyType?: SurveyType;
   shouldShowAnswerFeedback?: boolean;
+  surveyAnswers?: SurveyAnswer[];
 };
 
 export type GameFindScreen = {

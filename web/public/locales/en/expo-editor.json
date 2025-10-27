@@ -299,7 +299,20 @@
       "surveyTypeOnlyImageOption": "Image only",
       "surveyTypeImageTextOption": "Image and text",
       "surveyTypeFreeAnswerOption": "Free answer",
-      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Choose whether to show feedback to the visitor"
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Choose whether to show feedback to the visitor",
+      "closeAnswerTooltip": "Close answer",
+      "deleteAnswerTooltip": "Delete answer",
+      "variant": "Variant",
+      "answerImageLabel": "Accompanying image",
+      "answerImageTooltip": "Select an illustrative image from the document library.",
+      "answerTextLabel": "Answer text",
+      "answerTextTooltip": "Enter an appropriately long text for this answer option. We recommend a maximum of 120–160 characters.",
+      "addNewAnswer": "Add new answer",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Cannot delete more options!",
+        "textErrorLessThanThree": "The minimum allowed number of answers has been reached — three.",
+        "textConfirm": "Are you sure you want to remove this option? This action cannot be undone!"
+      }
     },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"

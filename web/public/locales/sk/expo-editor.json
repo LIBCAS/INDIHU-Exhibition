@@ -299,7 +299,20 @@
       "surveyTypeOnlyImageOption": "Iba obrázok",
       "surveyTypeImageTextOption": "Obrázok aj text",
       "surveyTypeFreeAnswerOption": "Voľná odpoveď",
-      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť spätná väzba"
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť spätná väzba",
+      "closeAnswerTooltip": "Zavrieť odpoveď",
+      "deleteAnswerTooltip": "Vymazať odpoveď",
+      "variant": "Varianta",
+      "answerImageLabel": "Sprievodný obrázok",
+      "answerImageTooltip": "Vyberte ilustračný obrázok z knižnice dokumentov.",
+      "answerTextLabel": "Text odpovede",
+      "answerTextTooltip": "Zadajte primerane dlhý text pre túto variantu odpovede. Odporúčame maximálne 120–160 znakov.",
+      "addNewAnswer": "Pridať novú odpoveď",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Nie je možné zmazať viac možností!",
+        "textErrorLessThanThree": "Bol dosiahnutý minimálny povolený počet odpovedí, a to tri.",
+        "textConfirm": "Naozaj chcete odstrániť túto možnosť? Akcia je nevratná!"
+      }
     },
     "finishScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"

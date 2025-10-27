@@ -299,7 +299,20 @@
       "surveyTypeOnlyImageOption": "Pouze obrázek",
       "surveyTypeImageTextOption": "Obrázek i text",
       "surveyTypeFreeAnswerOption": "Volná odpověď",
-      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, zda se má návštěvníkovi zobrazit zpětná vazba"
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, zda se má návštěvníkovi zobrazit zpětná vazba",
+      "closeAnswerTooltip": "Zavřít odpověd",
+      "deleteAnswerTooltip": "Vymazat odpověd",
+      "variant": "Varianta",
+      "answerImageLabel": "Doprovodný obrázek",
+      "answerImageTooltip": "Vyberte ilustrační obrázek z knihovny dokumentů.",
+      "answerTextLabel": "Text odpovědi",
+      "answerTextTooltip": "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi. Doporučujeme max. 120-160 znaků. ",
+      "addNewAnswer": "Přidat novou odpověď",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Nelze smazat více možností!",
+        "textErrorLessThanThree": "Bylo dosaženo minimálního počtu povolených odpovědí a to tři.",
+        "textConfirm": "Opravdu chcete odstranit tuto možnost? Akce je nevratná!"
+      }
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
