@@ -300,6 +300,7 @@
       "surveyTypeImageTextOption": "Image and text",
       "surveyTypeFreeAnswerOption": "Free answer",
       "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Choose whether to show feedback to the visitor",
+      "freeAnswerInformation": "In the free answer survey form, the visitor enters their own text, meaning they do not have any predefined options or answer variants available.",
       "closeAnswerTooltip": "Close answer",
       "deleteAnswerTooltip": "Delete answer",
       "variant": "Variant",

@@ -300,6 +300,7 @@
       "surveyTypeImageTextOption": "Obrázek i text",
       "surveyTypeFreeAnswerOption": "Volná odpověď",
       "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, zda se má návštěvníkovi zobrazit zpětná vazba",
+      "freeAnswerInformation": "Při formě ankety volná odpověď návštěvník zadává svůj vlastní text, tedy nemá k dispozici žádné předdefinované možnosti / varianty odpovědí.",
       "closeAnswerTooltip": "Zavřít odpověd",
       "deleteAnswerTooltip": "Vymazat odpověd",
       "variant": "Varianta",
