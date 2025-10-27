@@ -24,6 +24,7 @@ export type ScreenPreloadedFiles = {
   object3?: string;
   answers?: { image?: string }[];
   links?: { image?: string }[];
+  surveyAnswers?: { image?: string }[];
 };
 
 // - - - - - -
