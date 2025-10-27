@@ -46,7 +46,7 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
           },
           {
             label: t("tabs.surveyResultsTab"),
-            link: `${match.url}/survey-results`,
+            link: `${match.url}/results`,
           },
         ]}
       />
@@ -68,7 +68,7 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
       />
 
       <Route
-        path={`${match.url}/survey-results`}
+        path={`${match.url}/results`}
         render={() => <SurveyResults activeScreen={activeScreen} />}
       />
 
