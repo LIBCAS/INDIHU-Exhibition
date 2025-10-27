@@ -293,7 +293,13 @@
       "nameTooltip": "Pojmenování obrazovky, které se zobrazí návštěvníkovi v liště pro textovou verzi. Název se také zobrazí jako pojmenování obrazovek ve výpisu všech obrazovek v editaci. Pokud jej nevyplníte, ve výpisu zůstane uveden jako název typ obrazovky.",
       "taskLabel": "Otázka",
       "taskTooltip": "Popište téma ankety a to, nad čím se mají zamyslete. Můžete napsat i pár na vysvětlenou.",
-      "screenCompleted": "Obrazovka je dokončená"
+      "screenCompleted": "Obrazovka je dokončená",
+      "surveyTypeLabel": "Vyberte formu ankety",
+      "surveyTypeOnlyTextOption": "Iba text",
+      "surveyTypeOnlyImageOption": "Pouze obrázek",
+      "surveyTypeImageTextOption": "Obrázek i text",
+      "surveyTypeFreeAnswerOption": "Volná odpověď",
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, zda se má návštěvníkovi zobrazit zpětná vazba"
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

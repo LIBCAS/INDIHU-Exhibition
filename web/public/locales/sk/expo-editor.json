@@ -293,7 +293,13 @@
       "nameTooltip": "Názov obrazovky, ktorý sa zobrazí návštevníkovi v lište pre textovú verziu. Názov sa tiež zobrazí ako označenie obrazoviek vo výpise všetkých obrazoviek v editácii. Ak ho nevyplníte, vo výpise zostane uvedený ako názov typu obrazovky.",
       "taskLabel": "Otázka",
       "taskTooltip": "Opíšte tému ankety a to, nad čím sa majú účastníci zamyslieť. Môžete napísať aj pár viet na vysvetlenie.",
-      "screenCompleted": "Obrazovka je dokončená"
+      "screenCompleted": "Obrazovka je dokončená",
+      "surveyTypeLabel": "Vyberte formu ankety",
+      "surveyTypeOnlyTextOption": "Iba text",
+      "surveyTypeOnlyImageOption": "Iba obrázok",
+      "surveyTypeImageTextOption": "Obrázok aj text",
+      "surveyTypeFreeAnswerOption": "Voľná odpoveď",
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť spätná väzba"
     },
     "finishScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"

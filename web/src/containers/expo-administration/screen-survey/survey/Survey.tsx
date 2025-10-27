@@ -1,0 +1,29 @@
+// Components
+import SurveyTypeSelect from "./components/SurveyTypeSelect";
+import SurveyAnswerDisplayCheckbox from "./components/SurveyAnswerDisplayCheckbox";
+
+// Types
+import { SurveyScreen } from "models";
+
+// - - - - - -
+
+type SurveyProps = {
+  activeScreen: SurveyScreen;
+};
+
+const Survey = ({ activeScreen }: SurveyProps) => {
+  return (
+    <div className="container-big container-tabMenu">
+      <div className="screen">
+        <div className="w-fit m-auto mb-16 flex flex-col gap-2 justify-start items-start xl:flex-row xl:w-auto xl:justify-center xl:gap-8">
+          <SurveyTypeSelect activeScreen={activeScreen} />
+          <SurveyAnswerDisplayCheckbox activeScreen={activeScreen} />
+        </div>
+
+        <div></div>
+      </div>
+    </div>
+  );
+};
+
+export default Survey;

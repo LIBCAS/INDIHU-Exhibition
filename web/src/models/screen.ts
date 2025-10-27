@@ -33,6 +33,7 @@ import {
   TimelineType,
   TimelineLeftBoundary,
   TimelineRightBoundary,
+  SurveyType,
 } from "./screen-administration";
 
 // - - - - -
@@ -448,6 +449,9 @@ export type SurveyScreen = {
   task?: string;
   muteChapterMusic?: boolean;
   screenCompleted?: boolean;
+  // Answers
+  surveyType?: SurveyType;
+  shouldShowAnswerFeedback?: boolean;
 };
 
 export type GameFindScreen = {

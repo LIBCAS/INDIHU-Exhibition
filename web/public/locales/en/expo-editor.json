@@ -293,7 +293,13 @@
       "nameTooltip": "The name of the screen that will be displayed to visitors in the text version bar. The name will also appear as the label of screens in the list of all screens during editing. If you don’t fill it in, the screen type name will remain displayed in the list.",
       "taskLabel": "Question",
       "taskTooltip": "Describe the topic of the survey and what participants should reflect on. You can also write a few sentences for clarification.",
-      "screenCompleted": "The screen is completed"
+      "screenCompleted": "The screen is completed",
+      "surveyTypeLabel": "Select the form of the survey",
+      "surveyTypeOnlyTextOption": "Text only",
+      "surveyTypeOnlyImageOption": "Image only",
+      "surveyTypeImageTextOption": "Image and text",
+      "surveyTypeFreeAnswerOption": "Free answer",
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Choose whether to show feedback to the visitor"
     },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
