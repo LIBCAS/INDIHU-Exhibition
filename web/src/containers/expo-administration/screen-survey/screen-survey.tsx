@@ -5,9 +5,9 @@ import { useHistory } from "react-router-dom";
 // Components
 import { Route } from "react-router-dom";
 import TabMenu from "components/tab-menu";
-import Description from "./Description";
+import Description from "./description/Description";
 import Survey from "./survey/Survey";
-import SurveyResults from "./SurveyResults";
+import SurveyResults from "./resullts/SurveyResults";
 import Footer from "components/editors/footer";
 
 // Models
