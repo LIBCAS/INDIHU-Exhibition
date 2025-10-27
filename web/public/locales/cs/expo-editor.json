@@ -21,7 +21,10 @@
     "answersTab": "Odpovědi",
     "externalTab": "Externí data",
     "referencesTab": "Odkazy",
-    "timelineTab": "Časová osa"
+    "timelineTab": "Časová osa",
+    "surveyDescTab": "Název ankety",
+    "surveyOptionsTab": "Varianty k výběru",
+    "surveyResultsTab": "Výsledky"
   },
   "descFields": {
     "name": "Název",

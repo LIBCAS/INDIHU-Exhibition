@@ -37,15 +37,15 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
       <TabMenu
         tabs={[
           {
-            label: t("tabs.descTab3"),
+            label: t("tabs.surveyDescTab"),
             link: `${match.url}/description`,
           },
           {
-            label: t("tabs.surveyTab"),
+            label: t("tabs.surveyOptionsTab"),
             link: `${match.url}/survey`,
           },
           {
-            label: t("tabs.surveyResults"),
+            label: t("tabs.surveyResultsTab"),
             link: `${match.url}/survey-results`,
           },
         ]}
