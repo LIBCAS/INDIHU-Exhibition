@@ -12,7 +12,7 @@ import { SurveyType } from "models";
 
 // Utils
 import { updateScreenData } from "actions/expoActions";
-import { DEFAULT_SURVEY_TYPE } from "../../default-values";
+import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
 
 // - - - - - -
 

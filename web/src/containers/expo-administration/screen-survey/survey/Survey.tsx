@@ -1,6 +1,6 @@
 // Components
-import SurveyTypeSelect from "./components/SurveyTypeSelect";
-import SurveyAnswerDisplayCheckbox from "./components/SurveyAnswerDisplayCheckbox";
+import SurveyTypeSelect from "./components/fields/SurveyTypeSelect";
+import SurveyAnswerDisplayCheckbox from "./components/fields/SurveyAnswerDisplayCheckbox";
 
 // Types
 import { SurveyScreen } from "models";
