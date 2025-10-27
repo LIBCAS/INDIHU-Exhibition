@@ -5,8 +5,9 @@ import { useHistory } from "react-router-dom";
 // Components
 import { Route } from "react-router-dom";
 import TabMenu from "components/tab-menu";
-import ScreenDescription from "components/editors/screen-description";
+import Description from "./Description";
 import Survey from "./Survey";
+import SurveyResults from "./SurveyResults";
 import Footer from "components/editors/footer";
 
 // Models
@@ -15,7 +16,6 @@ import {
   ConcreteScreenEditorProps,
   SurveyScreen,
 } from "models";
-import SurveyResults from "./SurveyResults";
 
 // - - - - - -
 
@@ -53,13 +53,7 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
 
       <Route
         path={`${match.url}/description`}
-        render={() => (
-          <ScreenDescription
-            activeScreen={activeScreen}
-            rowNum={rowNum}
-            colNum={colNum}
-          />
-        )}
+        render={() => <Description activeScreen={activeScreen} />}
       />
 
       <Route

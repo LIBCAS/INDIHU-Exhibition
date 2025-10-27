@@ -6,25 +6,25 @@ import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import HelpIcon from "components/help-icon";
 import { MuteChapterMusicCheckbox } from "components/editors/Checkboxes";
-import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // Types
 import { AppDispatch } from "store/store";
-import { GameQuizScreen } from "models";
+import { SurveyScreen } from "models";
 
-// Utils
+// Actions
 import { updateScreenData } from "actions/expoActions";
 
 // - - - - - -
 
-type DescriptionProps = {
-  activeScreen: GameQuizScreen;
+type SurveyProps = {
+  activeScreen: SurveyScreen;
 };
 
-const Description = (props: DescriptionProps) => {
-  const { activeScreen } = props;
+const Description = ({ activeScreen }: SurveyProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("expo-editor");
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.surveyScreen",
+  });
 
   return (
     <div className="container container-tabMenu">
@@ -33,61 +33,51 @@ const Description = (props: DescriptionProps) => {
           <div className="part margin-bottom margin-horizontal">
             <div className="flex-row-nowrap">
               <TextField
-                id="game-options-textfield-name"
-                label={t("descFields.gameQuizScreen.nameLabel")}
-                defaultValue={activeScreen?.title ?? ""}
+                id="survey-textfield-name"
+                label={t("nameLabel")}
+                defaultValue={activeScreen.title ?? ""}
                 onChange={(newTitle: string) =>
                   dispatch(updateScreenData({ title: newTitle }))
                 }
               />
               <HelpIcon
-                label={t("descFields.gameQuizScreen.nameTooltip")}
-                id="editor-game-options-title"
+                id="survey-textfield-name-help"
+                label={t("nameTooltip")}
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
-                id="game-options-textfield-task"
-                label={t("descFields.gameQuizScreen.taskLabel")}
+                id="survey-textfield-task"
+                label={t("taskLabel")}
                 defaultValue={activeScreen?.task ?? ""}
                 onChange={(newTask: string) =>
                   dispatch(updateScreenData({ task: newTask }))
                 }
               />
               <HelpIcon
-                label={t("descFields.gameQuizScreen.taskTooltip")}
-                id="editor-game-options-task"
+                id="survey-textfield-task-help"
+                label={t("taskTooltip")}
               />
             </div>
           </div>
 
           <div className="part margin-bottom margin-horizontal">
             <MuteChapterMusicCheckbox
-              muteChapterMusicValue={!!activeScreen.muteChapterMusic}
+              muteChapterMusicValue={activeScreen.muteChapterMusic ?? false}
             />
             <div className="row">
               <Checkbox
-                id="game-options-checkbox-screencompleted"
+                id="survey-checkbox-screenCompleted"
                 name="simple-checkboxes"
-                label={t("descFields.gameQuizScreen.screenCompleted")}
-                checked={activeScreen.screenCompleted}
-                value={activeScreen.screenCompleted}
+                label={t("screenCompleted")}
+                checked={activeScreen.screenCompleted ?? false}
+                value={activeScreen.screenCompleted ?? false}
                 onChange={(newValue: boolean) =>
                   dispatch(updateScreenData({ screenCompleted: newValue }))
                 }
                 className="checkbox-shift-left-by-padding"
               />
             </div>
-
-            <ScreenBackgroundColorPicker
-              label={t("descFields.screenBackgroundColorLabel")}
-              helpText={t("descFields.screenBackgroundColorTooltip")}
-              color={
-                "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
-                  ? activeScreen.screenBgColor
-                  : null
-              }
-            />
           </div>
         </div>
       </div>

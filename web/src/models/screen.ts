@@ -445,6 +445,9 @@ export type SurveyScreen = {
   type: typeof screenType.SURVEY;
   // Description tab
   title?: string;
+  task?: string;
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
 };
 
 export type GameFindScreen = {

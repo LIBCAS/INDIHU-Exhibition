@@ -288,6 +288,13 @@
       "rightBoundaryLabel": "Pravé ohraničení časové osy",
       "rightBoundaryTooltip": "Zvolte jednu z dostupných možností pro pravé ohraničení, konec časové osy. Výchozí hodnota je šipka."
     },
+    "surveyScreen": {
+      "nameLabel": "Název",
+      "nameTooltip": "Pojmenování obrazovky, které se zobrazí návštěvníkovi v liště pro textovou verzi. Název se také zobrazí jako pojmenování obrazovek ve výpisu všech obrazovek v editaci. Pokud jej nevyplníte, ve výpisu zůstane uveden jako název typ obrazovky.",
+      "taskLabel": "Otázka",
+      "taskTooltip": "Popište téma ankety a to, nad čím se mají zamyslete. Můžete napsat i pár na vysvětlenou.",
+      "screenCompleted": "Obrazovka je dokončená"
+    },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
     },
