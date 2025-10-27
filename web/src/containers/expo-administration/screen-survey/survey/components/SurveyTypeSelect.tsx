@@ -12,6 +12,7 @@ import { SurveyType } from "models";
 
 // Utils
 import { updateScreenData } from "actions/expoActions";
+import { DEFAULT_SURVEY_TYPE } from "../../default-values";
 
 // - - - - - -
 
@@ -52,7 +53,7 @@ const SurveyTypeSelect = ({ activeScreen }: SurveyTypeSelectProps) => {
         position="below"
         id="survey-selectfield-type"
         name="survey-selectfield-type"
-        defaultValue={activeScreen.surveyType ?? "TEXT_IMAGES"}
+        defaultValue={activeScreen.surveyType ?? DEFAULT_SURVEY_TYPE}
         onChange={(newValue: SurveyType) => {
           dispatch(updateScreenData({ surveyType: newValue }));
         }}
