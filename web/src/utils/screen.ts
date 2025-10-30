@@ -1,4 +1,4 @@
-import { defaultScreenTimeInSeconds } from "constants/screen";
+import { DEFAULT_SCREEN_TIME_SECONDS } from "constants/screen";
 import { Screen } from "models";
 import { DefaultOptions } from "types";
 
@@ -11,7 +11,7 @@ type Options = {
 
 const defaultOptions: DefaultOptions<Options> = {
   unit: "ms",
-  defaultValue: defaultScreenTimeInSeconds,
+  defaultValue: DEFAULT_SCREEN_TIME_SECONDS,
 };
 
 export const getScreenTime = (screen: Screen, options?: Options) => {
