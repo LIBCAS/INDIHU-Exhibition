@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -32,21 +33,125 @@ const Images = ({ activeScreen }: ImagesProps) => {
     keyPrefix: "descFields.gameMoveScreen",
   });
 
+  // - - - Assignment image - - -
+
   const image1 = dispatch(getFileById(activeScreen.image1));
-  const image2 = dispatch(getFileById(activeScreen.image2));
-  const object = dispatch(getFileById(activeScreen.object));
 
   const setImage1 = (img: IndihuFile) => {
     dispatch(updateScreenData({ image1: img.id }));
   };
 
+  // - - - Result image - - -
+
+  const image2 = dispatch(getFileById(activeScreen.image2));
+
   const setImage2 = (img: IndihuFile) => {
     dispatch(updateScreenData({ image2: img.id }));
   };
 
-  const setObject = (img: IndihuFile) => {
-    dispatch(updateScreenData({ object: img.id }));
-  };
+  // - - - Object image 1 - - -
+
+  const objectFile = dispatch(getFileById(activeScreen.object));
+
+  const setObjectFile = useCallback(
+    (img: IndihuFile) => {
+      dispatch(updateScreenData({ object: img.id }));
+    },
+    [dispatch]
+  );
+
+  const initializeObjectFile = useCallback(
+    (width: number, height: number) => {
+      dispatch(
+        updateScreenData({
+          objectOrigData: {
+            width: width,
+            height: height,
+          },
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  const resetObjectFile = useCallback(() => {
+    dispatch(
+      updateScreenData({
+        object: null,
+        objectOrigData: null,
+      })
+    );
+  }, [dispatch]);
+
+  // - - - Object image 2 - - -
+
+  const object2File = dispatch(getFileById(activeScreen.object2));
+
+  const setObject2File = useCallback(
+    (img: IndihuFile) => {
+      dispatch(updateScreenData({ object2: img.id }));
+    },
+    [dispatch]
+  );
+
+  const initializeObject2File = useCallback(
+    (width: number, height: number) => {
+      dispatch(
+        updateScreenData({
+          object2OrigData: {
+            width: width,
+            height: height,
+          },
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  const resetObject2File = useCallback(() => {
+    dispatch(
+      updateScreenData({
+        object2: null,
+        object2OrigData: null,
+      })
+    );
+  }, [dispatch]);
+
+  // - - - Object image 3 - - -
+
+  const object3File = dispatch(getFileById(activeScreen.object3));
+
+  const setObject3File = useCallback(
+    (img: IndihuFile) => {
+      dispatch(updateScreenData({ object3: img.id }));
+    },
+    [dispatch]
+  );
+
+  const initializeObject3File = useCallback(
+    (width: number, height: number) => {
+      dispatch(
+        updateScreenData({
+          object3OrigData: {
+            width: width,
+            height: height,
+          },
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  const resetObject3File = useCallback(() => {
+    dispatch(
+      updateScreenData({
+        object3: null,
+        object3OrigData: null,
+      })
+    );
+  }, [dispatch]);
+
+  // - - - GUI - - -
 
   return (
     <div className="container container-tabMenu">
@@ -71,6 +176,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
               helpIconLabel={t("imageAssignmentTooltip")}
             />
           </div>
+
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
               title={t("imageResultLabel")}
@@ -92,81 +198,68 @@ const Images = ({ activeScreen }: ImagesProps) => {
           </div>
         </div>
 
-        <div className="flex-row-nowrap flex-centered full-width">
-          {t("object")}
-          <FontIcon className="small-margin">image</FontIcon>
-          <TextField
-            id="screen-game-move-textfield-music"
-            value={object ? object.name : ""}
-            disabled
-          />
-          <div className="row flex-centered">
-            {object && (
-              <FontIcon
-                className="icon"
-                onClick={() =>
-                  dispatch(
-                    setDialog(DialogType.ConfirmDialog, {
-                      title: (
-                        <FontIcon className="color-black">delete</FontIcon>
-                      ),
-                      text: "Opravdu chcete odstranit objekt?",
-                      onSubmit: () =>
-                        dispatch(
-                          updateScreenData({
-                            object: null,
-                            objectOrigData: null,
-                          })
-                        ),
-                    })
-                  )
-                }
-              >
-                delete
-              </FontIcon>
-            )}
-            <Button
-              raised
-              label={t("objectSelectLabel")}
-              onClick={() =>
-                dispatch(
-                  setDialog(DialogType.ScreenFileChoose, {
-                    onChoose: setObject,
-                    typeMatch: new RegExp(/^image\/.*$/),
-                    accept: "image/*",
-                  })
-                )
-              }
-              className={!object ? "margin-left-small" : undefined}
-            />
-            <HelpIcon label={t("objectTooltip")} id="editor-game-move-object" />
-          </div>
-        </div>
+        <ObjectImagePanel
+          objectFile={objectFile}
+          objectOrder={1}
+          onObjectChoose={setObjectFile}
+          onObjectDelete={resetObjectFile}
+        />
 
-        {object && (
+        <ObjectImagePanel
+          objectFile={object2File}
+          objectOrder={2}
+          onObjectChoose={setObject2File}
+          onObjectDelete={resetObject2File}
+        />
+
+        <ObjectImagePanel
+          objectFile={object3File}
+          objectOrder={3}
+          onObjectChoose={setObject3File}
+          onObjectDelete={resetObject3File}
+        />
+
+        {objectFile && (
           <img
-            src={`/api/files/${object.fileId}`}
+            src={`/api/files/${objectFile.fileId}`}
             onLoad={(e) => {
               const imgEl = e.currentTarget;
-              dispatch(
-                updateScreenData({
-                  objectOrigData: {
-                    width: imgEl.width,
-                    height: imgEl.height,
-                  },
-                })
-              );
+              initializeObjectFile(imgEl.width, imgEl.height);
             }}
             className="hidden"
-            alt=""
+            alt="hidden-object1-file"
           />
         )}
 
-        {image1 && object && (
+        {object2File && (
+          <img
+            src={`/api/files/${object2File.fileId}`}
+            onLoad={(e) => {
+              const imgEl = e.currentTarget;
+              initializeObject2File(imgEl.width, imgEl.height);
+            }}
+            className="hidden"
+            alt="hidden-object2-file"
+          />
+        )}
+
+        {object3File && (
+          <img
+            src={`/api/files/${object3File.fileId}`}
+            onLoad={(e) => {
+              const imgEl = e.currentTarget;
+              initializeObject3File(imgEl.width, imgEl.height);
+            }}
+            className="hidden"
+            alt="hidden-object3-file"
+          />
+        )}
+
+        {image1 && objectFile && (
           <ObjectImagePreview
             activeScreen={activeScreen}
             image1Src={`/api/files/${image1.fileId}`}
-            objectImgSrc={`/api/files/${object.fileId}`}
+            objectImgSrc={`/api/files/${objectFile.fileId}`}
           />
         )}
       </div>
@@ -175,3 +268,71 @@ const Images = ({ activeScreen }: ImagesProps) => {
 };
 
 export default Images;
+
+// - - - - - -
+
+type ObjectImagePanelProps = {
+  objectFile: IndihuFile | null;
+  objectOrder: number;
+  onObjectChoose: (file: IndihuFile) => void;
+  onObjectDelete: () => void;
+};
+
+const ObjectImagePanel = ({
+  objectFile,
+  objectOrder,
+  onObjectChoose,
+  onObjectDelete,
+}: ObjectImagePanelProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.gameMoveScreen",
+  });
+
+  return (
+    <div className="flex-row-nowrap flex-centered full-width">
+      <div>{`${t("object")} ${objectOrder}`}</div>
+
+      <FontIcon className="small-margin">image</FontIcon>
+      <TextField
+        id="screen-game-move-textfield-music"
+        value={objectFile ? objectFile.name : ""}
+        disabled
+      />
+
+      <div className="row flex-centered">
+        {objectFile && (
+          <FontIcon
+            className="icon"
+            onClick={() =>
+              dispatch(
+                setDialog(DialogType.ConfirmDialog, {
+                  title: <FontIcon className="color-black">delete</FontIcon>,
+                  text: "Opravdu chcete odstranit objekt?",
+                  onSubmit: () => onObjectDelete(),
+                })
+              )
+            }
+          >
+            delete
+          </FontIcon>
+        )}
+        <Button
+          raised
+          label={t("objectSelectLabel")}
+          onClick={() =>
+            dispatch(
+              setDialog(DialogType.ScreenFileChoose, {
+                onChoose: onObjectChoose,
+                typeMatch: new RegExp(/^image\/.*$/),
+                accept: "image/*",
+              })
+            )
+          }
+          className={!objectFile ? "margin-left-small" : undefined}
+        />
+        <HelpIcon label={t("objectTooltip")} id="editor-game-move-object" />
+      </div>
+    </div>
+  );
+};

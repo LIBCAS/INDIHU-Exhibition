@@ -495,11 +495,17 @@ export type GameMoveScreen = {
   type: typeof screenType.GAME_MOVE;
   title?: string;
   task: string;
+
+  // NOTE: assignment image
   image1?: string;
-  image2?: string;
-  object?: string;
   image1OrigData?: ImageOrigData;
-  image2OrigData?: ImageOrigData;
+
+  // NOTE: result image
+  image2?: string;
+  image2OrigData?: ImageOrigData; // NOTE: result image
+
+  // NOTE: First object to move
+  object?: string;
   objectOrigData?: ImageOrigData;
   objectPositionProps?: {
     containerPosition: Position;
@@ -509,6 +515,32 @@ export type GameMoveScreen = {
     inContainerSize: Size;
     inContainedImgFractionSize: Size;
   };
+
+  // NOTE: Second object to move
+  object2?: string;
+  object2OrigData?: ImageOrigData;
+  object2PositionProps?: {
+    containerPosition: Position;
+    containedImgPosition: Position;
+  };
+  object2SizeProps?: {
+    inContainerSize: Size;
+    inContainedImgFractionSize: Size;
+  };
+
+  // NOTE: Third object to move
+  object3?: string;
+  object3OrigData?: ImageOrigData;
+  object3PositionProps?: {
+    containerPosition: Position;
+    containedImgPosition: Position;
+  };
+  object3SizeProps?: {
+    inContainerSize: Size;
+    inContainedImgFractionSize: Size;
+  };
+
+  // Other fields
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;
