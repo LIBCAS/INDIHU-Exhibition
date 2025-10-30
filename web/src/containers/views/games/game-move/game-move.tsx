@@ -62,7 +62,12 @@ export const GameMove = ({
   // - - - Move functionality - - -
 
   const { objInitialLeft, objInitialTop } = useMemo(
-    () => calculateObjectInitialPosition(viewScreen, containerSize),
+    () =>
+      calculateObjectInitialPosition(
+        viewScreen.image1OrigData,
+        viewScreen.objectPositionProps?.containedImgPosition,
+        containerSize
+      ),
     [containerSize, viewScreen]
   );
 
@@ -75,7 +80,13 @@ export const GameMove = ({
   // - - - Size calculation of object - - -
 
   const { objectWidth, objectHeight } = useMemo(
-    () => calculateObjectSize(viewScreen, containerSize),
+    () =>
+      calculateObjectSize(
+        viewScreen.image1OrigData,
+        viewScreen.objectOrigData,
+        viewScreen.objectSizeProps?.inContainedImgFractionSize,
+        containerSize
+      ),
     [containerSize, viewScreen]
   );
 

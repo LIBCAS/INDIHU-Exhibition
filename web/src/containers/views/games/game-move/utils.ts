@@ -1,4 +1,4 @@
-import { GameMoveScreen, Size } from "models";
+import { Position, Size } from "models";
 import { calculateObjectFit } from "utils/object-fit";
 
 // - - - - - -
@@ -7,21 +7,23 @@ import { calculateObjectFit } from "utils/object-fit";
  *
  */
 export const calculateObjectInitialPosition = (
-  viewScreen: GameMoveScreen,
+  assignmentImgOriginalData: Size | undefined,
+  objectOriginalPosition: Position | undefined,
   containerSize: Size
 ) => {
-  const assignmentImgOrigData = viewScreen.image1OrigData ?? {
+  const assignmentImgOrigData = assignmentImgOriginalData ?? {
     width: 0,
     height: 0,
   };
 
-  // Object position from administration against the contained image there
-  const objectPosition = viewScreen.objectPositionProps
-    ?.containedImgPosition ?? {
+  // NOTE: Object's original position, from administration, against the preview contained image
+  const objectPosition = objectOriginalPosition ?? {
     left: 0,
     top: 0,
   };
 
+  // NOTE: We have image original data (administration) and containerSize (view)
+  // So, we can calculate the size of the contained assignment image inside view
   const {
     width: assignmentImgWidth,
     height: assignmentImgHeight,
@@ -47,10 +49,12 @@ export const calculateObjectInitialPosition = (
  *
  */
 export const calculateObjectSize = (
-  viewScreen: GameMoveScreen,
+  assignmentImgOriginalData: Size | undefined,
+  objectImgOriginalData: Size | undefined,
+  objectOriginalSize: Size | undefined,
   containerSize: Size
 ) => {
-  const assignmentImgOrigData = viewScreen.image1OrigData ?? {
+  const assignmentImgOrigData = assignmentImgOriginalData ?? {
     width: 0,
     height: 0,
   };
@@ -62,23 +66,20 @@ export const calculateObjectSize = (
       child: assignmentImgOrigData,
     });
 
-  const objectImgOrigData = viewScreen.objectOrigData ?? {
+  const objectImgOrigData = objectImgOriginalData ?? {
     width: 0,
     height: 0,
   };
 
-  const inContainedImgFractionSize =
-    viewScreen.objectSizeProps?.inContainedImgFractionSize;
-
-  if (inContainedImgFractionSize === undefined) {
+  if (objectOriginalSize === undefined) {
     return {
       objectWidth: objectImgOrigData.width,
       objectHeight: objectImgOrigData.height,
     };
   }
 
-  const objectWidth = inContainedImgFractionSize.width * assignmentImgWidth;
-  const objectHeight = inContainedImgFractionSize.height * assignmentImgHeight;
+  const objectWidth = objectOriginalSize.width * assignmentImgWidth;
+  const objectHeight = objectOriginalSize.height * assignmentImgHeight;
 
   return { objectWidth, objectHeight };
 };
