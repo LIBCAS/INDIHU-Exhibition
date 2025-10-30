@@ -297,4 +297,6 @@ export const gameScreens = [
   screenType.GAME_OPTIONS,
   screenType.GAME_SIZING,
   screenType.GAME_WIPE,
+  // NOTE: Survey is not directly game screen, but it uses overlay of other game screens
+  screenType.SURVEY,
 ];

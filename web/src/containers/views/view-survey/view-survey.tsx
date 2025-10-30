@@ -1,9 +1,17 @@
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
+// Components
+import SurveyFreeAnswerView from "./free-answer/SurveyFreeAnswerView";
+import SurveyVariantAnswerView from "./variant-answers/SurveyVariantAnswerView";
+
 // Types
-import { ScreenProps, SurveyScreen } from "models";
 import { AppState } from "store/store";
+import { ScreenProps, SurveyScreen } from "models";
+
+// Utils
+import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
 
 // - - - - - -
 
@@ -12,28 +20,42 @@ const stateSelector = createSelector(
   (viewScreen) => ({ viewScreen })
 );
 
-export const ViewSurvey = ({ screenPreloadedFiles }: ScreenProps) => {
-  console.log();
-  console.log("*** ViewSurvey ***");
-
+export const ViewSurvey = ({
+  screenPreloadedFiles,
+  infoPanelRef,
+  actionsPanelRef,
+  isMobileOverlay,
+}: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
 
-  console.log("viewScreen: ", viewScreen);
-  console.log("screenPreloadedFiles: ", screenPreloadedFiles);
+  // - - - Data about Survey from administration - - -
+
+  const surveyType = useMemo(
+    () => viewScreen.surveyType ?? DEFAULT_SURVEY_TYPE,
+    [viewScreen.surveyType]
+  );
+
+  // - - - GUI - - -
+
+  if (surveyType === "FREE_ANSWER") {
+    return (
+      <SurveyFreeAnswerView
+        viewScreen={viewScreen}
+        infoPanelRef={infoPanelRef}
+        actionsPanelRef={actionsPanelRef}
+        isMobileOverlay={isMobileOverlay}
+      />
+    );
+  }
 
   return (
-    <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%]">
-      <div className="h-full overflow-auto expo-scrollbar pr-4 pb-16 md:pb-32">
-        <div className="min-h-full flex flex-col justify-center items-center gap-8 md:gap-12">
-          {/* 1. Title */}
-          <div className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
-            TODO title
-          </div>
-
-          {/* 2. TODO - rest */}
-          <div></div>
-        </div>
-      </div>
-    </div>
+    <SurveyVariantAnswerView
+      viewScreen={viewScreen}
+      infoPanelRef={infoPanelRef}
+      actionsPanelRef={actionsPanelRef}
+      isMobileOverlay={isMobileOverlay}
+      screenPreloadedFiles={screenPreloadedFiles}
+      surveyType={surveyType}
+    />
   );
 };

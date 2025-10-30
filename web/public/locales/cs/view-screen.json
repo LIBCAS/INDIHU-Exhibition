@@ -84,6 +84,14 @@
   "timelineScreen": {
     "missingTimelineName": "Neuvedený název časové osy"
   },
+  "surveyScreen": {
+    "solution": "Děkujeme za vaši odpověď a účast v této anketě.",
+    "missingTaskText": "Neuvedené zadání obrazovky anketa",
+    "missingAnswerText": "K této odpovědi nebyl přiložen žádný text.",
+    "freeAnswerPlaceholder": "Sem napište odpověď",
+    "freeAnswerTooLongMsg": "Bylo dosaženo maximálního počtu znaků pro volnou odpověď.",
+    "sendFreeAnswerBtnLabel": "Poslat odpověď"
+  },
 
   "game": {
     "controls": {

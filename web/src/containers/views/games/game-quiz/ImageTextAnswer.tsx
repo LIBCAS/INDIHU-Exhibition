@@ -128,7 +128,7 @@ const ImageTextAnswer = ({
     <Grid item xs={12} sm={12} md={6} lg={6} xl={4}>
       <div
         className={cx(
-          "h-full flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer relative",
+          "relative h-full flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer",
           {
             "!p-2": quizType === "ONLY_IMAGES",
             "!p-3": quizType === "ONLY_TEXT",
