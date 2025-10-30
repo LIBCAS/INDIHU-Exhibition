@@ -3,12 +3,13 @@ import { useState, useMemo, useCallback } from "react";
 import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { useTranslation } from "react-i18next";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+
+// Hooks
 import useResizeObserver from "hooks/use-resize-observer";
 import { useElementMove } from "../../../../hooks/spring-hooks/use-element-move";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -48,11 +49,17 @@ export const GameMove = ({
     object: objectImgSrc,
   } = screenPreloadedFiles;
 
-  // - - Move functionality - -
+  // - - - States - - -
+
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+  // - - - Hooks - - -
 
   const [containerRef, containerSize] = useResizeObserver();
 
   const [objectDragRef, objectDragSize] = useResizeObserver();
+
+  // - - - Move functionality - - -
 
   const { objInitialLeft, objInitialTop } = useMemo(
     () => calculateObjectInitialPosition(viewScreen, containerSize),
@@ -65,24 +72,21 @@ export const GameMove = ({
     initialPosition: { left: objInitialLeft, top: objInitialTop },
   });
 
-  // - - Size calculation of object, based on administration settings - -
-  // once at mount assigned through CSS and then used by `objectDragSize`
+  // - - - Size calculation of object - - -
 
   const { objectWidth, objectHeight } = useMemo(
     () => calculateObjectSize(viewScreen, containerSize),
     [containerSize, viewScreen]
   );
 
-  // - - Tutorial - -
+  // - - - Tutorial - - -
 
   const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
 
-  // - - - -
-
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+  // - - - Callbacks - - -
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -93,6 +97,8 @@ export const GameMove = ({
     moveSpringApi.start({ left: objInitialLeft, top: objInitialTop });
   }, [moveSpringApi, objInitialLeft, objInitialTop]);
 
+  // - - - Transition animations - - -
+
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
@@ -100,12 +106,14 @@ export const GameMove = ({
     leave: { opacity: 0 },
   });
 
-  // - - - -
+  // - - - Game Auto Navigation Hook - - -
 
   useGameAutoNavigationOnResultTimeElapsed({
     gameResultTime: resultTime * 1000,
     isGameFinished: isGameFinished,
   });
+
+  // - - - GUI - - -
 
   return (
     <div className="relative w-[100svw] h-[100svh]" ref={containerRef}>

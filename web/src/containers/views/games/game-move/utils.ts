@@ -1,6 +1,11 @@
 import { GameMoveScreen, Size } from "models";
 import { calculateObjectFit } from "utils/object-fit";
 
+// - - - - - -
+
+/**
+ *
+ */
 export const calculateObjectInitialPosition = (
   viewScreen: GameMoveScreen,
   containerSize: Size
@@ -38,6 +43,9 @@ export const calculateObjectInitialPosition = (
   return { objInitialLeft, objInitialTop };
 };
 
+/**
+ *
+ */
 export const calculateObjectSize = (
   viewScreen: GameMoveScreen,
   containerSize: Size
