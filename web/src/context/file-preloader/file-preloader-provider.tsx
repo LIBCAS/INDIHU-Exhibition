@@ -19,6 +19,8 @@ export type ScreenPreloadedFiles = {
   image2?: string;
   image3?: string;
   object?: string;
+  object2?: string;
+  object3?: string;
   answers?: { image?: string }[];
   links?: { image?: string }[];
 };
