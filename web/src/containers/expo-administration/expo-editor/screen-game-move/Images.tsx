@@ -35,9 +35,9 @@ const Images = ({ activeScreen }: ImagesProps) => {
 
   // - - - Assignment image - - -
 
-  const image1 = dispatch(getFileById(activeScreen.image1));
+  const assignmentImageFile = dispatch(getFileById(activeScreen.image1));
 
-  const setImage1 = (img: IndihuFile) => {
+  const setAssignmentImageFile = (img: IndihuFile) => {
     dispatch(updateScreenData({ image1: img.id }));
   };
 
@@ -79,6 +79,8 @@ const Images = ({ activeScreen }: ImagesProps) => {
       updateScreenData({
         object: null,
         objectOrigData: null,
+        objectPositionProps: null,
+        objectSizeProps: null,
       })
     );
   }, [dispatch]);
@@ -113,6 +115,8 @@ const Images = ({ activeScreen }: ImagesProps) => {
       updateScreenData({
         object2: null,
         object2OrigData: null,
+        object2PositionProps: null,
+        object2SizeProps: null,
       })
     );
   }, [dispatch]);
@@ -147,6 +151,8 @@ const Images = ({ activeScreen }: ImagesProps) => {
       updateScreenData({
         object3: null,
         object3OrigData: null,
+        object3PositionProps: null,
+        object3SizeProps: null,
       })
     );
   }, [dispatch]);
@@ -160,8 +166,8 @@ const Images = ({ activeScreen }: ImagesProps) => {
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
               title={t("imageAssignmentLabel")}
-              image={image1}
-              setImage={setImage1}
+              image={assignmentImageFile}
+              setImage={setAssignmentImageFile}
               onDelete={() =>
                 dispatch(
                   updateScreenData({ image1: null, image1OrigData: null })
@@ -255,11 +261,17 @@ const Images = ({ activeScreen }: ImagesProps) => {
           />
         )}
 
-        {image1 && objectFile && (
+        {assignmentImageFile && (
           <ObjectImagePreview
             activeScreen={activeScreen}
-            image1Src={`/api/files/${image1.fileId}`}
-            objectImgSrc={`/api/files/${objectFile.fileId}`}
+            image1Src={`/api/files/${assignmentImageFile.fileId}`}
+            objectImgSrc={objectFile ? `/api/files/${objectFile.fileId}` : null}
+            object2ImgSrc={
+              object2File ? `/api/files/${object2File.fileId}` : null
+            }
+            object3ImgSrc={
+              object3File ? `/api/files/${object3File.fileId}` : null
+            }
           />
         )}
       </div>
