@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 // Hooks
 import useResizeObserver from "hooks/use-resize-observer";
-import { useElementMove } from "../../../../hooks/spring-hooks/use-element-move";
+import { useGameMoveObject } from "./hooks/useGameMoveObject";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
@@ -20,7 +20,6 @@ import { AppState } from "store/store";
 import { ScreenProps, GameMoveScreen } from "models";
 
 // Utils
-import { calculateObjectInitialPosition, calculateObjectSize } from "./utils";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - - - - - -
@@ -63,108 +62,56 @@ export const GameMove = ({
   const [object2DragRef, object2DragSize] = useResizeObserver();
   const [object3DragRef, object3DragSize] = useResizeObserver();
 
-  // - - - Move functionality (Object 1) - - -
+  // - - - Object 1 - - -
 
-  const { objInitialLeft, objInitialTop } = useMemo(
-    () =>
-      calculateObjectInitialPosition(
-        viewScreen.image1OrigData,
-        viewScreen.objectPositionProps?.containedImgPosition,
-        containerSize
-      ),
-    [containerSize, viewScreen]
-  );
-
-  const { moveSpring, moveSpringApi, bindMoveDrag } = useElementMove({
+  const {
+    moveSpring,
+    bindMoveDrag,
+    objectWidth,
+    objectHeight,
+    resetObjectPosition,
+  } = useGameMoveObject({
+    assignmentImageOrigData: viewScreen.image1OrigData,
     containerSize: containerSize,
-    dragMovingObjectSize: objectDragSize,
-    initialPosition: { left: objInitialLeft, top: objInitialTop },
+    objectPositionProps: viewScreen.objectPositionProps,
+    objectSizeProps: viewScreen.objectSizeProps,
+    objectImageOrigData: viewScreen.objectOrigData,
+    objectDragSize: objectDragSize,
   });
 
-  // - - - Size calculation of object (Object 1) - - -
-
-  const { objectWidth, objectHeight } = useMemo(
-    () =>
-      calculateObjectSize(
-        viewScreen.image1OrigData,
-        viewScreen.objectOrigData,
-        viewScreen.objectSizeProps?.inContainedImgFractionSize,
-        containerSize
-      ),
-    [containerSize, viewScreen]
-  );
-
-  // - - - Move functionality (Object 2) - - -
-
-  const { objInitialLeft: obj2InitialLeft, objInitialTop: obj2InitialTop } =
-    useMemo(
-      () =>
-        calculateObjectInitialPosition(
-          viewScreen.image1OrigData,
-          viewScreen.object2PositionProps?.containedImgPosition,
-          containerSize
-        ),
-      [containerSize, viewScreen]
-    );
+  // - - - Object 2 - - -
 
   const {
     moveSpring: move2Spring,
-    moveSpringApi: move2SpringApi,
     bindMoveDrag: bindMove2Drag,
-  } = useElementMove({
+    objectWidth: object2Width,
+    objectHeight: object2Height,
+    resetObjectPosition: resetObject2Position,
+  } = useGameMoveObject({
+    assignmentImageOrigData: viewScreen.image1OrigData,
     containerSize: containerSize,
-    dragMovingObjectSize: object2DragSize,
-    initialPosition: { left: obj2InitialLeft, top: obj2InitialTop },
+    objectPositionProps: viewScreen.object2PositionProps,
+    objectSizeProps: viewScreen.object2SizeProps,
+    objectImageOrigData: viewScreen.object2OrigData,
+    objectDragSize: object2DragSize,
   });
 
-  // - - - Size calculation of object (Object 2) - - -
-
-  const { objectWidth: object2Width, objectHeight: object2Height } = useMemo(
-    () =>
-      calculateObjectSize(
-        viewScreen.image1OrigData,
-        viewScreen.object2OrigData,
-        viewScreen.object2SizeProps?.inContainedImgFractionSize,
-        containerSize
-      ),
-    [containerSize, viewScreen]
-  );
-
-  // - - - Move functionality (Object 3) - - -
-
-  const { objInitialLeft: obj3InitialLeft, objInitialTop: obj3InitialTop } =
-    useMemo(
-      () =>
-        calculateObjectInitialPosition(
-          viewScreen.image1OrigData,
-          viewScreen.object3PositionProps?.containedImgPosition,
-          containerSize
-        ),
-      [containerSize, viewScreen]
-    );
+  // - - - Object 3 - - -
 
   const {
     moveSpring: move3Spring,
-    moveSpringApi: move3SpringApi,
     bindMoveDrag: bindMove3Drag,
-  } = useElementMove({
+    objectWidth: object3Width,
+    objectHeight: object3Height,
+    resetObjectPosition: resetObject3Position,
+  } = useGameMoveObject({
+    assignmentImageOrigData: viewScreen.image1OrigData,
     containerSize: containerSize,
-    dragMovingObjectSize: object3DragSize,
-    initialPosition: { left: obj3InitialLeft, top: obj3InitialTop },
+    objectPositionProps: viewScreen.object3PositionProps,
+    objectSizeProps: viewScreen.object3SizeProps,
+    objectImageOrigData: viewScreen.object3OrigData,
+    objectDragSize: object3DragSize,
   });
-
-  // - - - Size calculation of object (Object 3) - - -
-
-  const { objectWidth: object3Width, objectHeight: object3Height } = useMemo(
-    () =>
-      calculateObjectSize(
-        viewScreen.image1OrigData,
-        viewScreen.object2OrigData,
-        viewScreen.object2SizeProps?.inContainedImgFractionSize,
-        containerSize
-      ),
-    [containerSize, viewScreen]
-  );
 
   // - - - Tutorial - - -
 
@@ -181,20 +128,10 @@ export const GameMove = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    moveSpringApi.start({ left: objInitialLeft, top: objInitialTop });
-    move2SpringApi.start({ left: obj2InitialLeft, top: obj2InitialTop });
-    move3SpringApi.start({ left: obj3InitialLeft, top: obj3InitialTop });
-  }, [
-    moveSpringApi,
-    objInitialLeft,
-    objInitialTop,
-    move2SpringApi,
-    obj2InitialLeft,
-    obj2InitialTop,
-    move3SpringApi,
-    obj3InitialLeft,
-    obj3InitialTop,
-  ]);
+    resetObjectPosition();
+    resetObject2Position();
+    resetObject3Position();
+  }, [resetObjectPosition, resetObject2Position, resetObject3Position]);
 
   // - - - Transition animations - - -
 
