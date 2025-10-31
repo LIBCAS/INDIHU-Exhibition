@@ -497,48 +497,48 @@ export type GameMoveScreen = {
   task: string;
 
   // NOTE: assignment image
-  image1?: string;
-  image1OrigData?: ImageOrigData;
+  image1?: string | null;
+  image1OrigData?: ImageOrigData | null;
 
   // NOTE: result image
-  image2?: string;
-  image2OrigData?: ImageOrigData; // NOTE: result image
+  image2?: string | null;
+  image2OrigData?: ImageOrigData | null;
 
   // NOTE: First object to move
-  object?: string;
-  objectOrigData?: ImageOrigData;
+  object?: string | null;
+  objectOrigData?: ImageOrigData | null;
   objectPositionProps?: {
     containerPosition: Position;
     containedImgPosition: Position;
-  };
+  } | null;
   objectSizeProps?: {
     inContainerSize: Size;
     inContainedImgFractionSize: Size;
-  };
+  } | null;
 
   // NOTE: Second object to move
-  object2?: string;
-  object2OrigData?: ImageOrigData;
+  object2?: string | null;
+  object2OrigData?: ImageOrigData | null;
   object2PositionProps?: {
     containerPosition: Position;
     containedImgPosition: Position;
-  };
+  } | null;
   object2SizeProps?: {
     inContainerSize: Size;
     inContainedImgFractionSize: Size;
-  };
+  } | null;
 
   // NOTE: Third object to move
-  object3?: string;
-  object3OrigData?: ImageOrigData;
+  object3?: string | null;
+  object3OrigData?: ImageOrigData | null;
   object3PositionProps?: {
     containerPosition: Position;
     containedImgPosition: Position;
-  };
+  } | null;
   object3SizeProps?: {
     inContainerSize: Size;
     inContainedImgFractionSize: Size;
-  };
+  } | null;
 
   // Other fields
   aloneScreen: boolean;

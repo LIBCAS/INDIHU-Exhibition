@@ -7,8 +7,8 @@ import { calculateObjectFit } from "utils/object-fit";
  *
  */
 export const calculateObjectInitialPosition = (
-  assignmentImgOriginalData: Size | undefined,
-  objectOriginalPosition: Position | undefined,
+  assignmentImgOriginalData: Size | undefined | null,
+  objectOriginalPosition: Position | undefined | null,
   containerSize: Size
 ) => {
   const assignmentImgOrigData = assignmentImgOriginalData ?? {
@@ -49,9 +49,9 @@ export const calculateObjectInitialPosition = (
  *
  */
 export const calculateObjectSize = (
-  assignmentImgOriginalData: Size | undefined,
-  objectImgOriginalData: Size | undefined,
-  objectOriginalSize: Size | undefined,
+  assignmentImgOriginalData: Size | undefined | null,
+  objectImgOriginalData: Size | undefined | null,
+  objectOriginalSize: Size | undefined | null,
   containerSize: Size
 ) => {
   const assignmentImgOrigData = assignmentImgOriginalData ?? {
@@ -71,7 +71,7 @@ export const calculateObjectSize = (
     height: 0,
   };
 
-  if (objectOriginalSize === undefined) {
+  if (objectOriginalSize === undefined || objectOriginalSize === null) {
     return {
       objectWidth: objectImgOrigData.width,
       objectHeight: objectImgOrigData.height,
