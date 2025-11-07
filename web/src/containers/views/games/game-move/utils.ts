@@ -1,22 +1,18 @@
-import { GameMoveScreen, Size } from "models";
+import { Position, Size } from "models";
 import { calculateObjectFit } from "utils/object-fit";
 
+// - - - - - -
+
+/**
+ *
+ */
 export const calculateObjectInitialPosition = (
-  viewScreen: GameMoveScreen,
+  assignmentImgOrigData: Size,
+  objectOrigPosition: Position,
   containerSize: Size
 ) => {
-  const assignmentImgOrigData = viewScreen.image1OrigData ?? {
-    width: 0,
-    height: 0,
-  };
-
-  // Object position from administration against the contained image there
-  const objectPosition = viewScreen.objectPositionProps
-    ?.containedImgPosition ?? {
-    left: 0,
-    top: 0,
-  };
-
+  // NOTE: We have image original data (administration) and containerSize (view)
+  // So, we can calculate the size of the contained assignment image inside view
   const {
     width: assignmentImgWidth,
     height: assignmentImgHeight,
@@ -29,8 +25,8 @@ export const calculateObjectInitialPosition = (
   });
 
   // E.g. wFraction = 0.25 means that the object's left-top corner is located 25% left against contained img there
-  const wFraction = objectPosition.left / assignmentImgOrigData.width;
-  const hFraction = objectPosition.top / assignmentImgOrigData.height;
+  const wFraction = objectOrigPosition.left / assignmentImgOrigData.width;
+  const hFraction = objectOrigPosition.top / assignmentImgOrigData.height;
 
   const objInitialLeft = assignmentImgLeftEdge + wFraction * assignmentImgWidth;
   const objInitialTop = assignmentImgTopEdge + hFraction * assignmentImgHeight;
@@ -38,15 +34,16 @@ export const calculateObjectInitialPosition = (
   return { objInitialLeft, objInitialTop };
 };
 
+// - - - - - -
+
+/**
+ *
+ */
 export const calculateObjectSize = (
-  viewScreen: GameMoveScreen,
+  assignmentImgOrigData: Size,
+  objectOriginalSize: Size | undefined | null,
   containerSize: Size
 ) => {
-  const assignmentImgOrigData = viewScreen.image1OrigData ?? {
-    width: 0,
-    height: 0,
-  };
-
   const { width: assignmentImgWidth, height: assignmentImgHeight } =
     calculateObjectFit({
       type: "contain",
@@ -54,23 +51,30 @@ export const calculateObjectSize = (
       child: assignmentImgOrigData,
     });
 
-  const objectImgOrigData = viewScreen.objectOrigData ?? {
-    width: 0,
-    height: 0,
-  };
-
-  const inContainedImgFractionSize =
-    viewScreen.objectSizeProps?.inContainedImgFractionSize;
-
-  if (inContainedImgFractionSize === undefined) {
+  if (objectOriginalSize === undefined || objectOriginalSize === null) {
+    const backup = calculateObjectSizeBackup(
+      assignmentImgWidth,
+      assignmentImgHeight
+    );
     return {
-      objectWidth: objectImgOrigData.width,
-      objectHeight: objectImgOrigData.height,
+      objectWidth: backup.width,
+      objectHeight: backup.height,
     };
   }
 
-  const objectWidth = inContainedImgFractionSize.width * assignmentImgWidth;
-  const objectHeight = inContainedImgFractionSize.height * assignmentImgHeight;
+  const objectWidth = objectOriginalSize.width * assignmentImgWidth;
+  const objectHeight = objectOriginalSize.height * assignmentImgHeight;
 
   return { objectWidth, objectHeight };
+};
+
+// - - - - - -
+
+export const calculateObjectSizeBackup = (
+  containedAssignmentImgWidth: number,
+  containedAssignmentImgHeight: number
+): Size => {
+  const backupWidth = containedAssignmentImgWidth / 4;
+  const backupHeight = containedAssignmentImgHeight / 4;
+  return { width: backupWidth, height: backupHeight };
 };

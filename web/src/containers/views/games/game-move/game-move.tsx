@@ -1,14 +1,15 @@
 import ReactDOM from "react-dom";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { useTranslation } from "react-i18next";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+
+// Hooks
 import useResizeObserver from "hooks/use-resize-observer";
-import { useElementMove } from "../../../../hooks/spring-hooks/use-element-move";
+import { useGameMoveObject } from "./hooks/useGameMoveObject";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -19,7 +20,6 @@ import { AppState } from "store/store";
 import { ScreenProps, GameMoveScreen } from "models";
 
 // Utils
-import { calculateObjectInitialPosition, calculateObjectSize } from "./utils";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 
 // - - - - - -
@@ -46,43 +46,78 @@ export const GameMove = ({
     image1: assignmentImgSrc,
     image2: resultingImgSrc,
     object: objectImgSrc,
+    object2: object2ImgSrc,
+    object3: object3ImgSrc,
   } = screenPreloadedFiles;
 
-  // - - Move functionality - -
+  // - - - States - - -
+
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+  // - - - Hooks - - -
 
   const [containerRef, containerSize] = useResizeObserver();
 
   const [objectDragRef, objectDragSize] = useResizeObserver();
+  const [object2DragRef, object2DragSize] = useResizeObserver();
+  const [object3DragRef, object3DragSize] = useResizeObserver();
 
-  const { objInitialLeft, objInitialTop } = useMemo(
-    () => calculateObjectInitialPosition(viewScreen, containerSize),
-    [containerSize, viewScreen]
-  );
+  // - - - Object 1 - - -
 
-  const { moveSpring, moveSpringApi, bindMoveDrag } = useElementMove({
+  const {
+    moveSpring,
+    bindMoveDrag,
+    objectWidth,
+    objectHeight,
+    resetObjectPosition,
+  } = useGameMoveObject({
+    assignmentImageOrigData: viewScreen.image1OrigData,
     containerSize: containerSize,
-    dragMovingObjectSize: objectDragSize,
-    initialPosition: { left: objInitialLeft, top: objInitialTop },
+    objectPositionProps: viewScreen.objectPositionProps,
+    objectSizeProps: viewScreen.objectSizeProps,
+    objectDragSize: objectDragSize,
   });
 
-  // - - Size calculation of object, based on administration settings - -
-  // once at mount assigned through CSS and then used by `objectDragSize`
+  // - - - Object 2 - - -
 
-  const { objectWidth, objectHeight } = useMemo(
-    () => calculateObjectSize(viewScreen, containerSize),
-    [containerSize, viewScreen]
-  );
+  const {
+    moveSpring: move2Spring,
+    bindMoveDrag: bindMove2Drag,
+    objectWidth: object2Width,
+    objectHeight: object2Height,
+    resetObjectPosition: resetObject2Position,
+  } = useGameMoveObject({
+    assignmentImageOrigData: viewScreen.image1OrigData,
+    containerSize: containerSize,
+    objectPositionProps: viewScreen.object2PositionProps,
+    objectSizeProps: viewScreen.object2SizeProps,
+    objectDragSize: object2DragSize,
+  });
 
-  // - - Tutorial - -
+  // - - - Object 3 - - -
+
+  const {
+    moveSpring: move3Spring,
+    bindMoveDrag: bindMove3Drag,
+    objectWidth: object3Width,
+    objectHeight: object3Height,
+    resetObjectPosition: resetObject3Position,
+  } = useGameMoveObject({
+    assignmentImageOrigData: viewScreen.image1OrigData,
+    containerSize: containerSize,
+    objectPositionProps: viewScreen.object3PositionProps,
+    objectSizeProps: viewScreen.object3SizeProps,
+    objectDragSize: object3DragSize,
+  });
+
+  // - - - Tutorial - - -
 
   const { bind: bindTutorial, TutorialTooltip } = useTutorial("gameMove", {
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
 
-  // - - - -
-
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+  // - - - Callbacks - - -
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
@@ -90,8 +125,12 @@ export const GameMove = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    moveSpringApi.start({ left: objInitialLeft, top: objInitialTop });
-  }, [moveSpringApi, objInitialLeft, objInitialTop]);
+    resetObjectPosition();
+    resetObject2Position();
+    resetObject3Position();
+  }, [resetObjectPosition, resetObject2Position, resetObject3Position]);
+
+  // - - - Transition animations - - -
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -100,12 +139,14 @@ export const GameMove = ({
     leave: { opacity: 0 },
   });
 
-  // - - - -
+  // - - - Game Auto Navigation Hook - - -
 
   useGameAutoNavigationOnResultTimeElapsed({
     gameResultTime: resultTime * 1000,
     isGameFinished: isGameFinished,
   });
+
+  // - - - GUI - - -
 
   return (
     <div className="relative w-[100svw] h-[100svh]" ref={containerRef}>
@@ -126,27 +167,80 @@ export const GameMove = ({
               alt="assignment-background-image"
             />
 
-            <animated.div
-              className="absolute touch-none hover:cursor-move p-2 border-2 border-white border-opacity-50 border-dashed"
-              style={{
-                left: moveSpring.left,
-                top: moveSpring.top,
-                opacity,
-                WebkitUserSelect: "none",
-                WebkitTouchCallout: "none",
-                width: objectWidth,
-                height: objectHeight,
-              }}
-              ref={objectDragRef}
-              {...bindMoveDrag()}
-            >
-              <img
-                src={objectImgSrc}
-                className="w-full h-full object-contain"
-                draggable={false}
-                alt="drag content"
-              />
-            </animated.div>
+            {/* Object 1 */}
+            {objectImgSrc && (
+              <animated.div
+                className="absolute touch-none hover:cursor-move p-2 border-2 border-white border-opacity-50 border-dashed"
+                style={{
+                  left: moveSpring.left,
+                  top: moveSpring.top,
+                  opacity,
+                  WebkitUserSelect: "none",
+                  WebkitTouchCallout: "none",
+                  width: objectWidth,
+                  height: objectHeight,
+                }}
+                ref={objectDragRef}
+                {...bindMoveDrag()}
+              >
+                <img
+                  src={objectImgSrc}
+                  className="w-full h-full object-contain"
+                  draggable={false}
+                  alt="drag-1-content"
+                />
+              </animated.div>
+            )}
+
+            {/* Object 2 */}
+            {object2ImgSrc && (
+              <animated.div
+                className="absolute touch-none hover:cursor-move p-2 border-2 border-white border-opacity-50 border-dashed"
+                style={{
+                  left: move2Spring.left,
+                  top: move2Spring.top,
+                  opacity,
+                  WebkitUserSelect: "none",
+                  WebkitTouchCallout: "none",
+                  width: object2Width,
+                  height: object2Height,
+                }}
+                ref={object2DragRef}
+                {...bindMove2Drag()}
+              >
+                <img
+                  src={object2ImgSrc}
+                  className="w-full h-full object-contain"
+                  draggable={false}
+                  alt="drag-2-content"
+                />
+              </animated.div>
+            )}
+
+            {/* Object 3 */}
+            {object3ImgSrc && (
+              <animated.div
+                className="absolute touch-none hover:cursor-move p-2 border-2 border-white border-opacity-50 border-dashed"
+                style={{
+                  left: move3Spring.left,
+                  top: move3Spring.top,
+                  opacity,
+                  WebkitUserSelect: "none",
+                  WebkitTouchCallout: "none",
+                  width: object3Width,
+                  height: object3Height,
+                }}
+                ref={object3DragRef}
+                {...bindMove3Drag()}
+              >
+                <img
+                  src={object3ImgSrc}
+                  className="w-full h-full object-contain"
+                  draggable={false}
+                  alt="drag-3-content"
+                />
+              </animated.div>
+            )}
           </>
         )
       )}
