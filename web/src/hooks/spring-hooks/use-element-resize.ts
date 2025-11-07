@@ -35,10 +35,13 @@ export const useElementResize = ({
     [origImgHeight, origImgWidth]
   );
 
-  const [resizeSpring, resizeSpringApi] = useSpring(() => ({
-    width: initialSize?.width ?? origImgWidth,
-    height: initialSize?.height ?? origImgHeight,
-  }));
+  const [resizeSpring, resizeSpringApi] = useSpring(
+    () => ({
+      width: initialSize?.width ?? origImgWidth,
+      height: initialSize?.height ?? origImgHeight,
+    }),
+    [origImgWidth, origImgHeight]
+  );
 
   const bindResizeDrag = useDrag(
     (state) => {

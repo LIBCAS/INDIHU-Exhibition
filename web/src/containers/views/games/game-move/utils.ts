@@ -34,22 +34,16 @@ export const calculateObjectInitialPosition = (
   return { objInitialLeft, objInitialTop };
 };
 
+// - - - - - -
+
 /**
  *
  */
 export const calculateObjectSize = (
   assignmentImgOrigData: Size,
-  objectImgOrigData: Size,
   objectOriginalSize: Size | undefined | null,
   containerSize: Size
 ) => {
-  if (objectOriginalSize === undefined || objectOriginalSize === null) {
-    return {
-      objectWidth: objectImgOrigData.width,
-      objectHeight: objectImgOrigData.height,
-    };
-  }
-
   const { width: assignmentImgWidth, height: assignmentImgHeight } =
     calculateObjectFit({
       type: "contain",
@@ -57,8 +51,30 @@ export const calculateObjectSize = (
       child: assignmentImgOrigData,
     });
 
+  if (objectOriginalSize === undefined || objectOriginalSize === null) {
+    const backup = calculateObjectSizeBackup(
+      assignmentImgWidth,
+      assignmentImgHeight
+    );
+    return {
+      objectWidth: backup.width,
+      objectHeight: backup.height,
+    };
+  }
+
   const objectWidth = objectOriginalSize.width * assignmentImgWidth;
   const objectHeight = objectOriginalSize.height * assignmentImgHeight;
 
   return { objectWidth, objectHeight };
+};
+
+// - - - - - -
+
+export const calculateObjectSizeBackup = (
+  containedAssignmentImgWidth: number,
+  containedAssignmentImgHeight: number
+): Size => {
+  const backupWidth = containedAssignmentImgWidth / 4;
+  const backupHeight = containedAssignmentImgHeight / 4;
+  return { width: backupWidth, height: backupHeight };
 };

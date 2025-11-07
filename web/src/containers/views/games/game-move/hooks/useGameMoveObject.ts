@@ -22,7 +22,6 @@ type Props = {
 
   objectPositionProps: GameMoveScreen["objectPositionProps"];
   objectSizeProps: GameMoveScreen["objectSizeProps"];
-  objectImageOrigData: GameMoveScreen["objectOrigData"];
   objectDragSize: Size;
 };
 
@@ -31,7 +30,6 @@ export const useGameMoveObject = ({
   containerSize,
   objectPositionProps,
   objectSizeProps,
-  objectImageOrigData,
   objectDragSize,
 }: Props) => {
   // NOTE: Original size of the assignment image, from the administration, e.g. 450px x 350px
@@ -40,9 +38,6 @@ export const useGameMoveObject = ({
   // NOTE: Object's original position, from administration, against the preview contained image
   const objectOrigPosition =
     objectPositionProps?.containedImgPosition ?? DEFAULT_POSITION;
-
-  // NOTE: Object's original size, from the administration
-  const objectImgOrigData = objectImageOrigData ?? DEFAULT_SIZE;
 
   // - - - Move functionality - - -
 
@@ -68,13 +63,11 @@ export const useGameMoveObject = ({
     () =>
       calculateObjectSize(
         assignmentImgOrigData,
-        objectImgOrigData,
         objectSizeProps?.inContainedImgFractionSize,
         containerSize
       ),
     [
       assignmentImgOrigData,
-      objectImgOrigData,
       objectSizeProps?.inContainedImgFractionSize,
       containerSize,
     ]

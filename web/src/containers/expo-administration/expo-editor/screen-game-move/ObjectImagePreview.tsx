@@ -14,6 +14,7 @@ import { GameMoveScreen } from "models";
 // Actions and utils
 import { updateScreenData } from "actions/expoActions";
 import { calculateObjectFit } from "utils/object-fit";
+import { calculateObjectSizeBackup } from "containers/views/games/game-move/utils";
 
 // Assets
 import expandImg from "../../../../assets/img/expand.png";
@@ -54,8 +55,8 @@ const ObjectImagePreview = ({
   const [containerRef, containerSize] = useResizeObserver();
 
   const {
-    width: containedImg1Width,
-    height: containedImg1Height,
+    width: containedAssignmentImgWidth,
+    height: containedAssignmentImgHeight,
     left: fromLeft,
     top: fromTop,
   } = calculateObjectFit({
@@ -63,6 +64,15 @@ const ObjectImagePreview = ({
     parent: containerSize,
     child: image1OrigData,
   });
+
+  const initialSizeBackupForObjs = useMemo(
+    () =>
+      calculateObjectSizeBackup(
+        containedAssignmentImgWidth,
+        containedAssignmentImgHeight
+      ),
+    [containedAssignmentImgWidth, containedAssignmentImgHeight]
+  );
 
   // - - - Object 1 - - -
 
@@ -92,15 +102,16 @@ const ObjectImagePreview = ({
   const { resizeSpring, bindResizeDrag } = useElementResize({
     containerSize: containerSize,
     dragResizingImgOrigData: objectOrigData,
-    initialSize: activeScreen.objectSizeProps?.inContainerSize,
+    initialSize:
+      activeScreen.objectSizeProps?.inContainerSize ?? initialSizeBackupForObjs,
     additionalCallback: (width, height) => {
       dispatch(
         updateScreenData({
           objectSizeProps: {
             inContainerSize: { width: width, height: height },
             inContainedImgFractionSize: {
-              width: width / containedImg1Width,
-              height: height / containedImg1Height,
+              width: width / containedAssignmentImgWidth,
+              height: height / containedAssignmentImgHeight,
             },
           },
         })
@@ -141,15 +152,17 @@ const ObjectImagePreview = ({
     useElementResize({
       containerSize: containerSize,
       dragResizingImgOrigData: object2OrigData,
-      initialSize: activeScreen.object2SizeProps?.inContainerSize,
+      initialSize:
+        activeScreen.object2SizeProps?.inContainerSize ??
+        initialSizeBackupForObjs,
       additionalCallback: (width, height) => {
         dispatch(
           updateScreenData({
             object2SizeProps: {
               inContainerSize: { width: width, height: height },
               inContainedImgFractionSize: {
-                width: width / containedImg1Width,
-                height: height / containedImg1Height,
+                width: width / containedAssignmentImgWidth,
+                height: height / containedAssignmentImgHeight,
               },
             },
           })
@@ -190,15 +203,17 @@ const ObjectImagePreview = ({
     useElementResize({
       containerSize: containerSize,
       dragResizingImgOrigData: object3OrigData,
-      initialSize: activeScreen.object3SizeProps?.inContainerSize,
+      initialSize:
+        activeScreen.object3SizeProps?.inContainerSize ??
+        initialSizeBackupForObjs,
       additionalCallback: (width, height) => {
         dispatch(
           updateScreenData({
             object3SizeProps: {
               inContainerSize: { width: width, height: height },
               inContainedImgFractionSize: {
-                width: width / containedImg1Width,
-                height: height / containedImg1Height,
+                width: width / containedAssignmentImgWidth,
+                height: height / containedAssignmentImgHeight,
               },
             },
           })

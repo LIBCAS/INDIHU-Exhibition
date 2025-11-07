@@ -75,7 +75,6 @@ export const GameMove = ({
     containerSize: containerSize,
     objectPositionProps: viewScreen.objectPositionProps,
     objectSizeProps: viewScreen.objectSizeProps,
-    objectImageOrigData: viewScreen.objectOrigData,
     objectDragSize: objectDragSize,
   });
 
@@ -92,7 +91,6 @@ export const GameMove = ({
     containerSize: containerSize,
     objectPositionProps: viewScreen.object2PositionProps,
     objectSizeProps: viewScreen.object2SizeProps,
-    objectImageOrigData: viewScreen.object2OrigData,
     objectDragSize: object2DragSize,
   });
 
@@ -109,7 +107,6 @@ export const GameMove = ({
     containerSize: containerSize,
     objectPositionProps: viewScreen.object3PositionProps,
     objectSizeProps: viewScreen.object3SizeProps,
-    objectImageOrigData: viewScreen.object3OrigData,
     objectDragSize: object3DragSize,
   });
 
