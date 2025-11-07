@@ -20,6 +20,9 @@ type UseElementResizeProps = {
  * @param dragResizingImgOrigData needed for aspect ratio of the element which is being resized
  * @param initialSize first size of the object which is being resized inside container boundary
  * @param additionalCallback function which is called when new width and height size is being assigned
+ *
+ * NOTE: Ensure that `dragResizingImgOrigData` and its size fits within the container bounds (`containerSize`),
+ * as its sizing may be used as the initial image size when no custom initial size is provided.
  */
 export const useElementResize = ({
   containerSize,
