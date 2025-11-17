@@ -15,6 +15,28 @@
     position: absolute;
   }
 
+  // - - - - - - Line segment at the beginning - - - - - -
+
+  &.beginning-segment-horizontal::before {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-base);
+    height: var(--timeline-thickness-lg);
+
+    left: 0;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+
+  &.beginning-segment-vertical::before {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-base);
+
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0%);
+  }
+
   // - - - - - - Dot at the beginning - - - - - -
 
   &.beginning-dot-horizontal::before {

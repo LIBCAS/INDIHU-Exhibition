@@ -108,11 +108,11 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
 
   const lineEdgeDecorationClassName = useMemo(() => {
     if (timelineType === "VERTICAL") {
-      return "timeline-line beginning-dot-vertical end-arrow-vertical";
+      return "timeline-line beginning-segment-vertical end-arrow-vertical";
     }
 
     // NOTE: Also diagonals, for some reason, works well with horizontal arrow setup
-    return "timeline-line beginning-dot-horizontal end-arrow-horizontal";
+    return "timeline-line beginning-segment-horizontal end-arrow-horizontal";
   }, [timelineType]);
 
   // - - - Derived variables (others) - - -
