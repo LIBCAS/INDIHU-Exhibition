@@ -15,6 +15,16 @@
     position: absolute;
   }
 
+  // - - - - - - Nothing at the beginning - - - - - -
+
+  &.beginning-nothing-horizontal::before {
+    background-color: var(--timeline-color);
+  }
+
+  &.beginning-nothing-vertical::before {
+    background-color: var(--timeline-color);
+  }
+
   // - - - - - - Line segment at the beginning - - - - - -
 
   &.beginning-segment-horizontal::before {
@@ -87,5 +97,37 @@
     right: auto;
     top: auto;
     transform: translate(-50%, var(--timeline-thickness-lg)) rotate(90deg);
+  }
+
+  // - - - - - - Line segment at the end - - - - - -
+
+  &.end-segment-horizontal::after {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-base);
+    height: var(--timeline-thickness-lg);
+
+    right: 0;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+
+  &.end-segment-vertical::after {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-base);
+
+    right: 50%;
+    bottom: 0;
+    transform: translate(50%, 0%);
+  }
+
+  // - - - - - - Nothing at the end - - - - - -
+
+  &.end-nothing-horizontal::after {
+    background-color: var(--timeline-color);
+  }
+
+  &.end-nothing-vertical::after {
+    background-color: var(--timeline-color);
   }
 }
