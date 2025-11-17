@@ -14,6 +14,7 @@ import { Viewers } from "../views";
 import { AppState, AppDispatch } from "store/store";
 
 // Utils
+import { store } from "index";
 import {
   mapScreenTypeValuesToKeys,
   musicEnabled,
@@ -159,7 +160,7 @@ export const NewViewScreen = ({
 
     const musicBlobSrc = chapterMusicCache[section];
     setMusicSrc(musicBlobSrc ?? null);
-  }, [section, chapterMusicCache]);
+  }, [chapterMusicCache, section]);
 
   /**
    * 3.) Effect responsible for automatic playing of `musicSrc`, reacting to previous effect
@@ -169,31 +170,37 @@ export const NewViewScreen = ({
       return;
     }
 
-    musicRef.loop = true;
-    musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
-
-    if (shouldIncrement) {
-      musicRef.play().catch((error) => {
-        if (error instanceof Error && error.name === "NotAllowedError") {
-          dispatch(setViewProgress({ shouldIncrement: false }));
-        }
-      });
+    const shouldIncrement = store.getState().expo.viewProgress.shouldIncrement;
+    if (!shouldIncrement) {
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [musicSrc, musicRef]);
+
+    const musicVolume =
+      store.getState().expo.expoVolumes.musicVolume.actualVolume / 100;
+
+    musicRef.loop = true;
+    musicRef.volume = musicVolume;
+    musicRef.play().catch((error) => {
+      if (error instanceof Error && error.name === "NotAllowedError") {
+        dispatch(setViewProgress({ shouldIncrement: false }));
+      }
+    });
+  }, [musicSrc, musicRef, dispatch]);
 
   /**
    * 4.) Effect responsible for pausing `musicSrc`, when current screen does not support music playing
    */
   useEffect(() => {
-    if (musicRef && isMusicDisabled) {
-      musicRef.pause();
+    if (!musicRef) {
       return;
     }
-    if (musicRef && !isMusicDisabled) {
+
+    if (isMusicDisabled) {
+      musicRef.pause();
+    } else {
       musicRef.play();
     }
-  }, [isMusicDisabled, musicRef]);
+  }, [musicRef, isMusicDisabled]);
 
   // - - - Effects (audio) - - -
 
@@ -201,7 +208,11 @@ export const NewViewScreen = ({
    * 5.) Effect responsible for automatic playing of `audioSrc`
    */
   useEffect(() => {
-    if (!viewScreen || !audioRef) {
+    if (!audioSrc) {
+      return;
+    }
+
+    if (!audioRef) {
       return;
     }
 
@@ -209,8 +220,13 @@ export const NewViewScreen = ({
       return;
     }
 
+    const shouldIncrement = store.getState().expo.viewProgress.shouldIncrement;
+
     if (shouldIncrement) {
-      audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
+      const audioVolume =
+        store.getState().expo.expoVolumes.speechVolume.actualVolume / 100;
+
+      audioRef.volume = audioVolume;
       audioRef.play().catch((error) => {
         if (error instanceof Error && error.name === "NotAllowedError") {
           dispatch(setViewProgress({ shouldIncrement: false }));
@@ -222,9 +238,7 @@ export const NewViewScreen = ({
       audioRef.currentTime = 0;
       audioRef.pause();
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewScreen, audioSrc, audioRef, isAudioDisabled]);
+  }, [audioSrc, audioRef, isAudioDisabled, dispatch]);
 
   // - - - Effects (music + audio) - - -
 
@@ -235,6 +249,7 @@ export const NewViewScreen = ({
     if (musicRef) {
       musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
     }
+
     if (audioRef) {
       audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
     }
@@ -252,6 +267,7 @@ export const NewViewScreen = ({
           }
         });
       }
+
       if (!shouldIncrement && !isMusicDisabled) {
         musicRef.pause();
       }
@@ -268,8 +284,9 @@ export const NewViewScreen = ({
         audioRef.pause();
       }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldIncrement, audioRef, musicRef]);
+  }, [shouldIncrement, audioRef, musicRef, dispatch]);
 
   // - - - GUI - - -
 
