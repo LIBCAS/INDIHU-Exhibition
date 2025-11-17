@@ -65,10 +65,10 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen.timelineThickness]
   );
 
-  const { arrowThicknessBig, arrowThicknessSmal } = useMemo(
+  const { arrowThicknessBig, arrowThicknessSmall } = useMemo(
     () => ({
       arrowThicknessBig: calculateArrowThickness(timelineThickness, true),
-      arrowThicknessSmal: calculateArrowThickness(timelineThickness, false),
+      arrowThicknessSmall: calculateArrowThickness(timelineThickness, false),
     }),
     [timelineThickness]
   );
@@ -90,10 +90,10 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       ...calculateLineTransformation(timelineType, parentSize),
       borderRadius: "9999px",
       backgroundColor: timelineColor,
-      // NOTE: for the scss styles (dot and arrow od the straight line)
+      // NOTE: for the scss styles (dot and arrow of the straight line)
       "--timeline-color": timelineColor,
       "--timeline-thickness-lg": `${arrowThicknessBig}px`,
-      "--timeline-thickness-sm": `${arrowThicknessSmal}px`,
+      "--timeline-thickness-sm": `${arrowThicknessSmall}px`,
     }),
     [
       parentSize,
@@ -101,7 +101,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       timelineColor,
       timelineThickness,
       arrowThicknessBig,
-      arrowThicknessSmal,
+      arrowThicknessSmall,
     ]
   );
 
