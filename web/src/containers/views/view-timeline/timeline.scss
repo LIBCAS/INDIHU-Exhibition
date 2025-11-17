@@ -17,7 +17,7 @@
 
   // - - - - - - Dot at the beginning - - - - - -
 
-  &.horizontal::before {
+  &.beginning-dot-horizontal::before {
     background-color: var(--timeline-color);
     width: var(--timeline-thickness-lg);
     height: var(--timeline-thickness-lg);
@@ -28,7 +28,7 @@
     transform: translate(-50%, -50%);
   }
 
-  &.vertical::before {
+  &.beginning-dot-vertical::before {
     background-color: var(--timeline-color);
     width: var(--timeline-thickness-lg);
     height: var(--timeline-thickness-lg);
@@ -41,19 +41,19 @@
 
   // - - - - - - Arrow at the end - - - - - -
 
-  &.horizontal::after {
+  &.end-arrow-horizontal::after {
     width: 0;
     height: 0;
     border-left: var(--timeline-thickness-lg) solid var(--timeline-color);
     border-top: var(--timeline-thickness-sm) solid transparent;
     border-bottom: var(--timeline-thickness-sm) solid transparent;
 
-    right: 0;
+    right: 0px;
     top: 50%;
     transform: translate(var(--timeline-thickness-lg), -50%);
   }
 
-  &.vertical::after {
+  &.end-arrow-vertical::after {
     width: 0;
     height: 0;
     border-left: var(--timeline-thickness-lg) solid var(--timeline-color);
