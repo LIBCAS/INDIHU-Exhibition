@@ -3,23 +3,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 // Custom Hooks
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 import { useFilePreloader } from "context/file-preloader/file-preloader-provider";
 
 // Components
+import ScreenAutoNavigatorManager from "./expo-managers/ScreenAutoNavigatorManager";
 import { Viewers } from "../views";
 
 // Types and Enums
-import { AppDispatch, AppState } from "store/store";
+import { AppState, AppDispatch } from "store/store";
+
+// Utils
 import {
-  audioEnabled,
   mapScreenTypeValuesToKeys,
   musicEnabled,
+  audioEnabled,
 } from "enums/screen-type";
-import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
-import ScreenAutoNavigatorManager from "./expo-managers/ScreenAutoNavigatorManager";
+
+// Redux (actions)
 import { setViewProgress } from "actions/expoActions/viewer-actions";
 
-// - - - - - - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen,
@@ -31,6 +35,8 @@ const stateSelector = createSelector(
     expoVolumes,
   })
 );
+
+// - - - - - -
 
 interface NewViewScreenProps {
   name: string;
