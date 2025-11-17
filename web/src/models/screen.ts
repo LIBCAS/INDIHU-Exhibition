@@ -30,6 +30,8 @@ import {
   ScreenChapterIntroTextThemeType,
   ScreenChapterIntroTextHaloEffectOnType,
   TimelineType,
+  TimelineLeftBoundary,
+  TimelineRightBoundary,
 } from "./screen-administration";
 
 // - - - - -
@@ -413,6 +415,8 @@ export type TimelineScreen = {
   backgroundImageTransparency?: number;
   timelineColor?: string;
   timelineThickness?: number;
+  timelineLeftBoundary?: TimelineLeftBoundary;
+  timelineRightBoundary?: TimelineRightBoundary;
 };
 
 export type GameFindScreen = {
