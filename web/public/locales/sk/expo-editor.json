@@ -174,7 +174,7 @@
       "imageBoxTitle": "Obrázok",
       "imageBoxTooltip": "Vybraný obrázok vo fotogalérii.",
       "photoTitleLabel": "Názov obrázku",
-      "photoTitleTooltip": "Názov obrázku.",
+      "photoTitleTooltip": "Názov obrázku, maximálna dĺžka názvu 50 znakov vrátane medzier.",
       "photoDescriptionLabel": "Popis obrázku",
       "photoDescriptionTooltip": "Ľubovoľný popis k danej fotke."
     },

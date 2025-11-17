@@ -174,7 +174,7 @@
       "imageBoxTitle": "Image",
       "imageBoxTooltip": "Selected image from photogallery.",
       "photoTitleLabel": "Image title",
-      "photoTitleTooltip": "Image title.",
+      "photoTitleTooltip": "Image title, maximum name length 50 characters including spaces",
       "photoDescriptionLabel": "Image description",
       "photoDescriptionTooltip": "Optional description of the image."
     },
