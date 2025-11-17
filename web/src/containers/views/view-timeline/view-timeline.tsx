@@ -10,7 +10,13 @@ import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Types
 import { AppState } from "store/store";
-import { ScreenProps, TimelineScreen } from "models";
+import {
+  ScreenProps,
+  TimelineLeftBoundary,
+  TimelineRightBoundary,
+  TimelineScreen,
+  TimelineType,
+} from "models";
 
 // Utils
 import {
@@ -20,11 +26,14 @@ import {
 } from "containers/expo-administration/expo-editor/screen-timeline/hooks/useItemLinearMovement/linear-movement-utils";
 import {
   calculateArrowThickness,
+  calculateEdgeDecorationClassName,
   calculateInfopointsPosition,
 } from "./view-timeline-utils";
 import {
   DEFAULT_TIMELINE_BG_TRANSPARENCY,
   DEFAULT_TIMELINE_COLOR,
+  DEFAULT_TIMELINE_LEFT_BOUNDARY,
+  DEFAULT_TIMELINE_RIGHT_BOUNDARY,
   DEFAULT_TIMELINE_THICKNESS,
   DEFAULT_TIMELINE_TYPE,
 } from "containers/expo-administration/expo-editor/screen-timeline/default-values";
@@ -50,7 +59,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Derived variables (settings ) - - -
 
-  const timelineType = useMemo(
+  const timelineType = useMemo<TimelineType>(
     () => viewScreen.timelineType ?? DEFAULT_TIMELINE_TYPE,
     [viewScreen.timelineType]
   );
@@ -80,6 +89,16 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen.backgroundImageTransparency]
   );
 
+  const timelineLeftBoundary = useMemo<TimelineLeftBoundary>(
+    () => viewScreen.timelineLeftBoundary ?? DEFAULT_TIMELINE_LEFT_BOUNDARY,
+    [viewScreen.timelineLeftBoundary]
+  );
+
+  const timelineRightBoundary = useMemo<TimelineRightBoundary>(
+    () => viewScreen.timelineRightBoundary ?? DEFAULT_TIMELINE_RIGHT_BOUNDARY,
+    [viewScreen.timelineRightBoundary]
+  );
+
   // - - - Derived variables (styles) - - -
 
   const lineStyle = useMemo<CSSProperties>(
@@ -106,14 +125,15 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
     ]
   );
 
-  const lineEdgeDecorationClassName = useMemo(() => {
-    if (timelineType === "VERTICAL") {
-      return "timeline-line beginning-segment-vertical end-segment-vertical";
-    }
-
-    // NOTE: Also diagonals, for some reason, works well with horizontal arrow setup
-    return "timeline-line beginning-segment-horizontal end-segment-horizontal";
-  }, [timelineType]);
+  const lineEdgeDecorationClassName = useMemo(
+    () =>
+      calculateEdgeDecorationClassName(
+        timelineType,
+        timelineLeftBoundary,
+        timelineRightBoundary
+      ),
+    [timelineType, timelineLeftBoundary, timelineRightBoundary]
+  );
 
   // - - - Derived variables (others) - - -
 
