@@ -25,7 +25,7 @@ import {
   calculateLineTransformation,
 } from "containers/expo-administration/expo-editor/screen-timeline/hooks/useItemLinearMovement/linear-movement-utils";
 import {
-  calculateArrowThickness,
+  calculateEdgeThickness,
   calculateEdgeDecorationClassName,
   calculateInfopointsPosition,
 } from "./view-timeline-utils";
@@ -74,10 +74,10 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen.timelineThickness]
   );
 
-  const { arrowThicknessBig, arrowThicknessSmall } = useMemo(
+  const { edgeThicknessBig, edgeThicknessSmall } = useMemo(
     () => ({
-      arrowThicknessBig: calculateArrowThickness(timelineThickness, true),
-      arrowThicknessSmall: calculateArrowThickness(timelineThickness, false),
+      edgeThicknessBig: calculateEdgeThickness(timelineThickness, true),
+      edgeThicknessSmall: calculateEdgeThickness(timelineThickness, false),
     }),
     [timelineThickness]
   );
@@ -109,19 +109,20 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       ...calculateLineTransformation(timelineType, parentSize),
       borderRadius: "9999px",
       backgroundColor: timelineColor,
-      // NOTE: for the scss styles (dot and arrow of the straight line)
+
+      // NOTE: required to setup for the scss styles (left and right boundary of timeline)
       "--timeline-color": timelineColor,
       "--timeline-thickness-base": `${timelineThickness}px`,
-      "--timeline-thickness-lg": `${arrowThicknessBig}px`,
-      "--timeline-thickness-sm": `${arrowThicknessSmall}px`,
+      "--timeline-thickness-lg": `${edgeThicknessBig}px`,
+      "--timeline-thickness-sm": `${edgeThicknessSmall}px`,
     }),
     [
       parentSize,
       timelineType,
       timelineColor,
       timelineThickness,
-      arrowThicknessBig,
-      arrowThicknessSmall,
+      edgeThicknessBig,
+      edgeThicknessSmall,
     ]
   );
 

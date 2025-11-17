@@ -32,7 +32,7 @@ export const calculateInfopointsPosition = (
 
 // - - - - - -
 
-export const calculateArrowThickness = (
+export const calculateEdgeThickness = (
   thickness: number,
   returnBig: boolean
 ) => {
