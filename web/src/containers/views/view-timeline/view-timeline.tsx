@@ -92,6 +92,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       backgroundColor: timelineColor,
       // NOTE: for the scss styles (dot and arrow of the straight line)
       "--timeline-color": timelineColor,
+      "--timeline-thickness-base": `${timelineThickness}px`,
       "--timeline-thickness-lg": `${arrowThicknessBig}px`,
       "--timeline-thickness-sm": `${arrowThicknessSmall}px`,
     }),
@@ -105,7 +106,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
     ]
   );
 
-  const lineArrowClassName = useMemo(() => {
+  const lineEdgeDecorationClassName = useMemo(() => {
     if (timelineType === "VERTICAL") {
       return "timeline-line vertical";
     }
@@ -172,7 +173,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
               className="relative w-full h-full flex justify-center items-center"
             >
               {/* 2a) Timeline line */}
-              <div style={lineStyle} className={lineArrowClassName} />
+              <div style={lineStyle} className={lineEdgeDecorationClassName} />
 
               {/* 2b) Timeline Points */}
               {adjustedInfopoints.map((ip, ipIdx) => (
