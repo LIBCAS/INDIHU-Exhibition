@@ -262,7 +262,17 @@
       "chooseBackgroundImageBtnLabel": "Vyberte obrázek na pozadí",
       "clearBackgroundImageBtnLabel": "Odstranit obrázek z pozadí",
       "bgImageTransparencyLabel": "Průhlednost vybraného obrázku na pozadí",
-      "bgImageTransparencyTooltip": "Vyberte si úroveň průhlednosti pro váš obrázek na pozadí. Minimální povolená hodnota je 1, maximální povolená hodnota je 100."
+      "bgImageTransparencyTooltip": "Vyberte si úroveň průhlednosti pro váš obrázek na pozadí. Minimální povolená hodnota je 1, maximální povolená hodnota je 100.",
+      "leftBoundaryNothingOption": "Žádné ohraničení",
+      "leftBoundaryLineSegmentOption": "Úsečka",
+      "leftBoundaryDotOption": "Bod",
+      "leftBoundaryLabel": "Levé ohraničení časové osy",
+      "leftBoundaryTooltip": "Zvolte jednu z dostupných možností pro levé ohraničení, začátek časové osy. Výchozí hodnota je bod.",
+      "rightBoundaryNothingOption": "Žádné ohraničení",
+      "rightBoundaryLineSegmentOption": "Úsečka",
+      "rightBoundaryArrowOption": "Šipka",
+      "rightBoundaryLabel": "Pravé ohraničení časové osy",
+      "rightBoundaryTooltip": "Zvolte jednu z dostupných možností pro pravé ohraničení, konec časové osy. Výchozí hodnota je šipka."
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

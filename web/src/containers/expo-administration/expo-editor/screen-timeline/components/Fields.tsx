@@ -263,21 +263,21 @@ export const TimelineLeftBoundarySelectField = ({
       <SelectField
         menuItems={[
           {
-            label: "TODO - Žiadne",
+            label: t("leftBoundaryNothingOption"),
             value: TimelineLeftBoundaryEnum.NOTHING,
           },
           {
-            label: "TODO - Úsečka",
+            label: t("leftBoundaryLineSegmentOption"),
             value: TimelineLeftBoundaryEnum.LINE_SEGMENT,
           },
           {
-            label: "TODO - Bodka",
+            label: t("leftBoundaryDotOption"),
             value: TimelineLeftBoundaryEnum.DOT,
           },
         ]}
         itemLabel={"label"}
         itemValue={"value"}
-        label={"TODO - Ľavé ohraničenie časovej osy"}
+        label={t("leftBoundaryLabel")}
         position="below"
         id="screen-timeline-timelineLeftBoundary-selectField"
         defaultValue={
@@ -293,7 +293,7 @@ export const TimelineLeftBoundarySelectField = ({
       <div className="self-center">
         <HelpIcon
           id="screen-timeline-timelineLeftBoundaryHelpIcon"
-          label="TODO"
+          label={t("leftBoundaryTooltip")}
         />
       </div>
     </div>
@@ -319,21 +319,21 @@ export const TimelineRightBoundarySelectField = ({
       <SelectField
         menuItems={[
           {
-            label: "TODO - Žiadne",
+            label: t("rightBoundaryNothingOption"),
             value: TimelineRightBoundaryEnum.NOTHING,
           },
           {
-            label: "TODO - Úsečka",
+            label: t("rightBoundaryLineSegmentOption"),
             value: TimelineRightBoundaryEnum.LINE_SEGMENT,
           },
           {
-            label: "TODO - Šípka",
+            label: t("rightBoundaryArrowOption"),
             value: TimelineRightBoundaryEnum.ARROW,
           },
         ]}
         itemLabel={"label"}
         itemValue={"value"}
-        label={"TODO - Pravé ohraničenie časovej osy"}
+        label={t("rightBoundaryLabel")}
         position="below"
         id="screen-timeline-timelineRightBoundary-selectField"
         defaultValue={
@@ -351,7 +351,7 @@ export const TimelineRightBoundarySelectField = ({
       <div className="self-center">
         <HelpIcon
           id="screen-timeline-timelineRightBoundaryHelpIcon"
-          label="TODO"
+          label={t("rightBoundaryTooltip")}
         />
       </div>
     </div>

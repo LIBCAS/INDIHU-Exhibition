@@ -262,7 +262,17 @@
       "chooseBackgroundImageBtnLabel": "Choose a background image",
       "clearBackgroundImageBtnLabel": "Remove image from background",
       "bgImageTransparencyLabel": "Transparency of the selected background image",
-      "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100."
+      "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100.",
+      "leftBoundaryNothingOption": "No boundary",
+      "leftBoundaryLineSegmentOption": "Line segment",
+      "leftBoundaryDotOption": "Dot",
+      "leftBoundaryLabel": "Left timeline boundary",
+      "leftBoundaryTooltip": "Select one of the available options for the left boundary, the start of the timeline. The default value is a dot.",
+      "rightBoundaryNothingOption": "No boundary",
+      "rightBoundaryLineSegmentOption": "Line segment",
+      "rightBoundaryArrowOption": "Arrow",
+      "rightBoundaryLabel": "Right timeline boundary",
+      "rightBoundaryTooltip": "Select one of the available options for the right boundary, the end of the timeline. The default value is an arrow."
     },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
