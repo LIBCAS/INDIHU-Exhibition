@@ -82,7 +82,13 @@ export const GameErase = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [setContainerRef, containerSize] = useResizeObserver();
 
-  const { fillCanvas, clearCanvas, updateMousePosition, erase } = useGameErase({
+  const {
+    fillCanvas,
+    clearCanvas,
+    updateMousePosition,
+    erase,
+    isInfopointErased,
+  } = useGameErase({
     canvasRef,
     containerSize,
     upperImageOrigData,
@@ -233,6 +239,18 @@ export const GameErase = ({
 
         const adjustedLeft = fromLeft1 + left;
         const adjustedTop = fromTop1 + top;
+
+        const infopointInfo = {
+          width: infopoint.pxSize ?? 24,
+          height: infopoint.pxSize ?? 24,
+          left: adjustedLeft,
+          top: adjustedTop,
+        };
+
+        const isErased = isInfopointErased(infopointInfo);
+        if (isErased) {
+          return null;
+        }
 
         return (
           <Fragment key={`erase-infopoint-upper-${infopointIndex}`}>

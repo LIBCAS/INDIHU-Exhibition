@@ -11,7 +11,7 @@ import {
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Types
-import { ImageOrigData, Size } from "models";
+import { ImageOrigData, Size, Position } from "models";
 
 // Utils
 import { calculateObjectFit } from "utils/object-fit";
@@ -160,6 +160,42 @@ export const useGameErase = ({
     [ctx, shouldErase, mousePosition.x, mousePosition.y]
   );
 
+  /**
+   *
+   */
+  const isInfopointErased = useCallback(
+    (infopointInfo: Size & Position) => {
+      if (!ctx || !canvasRef.current) {
+        return false;
+      }
+
+      const width = infopointInfo.width;
+      const height = infopointInfo.height;
+
+      // NOTE: We need to subtract because infopoints are translate -50% -50%
+      // in order that their position refers to their center and top top left corner
+      const x = infopointInfo.left - width / 2;
+      const y = infopointInfo.top - height / 2;
+
+      // Read pixel data
+      const imageData = ctx.getImageData(x, y, width, height);
+      const pixels = imageData.data;
+
+      // Check alpha channel for all pixels in this region
+      for (let i = 3; i < pixels.length; i += 4) {
+        const alpha = pixels[i];
+        if (alpha !== 0) {
+          // Still visible → Not erased yet
+          return false;
+        }
+      }
+
+      // NOTE: All pixels are transparent → fully erased
+      return true;
+    },
+    [ctx, canvasRef]
+  );
+
   // - - - Effects - - -
 
   /**
@@ -204,5 +240,6 @@ export const useGameErase = ({
     clearCanvas,
     updateMousePosition,
     erase,
+    isInfopointErased,
   };
 };
