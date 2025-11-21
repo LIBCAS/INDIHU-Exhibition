@@ -317,8 +317,10 @@
       "wipeTowelOption": "Wipe towel",
       "upperImageLabel": "Upper image",
       "upperImageTooltip": "Select the top image showing the 'before' phase from the document library.",
+      "upperImageInfopointsTableLabel": "Infopoints",
       "bottomImageLabel": "Bottom image",
-      "bottomImageTooltip": "From the document library, select the image that appears after erasing the top image to show the 'after' stage."
+      "bottomImageTooltip": "From the document library, select the image that appears after erasing the top image to show the 'after' stage.",
+      "bottomImageInfopointsTableLabel": "Infopoints"
     },
     "gameSizingScreen": {
       "taskTooltip": "Describe the task to the user as precisely as possible (e.g. Estimate how big the Venus from Vestonice statuette is compared to the matchbox).",

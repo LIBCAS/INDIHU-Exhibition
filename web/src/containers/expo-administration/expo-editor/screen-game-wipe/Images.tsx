@@ -86,7 +86,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
 
             <InfopointsTable
               key="infopoints-table-image1"
-              title="TODO Infopointy"
+              title={t("upperImageInfopointsTableLabel")}
               infopoints={activeScreen.infopoints1 ?? []}
               onInfopointAdd={(dialogFormData) => {
                 dispatch(
@@ -177,7 +177,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
 
             <InfopointsTable
               key="infopoints-table-image2"
-              title="TODO Infopointy 2"
+              title={t("bottomImageInfopointsTableLabel")}
               infopoints={activeScreen.infopoints2 ?? []}
               onInfopointAdd={(dialogFormData) => {
                 dispatch(
