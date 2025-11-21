@@ -10,6 +10,7 @@ import ImageBox from "components/editors/ImageBox";
 import HelpIcon from "components/help-icon";
 
 import ObjectImagePreview from "./ObjectImagePreview";
+import InfopointsTable from "components/editors/InfopointsTable";
 
 // Models
 import { GameMoveScreen, File as IndihuFile } from "models";
@@ -20,6 +21,7 @@ import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
+import { compact, concat } from "lodash";
 
 // - -
 
@@ -200,6 +202,20 @@ const Images = ({ activeScreen }: ImagesProps) => {
               }
               helpIconId="editor-game-move-image2"
               helpIconLabel={t("imageResultTooltip")}
+              infopoints={activeScreen.image2Infopoints ?? []}
+              onInfopointMove={(movedInfopointIdx, newLeft, newTop) => {
+                dispatch(
+                  updateScreenData({
+                    image2Infopoints: activeScreen.image2Infopoints?.map(
+                      (ip, ipIdx) =>
+                        ipIdx === movedInfopointIdx
+                          ? { ...ip, left: newLeft, top: newTop }
+                          : ip
+                    ),
+                  })
+                );
+              }}
+              infopointTooltipId="result-image-infopoint"
             />
           </div>
         </div>
@@ -273,6 +289,68 @@ const Images = ({ activeScreen }: ImagesProps) => {
               object3File ? `/api/files/${object3File.fileId}` : null
             }
           />
+        )}
+
+        {/* Result Image Infopoints Table */}
+        {image2 && (
+          <div className="w-full flex justify-center items-center mb-16">
+            <div className="w-[45%]">
+              <InfopointsTable
+                title={t("imageResultInfopointsTableTitle")}
+                infopoints={activeScreen.image2Infopoints ?? []}
+                onInfopointAdd={(dialogFormData) => {
+                  dispatch(
+                    updateScreenData({
+                      image2Infopoints: compact(
+                        concat(activeScreen.image2Infopoints ?? [], {
+                          // Add new infopoints object
+                          ...dialogFormData,
+                          left: 17,
+                          top: 17,
+                        })
+                      ),
+                    })
+                  );
+                }}
+                onInfopointEdit={(infopointIdxToEdit, dialogFormData) => {
+                  dispatch(
+                    updateScreenData({
+                      image2Infopoints: activeScreen.image2Infopoints?.map(
+                        (ip, ipIdx) =>
+                          ipIdx === infopointIdxToEdit
+                            ? { ...ip, ...dialogFormData }
+                            : ip
+                      ),
+                    })
+                  );
+                }}
+                onInfopointDelete={(infopointIdxToDelete) => {
+                  dispatch(
+                    updateScreenData({
+                      image2Infopoints: activeScreen.image2Infopoints?.filter(
+                        (_ip, ipIdx) => ipIdx !== infopointIdxToDelete
+                      ),
+                    })
+                  );
+                }}
+                onInfopointAlwaysVisibleChange={(
+                  infopointIdxToEdit,
+                  newIsAlwaysVisibleValue
+                ) => {
+                  dispatch(
+                    updateScreenData({
+                      image2Infopoints: activeScreen.image2Infopoints?.map(
+                        (ip, ipIdx) =>
+                          ipIdx === infopointIdxToEdit
+                            ? { ...ip, alwaysVisible: newIsAlwaysVisibleValue }
+                            : ip
+                      ),
+                    })
+                  );
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>

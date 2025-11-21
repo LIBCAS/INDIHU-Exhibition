@@ -342,7 +342,8 @@
       "objectSelectLabel": "Vybrat",
       "objectTooltip": "Z knihovny dokumentů vyberte obrázek s částmi, ze kterých budou návštěvníci vybírat.",
       "screenPreviewText": "Umístění objektů",
-      "screenPreviewTooltip": "Přetáhněte objekty na vybraná místa, ze kterých má návštěvník za úkol objekty rozmístit na podkladový obrázek. Pomocí šipky také můžete objekt k posunu případně zvětšit."
+      "screenPreviewTooltip": "Přetáhněte objekty na vybraná místa, ze kterých má návštěvník za úkol objekty rozmístit na podkladový obrázek. Pomocí šipky také můžete objekt k posunu případně zvětšit.",
+      "imageResultInfopointsTableTitle": "Komentář k výsledku"
     },
     "gameQuizScreen": {
       "nameLabel": "Název",

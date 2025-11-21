@@ -231,7 +231,7 @@ const ObjectImagePreview = ({
   }
 
   return (
-    <div className="mt-16 mb-32 flex flex-col justify-center items-center gap-6">
+    <div className="mt-16 mb-16 flex flex-col justify-center items-center gap-6">
       <div className="flex self-start gap-0">
         <div className="font-['Work_Sans'] text-lg">
           {t("screenPreviewText")}

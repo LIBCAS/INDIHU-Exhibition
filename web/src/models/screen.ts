@@ -509,6 +509,7 @@ export type GameMoveScreen = {
   // NOTE: result image
   image2?: string | null;
   image2OrigData?: ImageOrigData | null;
+  image2Infopoints?: Infopoint[];
 
   // NOTE: First object to move
   object?: string | null;
