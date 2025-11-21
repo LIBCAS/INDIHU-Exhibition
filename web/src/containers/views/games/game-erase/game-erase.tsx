@@ -9,33 +9,41 @@ import {
 import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { useTranslation } from "react-i18next";
-import useResizeObserver from "hooks/use-resize-observer";
 
+// Hooks
+import useResizeObserver from "hooks/use-resize-observer";
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
+import { useTutorial } from "context/tutorial-provider/use-tutorial";
+
+// Components
 import { GameInfoPanel } from "../GameInfoPanel";
 import { GameActionsPanel } from "../GameActionsPanel";
+import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 
-import { ScreenProps } from "models";
+// Types
 import { AppState } from "store/store";
+import { ScreenProps } from "models";
 import { GameWipeScreen } from "models";
 
+// Utils
 import cx from "classnames";
 import classes from "./game-erase.module.scss";
 import { calculateObjectFit } from "utils/object-fit";
-import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
-import { useTutorial } from "context/tutorial-provider/use-tutorial";
-import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameWipeScreen,
   (viewScreen) => ({ viewScreen })
 );
 
+// - - - - - -
+
 const LINE_WIDTH = 40;
 
-// - - -
+// - - - - - -
 
 export const GameErase = ({
   screenPreloadedFiles,

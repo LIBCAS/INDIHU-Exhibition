@@ -1,6 +1,8 @@
-import { calculateObjectFit } from "utils/object-fit";
-import { Size } from "models";
 import { useMemo } from "react";
+import { Size } from "models";
+import { calculateObjectFit } from "utils/object-fit";
+
+// - - - - - -
 
 const useEraseMousePosition = (
   containerSize: Size,
