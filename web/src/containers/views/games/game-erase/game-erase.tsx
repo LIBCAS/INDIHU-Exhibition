@@ -149,21 +149,19 @@ export const GameErase = ({
 
   // - - - Infopoints (closing) - - -
 
-  const onKeyDownAction = useCallback(
-    (event: globalThis.KeyboardEvent) => {
+  useEffect(() => {
+    const onKeyDownAction = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeInfopoints(viewScreen)();
       }
-    },
-    [closeInfopoints, viewScreen]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeyDownAction);
-    return () => {
-      document.removeEventListener("keydown", onKeyDownAction);
     };
-  }, [onKeyDownAction]);
+
+    window.addEventListener("keydown", onKeyDownAction);
+    return () => {
+      window.removeEventListener("keydown", onKeyDownAction);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeInfopoints, viewScreen.type]);
 
   // - - - Game Auto Navigation - - -
 
