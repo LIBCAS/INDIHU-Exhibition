@@ -1,4 +1,11 @@
-import { useState, useRef, useMemo, useCallback } from "react";
+import {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+  Fragment,
+} from "react";
 import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -23,6 +30,9 @@ import { GameWipeScreen } from "models";
 import cx from "classnames";
 import classes from "./game-erase.module.scss";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+import { calculateObjectFit } from "utils/object-fit";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
 // - - - - - -
 
@@ -62,6 +72,11 @@ export const GameErase = ({
     [viewScreen.image1OrigData]
   );
 
+  const bottomImageOrigData = useMemo(
+    () => viewScreen.image2OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image2OrigData]
+  );
+
   // - - - Erase functionality - - -
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -93,6 +108,62 @@ export const GameErase = ({
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
+
+  // - - - Infopoints - - -
+
+  const {
+    width: containedImage1Width,
+    height: containedImage1Height,
+    left: fromLeft1,
+    top: fromTop1,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        parent: containerSize,
+        child: upperImageOrigData,
+      }),
+    [containerSize, upperImageOrigData]
+  );
+
+  const {
+    width: containedImage2Width,
+    height: containedImage2Height,
+    left: fromLeft2,
+    top: fromTop2,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        parent: containerSize,
+        child: bottomImageOrigData,
+      }),
+    [containerSize, bottomImageOrigData]
+  );
+
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints,
+    AnchorInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  // - - - Infopoints (closing) - - -
+
+  const onKeyDownAction = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints(viewScreen)();
+      }
+    },
+    [closeInfopoints, viewScreen]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDownAction);
+    return () => {
+      document.removeEventListener("keydown", onKeyDownAction);
+    };
+  }, [onKeyDownAction]);
 
   // - - - Game Auto Navigation - - -
 
@@ -135,6 +206,105 @@ export const GameErase = ({
         onPointerEnter={updateMousePosition}
         onPointerMove={erase}
       />
+
+      {/* INFOPOINTS */}
+      {viewScreen.infopoints1?.map((infopoint, infopointIndex) => {
+        const shouldDisplay = !isGameFinished;
+        if (!shouldDisplay) {
+          return null;
+        }
+
+        const infopointPosition = {
+          left: infopoint.left,
+          top: infopoint.top,
+        };
+        const imgBoxSize = {
+          width: upperImageOrigData.width,
+          height: upperImageOrigData.height,
+        };
+        const imgViewSize = {
+          width: containedImage1Width,
+          height: containedImage1Height,
+        };
+
+        const { left, top } = calculateInfopointPositionByImageBoxSize(
+          infopointPosition,
+          imgBoxSize,
+          imgViewSize
+        );
+
+        const adjustedLeft = fromLeft1 + left;
+        const adjustedTop = fromTop1 + top;
+
+        return (
+          <Fragment key={`erase-infopoint-upper-${infopointIndex}`}>
+            <AnchorInfopoint
+              id={`erase-infopoint-tooltip-upper-${infopointIndex}`}
+              left={adjustedLeft}
+              top={adjustedTop}
+              infopoint={infopoint}
+            />
+            <TooltipInfoPoint
+              key={`erase-infopoint-tooltip-upper-${infopointIndex}`}
+              id={`erase-infopoint-tooltip-upper-${infopointIndex}`}
+              infopoint={infopoint}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
+              primaryKey="0"
+              secondaryKey={infopointIndex.toString()}
+            />
+          </Fragment>
+        );
+      })}
+
+      {viewScreen.infopoints2?.map((infopoint, infopointIndex) => {
+        const shouldDisplay = isGameFinished;
+        if (!shouldDisplay) {
+          return null;
+        }
+
+        const infopointPosition = {
+          left: infopoint.left,
+          top: infopoint.top,
+        };
+        const imgBoxSize = {
+          width: bottomImageOrigData.width,
+          height: bottomImageOrigData.height,
+        };
+        const imgViewSize = {
+          width: containedImage2Width,
+          height: containedImage2Height,
+        };
+
+        const { left, top } = calculateInfopointPositionByImageBoxSize(
+          infopointPosition,
+          imgBoxSize,
+          imgViewSize
+        );
+
+        const adjustedLeft = fromLeft2 + left;
+        const adjustedTop = fromTop2 + top;
+
+        return (
+          <Fragment key={`erase-infopoint-bottom-${infopointIndex}`}>
+            <AnchorInfopoint
+              id={`erase-infopoint-tooltip-bottom-${infopointIndex}`}
+              left={adjustedLeft}
+              top={adjustedTop}
+              infopoint={infopoint}
+            />
+            <TooltipInfoPoint
+              key={`erase-infopoint-tooltip-bottom-${infopointIndex}`}
+              id={`erase-infopoint-tooltip-bottom-${infopointIndex}`}
+              infopoint={infopoint}
+              infopointStatusMap={infopointStatusMap}
+              setInfopointStatusMap={setInfopointStatusMap}
+              primaryKey="1"
+              secondaryKey={infopointIndex.toString()}
+            />
+          </Fragment>
+        );
+      })}
 
       {infoPanelRef.current &&
         ReactDOM.createPortal(
