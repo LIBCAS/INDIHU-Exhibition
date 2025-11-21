@@ -7,6 +7,9 @@ import useResizeObserver from "hooks/use-resize-observer";
 import { useElementMove } from "hooks/spring-hooks/use-element-move";
 import { useElementResize } from "hooks/spring-hooks/use-element-resize";
 
+// Components
+import HelpIcon from "components/help-icon";
+
 // Models
 import { AppDispatch } from "store/store";
 import { GameMoveScreen } from "models";
@@ -229,8 +232,15 @@ const ObjectImagePreview = ({
 
   return (
     <div className="mt-16 mb-32 flex flex-col justify-center items-center gap-6">
-      <div className="self-start font-['Work_Sans'] text-lg">
-        {t("screenPreviewText")}
+      <div className="flex self-start gap-0">
+        <div className="font-['Work_Sans'] text-lg">
+          {t("screenPreviewText")}
+        </div>
+        <HelpIcon
+          label={t("screenPreviewTooltip")}
+          id="object-image-preview-help"
+          className="!ml-2"
+        />
       </div>
 
       <div

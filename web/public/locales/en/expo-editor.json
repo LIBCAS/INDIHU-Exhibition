@@ -341,7 +341,8 @@
       "object": "Object",
       "objectSelectLabel": "Select",
       "objectTooltip": "From the document library, select an image with parts for the user to select from.",
-      "screenPreviewText": "Object placement"
+      "screenPreviewText": "Object placement",
+      "screenPreviewTooltip": "Drag objects to selected locations, from which the visitor is tasked with placing the objects on the background image. You can also use the arrow to move or enlarge the object."
     },
     "gameQuizScreen": {
       "nameLabel": "Title",
