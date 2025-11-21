@@ -341,7 +341,7 @@
       "object": "Object",
       "objectSelectLabel": "Select",
       "objectTooltip": "From the document library, select an image with parts for the user to select from.",
-      "screenPreviewText": "Screen preview"
+      "screenPreviewText": "Object placement"
     },
     "gameQuizScreen": {
       "nameLabel": "Title",

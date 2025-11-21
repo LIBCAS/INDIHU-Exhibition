@@ -341,7 +341,7 @@
       "object": "Objekt",
       "objectSelectLabel": "Vybrat",
       "objectTooltip": "Z knihovny dokumentů vyberte obrázek s částmi, ze kterých budou návštěvníci vybírat.",
-      "screenPreviewText": "Náhled obrazovky"
+      "screenPreviewText": "Umístění objektů"
     },
     "gameQuizScreen": {
       "nameLabel": "Název",
