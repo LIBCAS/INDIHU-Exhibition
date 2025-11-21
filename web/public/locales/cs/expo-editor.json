@@ -317,8 +317,10 @@
       "wipeTowelOption": "Hadřík",
       "upperImageLabel": "Vrchní obrázek",
       "upperImageTooltip": "Z knihovny dokumentů vyberte vrchní obrázek znázorňující fázi “před”.",
+      "upperImageInfopointsTableLabel": "Infopointy",
       "bottomImageLabel": "Spodní obrázek",
-      "bottomImageTooltip": "Z knihovny dokumentů vyberte obrázek, který se objeví po vygumování vrchního obrázku a ukazuje fázi “po”."
+      "bottomImageTooltip": "Z knihovny dokumentů vyberte obrázek, který se objeví po vygumování vrchního obrázku a ukazuje fázi “po”.",
+      "bottomImageInfopointsTableLabel": "Infopointy"
     },
     "gameSizingScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Odhadněte, jak je soška Věstonické Venuše velká v porovnání s krabičkou od sirek).",

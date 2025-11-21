@@ -5,6 +5,7 @@ import { parseSlideshowScreenMap } from "./slideshow-parser";
 import { parseTimelineScreenMap } from "./timeline-parser";
 import { parseGameDrawScreenMap } from "./game-draw-parser";
 import { parseGameSizingScreenMap } from "./game-sizing-parser";
+import { parseGameEraseScreenMap } from "./game-erase-parser";
 
 import {
   InfopointStatusMap,
@@ -31,6 +32,8 @@ export const parseScreenToInfopointStatusMap = (
       return parseGameDrawScreenMap(viewScreen);
     case screenType.GAME_SIZING:
       return parseGameSizingScreenMap(viewScreen);
+    case screenType.GAME_WIPE:
+      return parseGameEraseScreenMap(viewScreen);
     default:
       throw new Error("Unsupported view screen type for infopoint map parser.");
   }
