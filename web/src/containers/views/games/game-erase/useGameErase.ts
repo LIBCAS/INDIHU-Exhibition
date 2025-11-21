@@ -181,17 +181,20 @@ export const useGameErase = ({
       const imageData = ctx.getImageData(x, y, width, height);
       const pixels = imageData.data;
 
-      // Check alpha channel for all pixels in this region
+      // NOTE: Algorithm should return true if atleast 50% of pixels are already erased
+      // Pixel is erased - its alpha channel is 0, meaning its completely transparent
+      // One pixel - RGBA, so each pixel has 4 places in the array
+      let erasedPixels = 0;
+      const totalPixels = pixels.length / 4; // each pixel has RGBA
+
       for (let i = 3; i < pixels.length; i += 4) {
-        const alpha = pixels[i];
-        if (alpha !== 0) {
-          // Still visible → Not erased yet
-          return false;
+        if (pixels[i] === 0) {
+          erasedPixels++;
         }
       }
 
-      // NOTE: All pixels are transparent → fully erased
-      return true;
+      const isConsideredErased = erasedPixels / totalPixels >= 0.5;
+      return isConsideredErased;
     },
     [ctx, canvasRef]
   );
