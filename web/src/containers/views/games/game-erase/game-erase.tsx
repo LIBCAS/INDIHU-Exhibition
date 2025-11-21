@@ -52,6 +52,9 @@ export const GameErase = ({
   isMobileOverlay,
 }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
+  const { image1: upperImageSrc, image2: bottomImageSrc } =
+    screenPreloadedFiles;
+
   const { expoDesignData, palette } = useExpoDesignData();
   const { t } = useTranslation("view-screen");
 
@@ -115,7 +118,7 @@ export const GameErase = ({
     ctx.globalCompositeOperation = "source-over";
     ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     const imageElement = document.createElement("img");
-    imageElement.src = screenPreloadedFiles.image1 ?? "";
+    imageElement.src = upperImageSrc ?? "";
     imageElement.onload = () => {
       ctx.globalCompositeOperation = "source-over";
       ctx.drawImage(
@@ -131,7 +134,7 @@ export const GameErase = ({
     ctx,
     containedImage1Height,
     fromLeft,
-    screenPreloadedFiles.image1,
+    upperImageSrc,
     fromTop,
     containedImage1Width,
   ]);
@@ -232,7 +235,7 @@ export const GameErase = ({
     >
       <img
         className="absolute w-full h-full object-contain"
-        src={screenPreloadedFiles.image2}
+        src={bottomImageSrc}
         alt="solution-image"
       />
 
