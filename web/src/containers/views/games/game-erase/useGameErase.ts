@@ -164,7 +164,7 @@ export const useGameErase = ({
    *
    */
   const isInfopointErased = useCallback(
-    (infopointInfo: Size & Position) => {
+    (infopointInfo: Size & Position, thresholdRatio = 0.5) => {
       if (!ctx || !canvasRef.current) {
         return false;
       }
@@ -181,9 +181,9 @@ export const useGameErase = ({
       const imageData = ctx.getImageData(x, y, width, height);
       const pixels = imageData.data;
 
-      // NOTE: Algorithm should return true if atleast 50% of pixels are already erased
-      // Pixel is erased - its alpha channel is 0, meaning its completely transparent
+      // Pixel is erased -> its alpha channel is 0 -> its completely transparent
       // One pixel - RGBA, so each pixel has 4 places in the array
+      // Algorithm should return true if number of pixels considered as erased is higher than provided threshold
       let erasedPixels = 0;
       const totalPixels = pixels.length / 4; // each pixel has RGBA
 
@@ -193,7 +193,8 @@ export const useGameErase = ({
         }
       }
 
-      const isConsideredErased = erasedPixels / totalPixels >= 0.5;
+      const erasedRatio = erasedPixels / totalPixels;
+      const isConsideredErased = erasedRatio >= thresholdRatio;
       return isConsideredErased;
     },
     [ctx, canvasRef]

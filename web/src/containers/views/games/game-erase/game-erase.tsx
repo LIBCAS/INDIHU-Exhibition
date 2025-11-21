@@ -302,7 +302,7 @@ export const GameErase = ({
           top: adjustedTop,
         };
 
-        const isErased = isInfopointErased(infopointInfo);
+        const isErased = isInfopointErased(infopointInfo, 0.9);
 
         const shouldDisplay = isGameFinished || isErased;
         if (!shouldDisplay) {
