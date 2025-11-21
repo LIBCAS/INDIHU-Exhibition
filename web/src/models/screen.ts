@@ -473,6 +473,8 @@ export type GameWipeScreen = {
   screenCompleted: boolean;
   resultTime?: number;
   eraserToolType?: EraserToolType;
+  infopoints1?: Infopoint[];
+  infopoints2?: Infopoint[];
 };
 
 export type GameSizingScreen = {
