@@ -13,6 +13,7 @@ import {
   TimelineScreen,
   GameDrawScreen,
   GameSizingScreen,
+  GameWipeScreen,
 } from "models";
 
 import { screenType } from "enums/screen-type";
@@ -73,6 +74,7 @@ export const useInfopointClosing = ({
   function closeInfopoints(screen: TimelineScreen): () => void;
   function closeInfopoints(screen: GameDrawScreen): () => void;
   function closeInfopoints(screen: GameSizingScreen): () => void;
+  function closeInfopoints(screen: GameWipeScreen): () => void;
   function closeInfopoints(
     screen: SlideshowScreen
   ): (photoIndex: number) => void;
