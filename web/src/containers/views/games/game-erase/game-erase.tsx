@@ -213,8 +213,7 @@ export const GameErase = ({
 
       {/* INFOPOINTS */}
       {viewScreen.infopoints1?.map((infopoint, infopointIndex) => {
-        const shouldDisplay = !isGameFinished;
-        if (!shouldDisplay) {
+        if (isGameFinished) {
           return null;
         }
 
@@ -274,11 +273,6 @@ export const GameErase = ({
       })}
 
       {viewScreen.infopoints2?.map((infopoint, infopointIndex) => {
-        const shouldDisplay = isGameFinished;
-        if (!shouldDisplay) {
-          return null;
-        }
-
         const infopointPosition = {
           left: infopoint.left,
           top: infopoint.top,
@@ -300,6 +294,20 @@ export const GameErase = ({
 
         const adjustedLeft = fromLeft2 + left;
         const adjustedTop = fromTop2 + top;
+
+        const infopointInfo = {
+          width: infopoint.pxSize ?? 24,
+          height: infopoint.pxSize ?? 24,
+          left: adjustedLeft,
+          top: adjustedTop,
+        };
+
+        const isErased = isInfopointErased(infopointInfo);
+
+        const shouldDisplay = isGameFinished || isErased;
+        if (!shouldDisplay) {
+          return null;
+        }
 
         return (
           <Fragment key={`erase-infopoint-bottom-${infopointIndex}`}>
