@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useEffect, Fragment } from "react";
 import { animated, useTransition } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -10,6 +10,7 @@ import useResizeObserver from "hooks/use-resize-observer";
 import { useGameMoveObject } from "./hooks/useGameMoveObject";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -21,6 +22,8 @@ import { ScreenProps, GameMoveScreen } from "models";
 
 // Utils
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+import { calculateObjectFit } from "utils/object-fit";
+import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
 // - - - - - -
 
@@ -40,8 +43,6 @@ export const GameMove = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
-
   const {
     image1: assignmentImgSrc,
     image2: resultingImgSrc,
@@ -49,6 +50,15 @@ export const GameMove = ({
     object2: object2ImgSrc,
     object3: object3ImgSrc,
   } = screenPreloadedFiles;
+
+  // - - - Derived variables (settings) - - -
+
+  const { resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME } = viewScreen;
+
+  const resultImageOrigData = useMemo(
+    () => viewScreen.image2OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image2OrigData]
+  );
 
   // - - - States - - -
 
@@ -117,6 +127,47 @@ export const GameMove = ({
     closeOnEsc: true,
   });
 
+  // - - - Infopoints (resulting image) - - -
+
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints,
+    AnchorInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  const {
+    width: containedResultImgWidth,
+    height: containedResultImgHeight,
+    left: containedResultImgLeft,
+    top: containedResultImgTop,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        type: "contain",
+        parent: containerSize,
+        child: resultImageOrigData,
+      }),
+    [containerSize, resultImageOrigData]
+  );
+
+  // - - - Infopoints (closing) - - -
+
+  useEffect(() => {
+    const onKeyDownAction = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints(viewScreen)();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDownAction);
+    return () => {
+      window.removeEventListener("keydown", onKeyDownAction);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeInfopoints, viewScreen.type]);
+
   // - - - Callbacks - - -
 
   const onGameFinish = useCallback(() => {
@@ -152,12 +203,58 @@ export const GameMove = ({
     <div className="relative w-[100svw] h-[100svh]" ref={containerRef}>
       {transition(({ opacity }, isGameFinished) =>
         isGameFinished ? (
-          <animated.img
-            src={resultingImgSrc}
-            className="absolute w-full h-full object-contain"
-            style={{ opacity }}
-            alt="result image"
-          />
+          <div className="absolute w-full h-full">
+            <animated.img
+              src={resultingImgSrc}
+              className="absolute w-full h-full object-contain"
+              style={{ opacity }}
+              alt="result image"
+            />
+
+            {/* Infopoints */}
+            {viewScreen.image2Infopoints?.map((infopoint, infopointIndex) => {
+              const infopointPosition = {
+                left: infopoint.left,
+                top: infopoint.top,
+              };
+              const imgBoxSize = {
+                width: resultImageOrigData.width,
+                height: resultImageOrigData.height,
+              };
+              const imgViewSize = {
+                width: containedResultImgWidth,
+                height: containedResultImgHeight,
+              };
+
+              const { left, top } = calculateInfopointPositionByImageBoxSize(
+                infopointPosition,
+                imgBoxSize,
+                imgViewSize
+              );
+
+              const adjustedLeft = containedResultImgLeft + left;
+              const adjustedTop = containedResultImgTop + top;
+
+              return (
+                <Fragment key={`move-result-img-infopoint-${infopointIndex}`}>
+                  <AnchorInfopoint
+                    id={`move-result-img-tooltip-${infopointIndex}`}
+                    left={adjustedLeft}
+                    top={adjustedTop}
+                    infopoint={infopoint}
+                  />
+                  <TooltipInfoPoint
+                    key={`move-result-img-tooltip-${infopointIndex}`}
+                    id={`move-result-img-tooltip-${infopointIndex}`}
+                    infopoint={infopoint}
+                    infopointStatusMap={infopointStatusMap}
+                    setInfopointStatusMap={setInfopointStatusMap}
+                    primaryKey={infopointIndex.toString()}
+                  />
+                </Fragment>
+              );
+            })}
+          </div>
         ) : (
           <>
             <animated.img
