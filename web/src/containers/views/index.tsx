@@ -99,6 +99,7 @@ type ViewersProps = {
   screenPreloadedFiles: ScreenPreloadedFiles | undefined;
   areScreenFilesLoading: boolean;
   isMusicLoading: boolean;
+  isSoundtrackLoading: boolean;
   chapterMusicRef: HTMLAudioElement | null;
   audioRef: HTMLAudioElement | null;
 };
@@ -108,6 +109,7 @@ export const Viewers = ({
   screenPreloadedFiles,
   areScreenFilesLoading,
   isMusicLoading,
+  isSoundtrackLoading,
   chapterMusicRef,
   audioRef,
 }: ViewersProps) => {
@@ -142,6 +144,7 @@ export const Viewers = ({
           !screenPreloadedFiles ||
           isScreenLoading ||
           isMusicLoading ||
+          isSoundtrackLoading ||
           areScreenFilesLoading ? (
             <ViewLoading />
           ) : (

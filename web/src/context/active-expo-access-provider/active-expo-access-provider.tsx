@@ -32,7 +32,7 @@ export const ActiveExpoAccessProvider = ({
 
   return (
     <ActiveExpoAccessProviderContext.Provider
-      value={{ isReadWriteAccess: true }}
+      value={{ isReadWriteAccess: canEdit }}
     >
       {children}
     </ActiveExpoAccessProviderContext.Provider>
