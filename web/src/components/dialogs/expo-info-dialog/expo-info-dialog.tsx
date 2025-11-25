@@ -12,7 +12,7 @@ import DialogWrap from "../dialog-wrap-noredux-typed";
 import WysiwygPreview from "components/editors/WysiwygEditor/WysiwygPreview";
 
 // Types
-import { StartScreen, ViewExpo } from "models";
+import { File, StartScreen, ViewExpo } from "models";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 
 // Utils
@@ -24,12 +24,14 @@ export type ExpoInfoDialogProps = {
   closeThisDialog: () => void;
   viewExpo: ViewExpo;
   viewScreen: StartScreen;
+  expoAudioVersionFile: File | null;
 };
 
 export const ExpoInfoDialog = ({
   closeThisDialog,
   viewExpo,
   viewScreen,
+  expoAudioVersionFile,
 }: ExpoInfoDialogProps) => {
   const { t } = useTranslation("view-exhibition");
 
@@ -66,6 +68,11 @@ export const ExpoInfoDialog = ({
     openNewTopDialog(DialogRefType.WorksheetDialog);
   }, [openNewTopDialog]);
 
+  const openExpoAudioVersionDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.ExpoAudioVersionDialog),
+    [openNewTopDialog]
+  );
+
   const tags = useMemo(() => viewExpo?.tags, [viewExpo?.tags]);
 
   return (
@@ -90,6 +97,11 @@ export const ExpoInfoDialog = ({
           <Button color="primary" onClick={openChaptersDialog}>
             <Icon color="white" name="layers" />
           </Button>
+          {expoAudioVersionFile && (
+            <Button color="primary" onClick={openExpoAudioVersionDialog}>
+              <Icon color="white" name="hearing" />
+            </Button>
+          )}
           {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
             <Button color="primary" onClick={openWorksheetDialog}>
               <Icon color="white" name="description" />

@@ -26,6 +26,7 @@ import { ChaptersDialog } from "components/dialogs/chapters-dialog/chapters-dial
 import { FilesDialog } from "components/dialogs/files-dialog/files-dialog";
 import { WorksheetsDialog } from "components/dialogs/worksheets-dialog/worksheets-dialog";
 import ExpoAuthorsDialog from "components/dialogs/expo-authors-dialog/expo-authors-dialog";
+import { ExpoAudioVersionDialog } from "components/dialogs/expo-audio-version-dialog/expo-audio-version-dialog";
 
 // Models
 import { AppDispatch, AppState } from "store/store";
@@ -35,6 +36,7 @@ import { ViewExpo, StartScreen, ScreenProps } from "models";
 import { setViewProgress } from "actions/expoActions/viewer-actions";
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateLogoPosition } from "./calculateLogoPosition";
+import { getFileById } from "actions/file-actions-typed";
 
 // - - - - - -
 
@@ -50,8 +52,17 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
   const { t } = useTranslation("view-exhibition");
   const dispatch = useDispatch<AppDispatch>();
 
+  // NOTE: 'image' is source for background image, if set
+  const { image } = screenPreloadedFiles ?? {};
+
   const { viewExpo, viewScreen } = useSelector(stateSelector);
-  const { image } = screenPreloadedFiles ?? {}; // background image, if set
+
+  // - - -
+
+  const expoAudioVersionFile = useMemo(
+    () => dispatch(getFileById(viewScreen.audio)),
+    [dispatch, viewScreen.audio]
+  );
 
   // - - - Hooks - - -
 
@@ -68,6 +79,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
     isFilesDialogOpen,
     isWorksheetDialogOpen,
     isExpoAuthorsDialogOpen,
+    isExpoAudioVersionDialogOpen,
   } = useDialogRef();
 
   const animationProps = useViewStartAnimation(viewScreen?.animationType);
@@ -149,6 +161,11 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
 
   const openWorksheetsDialog = useCallback(
     () => openNewTopDialog(DialogRefType.WorksheetDialog),
+    [openNewTopDialog]
+  );
+
+  const openExpoAudioVersionDialog = useCallback(
+    () => openNewTopDialog(DialogRefType.ExpoAudioVersionDialog),
     [openNewTopDialog]
   );
 
@@ -296,6 +313,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
               closeThisDialog={closeTopDialog}
               viewExpo={viewExpo}
               viewScreen={viewScreen}
+              expoAudioVersionFile={expoAudioVersionFile}
             />
           }
         />
@@ -342,6 +360,17 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
             <ExpoAuthorsDialog
               closeThisDialog={closeTopDialog}
               collaboratorsData={viewScreen.collaborators}
+            />
+          }
+        />
+      )}
+
+      {isExpoAudioVersionDialogOpen && (
+        <DialogPortal
+          component={
+            <ExpoAudioVersionDialog
+              closeThisDialog={closeTopDialog}
+              expoAudioVersionFile={expoAudioVersionFile}
             />
           }
         />

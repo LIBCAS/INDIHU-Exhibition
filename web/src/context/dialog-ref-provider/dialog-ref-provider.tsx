@@ -36,6 +36,7 @@ type DialogRefProviderContextType = {
   isRegisterDialogOpen: boolean;
   isLoginDialogOpen: boolean;
   isExpoAuthorsDialogOpen: boolean;
+  isExpoAudioVersionDialogOpen: boolean;
 };
 
 const DialogRefContext = createContext<DialogRefProviderContextType>(
@@ -156,6 +157,11 @@ export const DialogRefProvider = ({ children }: DialogRefProviderProps) => {
     [openedTopDialog]
   );
 
+  const isExpoAudioVersionDialogOpen = useMemo(
+    () => openedTopDialog === DialogRefType.ExpoAudioVersionDialog,
+    [openedTopDialog]
+  );
+
   return (
     <DialogRefContext.Provider
       value={{
@@ -181,6 +187,7 @@ export const DialogRefProvider = ({ children }: DialogRefProviderProps) => {
         isRegisterDialogOpen,
         isLoginDialogOpen,
         isExpoAuthorsDialogOpen,
+        isExpoAudioVersionDialogOpen,
       }}
     >
       {children}
