@@ -10,7 +10,13 @@ import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Types
 import { AppState } from "store/store";
-import { ScreenProps, TimelineScreen } from "models";
+import {
+  ScreenProps,
+  TimelineLeftBoundary,
+  TimelineRightBoundary,
+  TimelineScreen,
+  TimelineType,
+} from "models";
 
 // Utils
 import {
@@ -19,12 +25,15 @@ import {
   calculateLineTransformation,
 } from "containers/expo-administration/expo-editor/screen-timeline/hooks/useItemLinearMovement/linear-movement-utils";
 import {
-  calculateArrowThickness,
+  calculateEdgeThickness,
+  calculateEdgeDecorationClassName,
   calculateInfopointsPosition,
 } from "./view-timeline-utils";
 import {
   DEFAULT_TIMELINE_BG_TRANSPARENCY,
   DEFAULT_TIMELINE_COLOR,
+  DEFAULT_TIMELINE_LEFT_BOUNDARY,
+  DEFAULT_TIMELINE_RIGHT_BOUNDARY,
   DEFAULT_TIMELINE_THICKNESS,
   DEFAULT_TIMELINE_TYPE,
 } from "containers/expo-administration/expo-editor/screen-timeline/default-values";
@@ -50,7 +59,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Derived variables (settings ) - - -
 
-  const timelineType = useMemo(
+  const timelineType = useMemo<TimelineType>(
     () => viewScreen.timelineType ?? DEFAULT_TIMELINE_TYPE,
     [viewScreen.timelineType]
   );
@@ -65,10 +74,10 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen.timelineThickness]
   );
 
-  const { arrowThicknessBig, arrowThicknessSmal } = useMemo(
+  const { edgeThicknessBig, edgeThicknessSmall } = useMemo(
     () => ({
-      arrowThicknessBig: calculateArrowThickness(timelineThickness, true),
-      arrowThicknessSmal: calculateArrowThickness(timelineThickness, false),
+      edgeThicknessBig: calculateEdgeThickness(timelineThickness, true),
+      edgeThicknessSmall: calculateEdgeThickness(timelineThickness, false),
     }),
     [timelineThickness]
   );
@@ -78,6 +87,16 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       (viewScreen.backgroundImageTransparency ??
         DEFAULT_TIMELINE_BG_TRANSPARENCY) / 100,
     [viewScreen.backgroundImageTransparency]
+  );
+
+  const timelineLeftBoundary = useMemo<TimelineLeftBoundary>(
+    () => viewScreen.timelineLeftBoundary ?? DEFAULT_TIMELINE_LEFT_BOUNDARY,
+    [viewScreen.timelineLeftBoundary]
+  );
+
+  const timelineRightBoundary = useMemo<TimelineRightBoundary>(
+    () => viewScreen.timelineRightBoundary ?? DEFAULT_TIMELINE_RIGHT_BOUNDARY,
+    [viewScreen.timelineRightBoundary]
   );
 
   // - - - Derived variables (styles) - - -
@@ -90,28 +109,32 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
       ...calculateLineTransformation(timelineType, parentSize),
       borderRadius: "9999px",
       backgroundColor: timelineColor,
-      // NOTE: for the scss styles (dot and arrow od the straight line)
+
+      // NOTE: required to setup for the scss styles (left and right boundary of timeline)
       "--timeline-color": timelineColor,
-      "--timeline-thickness-lg": `${arrowThicknessBig}px`,
-      "--timeline-thickness-sm": `${arrowThicknessSmal}px`,
+      "--timeline-thickness-base": `${timelineThickness}px`,
+      "--timeline-thickness-lg": `${edgeThicknessBig}px`,
+      "--timeline-thickness-sm": `${edgeThicknessSmall}px`,
     }),
     [
       parentSize,
       timelineType,
       timelineColor,
       timelineThickness,
-      arrowThicknessBig,
-      arrowThicknessSmal,
+      edgeThicknessBig,
+      edgeThicknessSmall,
     ]
   );
 
-  const lineArrowClassName = useMemo(() => {
-    if (timelineType === "VERTICAL") {
-      return "timeline-line vertical";
-    }
-    // NOTE: Also diagonals, for some reason, works well with horizontal arrow setup
-    return "timeline-line horizontal";
-  }, [timelineType]);
+  const lineEdgeDecorationClassName = useMemo(
+    () =>
+      calculateEdgeDecorationClassName(
+        timelineType,
+        timelineLeftBoundary,
+        timelineRightBoundary
+      ),
+    [timelineType, timelineLeftBoundary, timelineRightBoundary]
+  );
 
   // - - - Derived variables (others) - - -
 
@@ -172,7 +195,7 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
               className="relative w-full h-full flex justify-center items-center"
             >
               {/* 2a) Timeline line */}
-              <div style={lineStyle} className={lineArrowClassName} />
+              <div style={lineStyle} className={lineEdgeDecorationClassName} />
 
               {/* 2b) Timeline Points */}
               {adjustedInfopoints.map((ip, ipIdx) => (

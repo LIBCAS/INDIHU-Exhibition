@@ -3,23 +3,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 // Custom Hooks
+import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
 import { useFilePreloader } from "context/file-preloader/file-preloader-provider";
 
 // Components
+import ScreenAutoNavigatorManager from "./expo-managers/ScreenAutoNavigatorManager";
 import { Viewers } from "../views";
 
 // Types and Enums
-import { AppDispatch, AppState } from "store/store";
+import { AppState, AppDispatch } from "store/store";
+
+// Utils
+import { store } from "index";
 import {
-  audioEnabled,
   mapScreenTypeValuesToKeys,
   musicEnabled,
+  audioEnabled,
 } from "enums/screen-type";
-import { useSectionScreenParams } from "hooks/view-hooks/section-screen-hook";
-import ScreenAutoNavigatorManager from "./expo-managers/ScreenAutoNavigatorManager";
+
+// Redux (actions)
 import { setViewProgress } from "actions/expoActions/viewer-actions";
 
-// - - - - - - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen,
@@ -32,6 +37,8 @@ const stateSelector = createSelector(
   })
 );
 
+// - - - - - -
+
 interface NewViewScreenProps {
   name: string;
   handleViewScreen: ({ section, screen }: any) => Promise<any>;
@@ -42,10 +49,10 @@ export const NewViewScreen = ({
   handleViewScreen,
   setViewScreenIsLoaded,
 }: NewViewScreenProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const { viewScreen, shouldIncrement, expoVolumes } =
     useSelector(stateSelector);
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const { section, screen } = useSectionScreenParams();
 
@@ -58,34 +65,66 @@ export const NewViewScreen = ({
 
   const [isScreenLoading, setIsScreenLoading] = useState<boolean>(true);
 
-  // audioSrc is either a string as 'blob:http://localhost:3000/adjasdkasjsdkas' or undefined
-  // audioSrc is always screenPreloadedFiles.audio and not screenPreloadedFiles.music --> audio of the current screen!
-  // audioSrc is undefined if the current screen does not its own audio set from editor settings
-  // audioSrc is also in the start screen the audio subor of the whole expo
-  // if audiosrc is undefined, <audio> element referring will not be rendered
-  // If rendered -- <audio> will always have source of the current screen audio!!!
+  // - - - Audio - - -
+
+  /**
+   * 1. Audio source is either a blob URL string (which can be directly used for src atribute) or undefined
+   * 2. Audio source presents the audio only for the current single screen
+   * 3. Audio source is undefined if the current screen does not have its own audio set from the screen editor
+   * 4. Audio source (audio key) is also used in the start screen where it should represent audio for the whole expo
+   * 5. If audio source is undefined, then <audio> element referring it should not be rendered
+   */
+  const audioSrc = useMemo<string | undefined>(() => {
+    // NOTE: This extra check is very important!
+    if (section === "start" || section === "finish") {
+      return undefined;
+    }
+
+    return screenPreloadedFiles?.audio;
+  }, [screenPreloadedFiles, section]);
+
   const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
-  const audioSrc = useMemo(
-    () => screenPreloadedFiles?.audio,
-    [screenPreloadedFiles]
-  );
+
+  const isAudioDisabled = useMemo<boolean>(() => {
+    // NOTE: This extra check is very important!
+    if (section === "start" || section === "finish") {
+      return true;
+    }
+
+    if (!viewScreen?.type) {
+      return true;
+    }
+
+    const isAudioDisabledForThisScreen =
+      !audioEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
+
+    return isAudioDisabledForThisScreen;
+  }, [viewScreen?.type, section]);
+
+  // - - - Music - - -
+
+  /**
+   * Music source represents the audio for one whole chapter
+   */
+  const [musicSrc, setMusicSrc] = useState<string | null>(null);
 
   const [musicRef, setMusicRef] = useState<HTMLAudioElement | null>(null);
-  const [musicSrc, setMusicSrc] = useState<string | null>(null);
 
   const isMusicDisabled = useMemo(() => {
     if (!viewScreen) {
       return false;
     }
+
     const mutedScreenByAdmin =
       "muteChapterMusic" in viewScreen && viewScreen.muteChapterMusic;
+
     const mutedScreenAlways =
       !musicEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
 
     return mutedScreenByAdmin || mutedScreenAlways;
   }, [viewScreen]);
 
-  // - -
+  // - - - Callbacks - - -
 
   const handleMount = useCallback(async () => {
     setIsScreenLoading(true);
@@ -94,14 +133,20 @@ export const NewViewScreen = ({
     setIsScreenLoading(false);
   }, [handleViewScreen, screen, section, setViewScreenIsLoaded]);
 
-  /* 1.) Mount this NewViewScreen in ViewScreen.tsx */
+  // - - - Effects - - -
+
+  /**
+   * 1.) Effect responsible for mounting this component
+   */
   useEffect(() => {
     handleMount();
   }, [handleMount]);
 
-  // - - -
+  // - - - Effects (music) - - -
 
-  /* Effect responsible for handling setting new musicSrc, e.g when new section with our without music */
+  /**
+   * 2.) Effect responsible for setting `musicSrc` (when section, chapter of this exposition changes)
+   */
   useEffect(() => {
     if (section === undefined || section === "start" || section === "finish") {
       setMusicSrc(null);
@@ -115,53 +160,73 @@ export const NewViewScreen = ({
 
     const musicBlobSrc = chapterMusicCache[section];
     setMusicSrc(musicBlobSrc ?? null);
-  }, [section, chapterMusicCache]);
+  }, [chapterMusicCache, section]);
 
-  /* Effect reacting on previous effect when musicSrc has changed, handles automatic playing of new musicSrc  */
+  /**
+   * 3.) Effect responsible for automatic playing of `musicSrc`, reacting to previous effect
+   */
   useEffect(() => {
     if (!musicRef) {
       return;
     }
 
-    musicRef.loop = true;
-    musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
-    if (shouldIncrement) {
-      musicRef.play().catch((error) => {
-        if (error instanceof Error && error.name === "NotAllowedError") {
-          dispatch(setViewProgress({ shouldIncrement: false }));
-        }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [musicSrc, musicRef]);
-
-  /* Effect which pauses the playing chapter music if current screen does not support music playing */
-  useEffect(() => {
-    if (musicRef && isMusicDisabled) {
-      musicRef.pause();
+    const shouldIncrement = store.getState().expo.viewProgress.shouldIncrement;
+    if (!shouldIncrement) {
       return;
     }
-    if (musicRef && !isMusicDisabled) {
+
+    const musicVolume =
+      store.getState().expo.expoVolumes.musicVolume.actualVolume / 100;
+
+    musicRef.loop = true;
+    musicRef.volume = musicVolume;
+    musicRef.play().catch((error) => {
+      if (error instanceof Error && error.name === "NotAllowedError") {
+        dispatch(setViewProgress({ shouldIncrement: false }));
+      }
+    });
+  }, [musicSrc, musicRef, dispatch]);
+
+  /**
+   * 4.) Effect responsible for pausing `musicSrc`, when current screen does not support music playing
+   */
+  useEffect(() => {
+    if (!musicRef) {
+      return;
+    }
+
+    if (isMusicDisabled) {
+      musicRef.pause();
+    } else {
       musicRef.play();
     }
-  }, [isMusicDisabled, musicRef]);
+  }, [musicRef, isMusicDisabled]);
 
-  /* Effect which handles automatic playing of current screen audio + when going to new screen.. pause and rewind old audio */
+  // - - - Effects (audio) - - -
+
+  /**
+   * 5.) Effect responsible for automatic playing of `audioSrc`
+   */
   useEffect(() => {
-    if (!viewScreen || !audioRef) {
+    if (!audioSrc) {
       return;
     }
-    // E.g not to play the audio verze vystavy on the start screen!
-    // TODO -- out as memo use
-    const isAudioDisabled =
-      !audioEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
+
+    if (!audioRef) {
+      return;
+    }
 
     if (isAudioDisabled) {
       return;
     }
 
+    const shouldIncrement = store.getState().expo.viewProgress.shouldIncrement;
+
     if (shouldIncrement) {
-      audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
+      const audioVolume =
+        store.getState().expo.expoVolumes.speechVolume.actualVolume / 100;
+
+      audioRef.volume = audioVolume;
       audioRef.play().catch((error) => {
         if (error instanceof Error && error.name === "NotAllowedError") {
           dispatch(setViewProgress({ shouldIncrement: false }));
@@ -170,25 +235,29 @@ export const NewViewScreen = ({
     }
 
     return () => {
-      // TODO now should be not required!
       audioRef.currentTime = 0;
       audioRef.pause();
     };
+  }, [audioSrc, audioRef, isAudioDisabled, dispatch]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewScreen, audioSrc, audioRef]);
+  // - - - Effects (music + audio) - - -
 
-  /* Effect which handles muting of the music and audio when e.g mute button is pressed */
+  /**
+   * 6.) Effect reponsible for muting both the sources  (e.g. when mute button was pressed)
+   */
   useEffect(() => {
     if (musicRef) {
       musicRef.volume = expoVolumes.musicVolume.actualVolume / 100;
     }
+
     if (audioRef) {
       audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
     }
   }, [expoVolumes, audioRef, musicRef]);
 
-  /* Effect which handles pausing / start playing of the music and audio when e.g pause button is pressed */
+  /**
+   * 7.) Effect responsible for pausing / playing of the both sources (e.g. when pause/play button was pressed)
+   */
   useEffect(() => {
     if (musicRef) {
       if (shouldIncrement && !isMusicDisabled) {
@@ -198,6 +267,7 @@ export const NewViewScreen = ({
           }
         });
       }
+
       if (!shouldIncrement && !isMusicDisabled) {
         musicRef.pause();
       }
@@ -214,14 +284,14 @@ export const NewViewScreen = ({
         audioRef.pause();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldIncrement, audioRef, musicRef]);
 
-  // - -
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldIncrement, audioRef, musicRef, dispatch]);
+
+  // - - - GUI - - -
 
   return (
     <ScreenAutoNavigatorManager>
-      {/* If rendered -- <audio> will always have source of the current screen audio!!! */}
       {musicSrc && (
         <audio
           key={musicSrc}
@@ -229,6 +299,8 @@ export const NewViewScreen = ({
           ref={(musicRef) => setMusicRef(musicRef)}
         />
       )}
+
+      {/* NOTE: If audio is rendered, its audioSrc should always have source of the current screen! */}
       {audioSrc && (
         <audio
           key={audioSrc}

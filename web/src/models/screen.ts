@@ -30,6 +30,8 @@ import {
   ScreenChapterIntroTextThemeType,
   ScreenChapterIntroTextHaloEffectOnType,
   TimelineType,
+  TimelineLeftBoundary,
+  TimelineRightBoundary,
 } from "./screen-administration";
 
 // - - - - -
@@ -413,6 +415,8 @@ export type TimelineScreen = {
   backgroundImageTransparency?: number;
   timelineColor?: string;
   timelineThickness?: number;
+  timelineLeftBoundary?: TimelineLeftBoundary;
+  timelineRightBoundary?: TimelineRightBoundary;
 };
 
 export type GameFindScreen = {
@@ -469,6 +473,8 @@ export type GameWipeScreen = {
   screenCompleted: boolean;
   resultTime?: number;
   eraserToolType?: EraserToolType;
+  infopoints1?: Infopoint[];
+  infopoints2?: Infopoint[];
 };
 
 export type GameSizingScreen = {
@@ -495,20 +501,53 @@ export type GameMoveScreen = {
   type: typeof screenType.GAME_MOVE;
   title?: string;
   task: string;
-  image1?: string;
-  image2?: string;
-  object?: string;
-  image1OrigData?: ImageOrigData;
-  image2OrigData?: ImageOrigData;
-  objectOrigData?: ImageOrigData;
+
+  // NOTE: assignment image
+  image1?: string | null;
+  image1OrigData?: ImageOrigData | null;
+
+  // NOTE: result image
+  image2?: string | null;
+  image2OrigData?: ImageOrigData | null;
+  image2Infopoints?: Infopoint[];
+
+  // NOTE: First object to move
+  object?: string | null;
+  objectOrigData?: ImageOrigData | null;
   objectPositionProps?: {
     containerPosition: Position;
     containedImgPosition: Position;
-  };
+  } | null;
   objectSizeProps?: {
     inContainerSize: Size;
     inContainedImgFractionSize: Size;
-  };
+  } | null;
+
+  // NOTE: Second object to move
+  object2?: string | null;
+  object2OrigData?: ImageOrigData | null;
+  object2PositionProps?: {
+    containerPosition: Position;
+    containedImgPosition: Position;
+  } | null;
+  object2SizeProps?: {
+    inContainerSize: Size;
+    inContainedImgFractionSize: Size;
+  } | null;
+
+  // NOTE: Third object to move
+  object3?: string | null;
+  object3OrigData?: ImageOrigData | null;
+  object3PositionProps?: {
+    containerPosition: Position;
+    containedImgPosition: Position;
+  } | null;
+  object3SizeProps?: {
+    inContainerSize: Size;
+    inContainedImgFractionSize: Size;
+  } | null;
+
+  // Other fields
   aloneScreen: boolean;
   music?: string;
   muteChapterMusic: boolean;

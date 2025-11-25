@@ -99,6 +99,7 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
   }, [images, selectedImageIndex, closeAllDialogs]);
 
   // 3. - - - Key press and mouse handlers - - -
+
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape" && isLightBoxOpened) {

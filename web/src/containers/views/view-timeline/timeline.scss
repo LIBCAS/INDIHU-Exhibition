@@ -1,27 +1,97 @@
 .timeline-line {
   --timeline-color: black;
+  --timeline-thickness-base: 4px;
+
   --timeline-thickness-lg: 24px;
   --timeline-thickness-sm: 18px;
 
-  // Arrow at the end
+  &::before {
+    content: "";
+    position: absolute;
+  }
 
   &::after {
     content: "";
     position: absolute;
+  }
+
+  // - - - - - - Nothing at the beginning - - - - - -
+
+  &.beginning-nothing-horizontal::before {
+    background-color: var(--timeline-color);
+  }
+
+  &.beginning-nothing-vertical::before {
+    background-color: var(--timeline-color);
+  }
+
+  // - - - - - - Line segment at the beginning - - - - - -
+
+  &.beginning-segment-horizontal::before {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-base);
+    height: var(--timeline-thickness-lg);
+
+    left: 0;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+
+  &.beginning-segment-vertical::before {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-base);
+
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0%);
+  }
+
+  // - - - - - - Dot at the beginning - - - - - -
+
+  &.beginning-dot-horizontal::before {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-lg);
+    border-radius: 50%;
+
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &.beginning-dot-vertical::before {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-lg);
+    border-radius: 50%;
+
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  // - - - - - - Arrow at the end - - - - - -
+
+  &.end-arrow-horizontal::after {
     width: 0;
     height: 0;
     border-left: var(--timeline-thickness-lg) solid var(--timeline-color);
     border-top: var(--timeline-thickness-sm) solid transparent;
     border-bottom: var(--timeline-thickness-sm) solid transparent;
-  }
 
-  &.horizontal::after {
-    right: 0;
+    right: 0px;
     top: 50%;
     transform: translate(var(--timeline-thickness-lg), -50%);
   }
 
-  &.vertical::after {
+  &.end-arrow-vertical::after {
+    width: 0;
+    height: 0;
+    border-left: var(--timeline-thickness-lg) solid var(--timeline-color);
+    border-top: var(--timeline-thickness-sm) solid transparent;
+    border-bottom: var(--timeline-thickness-sm) solid transparent;
+
     left: 50%;
     bottom: 0;
     right: auto;
@@ -29,26 +99,35 @@
     transform: translate(-50%, var(--timeline-thickness-lg)) rotate(90deg);
   }
 
-  // Dot at the beginning
+  // - - - - - - Line segment at the end - - - - - -
 
-  &::before {
-    content: "";
-    position: absolute;
-    width: var(--timeline-thickness-lg);
-    height: var(--timeline-thickness-lg);
+  &.end-segment-horizontal::after {
     background-color: var(--timeline-color);
-    border-radius: 50%;
-  }
+    width: var(--timeline-thickness-base);
+    height: var(--timeline-thickness-lg);
 
-  &.horizontal::before {
-    left: 0;
+    right: 0;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(0%, -50%);
   }
 
-  &.vertical::before {
-    left: 50%;
-    top: 0;
-    transform: translate(-50%, -50%);
+  &.end-segment-vertical::after {
+    background-color: var(--timeline-color);
+    width: var(--timeline-thickness-lg);
+    height: var(--timeline-thickness-base);
+
+    right: 50%;
+    bottom: 0;
+    transform: translate(50%, 0%);
+  }
+
+  // - - - - - - Nothing at the end - - - - - -
+
+  &.end-nothing-horizontal::after {
+    background-color: var(--timeline-color);
+  }
+
+  &.end-nothing-vertical::after {
+    background-color: var(--timeline-color);
   }
 }

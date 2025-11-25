@@ -8,14 +8,25 @@ import HelpIcon from "components/help-icon";
 
 // Types
 import { AppDispatch } from "store/store";
-import { TimelineScreen, TimelineType } from "models";
+import {
+  TimelineLeftBoundary,
+  TimelineRightBoundary,
+  TimelineScreen,
+  TimelineType,
+} from "models";
 
 // Utils
 import { updateScreenData } from "actions/expoActions";
-import { TimelineTypeEnum } from "enums/administration-screens/screen-timeline";
+import {
+  TimelineTypeEnum,
+  TimelineLeftBoundaryEnum,
+  TimelineRightBoundaryEnum,
+} from "enums/administration-screens/screen-timeline";
 import {
   DEFAULT_TIMELINE_BG_TRANSPARENCY,
   DEFAULT_TIMELINE_COLOR,
+  DEFAULT_TIMELINE_LEFT_BOUNDARY,
+  DEFAULT_TIMELINE_RIGHT_BOUNDARY,
   DEFAULT_TIMELINE_THICKNESS,
   DEFAULT_TIMELINE_TYPE,
 } from "../default-values";
@@ -227,6 +238,120 @@ export const TimelineThicknessTextField = ({
         <HelpIcon
           id="screen-timeline-timelinethickness-helpIcon"
           label={t("timelineThicknessTooltip")}
+        />
+      </div>
+    </div>
+  );
+};
+
+// - - - - - -
+
+type TimelineLeftBoundarySelectFieldProps = {
+  activeScreen: TimelineScreen;
+};
+
+export const TimelineLeftBoundarySelectField = ({
+  activeScreen,
+}: TimelineLeftBoundarySelectFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
+
+  return (
+    <div className="w-full flex">
+      <SelectField
+        menuItems={[
+          {
+            label: t("leftBoundaryNothingOption"),
+            value: TimelineLeftBoundaryEnum.NOTHING,
+          },
+          {
+            label: t("leftBoundaryLineSegmentOption"),
+            value: TimelineLeftBoundaryEnum.LINE_SEGMENT,
+          },
+          {
+            label: t("leftBoundaryDotOption"),
+            value: TimelineLeftBoundaryEnum.DOT,
+          },
+        ]}
+        itemLabel={"label"}
+        itemValue={"value"}
+        label={t("leftBoundaryLabel")}
+        position="below"
+        id="screen-timeline-timelineLeftBoundary-selectField"
+        defaultValue={
+          activeScreen.timelineLeftBoundary ?? DEFAULT_TIMELINE_LEFT_BOUNDARY
+        }
+        onChange={(newTimelineLeftBoundary: TimelineLeftBoundary) => {
+          dispatch(
+            updateScreenData({ timelineLeftBoundary: newTimelineLeftBoundary })
+          );
+        }}
+        fullWidth
+      />
+      <div className="self-center">
+        <HelpIcon
+          id="screen-timeline-timelineLeftBoundaryHelpIcon"
+          label={t("leftBoundaryTooltip")}
+        />
+      </div>
+    </div>
+  );
+};
+
+// - - - - - -
+
+type TimelineRightBoundarySelectFieldProps = {
+  activeScreen: TimelineScreen;
+};
+
+export const TimelineRightBoundarySelectField = ({
+  activeScreen,
+}: TimelineRightBoundarySelectFieldProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.timelineScreen",
+  });
+
+  return (
+    <div className="w-full flex">
+      <SelectField
+        menuItems={[
+          {
+            label: t("rightBoundaryNothingOption"),
+            value: TimelineRightBoundaryEnum.NOTHING,
+          },
+          {
+            label: t("rightBoundaryLineSegmentOption"),
+            value: TimelineRightBoundaryEnum.LINE_SEGMENT,
+          },
+          {
+            label: t("rightBoundaryArrowOption"),
+            value: TimelineRightBoundaryEnum.ARROW,
+          },
+        ]}
+        itemLabel={"label"}
+        itemValue={"value"}
+        label={t("rightBoundaryLabel")}
+        position="below"
+        id="screen-timeline-timelineRightBoundary-selectField"
+        defaultValue={
+          activeScreen.timelineRightBoundary ?? DEFAULT_TIMELINE_RIGHT_BOUNDARY
+        }
+        onChange={(newTimelineRightBoundary: TimelineRightBoundary) => {
+          dispatch(
+            updateScreenData({
+              timelineRightBoundary: newTimelineRightBoundary,
+            })
+          );
+        }}
+        fullWidth
+      />
+      <div className="self-center">
+        <HelpIcon
+          id="screen-timeline-timelineRightBoundaryHelpIcon"
+          label={t("rightBoundaryTooltip")}
         />
       </div>
     </div>

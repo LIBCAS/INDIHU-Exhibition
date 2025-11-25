@@ -174,7 +174,7 @@
       "imageBoxTitle": "Image",
       "imageBoxTooltip": "Selected image from photogallery.",
       "photoTitleLabel": "Image title",
-      "photoTitleTooltip": "Image title.",
+      "photoTitleTooltip": "Image title, maximum name length 50 characters including spaces",
       "photoDescriptionLabel": "Image description",
       "photoDescriptionTooltip": "Optional description of the image."
     },
@@ -262,7 +262,17 @@
       "chooseBackgroundImageBtnLabel": "Choose a background image",
       "clearBackgroundImageBtnLabel": "Remove image from background",
       "bgImageTransparencyLabel": "Transparency of the selected background image",
-      "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100."
+      "bgImageTransparencyTooltip": "Set the transparency level for your background image. The minimum allowed value is 1, and the maximum allowed value is 100.",
+      "leftBoundaryNothingOption": "No boundary",
+      "leftBoundaryLineSegmentOption": "Line segment",
+      "leftBoundaryDotOption": "Dot",
+      "leftBoundaryLabel": "Left timeline boundary",
+      "leftBoundaryTooltip": "Select one of the available options for the left boundary, the start of the timeline. The default value is a dot.",
+      "rightBoundaryNothingOption": "No boundary",
+      "rightBoundaryLineSegmentOption": "Line segment",
+      "rightBoundaryArrowOption": "Arrow",
+      "rightBoundaryLabel": "Right timeline boundary",
+      "rightBoundaryTooltip": "Select one of the available options for the right boundary, the end of the timeline. The default value is an arrow."
     },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
@@ -307,8 +317,10 @@
       "wipeTowelOption": "Wipe towel",
       "upperImageLabel": "Upper image",
       "upperImageTooltip": "Select the top image showing the 'before' phase from the document library.",
+      "upperImageInfopointsTableLabel": "Infopoints",
       "bottomImageLabel": "Bottom image",
-      "bottomImageTooltip": "From the document library, select the image that appears after erasing the top image to show the 'after' stage."
+      "bottomImageTooltip": "From the document library, select the image that appears after erasing the top image to show the 'after' stage.",
+      "bottomImageInfopointsTableLabel": "Infopoints"
     },
     "gameSizingScreen": {
       "taskTooltip": "Describe the task to the user as precisely as possible (e.g. Estimate how big the Venus from Vestonice statuette is compared to the matchbox).",
@@ -329,7 +341,9 @@
       "object": "Object",
       "objectSelectLabel": "Select",
       "objectTooltip": "From the document library, select an image with parts for the user to select from.",
-      "screenPreviewText": "Screen preview"
+      "screenPreviewText": "Object placement",
+      "screenPreviewTooltip": "Drag objects to selected locations, from which the visitor is tasked with placing the objects on the background image. You can also use the arrow to move or enlarge the object.",
+      "imageResultInfopointsTableTitle": "Result Comment"
     },
     "gameQuizScreen": {
       "nameLabel": "Title",

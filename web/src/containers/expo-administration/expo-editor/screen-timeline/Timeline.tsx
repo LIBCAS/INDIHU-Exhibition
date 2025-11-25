@@ -9,6 +9,8 @@ import {
   TimelineBgImageTransparencyTextField,
   TimelineColorTextField,
   TimelineThicknessTextField,
+  TimelineLeftBoundarySelectField,
+  TimelineRightBoundarySelectField,
 } from "./components/Fields";
 import TimelineBox from "./components/TimelineBox";
 import EvenDistributionOfPointsButton from "./components/EvenDistributionOfPointsButton";
@@ -205,6 +207,18 @@ const Timeline = ({ activeScreen }: TimelineProps) => {
               <TimelineBgImageTransparencyTextField
                 activeScreen={activeScreen}
               />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="max-w-[400px]">
+              <TimelineLeftBoundarySelectField activeScreen={activeScreen} />
+            </div>
+          </div>
+
+          <div className="mt-4 mb-36">
+            <div className="max-w-[400px]">
+              <TimelineRightBoundarySelectField activeScreen={activeScreen} />
             </div>
           </div>
         </div>

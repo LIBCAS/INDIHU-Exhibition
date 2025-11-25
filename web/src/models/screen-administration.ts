@@ -14,6 +14,8 @@ import {
   SlideshowScreenAnimationEnum,
   ScreenParallaxAnimationEnum,
   TimelineTypeEnum,
+  TimelineLeftBoundaryEnum,
+  TimelineRightBoundaryEnum,
 } from "enums/administration-screens";
 
 // - - - - - -
@@ -51,3 +53,5 @@ export type ScreenParallaxAnimationType =
   keyof typeof ScreenParallaxAnimationEnum;
 
 export type TimelineType = keyof typeof TimelineTypeEnum;
+export type TimelineLeftBoundary = keyof typeof TimelineLeftBoundaryEnum;
+export type TimelineRightBoundary = keyof typeof TimelineRightBoundaryEnum;

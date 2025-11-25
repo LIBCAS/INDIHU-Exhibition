@@ -199,7 +199,11 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
                   defaultValue={
                     activeScreen.images[activeImageIndex]?.photoTitle ?? ""
                   }
-                  onChange={(newPhotoTitle: string) =>
+                  onChange={(newPhotoTitle: string) => {
+                    if (newPhotoTitle.length > 50) {
+                      return;
+                    }
+
                     dispatch(
                       updateScreenData({
                         images: activeScreen.images?.map((img, imgIndex) =>
@@ -208,8 +212,9 @@ const Photogallery = (props: ScreenEditorPhotogalleryProps) => {
                             : img
                         ),
                       })
-                    )
-                  }
+                    );
+                  }}
+                  maxLength={50}
                 />
 
                 <HelpIcon

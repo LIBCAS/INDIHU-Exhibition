@@ -1,5 +1,4 @@
-export const defaultScreenTimeInSeconds = 20;
-export const defaultScreenTimeInMs = defaultScreenTimeInSeconds * 1000;
+export const DEFAULT_SCREEN_TIME_SECONDS = 20;
 
 export const OVERLAY_UNACTIVE_TIMEOUT = 3000; // in milliseconds
 

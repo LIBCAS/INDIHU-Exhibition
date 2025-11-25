@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import TextField from "react-md/lib/TextFields";
@@ -11,6 +11,7 @@ import { AppDispatch } from "store/store";
 import { File as IndihuFile, Screen } from "models";
 
 import { updateScreenData } from "actions/expoActions/screen-actions";
+import { DEFAULT_SCREEN_TIME_SECONDS } from "constants/screen";
 
 type TimeProps = {
   audio?: IndihuFile | null;
@@ -31,7 +32,16 @@ const Time = ({
 }: TimeProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
+
   const [error, setError] = useState<string | null>(null);
+
+  const defaultValueTime = useMemo(() => {
+    if ("time" in activeScreen) {
+      return activeScreen.time ?? DEFAULT_SCREEN_TIME_SECONDS;
+    }
+
+    return DEFAULT_SCREEN_TIME_SECONDS;
+  }, [activeScreen]);
 
   return (
     <div className="flex-col">
@@ -42,7 +52,8 @@ const Time = ({
             type="number"
             id="screen-image-textfield-time"
             label={t("descFields.screenTime")}
-            value={"time" in activeScreen ? activeScreen.time : 20}
+            // NOTE: keep it as defaultValue instead of value, better UX, issue #481
+            defaultValue={defaultValueTime}
             disabled={
               disabled ||
               (audio &&
@@ -53,8 +64,13 @@ const Time = ({
                 activeScreen.timePhotosManual)
             }
             onChange={(newTime: string) => {
-              const time = Number(newTime); // empty string is converted to 0
-              if (isNaN(time) || time < 3 || time > 1000000) {
+              const time = Number(newTime); // NOTE: empty string is converted to 0
+              if (isNaN(time)) {
+                setError("Zadejte prosím platnú číselnú hodnotu.");
+                return;
+              }
+
+              if (time < 3 || time > 1000000) {
                 setError("Zadejte číslo v rozsahu 3 až 1000000.");
                 return;
               }

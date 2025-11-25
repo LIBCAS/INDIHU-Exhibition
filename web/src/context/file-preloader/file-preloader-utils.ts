@@ -55,6 +55,8 @@ const screenFileResolver: ScreenFileResolverMap = {
   image2: retrieveFileUrl,
   image3: retrieveFileUrl,
   object: retrieveFileUrl,
+  object2: retrieveFileUrl,
+  object3: retrieveFileUrl,
   video: retrieveFileUrl,
   images: async (images, fileLookupMap) =>
     Promise.all(

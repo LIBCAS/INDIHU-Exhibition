@@ -9,9 +9,12 @@ import "i18n";
 import "normalize.css";
 import "./styles/style.scss";
 
-// - -
-const store = configureStore();
+// - - - - - -
+
+export const store = configureStore();
 export const dispatch = store.dispatch;
+
+// - - - - - -
 
 render(<AppProviders store={store} />, document.getElementById("root"));
 

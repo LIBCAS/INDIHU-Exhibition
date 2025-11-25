@@ -174,7 +174,7 @@
       "imageBoxTitle": "Obrázok",
       "imageBoxTooltip": "Vybraný obrázok vo fotogalérii.",
       "photoTitleLabel": "Názov obrázku",
-      "photoTitleTooltip": "Názov obrázku.",
+      "photoTitleTooltip": "Názov obrázku, maximálna dĺžka názvu 50 znakov vrátane medzier.",
       "photoDescriptionLabel": "Popis obrázku",
       "photoDescriptionTooltip": "Ľubovoľný popis k danej fotke."
     },
@@ -262,7 +262,17 @@
       "chooseBackgroundImageBtnLabel": "Vyberte obrázok na pozadie",
       "clearBackgroundImageBtnLabel": "Odstrániť obrázok z pozadia",
       "bgImageTransparencyLabel": "Transparentnosť zvoleného obrázku na pozadí",
-      "bgImageTransparencyTooltip": "Zvolte si stupeň transparentnosti pre váš obrázok na pozadí. Minimálna povolená hodnota je 1, kým maximálna povolená hodnota je 100."
+      "bgImageTransparencyTooltip": "Zvolte si stupeň transparentnosti pre váš obrázok na pozadí. Minimálna povolená hodnota je 1, kým maximálna povolená hodnota je 100.",
+      "leftBoundaryNothingOption": "Žiadne ohraničenie",
+      "leftBoundaryLineSegmentOption": "Úsečka",
+      "leftBoundaryDotOption": "Bod",
+      "leftBoundaryLabel": "Ľavé ohraničenie časovej osy",
+      "leftBoundaryTooltip": "Zvoľte jednu z dostupných možností pre ľavé ohraničenie, začiatok časovej osy. Predvolená hodnota je bod.",
+      "rightBoundaryNothingOption": "Žiadne ohraničenie",
+      "rightBoundaryLineSegmentOption": "Úsečka",
+      "rightBoundaryArrowOption": "Šípka",
+      "rightBoundaryLabel": "Pravé ohraničenie časovej osy",
+      "rightBoundaryTooltip": "Zvoľte jednu z dostupných možností pre pravé ohraničenie, koniec časovej osy. Predvolená hodnota je šípka."
     },
     "finishScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
@@ -307,8 +317,10 @@
       "wipeTowelOption": "Hadrík",
       "upperImageLabel": "Vrchný obrázok",
       "upperImageTooltip": "Z knižnice dokumentov vyberte vrchný obrázok znázorňujúci fázu “pred”.",
+      "upperImageInfopointsTableLabel": "Infopointy",
       "bottomImageLabel": "Spodný obrázok",
-      "bottomImageTooltip": "Z knižnice dokumentov vyberte obrázok, ktorý sa objaví po vygumovaní vrchného obrázku a ukazuje fázu “po”."
+      "bottomImageTooltip": "Z knižnice dokumentov vyberte obrázok, ktorý sa objaví po vygumovaní vrchného obrázku a ukazuje fázu “po”.",
+      "bottomImageInfopointsTableLabel": "Infopointy"
     },
     "gameSizingScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. odhadnite, aká je soška Vestonickej Venuše veľká v porovnaní so škatuľkou od zápaliek).",
@@ -329,7 +341,9 @@
       "object": "Objekt",
       "objectSelectLabel": "Vybrať",
       "objectTooltip": "Z knižnice dokumentov vyberte obrázok s časťami, z ktorých budú návštevníci vyberať.",
-      "screenPreviewText": "Náhľad obrazovky"
+      "screenPreviewText": "Umiestnenie objektov",
+      "screenPreviewTooltip": "Pretiahnite objekty na vybrané miesta, z ktorých má návštevník za úlohu objekty rozmiestniť na podkladový obrázok. Pomocou šípky tiež môžete objekt na posun prípadne zväčšiť.",
+      "imageResultInfopointsTableTitle": "Komentár k výsledku"
     },
     "gameQuizScreen": {
       "nameLabel": "Názov",
