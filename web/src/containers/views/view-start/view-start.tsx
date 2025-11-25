@@ -297,6 +297,7 @@ export const ViewStart = ({ screenPreloadedFiles }: ScreenProps) => {
                   setIsDetailPanelOpen={setIsDetailPanelOpen}
                   openFilesDialog={openFilesDialog}
                   openWorksheetsDialog={openWorksheetsDialog}
+                  openExpoAudioVersionDialog={openExpoAudioVersionDialog}
                 />
               </animated.div>
             </div>

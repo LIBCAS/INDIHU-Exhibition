@@ -14,6 +14,7 @@
   "worksheets": "Exhibition worksheets",
   "no-worksheets": "Exhibition has no worksheets",
   "expo-audio-version": "Audio version of the exhibition",
+  "expo-audio-version-short": "Audio version",
   "no-expo-audio-version": "This exhibition does not contain an audio version",
   "screen-files": "Files to individual screens",
   "no-screen-files": "Exhibition screens do not contain any files",

@@ -16,6 +16,7 @@
   "worksheets": "Pracovní listy k výstavě",
   "no-worksheets": "Výstava neobsahuje žádné pracovní listy",
   "expo-audio-version": "Audio verze výstavy",
+  "expo-audio-version-short": "Audio verze",
   "no-expo-audio-version": "Tato výstava neobsahuje žádnou audio verzi",
   "no-screens": "Výstava neobsahuje žádné obrazovky",
   "info": "Informace o výstavě",
