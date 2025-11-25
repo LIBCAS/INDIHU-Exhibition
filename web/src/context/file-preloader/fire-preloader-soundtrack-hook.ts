@@ -89,13 +89,18 @@ export const useFilePreloaderSoundtrack = () => {
       return;
     }
 
-    // NOTE: Now we are sure that we are on the first start screen
+    // NOTE1: Now we are sure that we are on the first start screen
+    // NOTE2: If it was already preloaded once, we do not need to preload it again
+    if (soundtrackUrl) {
+      return;
+    }
+
     const handleSoundtrackPreload = async () => {
       await handleLoadSoundtrack();
     };
 
     handleSoundtrackPreload();
-  }, [section, handleLoadSoundtrack]);
+  }, [section, soundtrackUrl, handleLoadSoundtrack]);
 
   /**
    * Effect responsible for revoking / clearing the preloaded blob file
