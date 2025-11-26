@@ -192,6 +192,7 @@ export type FinishScreen = {
   type: typeof screenType.FINISH;
   title?: string;
   image?: string;
+  screenBgColor?: string | null;
 };
 
 export type IntroScreen = {
