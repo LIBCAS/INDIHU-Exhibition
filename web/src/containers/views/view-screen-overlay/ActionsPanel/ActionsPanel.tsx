@@ -178,7 +178,8 @@ const ActionsPanel = ({
   const isAudioMuted = useMemo(
     () =>
       expoVolumes.speechVolume.actualVolume === 0 &&
-      expoVolumes.musicVolume.actualVolume === 0,
+      expoVolumes.musicVolume.actualVolume === 0 &&
+      expoVolumes.soundtrackVolume.actualVolume === 0,
     [expoVolumes]
   );
 
