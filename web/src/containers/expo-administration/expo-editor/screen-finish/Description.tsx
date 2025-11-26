@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 // Components
 import { TextField, FontIcon, Button } from "react-md";
 import HelpIcon from "components/help-icon";
+import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // Models
 import { FinishScreen, File as IndihuFile } from "models";
@@ -99,6 +100,19 @@ const Description = ({ activeScreen }: DescriptionProps) => {
                   id="editor-start-description-image"
                 />
               </div>
+            </div>
+
+            <div className="mt-4">
+              <ScreenBackgroundColorPicker
+                label={t("descFields.screenBackgroundColorLabel")}
+                helpText={t("descFields.screenBackgroundColorTooltip")}
+                color={
+                  "screenBgColor" in activeScreen &&
+                  !!activeScreen.screenBgColor
+                    ? activeScreen.screenBgColor
+                    : null
+                }
+              />
             </div>
           </div>
         </div>

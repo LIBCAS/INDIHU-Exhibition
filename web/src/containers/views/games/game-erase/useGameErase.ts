@@ -7,9 +7,6 @@ import {
   MutableRefObject,
 } from "react";
 
-// Hooks
-import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
-
 // Types
 import { ImageOrigData, Size, Position } from "models";
 
@@ -28,6 +25,7 @@ type Props = {
   upperImageOrigData: ImageOrigData;
   upperImageSrc: string | undefined;
   shouldErase: boolean;
+  backgroundColor: string;
 };
 
 export const useGameErase = ({
@@ -36,9 +34,8 @@ export const useGameErase = ({
   upperImageOrigData,
   upperImageSrc,
   shouldErase,
+  backgroundColor,
 }: Props) => {
-  const { expoDesignData, palette } = useExpoDesignData();
-
   // - - - States - - -
 
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
@@ -47,11 +44,6 @@ export const useGameErase = ({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // - - - Derived variables - - -
-
-  const expoBackgroundColor = useMemo(
-    () => expoDesignData?.backgroundColor ?? palette.background,
-    [expoDesignData?.backgroundColor, palette.background]
-  );
 
   const {
     width: containedImage1Width,
@@ -231,11 +223,11 @@ export const useGameErase = ({
       return;
     }
 
-    ctx.fillStyle = expoBackgroundColor;
+    ctx.fillStyle = backgroundColor;
     fillCanvas();
     ctx.lineWidth = LINE_WIDTH;
     ctx.lineCap = "round";
-  }, [ctx, expoBackgroundColor, fillCanvas]);
+  }, [ctx, backgroundColor, fillCanvas]);
 
   // - - - Return Value - - -
 

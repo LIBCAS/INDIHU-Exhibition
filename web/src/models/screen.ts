@@ -184,6 +184,7 @@ export type StartScreen = {
   organization?: string;
   organizationLink?: string;
   expoSoundtrack?: string | null; // NOTE: Zvukový podkres k výstavě
+  screenBgColor?: string | null;
 };
 
 export type FinishScreen = {
@@ -191,6 +192,7 @@ export type FinishScreen = {
   type: typeof screenType.FINISH;
   title?: string;
   image?: string;
+  screenBgColor?: string | null;
 };
 
 export type IntroScreen = {
@@ -214,6 +216,7 @@ export type IntroScreen = {
   screenCompleted: boolean;
   introTextTheme?: ScreenChapterIntroTextThemeType;
   isIntroTextHaloEffectOn?: ScreenChapterIntroTextHaloEffectOnType;
+  screenBgColor?: string | null;
 };
 
 export type ImageScreen = {
@@ -233,6 +236,7 @@ export type ImageScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string | null;
 };
 
 export type VideoScreen = {
@@ -246,6 +250,7 @@ export type VideoScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string | null;
 };
 
 export type TextScreen = {
@@ -262,6 +267,7 @@ export type TextScreen = {
   documents?: Document[];
   aloneScreen: boolean;
   music?: string;
+  screenBgColor?: string | null;
 };
 
 export type SlideshowScreen = {
@@ -280,6 +286,7 @@ export type SlideshowScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string | null;
 };
 
 export type PhotogalleryScreen = {
@@ -294,6 +301,7 @@ export type PhotogalleryScreen = {
   screenCompleted?: boolean;
   documents?: Document[];
   images?: PhotogalleryImages;
+  screenBgColor?: string | null;
 };
 
 export type ParallaxScreeen = {
@@ -311,6 +319,7 @@ export type ParallaxScreeen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string | null;
 };
 
 export type ZoomScreen = {
@@ -331,6 +340,7 @@ export type ZoomScreen = {
   music?: string;
   muteChapterMusic?: boolean;
   screenCompleted?: boolean;
+  screenBgColor?: string | null;
 };
 
 export type ImageChangeScreen = {
@@ -355,6 +365,7 @@ export type ImageChangeScreen = {
   gradualTransitionBeginPosition?: ImageChangeGradualTransitionBeginPositionType;
   image1Infopoints?: Infopoint[];
   image2Infopoints?: Infopoint[];
+  screenBgColor?: string | null;
 };
 
 export type ExternalScreen = {
@@ -372,6 +383,7 @@ export type ExternalScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string | null;
 };
 
 export type SignpostScreen = {
@@ -393,6 +405,7 @@ export type SignpostScreen = {
   referenceType?: SignpostReferenceType;
   links: ReferenceObj[];
   nextScreenReference?: string; // screen.id as string
+  screenBgColor?: string | null;
 };
 
 export type TimelineScreen = {
@@ -418,6 +431,7 @@ export type TimelineScreen = {
   timelineThickness?: number;
   timelineLeftBoundary?: TimelineLeftBoundary;
   timelineRightBoundary?: TimelineRightBoundary;
+  screenBgColor?: string | null;
 };
 
 export type GameFindScreen = {
@@ -437,6 +451,7 @@ export type GameFindScreen = {
   resultTime?: number;
   numberOfPins?: number;
   pinsTexts?: string[];
+  screenBgColor?: string | null;
 };
 
 export type GameDrawScreen = {
@@ -457,6 +472,7 @@ export type GameDrawScreen = {
   initialColor?: string;
   initialThickness?: number;
   infopoints1?: Infopoint[];
+  screenBgColor?: string | null;
 };
 
 export type GameWipeScreen = {
@@ -476,6 +492,7 @@ export type GameWipeScreen = {
   eraserToolType?: EraserToolType;
   infopoints1?: Infopoint[];
   infopoints2?: Infopoint[];
+  screenBgColor?: string | null;
 };
 
 export type GameSizingScreen = {
@@ -495,6 +512,7 @@ export type GameSizingScreen = {
   screenCompleted: boolean;
   resultTime?: number;
   infopoints3?: Infopoint[]; // NOTE: for resulting image
+  screenBgColor?: string | null;
 };
 
 export type GameMoveScreen = {
@@ -554,6 +572,7 @@ export type GameMoveScreen = {
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  screenBgColor?: string | null;
 };
 
 export type GameQuizScreen = {
@@ -571,4 +590,5 @@ export type GameQuizScreen = {
   answersType?: GameQuizAnswersType;
   quizType?: GameQuizType;
   answersTextDisplayType?: GameQuizAnswerDisplayType;
+  screenBgColor?: string | null;
 };

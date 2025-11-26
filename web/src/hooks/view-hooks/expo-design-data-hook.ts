@@ -1,16 +1,31 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+
+// Types
 import { AppState } from "store/store";
+import { ThemeFormDataProcessed } from "containers/expo-administration/expo-theme/models";
+
+// Utils
 import { palette } from "palette";
 
+// - - - - - -
+
 const stateSelector = createSelector(
-  ({ expo }: AppState) => expo.viewExpo?.expositionDesignData,
-  (expositionDesignData) => ({ expositionDesignData })
+  ({ expo }: AppState) => expo.viewExpo,
+  ({ expo }: AppState) => expo.activeExpo,
+  (viewExpo, activeExpo) => ({ viewExpo, activeExpo })
 );
 
+// - - - - - -
+
 export const useExpoDesignData = () => {
-  const { expositionDesignData } = useSelector(stateSelector);
+  const { viewExpo, activeExpo } = useSelector(stateSelector);
+
+  const expositionDesignData = useMemo<ThemeFormDataProcessed | undefined>(
+    () => viewExpo?.expositionDesignData ?? activeExpo?.expositionDesignData,
+    [activeExpo?.expositionDesignData, viewExpo?.expositionDesignData]
+  );
 
   const isLightMode = useMemo(
     () => !expositionDesignData || expositionDesignData.theme === "LIGHT",

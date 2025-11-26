@@ -7,6 +7,8 @@ import { TextField, SelectField, FontIcon, Button, Checkbox } from "react-md";
 import AudioMusic from "components/editors/audio-music";
 import HelpIcon from "components/help-icon";
 import WysiwygEditor from "components/editors/WysiwygEditor/WysiwygEditor";
+import ExpoSoundtrack from "./ExpoSoundtrack";
+import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // Models
 import {
@@ -25,7 +27,6 @@ import { giveMeExpoTime } from "utils";
 import { ScreenStartAnimationEnum } from "enums/administration-screens";
 import { DialogType } from "components/dialogs/dialog-types";
 import { wrapTextInParagraph } from "components/editors/WysiwygEditor/utils";
-import ExpoSoundtrack from "./ExpoSoundtrack";
 
 // - -
 
@@ -317,6 +318,16 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
                 className="checkbox-shift-left-by-padding"
               />
             </div>
+
+            <ScreenBackgroundColorPicker
+              label={t("descFields.screenBackgroundColorLabel")}
+              helpText={t("descFields.screenBackgroundColorTooltip")}
+              color={
+                "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
+                  ? activeScreen.screenBgColor
+                  : null
+              }
+            />
           </div>
         </div>
       </div>
