@@ -205,7 +205,11 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
         </div>
 
         <div className="w-full flex items-start gap-2">
-          <div className="w-3/6">
+          {/* NOTE: Hide shape setting if its comment type, the shape will remain set as 'SQUARE' but this setting will be ignored */}
+          <div
+            className="w-3/6"
+            style={{ display: type === "comment" ? "none" : undefined }}
+          >
             <ReactMdSelectField
               controls={[
                 {
