@@ -184,6 +184,7 @@ export type StartScreen = {
   organization?: string;
   organizationLink?: string;
   expoSoundtrack?: string | null; // NOTE: Zvukový podkres k výstavě
+  screenBgColor?: string | null;
 };
 
 export type FinishScreen = {
