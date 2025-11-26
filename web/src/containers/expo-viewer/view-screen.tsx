@@ -195,10 +195,6 @@ export const NewViewScreen = ({
       return;
     }
 
-    if (isSoundtrackDisabled) {
-      return;
-    }
-
     const soundtrackVolume =
       store.getState().expo.expoVolumes.soundtrackVolume.actualVolume / 100;
 
@@ -209,7 +205,7 @@ export const NewViewScreen = ({
         dispatch(setViewProgress({ shouldIncrement: false }));
       }
     });
-  }, [sountrackSrc, soundtrackRef, isSoundtrackDisabled, dispatch]);
+  }, [sountrackSrc, soundtrackRef, dispatch]);
 
   /**
    * 4.) Effect responsible for pausing `soundtrackSrc`, when current screen does not support music playing
