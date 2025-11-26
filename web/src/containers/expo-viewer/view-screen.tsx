@@ -169,12 +169,18 @@ export const NewViewScreen = ({
    * 2.) Effect responsible for setting `soundtrackSrc` (reacting to preloaded soundtrackUrl)
    */
   useEffect(() => {
+    if (section === undefined || section === "start" || section === "finish") {
+      setSoundtrackSrc(null);
+      return;
+    }
+
     if (!soundtrackUrl) {
+      setSoundtrackSrc(null);
       return;
     }
 
     setSoundtrackSrc(soundtrackUrl);
-  }, [soundtrackUrl]);
+  }, [section, soundtrackUrl]);
 
   /**
    * 3.) Effect responsible for automatic playing of 'soundtrackSrc', reacting to previous effect
