@@ -318,10 +318,10 @@ export const NewViewScreen = ({
     };
   }, [audioSrc, audioRef, isAudioDisabled, dispatch]);
 
-  // - - - Effects (music + audio) - - -
+  // - - - Effects (music + audio + soundtrack) - - -
 
   /**
-   * 9.) Effect reponsible for muting both the sources  (e.g. when mute button was pressed)
+   * 9.) Effect reponsible for muting all audio sources  (e.g. when mute button was pressed)
    */
   useEffect(() => {
     if (musicRef) {
@@ -331,10 +331,14 @@ export const NewViewScreen = ({
     if (audioRef) {
       audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
     }
-  }, [expoVolumes, audioRef, musicRef]);
+
+    if (soundtrackRef) {
+      // TODO
+    }
+  }, [expoVolumes, audioRef, musicRef, soundtrackRef]);
 
   /**
-   * 10.) Effect responsible for pausing / playing of the both sources (e.g. when pause/play button was pressed)
+   * 10.) Effect responsible for pausing / playing  all audio sources (e.g. when pause/play button was pressed)
    */
   useEffect(() => {
     if (musicRef) {
@@ -363,8 +367,19 @@ export const NewViewScreen = ({
       }
     }
 
+    if (soundtrackRef) {
+      if (shouldIncrement) {
+        soundtrackRef.play().catch((error) => {
+          if (error instanceof Error && error.name === "NotAllowedError") {
+            dispatch(setViewProgress({ shouldIncrement: false }));
+          }
+        });
+      } else {
+        soundtrackRef.pause();
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldIncrement, audioRef, musicRef, dispatch]);
+  }, [shouldIncrement, audioRef, musicRef, soundtrackRef, dispatch]);
 
   // - - - GUI - - -
 
