@@ -20,6 +20,9 @@ import Button from "react-md/lib/Buttons/Button";
 import ColorPicker from "components/form/formik/ColorPicker";
 import ScreenChooser from "containers/expo-administration/expo-editor/screen-signpost/ScreenChooser";
 
+// Utils
+import { retrieveInfopointFormTranslations } from "./translations";
+
 // - - - - - - -
 
 export type InfopointFormType = "classic" | "timeline";
@@ -38,27 +41,14 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
 
   // - - - Translations - - -
 
-  const headerLabel =
-    type === "timeline" ? t("timelineType.headerLabel") : t("headerLabel");
-
-  const bodyContentTypeLabel =
-    type === "timeline"
-      ? t("timelineType.bodyContentTypeLabel")
-      : t("bodyContentTypeLabel");
-
-  const textBodyLabel =
-    type === "timeline" ? t("timelineType.textBodyLabel") : t("textBodyLabel");
-
-  const additionalPropertiesSubheader =
-    type === "timeline"
-      ? t("timelineType.additionalPropertiesSubheader")
-      : t("additionalPropertiesSubheader");
-
-  const shapeLabel =
-    type === "timeline" ? t("timelineType.shapeLabel") : t("shapeLabel");
-
-  const colorLabel =
-    type === "timeline" ? t("timelineType.colorLabel") : t("colorLabel");
+  const {
+    headerLabel,
+    bodyContentTypeLabel,
+    textBodyLabel,
+    additionalPropertiesSubheader,
+    shapeLabel,
+    colorLabel,
+  } = retrieveInfopointFormTranslations(t, type);
 
   // - - - GUI - - -
 
