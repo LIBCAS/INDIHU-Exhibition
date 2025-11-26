@@ -250,6 +250,7 @@ export type VideoScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string | null;
 };
 
 export type TextScreen = {
