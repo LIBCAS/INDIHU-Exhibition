@@ -461,7 +461,7 @@
     "screenUrlChooseLabel": "Vyberte obrazovku této výstavy",
     "screenUrlNameLabel": "Název interního odkazu na obrazovku",
 
-    "shapeSizeColorSectionSubheader": "Tvar, velikost a barva infopointu:",
+    "additionalPropertiesSubheader": "Tvar, velikost a barva infopointu:",
     "shapeLabel": "Tvar infopointu",
     "shapeSquareOption": "Čtverec",
     "shapeCircleOption": "Kruh",
@@ -474,7 +474,9 @@
       "headerLabel": "Název bodu na časové ose",
       "bodyContentTypeLabel": "Typ těla",
       "textBodyLabel": "Textový popis",
-      "shapeSizeColorSectionSubheader": "Tvar, velikost a barva bodu"
+      "additionalPropertiesSubheader": "Tvar, velikost a barva bodu",
+      "shapeLabel": "Tvar bodu",
+      "colorLabel": "Barva bodu"
     }
   },
   "sequenceForm": {

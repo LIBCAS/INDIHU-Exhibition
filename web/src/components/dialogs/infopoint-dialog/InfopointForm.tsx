@@ -49,10 +49,18 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
   const textBodyLabel =
     type === "timeline" ? t("timelineType.textBodyLabel") : t("textBodyLabel");
 
-  const shapeSizeColorSectionSubheader =
+  const additionalPropertiesSubheader =
     type === "timeline"
-      ? t("timelineType.shapeSizeColorSectionSubheader")
-      : t("shapeSizeColorSectionSubheader");
+      ? t("timelineType.additionalPropertiesSubheader")
+      : t("additionalPropertiesSubheader");
+
+  const shapeLabel =
+    type === "timeline" ? t("timelineType.shapeLabel") : t("shapeLabel");
+
+  const colorLabel =
+    type === "timeline" ? t("timelineType.colorLabel") : t("colorLabel");
+
+  // - - - GUI - - -
 
   return (
     <Form>
@@ -203,7 +211,7 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
 
       <div>
         <div className="mt-8 mb-1 font-['Work_Sans'] text-[15px] text-black/[.83] underline">
-          {shapeSizeColorSectionSubheader}
+          {additionalPropertiesSubheader}
         </div>
 
         <div className="w-full flex items-start gap-2">
@@ -223,7 +231,7 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
                   value: "ICON",
                 },
               ]}
-              label={t("shapeLabel")}
+              label={shapeLabel}
               name="shape"
               fullWidth
             />
@@ -239,7 +247,7 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
         </div>
 
         {formik.values.shape !== "ICON" && (
-          <ColorPicker name="color" label={t("colorLabel")} />
+          <ColorPicker name="color" label={colorLabel} />
         )}
 
         {formik.values.shape === "ICON" && (
