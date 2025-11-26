@@ -395,6 +395,7 @@ export const NewViewScreen = ({
           key={sountrackSrc}
           src={sountrackSrc}
           ref={(soundtrackRef) => setSoundtrackRef(soundtrackRef)}
+          data-id="soundtrack"
         />
       )}
 
@@ -403,6 +404,7 @@ export const NewViewScreen = ({
           key={musicSrc}
           src={musicSrc}
           ref={(musicRef) => setMusicRef(musicRef)}
+          data-id="music"
         />
       )}
 
@@ -412,6 +414,7 @@ export const NewViewScreen = ({
           key={audioSrc}
           src={audioSrc}
           ref={(audioRef) => setAudioRef(audioRef)}
+          data-id="speech-audio"
         />
       )}
       <Viewers
