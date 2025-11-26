@@ -461,7 +461,7 @@
     "screenUrlChooseLabel": "Vyberte obrazovku tejto výstavy",
     "screenUrlNameLabel": "Názov interného odkazu na obrazovku",
 
-    "shapeSizeColorSectionSubheader": "Tvar, veľkosť a farba infopointu:",
+    "additionalPropertiesSubheader": "Tvar, veľkosť a farba infopointu:",
     "shapeLabel": "Tvar infopointu",
     "shapeSquareOption": "Štvorec",
     "shapeCircleOption": "Kruh",
@@ -474,7 +474,18 @@
       "headerLabel": "Názov bodu na časovej osi",
       "bodyContentTypeLabel": "Typ tela",
       "textBodyLabel": "Textový popis",
-      "shapeSizeColorSectionSubheader": "Tvar, veľkosť a farba bodu"
+      "additionalPropertiesSubheader": "Tvar, veľkosť a farba bodu",
+      "shapeLabel": "Tvar bodu",
+      "colorLabel": "Farba bodu"
+    },
+
+    "commentType": {
+      "headerLabel": "Nadpis komentára",
+      "bodyContentTypeLabel": "Typ tela komentára",
+      "textBodyLabel": "Textový popis komentára",
+      "additionalPropertiesSubheader": "Dodatočné nastavenia komentára",
+      "shapeLabel": "Tvar komentára",
+      "colorLabel": "Farba komentára"
     }
   },
   "sequenceForm": {

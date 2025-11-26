@@ -461,7 +461,7 @@
     "screenUrlChooseLabel": "Select the screen of this exhibition",
     "screenUrlNameLabel": "Title of the internal link of chosen screen",
 
-    "shapeSizeColorSectionSubheader": "Shape, size and color of infopoint:",
+    "additionalPropertiesSubheader": "Shape, size and color of infopoint:",
     "shapeLabel": "Infopoint shape",
     "shapeSquareOption": "Square",
     "shapeCircleOption": "Circle",
@@ -474,7 +474,18 @@
       "headerLabel": "Timeline Point Title",
       "bodyContentTypeLabel": "Body Type",
       "textBodyLabel": "Text Description",
-      "shapeSizeColorSectionSubheader": "Shape, Size, and Color of the Point"
+      "additionalPropertiesSubheader": "Shape, Size, and Color of the Point",
+      "shapeLabel": "Point shape",
+      "colorLabel": "Point color"
+    },
+
+    "commentType": {
+      "headerLabel": "Comment Header",
+      "bodyContentTypeLabel": "Comment Body Type",
+      "textBodyLabel": "Comment Text Description",
+      "additionalPropertiesSubheader": "Additional Comment Settings",
+      "shapeLabel": "Comment Shape",
+      "colorLabel": "Comment Color"
     }
   },
   "sequenceForm": {
