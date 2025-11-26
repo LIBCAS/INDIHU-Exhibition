@@ -101,7 +101,7 @@ export const AudioDialog = ({
           <AudioSlider
             volumeKey="soundtrackVolume"
             volumeObj={soundtrackVolume}
-            tooltipContent="TODO soundtrack tooltip"
+            tooltipContent={t("soundtrackIconTooltip")}
           />
         )}
       </div>
