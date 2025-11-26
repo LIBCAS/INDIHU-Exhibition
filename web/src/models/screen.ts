@@ -451,6 +451,7 @@ export type GameFindScreen = {
   resultTime?: number;
   numberOfPins?: number;
   pinsTexts?: string[];
+  screenBgColor?: string | null;
 };
 
 export type GameDrawScreen = {
@@ -471,6 +472,7 @@ export type GameDrawScreen = {
   initialColor?: string;
   initialThickness?: number;
   infopoints1?: Infopoint[];
+  screenBgColor?: string | null;
 };
 
 export type GameWipeScreen = {
@@ -490,6 +492,7 @@ export type GameWipeScreen = {
   eraserToolType?: EraserToolType;
   infopoints1?: Infopoint[];
   infopoints2?: Infopoint[];
+  screenBgColor?: string | null;
 };
 
 export type GameSizingScreen = {
@@ -509,6 +512,7 @@ export type GameSizingScreen = {
   screenCompleted: boolean;
   resultTime?: number;
   infopoints3?: Infopoint[]; // NOTE: for resulting image
+  screenBgColor?: string | null;
 };
 
 export type GameMoveScreen = {
@@ -568,6 +572,7 @@ export type GameMoveScreen = {
   muteChapterMusic: boolean;
   screenCompleted: boolean;
   resultTime?: number;
+  screenBgColor?: string | null;
 };
 
 export type GameQuizScreen = {
