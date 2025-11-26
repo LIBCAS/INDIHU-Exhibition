@@ -131,9 +131,7 @@ const ScreenBackgroundColorPicker = ({
               useMaterialUiIcon
               iconStyle={{ fontSize: "24px" }}
               onClick={() => {
-                dispatch(
-                  updateScreenData({ screenBgColor: defaultColorValue })
-                );
+                dispatch(updateScreenData({ screenBgColor: null }));
               }}
             />
           </div>

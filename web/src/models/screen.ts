@@ -233,7 +233,7 @@ export type ImageScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type VideoScreen = {
@@ -263,7 +263,7 @@ export type TextScreen = {
   documents?: Document[];
   aloneScreen: boolean;
   music?: string;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type SlideshowScreen = {
@@ -282,7 +282,7 @@ export type SlideshowScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type PhotogalleryScreen = {
@@ -314,7 +314,7 @@ export type ParallaxScreeen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type ZoomScreen = {
@@ -335,7 +335,7 @@ export type ZoomScreen = {
   music?: string;
   muteChapterMusic?: boolean;
   screenCompleted?: boolean;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type ImageChangeScreen = {
@@ -360,7 +360,7 @@ export type ImageChangeScreen = {
   gradualTransitionBeginPosition?: ImageChangeGradualTransitionBeginPositionType;
   image1Infopoints?: Infopoint[];
   image2Infopoints?: Infopoint[];
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type ExternalScreen = {
@@ -378,7 +378,7 @@ export type ExternalScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type SignpostScreen = {
@@ -400,7 +400,7 @@ export type SignpostScreen = {
   referenceType?: SignpostReferenceType;
   links: ReferenceObj[];
   nextScreenReference?: string; // screen.id as string
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type TimelineScreen = {
@@ -426,7 +426,7 @@ export type TimelineScreen = {
   timelineThickness?: number;
   timelineLeftBoundary?: TimelineLeftBoundary;
   timelineRightBoundary?: TimelineRightBoundary;
-  screenBgColor?: string;
+  screenBgColor?: string | null;
 };
 
 export type GameFindScreen = {
