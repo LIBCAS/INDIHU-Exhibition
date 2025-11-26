@@ -25,11 +25,19 @@ type ExpoSoundTrackProps = {
 };
 
 /**
- * Komponenta zodpovedná za nahratie podkresovej hudby k celej výstave.
- * Predstavuje to tretí typ pre hudobnú složku.
- * Aktuálne projekt podporuje audio pre konkrétnu obrazovku, music skrz celú kapitolu.
- * Toto je tretí hudobný formát, jedna hudobná zložka hrajúca skrz celú výstavu, všetky kapitoly.
- * Bacha na miešanie, toto je vhodné len pre výstavy, ktoré napr. nepoužívajú kapitoly a teda nemajú podkresovú hudbu z kapitol a teda použijú toto
+ * Component responsible for playing background music for the entire exhibition.
+ *
+ * This represents the third type of audio layer in the project:
+ * 1. Screen-specific audio
+ * 2. Chapter-wide music
+ * 3. Exhibition-wide music (this component)
+ *
+ * Notes:
+ * - The current project supports audio per screen and music per chapter.
+ * - This component handles a single audio track that plays throughout the entire exhibition,
+ *   across all chapters.
+ * - Be cautious with mixing audio layers. This type is suitable only for exhibitions
+ *   that do not use chapters with their own background music.
  */
 const ExpoSoundtrack = ({
   value,
