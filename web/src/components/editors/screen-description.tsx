@@ -129,8 +129,8 @@ const ScreenDescription = ({
             />
 
             <ScreenBackgroundColorPicker
-              label="Barva pozadí obrazovky"
-              helpText="Zde můžete změnit barvu pozadí obrazovky, abyste ji lépe propojili s pozadím obrázku, nebo abyste barevně odlišily herní a interaktivní obrazovky od statických. Ovšem důrazně doporučujeme s barevnými změnami šetřit, abyste zachovali elegantní design celé výstavy!"
+              label={t("descFields.screenBackgroundColorLabel")}
+              helpText={t("descFields.screenBackgroundColorTooltip")}
               color={
                 "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
                   ? activeScreen.screenBgColor

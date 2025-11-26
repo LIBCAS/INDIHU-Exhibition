@@ -77,6 +77,8 @@
     "gameTaskTooltip": "",
     "gameResultTime": "Doba zobrazení výsledku",
     "gameResultTimeTooltip": "Počet sekund určující, jak dlouho návštěvník uvidí výsledek minihry.",
+    "screenBackgroundColorLabel": "Barva pozadí obrazovky",
+    "screenBackgroundColorTooltip": "Zde můžete změnit barvu pozadí obrazovky, abyste ji lépe propojili s pozadím obrázku, nebo abyste barevně odlišily herní a interaktivní obrazovky od statických. Ovšem důrazně doporučujeme s barevnými změnami šetřit, abyste zachovali elegantní design celé výstavy!",
 
     "startScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

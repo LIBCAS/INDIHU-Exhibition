@@ -77,6 +77,8 @@
     "gameTaskTooltip": "",
     "gameResultTime": "Result display time",
     "gameResultTimeTooltip": "The number of seconds that determines how long the user will see the result of the game.",
+    "screenBackgroundColorLabel": "Screen background color",
+    "screenBackgroundColorTooltip": "Here you can change the screen background color to better match the image background, or to visually distinguish game and interactive screens from static ones. However, we strongly recommend using color changes sparingly to maintain the elegant design of the entire exhibition!",
 
     "startScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
