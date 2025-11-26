@@ -477,6 +477,15 @@
       "additionalPropertiesSubheader": "Shape, Size, and Color of the Point",
       "shapeLabel": "Point shape",
       "colorLabel": "Point color"
+    },
+
+    "commentType": {
+      "headerLabel": "Comment Header",
+      "bodyContentTypeLabel": "Comment Body Type",
+      "textBodyLabel": "Comment Text Description",
+      "additionalPropertiesSubheader": "Additional Comment Settings",
+      "shapeLabel": "Comment Shape",
+      "colorLabel": "Comment Color"
     }
   },
   "sequenceForm": {

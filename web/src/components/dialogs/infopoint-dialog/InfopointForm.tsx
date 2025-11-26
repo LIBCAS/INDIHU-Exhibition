@@ -25,7 +25,7 @@ import { retrieveInfopointFormTranslations } from "./translations";
 
 // - - - - - - -
 
-export type InfopointFormType = "classic" | "timeline";
+export type InfopointFormType = "classic" | "timeline" | "comment";
 
 type InfopointFormProps = {
   formik: FormikProps<InfopointFormData>;

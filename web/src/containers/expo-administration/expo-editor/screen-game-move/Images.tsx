@@ -348,6 +348,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                     })
                   );
                 }}
+                type="comment"
               />
             </div>
           </div>

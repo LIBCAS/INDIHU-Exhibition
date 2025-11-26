@@ -477,6 +477,15 @@
       "additionalPropertiesSubheader": "Tvar, veľkosť a farba bodu",
       "shapeLabel": "Tvar bodu",
       "colorLabel": "Farba bodu"
+    },
+
+    "commentType": {
+      "headerLabel": "Nadpis komentára",
+      "bodyContentTypeLabel": "Typ tela komentára",
+      "textBodyLabel": "Textový popis komentára",
+      "additionalPropertiesSubheader": "Dodatočné nastavenia komentára",
+      "shapeLabel": "Tvar komentára",
+      "colorLabel": "Farba komentára"
     }
   },
   "sequenceForm": {

@@ -31,6 +31,19 @@ export const retrieveInfopointFormTranslations = (
     };
   }
 
+  if (type === "comment") {
+    return {
+      headerLabel: t("commentType.headerLabel"),
+      bodyContentTypeLabel: t("commentType.bodyContentTypeLabel"),
+      textBodyLabel: t("commentType.textBodyLabel"),
+      additionalPropertiesSubheader: t(
+        "commentType.additionalPropertiesSubheader"
+      ),
+      shapeLabel: t("commentType.shapeLabel"),
+      colorLabel: t("commentType.colorLabel"),
+    };
+  }
+
   return {
     headerLabel: t("headerLabel"),
     bodyContentTypeLabel: t("bodyContentTypeLabel"),
