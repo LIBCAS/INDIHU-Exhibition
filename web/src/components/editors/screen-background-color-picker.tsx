@@ -25,12 +25,14 @@ type ScreenBackgroundColorPickerProps = {
   color: string | null;
   label: string;
   helpText: string;
+  placement?: "right-top" | "right-bottom";
 };
 
 const ScreenBackgroundColorPicker = ({
   color,
   label,
   helpText,
+  placement = "right-bottom",
 }: ScreenBackgroundColorPickerProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { expoDesignData } = useExpoDesignData();
@@ -142,7 +144,13 @@ const ScreenBackgroundColorPicker = ({
           <div
             ref={popoverColorPickerRef}
             className="absolute rounded-lg"
-            style={{ bottom: "calc(100% + 2px)", right: "2px" }}
+            style={{
+              right: "2px",
+              bottom:
+                placement === "right-top" ? "calc(100% + 2px)" : undefined,
+              top:
+                placement === "right-bottom" ? "calc(100% + 2px)" : undefined,
+            }}
           >
             <HexAlphaColorPicker
               color={colorValue}
