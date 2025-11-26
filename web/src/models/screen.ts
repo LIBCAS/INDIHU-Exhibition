@@ -216,6 +216,7 @@ export type IntroScreen = {
   screenCompleted: boolean;
   introTextTheme?: ScreenChapterIntroTextThemeType;
   isIntroTextHaloEffectOn?: ScreenChapterIntroTextHaloEffectOnType;
+  screenBgColor?: string | null;
 };
 
 export type ImageScreen = {

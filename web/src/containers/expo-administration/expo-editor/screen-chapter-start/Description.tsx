@@ -8,6 +8,7 @@ import SelectField from "react-md/lib/SelectFields";
 import AudioMusic from "components/editors/audio-music";
 import Time from "components/editors/time";
 import HelpIcon from "components/help-icon";
+import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // Models
 import {
@@ -224,19 +225,36 @@ const Description = ({ activeScreen }: DescriptionProps) => {
 
           {/* Second column */}
           <div className="part margin-bottom margin-horizontal">
-            <AudioMusic
-              isAudio={true}
-              audio={audio}
-              helpIconTitle={t("descFields.audioScreenTrackTooltip")}
-              id="editor-chapter-start-description-audio"
-            />
-            <Time activeScreen={activeScreen} audio={audio} />
-            <AudioMusic
-              isAudio={false}
-              music={music}
-              helpIconTitle={t("descFields.audioChapterTrackTooltip")}
-              id="editor-chapter-start-description-music"
-            />
+            <div className="ml-4">
+              <AudioMusic
+                isAudio={true}
+                audio={audio}
+                helpIconTitle={t("descFields.audioScreenTrackTooltip")}
+                id="editor-chapter-start-description-audio"
+              />
+
+              <Time activeScreen={activeScreen} audio={audio} />
+
+              <AudioMusic
+                isAudio={false}
+                music={music}
+                helpIconTitle={t("descFields.audioChapterTrackTooltip")}
+                id="editor-chapter-start-description-music"
+              />
+
+              <div className="mt-4">
+                <ScreenBackgroundColorPicker
+                  label={t("descFields.screenBackgroundColorLabel")}
+                  helpText={t("descFields.screenBackgroundColorTooltip")}
+                  color={
+                    "screenBgColor" in activeScreen &&
+                    !!activeScreen.screenBgColor
+                      ? activeScreen.screenBgColor
+                      : null
+                  }
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
