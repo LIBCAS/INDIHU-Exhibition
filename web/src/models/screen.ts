@@ -301,6 +301,7 @@ export type PhotogalleryScreen = {
   screenCompleted?: boolean;
   documents?: Document[];
   images?: PhotogalleryImages;
+  screenBgColor?: string | null;
 };
 
 export type ParallaxScreeen = {
