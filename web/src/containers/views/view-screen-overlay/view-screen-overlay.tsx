@@ -18,6 +18,7 @@ import { useMediaDevice } from "context/media-device-provider/media-device-provi
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
 import { useGlassMagnifierConfig } from "context/glass-magnifier-config-provider/glass-magnifier-config-provider";
+import { useIsAnyTutorialOpened } from "context/tutorial-provider/tutorial-provider";
 
 // Components
 import { ExpoProgressBar } from "./expo-progress-bar/expo-progress-bar";
@@ -43,7 +44,6 @@ import classes from "./view-screen-overlay.module.scss";
 import { isGameScreen } from "../../../utils/view-utils";
 import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
 import { screenType } from "enums/screen-type";
-import { useIsAnyTutorialOpened } from "context/tutorial-provider/tutorial-provider";
 
 // - - - - - -
 
@@ -89,30 +89,39 @@ export const ViewScreenOverlay = ({
   } = useSelector(statesSelector);
   const dispatch = useDispatch<AppDispatch>();
 
-  // Memos
-  // For start and finish screens only, do not show the overlay
+  // - - - Derived variables (memos) - - -
+
+  /**
+   * For start and finish screens only, do not show the overlay
+   */
   const isOverlayHidden = useMemo(() => {
     return viewScreen?.type === "START" || viewScreen?.type === "FINISH";
   }, [viewScreen?.type]);
 
+  /**
+   *
+   */
   const amIGameScreen = useMemo(
     () => isGameScreen(viewScreen?.type),
     [viewScreen?.type]
   );
 
-  // States
+  // - - - States - - -
+
   const [isOverlayActive, setIsOverlayActive] = useState<boolean>(true); // automatically inactive after 4s without mouse movement
   const [wasMouseMovement, setWasMouseMovement] = useState<boolean>(false); // for game screens, if was mouse movement, stop redirection to next screen
   const [isProgressbarHovered, setIsProgressbarHovered] = useState(false); // Progressbar height animation on hover
   const [key] = useState<number>(0); // incrementing on replay
 
-  // Refs
+  // - - - Refs - - -
+
   const timeoutRef = useRef<NodeJS.Timeout>();
   const infoPanelRef = useRef<HTMLDivElement | null>(null); // info, left down panel
   const actionsPanelRef = useRef<HTMLDivElement | null>(null); // actions, right down panel
   const forwardButtonRef = useRef<HTMLDivElement>(null);
 
-  // Custom hooks
+  // - - - Custom hooks - - -
+
   const { isSm: isMobileOverlay } = useMediaDevice();
 
   const { navigateBack, navigateForward } = useExpoNavigation();
@@ -141,7 +150,8 @@ export const ViewScreenOverlay = ({
   const { isGlassMagnifierEnabled, setIsGlassMagnifierEnabled } =
     useGlassMagnifierConfig();
 
-  // Animations
+  // - - - Animations - - -
+
   const { overlayOpacity } = useSpring({
     overlayOpacity: !isOverlayActive && !isDrawerPanelOpen ? 0 : 1,
   });
@@ -150,20 +160,29 @@ export const ViewScreenOverlay = ({
     barHeight: isProgressbarHovered ? 25 : 15,
   });
 
-  // Callbacks
+  // - - - Callbacks - - -
+
+  /**
+   *
+   */
   const play = useCallback(() => {
     if (!isAnyTutorialOpen) {
       dispatch(setViewProgress({ shouldIncrement: true }));
     }
   }, [dispatch, isAnyTutorialOpen]);
 
+  /**
+   *
+   */
   const pause = useCallback(() => {
     if (!isAnyTutorialOpen) {
       dispatch(setViewProgress({ shouldIncrement: false }));
     }
   }, [dispatch, isAnyTutorialOpen]);
 
-  // Mute callback - fired when pressing M on keyboard
+  /**
+   * Mute callback - fired when pressing M on keyboard
+   */
   const toggleSound = useCallback(() => {
     if (
       expoVolumes.speechVolume.actualVolume !== 0 ||
@@ -177,14 +196,15 @@ export const ViewScreenOverlay = ({
     dispatch(unmuteVolumes(expoVolumes));
   }, [expoVolumes, dispatch]);
 
-  // on enter and on space keyboard action, start the expo (like clicking the start button)
+  /**
+   * On enter and on space keyboard action, start the expo (like clicking the start button)
+   */
   const handleExpoStart = useCallback(() => {
     dispatch(setViewProgress({ shouldIncrement: true }));
     navigateForward();
   }, [dispatch, navigateForward]);
 
-  // - - -
-  // EFFECTS
+  // - - - Effects - - -
 
   // On every screen change.. set the mouse movement to false
   useEffect(() => {
@@ -212,6 +232,8 @@ export const ViewScreenOverlay = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnyTutorialOpen, shouldIncrement]);
 
+  // - - - Swipe - - -
+
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (_e) => {
       if (
@@ -236,7 +258,7 @@ export const ViewScreenOverlay = ({
     delta: 80,
   });
 
-  // - - -
+  // - - - Keyboard and Mouse handlers - - -
 
   // Keyboard - arrows navigation, space bar will stop the progress, escape will close the side Drawer panel
   const onKeydownAction = useCallback(
