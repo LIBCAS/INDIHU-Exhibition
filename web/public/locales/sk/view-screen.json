@@ -27,8 +27,9 @@
 
     "audioDialog": {
       "title": "Nastavenie zvuku",
-      "speechIconTooltip": "Zvuková stopa hovorenej reči",
-      "backgroundMusicIconTooltip": "Zvuková stopa podkresovej hudby",
+      "speechIconTooltip": "Zvuková stopa hovoreného slova",
+      "backgroundMusicIconTooltip": "Zvuková stopa podkresovej hudby kapitoly",
+      "soundtrackIconTooltip": "Zvuková stopa podkresovej hudby celej výstavy",
       "muteEverythingLabel": "Stlmiť všetko",
       "amplifyEverythingLabel": "Zosilniť všetko"
     }

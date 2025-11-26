@@ -65,6 +65,7 @@ const statesSelector = createSelector(
 type ViewScreenOverlayProps = {
   chapterMusicRef: HTMLAudioElement | null;
   audioRef: HTMLAudioElement | null;
+  expoSoundtrackRef: HTMLAudioElement | null;
   children:
     | ReactNode
     | ((
@@ -78,6 +79,7 @@ export const ViewScreenOverlay = ({
   children,
   chapterMusicRef,
   audioRef,
+  expoSoundtrackRef,
 }: ViewScreenOverlayProps) => {
   const {
     viewScreen,
@@ -165,7 +167,8 @@ export const ViewScreenOverlay = ({
   const toggleSound = useCallback(() => {
     if (
       expoVolumes.speechVolume.actualVolume !== 0 ||
-      expoVolumes.musicVolume.actualVolume !== 0
+      expoVolumes.musicVolume.actualVolume !== 0 ||
+      expoVolumes.soundtrackVolume.actualVolume !== 0
     ) {
       dispatch(muteVolumes(expoVolumes));
       return;
@@ -398,6 +401,7 @@ export const ViewScreenOverlay = ({
           isMobileOverlay={isMobileOverlay}
           isScreenAudioPresent={audioRef !== null}
           isChapterMusicPresent={chapterMusicRef !== null}
+          isExpoSoundtrackPresent={expoSoundtrackRef !== null}
           openDrawer={openDrawer}
           play={play}
           pause={pause}

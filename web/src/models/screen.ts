@@ -183,6 +183,7 @@ export type StartScreen = {
   screenCompleted: boolean;
   organization?: string;
   organizationLink?: string;
+  expoSoundtrack?: string | null; // NOTE: Zvukový podkres k výstavě
 };
 
 export type FinishScreen = {

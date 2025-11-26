@@ -2,8 +2,9 @@ import { ReactNode, createContext, useContext } from "react";
 
 import { useFilePreloaderScreens } from "./file-preloader-screens-hook";
 import { useFilePreloaderMusic } from "./file-preloader-music-hook";
+import { useFilePreloaderSoundtrack } from "./fire-preloader-soundtrack-hook";
 
-// - - - - - - - -
+// - - - - - -
 
 // Represents object with preloaded files for one current screen
 // e.g if current screen is 'Slideshow', then preloaded files are 'audio' and 'images'
@@ -25,6 +26,8 @@ export type ScreenPreloadedFiles = {
   links?: { image?: string }[];
 };
 
+// - - - - - -
+
 // Represents object of all screens which currently have preloaded files
 // Current screen is always preloaded + next screen and previous screen
 // If some screen is already preloaded, next time preloading will be ignored
@@ -40,6 +43,8 @@ export type ScreenPreloads = {
   isLoading: boolean;
 };
 
+// - - - - - -
+
 // Represent cache of preloaded chapter musics, separatly
 // number key as index of chapter
 export type ChapterMusicCache = Record<number, string | undefined>;
@@ -49,7 +54,16 @@ type MusicPreloads = {
   isMusicLoading: boolean;
 };
 
-export type FilePreloaderContextType = ScreenPreloads & MusicPreloads;
+// - - - - - -
+
+export type ExpoSoundtrackPreload = {
+  soundtrackUrl: string | null;
+  isSoundtrackLoading: boolean;
+};
+
+export type FilePreloaderContextType = ScreenPreloads &
+  MusicPreloads &
+  ExpoSoundtrackPreload;
 
 const FilePreloaderContext = createContext<FilePreloaderContextType>(
   undefined as never
@@ -68,13 +82,18 @@ export const FilePreloaderProvider = ({
   // Automatically listening to screen changes, when screen changes, preload its current + previous and next screen
   const screenPreloads = useFilePreloaderScreens();
   const musicPreloads = useFilePreloaderMusic();
+  const soundtrackPreload = useFilePreloaderSoundtrack();
 
   const filePreloaderValue: FilePreloaderContextType = {
     fileCache: screenPreloads.fileCache,
     screenPreloadedFiles: screenPreloads.screenPreloadedFiles,
     isLoading: screenPreloads.isLoading,
+
     chapterMusicCache: musicPreloads.chapterMusicCache,
     isMusicLoading: musicPreloads.isMusicLoading,
+
+    soundtrackUrl: soundtrackPreload.soundtrackUrl,
+    isSoundtrackLoading: soundtrackPreload.isSoundtrackLoading,
   };
 
   return (

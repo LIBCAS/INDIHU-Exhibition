@@ -25,6 +25,7 @@ import { giveMeExpoTime } from "utils";
 import { ScreenStartAnimationEnum } from "enums/administration-screens";
 import { DialogType } from "components/dialogs/dialog-types";
 import { wrapTextInParagraph } from "components/editors/WysiwygEditor/utils";
+import ExpoSoundtrack from "./ExpoSoundtrack";
 
 // - -
 
@@ -38,6 +39,7 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
 
   const image = dispatch(getFileById(activeScreen.image));
   const audio = dispatch(getFileById(activeScreen.audio));
+  const expoSoundTrack = dispatch(getFileById(activeScreen.expoSoundtrack));
 
   const setImage = (img: IndihuFile) => {
     dispatch(updateScreenData({ image: img.id }));
@@ -223,6 +225,12 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
               isAudio={true}
               helpIconTitle={t("descFields.expoAudioTooltip")}
               id="editor-start-description-audio"
+            />
+
+            <ExpoSoundtrack
+              textFieldLabel={t("descFields.expoSoundtrackLabel")}
+              helpIconTitle={t("descFields.expoSoundtrackTooltip")}
+              value={expoSoundTrack?.name ?? ""}
             />
 
             <div className="flex-col">

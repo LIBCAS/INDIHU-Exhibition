@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import { useSpring, animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
 
@@ -7,26 +8,31 @@ import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import Paper from "react-md/lib/Papers/Paper";
+import AuthorsTable from "./AuthorsTable";
+
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 import { Divider } from "components/divider/divider";
 
 // Types
+import { AppDispatch } from "store/store";
 import { StartScreen } from "models";
 
 // Utils
 import { isWorksheetFile } from "utils/view-utils";
 import cx from "classnames";
-import AuthorsTable from "./AuthorsTable";
+import { getFileById } from "actions/file-actions-typed";
 
 // - - - - - -
 
 type StartDetailPanelProps = {
   viewScreen: StartScreen;
   isDetailPanelOpen: boolean;
+
   setIsDetailPanelOpen: Dispatch<SetStateAction<boolean>>;
   openFilesDialog: () => void;
   openWorksheetsDialog: () => void;
+  openExpoAudioVersionDialog: () => void;
 };
 
 const StartDetailPanel = ({
@@ -35,7 +41,9 @@ const StartDetailPanel = ({
   setIsDetailPanelOpen,
   openFilesDialog,
   openWorksheetsDialog,
+  openExpoAudioVersionDialog,
 }: StartDetailPanelProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("view-exhibition");
   const { bgTheming, fgTheming } = useExpoDesignData();
 
@@ -51,6 +59,11 @@ const StartDetailPanel = ({
 
   const startWorksheetFiles = startDocuments?.filter((currFile) =>
     isWorksheetFile(currFile)
+  );
+
+  const expoAudioVersionFile = useMemo(
+    () => dispatch(getFileById(viewScreen.audio)),
+    [dispatch, viewScreen.audio]
   );
 
   // - - - Animations - - -
@@ -112,7 +125,7 @@ const StartDetailPanel = ({
         )}
 
         {/* 3. Footer */}
-        <div className="flex justify-end items-center mt-auto gap-2">
+        <div className="mt-auto flex justify-end items-center gap-2 flex-wrap">
           {startWorksheetFiles && startWorksheetFiles.length !== 0 && (
             <Button
               iconBefore={<Icon name="description" color="expoThemeIcons" />}
@@ -134,6 +147,18 @@ const StartDetailPanel = ({
               }}
             >
               {t("files")}
+            </Button>
+          )}
+
+          {expoAudioVersionFile && (
+            <Button
+              iconBefore={<Icon name="hearing" color="expoThemeIcons" />}
+              onClick={(e) => {
+                e.stopPropagation();
+                openExpoAudioVersionDialog();
+              }}
+            >
+              {t("expo-audio-version-short")}
             </Button>
           )}
         </div>

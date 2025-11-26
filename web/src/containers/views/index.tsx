@@ -99,8 +99,10 @@ type ViewersProps = {
   screenPreloadedFiles: ScreenPreloadedFiles | undefined;
   areScreenFilesLoading: boolean;
   isMusicLoading: boolean;
+  isSoundtrackLoading: boolean;
   chapterMusicRef: HTMLAudioElement | null;
   audioRef: HTMLAudioElement | null;
+  expoSoundtrackRef: HTMLAudioElement | null;
 };
 
 export const Viewers = ({
@@ -108,8 +110,10 @@ export const Viewers = ({
   screenPreloadedFiles,
   areScreenFilesLoading,
   isMusicLoading,
+  isSoundtrackLoading,
   chapterMusicRef,
   audioRef,
+  expoSoundtrackRef,
 }: ViewersProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const dispatch = useDispatch<AppDispatch>();
@@ -137,11 +141,16 @@ export const Viewers = ({
 
   return (
     <TutorialProvider>
-      <ViewScreenOverlay chapterMusicRef={chapterMusicRef} audioRef={audioRef}>
+      <ViewScreenOverlay
+        chapterMusicRef={chapterMusicRef}
+        audioRef={audioRef}
+        expoSoundtrackRef={expoSoundtrackRef}
+      >
         {(infoPanelRef, actionsPanelRef, isMobileOverlay) =>
           !screenPreloadedFiles ||
           isScreenLoading ||
           isMusicLoading ||
+          isSoundtrackLoading ||
           areScreenFilesLoading ? (
             <ViewLoading />
           ) : (

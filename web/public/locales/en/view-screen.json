@@ -28,7 +28,8 @@
     "audioDialog": {
       "title": "Audio settings",
       "speechIconTooltip": "Commentary soundtrack",
-      "backgroundMusicIconTooltip": "Background music soundtrack",
+      "backgroundMusicIconTooltip": "Chapter background music track",
+      "soundtrackIconTooltip": "Exhibition background music track",
       "muteEverythingLabel": "Reduce the volume",
       "amplifyEverythingLabel": "Increase the volume"
     }

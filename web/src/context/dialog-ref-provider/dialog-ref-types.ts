@@ -10,6 +10,7 @@ export enum DialogRefType {
   WorksheetDialog = "WorksheetDialog",
   ExpoInfoDialog = "ExpoInfoDialog",
   ExpoAuthorsDialog = "ExpoAuthorsDialog",
+  ExpoAudioVersionDialog = "ExpoAudioVersionDialog",
   // Finish Screen dialogs
   ShareExpoDialog = "ShareExpoDialog",
   FinishAllFilesDialog = "FinishAllFilesDialog",

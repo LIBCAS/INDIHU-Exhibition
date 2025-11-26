@@ -36,6 +36,7 @@ const stateSelector = createSelector(
 
 export type AudioDialogProps = {
   closeThisDialog: () => void;
+  hasSoundtrackVolume: boolean;
   hasSpeechVolume: boolean;
   hasMusicVolume: boolean;
   isVideoPresent: boolean;
@@ -43,6 +44,7 @@ export type AudioDialogProps = {
 
 export const AudioDialog = ({
   closeThisDialog,
+  hasSoundtrackVolume,
   hasSpeechVolume,
   hasMusicVolume,
   isVideoPresent,
@@ -53,8 +55,20 @@ export const AudioDialog = ({
     keyPrefix: "overlay.audioDialog",
   });
 
-  const speechVolume = useMemo(() => expoVolumes.speechVolume, [expoVolumes]);
-  const musicVolume = useMemo(() => expoVolumes.musicVolume, [expoVolumes]);
+  const speechVolume = useMemo(
+    () => expoVolumes.speechVolume,
+    [expoVolumes.speechVolume]
+  );
+
+  const musicVolume = useMemo(
+    () => expoVolumes.musicVolume,
+    [expoVolumes.musicVolume]
+  );
+
+  const soundtrackVolume = useMemo(
+    () => expoVolumes.soundtrackVolume,
+    [expoVolumes.soundtrackVolume]
+  );
 
   return (
     <DialogWrap
@@ -80,6 +94,14 @@ export const AudioDialog = ({
             volumeKey="musicVolume"
             volumeObj={musicVolume}
             tooltipContent={t("backgroundMusicIconTooltip")}
+          />
+        )}
+        {/* Third slider */}
+        {hasSoundtrackVolume && (
+          <AudioSlider
+            volumeKey="soundtrackVolume"
+            volumeObj={soundtrackVolume}
+            tooltipContent={t("soundtrackIconTooltip")}
           />
         )}
       </div>
@@ -114,17 +136,20 @@ export const AudioDialog = ({
 // - - - - - - -
 
 const getIconname = (
-  volumeKey: "speechVolume" | "musicVolume",
+  volumeKey: "speechVolume" | "musicVolume" | "soundtrackVolume",
   actualVolume: number
 ) => {
   if (volumeKey === "speechVolume") {
     return actualVolume === 0 ? "voice_over_off" : "record_voice_over";
   }
+  if (volumeKey === "soundtrackVolume") {
+    return actualVolume === 0 ? "movie_off" : "movie";
+  }
   return actualVolume === 0 ? "music_off" : "music_note";
 };
 
 interface AudioSliderProps {
-  volumeKey: "speechVolume" | "musicVolume";
+  volumeKey: "speechVolume" | "musicVolume" | "soundtrackVolume";
   volumeObj: Volumes;
   tooltipContent?: string;
 }

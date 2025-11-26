@@ -23,7 +23,12 @@ export type ExpoReducerState = {
   expoEditor: {
     startAuthorsFilter: { sort: string; order: string; search: string };
   };
-  expoVolumes: { speechVolume: Volumes; musicVolume: Volumes }; // volumes are numbers in range <0, 100>
+  // NOTE: volumes are numbers in range <0, 100>
+  expoVolumes: {
+    speechVolume: Volumes;
+    musicVolume: Volumes;
+    soundtrackVolume: Volumes;
+  };
   tooltipInfo: {
     tooltipContent: string | null;
     videoDuration: number | null;
@@ -57,6 +62,7 @@ const initialState: ExpoReducerState = {
   expoVolumes: {
     speechVolume: { previousVolume: 0, actualVolume: 100 },
     musicVolume: { previousVolume: 0, actualVolume: 20 },
+    soundtrackVolume: { previousVolume: 0, actualVolume: 20 },
   },
   tooltipInfo: {
     tooltipContent: null,

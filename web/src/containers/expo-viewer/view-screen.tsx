@@ -61,6 +61,8 @@ export const NewViewScreen = ({
     isLoading: areScreenFilesLoading,
     chapterMusicCache,
     isMusicLoading,
+    soundtrackUrl,
+    isSoundtrackLoading,
   } = useFilePreloader();
 
   const [isScreenLoading, setIsScreenLoading] = useState<boolean>(true);
@@ -124,6 +126,25 @@ export const NewViewScreen = ({
     return mutedScreenByAdmin || mutedScreenAlways;
   }, [viewScreen]);
 
+  // - - - Expo sountrack audio - - -
+
+  const [sountrackSrc, setSoundtrackSrc] = useState<string | null>(null);
+
+  const [soundtrackRef, setSoundtrackRef] = useState<HTMLAudioElement | null>(
+    null
+  );
+
+  const isSoundtrackDisabled = useMemo(() => {
+    if (section === undefined) {
+      return true;
+    }
+    if (section === "start" || section === "finish") {
+      return true;
+    }
+
+    return false;
+  }, [section]);
+
   // - - - Callbacks - - -
 
   const handleMount = useCallback(async () => {
@@ -142,10 +163,73 @@ export const NewViewScreen = ({
     handleMount();
   }, [handleMount]);
 
+  // - - - Effects (soundtrack) - - -
+
+  /**
+   * 2.) Effect responsible for setting `soundtrackSrc` (reacting to preloaded soundtrackUrl)
+   */
+  useEffect(() => {
+    if (section === undefined || section === "start" || section === "finish") {
+      setSoundtrackSrc(null);
+      return;
+    }
+
+    if (!soundtrackUrl) {
+      setSoundtrackSrc(null);
+      return;
+    }
+
+    setSoundtrackSrc(soundtrackUrl);
+  }, [section, soundtrackUrl]);
+
+  /**
+   * 3.) Effect responsible for automatic playing of 'soundtrackSrc', reacting to previous effect
+   */
+  useEffect(() => {
+    if (!soundtrackRef) {
+      return;
+    }
+
+    const shouldIncrement = store.getState().expo.viewProgress.shouldIncrement;
+    if (!shouldIncrement) {
+      return;
+    }
+
+    const soundtrackVolume =
+      store.getState().expo.expoVolumes.soundtrackVolume.actualVolume / 100;
+
+    soundtrackRef.loop = true;
+    soundtrackRef.volume = soundtrackVolume;
+    soundtrackRef.play().catch((error) => {
+      if (error instanceof Error && error.name === "NotAllowedError") {
+        dispatch(setViewProgress({ shouldIncrement: false }));
+      }
+    });
+  }, [sountrackSrc, soundtrackRef, dispatch]);
+
+  /**
+   * 4.) Effect responsible for pausing `soundtrackSrc`, when current screen does not support music playing
+   */
+  useEffect(() => {
+    if (!soundtrackRef) {
+      return;
+    }
+
+    if (isSoundtrackDisabled) {
+      soundtrackRef.pause();
+    } else {
+      soundtrackRef.play().catch((error) => {
+        if (error instanceof Error && error.name === "NotAllowedError") {
+          dispatch(setViewProgress({ shouldIncrement: false }));
+        }
+      });
+    }
+  }, [soundtrackRef, isSoundtrackDisabled, dispatch]);
+
   // - - - Effects (music) - - -
 
   /**
-   * 2.) Effect responsible for setting `musicSrc` (when section, chapter of this exposition changes)
+   * 5.) Effect responsible for setting `musicSrc` (when section, chapter of this exposition changes)
    */
   useEffect(() => {
     if (section === undefined || section === "start" || section === "finish") {
@@ -163,7 +247,7 @@ export const NewViewScreen = ({
   }, [chapterMusicCache, section]);
 
   /**
-   * 3.) Effect responsible for automatic playing of `musicSrc`, reacting to previous effect
+   * 6.) Effect responsible for automatic playing of `musicSrc`, reacting to previous effect
    */
   useEffect(() => {
     if (!musicRef) {
@@ -188,7 +272,7 @@ export const NewViewScreen = ({
   }, [musicSrc, musicRef, dispatch]);
 
   /**
-   * 4.) Effect responsible for pausing `musicSrc`, when current screen does not support music playing
+   * 7.) Effect responsible for pausing `musicSrc`, when current screen does not support music playing
    */
   useEffect(() => {
     if (!musicRef) {
@@ -205,7 +289,7 @@ export const NewViewScreen = ({
   // - - - Effects (audio) - - -
 
   /**
-   * 5.) Effect responsible for automatic playing of `audioSrc`
+   * 8.) Effect responsible for automatic playing of `audioSrc`
    */
   useEffect(() => {
     if (!audioSrc) {
@@ -240,10 +324,10 @@ export const NewViewScreen = ({
     };
   }, [audioSrc, audioRef, isAudioDisabled, dispatch]);
 
-  // - - - Effects (music + audio) - - -
+  // - - - Effects (music + audio + soundtrack) - - -
 
   /**
-   * 6.) Effect reponsible for muting both the sources  (e.g. when mute button was pressed)
+   * 9.) Effect reponsible for muting all audio sources  (e.g. when mute button was pressed)
    */
   useEffect(() => {
     if (musicRef) {
@@ -253,10 +337,14 @@ export const NewViewScreen = ({
     if (audioRef) {
       audioRef.volume = expoVolumes.speechVolume.actualVolume / 100;
     }
-  }, [expoVolumes, audioRef, musicRef]);
+
+    if (soundtrackRef) {
+      soundtrackRef.volume = expoVolumes.soundtrackVolume.actualVolume / 100;
+    }
+  }, [expoVolumes, audioRef, musicRef, soundtrackRef]);
 
   /**
-   * 7.) Effect responsible for pausing / playing of the both sources (e.g. when pause/play button was pressed)
+   * 10.) Effect responsible for pausing / playing  all audio sources (e.g. when pause/play button was pressed)
    */
   useEffect(() => {
     if (musicRef) {
@@ -285,18 +373,40 @@ export const NewViewScreen = ({
       }
     }
 
+    if (soundtrackRef) {
+      if (shouldIncrement && !isSoundtrackDisabled) {
+        soundtrackRef.play().catch((error) => {
+          if (error instanceof Error && error.name === "NotAllowedError") {
+            dispatch(setViewProgress({ shouldIncrement: false }));
+          }
+        });
+      }
+      if (!shouldIncrement && !isSoundtrackDisabled) {
+        soundtrackRef.pause();
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldIncrement, audioRef, musicRef, dispatch]);
+  }, [shouldIncrement, audioRef, musicRef, soundtrackRef, dispatch]);
 
   // - - - GUI - - -
 
   return (
     <ScreenAutoNavigatorManager>
+      {sountrackSrc && (
+        <audio
+          key={sountrackSrc}
+          src={sountrackSrc}
+          ref={(soundtrackRef) => setSoundtrackRef(soundtrackRef)}
+          data-id="soundtrack"
+        />
+      )}
+
       {musicSrc && (
         <audio
           key={musicSrc}
           src={musicSrc}
           ref={(musicRef) => setMusicRef(musicRef)}
+          data-id="music"
         />
       )}
 
@@ -306,6 +416,7 @@ export const NewViewScreen = ({
           key={audioSrc}
           src={audioSrc}
           ref={(audioRef) => setAudioRef(audioRef)}
+          data-id="speech-audio"
         />
       )}
       <Viewers
@@ -313,8 +424,10 @@ export const NewViewScreen = ({
         screenPreloadedFiles={screenPreloadedFiles}
         areScreenFilesLoading={areScreenFilesLoading}
         isMusicLoading={isMusicLoading}
+        isSoundtrackLoading={isSoundtrackLoading}
         chapterMusicRef={musicRef}
         audioRef={audioRef}
+        expoSoundtrackRef={soundtrackRef}
       />
     </ScreenAutoNavigatorManager>
   );
