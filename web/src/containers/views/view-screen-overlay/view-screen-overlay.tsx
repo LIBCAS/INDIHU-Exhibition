@@ -167,7 +167,8 @@ export const ViewScreenOverlay = ({
   const toggleSound = useCallback(() => {
     if (
       expoVolumes.speechVolume.actualVolume !== 0 ||
-      expoVolumes.musicVolume.actualVolume !== 0
+      expoVolumes.musicVolume.actualVolume !== 0 ||
+      expoVolumes.soundtrackVolume.actualVolume !== 0
     ) {
       dispatch(muteVolumes(expoVolumes));
       return;

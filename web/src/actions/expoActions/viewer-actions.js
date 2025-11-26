@@ -149,8 +149,9 @@ export const setExpoVolumes = (volumeObj) => (dispatch) => {
 export const muteVolumes = (expoVolumes) => (dispatch) => {
   const speechVolume = expoVolumes.speechVolume;
   const musicVolume = expoVolumes.musicVolume;
+  const soundtrackVolume = expoVolumes.soundtrackVolume;
 
-  // if not already muted
+  // NOTE: If not already muted
   if (speechVolume.actualVolume !== 0) {
     dispatch(
       setExpoVolumes({
@@ -162,7 +163,7 @@ export const muteVolumes = (expoVolumes) => (dispatch) => {
     );
   }
 
-  // if not already muted
+  // NOTE: If not already muted
   if (musicVolume.actualVolume !== 0) {
     dispatch(
       setExpoVolumes({
@@ -173,11 +174,24 @@ export const muteVolumes = (expoVolumes) => (dispatch) => {
       })
     );
   }
+
+  // NOTE: If not already muted
+  if (soundtrackVolume.actualVolume !== 0) {
+    dispatch(
+      setExpoVolumes({
+        soundtrackVolume: {
+          previousVolume: soundtrackVolume.actualVolume,
+          actualVolume: 0,
+        },
+      })
+    );
+  }
 };
 
 export const unmuteVolumes = (expoVolumes) => (dispatch) => {
   const speechVolume = expoVolumes.speechVolume;
   const musicVolume = expoVolumes.musicVolume;
+  const soundtrackVolume = expoVolumes.soundtrackVolume;
 
   if (
     speechVolume.previousVolume !== 0 &&
@@ -202,6 +216,20 @@ export const unmuteVolumes = (expoVolumes) => (dispatch) => {
         musicVolume: {
           previousVolume: musicVolume.previousVolume,
           actualVolume: musicVolume.previousVolume,
+        },
+      })
+    );
+  }
+
+  if (
+    soundtrackVolume.previousVolume !== 0 &&
+    soundtrackVolume.previousVolume > soundtrackVolume.actualVolume
+  ) {
+    dispatch(
+      setExpoVolumes({
+        soundtrackVolume: {
+          previousVolume: soundtrackVolume.previousVolume,
+          actualVolume: soundtrackVolume.previousVolume,
         },
       })
     );

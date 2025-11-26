@@ -369,6 +369,7 @@ const ActionsPanel = ({
           component={
             <AudioDialog
               closeThisDialog={closeTopDialog}
+              hasSoundtrackVolume={isExpoSoundtrackPresent}
               hasSpeechVolume={isScreenAudioPresent}
               hasMusicVolume={isChapterMusicPresent}
               isVideoPresent={

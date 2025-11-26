@@ -193,8 +193,8 @@ export const NewViewScreen = ({
       return;
     }
 
-    // TODO - nice feature to the future to adjust also this volume via AudioDialog
-    const soundtrackVolume = 0.2;
+    const soundtrackVolume =
+      store.getState().expo.expoVolumes.soundtrackVolume.actualVolume / 100;
 
     soundtrackRef.loop = true;
     soundtrackRef.volume = soundtrackVolume;
@@ -333,7 +333,7 @@ export const NewViewScreen = ({
     }
 
     if (soundtrackRef) {
-      // TODO
+      soundtrackRef.volume = expoVolumes.soundtrackVolume.actualVolume / 100;
     }
   }, [expoVolumes, audioRef, musicRef, soundtrackRef]);
 
