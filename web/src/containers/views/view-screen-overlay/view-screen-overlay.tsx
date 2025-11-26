@@ -13,6 +13,7 @@ import { createSelector } from "reselect";
 import { animated, useSpring } from "react-spring";
 import { useSwipeable } from "react-swipeable";
 
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useExpoNavigation } from "hooks/view-hooks/expo-navigation-hook";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
@@ -44,6 +45,7 @@ import classes from "./view-screen-overlay.module.scss";
 import { isGameScreen } from "../../../utils/view-utils";
 import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
 import { screenType } from "enums/screen-type";
+import { palette } from "palette";
 
 // - - - - - -
 
@@ -88,6 +90,7 @@ export const ViewScreenOverlay = ({
     isPhotogalleryLightboxOpened,
   } = useSelector(statesSelector);
   const dispatch = useDispatch<AppDispatch>();
+  const { expoDesignData } = useExpoDesignData();
 
   // - - - Derived variables (memos) - - -
 
@@ -104,6 +107,25 @@ export const ViewScreenOverlay = ({
   const amIGameScreen = useMemo(
     () => isGameScreen(viewScreen?.type),
     [viewScreen?.type]
+  );
+
+  /**
+   *
+   */
+  const defaultScreenBackgroundColor = useMemo(
+    () => expoDesignData?.backgroundColor ?? palette.background,
+    [expoDesignData?.backgroundColor]
+  );
+
+  /**
+   *
+   */
+  const screenBackgroundColor = useMemo(
+    () =>
+      viewScreen && "screenBgColor" in viewScreen && !!viewScreen.screenBgColor
+        ? viewScreen.screenBgColor
+        : defaultScreenBackgroundColor,
+    [viewScreen, defaultScreenBackgroundColor]
   );
 
   // - - - States - - -
@@ -363,6 +385,7 @@ export const ViewScreenOverlay = ({
     return (
       <div
         className="w-full h-full overflow-hidden"
+        style={{ backgroundColor: screenBackgroundColor }}
         key={key}
         {...swipeHandlers}
       >
@@ -378,6 +401,7 @@ export const ViewScreenOverlay = ({
       {/* 1. First div next to the <audio> element, inside there is always the content of ScreenComponent itself */}
       <div
         className="w-full h-full overflow-hidden"
+        style={{ backgroundColor: screenBackgroundColor }}
         key={key}
         onMouseDown={() => setWasMouseMovement(true)}
         onMouseMove={() => setWasMouseMovement(true)}
