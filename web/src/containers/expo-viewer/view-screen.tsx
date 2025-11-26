@@ -372,13 +372,14 @@ export const NewViewScreen = ({
     }
 
     if (soundtrackRef) {
-      if (shouldIncrement) {
+      if (shouldIncrement && !isSoundtrackDisabled) {
         soundtrackRef.play().catch((error) => {
           if (error instanceof Error && error.name === "NotAllowedError") {
             dispatch(setViewProgress({ shouldIncrement: false }));
           }
         });
-      } else {
+      }
+      if (!shouldIncrement && !isSoundtrackDisabled) {
         soundtrackRef.pause();
       }
     }
