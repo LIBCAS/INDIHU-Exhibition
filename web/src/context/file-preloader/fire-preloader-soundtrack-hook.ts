@@ -85,12 +85,8 @@ export const useFilePreloaderSoundtrack = () => {
     if (section === undefined) {
       return;
     }
-    if (section !== "start") {
-      return;
-    }
 
-    // NOTE1: Now we are sure that we are on the first start screen
-    // NOTE2: If it was already preloaded once, we do not need to preload it again
+    // NOTE: If it was already preloaded once, we do not need to preload it again
     if (soundtrackUrl) {
       return;
     }
