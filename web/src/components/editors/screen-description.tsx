@@ -1,19 +1,27 @@
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
+// Components
 import { TitleTextField } from "./TextFields";
 import Music from "./music";
 import AudioMusic from "./audio-music";
 import Time from "./time";
 import WysiwygEditor from "./WysiwygEditor/WysiwygEditor";
+import ScreenBackgroundColorPicker from "./screen-background-color-picker";
+import { ScreenCompletedCheckbox } from "./Checkboxes";
 
+// Types
 import { Screen } from "models";
 import { AppDispatch } from "store/store";
 
+// Redux (actions)
 import { getFileById } from "actions/file-actions-typed";
 import { saveScreen, updateScreenData } from "actions/expoActions";
-import { ScreenCompletedCheckbox } from "./Checkboxes";
+
+// Utils
 import { wrapTextInParagraph } from "./WysiwygEditor/utils";
+
+// - - - - - -
 
 type ScreenDescriptionProps = {
   activeScreen: Screen;
@@ -117,6 +125,16 @@ const ScreenDescription = ({
                 "screenCompleted" in activeScreen
                   ? !!activeScreen.screenCompleted
                   : false
+              }
+            />
+
+            <ScreenBackgroundColorPicker
+              label="Barva pozadí obrazovky"
+              helpText="Zde můžete změnit barvu pozadí obrazovky, abyste ji lépe propojili s pozadím obrázku, nebo abyste barevně odlišily herní a interaktivní obrazovky od statických. Ovšem důrazně doporučujeme s barevnými změnami šetřit, abyste zachovali elegantní design celé výstavy!"
+              color={
+                "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
+                  ? activeScreen.screenBgColor
+                  : null
               }
             />
           </div>

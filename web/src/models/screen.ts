@@ -233,6 +233,7 @@ export type ImageScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string;
 };
 
 export type VideoScreen = {
@@ -262,6 +263,7 @@ export type TextScreen = {
   documents?: Document[];
   aloneScreen: boolean;
   music?: string;
+  screenBgColor?: string;
 };
 
 export type SlideshowScreen = {
@@ -280,6 +282,7 @@ export type SlideshowScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string;
 };
 
 export type PhotogalleryScreen = {
@@ -311,6 +314,7 @@ export type ParallaxScreeen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string;
 };
 
 export type ZoomScreen = {
@@ -331,6 +335,7 @@ export type ZoomScreen = {
   music?: string;
   muteChapterMusic?: boolean;
   screenCompleted?: boolean;
+  screenBgColor?: string;
 };
 
 export type ImageChangeScreen = {
@@ -355,6 +360,7 @@ export type ImageChangeScreen = {
   gradualTransitionBeginPosition?: ImageChangeGradualTransitionBeginPositionType;
   image1Infopoints?: Infopoint[];
   image2Infopoints?: Infopoint[];
+  screenBgColor?: string;
 };
 
 export type ExternalScreen = {
@@ -372,6 +378,7 @@ export type ExternalScreen = {
   music?: string;
   muteChapterMusic: boolean;
   screenCompleted: boolean;
+  screenBgColor?: string;
 };
 
 export type SignpostScreen = {
@@ -393,6 +400,7 @@ export type SignpostScreen = {
   referenceType?: SignpostReferenceType;
   links: ReferenceObj[];
   nextScreenReference?: string; // screen.id as string
+  screenBgColor?: string;
 };
 
 export type TimelineScreen = {
@@ -418,6 +426,7 @@ export type TimelineScreen = {
   timelineThickness?: number;
   timelineLeftBoundary?: TimelineLeftBoundary;
   timelineRightBoundary?: TimelineRightBoundary;
+  screenBgColor?: string;
 };
 
 export type GameFindScreen = {
