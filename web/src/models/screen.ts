@@ -590,4 +590,5 @@ export type GameQuizScreen = {
   answersType?: GameQuizAnswersType;
   quizType?: GameQuizType;
   answersTextDisplayType?: GameQuizAnswerDisplayType;
+  screenBgColor?: string | null;
 };
