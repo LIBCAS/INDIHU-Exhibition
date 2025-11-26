@@ -216,9 +216,13 @@ export const NewViewScreen = ({
     if (isSoundtrackDisabled) {
       soundtrackRef.pause();
     } else {
-      soundtrackRef.play();
+      soundtrackRef.play().catch((error) => {
+        if (error instanceof Error && error.name === "NotAllowedError") {
+          dispatch(setViewProgress({ shouldIncrement: false }));
+        }
+      });
     }
-  }, [soundtrackRef, isSoundtrackDisabled]);
+  }, [soundtrackRef, isSoundtrackDisabled, dispatch]);
 
   // - - - Effects (music) - - -
 
