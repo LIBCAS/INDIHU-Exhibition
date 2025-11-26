@@ -137,6 +137,8 @@ export const setScreensInfo = (screensInfo) => (dispatch) => {
   });
 };
 
+// - - - VOLUMES - - -
+
 export const setExpoVolumes = (volumeObj) => (dispatch) => {
   dispatch({
     type: EXPO_VOLUMES_UPDATE,

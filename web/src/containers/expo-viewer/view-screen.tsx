@@ -417,6 +417,7 @@ export const NewViewScreen = ({
         isSoundtrackLoading={isSoundtrackLoading}
         chapterMusicRef={musicRef}
         audioRef={audioRef}
+        expoSoundtrackRef={soundtrackRef}
       />
     </ScreenAutoNavigatorManager>
   );
