@@ -104,7 +104,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   // - - - Effects - - -
 
   /**
-   *
+   * Effect responsible for playing / pausing the sequence animation flow
    */
   useEffect(() => {
     if (!shouldIncrement) {
@@ -115,7 +115,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   }, [api, shouldIncrement]);
 
   /**
-   * Effect responsible for running on beginning of the screen
+   * Effect responsible for starting and handling the sequence animation flow
    */
   useEffect(() => {
     sequences?.reduce((accDelay, seq) => {
@@ -157,9 +157,9 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
             currSequence && zoomingIn && stayingIn
               ? {
                   scale: zoom
-                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0]) // zoom in, stay, zoom out
-                    .to((x) => Math.log2(x + 1))
-                    .to([0, 1], [1, currSequence.zoom]), // when zoom in, scale from 1 to zoom, stay, revert
+                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0]) // NOTE: [zooming-in, staying-in-detail, zooming-out] for scale looks like [0, 1, 1, 0]
+                    .to((x) => Math.log2(x + 1)) // NOTE: represents easing function, our custom one, not using predefined
+                    .to([0, 1], [1, currSequence.zoom]), // NOTE: When zooming-in, we need to map value 1 to our real zoom scale value
                   translateX: translate
                     .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
                     .to(easings.easeOutQuad)
