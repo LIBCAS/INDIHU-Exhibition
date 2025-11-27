@@ -92,6 +92,9 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   const [currSequence, setCurrSequence] = useState<Sequence | null>(null);
 
+  // NOTE: Initial value is true because screen starts with initial delay, before first sequence
+  const [isDelayActive, setisDelayActive] = useState<boolean>(true);
+
   const { zoomingIn, stayingIn } = useZoomPhase(currSequence) ?? {};
 
   // - - - Spring - - -
@@ -126,8 +129,14 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
         to: { zoom: 1, translate: 1 },
         delay: accDelay,
         config: { duration: duration }, // easing: easings.easeInOutQuad
-        onStart: () => setCurrSequence(seq),
-        onResolve: () => setCurrSequence(null),
+        onStart: () => {
+          setCurrSequence(seq);
+          setisDelayActive(false);
+        },
+        onResolve: () => {
+          setCurrSequence(null);
+          setisDelayActive(true);
+        },
       });
 
       return accDelay + duration + delayTime;
