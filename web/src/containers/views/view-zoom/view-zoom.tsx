@@ -36,7 +36,10 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Derived variables (settings) - - -
 
-  const sequences = useMemo(() => viewScreen.sequences, [viewScreen.sequences]);
+  const sequences = useMemo(
+    () => viewScreen.sequences ?? [],
+    [viewScreen.sequences]
+  );
 
   const delayTime = useMemo(
     () =>
@@ -121,7 +124,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
    * Effect responsible for starting and handling the sequence animation flow
    */
   useEffect(() => {
-    sequences?.reduce((accDelay, seq) => {
+    sequences.reduce((accDelay, seq) => {
       const { duration } = calculateSequenceParameters(seq);
 
       api.start({
