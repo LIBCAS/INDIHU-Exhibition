@@ -29,7 +29,7 @@ const SequenceDialogEdit = ({
   sequence,
   sequenceIndex,
 }: SequenceDialogEditProps) => {
-  const { t } = useTranslation("sequenceForm", { keyPrefix: "sequenceForm" });
+  const { t } = useTranslation("expo-editor", { keyPrefix: "sequenceForm" });
   const { t: validationT } = useTranslation("validation");
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
