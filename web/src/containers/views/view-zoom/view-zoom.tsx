@@ -93,10 +93,15 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Zooming functionality - - -
 
-  const [currSequence, setCurrSequence] = useState<Sequence | null>(null);
-
   // NOTE: Initial value is true because screen starts with initial delay, before first sequence
   const [isDelayActive, setisDelayActive] = useState<boolean>(true);
+
+  const [currSequenceIdx, setCurrSequenceIdx] = useState<number | null>(null);
+
+  const currSequence = useMemo<Sequence | null>(
+    () => (currSequenceIdx === null ? null : sequences[currSequenceIdx]),
+    [sequences, currSequenceIdx]
+  );
 
   const { zoomingIn, stayingIn } = useZoomPhase(currSequence) ?? {};
 
@@ -124,7 +129,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
    * Effect responsible for starting and handling the sequence animation flow
    */
   useEffect(() => {
-    sequences.reduce((accDelay, seq) => {
+    sequences.reduce((accDelay, seq, seqIdx) => {
       const { duration } = calculateSequenceParameters(seq);
 
       api.start({
@@ -133,7 +138,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
         delay: accDelay,
         config: { duration: duration }, // easing: easings.easeInOutQuad
         onStart: () => {
-          setCurrSequence(seq);
+          setCurrSequenceIdx(seqIdx);
           setisDelayActive(false);
         },
         onResolve: () => {
