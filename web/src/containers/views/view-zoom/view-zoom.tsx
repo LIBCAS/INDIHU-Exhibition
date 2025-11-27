@@ -134,7 +134,6 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
           setisDelayActive(false);
         },
         onResolve: () => {
-          setCurrSequence(null);
           setisDelayActive(true);
         },
       });
@@ -143,13 +142,21 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     }, delayTime);
   }, [sequences, api, delayTime]);
 
-  // - - - Animation - - -
+  // - - - Animation (tooltip box) - - -
 
-  const infoTransition = useTransition(currSequence, {
-    from: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
-    enter: { opacity: 1, translateX: 0, delay: 250 },
-    leave: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
-  });
+  const shouldShowSeqTooltip = useMemo(
+    () => currSequence !== null && isDelayActive === false,
+    [currSequence, isDelayActive]
+  );
+
+  const infoTransition = useTransition(
+    shouldShowSeqTooltip ? currSequence : null,
+    {
+      from: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
+      enter: { opacity: 1, translateX: 0, delay: 250 },
+      leave: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
+    }
+  );
 
   // - - - GUI - - -
 
