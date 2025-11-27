@@ -3,20 +3,22 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { animated, useSpring, useTransition, easings } from "react-spring";
 
+// Custom hook
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import useResizeObserver from "hooks/use-resize-observer";
-import { useZoomPhase, calculateSequenceParameters } from "./useZoomPhase";
+import { useZoomPhase } from "./useZoomPhase";
 
 // Models
-import { ScreenProps, ZoomScreen, Sequence, Size } from "models";
 import { AppState } from "store/store";
+import { ScreenProps, ZoomScreen, Sequence, Size } from "models";
 
 // Utils
 import cx from "classnames";
+import { calculateSequenceParameters } from "./useZoomPhase";
 import { calculateObjectFit } from "utils/object-fit";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ZoomScreen,
@@ -24,7 +26,7 @@ const stateSelector = createSelector(
   (viewScreen, shouldIncrement) => ({ viewScreen, shouldIncrement })
 );
 
-// - -
+// - - - - - -
 
 export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   const { image } = screenPreloadedFiles;
@@ -32,7 +34,10 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   const { bgTheming, fgTheming } = useExpoDesignData();
 
+  // - - - Derived variables (settings) - - -
+
   const sequences = useMemo(() => viewScreen.sequences, [viewScreen.sequences]);
+
   const delayTime = useMemo(
     () =>
       (viewScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000,
@@ -56,7 +61,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen.imageOrigData]
   );
 
-  // - -
+  // - - - Contained image - - -
 
   const [containerRef, containerSize] = useResizeObserver();
 
@@ -83,18 +88,24 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     ]
   );
 
-  // - -
+  // - - - Zooming functionality - - -
 
   const [currSequence, setCurrSequence] = useState<Sequence | null>(null);
+
   const { zoomingIn, stayingIn } = useZoomPhase(currSequence) ?? {};
 
-  // - -
+  // - - - Spring - - -
 
   const [{ zoom, translate }, api] = useSpring(() => ({
     zoom: 1,
     translate: 1,
   }));
 
+  // - - - Effects - - -
+
+  /**
+   *
+   */
   useEffect(() => {
     if (!shouldIncrement) {
       api.pause();
@@ -103,7 +114,9 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     api.resume();
   }, [api, shouldIncrement]);
 
-  // Runs on beginning of the screen
+  /**
+   * Effect responsible for running on beginning of the screen
+   */
   useEffect(() => {
     sequences?.reduce((accDelay, seq) => {
       const { duration } = calculateSequenceParameters(seq);
@@ -121,7 +134,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     }, delayTime);
   }, [sequences, api, delayTime]);
 
-  // - -
+  // - - - Animation - - -
 
   const infoTransition = useTransition(currSequence, {
     from: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
@@ -129,10 +142,12 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     leave: { opacity: 0, translateX: isTooltipPositionRight ? 15 : -15 },
   });
 
+  // - - - GUI - - -
+
   return (
     <div
-      ref={containerRef}
       className="w-full h-full flex justify-center items-center overflow-hidden"
+      ref={containerRef}
     >
       {image && (
         <animated.img

@@ -1,7 +1,11 @@
 import { ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME } from "constants/screen";
 import { Sequence } from "models";
 
-/** Resulting duration is in miliseconds */
+// - - - - - -
+
+/**
+ * Resulting duration is in miliseconds
+ */
 export const calculateSequenceParameters = (seq: Sequence) => {
   const zoomTime = (seq.time ?? 2) * 1000;
   const stayTime =
@@ -10,7 +14,9 @@ export const calculateSequenceParameters = (seq: Sequence) => {
   return { zoomTime, stayTime, duration };
 };
 
-/** Result is in seconds */
+/**
+ * Result is in seconds
+ */
 export const calculateTotalSequencesTime = (
   sequences: Sequence[],
   delayTime: number
@@ -25,10 +31,11 @@ export const calculateTotalSequencesTime = (
   return totalTimeInSeconds;
 };
 
-/** One zoom consists of three phases: zoom in, stay in, zoom out
- *  After each zoom there is also delay before the next zoom starts
- *  There is also one initial delay before first zoom starts
- *  Example: Delay -> Zoom in, Stay, Zoom out -> Delay -> Phase2 -> Final delay
+/**
+ * One zoom consists of three phases: zoom in, stay in, zoom out
+ * After each zoom there is also delay before the next zoom starts
+ * There is also one initial delay before first zoom starts
+ * Example: Delay -> Zoom in, Stay, Zoom out -> Delay -> Phase2 -> Final delay
  */
 export const useZoomPhase = (currSeq: Sequence | null) => {
   if (!currSeq) {
