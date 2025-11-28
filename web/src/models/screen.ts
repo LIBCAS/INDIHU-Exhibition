@@ -116,6 +116,7 @@ export type Sequence = {
   timeError?: boolean;
   textColor?: string;
   bgColor?: string;
+  borderColor?: string;
 };
 
 export type GameQuizAnswer = {

@@ -36,6 +36,11 @@ const SequenceForm = (_props: SequenceFormProps) => {
     [isLightMode, palette]
   );
 
+  const backupBorderColor = useMemo(
+    () => (isLightMode ? palette["light-mode-f"] : palette["dark-mode-f"]),
+    [isLightMode, palette]
+  );
+
   return (
     <Form>
       <div className="flex flex-col gap-4">
@@ -91,6 +96,12 @@ const SequenceForm = (_props: SequenceFormProps) => {
           name="bgColor"
           label="TODO - Farba pozadia"
           backupColor={backupBgColor}
+        />
+
+        <ColorPicker
+          name="borderColor"
+          label="TODO - Farba rámiku"
+          backupColor={backupBorderColor}
         />
       </div>
     </Form>

@@ -50,6 +50,7 @@ const SequenceDialogEdit = ({
 
         textColor: sequence.textColor ?? undefined,
         bgColor: sequence.bgColor ?? undefined,
+        borderColor: sequence.borderColor ?? undefined,
       }}
       onSubmit={(formData) => {
         onDialogSubmit(sequenceIndex, formData);

@@ -44,6 +44,7 @@ const SequenceDialogNew = ({
 
         textColor: undefined,
         bgColor: undefined,
+        borderColor: undefined,
       }}
       onSubmit={(formData) => {
         onDialogSubmit(formData);

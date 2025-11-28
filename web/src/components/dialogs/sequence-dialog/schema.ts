@@ -11,5 +11,6 @@ export const retrieveSequenceSchema = (t: TFunction) => {
       .required(t("required")),
     textColor: Yup.string(),
     bgColor: Yup.string(),
+    borderColor: Yup.string(),
   });
 };

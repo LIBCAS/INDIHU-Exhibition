@@ -218,12 +218,8 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
               className={cx(
                 "fixed p-4 max-w-[320px] rounded-none shadow-md shadow-neutral-600",
                 {
-                  "border-solid border-[1px] border-black":
-                    !currSequence.bgColor && isLightMode,
-
-                  "border-solid border-[1px] border-white":
-                    !currSequence.bgColor && !isLightMode,
-
+                  "border-solid border-[1px] border-black": isLightMode,
+                  "border-solid border-[1px] border-white": !isLightMode,
                   ...bgTheming,
                   ...fgTheming,
                 }
@@ -235,6 +231,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
                 // Override global theming settings if local sequence has these colors set
                 backgroundColor: currSequence.bgColor ?? undefined,
                 color: currSequence.textColor ?? undefined,
+                borderColor: currSequence.borderColor ?? undefined,
               }}
             >
               {currSequence.text}

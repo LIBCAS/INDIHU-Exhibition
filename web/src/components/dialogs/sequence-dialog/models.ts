@@ -6,4 +6,5 @@ export interface SequenceFormData {
 
   textColor?: string;
   bgColor?: string;
+  borderColor?: string;
 }
