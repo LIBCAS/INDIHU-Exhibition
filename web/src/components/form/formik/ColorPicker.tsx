@@ -1,7 +1,15 @@
-import { useState, useRef, useCallback, Dispatch, SetStateAction } from "react";
+import {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useField } from "formik";
-import { useOnClickOutside } from "hooks/use-on-click-outside";
 import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
+
+import { useOnClickOutside } from "hooks/use-on-click-outside";
 import { Icon } from "components/icon/icon";
 
 /* Designed to use with <Formik> context component, but possible to use also without
@@ -14,14 +22,31 @@ type ColorPickerProps = {
   label?: string;
   color?: string;
   setColor?: Dispatch<SetStateAction<string>>;
+  backupColor?: string;
 };
 
-const ColorPicker = ({ name, color, setColor, label }: ColorPickerProps) => {
+const ColorPicker = ({
+  name,
+  color,
+  setColor,
+  label,
+  backupColor,
+}: ColorPickerProps) => {
   // field contains { name, value, onChange, onBlur, .. }
   // meta contains { value, error, touched, initialValue, initialError, initialTouched }
   // helper contains { setValue, setError, setTouched }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [field, meta, helper] = useField<string>(name); // string as color here!
+  const [field, meta, helper] = useField<string | undefined>(name); // string as color here!
+
+  const colorValue = useMemo(
+    () => color ?? field.value ?? backupColor,
+    [backupColor, color, field.value]
+  );
+
+  const colorValueFormik = useMemo(
+    () => field.value ?? backupColor,
+    [backupColor, field.value]
+  );
 
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
   const [isColorEditModeOn, setIsColorEditModeOn] = useState<boolean>(false);
@@ -55,14 +80,14 @@ const ColorPicker = ({ name, color, setColor, label }: ColorPickerProps) => {
         <div className="flex gap-2 justify-between border-[1px] border-solid border-black/[.54] rounded p-2">
           <div
             className="w-1/6 border-[1px] border-solid border-black"
-            style={{ backgroundColor: color ?? field.value }}
+            style={{ backgroundColor: colorValue }}
           />
 
           <div className="w-4/6 font-['Work_Sans'] text-xl text-center self-center">
             {isColorEditModeOn ? (
               <div>
                 <HexColorInput
-                  color={color ?? field.value}
+                  color={colorValue}
                   onChange={(newColor: string) => {
                     helper.setValue(newColor);
                     if (setColor) setColor(newColor);
@@ -72,7 +97,7 @@ const ColorPicker = ({ name, color, setColor, label }: ColorPickerProps) => {
                 />
               </div>
             ) : (
-              <div>{color ?? field.value}</div>
+              <div>{colorValue}</div>
             )}
           </div>
 
@@ -104,7 +129,7 @@ const ColorPicker = ({ name, color, setColor, label }: ColorPickerProps) => {
             style={{ bottom: "calc(100% + 2px)", right: "2px" }}
           >
             <HexAlphaColorPicker
-              color={color ?? field.value}
+              color={colorValue}
               onChange={(newColor: string) => {
                 helper.setValue(newColor);
                 if (setColor) setColor(newColor);
@@ -118,8 +143,8 @@ const ColorPicker = ({ name, color, setColor, label }: ColorPickerProps) => {
                 type="color"
                 className="hidden"
                 // Field handling
-                name={field.value}
-                value={field.value}
+                name={colorValueFormik}
+                value={colorValueFormik}
                 onChange={(e) => {
                   helper.setValue(e.target.value);
                 }}

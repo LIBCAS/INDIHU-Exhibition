@@ -1,16 +1,19 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import { Formik } from "formik";
-import DialogWrap from "../dialog-wrap-noredux-typed";
 
+// Components
+import DialogWrap from "../dialog-wrap-noredux-typed";
 import SequenceForm from "./SequenceForm";
-import { retrieveSequenceSchema } from "./schema";
+
+// Types
 import { SequenceFormData } from "./models";
 
+// Utils
+import { retrieveSequenceSchema } from "./schema";
 import { ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME } from "constants/screen";
 
-// - -
+// - - - - - -
 
 interface SequenceDialogNewProps {
   closeThisDialog: () => void;
@@ -38,6 +41,9 @@ const SequenceDialogNew = ({
         zoom: 2,
         time: 1,
         stayInDetailTime: ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME,
+
+        textColor: undefined,
+        bgColor: undefined,
       }}
       onSubmit={(formData) => {
         onDialogSubmit(formData);

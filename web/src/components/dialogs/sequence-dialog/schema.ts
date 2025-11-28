@@ -9,5 +9,7 @@ export const retrieveSequenceSchema = (t: TFunction) => {
     stayInDetailTime: Yup.number()
       .min(1, t("atLeastOne"))
       .required(t("required")),
+    textColor: Yup.string(),
+    bgColor: Yup.string(),
   });
 };

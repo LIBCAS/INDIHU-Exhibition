@@ -47,6 +47,9 @@ const SequenceDialogEdit = ({
         time: sequence.time ?? 1,
         stayInDetailTime:
           sequence.stayInDetailTime ?? ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME,
+
+        textColor: sequence.textColor ?? undefined,
+        bgColor: sequence.bgColor ?? undefined,
       }}
       onSubmit={(formData) => {
         onDialogSubmit(sequenceIndex, formData);

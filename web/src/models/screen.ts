@@ -114,6 +114,8 @@ export type Sequence = {
   edit?: boolean; // whether being currently edited
   move?: boolean; // whether its infopoint being currently moved
   timeError?: boolean;
+  textColor?: string;
+  bgColor?: string;
 };
 
 export type GameQuizAnswer = {
