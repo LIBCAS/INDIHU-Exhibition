@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo, CSSProperties } from "react";
+import { useMemo, CSSProperties } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { animated, useSpring, useTransition, easings } from "react-spring";
+import { animated, useTransition } from "react-spring";
 
 // Custom hook
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
@@ -10,14 +10,13 @@ import { useZoomPhase } from "./useZoomPhase";
 
 // Models
 import { AppState } from "store/store";
-import { ScreenProps, ZoomScreen, Sequence, Size } from "models";
+import { ScreenProps, ZoomScreen, Size } from "models";
 
 // Utils
 import cx from "classnames";
 
 import { calculateObjectFit } from "utils/object-fit";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
-import { calculateSequenceParameters } from "./zoom-utils";
 
 // - - - - - -
 
@@ -94,62 +93,13 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Zooming functionality - - -
 
-  // NOTE: Initial value is true because screen starts with initial delay, before first sequence
-  const [isDelayActive, setisDelayActive] = useState<boolean>(true);
-
-  const [currSequenceIdx, setCurrSequenceIdx] = useState<number | null>(null);
-
-  const currSequence = useMemo<Sequence | null>(
-    () => (currSequenceIdx === null ? null : sequences[currSequenceIdx]),
-    [sequences, currSequenceIdx]
+  const { currSequence, isDelayActive, zoomStyle } = useZoomPhase(
+    sequences,
+    shouldIncrement,
+    delayTime,
+    { containedImgWidth, containedImgHeight },
+    { widthRatio, heightRatio }
   );
-
-  const { zoomingIn, stayingIn } = useZoomPhase(currSequence) ?? {};
-
-  // - - - Spring - - -
-
-  const [{ zoom, translate }, api] = useSpring(() => ({
-    zoom: 1,
-    translate: 1,
-  }));
-
-  // - - - Effects - - -
-
-  /**
-   * Effect responsible for playing / pausing the sequence animation flow
-   */
-  useEffect(() => {
-    if (!shouldIncrement) {
-      api.pause();
-      return;
-    }
-    api.resume();
-  }, [api, shouldIncrement]);
-
-  /**
-   * Effect responsible for starting and handling the sequence animation flow
-   */
-  useEffect(() => {
-    sequences.reduce((accDelay, seq, seqIdx) => {
-      const { duration } = calculateSequenceParameters(seq);
-
-      api.start({
-        from: { zoom: 0, translate: 0 },
-        to: { zoom: 1, translate: 1 },
-        delay: accDelay,
-        config: { duration: duration }, // easing: easings.easeInOutQuad
-        onStart: () => {
-          setCurrSequenceIdx(seqIdx);
-          setisDelayActive(false);
-        },
-        onResolve: () => {
-          setisDelayActive(true);
-        },
-      });
-
-      return accDelay + duration + delayTime;
-    }, delayTime);
-  }, [sequences, api, delayTime]);
 
   // - - - Animation (tooltip box) - - -
 
@@ -178,36 +128,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
         <animated.img
           className="w-full h-full object-contain"
           src={image}
-          style={
-            currSequence && zoomingIn && stayingIn
-              ? {
-                  scale: zoom
-                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0]) // NOTE: [zooming-in, staying-in-detail, zooming-out] for scale looks like [0, 1, 1, 0]
-                    .to((x) => Math.log2(x + 1)) // NOTE: represents easing function, our custom one, not using predefined
-                    .to([0, 1], [1, currSequence.zoom]), // NOTE: When zooming-in, we need to map value 1 to our real zoom scale value
-                  translateX: translate
-                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
-                    .to(easings.easeOutQuad)
-                    .to(
-                      [0, 1],
-                      [
-                        0,
-                        containedImgWidth / 2 - currSequence.left * widthRatio,
-                      ]
-                    ),
-                  translateY: translate
-                    .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
-                    .to(easings.easeOutQuad)
-                    .to(
-                      [0, 1],
-                      [
-                        0,
-                        containedImgHeight / 2 - currSequence.top * heightRatio,
-                      ]
-                    ),
-                }
-              : undefined
-          }
+          style={zoomStyle}
         />
       )}
 

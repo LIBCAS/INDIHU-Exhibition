@@ -1,4 +1,10 @@
+import { useEffect, useMemo, useState } from "react";
+import { useSpring, easings } from "react-spring";
+
+// Models
 import { Sequence } from "models";
+
+// Utils
 import { calculateSequenceParameters } from "./zoom-utils";
 
 // - - - - - -
@@ -11,20 +17,136 @@ import { calculateSequenceParameters } from "./zoom-utils";
  *
  * This hooks calculates some required animation parameters for a single sequence.
  */
-export const useZoomPhase = (currSeq: Sequence | null) => {
-  if (!currSeq) {
-    return null;
-  }
+export const useZoomPhase = (
+  sequences: Sequence[],
+  shouldIncrement: boolean,
+  delayTime: number,
+  containedImgSize: { containedImgWidth: number; containedImgHeight: number },
+  containedImgRatio: { widthRatio: number; heightRatio: number }
+) => {
+  const { containedImgWidth, containedImgHeight } = containedImgSize;
+  const { widthRatio, heightRatio } = containedImgRatio;
 
-  const { zoomTime, stayTime, duration } = calculateSequenceParameters(currSeq);
+  // - - - States - - -
 
-  // E.g. zoomTime = 10s, stayTime = 20s
-  // This means that the total duration must be 40s
-  // Result will be: [10s, 20s, 40s, 0.25, 0.75]
-  // initialDelay + [0, 0.25, 0.75, 1] --> initialDelay + [0, zoomingIn, stayingIn, 1]
-  // Initial delay, then zooming-in for 10s, then stay-in-detail for 20s, finally zoom-out for 10s
-  const zoomingIn = zoomTime / duration;
-  const stayingIn = (zoomTime + stayTime) / duration;
+  // NOTE: Initial value is true because screen starts with initial delay, before first sequence
+  const [isDelayActive, setisDelayActive] = useState<boolean>(true);
 
-  return { zoomTime, stayTime, duration, zoomingIn, stayingIn };
+  const [currSequenceIdx, setCurrSequenceIdx] = useState<number | null>(null);
+
+  // - - - Main Logic - - -
+
+  /**
+   *
+   */
+  const currSequence = useMemo<Sequence | null>(
+    () => (currSequenceIdx === null ? null : sequences[currSequenceIdx]),
+    [sequences, currSequenceIdx]
+  );
+
+  /**
+   *
+   */
+  const { zoomTime, stayTime, duration } =
+    useMemo(
+      () => (currSequence ? calculateSequenceParameters(currSequence) : null),
+      [currSequence]
+    ) ?? {};
+
+  /**
+   *
+   */
+  const { zoomingIn, stayingIn } =
+    useMemo(() => {
+      if (
+        zoomTime === undefined ||
+        stayTime === undefined ||
+        duration === undefined
+      ) {
+        return null;
+      }
+
+      // E.g. zoomTime = 10s, stayTime = 20s
+      // This means that the total duration must be 40s
+      // Result will be: [10s, 20s, 40s, 0.25, 0.75]
+      // initialDelay + [0, 0.25, 0.75, 1] --> initialDelay + [0, zoomingIn, stayingIn, 1]
+      // Initial delay, then zooming-in for 10s, then stay-in-detail for 20s, finally zoom-out for 10s
+      const zoomingIn = zoomTime / duration;
+      const stayingIn = (zoomTime + stayTime) / duration;
+
+      return { zoomingIn, stayingIn };
+    }, [zoomTime, stayTime, duration]) ?? {};
+
+  // - - - Spring - - -
+
+  const [{ zoom, translate }, api] = useSpring(() => ({
+    zoom: 1,
+    translate: 1,
+  }));
+
+  // - - - Effects - - -
+
+  /**
+   * Effect responsible for playing / pausing the sequence animation flow
+   */
+  useEffect(() => {
+    if (!shouldIncrement) {
+      api.pause();
+      return;
+    }
+    api.resume();
+  }, [api, shouldIncrement]);
+
+  /**
+   * Effect responsible for starting and handling the sequence animation flow
+   */
+  useEffect(() => {
+    sequences.reduce((accDelay, seq, seqIdx) => {
+      const { duration } = calculateSequenceParameters(seq);
+
+      api.start({
+        from: { zoom: 0, translate: 0 },
+        to: { zoom: 1, translate: 1 },
+        delay: accDelay,
+        config: { duration: duration }, // easing: easings.easeInOutQuad
+        onStart: () => {
+          setCurrSequenceIdx(seqIdx);
+          setisDelayActive(false);
+        },
+        onResolve: () => {
+          setisDelayActive(true);
+        },
+      });
+
+      return accDelay + duration + delayTime;
+    }, delayTime);
+  }, [sequences, api, delayTime]);
+
+  // - - - Zoom Styling - - -
+
+  const zoomStyle =
+    currSequence && zoomingIn && stayingIn
+      ? {
+          scale: zoom
+            .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0]) // NOTE: [zooming-in, staying-in-detail, zooming-out] for scale looks like [0, 1, 1, 0]
+            .to((x) => Math.log2(x + 1)) // NOTE: represents easing function, our custom one, not using predefined
+            .to([0, 1], [1, currSequence.zoom]), // NOTE: When zooming-in, we need to map value 1 to our real zoom scale value
+          translateX: translate
+            .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
+            .to(easings.easeOutQuad)
+            .to(
+              [0, 1],
+              [0, containedImgWidth / 2 - currSequence.left * widthRatio]
+            ),
+          translateY: translate
+            .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 0])
+            .to(easings.easeOutQuad)
+            .to(
+              [0, 1],
+              [0, containedImgHeight / 2 - currSequence.top * heightRatio]
+            ),
+        }
+      : undefined;
+
+  return { currSequence, isDelayActive, zoomStyle };
 };
