@@ -216,15 +216,26 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
           currSequence.text && (
             <animated.div
               className={cx(
-                "fixed p-4 max-w-[320px] rounded-none shadow-md shadow-neutral-600 border-solid border-[1px]",
+                "fixed p-4 max-w-[320px] rounded-none shadow-md shadow-neutral-600",
                 {
-                  "border-black": isLightMode,
-                  "border-white": !isLightMode,
+                  "border-solid border-[1px] border-black":
+                    !currSequence.bgColor && isLightMode,
+
+                  "border-solid border-[1px] border-white":
+                    !currSequence.bgColor && !isLightMode,
+
                   ...bgTheming,
                   ...fgTheming,
                 }
               )}
-              style={{ opacity, translateX, ...tooltipStyle }}
+              style={{
+                opacity,
+                translateX,
+                ...tooltipStyle,
+                // Override global theming settings if local sequence has these colors set
+                backgroundColor: currSequence.bgColor ?? undefined,
+                color: currSequence.textColor ?? undefined,
+              }}
             >
               {currSequence.text}
             </animated.div>
