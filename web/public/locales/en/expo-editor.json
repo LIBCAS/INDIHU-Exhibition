@@ -159,7 +159,8 @@
       "seqTableTitle": "Zoom sequence",
       "seqTableOrderCol": "Order",
       "seqTableDescCol": "Description",
-      "seqTableActionCol": "Actions"
+      "seqTableActionCol": "Actions",
+      "missingTextForSequence": "There is no text associated with this sequence."
     },
     "slideshowScreen": {
       "imageBoxTitle": "Image",

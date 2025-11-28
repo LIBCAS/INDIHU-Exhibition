@@ -159,7 +159,8 @@
       "seqTableTitle": "Sekvence zoomu",
       "seqTableOrderCol": "Pořadí",
       "seqTableDescCol": "Popis",
-      "seqTableActionCol": "Akce"
+      "seqTableActionCol": "Akce",
+      "missingTextForSequence": "K této sekvenci není přiřazen žádný text."
     },
     "slideshowScreen": {
       "imageBoxTitle": "Obrázek",

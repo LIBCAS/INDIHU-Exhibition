@@ -150,8 +150,14 @@ const SequencesTable = ({
                     </FontIcon>
                   </div>
                 </td>
-                <td className="nowrap overflow-hidden text-ellipsis">
-                  {seq.text}
+                <td
+                  className={cx("nowrap overflow-hidden text-ellipsis", {
+                    italic: !seq.text,
+                  })}
+                >
+                  {seq.text
+                    ? seq.text
+                    : t("descFields.imageZoomScreen.missingTextForSequence")}
                 </td>
                 <td>
                   <div className="w-full flex justify-end items-center">
