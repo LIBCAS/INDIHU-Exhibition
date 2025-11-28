@@ -496,7 +496,10 @@
     "sequenceDescriptionHelpText": "Enter a zoom description",
     "sequenceZoomLabel": "Zoom size",
     "sequenceZoomTimeLabel": "Zoom duration",
-    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail"
+    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail",
+    "sequenceTextColorLabel": "Text color",
+    "sequenceBgColorLabel": "Background color",
+    "sequenceBorderColorLabel": "Border color"
   },
   "imageBox": {
     "emptySelectLabel": "Select",

@@ -88,19 +88,19 @@ const SequenceForm = (_props: SequenceFormProps) => {
 
         <ColorPicker
           name="textColor"
-          label="TODO - Farba textu"
+          label={t("sequenceTextColorLabel")}
           backupColor={backupTextColor}
         />
 
         <ColorPicker
           name="bgColor"
-          label="TODO - Farba pozadia"
+          label={t("sequenceBgColorLabel")}
           backupColor={backupBgColor}
         />
 
         <ColorPicker
           name="borderColor"
-          label="TODO - Farba rámiku"
+          label={t("sequenceBorderColorLabel")}
           backupColor={backupBorderColor}
         />
       </div>

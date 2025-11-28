@@ -496,7 +496,10 @@
     "sequenceDescriptionHelpText": "Vložte popis přiblížení",
     "sequenceZoomLabel": "Přiblížení",
     "sequenceZoomTimeLabel": "Doba přiblížení",
-    "sequenceStayOnDetailTimeLabel": "Doba setrvání na detailu"
+    "sequenceStayOnDetailTimeLabel": "Doba setrvání na detailu",
+    "sequenceTextColorLabel": "Barva textu",
+    "sequenceBgColorLabel": "Barva pozadí",
+    "sequenceBorderColorLabel": "Barva rámečku"
   },
   "imageBox": {
     "emptySelectLabel": "Vybrat",
