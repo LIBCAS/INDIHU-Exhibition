@@ -65,7 +65,7 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
               itemLabel="label"
               itemValue="value"
               position="below"
-              defaultValue={activeScreen.tooltipPosition}
+              defaultValue={activeScreen.tooltipPosition ?? "TOP_LEFT"}
               onChange={(newTooltipPosition: "TOP_LEFT" | "TOP_RIGHT") => {
                 dispatch(
                   updateScreenData({ tooltipPosition: newTooltipPosition })
