@@ -20,19 +20,32 @@ const stateSelector = createSelector(
 // - - - - - -
 
 export const useExpoDesignData = () => {
+  // NOTE: activeExpo is present inside administration screens, viewExpo is present inside view screens
   const { viewExpo, activeExpo } = useSelector(stateSelector);
 
+  /**
+   * Returns the exposition design data for the current exposition,
+   * whether the user is in the administration section or viewing screens.
+   */
   const expositionDesignData = useMemo<ThemeFormDataProcessed | undefined>(
     () => viewExpo?.expositionDesignData ?? activeExpo?.expositionDesignData,
     [activeExpo?.expositionDesignData, viewExpo?.expositionDesignData]
   );
 
-  const isLightMode = useMemo(
-    () => !expositionDesignData || expositionDesignData.theme === "LIGHT",
-    [expositionDesignData]
+  /**
+   * In administration screens, light mode is always forced (because activeExpo is set).
+   * In view screens, light mode is used only if it is explicitly configured.
+   */
+  const isLightMode = useMemo<boolean>(
+    () =>
+      activeExpo !== undefined ||
+      expositionDesignData === undefined ||
+      expositionDesignData.theme === "LIGHT",
+    [activeExpo, expositionDesignData]
   );
 
-  // Applying tailwind classes based on selected theme
+  // - - - Applying tailwind classes, based on the currently active theme - - -
+
   const bgTheming = {
     "bg-light-mode-b": isLightMode,
     "bg-dark-mode-b": !isLightMode,
@@ -45,7 +58,8 @@ export const useExpoDesignData = () => {
 
   const bgFgTheming = { ...bgTheming, ...fgTheming };
 
-  // Applying theme tailwind classes  only if additional constraint is true
+  // - - - Applying tailwind classes, only if additional constraint is true - - -
+
   const bgThemingIf = (constraint: boolean) => {
     if (constraint) {
       return bgTheming;
@@ -66,6 +80,8 @@ export const useExpoDesignData = () => {
     }
     return {};
   };
+
+  // - - - Return value - - -
 
   return {
     expoDesignData: expositionDesignData,
