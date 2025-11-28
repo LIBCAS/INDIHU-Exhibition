@@ -212,7 +212,8 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
       {infoTransition(
         ({ opacity, translateX }, currSequence) =>
-          currSequence && (
+          currSequence &&
+          currSequence.text && (
             <animated.div
               className={cx(
                 "fixed p-4 shadow-md text-black bg-white max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw] overflow-x-hidden text-ellipsis",
