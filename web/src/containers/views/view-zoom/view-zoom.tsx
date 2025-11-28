@@ -32,7 +32,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   const { image } = screenPreloadedFiles;
   const { viewScreen, shouldIncrement } = useSelector(stateSelector);
 
-  const { bgTheming, fgTheming } = useExpoDesignData();
+  const { bgTheming, fgTheming, isLightMode } = useExpoDesignData();
 
   // - - - Derived variables (settings) - - -
 
@@ -216,8 +216,10 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
           currSequence.text && (
             <animated.div
               className={cx(
-                "fixed p-4 shadow-md text-black bg-white max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw] overflow-x-hidden text-ellipsis",
+                "fixed p-4 max-w-[320px] rounded-none shadow-md shadow-neutral-600 border-solid border-[1px]",
                 {
+                  "border-black": isLightMode,
+                  "border-white": !isLightMode,
                   ...bgTheming,
                   ...fgTheming,
                 }
