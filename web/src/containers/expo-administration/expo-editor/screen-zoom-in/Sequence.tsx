@@ -127,7 +127,7 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
             }}
             helpIconId="editor-zoom-in-image"
             helpIconLabel={t("descFields.imageZoomScreen.imageBoxTooltip")}
-            infopoints={activeScreen.sequences}
+            infopoints={activeScreen.sequences ?? []}
             onInfopointMove={(
               movedInfopointIndex,
               newLeftPosition,
