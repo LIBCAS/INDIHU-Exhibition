@@ -55,14 +55,13 @@ export const calculateSequenceParameters = (
 export const calculateTotalSequencesTime = (
   sequences: Sequence[],
   delayTime: number,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   zoomType: ZoomType = "reset-after-zoom"
 ) => {
   const initialDelay = delayTime;
 
   // NOTE: One delay is at the beginning + then one delay between sequences + finally one last delay in the end
   const totalTimeInMiliseconds = sequences.reduce((acc, seq) => {
-    const { duration } = calculateSequenceParameters(seq);
+    const { duration } = calculateSequenceParameters(seq, zoomType);
     return acc + duration + delayTime;
   }, initialDelay);
 
