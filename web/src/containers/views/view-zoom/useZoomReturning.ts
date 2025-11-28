@@ -10,14 +10,14 @@ import { calculateSequenceParameters } from "./zoom-utils";
 // - - - - - -
 
 /**
- * As previously mentioned, one whole zoom sequence animation consists of three phases: zoom in, stay in, zoom out.
- * As previously mentioned, there is one initial delay, one delay between each sequence, one final delay.
+ * One single zoom sequence consists of three phases: **Zoom-in**, **Stay-in**, **Zoom-out**.
+ * Before the first zoom sequence, there is one initial delay.
+ * After each zoom sequence, before going to the next zoom, there is also one delay.
  *
- * Example: Initial delay -> Zoom-in -> Stay-in-detail -> Zoom-out -> Delay -> ... -> Final delay
- *
- * This hooks calculates some required animation parameters for a single sequence.
+ * Example: Initial delay -> Seq 1 -> Delay -> Seq 2 -> Delay -> Seq 3 -> Delay.
+ * Each sequence has three phases as mentioned previously.
  */
-export const useZoomPhase = (
+export const useZoomReturning = (
   sequences: Sequence[],
   shouldIncrement: boolean,
   delayTime: number,
