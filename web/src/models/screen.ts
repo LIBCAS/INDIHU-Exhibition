@@ -119,6 +119,8 @@ export type Sequence = {
   borderColor?: string;
 };
 
+export type ZoomType = "reset-after-zoom" | "continuous-zoom";
+
 export type GameQuizAnswer = {
   correct: boolean;
   text: string;
