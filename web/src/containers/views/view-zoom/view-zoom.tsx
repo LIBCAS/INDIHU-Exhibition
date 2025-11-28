@@ -14,9 +14,10 @@ import { ScreenProps, ZoomScreen, Sequence, Size } from "models";
 
 // Utils
 import cx from "classnames";
-import { calculateSequenceParameters } from "./useZoomPhase";
+
 import { calculateObjectFit } from "utils/object-fit";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
+import { calculateSequenceParameters } from "./zoom-utils";
 
 // - - - - - -
 

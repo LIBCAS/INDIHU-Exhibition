@@ -17,8 +17,9 @@ import {
   ZoomScreen,
 } from "models";
 
+// Utils
 import { find } from "lodash";
-import { calculateTotalSequencesTime } from "containers/views/view-zoom/useZoomPhase";
+import { calculateTotalSequencesTime } from "containers/views/view-zoom/zoom-utils";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
 
 // - -
