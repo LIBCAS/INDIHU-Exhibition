@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSpring, easings } from "react-spring";
 
 // Models
-import { Sequence } from "models";
+import { Sequence, ZoomType } from "models";
 
 // Utils
 import { calculateSequenceParameters } from "./zoom-utils";
@@ -22,7 +22,8 @@ export const useZoomReturning = (
   shouldIncrement: boolean,
   delayTime: number,
   containedImgSize: { containedImgWidth: number; containedImgHeight: number },
-  containedImgRatio: { widthRatio: number; heightRatio: number }
+  containedImgRatio: { widthRatio: number; heightRatio: number },
+  zoomType: ZoomType
 ) => {
   const { containedImgWidth, containedImgHeight } = containedImgSize;
   const { widthRatio, heightRatio } = containedImgRatio;
@@ -47,13 +48,31 @@ export const useZoomReturning = (
   /**
    *
    */
+  const prevSequence = useMemo<Sequence | null>(() => {
+    if (currSequenceIdx === null || currSequenceIdx <= 0) {
+      return null;
+    }
+    return sequences[currSequenceIdx - 1];
+  }, [sequences, currSequenceIdx]);
+
+  /**
+   *
+   */
+  // const isFinalDelay = useMemo<boolean>(
+  //   () => currSequenceIdx === sequences.length - 1 && isDelayActive,
+  //   [sequences.length, currSequenceIdx, isDelayActive]
+  // );
+
+  /**
+   *
+   */
   const { zoomTime, stayTime, duration } =
     useMemo(
       () =>
         currSequence
-          ? calculateSequenceParameters(currSequence, "RESET_AFTER_ZOOM")
+          ? calculateSequenceParameters(currSequence, zoomType)
           : null,
-      [currSequence]
+      [currSequence, zoomType]
     ) ?? {};
 
   /**
@@ -69,7 +88,7 @@ export const useZoomReturning = (
         return null;
       }
 
-      // E.g. zoomTime = 10s, stayTime = 20s
+      // E.g. zoomTime = 10s, stayTime = 20s, zoomType = 'RESET_AFTER_ZOOM'
       // This means that the total duration must be 40s
       // Result will be: [10s, 20s, 40s, 0.25, 0.75]
       // initialDelay + [0, 0.25, 0.75, 1] --> initialDelay + [0, zoomingIn, stayingIn, 1]
@@ -105,7 +124,7 @@ export const useZoomReturning = (
    */
   useEffect(() => {
     sequences.reduce((accDelay, seq, seqIdx) => {
-      const { duration } = calculateSequenceParameters(seq, "RESET_AFTER_ZOOM");
+      const { duration } = calculateSequenceParameters(seq, zoomType);
 
       api.start({
         from: { zoom: 0, translate: 0 },
@@ -123,9 +142,9 @@ export const useZoomReturning = (
 
       return accDelay + duration + delayTime;
     }, delayTime);
-  }, [sequences, api, delayTime]);
+  }, [sequences, delayTime, zoomType, api]);
 
-  // - - - Zoom Styling - - -
+  // - - - Zoom Styling (common) - - -
 
   const getTranslation = useCallback(
     (currSeq: Sequence) => {
@@ -138,7 +157,9 @@ export const useZoomReturning = (
     [containedImgWidth, containedImgHeight, widthRatio, heightRatio]
   );
 
-  const zoomStyle =
+  // - - - Zoom Styling (reset-after-zoom) - - -
+
+  const zoomStyleReset =
     currSequence && zoomingIn && stayingIn
       ? {
           scale: zoom
@@ -157,6 +178,50 @@ export const useZoomReturning = (
             .to([0, 1], [0, getTranslation(currSequence).y]),
         }
       : undefined;
+
+  // - - - Zoom Styling (continuous-zoom)
+
+  const fromZoom = currSequenceIdx === 0 ? 1 : prevSequence?.zoom ?? 1;
+  const fromTarget =
+    currSequenceIdx === 0 || prevSequence === null
+      ? { x: 0, y: 0 }
+      : getTranslation(prevSequence);
+
+  // NOTE: To immediately return to center (without animation), add isFinalDelay condition
+  const toZoom = currSequence?.zoom ?? 1;
+  const toTarget =
+    currSequence === null ? { x: 0, y: 0 } : getTranslation(currSequence);
+
+  const zoomStyleContinuous =
+    currSequence && zoomingIn && stayingIn
+      ? {
+          scale: zoom.to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 1]).to((v) => {
+            const result = fromZoom + (toZoom - fromZoom) * v;
+            return result;
+          }),
+
+          translateX: translate
+            .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 1])
+            .to(easings.easeOutQuad)
+            .to((v) => {
+              const result = fromTarget.x + (toTarget.x - fromTarget.x) * v;
+              return result;
+            }),
+
+          translateY: translate
+            .to([0, zoomingIn, stayingIn, 1], [0, 1, 1, 1])
+            .to(easings.easeOutQuad)
+            .to((v) => {
+              const result = fromTarget.y + (toTarget.y - fromTarget.y) * v;
+              return result;
+            }),
+        }
+      : undefined;
+
+  // - - - Return Value - - -
+
+  const zoomStyle =
+    zoomType === "RESET_AFTER_ZOOM" ? zoomStyleReset : zoomStyleContinuous;
 
   return { currSequence, isDelayActive, zoomStyle };
 };

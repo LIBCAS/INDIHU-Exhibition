@@ -17,7 +17,7 @@ import { ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME } from "constants/screen";
  */
 export const calculateSequenceParameters = (
   seq: Sequence,
-  zoomType: ZoomType = "RESET_AFTER_ZOOM"
+  zoomType: ZoomType
 ) => {
   const zoomTime = (seq.time ?? 2) * 1000;
   const stayTime =
@@ -55,7 +55,7 @@ export const calculateSequenceParameters = (
 export const calculateTotalSequencesTime = (
   sequences: Sequence[],
   delayTime: number,
-  zoomType: ZoomType = "RESET_AFTER_ZOOM"
+  zoomType: ZoomType
 ) => {
   const initialDelay = delayTime;
 

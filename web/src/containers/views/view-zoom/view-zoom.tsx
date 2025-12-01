@@ -10,7 +10,7 @@ import { useZoomReturning } from "./useZoomReturning";
 
 // Models
 import { AppState } from "store/store";
-import { ScreenProps, ZoomScreen, Size } from "models";
+import { ScreenProps, ZoomScreen, Size, ZoomType } from "models";
 
 // Utils
 import cx from "classnames";
@@ -35,6 +35,11 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
   const { bgTheming, fgTheming, isLightMode } = useExpoDesignData();
 
   // - - - Derived variables (settings) - - -
+
+  const zoomType = useMemo<ZoomType>(
+    () => viewScreen.zoomType ?? "RESET_AFTER_ZOOM",
+    [viewScreen.zoomType]
+  );
 
   const sequences = useMemo(
     () => viewScreen.sequences ?? [],
@@ -98,7 +103,8 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     shouldIncrement,
     delayTime,
     { containedImgWidth, containedImgHeight },
-    { widthRatio, heightRatio }
+    { widthRatio, heightRatio },
+    zoomType
   );
 
   // - - - Animation (tooltip box) - - -
