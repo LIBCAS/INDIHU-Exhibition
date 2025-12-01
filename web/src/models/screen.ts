@@ -16,6 +16,7 @@ import {
   GameQuizType,
   GameQuizAnswerDisplayType,
   ZoomInTooltipPositionType,
+  ZoomType,
   ImageChangeAnimationType,
   ImageChangeRodPositionType,
   ImageChangeGradualTransitionBeginPositionType,
@@ -114,6 +115,9 @@ export type Sequence = {
   edit?: boolean; // whether being currently edited
   move?: boolean; // whether its infopoint being currently moved
   timeError?: boolean;
+  textColor?: string;
+  bgColor?: string;
+  borderColor?: string;
 };
 
 export type GameQuizAnswer = {
@@ -341,6 +345,7 @@ export type ZoomScreen = {
   muteChapterMusic?: boolean;
   screenCompleted?: boolean;
   screenBgColor?: string | null;
+  zoomType?: ZoomType;
 };
 
 export type ImageChangeScreen = {

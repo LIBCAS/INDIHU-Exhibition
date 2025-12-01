@@ -152,6 +152,10 @@
       "zoomPositionTopRightOption": "Vpravo hore",
       "seqDelayLabel": "Oneskorenie medzi sekvenciami",
       "seqDelayTooltip": "Doba, ktorá uplynie predtým, ako sa začne nová sekvencia po tom, čo skončila predošlá.",
+      "zoomTypeLabel": "Vyberte typ priblíženia",
+      "zoomTypeTooltip": "Vyberte si jednu z dostupných animačných možností priblíženia. Ak chcete, aby priblíženie plynule prešlo z jedného bodu na druhý bez návratu na celkový pohľad, zvoľte možnosť priblíženia bez návratu na celok.",
+      "zoomTypeResetAfterZoomOption": "Priblíženie s návratom na celok",
+      "zoomTypeContinuousZoomOption": "Priblíženie bez návratu na celok",
       "imageBoxTitle": "Obrázok",
       "imageBoxTooltip": "Hlavný obrázok, nad ktorým sa vykonáva zoom. V tabuľke so sekvenciou zoomov môžete pridať nový bod pre zoom a umiestniť ho na obrázok. V tabuľke potom k tomuto bodu záujmu vyberte úroveň zoomu a dĺžku trvania animácie.",
       "totalScreenTime": "Celkový čas zobrazenia obrazovky:",
@@ -159,7 +163,8 @@
       "seqTableTitle": "Sekvencia zoomu",
       "seqTableOrderCol": "Poradie",
       "seqTableDescCol": "Popis",
-      "seqTableActionCol": "Akcia"
+      "seqTableActionCol": "Akcia",
+      "missingTextForSequence": "K tejto sekvencii nie je priradený žiadny text."
     },
     "slideshowScreen": {
       "imageBoxTitle": "Obrázok",
@@ -495,7 +500,10 @@
     "sequenceDescriptionHelpText": "Vložte popis priblíženia",
     "sequenceZoomLabel": "Priblíženie",
     "sequenceZoomTimeLabel": "Doba priblíženia",
-    "sequenceStayOnDetailTimeLabel": "Doba zotrvania na detaile"
+    "sequenceStayOnDetailTimeLabel": "Doba zotrvania na detaile",
+    "sequenceTextColorLabel": "Farba textu",
+    "sequenceBgColorLabel": "Farba pozadia",
+    "sequenceBorderColorLabel": "Farba rámika"
   },
   "imageBox": {
     "emptySelectLabel": "Vybrať",

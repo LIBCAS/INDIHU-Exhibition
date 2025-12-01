@@ -1,14 +1,21 @@
+import { useMemo } from "react";
 import { Form, FormikProps } from "formik";
-import { SequenceFormData } from "./models";
+import { useTranslation } from "react-i18next";
+
+// Hooks
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import {
   ReactMdTextField,
   ReactMdSelectField,
 } from "components/form/formik/react-md";
-import { useTranslation } from "react-i18next";
+import ColorPicker from "components/form/formik/ColorPicker";
 
-// - -
+// Types
+import { SequenceFormData } from "./models";
+
+// - - - - - -
 
 interface SequenceFormProps {
   formik: FormikProps<SequenceFormData>;
@@ -16,6 +23,23 @@ interface SequenceFormProps {
 
 const SequenceForm = (_props: SequenceFormProps) => {
   const { t } = useTranslation("expo-editor", { keyPrefix: "sequenceForm" });
+
+  const { isLightMode, palette } = useExpoDesignData();
+
+  const backupTextColor = useMemo(
+    () => (isLightMode ? palette["light-mode-f"] : palette["dark-mode-f"]),
+    [isLightMode, palette]
+  );
+
+  const backupBgColor = useMemo(
+    () => (isLightMode ? palette["light-mode-b"] : palette["dark-mode-b"]),
+    [isLightMode, palette]
+  );
+
+  const backupBorderColor = useMemo(
+    () => (isLightMode ? palette["light-mode-f"] : palette["dark-mode-f"]),
+    [isLightMode, palette]
+  );
 
   return (
     <Form>
@@ -61,6 +85,24 @@ const SequenceForm = (_props: SequenceFormProps) => {
             parseAsFloat
           />
         </div>
+
+        <ColorPicker
+          name="textColor"
+          label={t("sequenceTextColorLabel")}
+          backupColor={backupTextColor}
+        />
+
+        <ColorPicker
+          name="bgColor"
+          label={t("sequenceBgColorLabel")}
+          backupColor={backupBgColor}
+        />
+
+        <ColorPicker
+          name="borderColor"
+          label={t("sequenceBorderColorLabel")}
+          backupColor={backupBorderColor}
+        />
       </div>
     </Form>
   );

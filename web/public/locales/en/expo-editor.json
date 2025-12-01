@@ -154,12 +154,17 @@
       "seqDelayTooltip": "The time that elapses before a new sequence starts after the previous one has ended.",
       "imageBoxTitle": "Image",
       "imageBoxTooltip": "Main image being zoomed over. In the zoom sequence table, you can add a new zoom point and place it on the image. In the table, select the zoom level and animation duration for this point of interest.",
+      "zoomTypeLabel": "Select zoom type",
+      "zoomTypeTooltip": "Choose one of the available zoom animation options. If you want the zoom to smoothly transition from one point to another without returning to the full view, select the continuous zoom option.",
+      "zoomTypeResetAfterZoomOption": "Zoom with return to full view",
+      "zoomTypeContinuousZoomOption": "Continuous zoom without return to full view",
       "totalScreenTime": "Total screen time:",
       "seconds": "seconds",
       "seqTableTitle": "Zoom sequence",
       "seqTableOrderCol": "Order",
       "seqTableDescCol": "Description",
-      "seqTableActionCol": "Actions"
+      "seqTableActionCol": "Actions",
+      "missingTextForSequence": "There is no text associated with this sequence."
     },
     "slideshowScreen": {
       "imageBoxTitle": "Image",
@@ -495,7 +500,10 @@
     "sequenceDescriptionHelpText": "Enter a zoom description",
     "sequenceZoomLabel": "Zoom size",
     "sequenceZoomTimeLabel": "Zoom duration",
-    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail"
+    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail",
+    "sequenceTextColorLabel": "Text color",
+    "sequenceBgColorLabel": "Background color",
+    "sequenceBorderColorLabel": "Border color"
   },
   "imageBox": {
     "emptySelectLabel": "Select",
