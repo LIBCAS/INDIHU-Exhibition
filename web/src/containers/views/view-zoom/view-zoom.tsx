@@ -6,7 +6,7 @@ import { animated, useTransition } from "react-spring";
 // Custom hook
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import useResizeObserver from "hooks/use-resize-observer";
-import { useZoomReturning } from "./useZoomReturning";
+import { useZoom } from "./useZoom";
 
 // Models
 import { AppState } from "store/store";
@@ -98,7 +98,7 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Zooming functionality - - -
 
-  const { currSequence, isDelayActive, zoomStyle } = useZoomReturning(
+  const { currSequence, isDelayActive, zoomStyle } = useZoom(
     sequences,
     shouldIncrement,
     delayTime,

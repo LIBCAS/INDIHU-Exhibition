@@ -17,7 +17,7 @@ import { calculateSequenceParameters } from "./zoom-utils";
  * Example: Initial delay -> Seq 1 -> Delay -> Seq 2 -> Delay -> Seq 3 -> Delay.
  * Each sequence has three phases as mentioned previously.
  */
-export const useZoomReturning = (
+export const useZoom = (
   sequences: Sequence[],
   shouldIncrement: boolean,
   delayTime: number,
