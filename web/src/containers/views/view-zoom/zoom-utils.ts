@@ -17,7 +17,7 @@ import { ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME } from "constants/screen";
  */
 export const calculateSequenceParameters = (
   seq: Sequence,
-  zoomType: ZoomType = "reset-after-zoom"
+  zoomType: ZoomType = "RESET_AFTER_ZOOM"
 ) => {
   const zoomTime = (seq.time ?? 2) * 1000;
   const stayTime =
@@ -25,9 +25,9 @@ export const calculateSequenceParameters = (
 
   let duration;
 
-  if (zoomType === "reset-after-zoom") {
+  if (zoomType === "RESET_AFTER_ZOOM") {
     duration = zoomTime + stayTime + zoomTime; // NOTE: zoom-in, stay-in, zoom-out
-  } else if (zoomType === "continuous-zoom") {
+  } else if (zoomType === "CONTINUOUS_ZOOM") {
     duration = zoomTime + stayTime; // NOTE: zoom-in, stay-in (missing zoom-out phase)
   } else {
     const errMsg = `[calculateSequenceParameters]: Unknown zoom type ${zoomType}`;
@@ -55,7 +55,7 @@ export const calculateSequenceParameters = (
 export const calculateTotalSequencesTime = (
   sequences: Sequence[],
   delayTime: number,
-  zoomType: ZoomType = "reset-after-zoom"
+  zoomType: ZoomType = "RESET_AFTER_ZOOM"
 ) => {
   const initialDelay = delayTime;
 

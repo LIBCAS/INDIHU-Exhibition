@@ -3,6 +3,7 @@ import {
   GameQuizEnum,
   GameQuizTextDisplayEnum,
   ZoomInTooltipPositionEnum,
+  ZoomTypeEnum,
   ImageChangeAnimationEnum,
   ImageChangeGradualTransitionBeginPositionEnum,
   SignpostReferenceEnum,
@@ -25,6 +26,7 @@ export type GameQuizType = keyof typeof GameQuizEnum;
 export type GameQuizAnswerDisplayType = keyof typeof GameQuizTextDisplayEnum;
 
 export type ZoomInTooltipPositionType = keyof typeof ZoomInTooltipPositionEnum;
+export type ZoomType = keyof typeof ZoomTypeEnum;
 
 export type ImageChangeAnimationType = keyof typeof ImageChangeAnimationEnum;
 export type ImageChangeRodPositionType = "0" | "0.25" | "0.5" | "0.75" | "1"; // TODO

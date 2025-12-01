@@ -41,7 +41,7 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
   const totalZoomScreenTime = calculateTotalSequencesTime(
     activeScreen.sequences ?? [],
     (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000,
-    "reset-after-zoom"
+    "RESET_AFTER_ZOOM"
   );
 
   return (

@@ -16,6 +16,7 @@ import {
   GameQuizType,
   GameQuizAnswerDisplayType,
   ZoomInTooltipPositionType,
+  ZoomType,
   ImageChangeAnimationType,
   ImageChangeRodPositionType,
   ImageChangeGradualTransitionBeginPositionType,
@@ -118,8 +119,6 @@ export type Sequence = {
   bgColor?: string;
   borderColor?: string;
 };
-
-export type ZoomType = "reset-after-zoom" | "continuous-zoom";
 
 export type GameQuizAnswer = {
   correct: boolean;
@@ -346,6 +345,7 @@ export type ZoomScreen = {
   muteChapterMusic?: boolean;
   screenCompleted?: boolean;
   screenBgColor?: string | null;
+  zoomType?: ZoomType;
 };
 
 export type ImageChangeScreen = {

@@ -51,7 +51,7 @@ export const useZoomReturning = (
     useMemo(
       () =>
         currSequence
-          ? calculateSequenceParameters(currSequence, "reset-after-zoom")
+          ? calculateSequenceParameters(currSequence, "RESET_AFTER_ZOOM")
           : null,
       [currSequence]
     ) ?? {};
@@ -105,7 +105,7 @@ export const useZoomReturning = (
    */
   useEffect(() => {
     sequences.reduce((accDelay, seq, seqIdx) => {
-      const { duration } = calculateSequenceParameters(seq, "reset-after-zoom");
+      const { duration } = calculateSequenceParameters(seq, "RESET_AFTER_ZOOM");
 
       api.start({
         from: { zoom: 0, translate: 0 },

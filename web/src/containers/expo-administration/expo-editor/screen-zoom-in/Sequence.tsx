@@ -35,6 +35,9 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
     dispatch(updateScreenData({ image: imgFile.id, sequences: [] }));
   };
 
+  /**
+   *
+   */
   useEffect(() => {
     dispatch(updateScreenData({ time: totalZoomScreenTime }));
   }, [totalZoomScreenTime, dispatch]);
