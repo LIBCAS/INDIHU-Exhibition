@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouteMatch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -37,12 +38,21 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
   const zoomInProps = props as ScreenEditorZoomInProps;
   const { activeScreen, url } = zoomInProps;
 
-  //
-  const totalZoomScreenTime = calculateTotalSequencesTime(
-    activeScreen.sequences ?? [],
-    (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000,
-    "RESET_AFTER_ZOOM"
-  );
+  /**
+   *
+   */
+  const totalZoomScreenTime = useMemo(() => {
+    const sequences = activeScreen.sequences ?? [];
+    const seqDelayTime =
+      (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000;
+    const zoomType = activeScreen.zoomType ?? "RESET_AFTER_ZOOM";
+
+    return calculateTotalSequencesTime(sequences, seqDelayTime, zoomType);
+  }, [
+    activeScreen.sequences,
+    activeScreen.seqDelayTime,
+    activeScreen.zoomType,
+  ]);
 
   return (
     <div>
