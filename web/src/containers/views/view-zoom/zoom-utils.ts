@@ -44,9 +44,9 @@ export const calculateSequenceParameters = (
  * Calculates the total duration of all sequence animations of which one zoom screen is composed of.
  * This result also represents the total duration of the whole zoom screen (total screen time).
  *
- * The result includes:
+ * The result may include:
+ * - one initial delay
  * - the duration of every sequence (summary of all of its phases),
- * - one initial delay,
  * - a delay between each sequence,
  * - and one final delay at the end.
  *
