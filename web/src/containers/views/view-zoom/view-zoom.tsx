@@ -17,6 +17,7 @@ import cx from "classnames";
 
 import { calculateObjectFit } from "utils/object-fit";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
+import { generateFakeSequence } from "./zoom-utils";
 
 // - - - - - -
 
@@ -41,9 +42,9 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen.zoomType]
   );
 
-  const sequences = useMemo(
-    () => viewScreen.sequences ?? [],
-    [viewScreen.sequences]
+  const imageOrigData = useMemo<Size>(
+    () => viewScreen.imageOrigData ?? { width: 0, height: 0 },
+    [viewScreen.imageOrigData]
   );
 
   const delayTime = useMemo(
@@ -51,6 +52,17 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
       (viewScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000,
     [viewScreen.seqDelayTime]
   );
+
+  const sequences = useMemo(() => {
+    const baseSequences = viewScreen.sequences ?? [];
+    if (zoomType === "RESET_AFTER_ZOOM") {
+      return baseSequences;
+    }
+
+    const fakeSequence = generateFakeSequence(imageOrigData, delayTime);
+    const extendedSequences = [...baseSequences, fakeSequence];
+    return extendedSequences;
+  }, [viewScreen.sequences, zoomType, imageOrigData, delayTime]);
 
   const isTooltipPositionRight = useMemo(
     () => (viewScreen.tooltipPosition === "TOP_RIGHT" ? true : false),
@@ -63,11 +75,6 @@ export const ViewZoom = ({ screenPreloadedFiles }: ScreenProps) => {
     }
     return { top: 20, left: 20 };
   }, [isTooltipPositionRight]);
-
-  const imageOrigData = useMemo<Size>(
-    () => viewScreen.imageOrigData ?? { width: 0, height: 0 },
-    [viewScreen.imageOrigData]
-  );
 
   // - - - Contained image - - -
 

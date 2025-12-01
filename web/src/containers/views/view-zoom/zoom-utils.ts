@@ -1,4 +1,4 @@
-import { Sequence, ZoomType } from "models";
+import { ImageOrigData, Sequence, ZoomType } from "models";
 import { ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME } from "constants/screen";
 
 // - - - - - -
@@ -60,11 +60,44 @@ export const calculateTotalSequencesTime = (
   const initialDelay = delayTime;
 
   // NOTE: One delay is at the beginning + then one delay between sequences + finally one last delay in the end
-  const totalTimeInMiliseconds = sequences.reduce((acc, seq) => {
+  let totalTimeInMiliseconds = sequences.reduce((acc, seq) => {
     const { duration } = calculateSequenceParameters(seq, zoomType);
     return acc + duration + delayTime;
   }, initialDelay);
 
+  if (zoomType === "RESET_AFTER_ZOOM") {
+    const totalTimeInSeconds = Math.round(totalTimeInMiliseconds / 1000);
+    return totalTimeInSeconds;
+  }
+
+  // NOTE: When using 'CONTINUOUS_ZOOM', we need to add some extra time for our fake sequence
+  // One delay time as zoomTime, to return back to center with zoom 1, second delay time to stay there for some time
+  totalTimeInMiliseconds = totalTimeInMiliseconds + delayTime + delayTime;
   const totalTimeInSeconds = Math.round(totalTimeInMiliseconds / 1000);
   return totalTimeInSeconds;
+};
+
+// - - - - - -
+
+/**
+ * When using zoomType as 'CONTINUOUS_ZOOM', we need to use one additional extra fake sequence.
+ * The purpose of this last fake sequence is to go from last sequence animation back to the center.
+ *
+ * In order that this fake sequence is perfectly centered, we need:
+ * - to use zoom scale 1
+ * - empty text so its not being displayed as real sequence
+ * - left and top coordinates needs to be derived from the image used as background
+ */
+export const generateFakeSequence = (
+  imageOrigData: ImageOrigData,
+  delayTime: number
+): Sequence => {
+  const fakeSequence: Sequence = {
+    left: imageOrigData.width / 2,
+    top: imageOrigData.height / 2,
+    text: "", // NOTE: Empty text is not displayed
+    zoom: 1,
+    time: delayTime / 1000, // NOTE: we need seconds here
+  };
+  return fakeSequence;
 };
