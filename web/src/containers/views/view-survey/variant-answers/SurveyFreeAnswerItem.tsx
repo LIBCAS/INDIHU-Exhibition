@@ -47,7 +47,10 @@ const SurveyFreeAnswerItem = ({
   return (
     <Grid item xs={12} sm={12} md={6} lg={6} xl={4}>
       <div
-        onClick={() => handleMarkThisAnswer()}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleMarkThisAnswer();
+        }}
         className={cx(
           "relative h-full flex flex-col gap-0 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer",
           {

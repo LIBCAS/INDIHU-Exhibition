@@ -86,10 +86,18 @@ export const ViewSurvey = ({
     dispatch(setScreensInfo({ isSurveyFreeAsnwerMarked: true }));
   }, [dispatch]);
 
+  const handleClearAnswer = useCallback(() => {
+    setMarkedAnswerIdx(null);
+    dispatch(setScreensInfo({ isSurveyFreeAsnwerMarked: false }));
+  }, [dispatch]);
+
   // - - - GUI - - -
 
   return (
-    <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%]">
+    <div
+      className="w-full h-full px-[5%] xl:px-[10%] py-[5%]"
+      onClick={handleClearAnswer}
+    >
       <div className="h-full overflow-auto expo-scrollbar pr-4 pb-16 md:pb-32">
         <div className="min-h-full flex flex-col justify-center items-center gap-8 md:gap-12">
           {/* 1. Title */}
