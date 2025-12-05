@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { useState, useMemo, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
@@ -14,8 +14,11 @@ import { GameInfoPanel } from "../games/GameInfoPanel";
 import { GameActionsPanel } from "../games/GameActionsPanel";
 
 // Types
-import { AppState } from "store/store";
+import { AppDispatch, AppState } from "store/store";
 import { ScreenProps, SurveyScreen, SurveyType } from "models";
+
+// Redux actions
+import { setScreensInfo } from "actions/expoActions/viewer-actions";
 
 // Utils
 import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
@@ -24,7 +27,11 @@ import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-surve
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as SurveyScreen,
-  (viewScreen) => ({ viewScreen })
+  ({ expo }: AppState) => expo.screensInfo.isSurveyFreeAsnwerMarked,
+  (viewScreen, isSurveyFreeAsnwerMarked) => ({
+    viewScreen,
+    isSurveyFreeAsnwerMarked,
+  })
 );
 
 export const ViewSurvey = ({
@@ -33,8 +40,9 @@ export const ViewSurvey = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen } = useSelector(stateSelector);
+  const { viewScreen, isSurveyFreeAsnwerMarked } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen", { keyPrefix: "surveyScreen" });
+  const dispatch = useDispatch<AppDispatch>();
 
   // - - - Data about Survey from administration - - -
 
@@ -54,8 +62,6 @@ export const ViewSurvey = ({
 
   const [markedAnswerIdx, setMarkedAnswerIdx] = useState<number | null>(null);
 
-  const [isFreeAnswerMarked, setIsFreeAnswerMarked] = useState<boolean>(false);
-
   // - - - Callbacks - - -
 
   const onGameFinish = useCallback(() => {
@@ -67,15 +73,18 @@ export const ViewSurvey = ({
     setMarkedAnswerIdx(null);
   }, []);
 
-  const handleMarkClassicAnswer = useCallback((asnwerIdx) => {
-    setIsFreeAnswerMarked(false);
-    setMarkedAnswerIdx(asnwerIdx);
-  }, []);
+  const handleMarkClassicAnswer = useCallback(
+    (asnwerIdx) => {
+      dispatch(setScreensInfo({ isSurveyFreeAsnwerMarked: false }));
+      setMarkedAnswerIdx(asnwerIdx);
+    },
+    [dispatch]
+  );
 
   const handleMarkFreeAnswer = useCallback(() => {
     setMarkedAnswerIdx(null);
-    setIsFreeAnswerMarked(true);
-  }, []);
+    dispatch(setScreensInfo({ isSurveyFreeAsnwerMarked: true }));
+  }, [dispatch]);
 
   // - - - GUI - - -
 
@@ -111,7 +120,7 @@ export const ViewSurvey = ({
             {shouldIncludeFreeAnswer && (
               <SurveyFreeAnswerItem
                 isGameFinished={isGameFinished}
-                isAnswerMarked={isFreeAnswerMarked}
+                isAnswerMarked={isSurveyFreeAsnwerMarked}
                 handleMarkThisAnswer={handleMarkFreeAnswer}
               />
             )}
