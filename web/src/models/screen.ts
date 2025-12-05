@@ -461,6 +461,7 @@ export type SurveyScreen = {
   shouldIncludeFreeAnswer?: boolean;
   shouldShowAnswerFeedback?: boolean;
   surveyAnswers?: SurveyAnswer[];
+  screenBgColor?: string | null;
 };
 
 export type GameFindScreen = {

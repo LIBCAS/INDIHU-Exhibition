@@ -13,6 +13,7 @@ import { SurveyScreen } from "models";
 
 // Actions
 import { updateScreenData } from "actions/expoActions";
+import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // - - - - - -
 
@@ -22,9 +23,7 @@ type SurveyProps = {
 
 const Description = ({ activeScreen }: SurveyProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("expo-editor", {
-    keyPrefix: "descFields.surveyScreen",
-  });
+  const { t } = useTranslation("expo-editor");
 
   return (
     <div className="container container-tabMenu">
@@ -34,7 +33,7 @@ const Description = ({ activeScreen }: SurveyProps) => {
             <div className="flex-row-nowrap">
               <TextField
                 id="survey-textfield-name"
-                label={t("nameLabel")}
+                label={t("descFields.surveyScreen.nameLabel")}
                 defaultValue={activeScreen.title ?? ""}
                 onChange={(newTitle: string) =>
                   dispatch(updateScreenData({ title: newTitle }))
@@ -42,13 +41,13 @@ const Description = ({ activeScreen }: SurveyProps) => {
               />
               <HelpIcon
                 id="survey-textfield-name-help"
-                label={t("nameTooltip")}
+                label={t("descFields.surveyScreen.nameTooltip")}
               />
             </div>
             <div className="flex-row-nowrap">
               <TextField
                 id="survey-textfield-task"
-                label={t("taskLabel")}
+                label={t("descFields.surveyScreen.taskLabel")}
                 defaultValue={activeScreen?.task ?? ""}
                 onChange={(newTask: string) =>
                   dispatch(updateScreenData({ task: newTask }))
@@ -56,7 +55,7 @@ const Description = ({ activeScreen }: SurveyProps) => {
               />
               <HelpIcon
                 id="survey-textfield-task-help"
-                label={t("taskTooltip")}
+                label={t("descFields.surveyScreen.taskTooltip")}
               />
             </div>
           </div>
@@ -65,11 +64,12 @@ const Description = ({ activeScreen }: SurveyProps) => {
             <MuteChapterMusicCheckbox
               muteChapterMusicValue={activeScreen.muteChapterMusic ?? false}
             />
+
             <div className="row">
               <Checkbox
                 id="survey-checkbox-screenCompleted"
                 name="simple-checkboxes"
-                label={t("screenCompleted")}
+                label={t("descFields.surveyScreen.screenCompleted")}
                 checked={activeScreen.screenCompleted ?? false}
                 value={activeScreen.screenCompleted ?? false}
                 onChange={(newValue: boolean) =>
@@ -78,6 +78,16 @@ const Description = ({ activeScreen }: SurveyProps) => {
                 className="checkbox-shift-left-by-padding"
               />
             </div>
+
+            <ScreenBackgroundColorPicker
+              label={t("descFields.screenBackgroundColorLabel")}
+              helpText={t("descFields.screenBackgroundColorTooltip")}
+              color={
+                "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
+                  ? activeScreen.screenBgColor
+                  : null
+              }
+            />
           </div>
         </div>
       </div>
