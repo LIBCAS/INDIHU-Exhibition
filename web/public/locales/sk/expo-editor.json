@@ -317,10 +317,12 @@
       "lockSurveyBtnTooltip": "Keď bude anketa hotová a pripravená na zverejnenie, kliknutím na tlačidlo ju zverejníte. Po zverejnení nebude možné anketu dodatočne upravovať. Testovacie odpovede zo obdobia tvorby výstavy budú odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa sa nezverejní.",
       "lockSurveyConfirmTitle": "Potvrdiť uzamknutie a zverejnenie ankety",
       "lockSurveyConfirmText": "Keď bude anketa hotová a pripravená na zverejnenie, kliknutím na tlačidlo ju zverejníte. Po zverejnení nebude možné anketu dodatočne upravovať. Testovacie odpovede zo obdobia tvorby výstavy budú odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa sa nezverejní.",
+      "lockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o uzamknutie ankety",
       "unlockSurveyBtnLabel": "Odblokovať a zrušiť publikáciu ankety",
       "unlockSurveyBtnTooltip": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
       "unlockSurveyConfirmTitle": "Potvrdiť odblokovanie a zrušenie publikácie ankety",
-      "unlockSurveyConfirmText": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá."
+      "unlockSurveyConfirmText": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
+      "unlockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o odblokovanie ankety"
     },
     "finishScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"

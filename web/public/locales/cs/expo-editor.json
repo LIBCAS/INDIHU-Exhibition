@@ -317,10 +317,12 @@
       "lockSurveyBtnTooltip": "Jakmile bude anketa hotová a připravená ke zveřejnění, kliknutím na tlačítko ji zveřejníte. Po zveřejnění nebude možné anketu dodatečně upravovat. Testovací odpovědi z období tvorby výstavy budou odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa se nezveřejní.",
       "lockSurveyConfirmTitle": "Potvrdit uzamknutí a zveřejnění ankety",
       "lockSurveyConfirmText": "Jakmile bude anketa hotová a připravená ke zveřejnění, kliknutím na tlačítko ji zveřejníte. Po zveřejnění nebude možné anketu dodatečně upravovat. Testovací odpovědi z období tvorby výstavy budou odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa se nezveřejní.",
+      "lockSurveyErrMsgPrefix": "Došlo k následující chybě při pokusu o uzamknutí ankety",
       "unlockSurveyBtnLabel": "Odblokovat a zrušit publikaci ankety",
       "unlockSurveyBtnTooltip": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená.",
       "unlockSurveyConfirmTitle": "Potvrdit odblokování a zrušení publikace ankety",
-      "unlockSurveyConfirmText": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená."
+      "unlockSurveyConfirmText": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená.",
+      "unlockSurveyErrMsgPrefix": "Došlo k následující chybě při pokusu o odblokování ankety"
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"
