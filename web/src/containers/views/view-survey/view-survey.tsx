@@ -56,6 +56,11 @@ export const ViewSurvey = ({
     [viewScreen.shouldIncludeFreeAnswer]
   );
 
+  const shouldShowAnswerFeedback = useMemo<boolean>(
+    () => viewScreen.shouldShowAnswerFeedback ?? false,
+    [viewScreen.shouldShowAnswerFeedback]
+  );
+
   // - - - Game State - - -
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
@@ -117,9 +122,6 @@ export const ViewSurvey = ({
                 }
                 isGameFinished={isGameFinished}
                 surveyType={surveyType}
-                shouldShowAnswerFeedback={
-                  viewScreen.shouldShowAnswerFeedback ?? false
-                }
                 isAnswerMarked={markedAnswerIdx === answerIdx}
                 handleMarkThisAnswer={handleMarkClassicAnswer}
               />

@@ -18,9 +18,7 @@ type SurveyViewAnswerProps = {
   answerIdx: number;
   preloadedImgSrc: string | undefined;
   isGameFinished: boolean;
-  surveyType: Exclude<SurveyType, "FREE_ANSWER">;
-  shouldShowAnswerFeedback: boolean;
-
+  surveyType: SurveyType;
   isAnswerMarked: boolean;
   handleMarkThisAnswer: (answerIdx: number) => void;
 };
@@ -31,7 +29,6 @@ const SurveyAnswerItem = ({
   preloadedImgSrc,
   isGameFinished,
   surveyType,
-  shouldShowAnswerFeedback,
   isAnswerMarked,
   handleMarkThisAnswer,
 }: SurveyViewAnswerProps) => {
