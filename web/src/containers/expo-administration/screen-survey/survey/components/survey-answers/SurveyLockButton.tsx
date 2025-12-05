@@ -95,6 +95,7 @@ const SurveyLockButton = ({ isScreenLocked }: SurveyLockButtonProps) => {
         title: <div className="font-bold">{t("lockSurveyConfirmTitle")}</div>,
         text: t("lockSurveyConfirmText"),
         onSubmit: async () => await handleLockOnServer(),
+        closeBefore: true,
       })
     );
   }, [t, dispatch, handleLockOnServer]);
@@ -110,6 +111,7 @@ const SurveyLockButton = ({ isScreenLocked }: SurveyLockButtonProps) => {
         title: <div className="font-bold">{t("unlockSurveyConfirmTitle")}</div>,
         text: t("unlockSurveyConfirmText"),
         onSubmit: async () => await handleUnlockOnServer(),
+        closeBefore: true,
       })
     );
   }, [t, dispatch, handleUnlockOnServer]);
