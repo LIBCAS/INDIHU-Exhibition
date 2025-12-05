@@ -322,7 +322,8 @@
       "unlockSurveyBtnTooltip": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená.",
       "unlockSurveyConfirmTitle": "Potvrdit odblokování a zrušení publikace ankety",
       "unlockSurveyConfirmText": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená.",
-      "unlockSurveyErrMsgPrefix": "Došlo k následující chybě při pokusu o odblokování ankety"
+      "unlockSurveyErrMsgPrefix": "Došlo k následující chybě při pokusu o odblokování ankety",
+      "saveScreenErrMsg": "Uložení obrazovky se nezdařilo"
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

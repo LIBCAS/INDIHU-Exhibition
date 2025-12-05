@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 // Components
 import SurveyTypeSelect from "./components/fields/SurveyTypeSelect";
 import SurveyIncludeFreeAnswerCheckbox from "./components/fields/SurveyIncludeFreeAnswerCheckbox";
@@ -15,14 +13,11 @@ import { SurveyScreen } from "models";
 
 type SurveyProps = {
   activeScreen: SurveyScreen;
+  rowNum: string | undefined;
+  colNum: string | undefined;
 };
 
-const Survey = ({ activeScreen }: SurveyProps) => {
-  const isSurveyScreenLocked = useMemo<boolean>(
-    () => activeScreen.isSurveyScreenLocked ?? false,
-    [activeScreen.isSurveyScreenLocked]
-  );
-
+const Survey = ({ activeScreen, rowNum, colNum }: SurveyProps) => {
   return (
     <div className="container-big container-tabMenu">
       <div className="screen">
@@ -41,7 +36,11 @@ const Survey = ({ activeScreen }: SurveyProps) => {
 
         <div>
           <AddSurveyAnswerButton activeScreen={activeScreen} />
-          <SurveyLockButton isScreenLocked={isSurveyScreenLocked} />
+          <SurveyLockButton
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
         </div>
       </div>
     </div>
