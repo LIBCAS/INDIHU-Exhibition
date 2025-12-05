@@ -46,12 +46,12 @@ const SurveyLockButton = ({ isScreenLocked }: SurveyLockButtonProps) => {
   const iconNameAfter = isScreenLocked ? "public" : "public_off";
 
   const btnText = isScreenLocked
-    ? t("lockSurveyBtnLabel")
-    : t("unlockSurveyBtnLabel");
+    ? t("unlockSurveyBtnLabel")
+    : t("lockSurveyBtnLabel");
 
   const btnTooltip = isScreenLocked
-    ? t("lockSurveyBtnTooltip")
-    : t("unlockSurveyBtnTooltip");
+    ? t("unlockSurveyBtnTooltip")
+    : t("lockSurveyBtnTooltip");
 
   // - - - Callbacks - - -
 
