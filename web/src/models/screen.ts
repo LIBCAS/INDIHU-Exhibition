@@ -458,6 +458,7 @@ export type SurveyScreen = {
   screenCompleted?: boolean;
   // Answers
   surveyType?: SurveyType;
+  shouldIncludeFreeAnswer?: boolean;
   shouldShowAnswerFeedback?: boolean;
   surveyAnswers?: SurveyAnswer[];
 };
