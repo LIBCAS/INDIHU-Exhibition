@@ -38,7 +38,7 @@ const AddSurveyAnswerButton = ({
   }
 
   return (
-    <div className="w-full flex justify-center items-center mt-6">
+    <div className="mt-6 w-full flex justify-center items-center">
       <Button
         color="secondary"
         iconBefore={<Icon name="add" />}

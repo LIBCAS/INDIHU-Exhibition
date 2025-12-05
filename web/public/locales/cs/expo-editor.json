@@ -312,7 +312,15 @@
         "titleErrorLessThanThree": "Nelze smazat více možností!",
         "textErrorLessThanThree": "Bylo dosaženo minimálního počtu povolených odpovědí a to tři.",
         "textConfirm": "Opravdu chcete odstranit tuto možnost? Akce je nevratná!"
-      }
+      },
+      "lockSurveyBtnLabel": "Uzamknout a zveřejnit anketu",
+      "lockSurveyBtnTooltip": "Jakmile bude anketa hotová a připravená ke zveřejnění, kliknutím na tlačítko ji zveřejníte. Po zveřejnění nebude možné anketu dodatečně upravovat. Testovací odpovědi z období tvorby výstavy budou odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa se nezveřejní.",
+      "lockSurveyConfirmTitle": "Potvrdit uzamknutí a zveřejnění ankety",
+      "lockSurveyConfirmText": "Jakmile bude anketa hotová a připravená ke zveřejnění, kliknutím na tlačítko ji zveřejníte. Po zveřejnění nebude možné anketu dodatečně upravovat. Testovací odpovědi z období tvorby výstavy budou odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa se nezveřejní.",
+      "unlockSurveyBtnLabel": "Odblokovat a zrušit publikaci ankety",
+      "unlockSurveyBtnTooltip": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená.",
+      "unlockSurveyConfirmTitle": "Potvrdit odblokování a zrušení publikace ankety",
+      "unlockSurveyConfirmText": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená."
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

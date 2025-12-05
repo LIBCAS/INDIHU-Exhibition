@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 
 // Components
 import SurveyAnswerItem from "./SurveyAnswerItem";
-import AddSurveyAnswerButton from "./AddSurveyAnswerButton";
 
 // Models
 import { AppDispatch } from "store/store";
@@ -51,8 +50,6 @@ const SurveyAnswers = ({ activeScreen }: SurveyAnswersProps) => {
           />
         );
       })}
-
-      <AddSurveyAnswerButton activeScreen={activeScreen} />
     </div>
   );
 };

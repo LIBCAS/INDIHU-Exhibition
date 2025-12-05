@@ -461,6 +461,7 @@ export type SurveyScreen = {
   shouldIncludeFreeAnswer?: boolean;
   shouldShowAnswerFeedback?: boolean;
   surveyAnswers?: SurveyAnswer[];
+  isSurveyScreenLocked?: boolean;
   screenBgColor?: string | null;
 };
 
