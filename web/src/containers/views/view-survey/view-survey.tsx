@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 // Components
-import SurveyFreeAnswerView from "./free-answer/SurveyFreeAnswerView";
 import SurveyVariantAnswerView from "./variant-answers/SurveyVariantAnswerView";
 
 // Types
@@ -36,17 +35,6 @@ export const ViewSurvey = ({
   );
 
   // - - - GUI - - -
-
-  if (surveyType === "FREE_ANSWER") {
-    return (
-      <SurveyFreeAnswerView
-        viewScreen={viewScreen}
-        infoPanelRef={infoPanelRef}
-        actionsPanelRef={actionsPanelRef}
-        isMobileOverlay={isMobileOverlay}
-      />
-    );
-  }
 
   return (
     <SurveyVariantAnswerView

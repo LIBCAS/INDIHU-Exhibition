@@ -42,10 +42,6 @@ const SurveyTypeSelect = ({ activeScreen }: SurveyTypeSelectProps) => {
             label: t("surveyTypeImageTextOption"),
             value: SurveyTypeEnum.TEXT_IMAGES,
           },
-          {
-            label: t("surveyTypeFreeAnswerOption"),
-            value: SurveyTypeEnum.FREE_ANSWER,
-          },
         ]}
         itemLabel={"label"}
         itemValue={"value"}

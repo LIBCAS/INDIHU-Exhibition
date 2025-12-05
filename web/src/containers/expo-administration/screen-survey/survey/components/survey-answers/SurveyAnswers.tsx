@@ -1,6 +1,4 @@
-import { useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
 
 // Components
 import SurveyAnswerItem from "./SurveyAnswerItem";
@@ -13,7 +11,6 @@ import { SurveyScreen, File as IndihuFile } from "models";
 // Utils
 import { updateScreenData } from "actions/expoActions";
 import { getFileById } from "actions/file-actions-typed";
-import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
 
 // - - - - - -
 
@@ -23,24 +20,6 @@ type SurveyAnswersProps = {
 
 const SurveyAnswers = ({ activeScreen }: SurveyAnswersProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation("expo-editor", {
-    keyPrefix: "descFields.surveyScreen",
-  });
-
-  const surveyType = useMemo(
-    () => activeScreen.surveyType ?? DEFAULT_SURVEY_TYPE,
-    [activeScreen.surveyType]
-  );
-
-  if (surveyType === "FREE_ANSWER") {
-    return (
-      <div className="max-w-full flex justify-center items-center">
-        <p className="italic text-lg text-center">
-          {t("freeAnswerInformation")}
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-full flex flex-col gap-2">

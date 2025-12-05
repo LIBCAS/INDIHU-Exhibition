@@ -19,10 +19,10 @@ import { AppDispatch } from "store/store";
 import { SurveyAnswer, SurveyScreen, File as IndihuFile } from "models";
 
 // Actions and utils
+import cx from "classnames";
 import { updateScreenData } from "actions/expoActions";
 import { setDialog } from "actions/dialog-actions";
 import { DialogType } from "components/dialogs/dialog-types";
-import cx from "classnames";
 
 // - - - - - -
 
