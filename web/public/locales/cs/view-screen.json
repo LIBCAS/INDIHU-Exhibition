@@ -90,7 +90,8 @@
     "missingAnswerText": "K této odpovědi nebyl přiložen žádný text.",
     "freeAnswerPlaceholder": "Sem napište odpověď",
     "freeAnswerTooLongMsg": "Bylo dosaženo maximálního počtu znaků pro volnou odpověď.",
-    "sendFreeAnswerBtnLabel": "Poslat odpověď"
+    "sendFreeAnswerBtnLabel": "Poslat odpověď",
+    "surveyScreenNotLockedMsg": "Tato obrazovka ankety ještě nebyla zveřejněna tvůrcem výstavy."
   },
 
   "game": {

@@ -46,6 +46,11 @@ export const ViewSurvey = ({
 
   // - - - Data about Survey from administration - - -
 
+  const isSurveyScreenLocked = useMemo<boolean>(
+    () => viewScreen.isSurveyScreenLocked ?? false,
+    [viewScreen.isSurveyScreenLocked]
+  );
+
   const surveyType = useMemo<SurveyType>(
     () => viewScreen.surveyType ?? DEFAULT_SURVEY_TYPE,
     [viewScreen.surveyType]
@@ -97,6 +102,18 @@ export const ViewSurvey = ({
   }, [dispatch]);
 
   // - - - GUI - - -
+
+  if (!isSurveyScreenLocked) {
+    return (
+      <div className="w-full h-full px-[5%] xl:px-[10%] py-[5%]">
+        <div className="h-full flex flex-col justify-center items-center">
+          <div className="w-full text-center text-white font-bold text-2xl md:text-3xl mt-4 md:mt-0">
+            {t("surveyScreenNotLockedMsg")}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
