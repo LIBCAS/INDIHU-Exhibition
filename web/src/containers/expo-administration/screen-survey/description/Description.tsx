@@ -6,6 +6,7 @@ import TextField from "react-md/lib/TextFields";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import HelpIcon from "components/help-icon";
 import { MuteChapterMusicCheckbox } from "components/editors/Checkboxes";
+import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // Types
 import { AppDispatch } from "store/store";
@@ -13,7 +14,6 @@ import { SurveyScreen } from "models";
 
 // Actions
 import { updateScreenData } from "actions/expoActions";
-import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // - - - - - -
 
@@ -44,6 +44,7 @@ const Description = ({ activeScreen }: SurveyProps) => {
                 label={t("descFields.surveyScreen.nameTooltip")}
               />
             </div>
+
             <div className="flex-row-nowrap">
               <TextField
                 id="survey-textfield-task"
@@ -52,6 +53,7 @@ const Description = ({ activeScreen }: SurveyProps) => {
                 onChange={(newTask: string) =>
                   dispatch(updateScreenData({ task: newTask }))
                 }
+                disabled={activeScreen.isSurveyScreenLocked ?? false}
               />
               <HelpIcon
                 id="survey-textfield-task-help"

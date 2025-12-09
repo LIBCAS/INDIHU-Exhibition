@@ -63,6 +63,9 @@ type ImageBoxProps = {
   infopointTooltipId?: string;
 
   activePoint?: any;
+
+  // Additional settings
+  shouldHideSettingsPanelRightPart?: boolean;
 };
 
 const ImageBox = ({
@@ -76,6 +79,7 @@ const ImageBox = ({
   infopoints,
   onInfopointMove,
   infopointTooltipId,
+  shouldHideSettingsPanelRightPart,
 }: ImageBoxProps) => {
   const { t } = useTranslation("expo-editor");
   const [currZoom, setCurrZoom] = useState<number>(1);
@@ -121,6 +125,7 @@ const ImageBox = ({
           onDelete={onDelete}
           changeImage={changeImage}
           setCurrZoom={setCurrZoom}
+          shouldHideSettingsPanelRightPart={shouldHideSettingsPanelRightPart}
         />
       </div>
 
@@ -414,6 +419,9 @@ type SettingsPanelProps = {
   onDelete: ImageBoxProps["onDelete"];
   changeImage: () => void;
   setCurrZoom: Dispatch<SetStateAction<number>>;
+
+  // Additional settings
+  shouldHideSettingsPanelRightPart?: boolean;
 };
 
 const SettingsPanel = ({
@@ -421,6 +429,7 @@ const SettingsPanel = ({
   onDelete,
   changeImage,
   setCurrZoom,
+  shouldHideSettingsPanelRightPart,
 }: SettingsPanelProps) => {
   const { expoId } = useSelector(stateSelector);
   const { t } = useTranslation("expo-editor");
@@ -479,61 +488,63 @@ const SettingsPanel = ({
       </div>
 
       {/* Right side with edit and delete icon */}
-      <div className="flex gap-1">
-        <Icon
-          useMaterialUiIcon
-          name="folder"
-          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
-          onClick={() => {
-            changeImage();
-          }}
-          tooltip={{
-            id: "zoom-out-icon-explorer-icon-button",
-            content: t("imageBox.openFileExplorerTooltip"),
-            variant: "dark",
-          }}
-        />
+      {!shouldHideSettingsPanelRightPart && (
+        <div className="flex gap-1">
+          <Icon
+            useMaterialUiIcon
+            name="folder"
+            iconStyle={{ fontSize: "24px", opacity: 0.6 }}
+            onClick={() => {
+              changeImage();
+            }}
+            tooltip={{
+              id: "zoom-out-icon-explorer-icon-button",
+              content: t("imageBox.openFileExplorerTooltip"),
+              variant: "dark",
+            }}
+          />
 
-        <Icon
-          useMaterialUiIcon
-          name="palette"
-          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
-          onClick={() => {
-            const imageEditorObj = {
-              expoId: expoId,
-              src: `/api/files/${image.fileId}`,
-              type: image.type,
-              onClose: undefined,
-            };
-            dispatch(setImageEditor(imageEditorObj));
-          }}
-          tooltip={{
-            id: "image-editor-icon-button",
-            content: t("imageBox.openImageEditorTooltip"),
-            variant: "dark",
-          }}
-        />
+          <Icon
+            useMaterialUiIcon
+            name="palette"
+            iconStyle={{ fontSize: "24px", opacity: 0.6 }}
+            onClick={() => {
+              const imageEditorObj = {
+                expoId: expoId,
+                src: `/api/files/${image.fileId}`,
+                type: image.type,
+                onClose: undefined,
+              };
+              dispatch(setImageEditor(imageEditorObj));
+            }}
+            tooltip={{
+              id: "image-editor-icon-button",
+              content: t("imageBox.openImageEditorTooltip"),
+              variant: "dark",
+            }}
+          />
 
-        <Icon
-          useMaterialUiIcon
-          name="delete"
-          iconStyle={{ fontSize: "24px", opacity: 0.6 }}
-          onClick={() => {
-            dispatch(
-              setDialog(DialogType.ConfirmDialog, {
-                title: <FontIcon className="color-black">delete</FontIcon>,
-                text: t("imageBox.deleteImageConfirm"),
-                onSubmit: () => onDelete(),
-              })
-            );
-          }}
-          tooltip={{
-            id: "delete-icon-button",
-            content: t("imageBox.deleteImageFromBox"),
-            variant: "dark",
-          }}
-        />
-      </div>
+          <Icon
+            useMaterialUiIcon
+            name="delete"
+            iconStyle={{ fontSize: "24px", opacity: 0.6 }}
+            onClick={() => {
+              dispatch(
+                setDialog(DialogType.ConfirmDialog, {
+                  title: <FontIcon className="color-black">delete</FontIcon>,
+                  text: t("imageBox.deleteImageConfirm"),
+                  onSubmit: () => onDelete(),
+                })
+              );
+            }}
+            tooltip={{
+              id: "delete-icon-button",
+              content: t("imageBox.deleteImageFromBox"),
+              variant: "dark",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

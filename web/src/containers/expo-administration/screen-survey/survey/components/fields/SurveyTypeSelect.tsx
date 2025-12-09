@@ -54,6 +54,7 @@ const SurveyTypeSelect = ({ activeScreen }: SurveyTypeSelectProps) => {
           dispatch(updateScreenData({ surveyType: newValue }));
         }}
         fullWidth
+        disabled={activeScreen.isSurveyScreenLocked ?? false}
       />
     </div>
   );

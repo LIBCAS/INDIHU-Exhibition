@@ -61,7 +61,7 @@ const SurveyAnswerItem = ({
 
   // NOTE: Should not happen
   if (surveyAnswers === undefined || surveyAnswers === null) {
-    const errMsg = "Survey asnwers field is not defined, as its expected!";
+    const errMsg = "Survey answers field is not defined, as its expected!";
     console.error(errMsg);
     return null;
   }
@@ -90,10 +90,12 @@ const SurveyAnswerItem = ({
             <MoveUpButton
               surveyAnswers={surveyAnswers}
               currAnswerIdx={currAnswerIdx}
+              isSurveyScreenLocked={activeScreen.isSurveyScreenLocked ?? false}
             />
             <MoveDownButton
               surveyAnswers={surveyAnswers}
               currAnswerIdx={currAnswerIdx}
+              isSurveyScreenLocked={activeScreen.isSurveyScreenLocked ?? false}
             />
           </div>
 
@@ -109,6 +111,7 @@ const SurveyAnswerItem = ({
             <DeleteButton
               surveyAnswers={surveyAnswers}
               currAnswerIdx={currAnswerIdx}
+              isSurveyScreenLocked={activeScreen.isSurveyScreenLocked ?? false}
             />
           </div>
         </div>
@@ -152,6 +155,9 @@ const SurveyAnswerItem = ({
               }
               helpIconLabel={t("answerImageTooltip")}
               helpIconId={`survey-answer-item-${currAnswerIdx}-img-help`}
+              shouldHideSettingsPanelRightPart={
+                activeScreen.isSurveyScreenLocked ?? false
+              }
             />
           )}
 
@@ -178,6 +184,7 @@ const SurveyAnswerItem = ({
                     })
                   )
                 }
+                disabled={activeScreen.isSurveyScreenLocked ?? false}
               />
               <HelpIcon
                 label={t("answerTextTooltip")}
@@ -220,19 +227,30 @@ const CloseButton = () => {
 type MoveUpButtonProps = {
   surveyAnswers: SurveyAnswer[];
   currAnswerIdx: number;
+  isSurveyScreenLocked: boolean;
 };
 
-const MoveUpButton = ({ surveyAnswers, currAnswerIdx }: MoveUpButtonProps) => {
+const MoveUpButton = ({
+  surveyAnswers,
+  currAnswerIdx,
+  isSurveyScreenLocked,
+}: MoveUpButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isDisabled = useMemo(() => currAnswerIdx === 0, [currAnswerIdx]);
+  const shouldHide = useMemo(() => currAnswerIdx === 0, [currAnswerIdx]);
+
+  const isDisabled = useMemo(
+    () => isSurveyScreenLocked,
+    [isSurveyScreenLocked]
+  );
 
   return (
     <Button
-      className={isDisabled ? "invisible" : undefined}
+      className={shouldHide ? "invisible" : undefined}
+      disabled={isDisabled}
       onClick={(e) => {
         e.stopPropagation();
-        if (isDisabled) {
+        if (shouldHide || isDisabled) {
           return;
         }
 
@@ -261,25 +279,33 @@ const MoveUpButton = ({ surveyAnswers, currAnswerIdx }: MoveUpButtonProps) => {
 type MoveDownButtonProps = {
   surveyAnswers: SurveyAnswer[];
   currAnswerIdx: number;
+  isSurveyScreenLocked: boolean;
 };
 
 const MoveDownButton = ({
   surveyAnswers,
   currAnswerIdx,
+  isSurveyScreenLocked,
 }: MoveDownButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isDisabled = useMemo(
+  const shouldHide = useMemo(
     () => currAnswerIdx === surveyAnswers.length - 1,
     [currAnswerIdx, surveyAnswers.length]
   );
 
+  const isDisabled = useMemo(
+    () => isSurveyScreenLocked,
+    [isSurveyScreenLocked]
+  );
+
   return (
     <Button
-      className={isDisabled ? "invisible" : undefined}
+      className={shouldHide ? "invisible" : undefined}
+      disabled={isDisabled}
       onClick={(e) => {
         e.stopPropagation();
-        if (isDisabled) {
+        if (shouldHide || isDisabled) {
           return;
         }
 
@@ -354,16 +380,27 @@ const AnswerLabelTextField = ({
 type DeleteButtonProps = {
   surveyAnswers: SurveyAnswer[];
   currAnswerIdx: number;
+  isSurveyScreenLocked: boolean;
 };
 
-const DeleteButton = ({ surveyAnswers, currAnswerIdx }: DeleteButtonProps) => {
+const DeleteButton = ({
+  surveyAnswers,
+  currAnswerIdx,
+  isSurveyScreenLocked,
+}: DeleteButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("expo-editor", {
     keyPrefix: "descFields.surveyScreen",
   });
 
+  const isDisabled = useMemo(
+    () => isSurveyScreenLocked,
+    [isSurveyScreenLocked]
+  );
+
   return (
     <Button
+      disabled={isDisabled}
       onClick={(e) => {
         e.stopPropagation();
 

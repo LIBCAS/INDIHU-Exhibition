@@ -36,6 +36,7 @@ const SurveyIncludeFreeAnswerCheckbox = ({
         onChange={(newValue: boolean) => {
           dispatch(updateScreenData({ shouldIncludeFreeAnswer: newValue }));
         }}
+        disabled={activeScreen.isSurveyScreenLocked ?? false}
       />
     </div>
   );

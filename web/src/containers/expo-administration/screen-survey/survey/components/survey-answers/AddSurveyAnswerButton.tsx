@@ -50,6 +50,7 @@ const AddSurveyAnswerButton = ({
             })
           );
         }}
+        disabled={activeScreen.isSurveyScreenLocked ?? false}
       >
         {t("addNewAnswer")}
       </Button>
