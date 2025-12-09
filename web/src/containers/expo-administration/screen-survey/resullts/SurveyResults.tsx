@@ -1,8 +1,6 @@
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-
-// Custom hooks
-import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 // Components
 import {
@@ -14,9 +12,17 @@ import {
   TableCell,
 } from "@mui/material";
 
+import { Spinner } from "components/loaders/spinner";
+import { Button } from "components/button/button";
+import { Icon } from "components/icon/icon";
+import { DialogType } from "components/dialogs/dialog-types";
+
 // Types
 import { AppDispatch } from "store/store";
 import { SurveyScreen } from "models";
+
+// Redux actions
+import { setDialog } from "actions/dialog-actions";
 
 // Utils
 import { formatDate } from "utils";
@@ -49,6 +55,12 @@ const messages = [
 
 // - - - - - -
 
+const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+// - - - - - -
+
 type SurveyResultsProps = {
   activeScreen: SurveyScreen;
 };
@@ -59,7 +71,50 @@ const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
     keyPrefix: "descFields.surveyScreen",
   });
 
-  const { isMd } = useMediaDevice();
+  // - - - States - - -
+
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const [deleteErrMsg, setDeleteErrMsg] = useState<string>("");
+
+  // - - - Callbacks - - -
+
+  /**
+   *
+   */
+  const handleDeleteAnswersOnServer = useCallback(async () => {
+    try {
+      setDeleteErrMsg("");
+      setIsDeleting(true);
+
+      // TODO
+      // Step 1 - attempt to delete
+      await sleep(3500);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
+      setDeleteErrMsg(errMsg);
+      console.error("[handleDeleteAnswersOnServer]: ", err);
+    } finally {
+      setIsDeleting(false);
+    }
+  }, []);
+
+  /**
+   *
+   */
+  const handleDeleteAnswers = useCallback(async () => {
+    dispatch(
+      setDialog(DialogType.ConfirmDialog, {
+        title: <div className="font-bold">Vymazanie všetkých odpovedí</div>,
+        text: "Ste si opravdu istý, že chcete vymazať všetky aktuálne zozbierané výsledky pre túto obrazovku ankety?",
+        onSubmit: async () => await handleDeleteAnswersOnServer(),
+        closeBefore: true,
+      })
+    );
+  }, [dispatch, handleDeleteAnswersOnServer]);
+
+  // - - - GUI - - -
 
   return (
     <div className="container container-tabMenu">
@@ -70,6 +125,34 @@ const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
           <div className="flex justify-start items-center gap-2">
             <div className="text-lg">Celkový počet všetkých odpovedí: </div>
             <div className="text-lg">100</div>
+          </div>
+
+          <div className="mt-2">
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-start items-center gap-4">
+                <Button
+                  color="secondary"
+                  type="contained"
+                  big
+                  shadow
+                  disabled={isDeleting}
+                  iconBefore={<Icon name="delete" />}
+                  onClick={handleDeleteAnswers}
+                >
+                  Vymazat všetky odpovědi
+                </Button>
+
+                {isDeleting && (
+                  <div>
+                    <Spinner className="w-8 h-8 border-x-secondary border-t-secondary" />
+                  </div>
+                )}
+              </div>
+
+              {deleteErrMsg !== "" && (
+                <div className="text-danger text-start">{deleteErrMsg}</div>
+              )}
+            </div>
           </div>
         </div>
 
