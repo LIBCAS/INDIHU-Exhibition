@@ -96,9 +96,12 @@ export const GameDraw = ({
 
   // - - - Ref - - -
 
+  const [imageContainerRef, imageContainerSize, imageContainer] =
+    useResizeObserver<HTMLImageElement>();
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // - - Draw functionality - -
+  // - - - Draw functionality - - -
 
   const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
     canvasRef,
@@ -122,7 +125,7 @@ export const GameDraw = ({
     clearCanvas();
   }, [clearCanvas]);
 
-  // - - Transition animation between drawing and solution img - -
+  // - - - Transition animation between drawing and solution img - - -
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -152,9 +155,6 @@ export const GameDraw = ({
     () => viewScreen.image1OrigData ?? { width: 0, height: 0 },
     [viewScreen.image1OrigData]
   );
-
-  const [imageContainerRef, imageContainerSize, imageContainer] =
-    useResizeObserver<HTMLImageElement>();
 
   const {
     width: containedImageWidth,
