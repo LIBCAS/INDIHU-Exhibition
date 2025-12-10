@@ -18,6 +18,7 @@ import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useBoolean } from "hooks/boolean-hook";
 import { useGameDraw } from "./useGameDraw";
+import { useGameDrawScreenshot } from "./useGameDrawScreenshot";
 import useResizeObserver from "hooks/use-resize-observer";
 
 // Components
@@ -44,7 +45,6 @@ import {
 
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
-import { useScreenshotCanvas } from "./useScreenshotCanvas";
 
 // - - - -
 
@@ -193,7 +193,7 @@ export const GameDraw = ({
 
   // - - - Screenshot functionality - - -
 
-  const { handleTakeScreenshot } = useScreenshotCanvas({
+  const { handleTakeScreenshot } = useGameDrawScreenshot({
     imageContainerEl: imageContainer,
     canvasEl: canvasRef.current,
     containedImageWidth: containedImageWidth,

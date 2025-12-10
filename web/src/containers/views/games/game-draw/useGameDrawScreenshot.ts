@@ -18,7 +18,7 @@ type Props = {
   fromTopHeight: number;
 };
 
-export const useScreenshotCanvas = ({
+export const useGameDrawScreenshot = ({
   imageContainerEl,
   canvasEl,
   containedImageWidth,
