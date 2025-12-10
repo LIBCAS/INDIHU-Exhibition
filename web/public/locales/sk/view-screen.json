@@ -97,6 +97,7 @@
   },
   "game-draw": {
     "solution": "Výborne! Splnil si zadanie a toto je výsledok",
+    "takeScreenshotAction": "Urobte snímku obrazovky svojej kresby",
     "switchToPencilAction": "Prepnúť na ceruzku",
     "switchToEraserAction": "Prepnúť na gumu",
     "thicknessChooserAction": "Výber hrúbky",

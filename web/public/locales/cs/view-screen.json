@@ -97,6 +97,7 @@
   },
   "game-draw": {
     "solution": "Výborně! Splnil jsi zadání a toto je výsledek",
+    "takeScreenshotAction": "Udělejte snímek obrazovky vaší kresby",
     "switchToPencilAction": "Přepnout na tužku",
     "switchToEraserAction": "Přepnout na gumu",
     "thicknessChooserAction": "Výběr tloušťky",

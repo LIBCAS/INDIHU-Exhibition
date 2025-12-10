@@ -312,7 +312,23 @@ export const GameDraw = ({
             onGameFinish={onGameFinish}
             onGameReset={onGameReset}
             gameActions={[
-              <div key="tool-button">
+              isGameFinished === false ? (
+                <div key="screenshot-button" className="relative">
+                  <Button
+                    color="expoTheme"
+                    iconBefore={<Icon name="file_download" />}
+                    onClick={() => console.log("TODO")}
+                    tooltip={{
+                      id: "game-draw-overlay-screenshot-button",
+                      content: t("game-draw.takeScreenshotAction"),
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              ),
+
+              <div key="tool-button" className="relative">
                 <Button
                   color="expoTheme"
                   onClick={toggleTool}
@@ -326,7 +342,7 @@ export const GameDraw = ({
                 />
               </div>,
 
-              <div className="relative" key="thickness-button">
+              <div key="thickness-button" className="relative">
                 <Button
                   ref={(ref) => setThicknessAnchor(ref)}
                   color="expoTheme"
@@ -339,7 +355,7 @@ export const GameDraw = ({
                 />
               </div>,
 
-              <div className="relative" key="color-picker-button">
+              <div key="color-picker-button" className="relative">
                 <Button
                   color="expoTheme"
                   tooltip={{
