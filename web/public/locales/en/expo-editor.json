@@ -313,6 +313,7 @@
       "initialDrawingSettingsTitle": "Initial settings for drawing",
       "initialDrawingColorLabel": "Initial color",
       "initialDrawingThicknessLabel": "Initial thickness",
+      "initialDrawingTransparencyLabel": "Initial transparency",
       "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {

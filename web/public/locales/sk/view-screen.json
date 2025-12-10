@@ -101,7 +101,8 @@
     "switchToPencilAction": "Prepnúť na ceruzku",
     "switchToEraserAction": "Prepnúť na gumu",
     "thicknessChooserAction": "Výber hrúbky",
-    "colorChooserAction": "Výber farby"
+    "colorChooserAction": "Výber farby",
+    "transparencyChooserAction": "Výber priehľadnosti"
   },
   "game-erase": {
     "solution": "Výborne! Splnil si zadanie a toto je výsledok"

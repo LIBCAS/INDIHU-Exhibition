@@ -20,6 +20,7 @@ type Props = {
   isGameFinished: boolean;
   color: string;
   thickness: number;
+  transparency: number;
   isErasing: boolean;
 };
 
@@ -32,6 +33,7 @@ export const useGameDraw = ({
   isGameFinished,
   color,
   thickness,
+  transparency,
   isErasing,
 }: Props) => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -138,8 +140,8 @@ export const useGameDraw = ({
    *
    */
   useEffect(() => {
-    configureContext(ctx, color, thickness, isErasing);
-  }, [ctx, color, thickness, isErasing, shouldReconfigureCtx]);
+    configureContext(ctx, color, thickness, transparency, isErasing);
+  }, [ctx, color, thickness, transparency, isErasing, shouldReconfigureCtx]);
 
   // - - - Return Value - - -
 

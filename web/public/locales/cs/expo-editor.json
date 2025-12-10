@@ -313,6 +313,7 @@
       "initialDrawingSettingsTitle": "Počáteční nastavení pro kreslení",
       "initialDrawingColorLabel": "Počáteční barva",
       "initialDrawingThicknessLabel": "Počáteční tloušťka",
+      "initialDrawingTransparencyLabel": "Počáteční transparentnost",
       "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {

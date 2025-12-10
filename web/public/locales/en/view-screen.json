@@ -101,7 +101,8 @@
     "switchToPencilAction": "Switch to pencil",
     "switchToEraserAction": "Switch to eraser",
     "thicknessChooserAction": "Choice of thickness",
-    "colorChooserAction": "Choice of color"
+    "colorChooserAction": "Choice of color",
+    "transparencyChooserAction": "Choise of transparency"
   },
   "game-erase": {
     "solution": "Great! You completed the assignment and this is the result"

@@ -19,6 +19,7 @@ import { updateScreenData } from "actions/expoActions";
 import {
   GAME_DRAW_DEFAULT_COLOR,
   GAME_DRAW_DEFAULT_THICKNESS,
+  GAME_DRAW_DEFAULT_TRANSPARENCY,
 } from "constants/screen";
 import { compact, concat } from "lodash";
 
@@ -50,6 +51,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
       updateScreenData({
         initialColor: GAME_DRAW_DEFAULT_COLOR,
         initialThickness: GAME_DRAW_DEFAULT_THICKNESS,
+        initialTransparency: GAME_DRAW_DEFAULT_TRANSPARENCY,
       })
     );
   }, [dispatch]);
@@ -231,6 +233,35 @@ const Images = ({ activeScreen }: ImagesProps) => {
               />
               <div>
                 ({activeScreen.initialThickness ?? GAME_DRAW_DEFAULT_THICKNESS})
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div>{t("initialDrawingTransparencyLabel")}</div>
+              <input
+                type="range"
+                draggable={false}
+                min={5}
+                max={100}
+                step={5}
+                defaultValue={
+                  activeScreen.initialTransparency ??
+                  GAME_DRAW_DEFAULT_TRANSPARENCY
+                }
+                onChange={(e) => {
+                  const newInitialTransparency = parseInt(e.target.value);
+                  dispatch(
+                    updateScreenData({
+                      initialTransparency: newInitialTransparency,
+                    })
+                  );
+                }}
+              />
+              <div>
+                (
+                {activeScreen.initialTransparency ??
+                  GAME_DRAW_DEFAULT_TRANSPARENCY}
+                )
               </div>
             </div>
 
