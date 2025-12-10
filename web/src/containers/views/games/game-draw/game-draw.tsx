@@ -44,6 +44,7 @@ import {
 
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
+import { useScreenshotCanvas } from "./useScreenshotCanvas";
 
 // - - - -
 
@@ -152,7 +153,7 @@ export const GameDraw = ({
     [viewScreen.image1OrigData]
   );
 
-  const [imageContainerRef, imageContainerSize] =
+  const [imageContainerRef, imageContainerSize, imageContainer] =
     useResizeObserver<HTMLImageElement>();
 
   const {
@@ -189,6 +190,17 @@ export const GameDraw = ({
       document.removeEventListener("keydown", onKeyDownAction);
     };
   }, [onKeyDownAction]);
+
+  // - - - Screenshot functionality - - -
+
+  const { handleTakeScreenshot } = useScreenshotCanvas({
+    imageContainerEl: imageContainer,
+    canvasEl: canvasRef.current,
+    containedImageWidth: containedImageWidth,
+    containedImageHeight: containedImageHeight,
+    fromLeftWidth: fromLeftWidth,
+    fromTopHeight: fromTopHeight,
+  });
 
   // - - - Game Auto Navigation - - -
 
@@ -317,7 +329,7 @@ export const GameDraw = ({
                   <Button
                     color="expoTheme"
                     iconBefore={<Icon name="file_download" />}
-                    onClick={() => console.log("TODO")}
+                    onClick={async () => await handleTakeScreenshot(true)}
                     tooltip={{
                       id: "game-draw-overlay-screenshot-button",
                       content: t("game-draw.takeScreenshotAction"),
