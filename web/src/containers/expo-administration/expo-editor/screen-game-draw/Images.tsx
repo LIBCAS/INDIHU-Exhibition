@@ -190,6 +190,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
         )}
 
         {/* Initial settings (color and thickness) */}
+
         <div className="mt-6 mb-1">
           <div className="text-lg">{t("initialDrawingSettingsTitle")}</div>
 
@@ -199,9 +200,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
               <input
                 type="color"
                 className="hover:cursor-pointer"
-                defaultValue={
-                  activeScreen.initialColor ?? GAME_DRAW_DEFAULT_COLOR
-                }
+                value={activeScreen.initialColor ?? GAME_DRAW_DEFAULT_COLOR}
                 onChange={(e) => {
                   const newInitialColor = e.target.value;
                   dispatch(updateScreenData({ initialColor: newInitialColor }));
@@ -219,7 +218,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                 draggable={false}
                 min={1}
                 max={50}
-                defaultValue={
+                value={
                   activeScreen.initialThickness ?? GAME_DRAW_DEFAULT_THICKNESS
                 }
                 onChange={(e) => {
@@ -244,7 +243,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
                 min={5}
                 max={100}
                 step={5}
-                defaultValue={
+                value={
                   activeScreen.initialTransparency ??
                   GAME_DRAW_DEFAULT_TRANSPARENCY
                 }
