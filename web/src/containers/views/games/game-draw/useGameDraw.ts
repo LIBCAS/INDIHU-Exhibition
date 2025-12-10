@@ -7,7 +7,7 @@ import {
 } from "react";
 
 // Types
-import { Position } from "models";
+import { Position, Size } from "models";
 
 // Utils
 import { configureContext } from "./configureContext";
@@ -15,6 +15,7 @@ import { configureContext } from "./configureContext";
 // - - - - - -
 
 type Props = {
+  containerSize: Size;
   canvasRef: MutableRefObject<HTMLCanvasElement | null>;
   isGameFinished: boolean;
   color: string;
@@ -26,6 +27,7 @@ type Props = {
  * NOTE: canvasRef should never be null, because useEffect runs after all components are painted to DOM
  */
 export const useGameDraw = ({
+  containerSize,
   canvasRef,
   isGameFinished,
   color,
@@ -37,18 +39,34 @@ export const useGameDraw = ({
 
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
+  const [shouldReconfigureCtx, setShouldReconfigureCtx] =
+    useState<boolean>(false);
+
   // - - - Callbacks - - -
 
   /**
    *
    */
-  const resizeCanvas = useCallback(() => {
-    if (canvasRef.current === null) return;
+  const initializeCanvas = useCallback(() => {
+    if (canvasRef.current === null) {
+      return;
+    }
 
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (containerSize.width === 0 || containerSize.height === 0) {
+      return;
+    }
+
+    // Step 1
+    canvasRef.current.width = containerSize.width;
+    canvasRef.current.height = containerSize.height;
+
+    // Step 2
+    const context = canvasRef.current.getContext("2d");
+    setCtx(context);
+
+    // Step 3
+    setShouldReconfigureCtx((prev) => !prev);
+  }, [canvasRef, containerSize.width, containerSize.height]);
 
   /**
    *
@@ -97,8 +115,7 @@ export const useGameDraw = ({
       canvasRef.current.width ?? 0,
       canvasRef.current.height ?? 0
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ctx]);
+  }, [canvasRef, ctx]);
 
   // - - - Effects - - -
 
@@ -106,39 +123,23 @@ export const useGameDraw = ({
    *
    */
   useEffect(() => {
-    if (canvasRef.current === null) {
-      return;
-    }
-
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-
-    const context = canvasRef.current.getContext("2d");
-    setCtx(context);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    initializeCanvas();
+  }, [initializeCanvas]);
 
   /**
    *
    */
   useEffect(() => {
-    window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
-  }, [resizeCanvas]);
+    window.addEventListener("resize", initializeCanvas);
+    return () => window.removeEventListener("resize", initializeCanvas);
+  }, [initializeCanvas]);
 
   /**
    *
    */
   useEffect(() => {
     configureContext(ctx, color, thickness, isErasing);
-  }, [
-    ctx,
-    color,
-    thickness,
-    isErasing,
-    canvasRef.current?.width,
-    canvasRef.current?.height,
-  ]);
+  }, [ctx, color, thickness, isErasing, shouldReconfigureCtx]);
 
   // - - - Return Value - - -
 

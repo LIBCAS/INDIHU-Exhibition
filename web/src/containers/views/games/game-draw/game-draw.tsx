@@ -104,6 +104,7 @@ export const GameDraw = ({
   // - - - Draw functionality - - -
 
   const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
+    containerSize: imageContainerSize,
     canvasRef,
     isGameFinished,
     color,
