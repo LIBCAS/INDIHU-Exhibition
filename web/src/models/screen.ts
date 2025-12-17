@@ -476,6 +476,7 @@ export type GameDrawScreen = {
   resultTime?: number;
   initialColor?: string;
   initialThickness?: number;
+  initialTransparency?: number;
   infopoints1?: Infopoint[];
   screenBgColor?: string | null;
 };
