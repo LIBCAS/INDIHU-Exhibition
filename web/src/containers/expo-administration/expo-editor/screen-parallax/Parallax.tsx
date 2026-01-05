@@ -146,7 +146,7 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
           }}
         />
 
-        <div className="flex-row flex-space-between margin-bottom">
+        <div className="flex-row flex-space-between">
           <span>
             <span>{t("descFields.parallaxScreen.theLowestImage")}</span>
             <HelpIcon
@@ -161,6 +161,53 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
               id="editor-parallax-image-top"
             />
           </span>
+        </div>
+
+        <div className="mt-2 mb-4 flex justify-start items-center">
+          <SelectField
+            id="screen-parallax-selectfield-animation"
+            className="select-field"
+            label={t("descFields.parallaxScreen.parallaxAnimationLabel")}
+            menuItems={[
+              {
+                label: t("descFields.parallaxScreen.animationWithout"),
+                value: ScreenParallaxAnimationEnum.WITHOUT,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationFromTop"),
+                value: ScreenParallaxAnimationEnum.FROM_TOP,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationFromBottom"),
+                value: ScreenParallaxAnimationEnum.FROM_BOTTOM,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationLeftToRight"),
+                value: ScreenParallaxAnimationEnum.FROM_LEFT_TO_RIGHT,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationRightToLeft"),
+                value: ScreenParallaxAnimationEnum.FROM_RIGHT_TO_LEFT,
+              },
+            ]}
+            itemLabel={"label"}
+            itemValue={"value"}
+            position={"below"}
+            defaultValue={
+              activeScreen.animationType ?? ScreenParallaxAnimationEnum.WITHOUT
+            }
+            onChange={(value: any) =>
+              dispatch(
+                updateScreenData({
+                  animationType: value,
+                })
+              )
+            }
+          />
+          <HelpIcon
+            label={t("descFields.parallaxScreen.parallaxAnimationLabelTooltip")}
+            id="editor-parallax-animation"
+          />
         </div>
 
         {activeImageIndex !== -1 && (
@@ -186,60 +233,6 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
                   }}
                   helpIconId="editor-parallax-image"
                   helpIconLabel={t("descFields.parallaxScreen.imageBoxTooltip")}
-                />
-              </div>
-
-              <div className="flex-row-nowrap flex-centered">
-                <SelectField
-                  id="screen-parallax-selectfield-animation"
-                  className="select-field"
-                  label={t("descFields.parallaxScreen.parallaxAnimationLabel")}
-                  menuItems={[
-                    {
-                      label: t("descFields.parallaxScreen.animationWithout"),
-                      value: ScreenParallaxAnimationEnum.WITHOUT,
-                    },
-                    {
-                      label: t("descFields.parallaxScreen.animationFromTop"),
-                      value: ScreenParallaxAnimationEnum.FROM_TOP,
-                    },
-                    {
-                      label: t("descFields.parallaxScreen.animationFromBottom"),
-                      value: ScreenParallaxAnimationEnum.FROM_BOTTOM,
-                    },
-                    {
-                      label: t(
-                        "descFields.parallaxScreen.animationLeftToRight"
-                      ),
-                      value: ScreenParallaxAnimationEnum.FROM_LEFT_TO_RIGHT,
-                    },
-                    {
-                      label: t(
-                        "descFields.parallaxScreen.animationRightToLeft"
-                      ),
-                      value: ScreenParallaxAnimationEnum.FROM_RIGHT_TO_LEFT,
-                    },
-                  ]}
-                  itemLabel={"label"}
-                  itemValue={"value"}
-                  position={"below"}
-                  defaultValue={
-                    activeScreen.animationType ??
-                    ScreenParallaxAnimationEnum.WITHOUT
-                  }
-                  onChange={(value: any) =>
-                    dispatch(
-                      updateScreenData({
-                        animationType: value,
-                      })
-                    )
-                  }
-                />
-                <HelpIcon
-                  label={t(
-                    "descFields.parallaxScreen.parallaxAnimationLabelTooltip"
-                  )}
-                  id="editor-parallax-animation"
                 />
               </div>
             </div>
