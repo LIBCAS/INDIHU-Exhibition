@@ -193,7 +193,10 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
                   itemLabel={"label"}
                   itemValue={"value"}
                   position={"below"}
-                  defaultValue={activeScreen.animationType}
+                  defaultValue={
+                    activeScreen.animationType ??
+                    ScreenParallaxAnimationEnum.WITHOUT
+                  }
                   onChange={(value: any) =>
                     dispatch(
                       updateScreenData({

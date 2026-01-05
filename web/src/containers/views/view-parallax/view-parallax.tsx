@@ -9,6 +9,7 @@ import useResizeObserver from "hooks/use-resize-observer";
 // Models
 import { AppState } from "store/store";
 import { ScreenProps, ParallaxScreeen } from "models";
+import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
 // Utils
 import { getScreenTime } from "utils/screen";
@@ -35,8 +36,12 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
     [viewScreen]
   );
 
-  // Animation stuff
-  const animationType = viewScreen.animationType;
+  // - - - Animation stuff - - -
+
+  const animationType = useMemo(
+    () => viewScreen.animationType ?? ScreenParallaxAnimationEnum.WITHOUT,
+    [viewScreen.animationType]
+  );
 
   const isAnimationHorizontal = useMemo(
     () =>
