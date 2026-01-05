@@ -204,10 +204,10 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
               )
             }
           />
-          <HelpIcon
+          {/* <HelpIcon
             label={t("descFields.parallaxScreen.parallaxAnimationLabelTooltip")}
             id="editor-parallax-animation"
-          />
+          /> */}
         </div>
 
         {activeImageIndex !== -1 && (
