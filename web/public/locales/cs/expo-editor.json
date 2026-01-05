@@ -134,13 +134,13 @@
       "textTooltip": "Textový obsah obrazovky, který se zobrazí návštěvníkovi uprostřed a zarovnaný na střed. Maximální délka 300 znaků včetně mezer. Velikost písma se upravuje automaticky podle délky textu."
     },
     "parallaxScreen": {
-      "theLowestImage": "Nejspodnější",
+      "theLowestImage": "Statická vrstva na pozadí",
       "theLowestImageTooltip": "Nejspodnější vrstva obrázku. Představuje nejvzdálenější objekty vůči divákovi. Je animována nejpomaleji.",
-      "theTopmostImage": "Nejvrchnejší",
+      "theTopmostImage": "Pohyblivé vrstvy",
       "theTopmostImageTooltip": "Nejvrchnější vrstva obrázku. Představuje nejbližší objekty vůči divákovi. Je animována nejrychleji.",
       "imageBoxTitle": "Obrázek",
       "imageBoxTooltip": "Obrázek představující vybranou vrstvu. Každá vrstva je reprezentována jedním obrázkem.",
-      "parallaxAnimationLabel": "Celková animace parallaxu",
+      "parallaxAnimationLabel": "Směr animace parallaxu",
       "parallaxAnimationLabelTooltip": "Obrázek představující vybranou vrstvu. Každá vrstva je reprezentována jedním obrázkem.",
       "animationWithout": "Bez animace",
       "animationFromTop": "Shora dolů",

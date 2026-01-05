@@ -134,13 +134,13 @@
       "textTooltip": "The text content of the screen that will be displayed to the user in the center of the screen. Maximum length is 300 characters including spaces. The font size is adjusted automatically according to the length of the text."
     },
     "parallaxScreen": {
-      "theLowestImage": "Bottom layer",
+      "theLowestImage": "Static background layer",
       "theLowestImageTooltip": "The bottommost layer of the image. Represents the objects furthest from the viewer. It is animated at the slowest pace.",
-      "theTopmostImage": "Top layer",
+      "theTopmostImage": "Moving layers",
       "theTopmostImageTooltip": "The very top layer of the image. It represents the closest objects to the viewer. It is animated at the fastest pace.",
       "imageBoxTitle": "Image",
       "imageBoxTooltip": "An image representing the selected layer. Each layer is represented by one image.",
-      "parallaxAnimationLabel": "Parallax animation",
+      "parallaxAnimationLabel": "Parallax animation direction",
       "parallaxAnimationLabelTooltip": "An image representing the selected layer. Each layer is represented by one image.",
       "animationWithout": "Without animation",
       "animationFromTop": "From top down",
