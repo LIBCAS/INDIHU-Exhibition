@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -7,6 +7,7 @@ import { SelectField } from "react-md";
 import Carousel from "components/editors/carousel";
 import HelpIcon from "components/help-icon";
 import ImageBox from "components/editors/ImageBox";
+import { DialogType } from "components/dialogs/dialog-types";
 
 // Models
 import { AppDispatch } from "store/store";
@@ -16,6 +17,7 @@ import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 // Redux actions
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
+import { setDialog } from "actions/dialog-actions";
 
 // Utils
 import { filter } from "lodash";
@@ -30,12 +32,23 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
+  // - - - States - - -
+
   const [activeImageIndex, setActiveImageIndex] = useState<number>(-1);
+
+  // - - - Derived variables - - -
 
   const activeImageId = activeScreen.images?.find(
     (img, imgIndex) => img && imgIndex === activeImageIndex
   );
   const activeImage = dispatch(getFileById(activeImageId));
+
+  const isMaxNumberOfLayersAchieved = useMemo(
+    () => activeScreen.images && activeScreen.images.length >= 4,
+    [activeScreen.images]
+  );
+
+  // - - - Callbacks - - -
 
   const setImage = (img: IndihuFile) => {
     dispatch(
@@ -46,6 +59,8 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
       })
     );
   };
+
+  // - - - GUI - - -
 
   return (
     <div className="container container-tabMenu">
@@ -103,6 +118,21 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
             setActiveImageIndex(-1);
           }}
           onAdd={() => {
+            if (isMaxNumberOfLayersAchieved) {
+              dispatch(
+                setDialog(DialogType.InfoDialog, {
+                  noStornoButton: true,
+                  title: `${t(
+                    "descFields.parallaxScreen.maxNumberOfLayersAchievedErrTitle"
+                  )}`,
+                  content: `${t(
+                    "descFields.parallaxScreen.maxNumberOfLayersAchievedErrMsg"
+                  )}`,
+                })
+              );
+              return;
+            }
+
             dispatch(
               updateScreenData({
                 images: activeScreen.images

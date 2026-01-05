@@ -146,7 +146,9 @@
       "animationFromTop": "Shora dolů",
       "animationFromBottom": "Zdola nahoru",
       "animationLeftToRight": "Zleva doprava",
-      "animationRightToLeft": "Zprava doleva"
+      "animationRightToLeft": "Zprava doleva",
+      "maxNumberOfLayersAchievedErrTitle": "Byl dosažen maximální počet vrstev",
+      "maxNumberOfLayersAchievedErrMsg": "Parallax obrazovka podporuje jednu statickou vrstvu jako pozadí a maximálně tři pohyblivé vrstvy."
     },
     "imageZoomScreen": {
       "zoomPositionLabel": "Pozice popisu zoomu",

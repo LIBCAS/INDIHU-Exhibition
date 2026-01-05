@@ -146,7 +146,9 @@
       "animationFromTop": "From top down",
       "animationFromBottom": "From bottom up",
       "animationLeftToRight": "From left to right",
-      "animationRightToLeft": "From right to left"
+      "animationRightToLeft": "From right to left",
+      "maxNumberOfLayersAchievedErrTitle": "Maximum number of layers reached",
+      "maxNumberOfLayersAchievedErrMsg": "The parallax screen supports one static background layer and a maximum of three moving layers."
     },
     "imageZoomScreen": {
       "zoomPositionLabel": "Zoom description position",
