@@ -204,7 +204,7 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
                 />
                 <HelpIcon
                   label={t(
-                    "descFields.parallaxScreen.parallaxAnimationTooltip"
+                    "descFields.parallaxScreen.parallaxAnimationLabelTooltip"
                   )}
                   id="editor-parallax-animation"
                 />
