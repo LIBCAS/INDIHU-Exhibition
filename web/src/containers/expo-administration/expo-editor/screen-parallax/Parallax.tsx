@@ -3,22 +3,24 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 // Components
+import { SelectField } from "react-md";
 import Carousel from "components/editors/carousel";
 import HelpIcon from "components/help-icon";
-import { SelectField } from "react-md";
+import ImageBox from "components/editors/ImageBox";
 
 // Models
-import { ParallaxScreeen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
-
-// Actions and utils
-import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions";
+import { ParallaxScreeen, File as IndihuFile } from "models";
 import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
+// Redux actions
+import { getFileById } from "actions/file-actions-typed";
+import { updateScreenData } from "actions/expoActions";
+
+// Utils
 import { filter } from "lodash";
-import ImageBox from "components/editors/ImageBox";
-// - -
+
+// - - - - - -
 
 type ParallaxProps = {
   activeScreen: ParallaxScreeen;
