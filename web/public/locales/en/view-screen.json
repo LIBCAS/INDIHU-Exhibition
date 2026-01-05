@@ -28,7 +28,8 @@
     "audioDialog": {
       "title": "Audio settings",
       "speechIconTooltip": "Commentary soundtrack",
-      "backgroundMusicIconTooltip": "Background music soundtrack",
+      "backgroundMusicIconTooltip": "Chapter background music track",
+      "soundtrackIconTooltip": "Exhibition background music track",
       "muteEverythingLabel": "Reduce the volume",
       "amplifyEverythingLabel": "Increase the volume"
     }
@@ -96,10 +97,12 @@
   },
   "game-draw": {
     "solution": "Great! You completed the assignment and this is the result",
+    "takeScreenshotAction": "Take a screenshot of your drawing",
     "switchToPencilAction": "Switch to pencil",
     "switchToEraserAction": "Switch to eraser",
     "thicknessChooserAction": "Choice of thickness",
-    "colorChooserAction": "Choice of color"
+    "colorChooserAction": "Choice of color",
+    "transparencyChooserAction": "Choise of transparency"
   },
   "game-erase": {
     "solution": "Great! You completed the assignment and this is the result"

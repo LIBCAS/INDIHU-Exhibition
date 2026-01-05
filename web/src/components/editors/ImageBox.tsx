@@ -336,6 +336,28 @@ const ImageContainer = ({
           const adjustedLeft = xPercentage * (imgSize.width / 100);
           const adjustedTop = yPercentage * (imgSize.height / 100);
 
+          // NOTE: Content for infopoint to display inside tooltip
+          let content;
+
+          if ("zoom" in infopoint) {
+            content = infopoint.text || `${infopointIndex + 1}.`;
+          } else {
+            switch (infopoint.bodyContentType) {
+              case "IMAGE":
+                content =
+                  infopoint.imageFile?.name ?? "Neuvedený název obrázku";
+                break;
+
+              case "VIDEO":
+                content = infopoint.videoFile?.name ?? "Neuvedený název videa";
+                break;
+
+              default:
+                content = infopoint.text ?? "Neuvedeno";
+                break;
+            }
+          }
+
           return (
             <React.Fragment key={`infopoint-${infopointIndex}`}>
               <FontIcon
@@ -362,15 +384,7 @@ const ImageContainer = ({
                     ? `${infopointTooltipId}-${infopointIndex}`
                     : `screen-image-infopoint-${infopointIndex}`
                 }
-                data-tooltip-content={
-                  "zoom" in infopoint
-                    ? infopoint.text // in this case sequence.. otherwise always infopoint
-                    : infopoint.bodyContentType === "IMAGE"
-                    ? infopoint.imageFile?.name ?? "Neuveden název obrázku"
-                    : infopoint.bodyContentType === "VIDEO"
-                    ? infopoint.videoFile?.name ?? "Neuveden název videa"
-                    : infopoint.text ?? "Neuvedeno"
-                }
+                data-tooltip-content={content}
               >
                 help
               </FontIcon>

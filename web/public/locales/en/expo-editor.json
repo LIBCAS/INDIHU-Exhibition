@@ -50,6 +50,10 @@
     "audioDefaultHelpTooltip": "Audio",
     "musicDefaultHelpTooltip": "Music",
     "musicDescriptionHelpTooltip": "Upload background music here that will be played in a loop while viewing all screens of this chapter.",
+    "expoSoundtrackLabel": "Exhibition soundtrack",
+    "expoSoundtrackTooltip": "Upload an audio file, in .mp3 format, that will play in a loop while you navigate through the exhibition. Suitable for an exhibition that does not have chapters. This music can be turned off for selected screens.",
+    "expoSoundtrackBtnLabel": "Select",
+    "expoSoundtrackDeleteConfirmTitle": "Are you sure you want to delete the exhibition soundtrack?",
     "expoDuration": "Duration of the exhibition",
     "expoDurationTooltip": "Estimated duration of the exhibition to inform the visitor.",
     "expoDurationErrMsg": "Enter a number between 0 and 1000000.",
@@ -73,6 +77,8 @@
     "gameTaskTooltip": "",
     "gameResultTime": "Result display time",
     "gameResultTimeTooltip": "The number of seconds that determines how long the user will see the result of the game.",
+    "screenBackgroundColorLabel": "Screen background color",
+    "screenBackgroundColorTooltip": "Here you can change the screen background color to better match the image background, or to visually distinguish game and interactive screens from static ones. However, we strongly recommend using color changes sparingly to maintain the elegant design of the entire exhibition!",
 
     "startScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"
@@ -148,12 +154,17 @@
       "seqDelayTooltip": "The time that elapses before a new sequence starts after the previous one has ended.",
       "imageBoxTitle": "Image",
       "imageBoxTooltip": "Main image being zoomed over. In the zoom sequence table, you can add a new zoom point and place it on the image. In the table, select the zoom level and animation duration for this point of interest.",
+      "zoomTypeLabel": "Select zoom type",
+      "zoomTypeTooltip": "Choose one of the available zoom animation options. If you want the zoom to smoothly transition from one point to another without returning to the full view, select the continuous zoom option.",
+      "zoomTypeResetAfterZoomOption": "Zoom with return to full view",
+      "zoomTypeContinuousZoomOption": "Continuous zoom without return to full view",
       "totalScreenTime": "Total screen time:",
       "seconds": "seconds",
       "seqTableTitle": "Zoom sequence",
       "seqTableOrderCol": "Order",
       "seqTableDescCol": "Description",
-      "seqTableActionCol": "Actions"
+      "seqTableActionCol": "Actions",
+      "missingTextForSequence": "There is no text associated with this sequence."
     },
     "slideshowScreen": {
       "imageBoxTitle": "Image",
@@ -302,6 +313,7 @@
       "initialDrawingSettingsTitle": "Initial settings for drawing",
       "initialDrawingColorLabel": "Initial color",
       "initialDrawingThicknessLabel": "Initial thickness",
+      "initialDrawingTransparencyLabel": "Initial transparency",
       "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {
@@ -455,7 +467,7 @@
     "screenUrlChooseLabel": "Select the screen of this exhibition",
     "screenUrlNameLabel": "Title of the internal link of chosen screen",
 
-    "shapeSizeColorSectionSubheader": "Shape, size and color of infopoint:",
+    "additionalPropertiesSubheader": "Shape, size and color of infopoint:",
     "shapeLabel": "Infopoint shape",
     "shapeSquareOption": "Square",
     "shapeCircleOption": "Circle",
@@ -468,7 +480,18 @@
       "headerLabel": "Timeline Point Title",
       "bodyContentTypeLabel": "Body Type",
       "textBodyLabel": "Text Description",
-      "shapeSizeColorSectionSubheader": "Shape, Size, and Color of the Point"
+      "additionalPropertiesSubheader": "Shape, Size, and Color of the Point",
+      "shapeLabel": "Point shape",
+      "colorLabel": "Point color"
+    },
+
+    "commentType": {
+      "headerLabel": "Comment Header",
+      "bodyContentTypeLabel": "Comment Body Type",
+      "textBodyLabel": "Comment Text Description",
+      "additionalPropertiesSubheader": "Additional Comment Settings",
+      "shapeLabel": "Comment Shape",
+      "colorLabel": "Comment Color"
     }
   },
   "sequenceForm": {
@@ -478,7 +501,10 @@
     "sequenceDescriptionHelpText": "Enter a zoom description",
     "sequenceZoomLabel": "Zoom size",
     "sequenceZoomTimeLabel": "Zoom duration",
-    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail"
+    "sequenceStayOnDetailTimeLabel": "Dwelling time on detail",
+    "sequenceTextColorLabel": "Text color",
+    "sequenceBgColorLabel": "Background color",
+    "sequenceBorderColorLabel": "Border color"
   },
   "imageBox": {
     "emptySelectLabel": "Select",

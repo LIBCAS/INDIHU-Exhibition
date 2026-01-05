@@ -9,7 +9,7 @@ import SequencesTable from "./SequencesTable";
 import HelpIcon from "components/help-icon";
 
 // Models
-import { ZoomScreen, File as IndihuFile } from "models";
+import { ZoomScreen, File as IndihuFile, ZoomType } from "models";
 import { AppDispatch } from "store/store";
 
 // Utils
@@ -17,7 +17,10 @@ import { updateScreenData } from "actions/expoActions";
 import { getFileById } from "actions/file-actions-typed";
 import { compact, concat } from "lodash";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
-import { ZoomInTooltipPositionEnum } from "enums/administration-screens";
+import {
+  ZoomInTooltipPositionEnum,
+  ZoomTypeEnum,
+} from "enums/administration-screens";
 
 // - -
 
@@ -35,6 +38,9 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
     dispatch(updateScreenData({ image: imgFile.id, sequences: [] }));
   };
 
+  /**
+   *
+   */
   useEffect(() => {
     dispatch(updateScreenData({ time: totalZoomScreenTime }));
   }, [totalZoomScreenTime, dispatch]);
@@ -42,7 +48,7 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
   return (
     <div className="container container-tabMenu">
       <div className="screen screen-image">
-        <div className="mt-2 mb-4 mx-[2.5%] flex justify-start items-center gap-10">
+        <div className="mt-2 mb-4 mx-[2.5%] flex justify-start items-center gap-10 flex-wrap">
           <div className="flex items-center">
             <SelectField
               id="screen-zoom-in-tooltip-position"
@@ -65,7 +71,7 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
               itemLabel="label"
               itemValue="value"
               position="below"
-              defaultValue={activeScreen.tooltipPosition}
+              defaultValue={activeScreen.tooltipPosition ?? "TOP_LEFT"}
               onChange={(newTooltipPosition: "TOP_LEFT" | "TOP_RIGHT") => {
                 dispatch(
                   updateScreenData({ tooltipPosition: newTooltipPosition })
@@ -82,6 +88,7 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
             <TextField
               id="editor-zoom-in-delay-time"
               label={t("descFields.imageZoomScreen.seqDelayLabel")}
+              className="min-w-[200px]"
               type="number"
               // defaultValue={
               //   activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME
@@ -103,6 +110,39 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
             <HelpIcon
               label={t("descFields.imageZoomScreen.seqDelayTooltip")}
               id="editor-zoom-in-delay-time"
+            />
+          </div>
+
+          <div className="flex items-center">
+            <SelectField
+              id="screen-zoom-in-zoom-type"
+              label={t("descFields.imageZoomScreen.zoomTypeLabel")}
+              className="min-w-[230px]"
+              menuItems={[
+                {
+                  value: ZoomTypeEnum.RESET_AFTER_ZOOM,
+                  label: t(
+                    "descFields.imageZoomScreen.zoomTypeResetAfterZoomOption"
+                  ),
+                },
+                {
+                  value: ZoomTypeEnum.CONTINUOUS_ZOOM,
+                  label: t(
+                    "descFields.imageZoomScreen.zoomTypeContinuousZoomOption"
+                  ),
+                },
+              ]}
+              itemLabel="label"
+              itemValue="value"
+              position="below"
+              defaultValue={activeScreen.zoomType ?? "RESET_AFTER_ZOOM"}
+              onChange={(newZoomType: ZoomType) => {
+                dispatch(updateScreenData({ zoomType: newZoomType }));
+              }}
+            />
+            <HelpIcon
+              label={t("descFields.imageZoomScreen.zoomTypeTooltip")}
+              id="zoom-in-zoom-type-help"
             />
           </div>
         </div>
@@ -127,7 +167,7 @@ const Sequence = ({ activeScreen, totalZoomScreenTime }: SequenceProps) => {
             }}
             helpIconId="editor-zoom-in-image"
             helpIconLabel={t("descFields.imageZoomScreen.imageBoxTooltip")}
-            infopoints={activeScreen.sequences}
+            infopoints={activeScreen.sequences ?? []}
             onInfopointMove={(
               movedInfopointIndex,
               newLeftPosition,

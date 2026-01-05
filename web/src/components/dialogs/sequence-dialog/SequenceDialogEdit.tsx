@@ -29,7 +29,7 @@ const SequenceDialogEdit = ({
   sequence,
   sequenceIndex,
 }: SequenceDialogEditProps) => {
-  const { t } = useTranslation("sequenceForm", { keyPrefix: "sequenceForm" });
+  const { t } = useTranslation("expo-editor", { keyPrefix: "sequenceForm" });
   const { t: validationT } = useTranslation("validation");
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -47,6 +47,10 @@ const SequenceDialogEdit = ({
         time: sequence.time ?? 1,
         stayInDetailTime:
           sequence.stayInDetailTime ?? ZOOM_SCREEN_DEFAULT_STAY_IN_DETAIL_TIME,
+
+        textColor: sequence.textColor ?? undefined,
+        bgColor: sequence.bgColor ?? undefined,
+        borderColor: sequence.borderColor ?? undefined,
       }}
       onSubmit={(formData) => {
         onDialogSubmit(sequenceIndex, formData);

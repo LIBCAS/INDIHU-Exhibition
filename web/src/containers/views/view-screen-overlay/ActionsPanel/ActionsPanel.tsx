@@ -73,6 +73,7 @@ type ActionsPanelProps = {
   isMobileOverlay: boolean;
   isScreenAudioPresent: boolean;
   isChapterMusicPresent: boolean;
+  isExpoSoundtrackPresent: boolean;
   openDrawer: () => void;
   play: () => void;
   pause: () => void;
@@ -90,6 +91,7 @@ const ActionsPanel = ({
   isMobileOverlay,
   isScreenAudioPresent,
   isChapterMusicPresent,
+  isExpoSoundtrackPresent,
   openDrawer,
   play,
   pause,
@@ -169,13 +171,15 @@ const ActionsPanel = ({
   // - - AUDIO DIALOG - -
   const hasAudio =
     !!(viewScreen && "audio" in viewScreen && viewScreen.audio) ||
+    !!(viewScreen && "video" in viewScreen && viewScreen.video) ||
     isChapterMusicPresent ||
-    !!(viewScreen && "video" in viewScreen && viewScreen.video);
+    isExpoSoundtrackPresent;
 
   const isAudioMuted = useMemo(
     () =>
       expoVolumes.speechVolume.actualVolume === 0 &&
-      expoVolumes.musicVolume.actualVolume === 0,
+      expoVolumes.musicVolume.actualVolume === 0 &&
+      expoVolumes.soundtrackVolume.actualVolume === 0,
     [expoVolumes]
   );
 
@@ -366,6 +370,7 @@ const ActionsPanel = ({
           component={
             <AudioDialog
               closeThisDialog={closeTopDialog}
+              hasSoundtrackVolume={isExpoSoundtrackPresent}
               hasSpeechVolume={isScreenAudioPresent}
               hasMusicVolume={isChapterMusicPresent}
               isVideoPresent={

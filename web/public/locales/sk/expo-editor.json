@@ -50,6 +50,10 @@
     "audioDefaultHelpTooltip": "Audio",
     "musicDefaultHelpTooltip": "Hudba",
     "musicDescriptionHelpTooltip": "Sem nahrajte podkresovú hudbu, ktorá bude v slučke prehrávaná pri prezeraní všetkých obrazoviek tejto kapitoly.",
+    "expoSoundtrackLabel": "Zvukový podkres na výstavu",
+    "expoSoundtrackTooltip": "Nahrajte audio súbor, vo formáte .mp3, ktorý bude v slučke hrať pri prechádzaní výstavou. Vhodné pre výstavu, ktorá nemá kapitoly. Túto hudbu je možné u vybraných obrazoviek vypnúť.",
+    "expoSoundtrackBtnLabel": "Vybrať",
+    "expoSoundtrackDeleteConfirmTitle": "Naozaj chcete odstrániť zvukový podkres výstavy ?",
     "expoDuration": "Dĺžka trvania výstavy",
     "expoDurationTooltip": "Odhad dĺžky výstavy na informovanie návštevníka.",
     "expoDurationErrMsg": "Zadajte číslo v rozsahu 0 až 1000000.",
@@ -73,6 +77,8 @@
     "gameTaskTooltip": "",
     "gameResultTime": "Doba zobrazenia výsledku",
     "gameResultTimeTooltip": "Počet sekúnd určujúce, ako dlho návštevník uvidí výsledok minihry.",
+    "screenBackgroundColorLabel": "Farba pozadia obrazovky",
+    "screenBackgroundColorTooltip": "Tu môžete zmeniť farbu pozadia obrazovky, aby ste ju lepšie prepojili s pozadím obrázka, alebo aby ste farebne odlíšili herné a interaktívne obrazovky od statických. Avšak dôrazne odporúčame s farebnými zmenami šetriť, aby ste zachovali elegantný dizajn celej výstavy!",
 
     "startScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"
@@ -146,6 +152,10 @@
       "zoomPositionTopRightOption": "Vpravo hore",
       "seqDelayLabel": "Oneskorenie medzi sekvenciami",
       "seqDelayTooltip": "Doba, ktorá uplynie predtým, ako sa začne nová sekvencia po tom, čo skončila predošlá.",
+      "zoomTypeLabel": "Vyberte typ priblíženia",
+      "zoomTypeTooltip": "Vyberte si jednu z dostupných animačných možností priblíženia. Ak chcete, aby priblíženie plynule prešlo z jedného bodu na druhý bez návratu na celkový pohľad, zvoľte možnosť priblíženia bez návratu na celok.",
+      "zoomTypeResetAfterZoomOption": "Priblíženie s návratom na celok",
+      "zoomTypeContinuousZoomOption": "Priblíženie bez návratu na celok",
       "imageBoxTitle": "Obrázok",
       "imageBoxTooltip": "Hlavný obrázok, nad ktorým sa vykonáva zoom. V tabuľke so sekvenciou zoomov môžete pridať nový bod pre zoom a umiestniť ho na obrázok. V tabuľke potom k tomuto bodu záujmu vyberte úroveň zoomu a dĺžku trvania animácie.",
       "totalScreenTime": "Celkový čas zobrazenia obrazovky:",
@@ -153,7 +163,8 @@
       "seqTableTitle": "Sekvencia zoomu",
       "seqTableOrderCol": "Poradie",
       "seqTableDescCol": "Popis",
-      "seqTableActionCol": "Akcia"
+      "seqTableActionCol": "Akcia",
+      "missingTextForSequence": "K tejto sekvencii nie je priradený žiadny text."
     },
     "slideshowScreen": {
       "imageBoxTitle": "Obrázok",
@@ -302,6 +313,7 @@
       "initialDrawingSettingsTitle": "Počiatočné nastavenia pre kreslenie",
       "initialDrawingColorLabel": "Počiatočná farba",
       "initialDrawingThicknessLabel": "Počiatočná hrúbka",
+      "initialDrawingTransparencyLabel": "Počiatočná priehľadnosť",
       "resetInitialDrawingSettingsBtnLabel": "Reset"
     },
     "gameWipeScreen": {
@@ -455,7 +467,7 @@
     "screenUrlChooseLabel": "Vyberte obrazovku tejto výstavy",
     "screenUrlNameLabel": "Názov interného odkazu na obrazovku",
 
-    "shapeSizeColorSectionSubheader": "Tvar, veľkosť a farba infopointu:",
+    "additionalPropertiesSubheader": "Tvar, veľkosť a farba infopointu:",
     "shapeLabel": "Tvar infopointu",
     "shapeSquareOption": "Štvorec",
     "shapeCircleOption": "Kruh",
@@ -468,7 +480,18 @@
       "headerLabel": "Názov bodu na časovej osi",
       "bodyContentTypeLabel": "Typ tela",
       "textBodyLabel": "Textový popis",
-      "shapeSizeColorSectionSubheader": "Tvar, veľkosť a farba bodu"
+      "additionalPropertiesSubheader": "Tvar, veľkosť a farba bodu",
+      "shapeLabel": "Tvar bodu",
+      "colorLabel": "Farba bodu"
+    },
+
+    "commentType": {
+      "headerLabel": "Nadpis komentára",
+      "bodyContentTypeLabel": "Typ tela komentára",
+      "textBodyLabel": "Textový popis komentára",
+      "additionalPropertiesSubheader": "Dodatočné nastavenia komentára",
+      "shapeLabel": "Tvar komentára",
+      "colorLabel": "Farba komentára"
     }
   },
   "sequenceForm": {
@@ -478,7 +501,10 @@
     "sequenceDescriptionHelpText": "Vložte popis priblíženia",
     "sequenceZoomLabel": "Priblíženie",
     "sequenceZoomTimeLabel": "Doba priblíženia",
-    "sequenceStayOnDetailTimeLabel": "Doba zotrvania na detaile"
+    "sequenceStayOnDetailTimeLabel": "Doba zotrvania na detaile",
+    "sequenceTextColorLabel": "Farba textu",
+    "sequenceBgColorLabel": "Farba pozadia",
+    "sequenceBorderColorLabel": "Farba rámika"
   },
   "imageBox": {
     "emptySelectLabel": "Vybrať",

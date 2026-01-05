@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouteMatch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -17,8 +18,9 @@ import {
   ZoomScreen,
 } from "models";
 
+// Utils
 import { find } from "lodash";
-import { calculateTotalSequencesTime } from "containers/views/view-zoom/useZoomPhase";
+import { calculateTotalSequencesTime } from "containers/views/view-zoom/zoom-utils";
 import { ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME } from "constants/screen";
 
 // - -
@@ -36,11 +38,21 @@ const ScreenZoomIn = (props: ScreenEditorProps) => {
   const zoomInProps = props as ScreenEditorZoomInProps;
   const { activeScreen, url } = zoomInProps;
 
-  //
-  const totalZoomScreenTime = calculateTotalSequencesTime(
-    activeScreen.sequences ?? [],
-    (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000
-  );
+  /**
+   *
+   */
+  const totalZoomScreenTime = useMemo(() => {
+    const sequences = activeScreen.sequences ?? [];
+    const seqDelayTime =
+      (activeScreen.seqDelayTime ?? ZOOM_SCREEN_DEFAULT_SEQ_DELAY_TIME) * 1000;
+    const zoomType = activeScreen.zoomType ?? "RESET_AFTER_ZOOM";
+
+    return calculateTotalSequencesTime(sequences, seqDelayTime, zoomType);
+  }, [
+    activeScreen.sequences,
+    activeScreen.seqDelayTime,
+    activeScreen.zoomType,
+  ]);
 
   return (
     <div>

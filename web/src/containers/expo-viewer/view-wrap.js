@@ -2,18 +2,22 @@ import { compose, lifecycle, withState } from "recompose";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+// Hooks
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
+// Redux (actions)
 import {
   setViewProgress,
   tickProgress,
 } from "../../actions/expoActions/viewer-actions";
 import { setDialog } from "../../actions/dialog-actions";
 
+// Utils
 import { get, isEqual } from "lodash";
 import { isGameScreen } from "utils/view-utils";
-
 import { tickTime } from "constants/view-screen-progress";
+
+// - - - - - -
 
 const ViewWrap = ({ children }) => {
   const { expoDesignData } = useExpoDesignData();

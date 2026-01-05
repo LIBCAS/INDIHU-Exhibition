@@ -8,6 +8,7 @@ import {
 } from "./TextFields";
 import { ScreenCompletedCheckbox } from "./Checkboxes";
 import Music from "./music";
+import ScreenBackgroundColorPicker from "./screen-background-color-picker";
 
 import { AppDispatch } from "store/store";
 import { Screen } from "models";
@@ -78,6 +79,16 @@ const GameDescription = ({
                 "screenCompleted" in activeScreen
                   ? !!activeScreen.screenCompleted
                   : false
+              }
+            />
+
+            <ScreenBackgroundColorPicker
+              label={t("descFields.screenBackgroundColorLabel")}
+              helpText={t("descFields.screenBackgroundColorTooltip")}
+              color={
+                "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
+                  ? activeScreen.screenBgColor
+                  : null
               }
             />
           </div>

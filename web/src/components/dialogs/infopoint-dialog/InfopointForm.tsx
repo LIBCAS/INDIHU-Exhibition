@@ -20,9 +20,12 @@ import Button from "react-md/lib/Buttons/Button";
 import ColorPicker from "components/form/formik/ColorPicker";
 import ScreenChooser from "containers/expo-administration/expo-editor/screen-signpost/ScreenChooser";
 
+// Utils
+import { retrieveInfopointFormTranslations } from "./translations";
+
 // - - - - - - -
 
-export type InfopointFormType = "classic" | "timeline";
+export type InfopointFormType = "classic" | "timeline" | "comment";
 
 type InfopointFormProps = {
   formik: FormikProps<InfopointFormData>;
@@ -38,21 +41,16 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
 
   // - - - Translations - - -
 
-  const headerLabel =
-    type === "timeline" ? t("timelineType.headerLabel") : t("headerLabel");
+  const {
+    headerLabel,
+    bodyContentTypeLabel,
+    textBodyLabel,
+    additionalPropertiesSubheader,
+    shapeLabel,
+    colorLabel,
+  } = retrieveInfopointFormTranslations(t, type);
 
-  const bodyContentTypeLabel =
-    type === "timeline"
-      ? t("timelineType.bodyContentTypeLabel")
-      : t("bodyContentTypeLabel");
-
-  const textBodyLabel =
-    type === "timeline" ? t("timelineType.textBodyLabel") : t("textBodyLabel");
-
-  const shapeSizeColorSectionSubheader =
-    type === "timeline"
-      ? t("timelineType.shapeSizeColorSectionSubheader")
-      : t("shapeSizeColorSectionSubheader");
+  // - - - GUI - - -
 
   return (
     <Form>
@@ -203,11 +201,15 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
 
       <div>
         <div className="mt-8 mb-1 font-['Work_Sans'] text-[15px] text-black/[.83] underline">
-          {shapeSizeColorSectionSubheader}
+          {additionalPropertiesSubheader}
         </div>
 
         <div className="w-full flex items-start gap-2">
-          <div className="w-3/6">
+          {/* NOTE: Hide shape setting if its comment type, the shape will remain set as 'SQUARE' but this setting will be ignored */}
+          <div
+            className="w-3/6"
+            style={{ display: type === "comment" ? "none" : undefined }}
+          >
             <ReactMdSelectField
               controls={[
                 {
@@ -223,7 +225,7 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
                   value: "ICON",
                 },
               ]}
-              label={t("shapeLabel")}
+              label={shapeLabel}
               name="shape"
               fullWidth
             />
@@ -239,7 +241,7 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
         </div>
 
         {formik.values.shape !== "ICON" && (
-          <ColorPicker name="color" label={t("colorLabel")} />
+          <ColorPicker name="color" label={colorLabel} />
         )}
 
         {formik.values.shape === "ICON" && (

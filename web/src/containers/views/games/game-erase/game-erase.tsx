@@ -12,9 +12,11 @@ import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
 // Hooks
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import useResizeObserver from "hooks/use-resize-observer";
 import { useGameErase } from "./useGameErase";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -31,8 +33,9 @@ import cx from "classnames";
 import classes from "./game-erase.module.scss";
 import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
 import { calculateObjectFit } from "utils/object-fit";
-import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
+import { palette } from "palette";
 
 // - - - - - -
 
@@ -54,11 +57,25 @@ export const GameErase = ({
     screenPreloadedFiles;
   const { t } = useTranslation("view-screen");
 
+  const { expoDesignData } = useExpoDesignData();
+
   // - - - States - - -
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
   // - - - Derived variables (settings) - - -
+
+  /**
+   * First check for the local screen background color override, if set
+   * If local bg color is not used, use global setting from the theming
+   */
+  const screenBackgroundColor = useMemo<string>(() => {
+    if (viewScreen.screenBgColor) {
+      return viewScreen.screenBgColor;
+    }
+
+    return expoDesignData?.backgroundColor ?? palette.background;
+  }, [viewScreen.screenBgColor, expoDesignData?.backgroundColor]);
 
   const eraserToolType = useMemo(
     () => viewScreen.eraserToolType ?? "eraser",
@@ -94,6 +111,7 @@ export const GameErase = ({
     upperImageOrigData,
     upperImageSrc,
     shouldErase: !isGameFinished,
+    backgroundColor: screenBackgroundColor,
   });
 
   // - - - Game Handling - - -

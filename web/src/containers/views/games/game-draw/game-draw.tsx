@@ -18,6 +18,7 @@ import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useBoolean } from "hooks/boolean-hook";
 import { useGameDraw } from "./useGameDraw";
+import { useGameDrawScreenshot } from "./useGameDrawScreenshot";
 import useResizeObserver from "hooks/use-resize-observer";
 
 // Components
@@ -35,7 +36,10 @@ import { AppState } from "store/store";
 // Utils
 import cx from "classnames";
 import classes from "./game-draw.module.scss";
-import { GAME_SCREEN_DEFAULT_RESULT_TIME } from "constants/screen";
+import {
+  GAME_DRAW_DEFAULT_TRANSPARENCY,
+  GAME_SCREEN_DEFAULT_RESULT_TIME,
+} from "constants/screen";
 import {
   GAME_DRAW_DEFAULT_COLOR,
   GAME_DRAW_DEFAULT_THICKNESS,
@@ -68,6 +72,7 @@ export const GameDraw = ({
     showDrawing = false,
     initialColor = GAME_DRAW_DEFAULT_COLOR,
     initialThickness = GAME_DRAW_DEFAULT_THICKNESS,
+    initialTransparency = GAME_DRAW_DEFAULT_TRANSPARENCY,
   } = viewScreen;
 
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
@@ -75,13 +80,19 @@ export const GameDraw = ({
 
   // - - - States - - -
 
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
   const [color, setColor] = useState<string>(initialColor);
 
   const [thickness, setThickness] = useState<number>(initialThickness);
 
+  const [transparency, setTransparency] = useState<number>(initialTransparency);
+
   const [isErasing, { toggle: toggleTool }] = useBoolean(
     GAME_DRAW_DEFAULT_IS_ERASING
   );
+
+  // - - - States (thickness popover) - - -
 
   const [thicknessAnchor, setThicknessAnchor] =
     useState<HTMLButtonElement | null>(null);
@@ -91,19 +102,32 @@ export const GameDraw = ({
     { toggle: toggleThicknessPopover, setFalse: closeThicknessPopover },
   ] = useBoolean(false);
 
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+  // - - - States (transparency popover) - - -
+
+  const [transparencyAnchor, setTransparencyAnchor] =
+    useState<HTMLButtonElement | null>(null);
+
+  const [
+    isTransparencyPopoverOpen,
+    { toggle: toggleTransparencyPopover, setFalse: closeTransparencyPopover },
+  ] = useBoolean(false);
 
   // - - - Ref - - -
 
+  const [imageContainerRef, imageContainerSize, imageContainer] =
+    useResizeObserver<HTMLImageElement>();
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // - - Draw functionality - -
+  // - - - Draw functionality - - -
 
   const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
+    containerSize: imageContainerSize,
     canvasRef,
     isGameFinished,
     color,
     thickness,
+    transparency,
     isErasing,
   });
 
@@ -121,7 +145,7 @@ export const GameDraw = ({
     clearCanvas();
   }, [clearCanvas]);
 
-  // - - Transition animation between drawing and solution img - -
+  // - - - Transition animation between drawing and solution img - - -
 
   const transition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -151,9 +175,6 @@ export const GameDraw = ({
     () => viewScreen.image1OrigData ?? { width: 0, height: 0 },
     [viewScreen.image1OrigData]
   );
-
-  const [imageContainerRef, imageContainerSize] =
-    useResizeObserver<HTMLImageElement>();
 
   const {
     width: containedImageWidth,
@@ -189,6 +210,17 @@ export const GameDraw = ({
       document.removeEventListener("keydown", onKeyDownAction);
     };
   }, [onKeyDownAction]);
+
+  // - - - Screenshot functionality - - -
+
+  const { handleTakeScreenshot } = useGameDrawScreenshot({
+    imageContainerEl: imageContainer,
+    canvasEl: canvasRef.current,
+    containedImageWidth: containedImageWidth,
+    containedImageHeight: containedImageHeight,
+    fromLeftWidth: fromLeftWidth,
+    fromTopHeight: fromTopHeight,
+  });
 
   // - - - Game Auto Navigation - - -
 
@@ -293,6 +325,25 @@ export const GameDraw = ({
         />
       </Popper>
 
+      <Popper
+        anchor={transparencyAnchor}
+        placement="top-start"
+        open={isTransparencyPopoverOpen}
+        onClickOutside={closeTransparencyPopover}
+        arrow
+      >
+        <input
+          type="range"
+          draggable={false}
+          className="h-full bg-white"
+          min={5}
+          max={100}
+          step={5}
+          value={transparency}
+          onChange={(e) => setTransparency(parseInt(e.target.value))}
+        />
+      </Popper>
+
       {infoPanelRef.current &&
         ReactDOM.createPortal(
           <GameInfoPanel
@@ -312,7 +363,23 @@ export const GameDraw = ({
             onGameFinish={onGameFinish}
             onGameReset={onGameReset}
             gameActions={[
-              <div key="tool-button">
+              isGameFinished === false ? (
+                <div key="screenshot-button" className="relative">
+                  <Button
+                    color="expoTheme"
+                    iconBefore={<Icon name="file_download" />}
+                    onClick={async () => await handleTakeScreenshot(true)}
+                    tooltip={{
+                      id: "game-draw-overlay-screenshot-button-tooltip",
+                      content: t("game-draw.takeScreenshotAction"),
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              ),
+
+              <div key="tool-button" className="relative">
                 <Button
                   color="expoTheme"
                   onClick={toggleTool}
@@ -326,7 +393,7 @@ export const GameDraw = ({
                 />
               </div>,
 
-              <div className="relative" key="thickness-button">
+              <div key="thickness-button" className="relative">
                 <Button
                   ref={(ref) => setThicknessAnchor(ref)}
                   color="expoTheme"
@@ -339,7 +406,7 @@ export const GameDraw = ({
                 />
               </div>,
 
-              <div className="relative" key="color-picker-button">
+              <div key="color-picker-button" className="relative">
                 <Button
                   color="expoTheme"
                   tooltip={{
@@ -355,6 +422,19 @@ export const GameDraw = ({
                     onChange={(e) => setColor(e.target.value)}
                   />
                 </Button>
+              </div>,
+
+              <div key="transparency-button" className="relative">
+                <Button
+                  ref={(ref) => setTransparencyAnchor(ref)}
+                  color="expoTheme"
+                  onClick={toggleTransparencyPopover}
+                  iconBefore={<Icon name="opacity" />}
+                  tooltip={{
+                    id: "game-draw-overlay-opacity-button-tooltip",
+                    content: t("game-draw.transparencyChooserAction"),
+                  }}
+                />
               </div>,
             ]}
           />,

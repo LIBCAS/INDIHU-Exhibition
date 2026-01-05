@@ -242,6 +242,7 @@ export const GameMove = ({
                     left={adjustedLeft}
                     top={adjustedTop}
                     infopoint={infopoint}
+                    isComment={true}
                   />
                   <TooltipInfoPoint
                     key={`move-result-img-tooltip-${infopointIndex}`}

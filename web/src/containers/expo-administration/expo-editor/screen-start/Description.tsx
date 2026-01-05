@@ -7,6 +7,8 @@ import { TextField, SelectField, FontIcon, Button, Checkbox } from "react-md";
 import AudioMusic from "components/editors/audio-music";
 import HelpIcon from "components/help-icon";
 import WysiwygEditor from "components/editors/WysiwygEditor/WysiwygEditor";
+import ExpoSoundtrack from "./ExpoSoundtrack";
+import ScreenBackgroundColorPicker from "components/editors/screen-background-color-picker";
 
 // Models
 import {
@@ -38,6 +40,7 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
 
   const image = dispatch(getFileById(activeScreen.image));
   const audio = dispatch(getFileById(activeScreen.audio));
+  const expoSoundTrack = dispatch(getFileById(activeScreen.expoSoundtrack));
 
   const setImage = (img: IndihuFile) => {
     dispatch(updateScreenData({ image: img.id }));
@@ -225,6 +228,12 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
               id="editor-start-description-audio"
             />
 
+            <ExpoSoundtrack
+              textFieldLabel={t("descFields.expoSoundtrackLabel")}
+              helpIconTitle={t("descFields.expoSoundtrackTooltip")}
+              value={expoSoundTrack?.name ?? ""}
+            />
+
             <div className="flex-col">
               <div className="flex-row-nowrap">
                 <div className="form-input form-input-with-suffix">
@@ -309,6 +318,16 @@ const Description = ({ activeScreen, activeExpo }: DescriptionProps) => {
                 className="checkbox-shift-left-by-padding"
               />
             </div>
+
+            <ScreenBackgroundColorPicker
+              label={t("descFields.screenBackgroundColorLabel")}
+              helpText={t("descFields.screenBackgroundColorTooltip")}
+              color={
+                "screenBgColor" in activeScreen && !!activeScreen.screenBgColor
+                  ? activeScreen.screenBgColor
+                  : null
+              }
+            />
           </div>
         </div>
       </div>

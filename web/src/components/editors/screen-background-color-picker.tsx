@@ -1,64 +1,73 @@
-import {
-  useState,
-  useRef,
-  useMemo,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-} from "react";
-import { useField } from "formik";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
+import { useDispatch } from "react-redux";
 
+// Hooks
+import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useOnClickOutside } from "hooks/use-on-click-outside";
+
+// Components
+import HelpIcon from "components/help-icon";
 import { Icon } from "components/icon/icon";
 
-/* Designed to use with <Formik> context component, but possible to use also without
-if, by using react state from useState which is supplied through the color and setColot props. */
+// Types
+import { AppDispatch } from "store/store";
 
-// - - - - - - - -
+// Redux (actions)
+import { updateScreenData } from "actions/expoActions/screen-actions";
 
-type ColorPickerProps = {
-  name: string;
-  label?: string;
-  color?: string;
-  setColor?: Dispatch<SetStateAction<string>>;
-  backupColor?: string;
+// Utils
+import { palette } from "palette";
+
+// - - - - - -
+
+type ScreenBackgroundColorPickerProps = {
+  color: string | null;
+  label: string;
+  helpText: string;
+  placement?: "right-top" | "right-bottom";
 };
 
-const ColorPicker = ({
-  name,
+const ScreenBackgroundColorPicker = ({
   color,
-  setColor,
   label,
-  backupColor,
-}: ColorPickerProps) => {
-  // field contains { name, value, onChange, onBlur, .. }
-  // meta contains { value, error, touched, initialValue, initialError, initialTouched }
-  // helper contains { setValue, setError, setTouched }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [field, meta, helper] = useField<string | undefined>(name); // string as color here!
+  helpText,
+  placement = "right-bottom",
+}: ScreenBackgroundColorPickerProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { expoDesignData } = useExpoDesignData();
+
+  // - - - Derived variables - - -
+
+  const defaultColorValue = useMemo(
+    () => expoDesignData?.backgroundColor ?? palette.background,
+    [expoDesignData?.backgroundColor]
+  );
 
   const colorValue = useMemo(
-    () => color ?? field.value ?? backupColor,
-    [backupColor, color, field.value]
+    () => color ?? defaultColorValue,
+    [color, defaultColorValue]
   );
 
-  const colorValueFormik = useMemo(
-    () => field.value ?? backupColor,
-    [backupColor, field.value]
-  );
+  // - - - Refs - - -
+
+  const popoverColorPickerRef = useRef<HTMLDivElement | null>(null);
+  const paletteIconContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // - - - States - - -
 
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
   const [isColorEditModeOn, setIsColorEditModeOn] = useState<boolean>(false);
 
-  const popoverColorPickerRef = useRef<HTMLDivElement | null>(null);
-  const paletteIconContainerRef = useRef<HTMLDivElement | null>(null);
+  // - - - Callbacks - - -
 
   const openColorPicker = useCallback(() => setIsColorPickerOpen(true), []);
 
   const closeColorPicker = useCallback(() => {
     setIsColorPickerOpen(false);
   }, []);
+
+  // - - - Hooks - - -
 
   useOnClickOutside(
     popoverColorPickerRef,
@@ -69,11 +78,12 @@ const ColorPicker = ({
 
   return (
     <div>
-      {label && (
+      <div className="flex justify-between items-center gap-2">
         <label className="font-['Work_Sans'] text-[12px] text-black/[.54] inline-block mb-3 mt-2">
           {label}
         </label>
-      )}
+        <HelpIcon label={helpText} id="screen-background-color-help" />
+      </div>
 
       <div className="relative">
         {/* 1. Color Input Field */}
@@ -89,10 +99,9 @@ const ColorPicker = ({
                 <HexColorInput
                   color={colorValue}
                   onChange={(newColor: string) => {
-                    helper.setValue(newColor);
-                    if (setColor) setColor(newColor);
+                    dispatch(updateScreenData({ screenBgColor: newColor }));
                   }}
-                  onBlur={() => helper.setTouched(true)}
+                  //onBlur={() => {}}
                   className="border-[1px] border-solid border-black outline-none text-center"
                 />
               </div>
@@ -118,6 +127,15 @@ const ColorPicker = ({
                 onClick={() => !isColorEditModeOn && openColorPicker()}
               />
             </div>
+            <Icon
+              name="restart_alt"
+              containerClassName="cursor-pointer"
+              useMaterialUiIcon
+              iconStyle={{ fontSize: "24px" }}
+              onClick={() => {
+                dispatch(updateScreenData({ screenBgColor: null }));
+              }}
+            />
           </div>
         </div>
 
@@ -126,33 +144,21 @@ const ColorPicker = ({
           <div
             ref={popoverColorPickerRef}
             className="absolute rounded-lg"
-            style={{ bottom: "calc(100% + 2px)", right: "2px" }}
+            style={{
+              right: "2px",
+              bottom:
+                placement === "right-top" ? "calc(100% + 2px)" : undefined,
+              top:
+                placement === "right-bottom" ? "calc(100% + 2px)" : undefined,
+            }}
           >
             <HexAlphaColorPicker
               color={colorValue}
               onChange={(newColor: string) => {
-                helper.setValue(newColor);
-                if (setColor) setColor(newColor);
+                dispatch(updateScreenData({ screenBgColor: newColor }));
               }}
-              onBlur={(_e) => helper.setTouched(true)}
+              //onBlur={(_e) => {}}
             />
-
-            {/* When using formik, so not using classic useState, then we need this helper input */}
-            {!color && !setColor && (
-              <input
-                type="color"
-                className="hidden"
-                // Field handling
-                name={colorValueFormik}
-                value={colorValueFormik}
-                onChange={(e) => {
-                  helper.setValue(e.target.value);
-                }}
-                onBlur={(_e) => {
-                  helper.setTouched(true);
-                }}
-              />
-            )}
           </div>
         )}
       </div>
@@ -160,4 +166,4 @@ const ColorPicker = ({
   );
 };
 
-export default ColorPicker;
+export default ScreenBackgroundColorPicker;
