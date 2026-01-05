@@ -13,6 +13,7 @@ import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
 // Utils
 import { getScreenTime } from "utils/screen";
+import { calculateParallaxOffsetOld } from "./parallax-utils";
 
 // - - - - - -
 
@@ -42,10 +43,7 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Hooks - - -
 
-  const [
-    viewContainerRef,
-    { width: viewContainerWidth, height: viewContainerHeight },
-  ] = useResizeObserver();
+  const [viewContainerRef, viewContainerSize] = useResizeObserver();
 
   // - - - Animation stuff - - -
 
@@ -87,17 +85,17 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
    */
   const totalDistance = useMemo(() => {
     const distance = isAnimationHorizontal
-      ? viewContainerWidth
+      ? viewContainerSize.width
       : isAnimationVertical
-      ? viewContainerHeight
+      ? viewContainerSize.height
       : 0;
 
     return distance / 8;
   }, [
     isAnimationHorizontal,
     isAnimationVertical,
-    viewContainerWidth,
-    viewContainerHeight,
+    viewContainerSize.width,
+    viewContainerSize.height,
   ]);
 
   /**
@@ -135,14 +133,16 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
           );
         }
 
-        // Interpolation of offset value to value that is used directly in style prop
+        // NOTE1: Interpolation of offset value to value that is used directly in style prop
+        // NOTE2: Two algorithms are currently available:
+        //     - `calculateParallaxOffsetOld()` OR `calculateParallaxOffset()`
         const totalImages = preloadedImages.length;
-
-        const translateOffset = offset.to(
-          (value) =>
-            ((value * totalDistance) / totalImages) *
-            (preloadedImgIdx + 1) *
-            animationScale
+        const translateOffset = calculateParallaxOffsetOld(
+          offset,
+          preloadedImgIdx,
+          totalImages,
+          totalDistance,
+          animationScale
         );
 
         return (
