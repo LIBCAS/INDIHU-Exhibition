@@ -1,18 +1,19 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { animated, easings, useSpring } from "react-spring";
+
+// Hooks
 import useResizeObserver from "hooks/use-resize-observer";
 
 // Models
-import { ScreenProps, ParallaxScreeen } from "models";
 import { AppState } from "store/store";
+import { ScreenProps, ParallaxScreeen } from "models";
 
 // Utils
 import { getScreenTime } from "utils/screen";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ParallaxScreeen,
@@ -20,7 +21,7 @@ const stateSelector = createSelector(
   (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
 );
 
-// - -
+// - - - - - -
 
 export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, viewProgress } = useSelector(stateSelector);
