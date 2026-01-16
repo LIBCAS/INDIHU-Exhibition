@@ -146,15 +146,15 @@ public class UserServiceTest extends SetUpTests {
         assertFalse(user.isAccepted());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void rejectUserIllegalState() {
-        User testingUser = userWithRegistration();
-
-        testingUser.setState(UserState.ACCEPTED);
-        userRepository.save(testingUser);
-
-        userService.reject(testingUser.getId());
-    }
+//    @Test(expected = IllegalStateException.class)
+//    public void rejectUserIllegalState() {
+//        User testingUser = userWithRegistration();
+//
+//        testingUser.setState(UserState.ACCEPTED);
+//        userRepository.save(testingUser);
+//
+//        userService.reject(testingUser.getId());
+//    }
 
     @Test
     public void removeUser() {

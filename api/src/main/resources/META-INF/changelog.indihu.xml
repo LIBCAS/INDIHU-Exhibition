@@ -7,7 +7,7 @@
     <property name="now" value="now()" dbms="mysql"/>
     <property name="now" value="now()" dbms="postgresql"/>
 
-    <include file="dbchangelog.core.xml"/>
+    <include file="classpath:/META-INF/core.changelog.indihu.xml"/>
 
     <changeSet id="1" author="stora">
 
@@ -413,5 +413,33 @@
 
     <changeSet id="in:32" author="kollar">
         <dropNotNullConstraint tableName="in_message" columnName="text"/>
+    </changeSet>
+
+    <changeSet id="in:33" author="martiskat">
+        <createTable tableName="in_survey_answer">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="in_survey_answer_pk" nullable="false"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="deleted" type="timestamp"/>
+            <column name="expo_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="screen_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="answer_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="answer" type="varchar(2500)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="in_survey_answer" indexName="in_survey_answer_expo_screen_idx">
+            <column name="expo_id"/>
+            <column name="screen_id"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
