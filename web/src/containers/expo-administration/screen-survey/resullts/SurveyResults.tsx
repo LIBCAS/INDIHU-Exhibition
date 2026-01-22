@@ -136,7 +136,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     };
   }, [answerItems]);
 
-  // - - - Callbacks - - -
+  // - - - Callbacks (delete) - - -
 
   /**
    *
@@ -158,6 +158,9 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
       if (respStatus !== 200) {
         throw Error(`Kód chyby: ${respStatus}`);
       }
+
+      // NOTE:
+      setAnswerItems([]);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
@@ -166,7 +169,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     } finally {
       setIsDeleting(false);
     }
-  }, [activeExpoId, activeScreen.id]);
+  }, [activeScreen.id, activeExpoId]);
 
   /**
    *
@@ -182,40 +185,41 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     );
   }, [dispatch, handleDeleteAnswersOnServer]);
 
+  // - - - Callbacks (fetch) - - -
+
+  const handleFetchSurveyAnswers = useCallback(async () => {
+    try {
+      setFetchAnswersErrMsg("");
+      setIsFetchingAnswers(true);
+
+      const url = `/api/survey/answers/${activeExpoId}/${activeScreen.id}`;
+      await sleep(500);
+      const response = await fetcher(url, { method: "GET" });
+      const respStatus = response.status;
+      if (respStatus !== 200) {
+        throw Error(`Kód chyby: ${respStatus}`);
+      }
+
+      const respBody = (await response.json()) as SurveyAnswerItem[];
+      setAnswerItems(respBody);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const errMsg = `Behom získania odpovedí zo serveru došlo k nasledujúcej chybe: ${msg}`;
+      setFetchAnswersErrMsg(errMsg);
+      console.error(errMsg);
+    } finally {
+      setIsFetchingAnswers(false);
+    }
+  }, [activeScreen.id, activeExpoId]);
+
   // - - - Effects - - -
 
   /**
-   *
+   * Effect responsible for fetching survey answers after the component has been mounted
    */
   useEffect(() => {
-    const handleMount = async () => {
-      try {
-        setFetchAnswersErrMsg("");
-        setIsFetchingAnswers(true);
-
-        const screenId = activeScreen.id;
-        const url = `/api/survey/answers/${activeExpoId}/${screenId}`;
-        await sleep(500);
-        const response = await fetcher(url, { method: "GET" });
-        const respStatus = response.status;
-        if (respStatus !== 200) {
-          throw Error(`Kód chyby: ${respStatus}`);
-        }
-
-        const respBody = (await response.json()) as SurveyAnswerItem[];
-        setAnswerItems(respBody);
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        const errMsg = `Behom získania odpovedí zo serveru došlo k nasledujúcej chybe: ${msg}`;
-        setFetchAnswersErrMsg(errMsg);
-        console.error(errMsg);
-      } finally {
-        setIsFetchingAnswers(false);
-      }
-    };
-
-    handleMount();
-  }, [activeExpoId, activeScreen.id]);
+    handleFetchSurveyAnswers();
+  }, [handleFetchSurveyAnswers]);
 
   // - - - GUI - - -
 
