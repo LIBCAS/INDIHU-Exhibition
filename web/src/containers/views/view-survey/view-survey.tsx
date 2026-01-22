@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import { Grid } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 
 import SurveyAnswerItem from "./variant-answers/SurveyAnswerItem";
 import SurveyFreeAnswerItem from "./variant-answers/SurveyFreeAnswerItem";
@@ -15,20 +16,46 @@ import { GameActionsPanel } from "../games/GameActionsPanel";
 
 // Types
 import { AppDispatch, AppState } from "store/store";
-import { ScreenProps, SurveyScreen, SurveyType } from "models";
+import { ScreenProps, SurveyScreen, SurveyType, ViewExpo } from "models";
 
 // Redux actions
 import { setScreensInfo } from "actions/expoActions/viewer-actions";
 
 // Utils
 import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
+import { fetcher } from "utils/fetcher";
+
+// - - - - - -
+
+type SurveyBaseAnswer = {
+  expoId: string;
+  screenId: string;
+};
+
+type SurveyChoiceAnswer = SurveyBaseAnswer & {
+  answerType: "CHOICE";
+  answer: "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
+};
+
+type SurveyFreeAnswer = SurveyBaseAnswer & {
+  answerType: "FREE";
+  answer: string;
+};
+
+type SurveyAnswer = SurveyChoiceAnswer | SurveyFreeAnswer;
+
+// - - - - - -
+
+const answerTranslator = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
 
 // - - - - - -
 
 const stateSelector = createSelector(
+  ({ expo }: AppState) => expo.viewExpo as ViewExpo,
   ({ expo }: AppState) => expo.viewScreen as SurveyScreen,
   ({ expo }: AppState) => expo.screensInfo.isSurveyFreeAsnwerMarked,
-  (viewScreen, isSurveyFreeAsnwerMarked) => ({
+  (viewExpo, viewScreen, isSurveyFreeAsnwerMarked) => ({
+    viewExpo,
     viewScreen,
     isSurveyFreeAsnwerMarked,
   })
@@ -40,7 +67,8 @@ export const ViewSurvey = ({
   actionsPanelRef,
   isMobileOverlay,
 }: ScreenProps) => {
-  const { viewScreen, isSurveyFreeAsnwerMarked } = useSelector(stateSelector);
+  const { viewExpo, viewScreen, isSurveyFreeAsnwerMarked } =
+    useSelector(stateSelector);
   const { t } = useTranslation("view-screen", { keyPrefix: "surveyScreen" });
   const dispatch = useDispatch<AppDispatch>();
 
@@ -66,27 +94,101 @@ export const ViewSurvey = ({
     [viewScreen.shouldShowAnswerFeedback]
   );
 
-  // - - - Game State - - -
+  // - - - States (game) - - -
 
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
   const [markedAnswerIdx, setMarkedAnswerIdx] = useState<number | null>(null);
+  const [freeAnswerText, setFreeAnswerText] = useState<string>("");
 
-  // - - - Callbacks - - -
+  // - - - States (post-answers) - - -
 
-  const onGameFinish = useCallback(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isPostingAnswer, setIsPostingAnswer] = useState<boolean>(false);
+  const [postingAnswerErrMsg, setPostingAnswerErrMsg] = useState<string>("");
+  const [wasAnswerPosted, setWasAnswerPosted] = useState<boolean>(false);
+
+  // - - - Callbacks (post-answers) - - -
+
+  const handlePostAnswer = useCallback(async () => {
+    try {
+      // 1.
+      const expoId = viewExpo?.id;
+      const screenId = viewScreen?.id;
+
+      if (!expoId || !screenId) {
+        throw Error("Chýbajúca identifikácia výstavy alebo obrazovky");
+      }
+
+      // 2.
+      let body: SurveyAnswer | null = null;
+
+      if (markedAnswerIdx !== null) {
+        body = {
+          expoId: expoId,
+          screenId: screenId,
+          answerType: "CHOICE",
+          answer: answerTranslator[markedAnswerIdx],
+        };
+      } else if (freeAnswerText !== "") {
+        body = {
+          expoId: expoId,
+          screenId: screenId,
+          answerType: "FREE",
+          answer: freeAnswerText,
+        };
+      }
+
+      if (body === null) {
+        return;
+      }
+
+      // 3.
+      setIsPostingAnswer(true);
+      setPostingAnswerErrMsg("");
+      setWasAnswerPosted(false);
+
+      const resp = await fetcher(`/api/survey/answer`, {
+        method: "POST",
+        headers: new Headers({ "Content-Type": "application/json" }),
+        body: JSON.stringify(body),
+      });
+
+      const respStatus = resp.status;
+      if (respStatus !== 200) {
+        throw Error(`Kód chyby: ${respStatus}`);
+      }
+      setWasAnswerPosted(true);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const errMsg = `Behom nahrávania vašej odpovedi došlo k nasledujúcej chybe: ${msg}`;
+      setPostingAnswerErrMsg(errMsg);
+      console.error(errMsg);
+    } finally {
+      setIsPostingAnswer(false);
+    }
+  }, [viewExpo?.id, viewScreen?.id, markedAnswerIdx, freeAnswerText]);
+
+  // - - - Callbacks (game) - - -
+
+  const onGameFinish = useCallback(async () => {
     setIsGameFinished(true);
-  }, []);
+    await handlePostAnswer();
+  }, [handlePostAnswer]);
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
     setMarkedAnswerIdx(null);
+    setFreeAnswerText("");
   }, []);
+
+  // - - - Callbacks (answers) - - -
 
   const handleMarkClassicAnswer = useCallback(
     (asnwerIdx) => {
-      dispatch(setScreensInfo({ isSurveyFreeAsnwerMarked: false }));
       setMarkedAnswerIdx(asnwerIdx);
+      setFreeAnswerText("");
+      dispatch(setScreensInfo({ isSurveyFreeAsnwerMarked: false }));
     },
     [dispatch]
   );
@@ -149,6 +251,8 @@ export const ViewSurvey = ({
                 isGameFinished={isGameFinished}
                 isAnswerMarked={isSurveyFreeAsnwerMarked}
                 handleMarkThisAnswer={handleMarkFreeAnswer}
+                freeAnswerText={freeAnswerText}
+                setFreeAnswerText={setFreeAnswerText}
               />
             )}
           </Grid>
@@ -175,6 +279,26 @@ export const ViewSurvey = ({
           />,
           actionsPanelRef.current
         )}
+
+      {/* Successfull post answer */}
+      <Snackbar
+        open={wasAnswerPosted}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+      >
+        <Alert severity="success" onClose={() => setWasAnswerPosted(false)}>
+          Vaša odpoveď bola úspešne nahratá.
+        </Alert>
+      </Snackbar>
+
+      {/* Error occured while posting answer */}
+      <Snackbar
+        open={postingAnswerErrMsg !== ""}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+      >
+        <Alert severity="error" onClose={() => setPostingAnswerErrMsg("")}>
+          {postingAnswerErrMsg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

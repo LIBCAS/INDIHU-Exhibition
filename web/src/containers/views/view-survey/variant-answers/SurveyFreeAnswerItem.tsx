@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useMemo } from "react";
+import { ChangeEvent, useMemo, Dispatch, SetStateAction } from "react";
 
 // Hooks
 import { useTranslation } from "react-i18next";
@@ -21,19 +21,19 @@ type SurveyFreeAnswerItemProps = {
   isGameFinished: boolean;
   isAnswerMarked: boolean;
   handleMarkThisAnswer: () => void;
+  freeAnswerText: string;
+  setFreeAnswerText: Dispatch<SetStateAction<string>>;
 };
 
 const SurveyFreeAnswerItem = ({
   isGameFinished,
   isAnswerMarked,
   handleMarkThisAnswer,
+  freeAnswerText,
+  setFreeAnswerText,
 }: SurveyFreeAnswerItemProps) => {
   const { t } = useTranslation("view-screen", { keyPrefix: "surveyScreen" });
   const { isLightMode, palette } = useExpoDesignData();
-
-  // - - - States - - -
-
-  const [freeAnswerText, setFreeAnswerText] = useState<string>("");
 
   // - - - Derived variables - - -
 
