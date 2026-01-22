@@ -42,7 +42,7 @@ type SurveyFreeAnswer = SurveyBaseAnswer & {
   answer: string;
 };
 
-type SurveyAnswer = SurveyChoiceAnswer | SurveyFreeAnswer;
+export type SurveyAnswer = SurveyChoiceAnswer | SurveyFreeAnswer;
 
 // - - - - - -
 

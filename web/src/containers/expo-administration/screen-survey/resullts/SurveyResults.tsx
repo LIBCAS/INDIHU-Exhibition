@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -19,7 +19,7 @@ import { DialogType } from "components/dialogs/dialog-types";
 
 // Types
 import { AppDispatch } from "store/store";
-import { SurveyScreen } from "models";
+import { SurveyAnswer, SurveyScreen } from "models";
 
 // Redux actions
 import { setDialog } from "actions/dialog-actions";
@@ -27,6 +27,15 @@ import { setDialog } from "actions/dialog-actions";
 // Utils
 import { formatDate } from "utils";
 import { palette } from "palette";
+import { fetcher } from "utils/fetcher";
+
+// - - - - - -
+
+type SurveyAnswerItem = SurveyAnswer & {
+  id: string;
+  created: string;
+  updated: string;
+};
 
 // - - - - - -
 
@@ -62,10 +71,11 @@ const sleep = (ms: number): Promise<void> => {
 // - - - - - -
 
 type SurveyResultsProps = {
+  activeExpoId: string;
   activeScreen: SurveyScreen;
 };
 
-const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
+const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("expo-editor", {
     keyPrefix: "descFields.surveyScreen",
@@ -73,8 +83,14 @@ const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
 
   // - - - States - - -
 
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [answerItems, setAnswerItems] = useState<
+    SurveyAnswerItem[] | undefined
+  >(undefined);
 
+  const [isFetchingAnswers, setIsFetchingAnswers] = useState<boolean>(true);
+  const [fetchAnswersErrMsg, setFetchAnswersErrMsg] = useState<string>("");
+
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [deleteErrMsg, setDeleteErrMsg] = useState<string>("");
 
   // - - - Callbacks - - -
@@ -87,9 +103,18 @@ const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
       setDeleteErrMsg("");
       setIsDeleting(true);
 
-      // TODO
-      // Step 1 - attempt to delete
-      await sleep(3500);
+      const expoId = activeExpoId;
+      const screenId = activeScreen.id;
+
+      await sleep(1000);
+      const resp = await fetcher(`/api/survey/${expoId}/${screenId}`, {
+        method: "DELETE",
+      });
+
+      const respStatus = resp.status;
+      if (respStatus !== 200) {
+        throw Error(`Kód chyby: ${respStatus}`);
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
@@ -98,7 +123,7 @@ const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
     } finally {
       setIsDeleting(false);
     }
-  }, []);
+  }, [activeExpoId, activeScreen.id]);
 
   /**
    *
@@ -114,7 +139,63 @@ const SurveyResults = ({ activeScreen }: SurveyResultsProps) => {
     );
   }, [dispatch, handleDeleteAnswersOnServer]);
 
+  // - - - Effects - - -
+
+  /**
+   *
+   */
+  useEffect(() => {
+    const handleMount = async () => {
+      try {
+        setFetchAnswersErrMsg("");
+        setIsFetchingAnswers(true);
+
+        const screenId = activeScreen.id;
+        const url = `/api/survey/answers/${activeExpoId}/${screenId}`;
+        await sleep(500);
+        const response = await fetcher(url, { method: "GET" });
+        const respStatus = response.status;
+        if (respStatus !== 200) {
+          throw Error(`Kód chyby: ${respStatus}`);
+        }
+
+        const respBody = (await response.json()) as SurveyAnswerItem[];
+        setAnswerItems(respBody);
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        const errMsg = `Behom získania odpovedí zo serveru došlo k nasledujúcej chybe: ${msg}`;
+        setFetchAnswersErrMsg(errMsg);
+        console.error(errMsg);
+      } finally {
+        setIsFetchingAnswers(false);
+      }
+    };
+
+    handleMount();
+  }, [activeExpoId, activeScreen.id]);
+
   // - - - GUI - - -
+
+  if (fetchAnswersErrMsg !== "") {
+    return (
+      <div className="container container-tabMenu flex justify-center items-center">
+        <div className="mb-16">
+          <div className="text-xl text-danger">{fetchAnswersErrMsg}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isFetchingAnswers) {
+    return (
+      <div className="container container-tabMenu flex justify-center items-center">
+        <div className="mb-16 flex-col justify-start items-center gap-2">
+          <Spinner />
+          <div>Načitávam odpovedi zo serveru ...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container container-tabMenu">

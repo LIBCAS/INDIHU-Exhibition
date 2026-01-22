@@ -27,7 +27,7 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
   const history = useHistory();
 
   const surveyProps = props as ScreenEditorSurveyProps;
-  const { activeScreen, url } = surveyProps;
+  const { activeExpo, activeScreen, url } = surveyProps;
 
   const rowNum = match.params.position.match(/^(\d*)/)?.[0];
   const colNum = match.params.position.match(/(\d*)$/)?.[0];
@@ -65,7 +65,12 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
 
       <Route
         path={`${match.url}/results`}
-        render={() => <SurveyResults activeScreen={activeScreen} />}
+        render={() => (
+          <SurveyResults
+            activeExpoId={activeExpo.id}
+            activeScreen={activeScreen}
+          />
+        )}
       />
 
       <Footer
