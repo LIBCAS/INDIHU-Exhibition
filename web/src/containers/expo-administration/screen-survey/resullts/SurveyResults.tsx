@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -19,7 +19,11 @@ import { DialogType } from "components/dialogs/dialog-types";
 
 // Types
 import { AppDispatch } from "store/store";
-import { SurveyAnswer, SurveyScreen } from "models";
+import { SurveyScreen } from "models";
+import {
+  SurveyAnswer,
+  SurveyChoiceAnswer,
+} from "containers/views/view-survey/view-survey";
 
 // Redux actions
 import { setDialog } from "actions/dialog-actions";
@@ -31,36 +35,24 @@ import { fetcher } from "utils/fetcher";
 
 // - - - - - -
 
+const answerTypeToIdxTranslator = {
+  a: 0,
+  b: 1,
+  c: 2,
+  d: 3,
+  e: 4,
+  f: 5,
+  g: 6,
+  h: 7,
+};
+
+// - - - - - -
+
 type SurveyAnswerItem = SurveyAnswer & {
   id: string;
   created: string;
   updated: string;
 };
-
-// - - - - - -
-
-const messages = [
-  {
-    text: "asdasdas asd as asjdj ajshd jashd asa da asjdh ajshdj hasjdh ajsdh jashdj asjd as ",
-    created: "2023-10-21T11:24:44.678Z",
-  },
-  {
-    text: "asdasdas asd as asjdj ajshd jashd asa da ",
-    created: "2023-10-21T11:24:44.678Z",
-  },
-  {
-    text: "asdasdas asd as asjdj ajshd jashd asa da ajsdhaj shjd asjd a ",
-    created: "2023-10-21T11:24:44.678Z",
-  },
-  {
-    text: "asdasdas asd as asjdj ajshd jashd asa da asjdhasjhd jahsjd ahsjdh jashdjk ashjkd ajskhd jkashdkj ahsjhd jash djkahsjd hajkd hajk",
-    created: "2023-10-21T11:24:44.678Z",
-  },
-  {
-    text: "asdasdas asd as asjdj ajshd jashd asa da ",
-    created: "2023-10-21T11:24:44.678Z",
-  },
-];
 
 // - - - - - -
 
@@ -92,6 +84,57 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [deleteErrMsg, setDeleteErrMsg] = useState<string>("");
+
+  // - - - Derived variables - - -
+
+  const surveyAnswers = useMemo(
+    () => activeScreen.surveyAnswers,
+    [activeScreen.surveyAnswers]
+  );
+
+  const answerItemsStats = useMemo(() => {
+    if (answerItems === undefined) {
+      return null;
+    }
+
+    const numberOfAllAnswers = answerItems.length;
+    let numberOfChoiseAnswers = 0;
+
+    const freeAnswers: SurveyAnswerItem[] = [];
+
+    // Count answers for CHOICE type
+    const choiceCounts: Record<SurveyChoiceAnswer["answer"], number> = {
+      a: 0,
+      b: 0,
+      c: 0,
+      d: 0,
+      e: 0,
+      f: 0,
+      g: 0,
+      h: 0,
+    };
+
+    for (const item of answerItems) {
+      if (item.answerType === "CHOICE") {
+        choiceCounts[item.answer] += 1;
+        numberOfChoiseAnswers += 1;
+      } else if (item.answerType === "FREE") {
+        freeAnswers.push(item);
+      } else {
+        // pass
+      }
+    }
+
+    const numberOfFreeAnswers = freeAnswers.length;
+
+    return {
+      numberOfAllAnswers,
+      numberOfChoiseAnswers,
+      numberOfFreeAnswers,
+      choiceCounts,
+      freeAnswers,
+    };
+  }, [answerItems]);
 
   // - - - Callbacks - - -
 
@@ -176,6 +219,10 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
 
   // - - - GUI - - -
 
+  if (surveyAnswers === undefined) {
+    return null;
+  }
+
   if (fetchAnswersErrMsg !== "") {
     return (
       <div className="container container-tabMenu flex justify-center items-center">
@@ -186,7 +233,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     );
   }
 
-  if (isFetchingAnswers) {
+  if (isFetchingAnswers || answerItemsStats === null) {
     return (
       <div className="container container-tabMenu flex justify-center items-center">
         <div className="mb-16 flex-col justify-start items-center gap-2">
@@ -205,7 +252,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
         <div className="mt-4">
           <div className="flex justify-start items-center gap-2">
             <div className="text-lg">Celkový počet všetkých odpovedí: </div>
-            <div className="text-lg">100</div>
+            <div className="text-lg">{answerItemsStats.numberOfAllAnswers}</div>
           </div>
 
           <div className="mt-2">
@@ -243,7 +290,9 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
           <div className="mt-2 mb-2">
             <div className="flex justify-start items-center gap-2">
               <div className="text-lg">Celkový počet odpovedí varianty: </div>
-              <div className="text-lg">76</div>
+              <div className="text-lg">
+                {answerItemsStats.numberOfChoiseAnswers}
+              </div>
             </div>
           </div>
 
@@ -272,36 +321,44 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
               </TableHead>
 
               <TableBody>
-                <TableRow>
-                  <TableCell align="left">1</TableCell>
-                  <TableCell align="left">custom textace varianty</TableCell>
-                  <TableCell align="left">
-                    123456789 123456789 123456789 123456789 123456789 123456789
-                    123456789 123456789 123456789 123456789 123456789 123456789
-                  </TableCell>
-                  <TableCell align="left">20</TableCell>
-                  <TableCell align="left">20%</TableCell>
-                </TableRow>
+                {Object.entries(answerItemsStats.choiceCounts).map(
+                  ([answerType, answerCount], idx) => {
+                    const answerTyped =
+                      answerType as SurveyChoiceAnswer["answer"];
+                    const answerIdx = answerTypeToIdxTranslator[answerTyped];
 
-                <TableRow>
-                  <TableCell align="left">2</TableCell>
-                  <TableCell align="left">custom textace varianty</TableCell>
-                  <TableCell align="left">
-                    dasldas kadjk asjdkaj skdj aksdj kasjd kjaskd jaskj da
-                  </TableCell>
-                  <TableCell align="left">30</TableCell>
-                  <TableCell align="left">30%</TableCell>
-                </TableRow>
+                    console.log("answerTyped: ", answerTyped);
+                    console.log("answerIdx: ", answerIdx);
 
-                <TableRow>
-                  <TableCell align="left">3</TableCell>
-                  <TableCell align="left">custom textace varianty</TableCell>
-                  <TableCell align="left">
-                    dasldas kadjk asjdkaj skdj aksdj kasjd kjaskd jaskj da
-                  </TableCell>
-                  <TableCell align="left">50</TableCell>
-                  <TableCell align="left">50%</TableCell>
-                </TableRow>
+                    const answerItemAdmin = surveyAnswers[answerIdx];
+                    console.log("answerItemAdmin: ", answerItemAdmin);
+
+                    if (answerItemAdmin === undefined) {
+                      return null;
+                    }
+
+                    return (
+                      <TableRow key={idx + 1}>
+                        <TableCell align="left">{idx + 1}</TableCell>
+                        <TableCell align="left">
+                          {answerItemAdmin.customUserLabel ?? answerType}
+                        </TableCell>
+                        <TableCell align="left">
+                          {answerItemAdmin.text ?? "N/A"}
+                        </TableCell>
+                        <TableCell align="left">{answerCount}</TableCell>
+                        <TableCell align="left">
+                          {(
+                            (answerCount /
+                              answerItemsStats.numberOfChoiseAnswers) *
+                            100
+                          ).toFixed(2)}
+                          %
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -313,27 +370,29 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
           <div className="mt-2 mb-2">
             <div className="flex justify-start items-center gap-2">
               <div className="text-lg">Celkový počet voľných odpovedí: </div>
-              <div className="text-lg">20</div>
+              <div className="text-lg">
+                {answerItemsStats.numberOfFreeAnswers}
+              </div>
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
-            {messages.map((message, idx) => {
+            {answerItemsStats.freeAnswers.map((answer, idx) => {
               return (
                 <div
-                  key={idx}
+                  key={`${answer.id}-${idx}`}
                   className="px-4 py-3 flex flex-col gap-3 border-solid border-2 rounded-md"
                   style={{
                     borderColor: palette["medium-gray"],
                     backgroundColor: palette["light-gray"],
                   }}
                 >
-                  <div className="text-base">{message.text}</div>
+                  <div className="text-base">{answer.answer}</div>
 
                   <div className="flex flex-col justify-end items-end gap-1 md:flex-row md:items-center md:gap-3">
                     <div className="flex gap-1 items-center text-sm italic">
                       <div>Vytvořeno: </div>
-                      <div>{formatDate(message.created)}</div>
+                      <div>{formatDate(answer.created)}</div>
                     </div>
                   </div>
                 </div>

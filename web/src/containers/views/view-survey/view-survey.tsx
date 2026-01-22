@@ -27,17 +27,17 @@ import { fetcher } from "utils/fetcher";
 
 // - - - - - -
 
-type SurveyBaseAnswer = {
+export type SurveyBaseAnswer = {
   expoId: string;
   screenId: string;
 };
 
-type SurveyChoiceAnswer = SurveyBaseAnswer & {
+export type SurveyChoiceAnswer = SurveyBaseAnswer & {
   answerType: "CHOICE";
   answer: "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
 };
 
-type SurveyFreeAnswer = SurveyBaseAnswer & {
+export type SurveyFreeAnswer = SurveyBaseAnswer & {
   answerType: "FREE";
   answer: string;
 };
