@@ -224,7 +224,15 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
   // - - - GUI - - -
 
   if (surveyAnswers === undefined) {
-    return null;
+    return (
+      <div className="container container-tabMenu flex justify-center items-center">
+        <div className="mb-16">
+          <div className="text-xl">
+            Neboli ešte vytvorené žiadne odpovede pre túto obrazovku varianty.
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (fetchAnswersErrMsg !== "") {
