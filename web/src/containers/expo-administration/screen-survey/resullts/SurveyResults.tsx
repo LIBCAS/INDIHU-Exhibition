@@ -51,7 +51,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     activeScreenId: activeScreen.id,
   });
 
-  const { isDeleting, deleteErrMsg, handleDeleteAnswers } =
+  const { isDeleting, deleteErrMsg, handleDeleteAnswersDialog } =
     useDeleteSurveyAnswers({
       activeExpoId: activeExpoId,
       activeScreenId: activeScreen.id,
@@ -125,7 +125,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
                   shadow
                   disabled={isDeleting}
                   iconBefore={<Icon name="delete" />}
-                  onClick={handleDeleteAnswers}
+                  onClick={handleDeleteAnswersDialog}
                 >
                   Vymazat všetky odpovědi
                 </Button>

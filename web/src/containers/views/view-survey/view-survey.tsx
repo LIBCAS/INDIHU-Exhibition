@@ -24,8 +24,10 @@ import { setScreensInfo } from "actions/expoActions/viewer-actions";
 
 // Utils
 import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
-import { fetcher } from "utils/fetcher";
 import { answerIdxToTypeTranslator } from "containers/expo-administration/screen-survey/utils";
+
+// Api
+import { postSurveyAnswerApi } from "containers/expo-administration/screen-survey/api";
 
 // - - - - - -
 
@@ -127,16 +129,8 @@ export const ViewSurvey = ({
       setPostingAnswerErrMsg("");
       setWasAnswerPosted(false);
 
-      const resp = await fetcher(`/api/survey/answer`, {
-        method: "POST",
-        headers: new Headers({ "Content-Type": "application/json" }),
-        body: JSON.stringify(body),
-      });
+      await postSurveyAnswerApi(body);
 
-      const respStatus = resp.status;
-      if (respStatus !== 200) {
-        throw Error(`Kód chyby: ${respStatus}`);
-      }
       setWasAnswerPosted(true);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);

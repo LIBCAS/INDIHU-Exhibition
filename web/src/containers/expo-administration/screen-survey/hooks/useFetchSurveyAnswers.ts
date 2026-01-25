@@ -5,13 +5,10 @@ import { useTranslation } from "react-i18next";
 import { SurveyAnswerItem } from "../typings";
 
 // Utils
-import { fetcher } from "utils/fetcher";
+import { sleep } from "utils/sleep";
 
-// - - - - - -
-
-const sleep = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+// Api
+import { fetchSurveyAnswersApi } from "../api";
 
 // - - - - - -
 
@@ -47,16 +44,9 @@ const useFetchSurveyAnswers = ({ activeExpoId, activeScreenId }: Props) => {
       setFetchAnswersErrMsg("");
       setIsFetchingAnswers(true);
 
-      const url = `/api/survey/answers/${activeExpoId}/${activeScreenId}`;
       await sleep(500);
-      const response = await fetcher(url, { method: "GET" });
-      const respStatus = response.status;
-      if (respStatus !== 200) {
-        throw Error(`Kód chyby: ${respStatus}`);
-      }
-
-      const respBody = (await response.json()) as SurveyAnswerItem[];
-      setAnswerItems(respBody);
+      const items = await fetchSurveyAnswersApi(activeExpoId, activeScreenId);
+      setAnswerItems(items);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       const errMsg = `Behom získania odpovedí zo serveru došlo k nasledujúcej chybe: ${msg}`;

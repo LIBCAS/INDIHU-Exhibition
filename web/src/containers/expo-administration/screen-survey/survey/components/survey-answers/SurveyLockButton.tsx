@@ -2,9 +2,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-// Hooks
-import useDeleteSurveyAnswers from "containers/expo-administration/screen-survey/hooks/useDeleteSurveyAnswers";
-
 // Components
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
@@ -18,6 +15,9 @@ import { SurveyScreen } from "models";
 // Redux actions
 import { saveScreen, updateScreenData } from "actions/expoActions";
 import { setDialog } from "actions/dialog-actions";
+
+// Api
+import { deleteSurveyAnswersApi } from "containers/expo-administration/screen-survey/api";
 
 // - - - - - - -
 
@@ -37,13 +37,6 @@ const SurveyLockButton = ({
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("expo-editor", {
     keyPrefix: "descFields.surveyScreen",
-  });
-
-  // - - - Hooks - - -
-
-  const { handleDeleteAnswersOnServer } = useDeleteSurveyAnswers({
-    activeExpoId: activeExpoId,
-    activeScreenId: activeScreen.id,
   });
 
   // - - - States - - -
@@ -75,13 +68,13 @@ const SurveyLockButton = ({
   /**
    *
    */
-  const handleLockOnServer = useCallback(async () => {
+  const handleLock = useCallback(async () => {
     try {
       setLockingErrMsg("");
       setIsLoading(true);
 
       // Step 1
-      await handleDeleteAnswersOnServer(true);
+      await deleteSurveyAnswersApi(activeExpoId, activeScreen.id);
 
       // Step 2
       const activeScreenToSave = {
@@ -108,18 +101,18 @@ const SurveyLockButton = ({
     } finally {
       setIsLoading(false);
     }
-  }, [activeScreen, rowNum, colNum, dispatch, t, handleDeleteAnswersOnServer]);
+  }, [activeExpoId, activeScreen, rowNum, colNum, dispatch, t]);
 
   /**
    *
    */
-  const handleUnlockOnServer = useCallback(async () => {
+  const handleUnlock = useCallback(async () => {
     try {
       setLockingErrMsg("");
       setIsLoading(true);
 
       // Step 1
-      await handleDeleteAnswersOnServer(true);
+      await deleteSurveyAnswersApi(activeExpoId, activeScreen.id);
 
       // Step 2
       const activeScreenToSave = {
@@ -146,35 +139,35 @@ const SurveyLockButton = ({
     } finally {
       setIsLoading(false);
     }
-  }, [activeScreen, rowNum, colNum, dispatch, t, handleDeleteAnswersOnServer]);
+  }, [activeExpoId, activeScreen, rowNum, colNum, dispatch, t]);
 
   /**
    *
    */
-  const handleLockAndPublish = useCallback(() => {
+  const handleLockDialog = useCallback(() => {
     dispatch(
       setDialog(DialogType.ConfirmDialog, {
         title: <div className="font-bold">{t("lockSurveyConfirmTitle")}</div>,
         text: t("lockSurveyConfirmText"),
-        onSubmit: async () => await handleLockOnServer(),
+        onSubmit: async () => await handleLock(),
         closeBefore: true,
       })
     );
-  }, [t, dispatch, handleLockOnServer]);
+  }, [t, dispatch, handleLock]);
 
   /**
    *
    */
-  const handleUnlockAndUnpublish = useCallback(() => {
+  const handleUnlockDialog = useCallback(() => {
     dispatch(
       setDialog(DialogType.ConfirmDialog, {
         title: <div className="font-bold">{t("unlockSurveyConfirmTitle")}</div>,
         text: t("unlockSurveyConfirmText"),
-        onSubmit: async () => await handleUnlockOnServer(),
+        onSubmit: async () => await handleUnlock(),
         closeBefore: true,
       })
     );
-  }, [t, dispatch, handleUnlockOnServer]);
+  }, [t, dispatch, handleUnlock]);
 
   // - - - GUI - - -
 
@@ -195,9 +188,7 @@ const SurveyLockButton = ({
             variant: "dark",
             style: { maxWidth: 222 },
           }}
-          onClick={
-            isScreenLocked ? handleUnlockAndUnpublish : handleLockAndPublish
-          }
+          onClick={isScreenLocked ? handleUnlockDialog : handleLockDialog}
         >
           {btnText}
         </Button>
