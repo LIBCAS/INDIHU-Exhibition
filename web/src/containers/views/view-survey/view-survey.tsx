@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
+// Hooks
+import { useLocalStorage } from "hooks/use-local-storage";
+
 // Components
 import { Grid } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
@@ -28,6 +31,10 @@ import { answerIdxToTypeTranslator } from "containers/expo-administration/screen
 
 // Api
 import { postSurveyAnswerApi } from "containers/expo-administration/screen-survey/api";
+
+// - - - - - -
+
+type ExpoScreenSurveyPosts = Record<string, boolean>;
 
 // - - - - - -
 
@@ -92,6 +99,11 @@ export const ViewSurvey = ({
   const [postingAnswerErrMsg, setPostingAnswerErrMsg] = useState<string>("");
   const [wasAnswerPosted, setWasAnswerPosted] = useState<boolean>(false);
 
+  // - - - Local Storage - - -
+
+  const [surveyAnswerPosts, setSurveyAnswerPosts] =
+    useLocalStorage<ExpoScreenSurveyPosts>("surveyAnswerPosts", {});
+
   // - - - Callbacks (post-answers) - - -
 
   const handlePostAnswer = useCallback(async () => {
@@ -106,6 +118,14 @@ export const ViewSurvey = ({
       }
 
       // 2.
+      const localStorageKey = `${expoId}-${screenId}`;
+      const isAlreadyPosted = surveyAnswerPosts[localStorageKey];
+      if (isAlreadyPosted) {
+        const errMsg = tEditor("postSurveyAnswerAlreadyPosted");
+        throw Error(errMsg);
+      }
+
+      // 3.
       let body: SurveyAnswer | null = null;
 
       if (markedAnswerIdx !== null) {
@@ -128,13 +148,17 @@ export const ViewSurvey = ({
         return;
       }
 
-      // 3.
+      // 4.
       setIsPostingAnswer(true);
       setPostingAnswerErrMsg("");
       setWasAnswerPosted(false);
 
       await postSurveyAnswerApi(tEditor, body);
 
+      // 5. Mark it to the local storage
+      setSurveyAnswerPosts((prev) => ({ ...prev, [localStorageKey]: true }));
+
+      // 6.
       setWasAnswerPosted(true);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -144,7 +168,15 @@ export const ViewSurvey = ({
     } finally {
       setIsPostingAnswer(false);
     }
-  }, [viewExpo?.id, viewScreen?.id, markedAnswerIdx, freeAnswerText, tEditor]);
+  }, [
+    viewExpo?.id,
+    viewScreen?.id,
+    markedAnswerIdx,
+    freeAnswerText,
+    tEditor,
+    surveyAnswerPosts,
+    setSurveyAnswerPosts,
+  ]);
 
   // - - - Callbacks (game) - - -
 

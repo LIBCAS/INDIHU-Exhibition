@@ -345,6 +345,7 @@
       "deleteSurveyAnswersApiErrMsgPrefix": "Kód chyby",
 
       "postSurveyAnswerMissingIdentificationErrMsg": "Chýba identifikácia výstavy alebo obrazovky",
+      "postSurveyAnswerAlreadyPosted": "Už ste odpoveď raz odoslali!",
       "postSurveyAnswerErrMsg": "Počas nahrávania vašej odpovede došlo k nasledujúcej chybe",
       "postSurveySuccessMsg": "Vaša odpoveď bola úspešne nahratá.",
 

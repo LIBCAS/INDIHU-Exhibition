@@ -345,6 +345,7 @@
       "deleteSurveyAnswersApiErrMsgPrefix": "Error code",
 
       "postSurveyAnswerMissingIdentificationErrMsg": "Missing exhibition or screen identification",
+      "postSurveyAnswerAlreadyPosted": "It seems you’ve already submitted an answer!",
       "postSurveyAnswerErrMsg": "An error occurred while submitting your answer",
       "postSurveySuccessMsg": "Your answer was submitted successfully.",
 
