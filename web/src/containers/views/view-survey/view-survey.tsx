@@ -25,10 +25,7 @@ import { setScreensInfo } from "actions/expoActions/viewer-actions";
 // Utils
 import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
 import { fetcher } from "utils/fetcher";
-
-// - - - - - -
-
-const answerTranslator = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
+import { answerIdxToTypeTranslator } from "containers/expo-administration/screen-survey/utils";
 
 // - - - - - -
 
@@ -110,7 +107,7 @@ export const ViewSurvey = ({
           expoId: expoId,
           screenId: screenId,
           answerType: "CHOICE",
-          answer: answerTranslator[markedAnswerIdx],
+          answer: answerIdxToTypeTranslator[markedAnswerIdx],
         };
       } else if (freeAnswerText !== "") {
         body = {
