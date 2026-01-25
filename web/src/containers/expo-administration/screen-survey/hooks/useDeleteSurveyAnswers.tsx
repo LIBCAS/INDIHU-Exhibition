@@ -53,19 +53,19 @@ const useDeleteSurveyAnswers = ({
       const screenId = activeScreenId;
 
       await sleep(1000);
-      await deleteSurveyAnswersApi(expoId, screenId);
+      await deleteSurveyAnswersApi(t, expoId, screenId);
 
       // NOTE: Additional action
       handleClearSurveyAnswers?.();
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
+      const errMsg = `${t("deleteSurveyAnswersErrMsg")}: ${msg}`;
       setDeleteErrMsg(errMsg);
       console.error("[handleDeleteAnswersOnServer]: ", err);
     } finally {
       setIsDeleting(false);
     }
-  }, [activeExpoId, activeScreenId, handleClearSurveyAnswers]);
+  }, [activeExpoId, activeScreenId, handleClearSurveyAnswers, t]);
 
   /**
    *
@@ -73,13 +73,17 @@ const useDeleteSurveyAnswers = ({
   const handleDeleteAnswersDialog = useCallback(async () => {
     dispatch(
       setDialog(DialogType.ConfirmDialog, {
-        title: <div className="font-bold">Vymazanie všetkých odpovedí</div>,
-        text: "Ste si opravdu istý, že chcete vymazať všetky aktuálne zozbierané výsledky pre túto obrazovku ankety?",
+        title: (
+          <div className="font-bold">
+            {t("deleteSurveyAnswersConfirmationTitle")}
+          </div>
+        ),
+        text: t("deleteSurveyAnswersConfirmationText"),
         onSubmit: async () => await handleDeleteAnswers(),
         closeBefore: true,
       })
     );
-  }, [dispatch, handleDeleteAnswers]);
+  }, [t, dispatch, handleDeleteAnswers]);
 
   // - - - Return Value - - -
 

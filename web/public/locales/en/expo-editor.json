@@ -323,7 +323,15 @@
       "unlockSurveyConfirmTitle": "Confirm unlocking and unpublishing the survey",
       "unlockSurveyConfirmText": "Clicking this button will unlock the survey and unpublish it. To preserve data integrity, all collected responses will be deleted and data collection will start from the beginning. If you do not click the button, the survey will remain published and locked.",
       "unlockSurveyErrMsgPrefix": "The following error occurred while attempting to unlock the survey",
-      "saveScreenErrMsg": "Failed to save the screen"
+      "saveScreenErrMsg": "Failed to save the screen",
+
+      "fetchSurveyAnswersApiErrMsgPrefix": "Error code",
+      "postSurveyAnswersApiErrMsgPrefix": "Error code",
+      "deleteSurveyAnswersApiErrMsgPrefix": "Error code",
+
+      "deleteSurveyAnswersConfirmationTitle": "Delete all answers",
+      "deleteSurveyAnswersConfirmationText": "Are you sure you want to delete all currently collected results for this survey screen?",
+      "deleteSurveyAnswersErrMsg": "An error occurred while deleting the answers"
     },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"

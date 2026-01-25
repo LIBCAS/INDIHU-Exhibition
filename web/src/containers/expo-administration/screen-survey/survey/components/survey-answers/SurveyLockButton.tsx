@@ -74,7 +74,7 @@ const SurveyLockButton = ({
       setIsLoading(true);
 
       // Step 1
-      await deleteSurveyAnswersApi(activeExpoId, activeScreen.id);
+      await deleteSurveyAnswersApi(t, activeExpoId, activeScreen.id);
 
       // Step 2
       const activeScreenToSave = {
@@ -112,7 +112,7 @@ const SurveyLockButton = ({
       setIsLoading(true);
 
       // Step 1
-      await deleteSurveyAnswersApi(activeExpoId, activeScreen.id);
+      await deleteSurveyAnswersApi(t, activeExpoId, activeScreen.id);
 
       // Step 2
       const activeScreenToSave = {

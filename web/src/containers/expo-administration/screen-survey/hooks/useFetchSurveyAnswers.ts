@@ -45,7 +45,11 @@ const useFetchSurveyAnswers = ({ activeExpoId, activeScreenId }: Props) => {
       setIsFetchingAnswers(true);
 
       await sleep(500);
-      const items = await fetchSurveyAnswersApi(activeExpoId, activeScreenId);
+      const items = await fetchSurveyAnswersApi(
+        t,
+        activeExpoId,
+        activeScreenId
+      );
       setAnswerItems(items);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -55,7 +59,7 @@ const useFetchSurveyAnswers = ({ activeExpoId, activeScreenId }: Props) => {
     } finally {
       setIsFetchingAnswers(false);
     }
-  }, [activeExpoId, activeScreenId]);
+  }, [activeExpoId, activeScreenId, t]);
 
   /**
    *

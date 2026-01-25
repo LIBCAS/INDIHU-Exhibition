@@ -51,6 +51,9 @@ export const ViewSurvey = ({
   const { viewExpo, viewScreen, isSurveyFreeAsnwerMarked } =
     useSelector(stateSelector);
   const { t } = useTranslation("view-screen", { keyPrefix: "surveyScreen" });
+  const { t: tEditor } = useTranslation("expo-editor", {
+    keyPrefix: "descFields.surveyScreen",
+  });
   const dispatch = useDispatch<AppDispatch>();
 
   // - - - Data about Survey from administration - - -
@@ -129,7 +132,7 @@ export const ViewSurvey = ({
       setPostingAnswerErrMsg("");
       setWasAnswerPosted(false);
 
-      await postSurveyAnswerApi(body);
+      await postSurveyAnswerApi(tEditor, body);
 
       setWasAnswerPosted(true);
     } catch (e) {
@@ -140,7 +143,7 @@ export const ViewSurvey = ({
     } finally {
       setIsPostingAnswer(false);
     }
-  }, [viewExpo?.id, viewScreen?.id, markedAnswerIdx, freeAnswerText]);
+  }, [viewExpo?.id, viewScreen?.id, markedAnswerIdx, freeAnswerText, tEditor]);
 
   // - - - Callbacks (game) - - -
 

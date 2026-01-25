@@ -323,7 +323,15 @@
       "unlockSurveyConfirmTitle": "Potvrdit odblokování a zrušení publikace ankety",
       "unlockSurveyConfirmText": "Kliknutím na tlačítko odblokujete anketu a zrušíte její zveřejnění. Z důvodu zachování integrity dat budou všechny nasbírané odpovědi odstraněny a sběr dat začne od začátku. Pokud tlačítko nekliknete, anketa zůstane zveřejněná a uzamčená.",
       "unlockSurveyErrMsgPrefix": "Došlo k následující chybě při pokusu o odblokování ankety",
-      "saveScreenErrMsg": "Uložení obrazovky se nezdařilo"
+      "saveScreenErrMsg": "Uložení obrazovky se nezdařilo",
+
+      "fetchSurveyAnswersApiErrMsgPrefix": "Kód chyby",
+      "postSurveyAnswersApiErrMsgPrefix": "Kód chyby",
+      "deleteSurveyAnswersApiErrMsgPrefix": "Kód chyby",
+
+      "deleteSurveyAnswersConfirmationTitle": "Vymazání všech odpovědí",
+      "deleteSurveyAnswersConfirmationText": "Opravdu si přejete smazat všechny aktuálně shromážděné výsledky pro tuto anketní obrazovku?",
+      "deleteSurveyAnswersErrMsg": "Během mazání odpovědí došlo k následující chybě"
     },
     "finishScreen": {
       "deleteImageConfirm": "Opravdu chcete odstranit obrázek?"

@@ -1,9 +1,11 @@
 import { SurveyAnswer, SurveyAnswerItem } from "./typings";
+import { TFunction } from "i18next";
 import { fetcher } from "utils/fetcher";
 
 // - - - - - -
 
 export const fetchSurveyAnswersApi = async (
+  t: TFunction,
   expoId: string,
   screenId: string
 ) => {
@@ -13,7 +15,7 @@ export const fetchSurveyAnswersApi = async (
 
   const respStatus = resp.status;
   if (respStatus !== 200) {
-    throw Error(`Kód chyby: ${respStatus}`);
+    throw Error(`${t("fetchSurveyAnswersApiErrMsgPrefix")}: ${respStatus}`);
   }
 
   const respBody = await resp.json();
@@ -23,7 +25,10 @@ export const fetchSurveyAnswersApi = async (
 
 // - - - - - -
 
-export const postSurveyAnswerApi = async (surveyAnswer: SurveyAnswer) => {
+export const postSurveyAnswerApi = async (
+  t: TFunction,
+  surveyAnswer: SurveyAnswer
+) => {
   const resp = await fetcher(`/api/survey/answer`, {
     method: "POST",
     headers: new Headers({ "Content-Type": "application/json" }),
@@ -32,13 +37,14 @@ export const postSurveyAnswerApi = async (surveyAnswer: SurveyAnswer) => {
 
   const respStatus = resp.status;
   if (respStatus !== 200) {
-    throw Error(`Kód chyby: ${respStatus}`);
+    throw Error(`${t("postSurveyAnswersApiErrMsgPrefix")}: ${respStatus}`);
   }
 };
 
 // - - - - - -
 
 export const deleteSurveyAnswersApi = async (
+  t: TFunction,
   expoId: string,
   screenId: string
 ) => {
@@ -48,6 +54,6 @@ export const deleteSurveyAnswersApi = async (
 
   const respStatus = resp.status;
   if (respStatus !== 200) {
-    throw Error(`Kód chyby: ${respStatus}`);
+    throw Error(`${t("deleteSurveyAnswersApiErrMsgPrefix")}: ${respStatus}`);
   }
 };
