@@ -17,6 +17,7 @@ import { GameActionsPanel } from "../games/GameActionsPanel";
 // Types
 import { AppDispatch, AppState } from "store/store";
 import { ScreenProps, SurveyScreen, SurveyType, ViewExpo } from "models";
+import { SurveyAnswer } from "containers/expo-administration/screen-survey/typings";
 
 // Redux actions
 import { setScreensInfo } from "actions/expoActions/viewer-actions";
@@ -24,25 +25,6 @@ import { setScreensInfo } from "actions/expoActions/viewer-actions";
 // Utils
 import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
 import { fetcher } from "utils/fetcher";
-
-// - - - - - -
-
-export type SurveyBaseAnswer = {
-  expoId: string;
-  screenId: string;
-};
-
-export type SurveyChoiceAnswer = SurveyBaseAnswer & {
-  answerType: "CHOICE";
-  answer: "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
-};
-
-export type SurveyFreeAnswer = SurveyBaseAnswer & {
-  answerType: "FREE";
-  answer: string;
-};
-
-export type SurveyAnswer = SurveyChoiceAnswer | SurveyFreeAnswer;
 
 // - - - - - -
 

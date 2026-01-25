@@ -21,10 +21,7 @@ import { Icon } from "components/icon/icon";
 
 // Types
 import { SurveyScreen } from "models";
-import {
-  SurveyAnswer,
-  SurveyChoiceAnswer,
-} from "containers/views/view-survey/view-survey";
+import { SurveyChoiceAnswer, SurveyAnswerItem } from "../typings";
 
 // Utils
 import { formatDate } from "utils";
@@ -41,14 +38,6 @@ const answerTypeToIdxTranslator = {
   f: 5,
   g: 6,
   h: 7,
-};
-
-// - - - - - -
-
-type SurveyAnswerItem = SurveyAnswer & {
-  id: string;
-  created: string;
-  updated: string;
 };
 
 // - - - - - -

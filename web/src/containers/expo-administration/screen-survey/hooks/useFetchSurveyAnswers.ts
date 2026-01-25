@@ -2,18 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 // Types
-import { SurveyAnswer } from "containers/views/view-survey/view-survey";
+import { SurveyAnswerItem } from "../typings";
 
 // Utils
 import { fetcher } from "utils/fetcher";
-
-// - - - - - -
-
-type SurveyAnswerItem = SurveyAnswer & {
-  id: string;
-  created: string;
-  updated: string;
-};
 
 // - - - - - -
 
