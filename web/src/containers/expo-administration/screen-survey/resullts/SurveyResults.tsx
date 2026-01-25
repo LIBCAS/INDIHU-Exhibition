@@ -21,7 +21,11 @@ import { Icon } from "components/icon/icon";
 
 // Types
 import { SurveyScreen } from "models";
-import { SurveyChoiceAnswer, SurveyAnswerItem } from "../typings";
+import {
+  SurveyChoiceAnswer,
+  SurveyChoiseAnswerItem,
+  SurveyFreeAnswerItem,
+} from "../typings";
 
 // Utils
 import { formatDate } from "utils";
@@ -79,16 +83,33 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
   );
 
   const answerItemsStats = useMemo(() => {
+    // 1)
     if (answerItems === undefined) {
-      return null;
+      return undefined;
+    }
+    if (surveyAnswers === undefined) {
+      return undefined;
+    }
+
+    // 2)
+    const choiceAnswers: SurveyChoiseAnswerItem[] = [];
+    const freeAnswers: SurveyFreeAnswerItem[] = [];
+
+    for (const item of answerItems) {
+      if (item.answerType === "CHOICE") {
+        choiceAnswers.push(item);
+      } else if (item.answerType === "FREE") {
+        freeAnswers.push(item);
+      } else {
+        // pass
+      }
     }
 
     const numberOfAllAnswers = answerItems.length;
-    let numberOfChoiseAnswers = 0;
+    const numberOfFreeAnswers = freeAnswers.length;
+    const numberOfChoiseAnswers = choiceAnswers.length;
 
-    const freeAnswers: SurveyAnswerItem[] = [];
-
-    // Count answers for CHOICE type
+    // 3)
     const choiceCounts: Record<SurveyChoiceAnswer["answer"], number> = {
       a: 0,
       b: 0,
@@ -100,27 +121,67 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
       h: 0,
     };
 
-    for (const item of answerItems) {
-      if (item.answerType === "CHOICE") {
-        choiceCounts[item.answer] += 1;
-        numberOfChoiseAnswers += 1;
-      } else if (item.answerType === "FREE") {
-        freeAnswers.push(item);
-      } else {
-        // pass
-      }
+    for (const item of choiceAnswers) {
+      choiceCounts[item.answer] += 1;
     }
 
-    const numberOfFreeAnswers = freeAnswers.length;
+    // 4)
+    type SingleChoiceAnswerData = {
+      answerCount: number;
+      answerLabel: string;
+      answerText: string;
+      answerPercentage: string;
+    };
+
+    type ChoiceAnswersData = Partial<
+      Record<SurveyChoiceAnswer["answer"], SingleChoiceAnswerData>
+    >;
+
+    const choiceData: ChoiceAnswersData = {};
+
+    for (const item of Object.entries(choiceCounts)) {
+      const [answerType, answerCount] = item;
+      const answerTypeTyped = answerType as SurveyChoiceAnswer["answer"];
+
+      const idx = answerTypeToIdxTranslator[answerTypeTyped];
+      const surveyAnswerAdministration = surveyAnswers?.[idx];
+
+      // NOTE: This can easily happen - when not all 8 answer items are used in administration
+      if (surveyAnswerAdministration === undefined) {
+        continue;
+      }
+
+      const customUserLabel = surveyAnswerAdministration?.customUserLabel;
+      const text = surveyAnswerAdministration?.text;
+
+      const answerRatio =
+        numberOfChoiseAnswers === 0 ? 0 : answerCount / numberOfChoiseAnswers;
+      const answerPercentage = isNaN(answerRatio)
+        ? "-"
+        : `${(answerRatio * 100).toFixed(2)}%`;
+
+      const newObj: SingleChoiceAnswerData = {
+        answerCount: answerCount,
+        answerLabel: customUserLabel ?? answerTypeTyped,
+        answerText: text ?? "N/A",
+        answerPercentage: answerPercentage,
+      };
+
+      choiceData[answerTypeTyped] = newObj;
+    }
 
     return {
+      answerItems,
+      choiceAnswers,
+      freeAnswers,
+
       numberOfAllAnswers,
       numberOfChoiseAnswers,
       numberOfFreeAnswers,
-      choiceCounts,
-      freeAnswers,
+
+      choiceData,
     };
-  }, [answerItems]);
+  }, [answerItems, surveyAnswers]);
 
   // - - - GUI - - -
 
@@ -146,7 +207,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     );
   }
 
-  if (isFetchingAnswers || answerItemsStats === null) {
+  if (isFetchingAnswers || answerItemsStats === undefined) {
     return (
       <div className="container container-tabMenu flex justify-center items-center">
         <div className="mb-16 flex-col justify-start items-center gap-2">
@@ -234,43 +295,27 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
               </TableHead>
 
               <TableBody>
-                {Object.entries(answerItemsStats.choiceCounts).map(
-                  ([answerType, answerCount], idx) => {
-                    const answerTyped =
-                      answerType as SurveyChoiceAnswer["answer"];
-                    const answerIdx = answerTypeToIdxTranslator[answerTyped];
-
-                    console.log("answerTyped: ", answerTyped);
-                    console.log("answerIdx: ", answerIdx);
-
-                    const answerItemAdmin = surveyAnswers[answerIdx];
-                    console.log("answerItemAdmin: ", answerItemAdmin);
-
-                    if (answerItemAdmin === undefined) {
-                      return null;
-                    }
-
-                    return (
-                      <TableRow key={idx + 1}>
-                        <TableCell align="left">{idx + 1}</TableCell>
-                        <TableCell align="left">
-                          {answerItemAdmin.customUserLabel ?? answerType}
-                        </TableCell>
-                        <TableCell align="left">
-                          {answerItemAdmin.text ?? "N/A"}
-                        </TableCell>
-                        <TableCell align="left">{answerCount}</TableCell>
-                        <TableCell align="left">
-                          {(
-                            (answerCount /
-                              answerItemsStats.numberOfChoiseAnswers) *
-                            100
-                          ).toFixed(2)}
-                          %
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }
+                {Object.entries(answerItemsStats.choiceData).map(
+                  (
+                    [
+                      _answerType,
+                      {
+                        answerCount,
+                        answerLabel,
+                        answerText,
+                        answerPercentage,
+                      },
+                    ],
+                    idx
+                  ) => (
+                    <TableRow key={idx + 1}>
+                      <TableCell align="left">{idx + 1}</TableCell>
+                      <TableCell align="left">{answerLabel}</TableCell>
+                      <TableCell align="left">{answerText}</TableCell>
+                      <TableCell align="left">{answerCount}</TableCell>
+                      <TableCell align="left">{answerPercentage}</TableCell>
+                    </TableRow>
+                  )
                 )}
               </TableBody>
             </Table>
