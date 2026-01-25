@@ -101,7 +101,8 @@ export const ViewSurvey = ({
       const screenId = viewScreen?.id;
 
       if (!expoId || !screenId) {
-        throw Error("Chýbajúca identifikácia výstavy alebo obrazovky");
+        const errMsg = tEditor("postSurveyAnswerMissingIdentificationErrMsg");
+        throw Error(errMsg);
       }
 
       // 2.
@@ -137,7 +138,7 @@ export const ViewSurvey = ({
       setWasAnswerPosted(true);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      const errMsg = `Behom nahrávania vašej odpovedi došlo k nasledujúcej chybe: ${msg}`;
+      const errMsg = `${tEditor("postSurveyAnswerErrMsg")}: ${msg}`;
       setPostingAnswerErrMsg(errMsg);
       console.error(errMsg);
     } finally {
@@ -262,7 +263,7 @@ export const ViewSurvey = ({
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
       >
         <Alert severity="success" onClose={() => setWasAnswerPosted(false)}>
-          Vaša odpoveď bola úspešne nahratá.
+          {tEditor("postSurveySuccessMsg")}
         </Alert>
       </Snackbar>
 

@@ -344,6 +344,10 @@
       "postSurveyAnswersApiErrMsgPrefix": "Kód chyby",
       "deleteSurveyAnswersApiErrMsgPrefix": "Kód chyby",
 
+      "postSurveyAnswerMissingIdentificationErrMsg": "Chybí identifikace výstavy nebo obrazovky",
+      "postSurveyAnswerErrMsg": "Během nahrávání vaší odpovědi došlo k následující chybě",
+      "postSurveySuccessMsg": "Vaše odpověď byla úspěšně nahrána.",
+
       "deleteSurveyAnswersConfirmationTitle": "Vymazání všech odpovědí",
       "deleteSurveyAnswersConfirmationText": "Opravdu si přejete smazat všechny aktuálně shromážděné výsledky pro tuto anketní obrazovku?",
       "deleteSurveyAnswersErrMsg": "Během mazání odpovědí došlo k následující chybě"

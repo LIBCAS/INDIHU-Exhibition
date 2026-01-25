@@ -344,6 +344,10 @@
       "postSurveyAnswersApiErrMsgPrefix": "Error code",
       "deleteSurveyAnswersApiErrMsgPrefix": "Error code",
 
+      "postSurveyAnswerMissingIdentificationErrMsg": "Missing exhibition or screen identification",
+      "postSurveyAnswerErrMsg": "An error occurred while submitting your answer",
+      "postSurveySuccessMsg": "Your answer was submitted successfully.",
+
       "deleteSurveyAnswersConfirmationTitle": "Delete all answers",
       "deleteSurveyAnswersConfirmationText": "Are you sure you want to delete all currently collected results for this survey screen?",
       "deleteSurveyAnswersErrMsg": "An error occurred while deleting the answers"
