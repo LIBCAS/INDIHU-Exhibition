@@ -12,12 +12,18 @@ import { SurveyScreen } from "models";
 // - - - - - -
 
 type SurveyProps = {
+  activeExpoId: string;
   activeScreen: SurveyScreen;
   rowNum: string | undefined;
   colNum: string | undefined;
 };
 
-const Survey = ({ activeScreen, rowNum, colNum }: SurveyProps) => {
+const Survey = ({
+  activeExpoId,
+  activeScreen,
+  rowNum,
+  colNum,
+}: SurveyProps) => {
   return (
     <div className="container-big container-tabMenu">
       <div className="screen">
@@ -37,6 +43,7 @@ const Survey = ({ activeScreen, rowNum, colNum }: SurveyProps) => {
         <div>
           <AddSurveyAnswerButton activeScreen={activeScreen} />
           <SurveyLockButton
+            activeExpoId={activeExpoId}
             activeScreen={activeScreen}
             rowNum={rowNum}
             colNum={colNum}

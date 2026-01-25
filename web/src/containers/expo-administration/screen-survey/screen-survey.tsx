@@ -59,7 +59,12 @@ const ScreenSurvey = (props: ScreenEditorProps) => {
       <Route
         path={`${match.url}/survey`}
         render={() => (
-          <Survey activeScreen={activeScreen} rowNum={rowNum} colNum={colNum} />
+          <Survey
+            activeExpoId={activeExpo.id}
+            activeScreen={activeScreen}
+            rowNum={rowNum}
+            colNum={colNum}
+          />
         )}
       />
 

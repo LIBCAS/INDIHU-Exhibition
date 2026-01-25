@@ -2,6 +2,9 @@ import { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
+// Hooks
+import useDeleteSurveyAnswers from "containers/expo-administration/screen-survey/hooks/useDeleteSurveyAnswers";
+
 // Components
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
@@ -16,21 +19,17 @@ import { SurveyScreen } from "models";
 import { saveScreen, updateScreenData } from "actions/expoActions";
 import { setDialog } from "actions/dialog-actions";
 
-// - - - - - -
-
-const sleep = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 // - - - - - - -
 
 type SurveyLockButtonProps = {
+  activeExpoId: string;
   activeScreen: SurveyScreen;
   rowNum: string | undefined;
   colNum: string | undefined;
 };
 
 const SurveyLockButton = ({
+  activeExpoId,
   activeScreen,
   rowNum,
   colNum,
@@ -40,11 +39,17 @@ const SurveyLockButton = ({
     keyPrefix: "descFields.surveyScreen",
   });
 
+  // - - - Hooks - - -
+
+  const { handleDeleteAnswersOnServer } = useDeleteSurveyAnswers({
+    activeExpoId: activeExpoId,
+    activeScreenId: activeScreen.id,
+  });
+
   // - - - States - - -
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [errMsg, setErrMsg] = useState<string>("");
+  const [lockingErrMsg, setLockingErrMsg] = useState<string>("");
 
   // - - - Derived variables - - -
 
@@ -72,12 +77,11 @@ const SurveyLockButton = ({
    */
   const handleLockOnServer = useCallback(async () => {
     try {
-      setErrMsg("");
+      setLockingErrMsg("");
       setIsLoading(true);
 
-      // TODO
-      // Step 1 - first try to delete current testing asnwers and start clean
-      await sleep(2500);
+      // Step 1
+      await handleDeleteAnswersOnServer(true);
 
       // Step 2
       const activeScreenToSave = {
@@ -99,24 +103,23 @@ const SurveyLockButton = ({
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       const errMsg = `${t("lockSurveyErrMsgPrefix")}: ${msg}`;
-      setErrMsg(errMsg);
+      setLockingErrMsg(errMsg);
       console.error("[handleLockOnServer]: ", err);
     } finally {
       setIsLoading(false);
     }
-  }, [activeScreen, rowNum, colNum, dispatch, t]);
+  }, [activeScreen, rowNum, colNum, dispatch, t, handleDeleteAnswersOnServer]);
 
   /**
    *
    */
   const handleUnlockOnServer = useCallback(async () => {
     try {
-      setErrMsg("");
+      setLockingErrMsg("");
       setIsLoading(true);
 
-      // TODO
-      // Step 1 - first try to delete current prod answers, because of data integrity
-      await sleep(2500);
+      // Step 1
+      await handleDeleteAnswersOnServer(true);
 
       // Step 2
       const activeScreenToSave = {
@@ -138,12 +141,12 @@ const SurveyLockButton = ({
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       const errMsg = `${t("unlockSurveyErrMsgPrefix")}: ${msg}`;
-      setErrMsg(errMsg);
+      setLockingErrMsg(errMsg);
       console.error("[handleUnlockOnServer]: ", err);
     } finally {
       setIsLoading(false);
     }
-  }, [activeScreen, rowNum, colNum, dispatch, t]);
+  }, [activeScreen, rowNum, colNum, dispatch, t, handleDeleteAnswersOnServer]);
 
   /**
    *
@@ -200,8 +203,8 @@ const SurveyLockButton = ({
         </Button>
       </div>
 
-      {errMsg !== "" ? (
-        <div className="mt-2 text-danger text-center">{errMsg}</div>
+      {lockingErrMsg !== "" ? (
+        <div className="mt-2 text-danger text-center">{lockingErrMsg}</div>
       ) : isLoading ? (
         <div className="mt-2">
           <Spinner className="w-8 h-8 border-x-secondary border-t-secondary" />

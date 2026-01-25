@@ -47,49 +47,59 @@ const useDeleteSurveyAnswers = ({
   /**
    *
    */
-  const handleDeleteAnswersOnServer = useCallback(async () => {
-    try {
-      setDeleteErrMsg("");
-      setIsDeleting(true);
+  const handleDeleteAnswersOnServer = useCallback(
+    async (rethrowError = false) => {
+      try {
+        setDeleteErrMsg("");
+        setIsDeleting(true);
 
-      const expoId = activeExpoId;
-      const screenId = activeScreenId;
+        const expoId = activeExpoId;
+        const screenId = activeScreenId;
 
-      await sleep(1000);
-      const resp = await fetcher(`/api/survey/${expoId}/${screenId}`, {
-        method: "DELETE",
-      });
+        await sleep(1000);
+        const resp = await fetcher(`/api/survey/${expoId}/${screenId}`, {
+          method: "DELETE",
+        });
 
-      const respStatus = resp.status;
-      if (respStatus !== 200) {
-        throw Error(`Kód chyby: ${respStatus}`);
+        const respStatus = resp.status;
+        if (respStatus !== 200) {
+          throw Error(`Kód chyby: ${respStatus}`);
+        }
+
+        // NOTE:
+        handleClearSurveyAnswers?.();
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
+        setDeleteErrMsg(errMsg);
+        console.error("[handleDeleteAnswersOnServer]: ", err);
+
+        if (rethrowError) {
+          throw Error(errMsg);
+        }
+      } finally {
+        setIsDeleting(false);
       }
-
-      // NOTE:
-      handleClearSurveyAnswers?.();
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
-      setDeleteErrMsg(errMsg);
-      console.error("[handleDeleteAnswersOnServer]: ", err);
-    } finally {
-      setIsDeleting(false);
-    }
-  }, [activeExpoId, activeScreenId, handleClearSurveyAnswers]);
+    },
+    [activeExpoId, activeScreenId, handleClearSurveyAnswers]
+  );
 
   /**
    *
    */
-  const handleDeleteAnswers = useCallback(async () => {
-    dispatch(
-      setDialog(DialogType.ConfirmDialog, {
-        title: <div className="font-bold">Vymazanie všetkých odpovedí</div>,
-        text: "Ste si opravdu istý, že chcete vymazať všetky aktuálne zozbierané výsledky pre túto obrazovku ankety?",
-        onSubmit: async () => await handleDeleteAnswersOnServer(),
-        closeBefore: true,
-      })
-    );
-  }, [dispatch, handleDeleteAnswersOnServer]);
+  const handleDeleteAnswers = useCallback(
+    async (rethrowError = false) => {
+      dispatch(
+        setDialog(DialogType.ConfirmDialog, {
+          title: <div className="font-bold">Vymazanie všetkých odpovedí</div>,
+          text: "Ste si opravdu istý, že chcete vymazať všetky aktuálne zozbierané výsledky pre túto obrazovku ankety?",
+          onSubmit: async () => await handleDeleteAnswersOnServer(rethrowError),
+          closeBefore: true,
+        })
+      );
+    },
+    [dispatch, handleDeleteAnswersOnServer]
+  );
 
   // - - - Return Value - - -
 
@@ -97,6 +107,7 @@ const useDeleteSurveyAnswers = ({
     isDeleting,
     deleteErrMsg,
     handleDeleteAnswers,
+    handleDeleteAnswersOnServer,
   };
 };
 
