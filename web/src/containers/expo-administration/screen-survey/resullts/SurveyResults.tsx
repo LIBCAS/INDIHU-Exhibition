@@ -1,6 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+// Hooks
+import useFetchSurveyAnswers from "../hooks/useFetchSurveyAnswers";
+import useDeleteSurveyAnswers from "../hooks/useDeleteSurveyAnswers";
 
 // Components
 import {
@@ -15,23 +18,17 @@ import {
 import { Spinner } from "components/loaders/spinner";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { DialogType } from "components/dialogs/dialog-types";
 
 // Types
-import { AppDispatch } from "store/store";
 import { SurveyScreen } from "models";
 import {
   SurveyAnswer,
   SurveyChoiceAnswer,
 } from "containers/views/view-survey/view-survey";
 
-// Redux actions
-import { setDialog } from "actions/dialog-actions";
-
 // Utils
 import { formatDate } from "utils";
 import { palette } from "palette";
-import { fetcher } from "utils/fetcher";
 
 // - - - - - -
 
@@ -56,34 +53,34 @@ type SurveyAnswerItem = SurveyAnswer & {
 
 // - - - - - -
 
-const sleep = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
-// - - - - - -
-
 type SurveyResultsProps = {
   activeExpoId: string;
   activeScreen: SurveyScreen;
 };
 
 const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
-  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation("expo-editor", {
     keyPrefix: "descFields.surveyScreen",
   });
 
-  // - - - States - - -
+  // - - - Hooks - - -
 
-  const [answerItems, setAnswerItems] = useState<
-    SurveyAnswerItem[] | undefined
-  >(undefined);
+  const {
+    answerItems,
+    isFetchingAnswers,
+    fetchAnswersErrMsg,
+    handleClearSurveyAnswers,
+  } = useFetchSurveyAnswers({
+    activeExpoId: activeExpoId,
+    activeScreenId: activeScreen.id,
+  });
 
-  const [isFetchingAnswers, setIsFetchingAnswers] = useState<boolean>(true);
-  const [fetchAnswersErrMsg, setFetchAnswersErrMsg] = useState<string>("");
-
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [deleteErrMsg, setDeleteErrMsg] = useState<string>("");
+  const { isDeleting, deleteErrMsg, handleDeleteAnswers } =
+    useDeleteSurveyAnswers({
+      activeExpoId: activeExpoId,
+      activeScreenId: activeScreen.id,
+      handleClearSurveyAnswers: handleClearSurveyAnswers,
+    });
 
   // - - - Derived variables - - -
 
@@ -135,91 +132,6 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
       freeAnswers,
     };
   }, [answerItems]);
-
-  // - - - Callbacks (delete) - - -
-
-  /**
-   *
-   */
-  const handleDeleteAnswersOnServer = useCallback(async () => {
-    try {
-      setDeleteErrMsg("");
-      setIsDeleting(true);
-
-      const expoId = activeExpoId;
-      const screenId = activeScreen.id;
-
-      await sleep(1000);
-      const resp = await fetcher(`/api/survey/${expoId}/${screenId}`, {
-        method: "DELETE",
-      });
-
-      const respStatus = resp.status;
-      if (respStatus !== 200) {
-        throw Error(`Kód chyby: ${respStatus}`);
-      }
-
-      // NOTE:
-      setAnswerItems([]);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      const errMsg = `Behom vymazávania odpovedí došlo k nasledujúcej chybe: ${msg}`;
-      setDeleteErrMsg(errMsg);
-      console.error("[handleDeleteAnswersOnServer]: ", err);
-    } finally {
-      setIsDeleting(false);
-    }
-  }, [activeScreen.id, activeExpoId]);
-
-  /**
-   *
-   */
-  const handleDeleteAnswers = useCallback(async () => {
-    dispatch(
-      setDialog(DialogType.ConfirmDialog, {
-        title: <div className="font-bold">Vymazanie všetkých odpovedí</div>,
-        text: "Ste si opravdu istý, že chcete vymazať všetky aktuálne zozbierané výsledky pre túto obrazovku ankety?",
-        onSubmit: async () => await handleDeleteAnswersOnServer(),
-        closeBefore: true,
-      })
-    );
-  }, [dispatch, handleDeleteAnswersOnServer]);
-
-  // - - - Callbacks (fetch) - - -
-
-  const handleFetchSurveyAnswers = useCallback(async () => {
-    try {
-      setFetchAnswersErrMsg("");
-      setIsFetchingAnswers(true);
-
-      const url = `/api/survey/answers/${activeExpoId}/${activeScreen.id}`;
-      await sleep(500);
-      const response = await fetcher(url, { method: "GET" });
-      const respStatus = response.status;
-      if (respStatus !== 200) {
-        throw Error(`Kód chyby: ${respStatus}`);
-      }
-
-      const respBody = (await response.json()) as SurveyAnswerItem[];
-      setAnswerItems(respBody);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      const errMsg = `Behom získania odpovedí zo serveru došlo k nasledujúcej chybe: ${msg}`;
-      setFetchAnswersErrMsg(errMsg);
-      console.error(errMsg);
-    } finally {
-      setIsFetchingAnswers(false);
-    }
-  }, [activeScreen.id, activeExpoId]);
-
-  // - - - Effects - - -
-
-  /**
-   * Effect responsible for fetching survey answers after the component has been mounted
-   */
-  useEffect(() => {
-    handleFetchSurveyAnswers();
-  }, [handleFetchSurveyAnswers]);
 
   // - - - GUI - - -
 
