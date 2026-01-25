@@ -75,9 +75,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
     return (
       <div className="container container-tabMenu flex justify-center items-center">
         <div className="mb-16">
-          <div className="text-xl">
-            Neboli ešte vytvorené žiadne odpovede pre túto obrazovku varianty.
-          </div>
+          <div className="text-xl">{t("noAdminSurveyAnswersYet")}</div>
         </div>
       </div>
     );
@@ -98,7 +96,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
       <div className="container container-tabMenu flex justify-center items-center">
         <div className="mb-16 flex-col justify-start items-center gap-2">
           <Spinner />
-          <div>Načitávam odpovedi zo serveru ...</div>
+          <div>{t("loadingSurveyAnswersServer")}</div>
         </div>
       </div>
     );
@@ -107,11 +105,11 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
   return (
     <div className="container container-tabMenu">
       <div className="screen">
-        <div className="font-bold underline text-xl">Výsledky ankety:</div>
+        <div className="font-bold underline text-xl">{t("surveyResults")}</div>
 
         <div className="mt-4">
           <div className="flex justify-start items-center gap-2">
-            <div className="text-lg">Celkový počet všetkých odpovedí: </div>
+            <div className="text-lg">{t("totalNumberOfAnswers")}</div>
             <div className="text-lg">{answerItemsStats.numberOfAllAnswers}</div>
           </div>
 
@@ -127,7 +125,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
                   iconBefore={<Icon name="delete" />}
                   onClick={handleDeleteAnswersDialog}
                 >
-                  Vymazat všetky odpovědi
+                  {t("deleteAllAnswersBtnLabel")}
                 </Button>
 
                 {isDeleting && (
@@ -145,11 +143,11 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
         </div>
 
         <div className="mt-12">
-          <div className="text-lg underline">Varianta odpovede:</div>
+          <div className="text-lg underline">{t("choiceAnswersTitle")}</div>
 
           <div className="mt-2 mb-2">
             <div className="flex justify-start items-center gap-2">
-              <div className="text-lg">Celkový počet odpovedí varianty: </div>
+              <div className="text-lg">{t("totalNumberOfChoiceAnswers")}</div>
               <div className="text-lg">
                 {answerItemsStats.numberOfChoiseAnswers}
               </div>
@@ -173,10 +171,10 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
               <TableHead>
                 <TableRow>
                   <TableCell align="left">x</TableCell>
-                  <TableCell align="left">Označenie odpovede</TableCell>
-                  <TableCell align="left">Textácia odpovede</TableCell>
-                  <TableCell align="left">Celkový počet odpovedí</TableCell>
-                  <TableCell align="left">Procento z celku</TableCell>
+                  <TableCell align="left">{t("answerLabel")}</TableCell>
+                  <TableCell align="left">{t("answerText")}</TableCell>
+                  <TableCell align="left">{t("answerCount")}</TableCell>
+                  <TableCell align="left">{t("answerPercentage")}</TableCell>
                 </TableRow>
               </TableHead>
 
@@ -209,11 +207,11 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
         </div>
 
         <div className="mt-12">
-          <div className="text-lg underline">Voľné odpovede:</div>
+          <div className="text-lg underline">{t("freeAnswersTitle")}</div>
 
           <div className="mt-2 mb-2">
             <div className="flex justify-start items-center gap-2">
-              <div className="text-lg">Celkový počet voľných odpovedí: </div>
+              <div className="text-lg">{t("totalNumberOfFreeAnswers")}</div>
               <div className="text-lg">
                 {answerItemsStats.numberOfFreeAnswers}
               </div>
@@ -235,7 +233,7 @@ const SurveyResults = ({ activeExpoId, activeScreen }: SurveyResultsProps) => {
 
                   <div className="flex flex-col justify-end items-end gap-1 md:flex-row md:items-center md:gap-3">
                     <div className="flex gap-1 items-center text-sm italic">
-                      <div>Vytvořeno: </div>
+                      <div>{t("answerCreatedAt")}</div>
                       <div>{formatDate(answer.created)}</div>
                     </div>
                   </div>
