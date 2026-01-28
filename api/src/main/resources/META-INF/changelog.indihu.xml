@@ -7,7 +7,7 @@
     <property name="now" value="now()" dbms="mysql"/>
     <property name="now" value="now()" dbms="postgresql"/>
 
-    <include file="classpath:/META-INF/core.changelog.indihu.xml"/>
+<!--    <include file="classpath:/META-INF/core.changelog.indihu.xml"/>-->
 
     <changeSet id="1" author="stora">
 
