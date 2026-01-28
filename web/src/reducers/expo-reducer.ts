@@ -36,6 +36,7 @@ export type ExpoReducerState = {
   };
   screensInfo: {
     isPhotogalleryLightboxOpened: boolean;
+    isSurveyFreeAsnwerMarked: boolean;
   };
   isForbiddenEditExpoActionOn: boolean;
 };
@@ -71,6 +72,7 @@ const initialState: ExpoReducerState = {
   },
   screensInfo: {
     isPhotogalleryLightboxOpened: false,
+    isSurveyFreeAsnwerMarked: false,
   },
   isForbiddenEditExpoActionOn: false,
 };

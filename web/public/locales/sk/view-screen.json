@@ -84,6 +84,15 @@
   "timelineScreen": {
     "missingTimelineName": "Neuvedený názov časovej osi"
   },
+  "surveyScreen": {
+    "solution": "Ďakujeme za vašu odpoveď a účast v tejto ankete.",
+    "missingTaskText": "Neuvedené zadanie obrazovky anketa",
+    "missingAnswerText": "K tejto odpovedi nebol priložený žiadny text.",
+    "freeAnswerPlaceholder": "Sem napíšte odpoveď",
+    "freeAnswerTooLongMsg": "Bolo dosiahnuté maximálne povolené množstvo znakov pre voľnú odpoveď.",
+    "sendFreeAnswerBtnLabel": "Odoslať odpoveď",
+    "surveyScreenNotLockedMsg": "Táto obrazovka ankety ešte nebola zverejnená tvorcom výstavy."
+  },
 
   "game": {
     "controls": {

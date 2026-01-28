@@ -84,6 +84,15 @@
   "timelineScreen": {
     "missingTimelineName": "No timeline name provided"
   },
+  "surveyScreen": {
+    "solution": "Thank you for your response and participation in this survey.",
+    "missingTaskText": "Unspecified task for this survey screen",
+    "missingAnswerText": "No text was attached to this answer.",
+    "freeAnswerPlaceholder": "Write your answer here",
+    "freeAnswerTooLongMsg": "The maximum number of characters for the free answer has been reached.",
+    "sendFreeAnswerBtnLabel": "Send answer",
+    "surveyScreenNotLockedMsg": "This survey screen has not yet been published by the exhibition creator."
+  },
 
   "game": {
     "controls": {

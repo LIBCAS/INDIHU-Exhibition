@@ -6,16 +6,16 @@ import cx from "classnames";
 
 type GameInfoPanelProps = {
   gameScreen: { title?: string; task?: string };
-  isGameFinished?: boolean;
-  bindTutorial: { ref: RefCallback };
+  isGameFinished: boolean;
   solutionText: string;
+  bindTutorial?: { ref: RefCallback };
 };
 
 export const GameInfoPanel = ({
   gameScreen,
   isGameFinished,
-  bindTutorial,
   solutionText,
+  bindTutorial,
 }: GameInfoPanelProps) => {
   const { bgFgTheming } = useExpoDesignData();
   const { title, task } = gameScreen;

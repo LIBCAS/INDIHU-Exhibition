@@ -27,9 +27,11 @@ import { updateScreenData } from "actions/expoActions/screen-actions";
 import { DialogType } from "components/dialogs/dialog-types";
 import cx from "classnames";
 
+// - - - - - -
+
 const indexToVariantChar = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
-// - - -
+// - - - - - -
 
 type AnswerItemProps = {
   currAnswer: GameQuizAnswer;
