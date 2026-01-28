@@ -4,9 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { Trans, useTranslation } from "react-i18next";
 
-// Hooks
-import { useLocalStorage } from "hooks/use-local-storage";
-
 // Components
 import { Grid } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
@@ -36,8 +33,6 @@ import {
 import { postSurveyAnswerApi } from "containers/expo-administration/screen-survey/api";
 
 // - - - - - -
-
-type ExpoScreenSurveyPosts = Record<string, boolean>;
 
 type PostAnswerRespData = {
   currentAnswerCount: number;
@@ -138,8 +133,7 @@ export const ViewSurvey = ({
 
   // - - - Local Storage - - -
 
-  const [surveyAnswerPosts, setSurveyAnswerPosts] =
-    useLocalStorage<ExpoScreenSurveyPosts>("surveyAnswerPosts", {});
+  //
 
   // - - - Callbacks (post-answers) - - -
 
@@ -154,15 +148,7 @@ export const ViewSurvey = ({
         throw Error(errMsg);
       }
 
-      // Step 2 -> Check whether this screen was not already answered
-      const localStorageKey = `${expoId}-${screenId}`;
-      const isAlreadyPosted = surveyAnswerPosts[localStorageKey];
-      if (isAlreadyPosted) {
-        const errMsg = tEditor("postSurveyAnswerAlreadyPosted");
-        throw Error(errMsg);
-      }
-
-      // Step 3 -> Build the answer body for posting
+      // Step 2 -> Build the answer body for posting
       let body: SurveyAnswer | undefined;
 
       if (markedAnswerIdx !== null) {
@@ -187,14 +173,14 @@ export const ViewSurvey = ({
         return;
       }
 
-      // Step 4 -> Attempt to post answer
+      // Step 3 -> Attempt to post answer
       setIsPostingAnswer(true);
       setPostingAnswerErrMsg("");
       setPostAsnwerRespData(undefined);
 
       const aggregatedResp = await postSurveyAnswerApi(tEditor, body);
 
-      // Step 5 -> Process the response in order to show feedback
+      // Step 4 -> Process the response in order to show feedback
       const { currentAnswerCount, totalAnswersCount } =
         calculateCurrentAnswerCount(body, aggregatedResp);
 
@@ -205,9 +191,6 @@ export const ViewSurvey = ({
         currentAnswerCount: currentAnswerCount,
         currentAnswerPercentage: percentage,
       });
-
-      // Step 6 -> Mark this screen as already answered
-      setSurveyAnswerPosts((prev) => ({ ...prev, [localStorageKey]: true }));
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       const errMsg = `${tEditor("postSurveyAnswerErrMsg")}: ${msg}`;
@@ -216,15 +199,7 @@ export const ViewSurvey = ({
     } finally {
       setIsPostingAnswer(false);
     }
-  }, [
-    viewExpo?.id,
-    viewScreen?.id,
-    markedAnswerIdx,
-    freeAnswerText,
-    tEditor,
-    surveyAnswerPosts,
-    setSurveyAnswerPosts,
-  ]);
+  }, [viewExpo?.id, viewScreen?.id, markedAnswerIdx, freeAnswerText, tEditor]);
 
   // - - - Callbacks (game) - - -
 
