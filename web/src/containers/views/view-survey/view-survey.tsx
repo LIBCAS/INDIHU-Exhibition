@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import { useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 // Hooks
 import { useLocalStorage } from "hooks/use-local-storage";
@@ -27,7 +27,10 @@ import { setScreensInfo } from "actions/expoActions/viewer-actions";
 
 // Utils
 import { DEFAULT_SURVEY_TYPE } from "containers/expo-administration/screen-survey/default-values";
-import { answerIdxToTypeTranslator } from "containers/expo-administration/screen-survey/utils";
+import {
+  answerIdxToTypeTranslator,
+  calculateCurrentAnswerCount,
+} from "containers/expo-administration/screen-survey/utils";
 
 // Api
 import { postSurveyAnswerApi } from "containers/expo-administration/screen-survey/api";
@@ -35,6 +38,11 @@ import { postSurveyAnswerApi } from "containers/expo-administration/screen-surve
 // - - - - - -
 
 type ExpoScreenSurveyPosts = Record<string, boolean>;
+
+type PostAnswerRespData = {
+  currentAnswerCount: number;
+  currentAnswerPercentage: number;
+};
 
 // - - - - - -
 
@@ -97,7 +105,36 @@ export const ViewSurvey = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPostingAnswer, setIsPostingAnswer] = useState<boolean>(false);
   const [postingAnswerErrMsg, setPostingAnswerErrMsg] = useState<string>("");
-  const [wasAnswerPosted, setWasAnswerPosted] = useState<boolean>(false);
+  const [postAsnwerRespData, setPostAsnwerRespData] = useState<
+    PostAnswerRespData | undefined
+  >(undefined);
+
+  // - - - Derived variables - - -
+
+  const SuccessFeedback = useMemo(() => {
+    if (postAsnwerRespData === undefined) {
+      return <></>;
+    }
+
+    if (!shouldShowAnswerFeedback) {
+      return <>{tEditor("postSurveySuccessMsg")}</>;
+    }
+
+    return (
+      <>
+        {tEditor("postSurveySuccessMsg")}
+        <br />
+        <Trans
+          t={tEditor}
+          i18nKey={"postSurveySuccessFeedbackMsg"}
+          values={{
+            currentAnswerCount: postAsnwerRespData.currentAnswerCount,
+            currentAnswerPercentage: postAsnwerRespData.currentAnswerPercentage,
+          }}
+        />
+      </>
+    );
+  }, [shouldShowAnswerFeedback, postAsnwerRespData, tEditor]);
 
   // - - - Local Storage - - -
 
@@ -108,7 +145,7 @@ export const ViewSurvey = ({
 
   const handlePostAnswer = useCallback(async () => {
     try {
-      // 1.
+      // Step 1 -> Determine expo and screen id
       const expoId = viewExpo?.id;
       const screenId = viewScreen?.id;
 
@@ -117,7 +154,7 @@ export const ViewSurvey = ({
         throw Error(errMsg);
       }
 
-      // 2.
+      // Step 2 -> Check whether this screen was not already answered
       const localStorageKey = `${expoId}-${screenId}`;
       const isAlreadyPosted = surveyAnswerPosts[localStorageKey];
       if (isAlreadyPosted) {
@@ -125,8 +162,8 @@ export const ViewSurvey = ({
         throw Error(errMsg);
       }
 
-      // 3.
-      let body: SurveyAnswer | null = null;
+      // Step 3 -> Build the answer body for posting
+      let body: SurveyAnswer | undefined;
 
       if (markedAnswerIdx !== null) {
         body = {
@@ -142,24 +179,35 @@ export const ViewSurvey = ({
           answerType: "FREE",
           answer: freeAnswerText,
         };
+      } else {
+        // PASS
       }
 
-      if (body === null) {
+      if (body === undefined) {
         return;
       }
 
-      // 4.
+      // Step 4 -> Attempt to post answer
       setIsPostingAnswer(true);
       setPostingAnswerErrMsg("");
-      setWasAnswerPosted(false);
+      setPostAsnwerRespData(undefined);
 
-      await postSurveyAnswerApi(tEditor, body);
+      const aggregatedResp = await postSurveyAnswerApi(tEditor, body);
 
-      // 5. Mark it to the local storage
+      // Step 5 -> Process the response in order to show feedback
+      const { currentAnswerCount, totalAnswersCount } =
+        calculateCurrentAnswerCount(body, aggregatedResp);
+
+      const ratio = currentAnswerCount / totalAnswersCount;
+      const percentage = Math.round(ratio * 100);
+
+      setPostAsnwerRespData({
+        currentAnswerCount: currentAnswerCount,
+        currentAnswerPercentage: percentage,
+      });
+
+      // Step 6 -> Mark this screen as already answered
       setSurveyAnswerPosts((prev) => ({ ...prev, [localStorageKey]: true }));
-
-      // 6.
-      setWasAnswerPosted(true);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       const errMsg = `${tEditor("postSurveyAnswerErrMsg")}: ${msg}`;
@@ -291,11 +339,15 @@ export const ViewSurvey = ({
 
       {/* Successfull post answer */}
       <Snackbar
-        open={wasAnswerPosted}
+        open={postAsnwerRespData !== undefined}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
       >
-        <Alert severity="success" onClose={() => setWasAnswerPosted(false)}>
-          {tEditor("postSurveySuccessMsg")}
+        <Alert
+          severity="success"
+          onClose={() => setPostAsnwerRespData(undefined)}
+          style={{ textAlign: "center", fontSize: 13, alignItems: "center" }}
+        >
+          {SuccessFeedback}
         </Alert>
       </Snackbar>
 

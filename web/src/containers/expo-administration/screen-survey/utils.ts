@@ -1,10 +1,12 @@
 import {
+  SurveyAggregatedResp,
   SurveyAnswerItem,
   SurveyChoiceAnswer,
   SurveyChoiseAnswerItem,
   SurveyFreeAnswerItem,
+  SurveyAnswer,
 } from "./typings";
-import { SurveyAnswer } from "models";
+import { SurveyAnswer as SurveyAnswerAdministration } from "models";
 
 // - - - - - -
 
@@ -34,6 +36,45 @@ export const answerTypeToIdxTranslator = {
 
 // - - - - - - -
 
+type CurrentAnswerCountResult = {
+  currentAnswerCount: number;
+  totalAnswersCount: number;
+};
+
+const choiceCountMap = {
+  a: (r: SurveyAggregatedResp) => r.countA,
+  b: (r: SurveyAggregatedResp) => r.countB,
+  c: (r: SurveyAggregatedResp) => r.countC,
+  d: (r: SurveyAggregatedResp) => r.countD,
+  e: (r: SurveyAggregatedResp) => r.countE,
+  f: (r: SurveyAggregatedResp) => r.countF,
+  g: (r: SurveyAggregatedResp) => r.countG,
+  h: (r: SurveyAggregatedResp) => r.countH,
+};
+
+export const calculateCurrentAnswerCount = (
+  answerToPost: SurveyAnswer,
+  aggregatedResp: SurveyAggregatedResp
+): CurrentAnswerCountResult => {
+  // FREE answer case
+  if (answerToPost.answerType === "FREE") {
+    return {
+      currentAnswerCount: aggregatedResp.freeAnswers,
+      totalAnswersCount: aggregatedResp.totalAnswers,
+    };
+  }
+
+  // CHOICE answer case (a → h)
+  const getCount = choiceCountMap[answerToPost.answer];
+
+  return {
+    currentAnswerCount: getCount(aggregatedResp),
+    totalAnswersCount: aggregatedResp.totalAnswers,
+  };
+};
+
+// - - - - - - -
+
 /**
  *
  * @param answerItems coming from BE server
@@ -41,7 +82,7 @@ export const answerTypeToIdxTranslator = {
  */
 export const processSurveyAnswersFromServer = (
   answerItems: SurveyAnswerItem[] | undefined,
-  surveyAnswers: SurveyAnswer[] | undefined
+  surveyAnswers: SurveyAnswerAdministration[] | undefined
 ) => {
   // 1)
   if (answerItems === undefined) {

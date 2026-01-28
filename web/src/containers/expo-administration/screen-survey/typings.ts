@@ -28,3 +28,23 @@ export type SurveyChoiseAnswerItem = SurveyChoiceAnswer & SurveyBaseAnswerItem;
 export type SurveyFreeAnswerItem = SurveyFreeAnswer & SurveyBaseAnswerItem;
 
 export type SurveyAnswerItem = SurveyAnswer & SurveyBaseAnswerItem;
+
+// - - - - - -
+
+export type SurveyAggregatedResp = {
+  choiceAnswers: number;
+  countA: number;
+  countB: number;
+  countC: number;
+  countD: number;
+  countE: number;
+  countF: number;
+  countG: number;
+  countH: number;
+  freeAnswers: number;
+  totalAnswers: number;
+};
+
+export type SurveyAggregatedFullResp = SurveyAggregatedResp & {
+  freeTextAnswers: string[];
+};
