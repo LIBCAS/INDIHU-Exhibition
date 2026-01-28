@@ -6,7 +6,7 @@ import { useMediaDevice } from "context/media-device-provider/media-device-provi
 import { Grid } from "@mui/material";
 
 // Models
-import { SurveyAnswer, SurveyType } from "models";
+import { SurveyAnswerEditor, SurveyType } from "models";
 
 // Utils
 import cx from "classnames";
@@ -14,7 +14,7 @@ import cx from "classnames";
 // - - - - - -
 
 type SurveyViewAnswerProps = {
-  answer: SurveyAnswer;
+  answer: SurveyAnswerEditor;
   answerIdx: number;
   preloadedImgSrc: string | undefined;
   isGameFinished: boolean;

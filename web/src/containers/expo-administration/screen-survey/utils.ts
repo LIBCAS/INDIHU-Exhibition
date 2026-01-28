@@ -6,7 +6,7 @@ import {
   SurveyFreeAnswerItem,
   SurveyAnswer,
 } from "./typings";
-import { SurveyAnswer as SurveyAnswerAdministration } from "models";
+import { SurveyAnswerEditor } from "models";
 
 // - - - - - -
 
@@ -82,7 +82,7 @@ export const calculateCurrentAnswerCount = (
  */
 export const processSurveyAnswersFromServer = (
   answerItems: SurveyAnswerItem[] | undefined,
-  surveyAnswers: SurveyAnswerAdministration[] | undefined
+  surveyAnswers: SurveyAnswerEditor[] | undefined
 ) => {
   // 1)
   if (answerItems === undefined) {

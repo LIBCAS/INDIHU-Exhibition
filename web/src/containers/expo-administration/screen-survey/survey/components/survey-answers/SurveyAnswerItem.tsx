@@ -16,7 +16,7 @@ import EditableTextField from "components/editable-text-field/EditableTextField"
 
 // Models
 import { AppDispatch } from "store/store";
-import { SurveyAnswer, SurveyScreen, File as IndihuFile } from "models";
+import { SurveyAnswerEditor, SurveyScreen, File as IndihuFile } from "models";
 
 // Actions and utils
 import cx from "classnames";
@@ -31,7 +31,7 @@ const indexToVariantChar = ["A", "B", "C", "D", "E", "F", "G", "H"];
 // - - - - - -
 
 type SurveyAnswerItemProps = {
-  currAnswer: SurveyAnswer;
+  currAnswer: SurveyAnswerEditor;
   currAnswerIdx: number;
   activeScreen: SurveyScreen;
   currAnswerImageFile: IndihuFile | null;
@@ -225,7 +225,7 @@ const CloseButton = () => {
 // - - - - -
 
 type MoveUpButtonProps = {
-  surveyAnswers: SurveyAnswer[];
+  surveyAnswers: SurveyAnswerEditor[];
   currAnswerIdx: number;
   isSurveyScreenLocked: boolean;
 };
@@ -277,7 +277,7 @@ const MoveUpButton = ({
 // - - - - - -
 
 type MoveDownButtonProps = {
-  surveyAnswers: SurveyAnswer[];
+  surveyAnswers: SurveyAnswerEditor[];
   currAnswerIdx: number;
   isSurveyScreenLocked: boolean;
 };
@@ -332,8 +332,8 @@ const MoveDownButton = ({
 // - - - - - -
 
 type AnswerLabelTextFieldProps = {
-  surveyAnswers: SurveyAnswer[];
-  currAnswer: SurveyAnswer;
+  surveyAnswers: SurveyAnswerEditor[];
+  currAnswer: SurveyAnswerEditor;
   currAnswerIdx: number;
 };
 
@@ -378,7 +378,7 @@ const AnswerLabelTextField = ({
 // - - - - - -
 
 type DeleteButtonProps = {
-  surveyAnswers: SurveyAnswer[];
+  surveyAnswers: SurveyAnswerEditor[];
   currAnswerIdx: number;
   isSurveyScreenLocked: boolean;
 };

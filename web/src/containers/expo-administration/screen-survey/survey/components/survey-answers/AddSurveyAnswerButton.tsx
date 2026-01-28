@@ -8,7 +8,7 @@ import { Icon } from "components/icon/icon";
 
 // Models
 import { AppDispatch } from "store/store";
-import { SurveyAnswer, SurveyScreen } from "models";
+import { SurveyAnswerEditor, SurveyScreen } from "models";
 
 // Utils
 import { updateScreenData } from "actions/expoActions";
@@ -43,7 +43,7 @@ const AddSurveyAnswerButton = ({
         color="secondary"
         iconBefore={<Icon name="add" />}
         onClick={() => {
-          const newAnswer: SurveyAnswer = { text: "", image: null };
+          const newAnswer: SurveyAnswerEditor = { text: "", image: null };
           dispatch(
             updateScreenData({
               surveyAnswers: [...(activeScreen.surveyAnswers ?? []), newAnswer],

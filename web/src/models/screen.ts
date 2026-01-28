@@ -148,7 +148,7 @@ export type ReferenceObj = {
   customUserLabel?: string;
 };
 
-export type SurveyAnswer = {
+export type SurveyAnswerEditor = {
   text: string;
   image: string | null; // NOTE: imageId or null if image was not loaded
   imageOrigData?: ImageOrigData; // NOTE: Optional if image was not loaded
@@ -460,7 +460,7 @@ export type SurveyScreen = {
   surveyType?: SurveyType;
   shouldIncludeFreeAnswer?: boolean;
   shouldShowAnswerFeedback?: boolean;
-  surveyAnswers?: SurveyAnswer[];
+  surveyAnswers?: SurveyAnswerEditor[];
   isSurveyScreenLocked?: boolean;
   screenBgColor?: string | null;
 };
