@@ -100,6 +100,7 @@ export type SlideshowImages = {
 }[];
 
 export type ParallaxImages = string[];
+
 export type PhotogalleryImages = {
   id: string;
   photoTitle?: string;

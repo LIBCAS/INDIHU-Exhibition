@@ -134,19 +134,21 @@
       "textTooltip": "Textový obsah obrazovky, ktorý sa zobrazí návštevníkovi uprostred a zarovnaný na stred. Maximálna dĺžka 300 znakov vrátane medzier. Veľkosť písma sa upravuje automaticky podľa dĺžky textu."
     },
     "parallaxScreen": {
-      "theLowestImage": "Najspodnejšie",
+      "theLowestImage": "Statická vrstva na pozadí",
       "theLowestImageTooltip": "Najspodnejšia vrstva obrázku. Predstavuje najvzdialenejšie objekty voči divákovi. Je animovaná najpomalšie.",
-      "theTopmostImage": "Najvrchnejší",
+      "theTopmostImage": "Pohyblivé vrstvy",
       "theTopmostImageTooltip": "Najvrchnejšia vrstva obrázku. Predstavuje najbližšie objekty voči divákovi. Je animovaná najrýchlejšie.",
       "imageBoxTitle": "Obrázok",
       "imageBoxTooltip": "Obrázok predstavujúci vybranú vrstvu. Každá vrstva je reprezentovaná jedným obrázkom.",
-      "parallaxAnimationLabel": "Celková animácia parallaxu",
+      "parallaxAnimationLabel": "Smer animácie parallaxu",
       "parallaxAnimationLabelTooltip": "Obrázok predstavujúci vybranú vrstvu. Každá vrstva je reprezentovaná jedným obrázkom.",
       "animationWithout": "Bez animácie",
       "animationFromTop": "Zhora nadol",
       "animationFromBottom": "Zdola nahor",
       "animationLeftToRight": "Zľava doprava",
-      "animationRightToLeft": "Sprava doľava"
+      "animationRightToLeft": "Sprava doľava",
+      "maxNumberOfLayersAchievedErrTitle": "Bol dosiahnutý maximálny počet vrstiev",
+      "maxNumberOfLayersAchievedErrMsg": "Parallax obrazovka podporuje jednu statickú vrstvu ako pozadie a maximálne tri pohyblivé vrstvy."
     },
     "imageZoomScreen": {
       "zoomPositionLabel": "Pozícia popisu zoomu",
