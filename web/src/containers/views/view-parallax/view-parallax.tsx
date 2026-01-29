@@ -13,7 +13,7 @@ import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
 // Utils
 import { getScreenTime } from "utils/screen";
-import { calculateParallaxOffsetOld } from "./parallax-utils";
+import { calculateParallaxOffset } from "./parallax-utils";
 
 // - - - - - -
 
@@ -106,9 +106,9 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
    *
    */
   const { offset } = useSpring({
-    from: { offset: -1 },
+    from: { offset: 0 },
     to: { offset: 1 },
-    config: { duration: screenDuration, easing: easings.easeInOutSine },
+    config: { duration: screenDuration, easing: easings.linear },
     pause: !viewProgress.shouldIncrement,
   });
 
@@ -141,7 +141,7 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
         // NOTE2: Two algorithms are currently available:
         //     - `calculateParallaxOffsetOld()` OR `calculateParallaxOffset()`
         const totalImages = preloadedImages.length;
-        const translateOffset = calculateParallaxOffsetOld(
+        const translateOffset = calculateParallaxOffset(
           offset,
           preloadedImgIdx,
           totalImages,
