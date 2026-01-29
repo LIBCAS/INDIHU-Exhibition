@@ -1,5 +1,7 @@
 import { SpringValue } from "react-spring";
 
+const PARALLAX_DEPTH_EXPONENT = 1.5;
+
 // - - - - - - - - - - - - - - - - - - - -
 // - - - - - - - - HELPERS - - - - - - - -
 // - - - - - - - - - - - - - - - - - - - -
@@ -17,7 +19,7 @@ const determineLayerDepth = (imgIdx: number, totalImages: number) => {
   // the front-most layers moves the most. If you want even more emphasis
   // on the front layers, you can increase the exponent.
   const norm = imgIdx / (totalImages - 1);
-  const depth = Math.pow(norm, 1.5);
+  const depth = Math.pow(norm, PARALLAX_DEPTH_EXPONENT);
   return depth;
 };
 

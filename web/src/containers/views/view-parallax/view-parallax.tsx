@@ -25,6 +25,10 @@ const stateSelector = createSelector(
 
 // - - - - - -
 
+const PARALLAX_DISTANCE_FACTOR = 8;
+
+// - - - - - -
+
 export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, viewProgress } = useSelector(stateSelector);
   const preloadedImages = screenPreloadedFiles.images ?? [];
@@ -90,7 +94,7 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
       ? viewContainerSize.height
       : 0;
 
-    return distance / 8;
+    return distance / PARALLAX_DISTANCE_FACTOR;
   }, [
     isAnimationHorizontal,
     isAnimationVertical,
