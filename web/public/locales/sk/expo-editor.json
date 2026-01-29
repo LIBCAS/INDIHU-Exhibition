@@ -21,7 +21,10 @@
     "answersTab": "Odpovede",
     "externalTab": "Externé dáta",
     "referencesTab": "Odkazy",
-    "timelineTab": "Časová osa"
+    "timelineTab": "Časová osa",
+    "surveyDescTab": "Názov ankety",
+    "surveyOptionsTab": "Varianty k výberu",
+    "surveyResultsTab": "Výsledky"
   },
   "descFields": {
     "name": "Názov",
@@ -131,19 +134,21 @@
       "textTooltip": "Textový obsah obrazovky, ktorý sa zobrazí návštevníkovi uprostred a zarovnaný na stred. Maximálna dĺžka 300 znakov vrátane medzier. Veľkosť písma sa upravuje automaticky podľa dĺžky textu."
     },
     "parallaxScreen": {
-      "theLowestImage": "Najspodnejšie",
+      "theLowestImage": "Statická vrstva na pozadí",
       "theLowestImageTooltip": "Najspodnejšia vrstva obrázku. Predstavuje najvzdialenejšie objekty voči divákovi. Je animovaná najpomalšie.",
-      "theTopmostImage": "Najvrchnejší",
+      "theTopmostImage": "Pohyblivé vrstvy",
       "theTopmostImageTooltip": "Najvrchnejšia vrstva obrázku. Predstavuje najbližšie objekty voči divákovi. Je animovaná najrýchlejšie.",
       "imageBoxTitle": "Obrázok",
       "imageBoxTooltip": "Obrázok predstavujúci vybranú vrstvu. Každá vrstva je reprezentovaná jedným obrázkom.",
-      "parallaxAnimationLabel": "Celková animácia parallaxu",
+      "parallaxAnimationLabel": "Smer animácie parallaxu",
       "parallaxAnimationLabelTooltip": "Obrázok predstavujúci vybranú vrstvu. Každá vrstva je reprezentovaná jedným obrázkom.",
       "animationWithout": "Bez animácie",
       "animationFromTop": "Zhora nadol",
       "animationFromBottom": "Zdola nahor",
       "animationLeftToRight": "Zľava doprava",
-      "animationRightToLeft": "Sprava doľava"
+      "animationRightToLeft": "Sprava doľava",
+      "maxNumberOfLayersAchievedErrTitle": "Bol dosiahnutý maximálny počet vrstiev",
+      "maxNumberOfLayersAchievedErrMsg": "Parallax obrazovka podporuje jednu statickú vrstvu ako pozadie a maximálne tri pohyblivé vrstvy."
     },
     "imageZoomScreen": {
       "zoomPositionLabel": "Pozícia popisu zoomu",
@@ -284,6 +289,74 @@
       "rightBoundaryArrowOption": "Šípka",
       "rightBoundaryLabel": "Pravé ohraničenie časovej osy",
       "rightBoundaryTooltip": "Zvoľte jednu z dostupných možností pre pravé ohraničenie, koniec časovej osy. Predvolená hodnota je šípka."
+    },
+    "surveyScreen": {
+      "nameLabel": "Názov",
+      "nameTooltip": "Názov obrazovky, ktorý sa zobrazí návštevníkovi v lište pre textovú verziu. Názov sa tiež zobrazí ako označenie obrazoviek vo výpise všetkých obrazoviek v editácii. Ak ho nevyplníte, vo výpise zostane uvedený ako názov typu obrazovky.",
+      "taskLabel": "Otázka",
+      "taskTooltip": "Opíšte tému ankety a to, nad čím sa majú účastníci zamyslieť. Môžete napísať aj pár viet na vysvetlenie.",
+      "screenCompleted": "Obrazovka je dokončená",
+      "surveyTypeLabel": "Vyberte formu ankety",
+      "surveyTypeOnlyTextOption": "Iba text",
+      "surveyTypeOnlyImageOption": "Iba obrázok",
+      "surveyTypeImageTextOption": "Obrázok aj text",
+      "surveyShouldIncludeFreeAnswerCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť aj možnosť voľnej odpovede",
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť spätná väzba",
+      "closeAnswerTooltip": "Zavrieť odpoveď",
+      "deleteAnswerTooltip": "Vymazať odpoveď",
+      "variant": "Varianta",
+      "answerImageLabel": "Sprievodný obrázok",
+      "answerImageTooltip": "Vyberte ilustračný obrázok z knižnice dokumentov.",
+      "answerTextLabel": "Text odpovede",
+      "answerTextTooltip": "Zadajte primerane dlhý text pre túto variantu odpovede. Odporúčame maximálne 120–160 znakov.",
+      "addNewAnswer": "Pridať novú odpoveď",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Nie je možné zmazať viac možností!",
+        "textErrorLessThanThree": "Bol dosiahnutý minimálny povolený počet odpovedí, a to tri.",
+        "textConfirm": "Naozaj chcete odstrániť túto možnosť? Akcia je nevratná!"
+      },
+      "lockSurveyBtnLabel": "Uzamknúť a zverejniť anketu",
+      "lockSurveyBtnTooltip": "Keď bude anketa hotová a pripravená na zverejnenie, kliknutím na tlačidlo ju zverejníte. Po zverejnení nebude možné anketu dodatočne upravovať. Testovacie odpovede zo obdobia tvorby výstavy budú odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa sa nezverejní.",
+      "lockSurveyConfirmTitle": "Potvrdiť uzamknutie a zverejnenie ankety",
+      "lockSurveyConfirmText": "Keď bude anketa hotová a pripravená na zverejnenie, kliknutím na tlačidlo ju zverejníte. Po zverejnení nebude možné anketu dodatočne upravovať. Testovacie odpovede zo obdobia tvorby výstavy budú odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa sa nezverejní.",
+      "lockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o uzamknutie ankety",
+      "unlockSurveyBtnLabel": "Odblokovať a zrušiť publikáciu ankety",
+      "unlockSurveyBtnTooltip": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
+      "unlockSurveyConfirmTitle": "Potvrdiť odblokovanie a zrušenie publikácie ankety",
+      "unlockSurveyConfirmText": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
+      "unlockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o odblokovanie ankety",
+      "saveScreenErrMsg": "Nepodarilo sa uložiť obrazovku",
+
+      "noAdminSurveyAnswersYet": "Pre túto obrazovku ešte neboli vytvorené žiadne odpovede.",
+      "loadingSurveyAnswersServer": "Načítavam odpovede zo servera...",
+      "surveyResults": "Výsledky ankety:",
+      "totalNumberOfAnswers": "Celkový počet všetkých odpovedí: ",
+      "deleteAllAnswersBtnLabel": "Vymazať všetky odpovede",
+      "choiceAnswersTitle": "Odpovede na variantu:",
+      "totalNumberOfChoiceAnswers": "Celkový počet odpovedí varianty: ",
+      "answerLabel": "Označenie odpovede",
+      "answerText": "Text odpovede",
+      "answerCount": "Celkový počet odpovedí",
+      "answerPercentage": "Percento z celku",
+      "freeAnswersTitle": "Voľné odpovede:",
+      "totalNumberOfFreeAnswers": "Celkový počet voľných odpovedí: ",
+      "answerCreatedAt": "Vytvorené: ",
+
+      "fetchSurveyAnswersApiErrMsgPrefix": "Kód chyby",
+      "fetchSurveyAnswersAggregatedApiErrMsgPrefix": "Kód chyby",
+      "fetchSurveyAnswersAggregatedFullApiErrMsgPrefix": "Kód chyby",
+      "postSurveyAnswersApiErrMsgPrefix": "Kód chyby",
+      "deleteSurveyAnswersApiErrMsgPrefix": "Kód chyby",
+
+      "postSurveyAnswerMissingIdentificationErrMsg": "Chýba identifikácia výstavy alebo obrazovky",
+      "postSurveyAnswerAlreadyPosted": "Už ste odpoveď raz odoslali!",
+      "postSurveyAnswerErrMsg": "Počas nahrávania vašej odpovede došlo k nasledujúcej chybe",
+      "postSurveySuccessMsg": "Vaša odpoveď bola úspešne nahratá.",
+      "postSurveySuccessFeedbackMsg": "Rovnako ako vy odpovedalo {{currentAnswerCount}} návštevníkov, čo predstavuje {{currentAnswerPercentage}}% všetkých odpovedí.",
+
+      "deleteSurveyAnswersConfirmationTitle": "Vymazanie všetkých odpovedí",
+      "deleteSurveyAnswersConfirmationText": "Ste si naozaj istý, že chcete vymazať všetky aktuálne zozbierané výsledky pre túto obrazovku ankety?",
+      "deleteSurveyAnswersErrMsg": "Počas vymazávania odpovedí došlo k nasledujúcej chybe"
     },
     "finishScreen": {
       "deleteImageConfirm": "Naozaj chcete odstrániť vybraný obrázok?"

@@ -42,6 +42,7 @@ type ConfirmDialogDataProps = {
   title?: React.ReactNode | string;
   text?: string;
   onSubmit: (() => void) | (() => Promise<void>);
+  closeBefore?: boolean;
 };
 
 type InfoDialogDataProps = {

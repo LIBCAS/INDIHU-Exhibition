@@ -1,24 +1,28 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 // Components
+import { SelectField } from "react-md";
 import Carousel from "components/editors/carousel";
 import HelpIcon from "components/help-icon";
-import { SelectField } from "react-md";
+import ImageBox from "components/editors/ImageBox";
+import { DialogType } from "components/dialogs/dialog-types";
 
 // Models
-import { ParallaxScreeen, File as IndihuFile } from "models";
 import { AppDispatch } from "store/store";
-
-// Actions and utils
-import { getFileById } from "actions/file-actions-typed";
-import { updateScreenData } from "actions/expoActions";
+import { ParallaxScreeen, File as IndihuFile } from "models";
 import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
+// Redux actions
+import { getFileById } from "actions/file-actions-typed";
+import { updateScreenData } from "actions/expoActions";
+import { setDialog } from "actions/dialog-actions";
+
+// Utils
 import { filter } from "lodash";
-import ImageBox from "components/editors/ImageBox";
-// - -
+
+// - - - - - -
 
 type ParallaxProps = {
   activeScreen: ParallaxScreeen;
@@ -28,12 +32,23 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
   const { t } = useTranslation("expo-editor");
   const dispatch = useDispatch<AppDispatch>();
 
+  // - - - States - - -
+
   const [activeImageIndex, setActiveImageIndex] = useState<number>(-1);
+
+  // - - - Derived variables - - -
 
   const activeImageId = activeScreen.images?.find(
     (img, imgIndex) => img && imgIndex === activeImageIndex
   );
   const activeImage = dispatch(getFileById(activeImageId));
+
+  const isMaxNumberOfLayersAchieved = useMemo(
+    () => activeScreen.images && activeScreen.images.length >= 4,
+    [activeScreen.images]
+  );
+
+  // - - - Callbacks - - -
 
   const setImage = (img: IndihuFile) => {
     dispatch(
@@ -44,6 +59,8 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
       })
     );
   };
+
+  // - - - GUI - - -
 
   return (
     <div className="container container-tabMenu">
@@ -101,6 +118,21 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
             setActiveImageIndex(-1);
           }}
           onAdd={() => {
+            if (isMaxNumberOfLayersAchieved) {
+              dispatch(
+                setDialog(DialogType.InfoDialog, {
+                  noStornoButton: true,
+                  title: `${t(
+                    "descFields.parallaxScreen.maxNumberOfLayersAchievedErrTitle"
+                  )}`,
+                  content: `${t(
+                    "descFields.parallaxScreen.maxNumberOfLayersAchievedErrMsg"
+                  )}`,
+                })
+              );
+              return;
+            }
+
             dispatch(
               updateScreenData({
                 images: activeScreen.images
@@ -114,7 +146,7 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
           }}
         />
 
-        <div className="flex-row flex-space-between margin-bottom">
+        <div className="flex-row flex-space-between">
           <span>
             <span>{t("descFields.parallaxScreen.theLowestImage")}</span>
             <HelpIcon
@@ -129,6 +161,53 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
               id="editor-parallax-image-top"
             />
           </span>
+        </div>
+
+        <div className="mt-2 mb-4 flex justify-start items-center">
+          <SelectField
+            id="screen-parallax-selectfield-animation"
+            className="select-field"
+            label={t("descFields.parallaxScreen.parallaxAnimationLabel")}
+            menuItems={[
+              {
+                label: t("descFields.parallaxScreen.animationWithout"),
+                value: ScreenParallaxAnimationEnum.WITHOUT,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationFromTop"),
+                value: ScreenParallaxAnimationEnum.FROM_TOP,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationFromBottom"),
+                value: ScreenParallaxAnimationEnum.FROM_BOTTOM,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationLeftToRight"),
+                value: ScreenParallaxAnimationEnum.FROM_LEFT_TO_RIGHT,
+              },
+              {
+                label: t("descFields.parallaxScreen.animationRightToLeft"),
+                value: ScreenParallaxAnimationEnum.FROM_RIGHT_TO_LEFT,
+              },
+            ]}
+            itemLabel={"label"}
+            itemValue={"value"}
+            position={"below"}
+            defaultValue={
+              activeScreen.animationType ?? ScreenParallaxAnimationEnum.WITHOUT
+            }
+            onChange={(value: any) =>
+              dispatch(
+                updateScreenData({
+                  animationType: value,
+                })
+              )
+            }
+          />
+          {/* <HelpIcon
+            label={t("descFields.parallaxScreen.parallaxAnimationLabelTooltip")}
+            id="editor-parallax-animation"
+          /> */}
         </div>
 
         {activeImageIndex !== -1 && (
@@ -154,57 +233,6 @@ const Parallax = ({ activeScreen }: ParallaxProps) => {
                   }}
                   helpIconId="editor-parallax-image"
                   helpIconLabel={t("descFields.parallaxScreen.imageBoxTooltip")}
-                />
-              </div>
-
-              <div className="flex-row-nowrap flex-centered">
-                <SelectField
-                  id="screen-parallax-selectfield-animation"
-                  className="select-field"
-                  label={t("descFields.parallaxScreen.parallaxAnimationLabel")}
-                  menuItems={[
-                    {
-                      label: t("descFields.parallaxScreen.animationWithout"),
-                      value: ScreenParallaxAnimationEnum.WITHOUT,
-                    },
-                    {
-                      label: t("descFields.parallaxScreen.animationFromTop"),
-                      value: ScreenParallaxAnimationEnum.FROM_TOP,
-                    },
-                    {
-                      label: t("descFields.parallaxScreen.animationFromBottom"),
-                      value: ScreenParallaxAnimationEnum.FROM_BOTTOM,
-                    },
-                    {
-                      label: t(
-                        "descFields.parallaxScreen.animationLeftToRight"
-                      ),
-                      value: ScreenParallaxAnimationEnum.FROM_LEFT_TO_RIGHT,
-                    },
-                    {
-                      label: t(
-                        "descFields.parallaxScreen.animationRightToLeft"
-                      ),
-                      value: ScreenParallaxAnimationEnum.FROM_RIGHT_TO_LEFT,
-                    },
-                  ]}
-                  itemLabel={"label"}
-                  itemValue={"value"}
-                  position={"below"}
-                  defaultValue={activeScreen.animationType}
-                  onChange={(value: any) =>
-                    dispatch(
-                      updateScreenData({
-                        animationType: value,
-                      })
-                    )
-                  }
-                />
-                <HelpIcon
-                  label={t(
-                    "descFields.parallaxScreen.parallaxAnimationTooltip"
-                  )}
-                  id="editor-parallax-animation"
                 />
               </div>
             </div>

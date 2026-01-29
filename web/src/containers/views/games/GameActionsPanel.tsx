@@ -1,7 +1,14 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
+// Hooks
+import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
+
+// Components
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { useDrawerPanel } from "context/drawer-panel-provider/drawer-panel-provider";
-import { useTranslation } from "react-i18next";
+
+// - - - - - -
 
 type GameActionsPanelProps = {
   isMobileOverlay: boolean;
@@ -20,6 +27,14 @@ export const GameActionsPanel = ({
 }: GameActionsPanelProps) => {
   const { t } = useTranslation("view-screen");
   const { openDrawer } = useDrawerPanel();
+
+  const isGameControlAvailable = useMemo(
+    () =>
+      isGameFinished !== undefined &&
+      onGameFinish !== undefined &&
+      onGameReset !== undefined,
+    [isGameFinished, onGameFinish, onGameReset]
+  );
 
   return (
     <div className="flex flex-row-reverse gap-2">
@@ -41,33 +56,45 @@ export const GameActionsPanel = ({
         )}
 
         {/* Play again button */}
-        <div className="pointer-events-auto">
-          <Button
-            iconBefore={<Icon name="replay" />}
-            color="primary"
-            style={{ width: "38px", height: "31px", border: "2px solid white" }}
-            onClick={onGameReset}
-            tooltip={{
-              id: "game-overlay-replay-button-tooltip",
-              content: t("game.controls.play-again"),
-            }}
-          />
-        </div>
+        {isGameControlAvailable && (
+          <div className="pointer-events-auto">
+            <Button
+              iconBefore={<Icon name="replay" />}
+              color="primary"
+              style={{
+                width: "38px",
+                height: "31px",
+                border: "2px solid white",
+              }}
+              onClick={onGameReset}
+              tooltip={{
+                id: "game-overlay-replay-button-tooltip",
+                content: t("game.controls.play-again"),
+              }}
+            />
+          </div>
+        )}
 
         {/* Done button */}
-        <div className="pointer-events-auto">
-          <Button
-            disabled={isGameFinished}
-            iconBefore={<Icon name="done" />}
-            color="primary"
-            style={{ width: "38px", height: "31px", border: "2px solid white" }}
-            onClick={onGameFinish}
-            tooltip={{
-              id: "game-overlay-done-button-tooltip",
-              content: t("game.controls.finished"),
-            }}
-          />
-        </div>
+        {isGameControlAvailable && (
+          <div className="pointer-events-auto">
+            <Button
+              disabled={isGameFinished}
+              iconBefore={<Icon name="done" />}
+              color="primary"
+              style={{
+                width: "38px",
+                height: "31px",
+                border: "2px solid white",
+              }}
+              onClick={onGameFinish}
+              tooltip={{
+                id: "game-overlay-done-button-tooltip",
+                content: t("game.controls.finished"),
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Additional actions for particular game screens */}

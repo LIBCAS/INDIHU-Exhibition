@@ -21,7 +21,10 @@
     "answersTab": "Answers",
     "externalTab": "External data",
     "referencesTab": "Links",
-    "timelineTab": "Timeline"
+    "timelineTab": "Timeline",
+    "surveyDescTab": "Survey name",
+    "surveyOptionsTab": "Options to select",
+    "surveyResultsTab": "Results"
   },
   "descFields": {
     "name": "Title",
@@ -131,19 +134,21 @@
       "textTooltip": "The text content of the screen that will be displayed to the user in the center of the screen. Maximum length is 300 characters including spaces. The font size is adjusted automatically according to the length of the text."
     },
     "parallaxScreen": {
-      "theLowestImage": "Bottom layer",
+      "theLowestImage": "Static background layer",
       "theLowestImageTooltip": "The bottommost layer of the image. Represents the objects furthest from the viewer. It is animated at the slowest pace.",
-      "theTopmostImage": "Top layer",
+      "theTopmostImage": "Moving layers",
       "theTopmostImageTooltip": "The very top layer of the image. It represents the closest objects to the viewer. It is animated at the fastest pace.",
       "imageBoxTitle": "Image",
       "imageBoxTooltip": "An image representing the selected layer. Each layer is represented by one image.",
-      "parallaxAnimationLabel": "Parallax animation",
+      "parallaxAnimationLabel": "Parallax animation direction",
       "parallaxAnimationLabelTooltip": "An image representing the selected layer. Each layer is represented by one image.",
       "animationWithout": "Without animation",
       "animationFromTop": "From top down",
       "animationFromBottom": "From bottom up",
       "animationLeftToRight": "From left to right",
-      "animationRightToLeft": "From right to left"
+      "animationRightToLeft": "From right to left",
+      "maxNumberOfLayersAchievedErrTitle": "Maximum number of layers reached",
+      "maxNumberOfLayersAchievedErrMsg": "The parallax screen supports one static background layer and a maximum of three moving layers."
     },
     "imageZoomScreen": {
       "zoomPositionLabel": "Zoom description position",
@@ -284,6 +289,74 @@
       "rightBoundaryArrowOption": "Arrow",
       "rightBoundaryLabel": "Right timeline boundary",
       "rightBoundaryTooltip": "Select one of the available options for the right boundary, the end of the timeline. The default value is an arrow."
+    },
+    "surveyScreen": {
+      "nameLabel": "Name",
+      "nameTooltip": "The name of the screen that will be displayed to visitors in the text version bar. The name will also appear as the label of screens in the list of all screens during editing. If you don’t fill it in, the screen type name will remain displayed in the list.",
+      "taskLabel": "Question",
+      "taskTooltip": "Describe the topic of the survey and what participants should reflect on. You can also write a few sentences for clarification.",
+      "screenCompleted": "The screen is completed",
+      "surveyTypeLabel": "Select the form of the survey",
+      "surveyTypeOnlyTextOption": "Text only",
+      "surveyTypeOnlyImageOption": "Image only",
+      "surveyTypeImageTextOption": "Image and text",
+      "surveyShouldIncludeFreeAnswerCheckboxLabel": "Choose whether the visitor should also see an option for a free-form answer",
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Choose whether to show feedback to the visitor",
+      "closeAnswerTooltip": "Close answer",
+      "deleteAnswerTooltip": "Delete answer",
+      "variant": "Variant",
+      "answerImageLabel": "Accompanying image",
+      "answerImageTooltip": "Select an illustrative image from the document library.",
+      "answerTextLabel": "Answer text",
+      "answerTextTooltip": "Enter an appropriately long text for this answer option. We recommend a maximum of 120–160 characters.",
+      "addNewAnswer": "Add new answer",
+      "deleteAnswerDialog": {
+        "titleErrorLessThanThree": "Cannot delete more options!",
+        "textErrorLessThanThree": "The minimum allowed number of answers has been reached — three.",
+        "textConfirm": "Are you sure you want to remove this option? This action cannot be undone!"
+      },
+      "lockSurveyBtnLabel": "Lock and publish survey",
+      "lockSurveyBtnTooltip": "Once the survey is complete and ready to be published, click this button to publish it. After publishing, the survey cannot be edited. Any test responses collected during the creation of the exhibition will be removed, and data collection will start from the beginning. If you do not click the button, the survey will not be published.",
+      "lockSurveyConfirmTitle": "Confirm locking and publishing the survey",
+      "lockSurveyConfirmText": "Once the survey is complete and ready to be published, click this button to publish it. After publishing, the survey cannot be edited. Any test responses collected during the creation of the exhibition will be removed, and data collection will start from the beginning. If you do not click the button, the survey will not be published.",
+      "lockSurveyErrMsgPrefix": "The following error occurred while attempting to lock the survey",
+      "unlockSurveyBtnLabel": "Unlock and unpublish survey",
+      "unlockSurveyBtnTooltip": "Clicking this button will unlock the survey and unpublish it. To preserve data integrity, all collected responses will be deleted and data collection will start from the beginning. If you do not click the button, the survey will remain published and locked.",
+      "unlockSurveyConfirmTitle": "Confirm unlocking and unpublishing the survey",
+      "unlockSurveyConfirmText": "Clicking this button will unlock the survey and unpublish it. To preserve data integrity, all collected responses will be deleted and data collection will start from the beginning. If you do not click the button, the survey will remain published and locked.",
+      "unlockSurveyErrMsgPrefix": "The following error occurred while attempting to unlock the survey",
+      "saveScreenErrMsg": "Failed to save the screen",
+
+      "noAdminSurveyAnswersYet": "No answers have been created for this screen yet.",
+      "loadingSurveyAnswersServer": "Loading answers from the server...",
+      "surveyResults": "Survey results:",
+      "totalNumberOfAnswers": "Total number of all answers: ",
+      "deleteAllAnswersBtnLabel": "Delete all answers",
+      "choiceAnswersTitle": "Choice answers:",
+      "totalNumberOfChoiceAnswers": "Total number of choice answers: ",
+      "answerLabel": "Answer label",
+      "answerText": "Answer text",
+      "answerCount": "Total number of answers",
+      "answerPercentage": "Percentage of total",
+      "freeAnswersTitle": "Free answers:",
+      "totalNumberOfFreeAnswers": "Total number of free answers: ",
+      "answerCreatedAt": "Created at: ",
+
+      "fetchSurveyAnswersApiErrMsgPrefix": "Error code",
+      "fetchSurveyAnswersAggregatedApiErrMsgPrefix": "Error code",
+      "fetchSurveyAnswersAggregatedFullApiErrMsgPrefix": "Error code",
+      "postSurveyAnswersApiErrMsgPrefix": "Error code",
+      "deleteSurveyAnswersApiErrMsgPrefix": "Error code",
+
+      "postSurveyAnswerMissingIdentificationErrMsg": "Missing exhibition or screen identification",
+      "postSurveyAnswerAlreadyPosted": "It seems you’ve already submitted an answer!",
+      "postSurveyAnswerErrMsg": "An error occurred while submitting your answer",
+      "postSurveySuccessMsg": "Your answer was submitted successfully.",
+      "postSurveySuccessFeedbackMsg": "Just like you, {{currentAnswerCount}} visitors answered this, which makes up {{currentAnswerPercentage}}% of all responses.",
+
+      "deleteSurveyAnswersConfirmationTitle": "Delete all answers",
+      "deleteSurveyAnswersConfirmationText": "Are you sure you want to delete all currently collected results for this survey screen?",
+      "deleteSurveyAnswersErrMsg": "An error occurred while deleting the answers"
     },
     "finishScreen": {
       "deleteImageConfirm": "Are you sure you want to delete the selected image?"

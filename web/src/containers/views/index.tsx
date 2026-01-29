@@ -25,6 +25,7 @@ import { ViewImageChange } from "./view-image-change/view-image-change";
 import ViewExternal from "./view-external/view-external";
 import { ViewSignpost } from "./view-signpost/view-signpost";
 import { ViewTimeline } from "./view-timeline/view-timeline";
+import { ViewSurvey } from "./view-survey/view-survey";
 import { GameFind } from "./games/game-find/game-find";
 import { GameDraw } from "./games/game-draw/game-draw";
 import { GameErase } from "./games/game-erase/game-erase";
@@ -77,6 +78,8 @@ const resolveScreenComponent = (
       return ViewSignpost;
     case screenType.TIMELINE:
       return ViewTimeline;
+    case screenType.SURVEY:
+      return ViewSurvey;
     case screenType.GAME_FIND:
       return GameFind;
     case screenType.GAME_DRAW:

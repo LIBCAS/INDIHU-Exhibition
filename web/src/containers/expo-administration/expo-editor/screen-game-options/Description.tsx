@@ -60,6 +60,7 @@ const Description = (props: DescriptionProps) => {
               />
             </div>
           </div>
+
           <div className="part margin-bottom margin-horizontal">
             <MuteChapterMusicCheckbox
               muteChapterMusicValue={!!activeScreen.muteChapterMusic}

@@ -79,6 +79,12 @@ const screenFileResolver: ScreenFileResolverMap = {
         image: await retrieveFileUrl(link.image, fileLookupMap),
       })) ?? []
     ),
+  surveyAnswers: async (surveyAnswers, fileLookupMap) =>
+    Promise.all(
+      surveyAnswers?.map(async (surveyAnswer) => ({
+        image: await retrieveFileUrl(surveyAnswer.image, fileLookupMap),
+      })) ?? []
+    ),
 };
 
 // - - - - - - - -

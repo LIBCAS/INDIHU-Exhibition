@@ -1,18 +1,21 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { animated, easings, useSpring } from "react-spring";
+
+// Hooks
 import useResizeObserver from "hooks/use-resize-observer";
 
 // Models
-import { ScreenProps, ParallaxScreeen } from "models";
 import { AppState } from "store/store";
+import { ScreenProps, ParallaxScreeen } from "models";
+import { ScreenParallaxAnimationEnum } from "enums/administration-screens";
 
 // Utils
 import { getScreenTime } from "utils/screen";
+import { calculateParallaxOffset } from "./parallax-utils";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as ParallaxScreeen,
@@ -20,22 +23,33 @@ const stateSelector = createSelector(
   (viewScreen, viewProgress) => ({ viewScreen, viewProgress })
 );
 
-// - -
+// - - - - - -
+
+const PARALLAX_DISTANCE_FACTOR = 8;
+
+// - - - - - -
 
 export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen, viewProgress } = useSelector(stateSelector);
-  const { images } = viewScreen;
+  const preloadedImages = screenPreloadedFiles.images ?? [];
 
-  const preloadedImages = screenPreloadedFiles.images;
-  const preloadedRootImg = preloadedImages?.[0];
+  // - - - Screen administration - - -
 
-  const duration = useMemo(
+  const screenDuration = useMemo(
     () => getScreenTime(viewScreen, { unit: "ms" }),
     [viewScreen]
   );
 
-  // Animation stuff
-  const animationType = viewScreen.animationType;
+  const animationType = useMemo(
+    () => viewScreen.animationType ?? ScreenParallaxAnimationEnum.WITHOUT,
+    [viewScreen.animationType]
+  );
+
+  // - - - Hooks - - -
+
+  const [viewContainerRef, viewContainerSize] = useResizeObserver();
+
+  // - - - Animation stuff - - -
 
   const isAnimationHorizontal = useMemo(
     () =>
@@ -44,68 +58,105 @@ export const ViewParallax = ({ screenPreloadedFiles }: ScreenProps) => {
     [animationType]
   );
 
-  const animationScale = useMemo(
-    () =>
-      animationType === "FROM_BOTTOM" || animationType === "FROM_RIGHT_TO_LEFT"
-        ? -1
-        : 1,
+  const isAnimationVertical = useMemo(
+    () => animationType === "FROM_TOP" || animationType === "FROM_BOTTOM",
     [animationType]
   );
 
-  //
-  const [
-    viewContainerRef,
-    { width: viewContainerWidth, height: viewContainerHeight },
-  ] = useResizeObserver();
+  /**
+   *
+   */
+  const animationScale = useMemo(() => {
+    if (
+      animationType === "FROM_BOTTOM" ||
+      animationType === "FROM_RIGHT_TO_LEFT"
+    ) {
+      return -1;
+    }
 
-  const totalDistance = useMemo(
-    () =>
-      (isAnimationHorizontal ? viewContainerWidth : viewContainerHeight) / 8,
-    [isAnimationHorizontal, viewContainerWidth, viewContainerHeight]
-  );
+    if (
+      animationType === "FROM_TOP" ||
+      animationType === "FROM_LEFT_TO_RIGHT"
+    ) {
+      return 1;
+    }
 
-  //
+    return 0;
+  }, [animationType]);
+
+  /**
+   *
+   */
+  const totalDistance = useMemo(() => {
+    const distance = isAnimationHorizontal
+      ? viewContainerSize.width
+      : isAnimationVertical
+      ? viewContainerSize.height
+      : 0;
+
+    return distance / PARALLAX_DISTANCE_FACTOR;
+  }, [
+    isAnimationHorizontal,
+    isAnimationVertical,
+    viewContainerSize.width,
+    viewContainerSize.height,
+  ]);
+
+  /**
+   *
+   */
   const { offset } = useSpring({
-    from: {
-      offset: -1,
-    },
-    to: {
-      offset: 1,
-    },
-    config: { duration, easing: easings.easeInOutSine },
+    from: { offset: 0 },
+    to: { offset: 1 },
+    config: { duration: screenDuration, easing: easings.linear },
     pause: !viewProgress.shouldIncrement,
   });
+
+  // - - - GUI - - -
 
   return (
     <div
       ref={viewContainerRef}
-      className="h-full w-full flex justify-center items-center relative overflow-hidden"
+      className="relative w-full h-full flex justify-center items-center overflow-hidden"
     >
-      {preloadedRootImg && (
-        <img src={preloadedRootImg} className="w-full h-full object-contain" />
-      )}
-
-      {images?.map((imgId, imgIndex) => {
-        if (imgIndex === 0) {
-          return null;
+      {preloadedImages.map((preloadedImgSrc, preloadedImgIdx) => {
+        if (preloadedImgSrc === undefined || preloadedImgSrc === null) {
+          const errMsg = `Detected nullable preloaded img source for parallax at index: ${preloadedImgIdx}`;
+          console.error(errMsg);
+          return <></>;
         }
 
-        // Interpolation of offset value to value that is used directly in style prop
-        const translateOffset = offset.to(
-          (value) =>
-            ((value * totalDistance) / images?.length ?? 1) *
-            (imgIndex + 1) *
-            animationScale
+        // NOTE: First preloaded img is the background image which should not move at all
+        if (preloadedImgIdx === 0) {
+          return (
+            <img
+              key={preloadedImgIdx}
+              src={preloadedImgSrc}
+              className="w-full h-full object-contain"
+            />
+          );
+        }
+
+        // NOTE1: Interpolation of offset value to value that is used directly in style prop
+        // NOTE2: Two algorithms are currently available:
+        //     - `calculateParallaxOffsetOld()` OR `calculateParallaxOffset()`
+        const totalImages = preloadedImages.length;
+        const translateOffset = calculateParallaxOffset(
+          offset,
+          preloadedImgIdx,
+          totalImages,
+          totalDistance,
+          animationScale
         );
 
         return (
           <animated.img
-            key={imgId}
+            key={preloadedImgIdx}
+            src={preloadedImgSrc}
             className="absolute w-full h-full object-contain"
-            src={preloadedImages?.[imgIndex]}
             style={{
-              translateY: isAnimationHorizontal ? undefined : translateOffset,
               translateX: isAnimationHorizontal ? translateOffset : undefined,
+              translateY: isAnimationVertical ? translateOffset : undefined,
             }}
           />
         );

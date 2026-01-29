@@ -33,6 +33,7 @@ import {
   TimelineType,
   TimelineLeftBoundary,
   TimelineRightBoundary,
+  SurveyType,
 } from "./screen-administration";
 
 // - - - - -
@@ -99,6 +100,7 @@ export type SlideshowImages = {
 }[];
 
 export type ParallaxImages = string[];
+
 export type PhotogalleryImages = {
   id: string;
   photoTitle?: string;
@@ -147,6 +149,13 @@ export type ReferenceObj = {
   customUserLabel?: string;
 };
 
+export type SurveyAnswerEditor = {
+  text: string;
+  image: string | null; // NOTE: imageId or null if image was not loaded
+  imageOrigData?: ImageOrigData; // NOTE: Optional if image was not loaded
+  customUserLabel?: string; // NOTE: Optional as creator can but does not have to use custom label
+};
+
 // - - - - -
 
 export type Screen =
@@ -163,6 +172,7 @@ export type Screen =
   | ImageChangeScreen
   | ExternalScreen
   | SignpostScreen
+  | SurveyScreen
   | TimelineScreen
   | GameFindScreen
   | GameDrawScreen
@@ -436,6 +446,23 @@ export type TimelineScreen = {
   timelineThickness?: number;
   timelineLeftBoundary?: TimelineLeftBoundary;
   timelineRightBoundary?: TimelineRightBoundary;
+  screenBgColor?: string | null;
+};
+
+export type SurveyScreen = {
+  id: string;
+  type: typeof screenType.SURVEY;
+  // Description tab
+  title?: string;
+  task?: string;
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
+  // Answers
+  surveyType?: SurveyType;
+  shouldIncludeFreeAnswer?: boolean;
+  shouldShowAnswerFeedback?: boolean;
+  surveyAnswers?: SurveyAnswerEditor[];
+  isSurveyScreenLocked?: boolean;
   screenBgColor?: string | null;
 };
 

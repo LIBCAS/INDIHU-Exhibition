@@ -52,11 +52,19 @@ const statesSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen,
   ({ expo }: AppState) => expo.expoVolumes,
   ({ expo }: AppState) => expo.screensInfo.isPhotogalleryLightboxOpened,
-  (shouldIncrement, viewScreen, expoVolumes, isPhotogalleryLightboxOpened) => ({
+  ({ expo }: AppState) => expo.screensInfo.isSurveyFreeAsnwerMarked,
+  (
     shouldIncrement,
     viewScreen,
     expoVolumes,
     isPhotogalleryLightboxOpened,
+    isSurveyFreeAsnwerMarked
+  ) => ({
+    shouldIncrement,
+    viewScreen,
+    expoVolumes,
+    isPhotogalleryLightboxOpened,
+    isSurveyFreeAsnwerMarked,
   })
 );
 
@@ -86,6 +94,7 @@ export const ViewScreenOverlay = ({
     shouldIncrement,
     expoVolumes,
     isPhotogalleryLightboxOpened,
+    isSurveyFreeAsnwerMarked,
   } = useSelector(statesSelector);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -274,6 +283,10 @@ export const ViewScreenOverlay = ({
   // Keyboard - arrows navigation, space bar will stop the progress, escape will close the side Drawer panel
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
+      if (isSurveyFreeAsnwerMarked) {
+        return;
+      }
+
       if (
         event.key === "ArrowRight" &&
         !isPhotogalleryLightboxOpened &&
@@ -311,6 +324,7 @@ export const ViewScreenOverlay = ({
       }
     },
     [
+      isSurveyFreeAsnwerMarked,
       isPhotogalleryLightboxOpened,
       isAnyTutorialOpen,
       navigateForward,

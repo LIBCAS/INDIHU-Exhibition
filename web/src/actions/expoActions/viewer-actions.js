@@ -130,10 +130,13 @@ export const setTooltipInfo = (values) => (dispatch) => {
   });
 };
 
-export const setScreensInfo = (screensInfo) => (dispatch) => {
+export const setScreensInfo = (screensInfo) => (dispatch, getState) => {
+  const actualScreensInfo = getState().expo.screensInfo;
+  const newScreensInfo = { ...actualScreensInfo, ...screensInfo };
+
   dispatch({
     type: EXPO_SCREENS_INFO_UPDATE,
-    payload: screensInfo,
+    payload: newScreensInfo,
   });
 };
 

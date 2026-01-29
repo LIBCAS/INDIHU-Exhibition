@@ -32,6 +32,10 @@ export const addScreen =
                   { correct: false, text: "", image: null },
                 ]
               : undefined,
+          links:
+            type === screenType.SIGNPOST
+              ? [{ reference: null }, { reference: null }, { reference: null }]
+              : undefined,
         },
       ];
       if (row === 0) screens.unshift(arr);
