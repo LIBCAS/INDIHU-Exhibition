@@ -70,6 +70,21 @@ export const AudioDialog = ({
     [expoVolumes.soundtrackVolume]
   );
 
+  const isSpeechDisabled = useMemo(
+    () => expoVolumes.isSpeechDisabled,
+    [expoVolumes.isSpeechDisabled]
+  );
+
+  const isMusicDisabled = useMemo(
+    () => expoVolumes.isMusicDisabled,
+    [expoVolumes.isMusicDisabled]
+  );
+
+  const isSoundtrackDisabled = useMemo(
+    () => expoVolumes.isSoundtrackDisabled,
+    [expoVolumes.isSoundtrackDisabled]
+  );
+
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
@@ -81,7 +96,7 @@ export const AudioDialog = ({
     >
       <div className="flex flex-col gap-5">
         {/* First slider */}
-        {(hasSpeechVolume || isVideoPresent) && (
+        {(hasSpeechVolume || isVideoPresent) && !isSpeechDisabled && (
           <AudioSlider
             volumeKey="speechVolume"
             volumeObj={speechVolume}
@@ -89,7 +104,7 @@ export const AudioDialog = ({
           />
         )}
         {/* Second slider */}
-        {hasMusicVolume && (
+        {hasMusicVolume && !isMusicDisabled && (
           <AudioSlider
             volumeKey="musicVolume"
             volumeObj={musicVolume}
@@ -97,7 +112,7 @@ export const AudioDialog = ({
           />
         )}
         {/* Third slider */}
-        {hasSoundtrackVolume && (
+        {hasSoundtrackVolume && !isSoundtrackDisabled && (
           <AudioSlider
             volumeKey="soundtrackVolume"
             volumeObj={soundtrackVolume}
