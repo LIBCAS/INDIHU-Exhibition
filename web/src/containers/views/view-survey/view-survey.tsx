@@ -68,6 +68,11 @@ export const ViewSurvey = ({
 
   // - - - Data about Survey from administration - - -
 
+  const surveyAnswers = useMemo(
+    () => viewScreen.surveyAnswers ?? [],
+    [viewScreen.surveyAnswers]
+  );
+
   const isSurveyScreenLocked = useMemo<boolean>(
     () => viewScreen.isSurveyScreenLocked ?? false,
     [viewScreen.isSurveyScreenLocked]
@@ -258,8 +263,14 @@ export const ViewSurvey = ({
           </div>
 
           {/* 2. Answers */}
-          <Grid container spacing={{ xs: 4, md: 4, lg: 6 }}>
-            {viewScreen.surveyAnswers?.map((answer, answerIdx) => (
+          <Grid
+            container
+            spacing={{ xs: 4, md: 4, lg: 6 }}
+            sx={{
+              justifyContent: surveyAnswers.length <= 2 ? "center" : undefined,
+            }}
+          >
+            {surveyAnswers.map((answer, answerIdx) => (
               <SurveyAnswerItem
                 key={answerIdx}
                 answer={answer}
