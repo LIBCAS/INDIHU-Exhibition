@@ -10,7 +10,7 @@ import * as storage from "../utils/storage";
 
 import { refreshToken } from "actions/user-actions";
 
-// - -
+// - - - - - -
 
 /**
  * If unsigned user attempts to redirect to one of these routes,
@@ -21,6 +21,7 @@ const UNSIGNED_USER_ALLOWED_ROUTES = [
   { regex: new RegExp(/\/verify\/.*/) }, // verify mail
   { regex: new RegExp(/\/oauth\/./) }, // oauth routes
   { regex: new RegExp(/\/about$/) }, // about page
+  { regex: new RegExp(/\/about-test$/) }, // about page 2
   { regex: new RegExp(/\/terms-of-use$/) }, // terms of use page
   { regex: new RegExp(/\/privacy-policy$/) }, // privacy policy page
   { regex: new RegExp(/\/grafana$/) },
