@@ -23,14 +23,17 @@ import {
 
 // Redux (actions)
 import { setViewProgress } from "actions/expoActions/viewer-actions";
+import { IntroScreen } from "models";
 
 // - - - - - -
 
 const stateSelector = createSelector(
+  ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
   ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
   ({ expo }: AppState) => expo.expoVolumes,
-  (viewScreen, shouldIncrement, expoVolumes) => ({
+  (viewExpo, viewScreen, shouldIncrement, expoVolumes) => ({
+    viewExpo,
     viewScreen,
     shouldIncrement,
     expoVolumes,
@@ -51,7 +54,7 @@ export const NewViewScreen = ({
 }: NewViewScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { viewScreen, shouldIncrement, expoVolumes } =
+  const { viewExpo, viewScreen, shouldIncrement, expoVolumes } =
     useSelector(stateSelector);
 
   const { section, screen } = useSectionScreenParams();
@@ -142,8 +145,15 @@ export const NewViewScreen = ({
       return true;
     }
 
+    const introScreen = viewExpo?.structure?.screens?.[section]?.[0];
+    const introScreenTyped = introScreen as IntroScreen;
+    const muteExpoSoundtrack = introScreenTyped?.muteExpoSoundtrack ?? false;
+    if (muteExpoSoundtrack) {
+      return true;
+    }
+
     return false;
-  }, [section]);
+  }, [section, viewExpo?.structure]);
 
   // - - - Callbacks - - -
 
