@@ -41,6 +41,7 @@ type ScreenFileChooseDialogDataProps = {
 type ConfirmDialogDataProps = {
   title?: React.ReactNode | string;
   text?: string;
+  content?: React.ReactNode;
   onSubmit: (() => void) | (() => Promise<void>);
   closeBefore?: boolean;
 };

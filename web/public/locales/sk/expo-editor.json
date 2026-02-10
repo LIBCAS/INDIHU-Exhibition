@@ -325,6 +325,7 @@
       "unlockSurveyBtnTooltip": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
       "unlockSurveyConfirmTitle": "Potvrdiť odblokovanie a zrušenie publikácie ankety",
       "unlockSurveyConfirmText": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
+      "unlockSurveyConfirmText2": "Kliknutím na tlačidlo 'Potvrdiť' budú všetky odpovede vymazané.",
       "unlockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o odblokovanie ankety",
       "saveScreenErrMsg": "Nepodarilo sa uložiť obrazovku",
 

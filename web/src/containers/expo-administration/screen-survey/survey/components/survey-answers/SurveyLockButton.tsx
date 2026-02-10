@@ -162,7 +162,15 @@ const SurveyLockButton = ({
     dispatch(
       setDialog(DialogType.ConfirmDialog, {
         title: <div className="font-bold">{t("unlockSurveyConfirmTitle")}</div>,
-        text: t("unlockSurveyConfirmText"),
+        content: (
+          <div>
+            <span>{t("unlockSurveyConfirmText")}</span>
+            <span> </span>
+            <span className="font-semibold text-danger">
+              {t("unlockSurveyConfirmText2")}
+            </span>
+          </div>
+        ),
         onSubmit: async () => await handleUnlock(),
         closeBefore: true,
       })
