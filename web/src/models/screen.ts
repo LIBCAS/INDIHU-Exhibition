@@ -107,6 +107,11 @@ export type PhotogalleryImages = {
   photoDescription?: string;
 }[];
 
+export type ImageAnimationImages = {
+  id: string;
+  imageOrigData: ImageOrigData;
+};
+
 export type Sequence = {
   left: number;
   top: number;
@@ -482,6 +487,7 @@ export type ImageAnimationScreen = {
   // Documents tab
   documents?: Document[];
   // Screen specifics
+  images: ImageAnimationImages[];
 };
 
 export type GameFindScreen = {
