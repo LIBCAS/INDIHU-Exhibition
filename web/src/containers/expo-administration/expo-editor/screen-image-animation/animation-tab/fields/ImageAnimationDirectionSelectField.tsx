@@ -11,6 +11,7 @@ import { ImageAnimationDirectionEnum } from "enums/administration-screens";
 
 // Utils
 import { updateScreenData } from "actions/expoActions";
+import { DEFAULT_IMAGE_ANIMATION_DIRECTION } from "../../default-values";
 
 // - - - - - -
 
@@ -61,7 +62,7 @@ const ImageAnimationDirectionSelectField = ({
         name="image-animation-direction-selectfield"
         defaultValue={
           activeScreen.images?.[activeImgIndex]?.animationDirection ??
-          ImageAnimationDirectionEnum.FROM_LEFT_TO_RIGHT
+          DEFAULT_IMAGE_ANIMATION_DIRECTION
         }
         onChange={(newValue: ImageAnimationDirection) => {
           dispatch(

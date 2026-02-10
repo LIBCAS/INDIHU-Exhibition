@@ -11,6 +11,7 @@ import { ImageAnimationSpeedEnum } from "enums/administration-screens";
 
 // Utils
 import { updateScreenData } from "actions/expoActions";
+import { DEFAULT_IMAGE_ANIMATION_SPEED } from "../../default-values";
 
 // - - - - - -
 
@@ -53,7 +54,7 @@ const ImageAnimationSpeedSelectField = ({
         name="image-animation-speed-selectfield"
         defaultValue={
           activeScreen.images?.[activeImgIndex]?.animationSpeed ??
-          ImageAnimationSpeedEnum.MEDIUM
+          DEFAULT_IMAGE_ANIMATION_SPEED
         }
         onChange={(newValue: ImageAnimationSpeed) => {
           dispatch(
