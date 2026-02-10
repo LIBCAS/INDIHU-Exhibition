@@ -14,6 +14,8 @@ import { ImageAnimationScreen, File as IndihuFile } from "models";
 // Actions
 import { updateScreenData } from "actions/expoActions";
 import { getFileById } from "actions/file-actions-typed";
+import ImageAnimationDirectionSelectField from "./fields/ImageAnimationDirectionSelectField";
+import ImageAnimationSpeedSelectField from "./fields/ImageAnimationSpeedSelectField";
 
 // - - - - - -
 
@@ -188,8 +190,15 @@ const ImageAnimation = ({ activeScreen }: ImageAnimationProps) => {
             </div>
 
             {/* Second column */}
-            <div className="flex-col half-width-min gap-4">
-              <div>Hehe</div>
+            <div className="half-width-min flex-col justify-center items-center gap-4 mb-16">
+              <ImageAnimationDirectionSelectField
+                activeScreen={activeScreen}
+                activeImgIndex={activeImageIdx}
+              />
+              <ImageAnimationSpeedSelectField
+                activeScreen={activeScreen}
+                activeImgIndex={activeImageIdx}
+              />
             </div>
           </div>
         )}

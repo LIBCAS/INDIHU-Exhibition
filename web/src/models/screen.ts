@@ -34,6 +34,8 @@ import {
   TimelineLeftBoundary,
   TimelineRightBoundary,
   SurveyType,
+  ImageAnimationDirection,
+  ImageAnimationSpeed,
 } from "./screen-administration";
 
 // - - - - -
@@ -110,6 +112,8 @@ export type PhotogalleryImages = {
 export type ImageAnimationImages = {
   id: string;
   imageOrigData: ImageOrigData;
+  animationDirection: ImageAnimationDirection;
+  animationSpeed: ImageAnimationSpeed;
 };
 
 export type Sequence = {

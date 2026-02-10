@@ -9,3 +9,4 @@ export * from "./screen-slideshow";
 export * from "./screen-parallax";
 export * from "./screen-timeline";
 export * from "./screen-survey";
+export * from "./screen-image-animation";

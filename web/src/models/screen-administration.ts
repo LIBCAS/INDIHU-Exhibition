@@ -18,6 +18,8 @@ import {
   TimelineLeftBoundaryEnum,
   TimelineRightBoundaryEnum,
   SurveyTypeEnum,
+  ImageAnimationDirectionEnum,
+  ImageAnimationSpeedEnum,
 } from "enums/administration-screens";
 
 // - - - - - -
@@ -60,3 +62,6 @@ export type TimelineLeftBoundary = keyof typeof TimelineLeftBoundaryEnum;
 export type TimelineRightBoundary = keyof typeof TimelineRightBoundaryEnum;
 
 export type SurveyType = keyof typeof SurveyTypeEnum;
+
+export type ImageAnimationSpeed = keyof typeof ImageAnimationSpeedEnum;
+export type ImageAnimationDirection = keyof typeof ImageAnimationDirectionEnum;
