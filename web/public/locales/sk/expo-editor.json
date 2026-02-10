@@ -71,6 +71,7 @@
     "organizationLink": "Odkaz na webové stránky organizácie",
     "organizationLinkTooltip": "Odkaz na webové stránky inštitúcie, ktorá výstavu vytvorila.",
     "musicTurnOff": "Vypnúť zvukovú stopu kapitoly",
+    "expoSoundtrackTurnOff": "Vypnúť zvukový podkres k výstave",
     "screenCompleted": "Obrazovka je dokončená",
     "text": "Text k téme",
     "textTooltip": "Doplňujúci text k téme poskytujúci informácie a vysvetlenie návštevníkovi.<br/><br/>Pre formátovanie textu (rezy písma, zarážky a pod.) použite jednotlivé možnosti v ponuke editora. Po označení textu môžete tiež vybrať veľkosť písma a zmenšiť ho alebo zväčšiť. Pre slovenské úvodzovky označte príslušnú pasáž a kliknite na úvodzovky.",

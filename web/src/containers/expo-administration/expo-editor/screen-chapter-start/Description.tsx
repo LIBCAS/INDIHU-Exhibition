@@ -29,6 +29,7 @@ import {
   ScreenChapterIntroTextThemeEnum,
   ScreenChapterIntroTextHaloEffectOnEnum,
 } from "enums/administration-screens";
+import { MuteExpoSoundtrackCheckbox } from "components/editors/Checkboxes";
 
 // - -
 
@@ -241,6 +242,12 @@ const Description = ({ activeScreen }: DescriptionProps) => {
                 helpIconTitle={t("descFields.audioChapterTrackTooltip")}
                 id="editor-chapter-start-description-music"
               />
+
+              <div className="mt-4">
+                <MuteExpoSoundtrackCheckbox
+                  muteExpoSoundtrack={activeScreen?.muteExpoSoundtrack ?? false}
+                />
+              </div>
 
               <div className="mt-4">
                 <ScreenBackgroundColorPicker

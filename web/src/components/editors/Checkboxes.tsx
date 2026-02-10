@@ -6,7 +6,7 @@ import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 
 import { updateScreenData } from "actions/expoActions";
 
-// - -
+// - - - - - -
 
 type ScreenCompletedCheckboxProps = { screenCompletedValue: boolean };
 
@@ -32,7 +32,7 @@ export const ScreenCompletedCheckbox = ({
   );
 };
 
-// - -
+// - - - - - -
 
 type MuteChapterMusicCheckboxProps = { muteChapterMusicValue: boolean };
 
@@ -52,6 +52,34 @@ export const MuteChapterMusicCheckbox = ({
         checked={muteChapterMusicValue}
         onChange={(newMuteChapterMusic: boolean) =>
           dispatch(updateScreenData({ muteChapterMusic: newMuteChapterMusic }))
+        }
+      />
+    </div>
+  );
+};
+
+// - - - - - -
+
+type MuteExpoSoundtrackCheckboxProps = { muteExpoSoundtrack: boolean };
+
+export const MuteExpoSoundtrackCheckbox = ({
+  muteExpoSoundtrack,
+}: MuteExpoSoundtrackCheckboxProps) => {
+  const { t } = useTranslation("expo-editor");
+  const dispatch = useDispatch<AppDispatch>();
+
+  return (
+    <div className="row">
+      <Checkbox
+        id="editor-expo-soundtrack-mute-checkbox"
+        name="simple-checkboxes"
+        label={t("descFields.expoSoundtrackTurnOff")}
+        className="checkbox-shift-left-by-padding"
+        checked={muteExpoSoundtrack}
+        onChange={(newMuteExpoSoundtrack: boolean) =>
+          dispatch(
+            updateScreenData({ muteExpoSoundtrack: newMuteExpoSoundtrack })
+          )
         }
       />
     </div>

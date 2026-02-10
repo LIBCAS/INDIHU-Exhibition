@@ -71,6 +71,7 @@
     "organizationLink": "Link to the organization's website",
     "organizationLinkTooltip": "Link to the institution's website.",
     "musicTurnOff": "Turn off the chapter soundtrack",
+    "expoSoundtrackTurnOff": "Turn off exhibition soundtrack",
     "screenCompleted": "The screen is completed",
     "text": "Topic text",
     "textTooltip": "Addional text providing information to the visitor.<br/><br/>To format the text (font styles, bullets, etc.), use the individual options in the editor menu. After selecting the text, you can also select the font size and reduce or enlarge it. For Czech quotation marks, select the relevant passage and click on the quotation marks.",
