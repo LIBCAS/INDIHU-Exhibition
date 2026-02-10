@@ -473,7 +473,14 @@ export type ImageAnimationScreen = {
   type: typeof screenType.IMAGE_ANIMATION;
   // Description tab
   title?: string;
+  text?: string;
+  audio?: string;
+  time?: number;
+  timeAuto?: boolean;
+  muteChapterMusic?: boolean;
+  screenCompleted?: boolean;
   // Documents tab
+  documents?: Document[];
   // Screen specifics
 };
 
