@@ -116,11 +116,9 @@ export const FinishAllFilesDialog = ({
               {t("expo-audio-version")}
             </h1>
             <FileItem
-              file={{
-                ...expoAudioVersionFile,
-                fileName: expoAudioVersionFile.name,
-              }}
+              file={expoAudioVersionFile}
               isFromFinishFileDialog
+              specialType="expoAudioVersion"
             />
           </div>
         )}

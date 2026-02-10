@@ -18,12 +18,14 @@ interface Props {
   file: Document;
   isFromFinishFileDialog?: boolean;
   isSubItem?: boolean;
+  specialType?: "expoAudioVersion";
 }
 
 export const FileItem = ({
   file,
   isFromFinishFileDialog,
   isSubItem,
+  specialType,
 }: Props) => {
   const fileInfo = useMemo(() => {
     let fileIconName: string | undefined;
@@ -44,8 +46,12 @@ export const FileItem = ({
       shouldDisplayDownloadBtn = false;
     }
 
+    if (specialType === "expoAudioVersion") {
+      fileIconName = "hearing";
+    }
+
     return { fileIconName, fileTitle, shouldDisplayDownloadBtn };
-  }, [file]);
+  }, [file, specialType]);
 
   // - - - Callbacks - - -
 

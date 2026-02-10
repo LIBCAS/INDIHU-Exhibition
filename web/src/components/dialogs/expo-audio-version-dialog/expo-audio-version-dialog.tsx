@@ -31,15 +31,7 @@ export const ExpoAudioVersionDialog = ({
       closeOnEsc
       applyTheming
     >
-      {expoAudioVersionFile && (
-        <FileItem
-          file={{
-            ...expoAudioVersionFile,
-            fileName: expoAudioVersionFile.name,
-          }}
-        />
-      )}
-
+      {expoAudioVersionFile && <FileItem file={expoAudioVersionFile} />}
       {!expoAudioVersionFile && <div>{t("no-expo-audio-version")}</div>}
     </DialogWrap>
   );
