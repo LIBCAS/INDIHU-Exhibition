@@ -112,8 +112,8 @@ export type PhotogalleryImages = {
 export type ImageAnimationImages = {
   id: string;
   imageOrigData: ImageOrigData;
-  animationDirection: ImageAnimationDirection;
-  animationSpeed: ImageAnimationSpeed;
+  animationDirection?: ImageAnimationDirection;
+  animationSpeed?: ImageAnimationSpeed;
 };
 
 export type Sequence = {
