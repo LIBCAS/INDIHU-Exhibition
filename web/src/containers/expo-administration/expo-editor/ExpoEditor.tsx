@@ -18,6 +18,7 @@ import ScreenParallax from "./screen-parallax/screen-parallax";
 import ScreenExternal from "./screen-external/screen-external";
 import ScreenSignpost from "./screen-signpost/screen-signpost";
 import ScreenSurvey from "../screen-survey/screen-survey";
+import ScreenImageAnimation from "./screen-image-animation/screen-image-animation";
 import ScreenGameFind from "./screen-game-find/screen-game-find";
 import ScreenGameDraw from "./screen-game-draw/screen-game-draw";
 import ScreenGameWipe from "./screen-game-wipe/screen-game-wipe";
@@ -34,12 +35,12 @@ import { loadScreen, updateScreenData } from "actions/expoActions";
 import { screenUrl } from "enums/screen-type";
 import { isEmpty } from "lodash";
 
+// - - - - - -
+
 const expoStateSelector = createSelector(
   ({ expo }: AppState) => expo.activeScreen as Screen,
   (activeScreen) => ({ activeScreen })
 );
-
-// - -
 
 type ExpoEditorProps = {
   activeExpo: ActiveExpo;
@@ -164,6 +165,10 @@ const ExpoEditor = ({ activeExpo }: ExpoEditorProps) => {
       <Route
         path={`${match.url}/${screenUrl.SURVEY}/:position`}
         render={() => <ScreenSurvey {...editorProps} />}
+      />
+      <Route
+        path={`${match.url}/${screenUrl.IMAGE_ANIMATION}/:position`}
+        render={() => <ScreenImageAnimation {...editorProps} />}
       />
     </div>
   );

@@ -26,6 +26,7 @@ import ViewExternal from "./view-external/view-external";
 import { ViewSignpost } from "./view-signpost/view-signpost";
 import { ViewTimeline } from "./view-timeline/view-timeline";
 import { ViewSurvey } from "./view-survey/view-survey";
+import { ViewImageAnimation } from "./view-image-animation/view-image-animation";
 import { GameFind } from "./games/game-find/game-find";
 import { GameDraw } from "./games/game-draw/game-draw";
 import { GameErase } from "./games/game-erase/game-erase";
@@ -80,6 +81,8 @@ const resolveScreenComponent = (
       return ViewTimeline;
     case screenType.SURVEY:
       return ViewSurvey;
+    case screenType.IMAGE_ANIMATION:
+      return ViewImageAnimation;
     case screenType.GAME_FIND:
       return GameFind;
     case screenType.GAME_DRAW:
