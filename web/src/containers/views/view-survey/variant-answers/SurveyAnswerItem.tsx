@@ -1,5 +1,4 @@
 // Hooks
-import { useTranslation } from "react-i18next";
 import { useMediaDevice } from "context/media-device-provider/media-device-provider";
 
 //  Components
@@ -33,7 +32,6 @@ const SurveyAnswerItem = ({
   handleMarkThisAnswer,
 }: SurveyViewAnswerProps) => {
   const { isSm, isMobileLandscape } = useMediaDevice();
-  const { t } = useTranslation("view-screen", { keyPrefix: "surveyScreen" });
 
   // - - - GUI - - -
 
@@ -76,13 +74,7 @@ const SurveyAnswerItem = ({
             style={{ flex: 1 }}
             className="w-full flex justify-center items-center text-white"
           >
-            {answer.text === "" ? (
-              <div className="italic pl-2 pr-4 text-start">
-                {t("missingAnswerText")}
-              </div>
-            ) : (
-              <div className="pl-2 pr-4 text-start">{answer.text}</div>
-            )}
+            <div className="pl-2 pr-4 text-start">{answer.text}</div>
           </div>
         )}
       </div>

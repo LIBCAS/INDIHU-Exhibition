@@ -131,10 +131,6 @@ export const ViewSurvey = ({
     );
   }, [shouldShowAnswerFeedback, postAsnwerRespData, tEditor]);
 
-  // - - - Local Storage - - -
-
-  //
-
   // - - - Callbacks (post-answers) - - -
 
   const handlePostAnswer = useCallback(async () => {
