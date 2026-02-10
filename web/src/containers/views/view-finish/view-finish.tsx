@@ -29,16 +29,20 @@ import { AppDispatch, AppState } from "store/store";
 import { Screen, ScreenWithOnlyTypeTitleDocuments, ExpoRates } from "models";
 import { ScreenProps } from "models";
 
+// Redux (actions)
+import { getFileById } from "actions/file-actions-typed";
+
+// Utils
 import cx from "classnames";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewExpo,
   (viewExpo) => ({ viewExpo })
 );
 
-// - -
+// - - - - - -
 
 export const ViewFinish = ({
   screenPreloadedFiles,
@@ -114,6 +118,11 @@ export const ViewFinish = ({
 
     return structureScreenFiles;
   }, [viewExpo?.structure.screens]);
+
+  const expoAudioVersionFile = useMemo(
+    () => dispatch(getFileById(viewExpo?.structure.start.audio)),
+    [dispatch, viewExpo?.structure.start.audio]
+  );
 
   // - - - - - - - -
 
@@ -265,6 +274,7 @@ export const ViewFinish = ({
                 closeThisDialog={closeTopDialog}
                 startFiles={structureStartFiles}
                 screensFiles={structureScreenFiles}
+                expoAudioVersionFile={expoAudioVersionFile}
               />
             }
           />
