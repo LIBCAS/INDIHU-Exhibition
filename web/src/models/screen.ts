@@ -169,6 +169,7 @@ export type Screen =
   | PhotogalleryScreen
   | ParallaxScreeen
   | ZoomScreen
+  | ImageAnimationScreen
   | ImageChangeScreen
   | ExternalScreen
   | SignpostScreen
@@ -465,6 +466,15 @@ export type SurveyScreen = {
   surveyAnswers?: SurveyAnswerEditor[];
   isSurveyScreenLocked?: boolean;
   screenBgColor?: string | null;
+};
+
+export type ImageAnimationScreen = {
+  id: string;
+  type: typeof screenType.IMAGE_ANIMATION;
+  // Description tab
+  title?: string;
+  // Documents tab
+  // Screen specifics
 };
 
 export type GameFindScreen = {

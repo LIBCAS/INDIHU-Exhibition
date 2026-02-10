@@ -7,13 +7,14 @@ export const screenType = {
   TEXT: "TEXT",
   PARALLAX: "PARALLAX",
   IMAGE_ZOOM: "IMAGE_ZOOM",
+  IMAGE_ANIMATION: "IMAGE_ANIMATION", // new type of screen
   TIMELINE: "TIMELINE", // new type of screen
   SLIDESHOW: "PHOTOGALERY", // 'PHOTOGALERY' key is used for screen called slideshow, because previosly, there were no second photogallery screen
   PHOTOGALLERY_NEW: "PHOTOGALLERY_NEW",
   IMAGE_CHANGE: "IMAGE_CHANGE",
   EXTERNAL: "EXTERNAL",
   SIGNPOST: "SIGNPOST", // new type of screen
-  SURVEY: "SURVEY", // new type of screen
+  SURVEY: "SURVEY", // new type of screen,
   GAME_FIND: "GAME_FIND",
   GAME_DRAW: "GAME_DRAW",
   GAME_WIPE: "GAME_WIPE",
@@ -32,6 +33,7 @@ export const mapScreenTypeValuesToKeys = {
   TEXT: "TEXT",
   PARALLAX: "PARALLAX",
   IMAGE_ZOOM: "IMAGE_ZOOM",
+  IMAGE_ANIMATION: "IMAGE_ANIMATION",
   TIMELINE: "TIMELINE",
 
   PHOTOGALERY: "SLIDESHOW", // map 'PHOTOGALERY' | 'SLIDESHOW' to only SLIDESHOW key
@@ -60,6 +62,7 @@ export const screenTypeText = {
   TEXT: "Obrazovka s textem",
   PARALLAX: "Parallax",
   IMAGE_ZOOM: "Animace přiblížení",
+  IMAGE_ANIMATION: "Animácia obrázkov",
   TIMELINE: "Obrazovka časová osa",
 
   SLIDESHOW: "Slideshow",
@@ -85,6 +88,7 @@ export const screenTypeIcon = {
   TEXT: "fa-align-right",
   PARALLAX: "fa-picture-o",
   IMAGE_ZOOM: "fa-picture-o",
+  IMAGE_ANIMATION: "fa-picture-o",
   TIMELINE: "fa-picture-o",
   SLIDESHOW: "fa-picture-o",
   PHOTOGALLERY_NEW: "fa-picture-o",
@@ -111,6 +115,7 @@ export const screenCategories = [
       { id: "TEXT", name: "Obrazovka s textem" },
       { id: "PARALLAX", name: "Parallax" },
       { id: "IMAGE_ZOOM", name: "Animace přiblížení" },
+      { id: "IMAGE_ANIMATION", name: "Animace obrázku" },
       { id: "TIMELINE", name: "Obrazovka časová osa" },
       { id: "PHOTOGALERY", name: "Slideshow" },
     ],
@@ -150,6 +155,7 @@ export const screenUrl = {
   TEXT: "text",
   PARALLAX: "parallax",
   IMAGE_ZOOM: "image-zoom",
+  IMAGE_ANIMATION: "image-animation",
   TIMELINE: "timeline",
   SLIDESHOW: "slideshow",
   PHOTOGALLERY_NEW: "photogallery",
@@ -175,6 +181,7 @@ export const automaticRouting = {
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
+  IMAGE_ANIMATION: true,
   TIMELINE: true,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: true,
@@ -200,6 +207,7 @@ export const mobileDeviceRouting = {
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
+  IMAGE_ANIMATION: true,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: true,
   IMAGE_CHANGE: true,
@@ -224,6 +232,7 @@ export const audioEnabled = {
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
+  IMAGE_ANIMATION: true,
   TIMELINE: true,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: true,
@@ -249,6 +258,7 @@ export const musicEnabled = {
   TEXT: true,
   PARALLAX: true,
   IMAGE_ZOOM: true,
+  IMAGE_ANIMATION: true,
   TIMELINE: true,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: true,
@@ -274,6 +284,7 @@ export const glassMagnifierEnabled = {
   TEXT: false,
   PARALLAX: false,
   IMAGE_ZOOM: false,
+  IMAGE_ANIMATION: false,
   TIMELINE: false,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: false,
