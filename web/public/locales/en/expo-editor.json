@@ -24,7 +24,8 @@
     "timelineTab": "Timeline",
     "surveyDescTab": "Survey name",
     "surveyOptionsTab": "Options to select",
-    "surveyResultsTab": "Results"
+    "surveyResultsTab": "Results",
+    "imageAnimationTab": "Image Animation"
   },
   "descFields": {
     "name": "Title",

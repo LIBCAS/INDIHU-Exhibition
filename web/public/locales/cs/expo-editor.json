@@ -24,7 +24,8 @@
     "timelineTab": "Časová osa",
     "surveyDescTab": "Název ankety",
     "surveyOptionsTab": "Varianty k výběru",
-    "surveyResultsTab": "Výsledky"
+    "surveyResultsTab": "Výsledky",
+    "imageAnimationTab": "Animace obrázků"
   },
   "descFields": {
     "name": "Název",

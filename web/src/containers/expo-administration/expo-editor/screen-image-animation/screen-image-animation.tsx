@@ -43,7 +43,7 @@ const ScreenImageAnimation = (props: ScreenEditorProps) => {
             link: `${match.url}/description`,
           },
           {
-            label: "TODO 2",
+            label: t("tabs.imageAnimationTab"),
             link: `${match.url}/animation`,
           },
           {
