@@ -1,14 +1,23 @@
 import ReactDOM from "react-dom";
-import { useState, useMemo, useCallback, MouseEvent } from "react";
+import {
+  useState,
+  useMemo,
+  useCallback,
+  MouseEvent,
+  useEffect,
+  Fragment,
+} from "react";
 import { useTransition, animated } from "react-spring";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
 // Custom hooks
+import useResizeObserver from "hooks/use-resize-observer";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useCornerInfoBox } from "hooks/spring-hooks/use-corner-info-box";
+import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
 
 // Components
 import { GameInfoPanel } from "../GameInfoPanel";
@@ -16,7 +25,7 @@ import { GameActionsPanel } from "../GameActionsPanel";
 import { BasicTooltip } from "components/tooltip/BasicTooltip";
 
 // Models
-import { ScreenProps, Position } from "models";
+import { ScreenProps, Position, ImageOrigData } from "models";
 import { GameFindScreen } from "models";
 import { AppState } from "store/store";
 
@@ -27,6 +36,8 @@ import {
   GAME_FIND_DEFAULT_NUMBER_OF_PINS,
   GAME_SCREEN_DEFAULT_RESULT_TIME,
 } from "constants/screen";
+import { calculateObjectFit } from "utils/object-fit";
+import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
 // Assets
 import pinIcon from "assets/img/pin.png";
@@ -51,6 +62,10 @@ export const GameFind = ({
 
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
+
+  // - - - Custom hooks - - -
+
+  const [containerRef, containerSize] = useResizeObserver();
 
   // - - - Derived variables (administration) - - -
 
@@ -148,6 +163,52 @@ export const GameFind = ({
     [areAllPinPositionsFilled, currentPinIndex, pinPositions.length]
   );
 
+  // - - - Infopoint Comments (result image) - - -
+
+  const resultImageOrigData = useMemo<ImageOrigData>(
+    () => viewScreen.image2OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image2OrigData]
+  );
+
+  const {
+    width: containedResultImgWidth,
+    height: containedResultImgHeight,
+    left: containedResultImgLeft,
+    top: containedResultImgTop,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        type: "contain",
+        parent: containerSize,
+        child: resultImageOrigData,
+      }),
+    [containerSize, resultImageOrigData]
+  );
+
+  const {
+    infopointStatusMap,
+    setInfopointStatusMap,
+    closeInfopoints,
+    AnchorInfopoint,
+    TooltipInfoPoint,
+  } = useTooltipInfopoint(viewScreen);
+
+  // - - - Infopoints (closing) - - -
+
+  useEffect(() => {
+    const onKeyDownAction = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeInfopoints(viewScreen)();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDownAction);
+    return () => {
+      window.removeEventListener("keydown", onKeyDownAction);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeInfopoints, viewScreen.type]);
+
   // - - - Tutorial - --
 
   const { bind, TutorialTooltip } = useTutorial("gameFind", {
@@ -192,25 +253,74 @@ export const GameFind = ({
   // - - - GUI - - -
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative" ref={containerRef}>
       {imageTransition(({ opacity }, isGameFinished) =>
         !isGameFinished ? (
-          <animated.img
-            style={{ opacity }}
-            className={cx("w-full h-full absolute object-contain", {
-              [classes.pinningCursor]: !areAllPinPositionsFilled,
-            })}
-            onClick={pinImage}
-            src={assignmentImgSrc}
-            alt="assignment image"
-          />
+          <div className="absolute w-full h-full">
+            <animated.img
+              src={assignmentImgSrc}
+              alt="assignment image"
+              className={cx("absolute w-full h-full object-contain", {
+                [classes.pinningCursor]: !areAllPinPositionsFilled,
+              })}
+              style={{ opacity }}
+              onClick={pinImage}
+            />
+          </div>
         ) : (
-          <animated.img
-            style={{ opacity }}
-            className="w-full h-full absolute object-contain"
-            src={resultingImgSrc}
-            alt="result image"
-          />
+          <div className="absolute w-full h-full">
+            <animated.img
+              src={resultingImgSrc}
+              alt="result image"
+              className="absolute w-full h-full object-contain"
+              style={{ opacity }}
+            />
+
+            {/* Infopoints 2 */}
+            {viewScreen.image2Infopoints?.map((infopoint, infopointIndex) => {
+              const infopointPosition = {
+                left: infopoint.left,
+                top: infopoint.top,
+              };
+              const imgBoxSize = {
+                width: resultImageOrigData.width,
+                height: resultImageOrigData.height,
+              };
+              const imgViewSize = {
+                width: containedResultImgWidth,
+                height: containedResultImgHeight,
+              };
+
+              const { left, top } = calculateInfopointPositionByImageBoxSize(
+                infopointPosition,
+                imgBoxSize,
+                imgViewSize
+              );
+
+              const adjustedLeft = containedResultImgLeft + left;
+              const adjustedTop = containedResultImgTop + top;
+
+              return (
+                <Fragment key={`find-result-img-infopoint-${infopointIndex}`}>
+                  <AnchorInfopoint
+                    id={`find-result-img-tooltip-${infopointIndex}`}
+                    left={adjustedLeft}
+                    top={adjustedTop}
+                    infopoint={infopoint}
+                    isComment={true}
+                  />
+                  <TooltipInfoPoint
+                    key={`find-result-img-tooltip-${infopointIndex}`}
+                    id={`find-result-img-tooltip-${infopointIndex}`}
+                    infopoint={infopoint}
+                    infopointStatusMap={infopointStatusMap}
+                    setInfopointStatusMap={setInfopointStatusMap}
+                    primaryKey={infopointIndex.toString()}
+                  />
+                </Fragment>
+              );
+            })}
+          </div>
         )
       )}
 
