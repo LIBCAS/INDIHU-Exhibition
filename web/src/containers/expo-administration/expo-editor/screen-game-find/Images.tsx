@@ -164,7 +164,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
               <div className="w-[45%] flex justify-end items-start">
                 <div className="w-full">
                   <InfopointsTable
-                    title="TODO Title"
+                    title={t("imageResultInfopointsTableTitle")}
                     infopoints={activeScreen.image2Infopoints ?? []}
                     onInfopointAdd={(dialogFormData) => {
                       dispatch(
