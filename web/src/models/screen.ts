@@ -485,6 +485,7 @@ export type GameFindScreen = {
   numberOfPins?: number;
   pinsTexts?: string[];
   screenBgColor?: string | null;
+  image2Infopoints?: Infopoint[];
 };
 
 export type GameDrawScreen = {
