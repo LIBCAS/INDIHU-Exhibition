@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { useTranslation } from "react-i18next";
 
+// Custom hooks
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import { useGameAutoNavigationOnResultTimeElapsed } from "../useGameAutoNavigationOnResultTimeElapsed";
 import { useCornerInfoBox } from "hooks/spring-hooks/use-corner-info-box";
@@ -30,14 +31,14 @@ import {
 // Assets
 import pinIcon from "assets/img/pin.png";
 
-// - - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameFindScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-// - - - -
+// - - - - - -
 
 export const GameFind = ({
   screenPreloadedFiles,
@@ -48,23 +49,32 @@ export const GameFind = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const {
-    resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME,
-    showTip = false,
-    numberOfPins = GAME_FIND_DEFAULT_NUMBER_OF_PINS,
-    pinsTexts,
-  } = viewScreen;
-
-  // NOTE: pinsTexts - can store more than numberOfPins texts
-  const slicedPinsTexts = useMemo(
-    () => pinsTexts?.slice(0, numberOfPins),
-    [numberOfPins, pinsTexts]
-  );
-
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
 
-  // - - - -
+  // - - - Derived variables (administration) - - -
+
+  const resultTime = useMemo<number>(
+    () => viewScreen.resultTime ?? GAME_SCREEN_DEFAULT_RESULT_TIME,
+    [viewScreen.resultTime]
+  );
+
+  const showTip = useMemo<boolean>(
+    () => viewScreen.showTip ?? false,
+    [viewScreen.showTip]
+  );
+
+  const numberOfPins = useMemo<number>(
+    () => viewScreen.numberOfPins ?? GAME_FIND_DEFAULT_NUMBER_OF_PINS,
+    [viewScreen.numberOfPins]
+  );
+
+  const pinsTexts = useMemo<string[] | undefined>(
+    () => viewScreen.pinsTexts,
+    [viewScreen.pinsTexts]
+  );
+
+  // - - - States - - -
 
   const [isGameFinished, setIsGameFinished] = useState(false);
 
@@ -74,21 +84,53 @@ export const GameFind = ({
     new Array(numberOfPins).fill(undefined)
   );
 
+  // - - - Derived variables - - -
+
+  /**
+   * NOTE: Original pinsTexts can store more than numberOfPins texts!
+   */
+  const slicedPinsTexts = useMemo(
+    () => pinsTexts?.slice(0, numberOfPins),
+    [numberOfPins, pinsTexts]
+  );
+
+  /**
+   *
+   */
   const areAllPinPositionsFilled = useMemo(
     () => pinPositions.every((pos) => pos !== undefined),
     [pinPositions]
   );
 
+  /**
+   * When game is not finished, display always and when game is finished, it depends on showTip prop
+   */
+  const shouldDisplayPin = useMemo(
+    () => !isGameFinished || (isGameFinished && showTip),
+    [isGameFinished, showTip]
+  );
+
+  // - - - Callbacks - - -
+
+  /**
+   *
+   */
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
   }, []);
 
+  /**
+   *
+   */
   const onGameReset = useCallback(() => {
     setPinPositions((prev) => prev.map((_position) => undefined));
     setCurrentPinIndex(0);
     setIsGameFinished(false);
   }, []);
 
+  /**
+   *
+   */
   const pinImage = useCallback(
     (e: MouseEvent<HTMLImageElement>) => {
       if (areAllPinPositionsFilled || currentPinIndex === pinPositions.length) {
@@ -106,27 +148,33 @@ export const GameFind = ({
     [areAllPinPositionsFilled, currentPinIndex, pinPositions.length]
   );
 
-  // When game is not finished, display always and when game is finished, it depends on showTip prop
-  const shouldDisplayPin = useMemo(
-    () => !isGameFinished || (isGameFinished && showTip),
-    [isGameFinished, showTip]
-  );
-
-  // - - Tutorial - -
+  // - - - Tutorial - --
 
   const { bind, TutorialTooltip } = useTutorial("gameFind", {
     shouldOpen: !isMobileOverlay,
     closeOnEsc: true,
   });
 
-  // - - - -
+  // - - - Corner Info Box - - -
+
+  /**
+   * NOTE: Return value of this hook is transition !!
+   */
+  const CornerPinInfoBox = useCornerInfoBox<string>({
+    items: slicedPinsTexts,
+    currIndex: currentPinIndex,
+    textExtractor: (pinText) => pinText,
+    position: "left",
+  });
+
+  // - - - Auto Game Navigation - - -
 
   useGameAutoNavigationOnResultTimeElapsed({
     gameResultTime: resultTime * 1000,
     isGameFinished: isGameFinished,
   });
 
-  // - - Transitions - -
+  // - - - Animation Transitions - - -
 
   const imageTransition = useTransition(isGameFinished, {
     initial: { opacity: 1 },
@@ -141,13 +189,7 @@ export const GameFind = ({
     leave: { x: 1 },
   });
 
-  // NOTE: return value of this hook is transition as well
-  const CornerPinInfoBox = useCornerInfoBox<string>({
-    items: slicedPinsTexts,
-    currIndex: currentPinIndex,
-    textExtractor: (pinText) => pinText,
-    position: "left",
-  });
+  // - - - GUI - - -
 
   return (
     <div className="w-full h-full relative">
