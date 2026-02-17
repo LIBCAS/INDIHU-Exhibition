@@ -1,23 +1,25 @@
 import { useState, useCallback } from "react";
 import { animated, SpringValue } from "react-spring";
+import { useTranslation } from "react-i18next";
 
+// Dialogs
 import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
+// Custom hooks
 import useResizeObserver from "hooks/use-resize-observer";
 
+// Components
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-
 import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
+// Models
 import { Size, PhotogalleryImages } from "models";
-import { useTranslation } from "react-i18next";
 
-// - -
+// - - - - - -
 
 type LightBoxProps = {
   currPhotoObj: PhotogalleryImages[number];

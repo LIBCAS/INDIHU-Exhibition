@@ -1,11 +1,13 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
-import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { useSwipeable } from "react-swipeable";
+
+// Custom hooks
+import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 
 // Components
 import { Grid } from "@mui/material";
@@ -19,20 +21,22 @@ import { AppState } from "store/store";
 import { AppDispatch } from "store/store";
 import { PhotogalleryScreen, ScreenProps } from "models";
 
+// Redux (actions)
+import { setScreensInfo } from "actions/expoActions/viewer-actions";
+
 // Utils
 import cx from "classnames";
 import classes from "./gallery-overlay.module.scss";
-import { setScreensInfo } from "actions/expoActions/viewer-actions";
 import { OVERLAY_UNACTIVE_TIMEOUT } from "constants/screen";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as PhotogalleryScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-// - -
+// - - - - - -
 
 export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
   const { images } = screenPreloadedFiles;
@@ -41,80 +45,102 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
 
   const { closeAllDialogs } = useDialogRef();
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null
+  // - - - States - - -
+
+  const [selectedImgIdx, setSelectedImgIdx] = useState<number | null>(null);
+  const [isActivity, setIsActivity] = useState<boolean>(false); // NOTE: For photogallery overlay
+
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  // - - - Derived variables - - -
+
+  const isLessPhotos = images ? images.length <= 6 : true;
+
+  const isLightBoxOpened = useMemo(
+    () => selectedImgIdx !== null,
+    [selectedImgIdx]
   );
 
-  const [isActivity, setIsActivity] = useState<boolean>(false); // photogallery overlay
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  // - - - Springs - - -
 
   const overlayOpacityAnimation = useSpring({
     opacity: isActivity ? 1 : 0,
   });
 
-  // -- Style of grid based on number of total photos --
-  const isLessPhotos = images ? images.length <= 6 : true;
-
-  // 2. - - - Lightbox stuff - - -
-  const isLightBoxOpened = useMemo(
-    () => selectedImageIndex !== null,
-    [selectedImageIndex]
-  );
-
   const lightboxOpacityAnimation = useSpring({
     opacity: isLightBoxOpened ? 1 : 0,
   });
 
+  // - - - Callbacks - - -
+
+  /**
+   *
+   */
   const openLightBox = useCallback(
     (selectedImageIndex: number) => {
       dispatch(setScreensInfo({ isPhotogalleryLightboxOpened: true }));
-      setSelectedImageIndex(selectedImageIndex);
+      setSelectedImgIdx(selectedImageIndex);
     },
     [dispatch]
   );
 
+  /**
+   *
+   */
   const closeLightBox = useCallback(() => {
     dispatch(setScreensInfo({ isPhotogalleryLightboxOpened: false }));
-    setSelectedImageIndex(null);
+    setSelectedImgIdx(null);
   }, [dispatch]);
 
-  const prevPhoto = useCallback(() => {
-    if (selectedImageIndex === 0 || selectedImageIndex === null) {
+  /**
+   *
+   */
+  const switchToPreviousPhoto = useCallback(() => {
+    if (selectedImgIdx === 0 || selectedImgIdx === null) {
       return;
     }
-    setSelectedImageIndex((prev) => (prev !== null ? prev - 1 : prev));
+    setSelectedImgIdx((prev) => (prev !== null ? prev - 1 : prev));
     closeAllDialogs();
-  }, [selectedImageIndex, closeAllDialogs]);
+  }, [selectedImgIdx, closeAllDialogs]);
 
-  const nextPhoto = useCallback(() => {
+  /**
+   *
+   */
+  const switchToNextPhoto = useCallback(() => {
     if (
       !images ||
-      selectedImageIndex === images.length - 1 ||
-      selectedImageIndex === null
+      selectedImgIdx === images.length - 1 ||
+      selectedImgIdx === null
     ) {
       return;
     }
-    setSelectedImageIndex((prev) => (prev !== null ? prev + 1 : prev));
+    setSelectedImgIdx((prev) => (prev !== null ? prev + 1 : prev));
     closeAllDialogs();
-  }, [images, selectedImageIndex, closeAllDialogs]);
+  }, [images, selectedImgIdx, closeAllDialogs]);
 
-  // 3. - - - Key press and mouse handlers - - -
+  // - - - Keyboard and mouse handlers - - -
 
+  /**
+   *
+   */
   const onKeydownAction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape" && isLightBoxOpened) {
         closeLightBox();
       }
       if (event.key === "ArrowRight" && isLightBoxOpened) {
-        nextPhoto();
+        switchToNextPhoto();
       }
       if (event.key === "ArrowLeft" && isLightBoxOpened) {
-        prevPhoto();
+        switchToPreviousPhoto();
       }
     },
-    [closeLightBox, isLightBoxOpened, nextPhoto, prevPhoto]
+    [isLightBoxOpened, closeLightBox, switchToNextPhoto, switchToPreviousPhoto]
   );
 
+  /**
+   *
+   */
   const onMouseAction = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -131,6 +157,9 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     }
   }, [isLightBoxOpened]);
 
+  /**
+   *
+   */
   useEffect(() => {
     document.addEventListener("keydown", onKeydownAction);
     document.addEventListener("mousemove", onMouseAction);
@@ -142,6 +171,9 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     };
   }, [onKeydownAction, onMouseAction]);
 
+  /**
+   *
+   */
   useEffect(() => {
     if (isLightBoxOpened && timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -149,15 +181,19 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLightBoxOpened, timeoutRef.current]);
 
+  // - - - Swipe handlers - - -
+
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      nextPhoto();
+      switchToNextPhoto();
     },
     onSwipedRight: () => {
-      prevPhoto();
+      switchToPreviousPhoto();
     },
     delta: 80,
   });
+
+  // - - - GUI - - -
 
   return (
     <div className="w-full h-full relative">
@@ -189,18 +225,18 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       {/* Lightbox which is opened on some image click */}
       {images &&
         viewScreen.images &&
-        selectedImageIndex !== null &&
+        selectedImgIdx !== null &&
         isLightBoxOpened && (
           <animated.div style={lightboxOpacityAnimation}>
             <div
-              key={selectedImageIndex}
+              key={selectedImgIdx}
               className="absolute top-0 left-0 w-full h-full px-[7%] py-[4.5%]"
               {...swipeHandlers}
             >
               <LightBox
-                key={`lightbox-image-${selectedImageIndex}`}
-                currPhotoSrc={images[selectedImageIndex]}
-                currPhotoObj={viewScreen.images[selectedImageIndex]}
+                key={`lightbox-image-${selectedImgIdx}`}
+                currPhotoSrc={images[selectedImgIdx]}
+                currPhotoObj={viewScreen.images[selectedImgIdx]}
                 closeLightBox={closeLightBox}
                 overlayOpacityAnimation={overlayOpacityAnimation}
               />
@@ -214,13 +250,13 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
               )}
               style={{ opacity: overlayOpacityAnimation.opacity }}
             >
-              {selectedImageIndex !== 0 && (
+              {selectedImgIdx !== 0 && (
                 <div className={cx(classes.leftNav)}>
                   <div className="w-full h-full flex items-center">
                     <Button
                       color="expoTheme"
                       className="rounded-full pointer-events-auto"
-                      onClick={prevPhoto}
+                      onClick={switchToPreviousPhoto}
                     >
                       <Icon name="chevron_left" />
                     </Button>
@@ -228,13 +264,13 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
                 </div>
               )}
 
-              {selectedImageIndex !== images.length - 1 && (
+              {selectedImgIdx !== images.length - 1 && (
                 <div className={cx(classes.rightNav)}>
                   <div className="w-full h-full flex items-center justify-end">
                     <Button
                       color="expoTheme"
                       className="rounded-full pointer-events-auto"
-                      onClick={nextPhoto}
+                      onClick={switchToNextPhoto}
                     >
                       <Icon name="chevron_right" />
                     </Button>
