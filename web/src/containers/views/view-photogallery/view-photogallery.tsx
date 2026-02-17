@@ -90,7 +90,8 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
   const closeLightBox = useCallback(() => {
     dispatch(setScreensInfo({ isPhotogalleryLightboxOpened: false }));
     setSelectedImgIdx(null);
-  }, [dispatch]);
+    closeAllDialogs();
+  }, [dispatch, closeAllDialogs]);
 
   /**
    *
