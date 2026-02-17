@@ -40,7 +40,11 @@ const LightBox = ({
   });
 
   return (
-    <TransformWrapper disablePadding>
+    <TransformWrapper
+      disablePadding
+      panning={{ disabled: false }}
+      pinch={{ disabled: false }}
+    >
       {({ zoomIn, resetTransform, zoomOut }) => {
         return (
           <div className="w-full h-full flex flex-col gap-2">
@@ -54,7 +58,7 @@ const LightBox = ({
             />
 
             {/* Image itself */}
-            <div className="w-full h-full pointer-events-none">
+            <div className="w-full h-full">
               <div
                 ref={imgContainerRef}
                 style={{ width: "100%", height: "100%" }}
