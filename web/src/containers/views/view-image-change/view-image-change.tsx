@@ -258,19 +258,9 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
    */
   const [opacitySpring, opacityApi] = useSpring(
     () => ({
-      from: {
-        opacity: 1,
-      },
-      to: {
-        opacity: 0,
-      },
-      config: {
-        duration: time,
-      },
-      onChange: (changedValues) => {
-        const newOpacityValue = changedValues.value.opacity as number;
-        setCurrOpacityValue(newOpacityValue);
-      },
+      from: { opacity: 1 },
+      to: { opacity: 0 },
+      config: { duration: time },
     }),
     [animationType]
   );
@@ -411,9 +401,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
     api.start({
       from: { x: fromX, y: fromY },
       to: { x: toX, y: toY },
-      config: {
-        duration: time,
-      },
+      config: { duration: time },
     });
   }, [
     animationType,
@@ -423,6 +411,26 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
     gradualTransitionBeginPosition,
     isGradualTransitionVertical,
   ]);
+
+  /**
+   * Effect responsible for starting the opacity animation
+   * This effect is applicable only for the animation type: 'FADE_IN_OUT_TWO_IMAGES' (prolnuti)
+   */
+  useEffect(() => {
+    if (animationType !== "FADE_IN_OUT_TWO_IMAGES") {
+      return;
+    }
+
+    opacityApi.start({
+      from: { opacity: 1 },
+      to: { opacity: 0 },
+      config: { duration: time },
+      onChange: (changedValues) => {
+        const newOpacityValue = changedValues.value.opacity as number;
+        setCurrOpacityValue(newOpacityValue);
+      },
+    });
+  }, [animationType, opacityApi, time]);
 
   /**
    * Effect responsible for stopping and resuming automatic animation for 'GRADUAL_TRANSITION'
