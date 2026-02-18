@@ -207,17 +207,20 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
 
   /**
    * Memo responsible for switching image before and image after, based on actual positions
-   * Applicable only for animation types: 'HORIZONTAL' | 'VERTICAL'
+   * Applicable only for animation types: 'HORIZONTAL' | 'VERTICAL' | 'GRADUAL_TRANSITION'
    */
   const imgEl = useMemo(() => {
-    if (animationType !== "HORIZONTAL" && animationType !== "VERTICAL") {
+    if (animationType === "FADE_IN_OUT_TWO_IMAGES") {
       return null;
     }
     if (imageBeforeEl === null || imageAfterEl === null) {
       return null;
     }
 
-    const isHorizontal = animationType === "HORIZONTAL";
+    const isHorizontal =
+      animationType === "HORIZONTAL" ||
+      (animationType === "GRADUAL_TRANSITION" && isGradualTransitionVertical);
+
     const isBeforeSide = isHorizontal
       ? currMousePosition.y <= currRodPosition.y
       : currMousePosition.x <= currRodPosition.x;
@@ -225,12 +228,11 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
     return isBeforeSide ? imageBeforeEl : imageAfterEl;
   }, [
     animationType,
-    currMousePosition.x,
-    currMousePosition.y,
-    currRodPosition.x,
-    currRodPosition.y,
+    currMousePosition,
+    currRodPosition,
     imageAfterEl,
     imageBeforeEl,
+    isGradualTransitionVertical,
   ]);
 
   const { GlassMagnifier } = useGlassMagnifier(screenContainerEl, imgEl);
@@ -798,12 +800,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       </animated.div>
 
       {/* 7. Glass Magnifier */}
-      {(animationType === "HORIZONTAL" || animationType === "VERTICAL") &&
-        imgEl && (
-          <>
-            <GlassMagnifier />
-          </>
-        )}
+      {imgEl && <GlassMagnifier />}
     </div>
   );
 };
