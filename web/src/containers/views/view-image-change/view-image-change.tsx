@@ -112,7 +112,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   );
 
   const [isRodTouched, setIsRodTouched] = useState<boolean>(false);
-  const [currentRodPosition, setCurrentRodPosition] = useState({ x: 0, y: 0 });
+  const [currRodPosition, setCurrRodPosition] = useState({ x: 0, y: 0 });
   const [currOpacityValue, setCurrOpacityValue] = useState<number>(1);
 
   // - - - Custom hooks - - -
@@ -230,22 +230,22 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       onChange: (changedValues) => {
         const newValues = changedValues.value;
         if (animationType === "HORIZONTAL") {
-          setCurrentRodPosition((prev) => ({ ...prev, y: newValues.y }));
+          setCurrRodPosition((prev) => ({ ...prev, y: newValues.y }));
         }
         if (animationType === "VERTICAL") {
-          setCurrentRodPosition((prev) => ({ ...prev, x: newValues.x }));
+          setCurrRodPosition((prev) => ({ ...prev, x: newValues.x }));
         }
         if (
           animationType === "GRADUAL_TRANSITION" &&
           isGradualTransitionVertical
         ) {
-          setCurrentRodPosition((prev) => ({ ...prev, y: newValues.y }));
+          setCurrRodPosition((prev) => ({ ...prev, y: newValues.y }));
         }
         if (
           animationType === "GRADUAL_TRANSITION" &&
           !isGradualTransitionVertical
         ) {
-          setCurrentRodPosition((prev) => ({ ...prev, x: newValues.x }));
+          setCurrRodPosition((prev) => ({ ...prev, x: newValues.x }));
         }
       },
     }),
@@ -585,8 +585,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           !shouldShowBeforeImageInfopoint({
             infopointPosition: { left: adjustedLeft, top: adjustedTop },
             currentRodPosition: {
-              left: currentRodPosition.x,
-              top: currentRodPosition.y,
+              left: currRodPosition.x,
+              top: currRodPosition.y,
             },
             currOpacity: currOpacityValue,
             animationType: animationType,
@@ -660,8 +660,8 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           !shouldShowAfterImageInfopoint({
             infopointPosition: { left: adjustedLeft, top: adjustedTop },
             currentRodPosition: {
-              left: currentRodPosition.x,
-              top: currentRodPosition.y,
+              left: currRodPosition.x,
+              top: currRodPosition.y,
             },
             currOpacity: currOpacityValue,
             animationType: animationType,
