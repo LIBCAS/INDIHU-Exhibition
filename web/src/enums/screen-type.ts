@@ -277,7 +277,7 @@ export const glassMagnifierEnabled = {
   TIMELINE: false,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: false,
-  IMAGE_CHANGE: false,
+  IMAGE_CHANGE: true,
   EXTERNAL: false,
   SIGNPOST: false,
   SURVEY: false,

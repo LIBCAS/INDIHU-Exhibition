@@ -10,6 +10,7 @@ import useResizeObserver from "hooks/use-resize-observer";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 import { useTutorial } from "context/tutorial-provider/use-tutorial";
 import useTooltipInfopoint from "components/infopoint/useTooltipInfopoint";
+import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/useGlassMagnifier";
 
 // Components
 import { Icon } from "components/icon/icon";
@@ -114,13 +115,15 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   const [isRodTouched, setIsRodTouched] = useState<boolean>(false);
   const [currRodPosition, setCurrRodPosition] = useState({ x: 0, y: 0 });
   const [currOpacityValue, setCurrOpacityValue] = useState<number>(1);
+  const [currMousePosition, setCurrMousePosition] = useState({ x: 0, y: 0 });
 
   // - - - Custom hooks - - -
 
   /**
    * Hook up with reference to screen container div, in order to get its current width and height
    */
-  const [screenContainerRef, screenContainerSize] = useResizeObserver();
+  const [screenContainerRef, screenContainerSize, screenContainerEl] =
+    useResizeObserver();
 
   // - - - Infopoints (1) - - -
 
@@ -199,6 +202,38 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       animationType !== "GRADUAL_TRANSITION" &&
       animationType !== "FADE_IN_OUT_TWO_IMAGES",
   });
+
+  // - - - Glass Magnifier (extra logic) - - -
+
+  /**
+   * Memo responsible for switching image before and image after, based on actual positions
+   * Applicable only for animation types: 'HORIZONTAL' | 'VERTICAL'
+   */
+  const imgEl = useMemo(() => {
+    if (animationType !== "HORIZONTAL" && animationType !== "VERTICAL") {
+      return null;
+    }
+    if (imageBeforeEl === null || imageAfterEl === null) {
+      return null;
+    }
+
+    const isHorizontal = animationType === "HORIZONTAL";
+    const isBeforeSide = isHorizontal
+      ? currMousePosition.y <= currRodPosition.y
+      : currMousePosition.x <= currRodPosition.x;
+
+    return isBeforeSide ? imageBeforeEl : imageAfterEl;
+  }, [
+    animationType,
+    currMousePosition.x,
+    currMousePosition.y,
+    currRodPosition.x,
+    currRodPosition.y,
+    imageAfterEl,
+    imageBeforeEl,
+  ]);
+
+  const { GlassMagnifier } = useGlassMagnifier(screenContainerEl, imgEl);
 
   // - - - Springs - - -
 
@@ -487,6 +522,10 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
     <div
       ref={screenContainerRef}
       className="w-full h-full flex items-center justify-center relative"
+      onMouseMove={(e) => {
+        const mousePosition = { x: e.clientX, y: e.clientY };
+        setCurrMousePosition(mousePosition);
+      }}
     >
       {/* 1. First image (before) */}
       {image1 && (
@@ -757,6 +796,14 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
       >
         {TutorialTooltip}
       </animated.div>
+
+      {/* 7. Glass Magnifier */}
+      {(animationType === "HORIZONTAL" || animationType === "VERTICAL") &&
+        imgEl && (
+          <>
+            <GlassMagnifier />
+          </>
+        )}
     </div>
   );
 };
