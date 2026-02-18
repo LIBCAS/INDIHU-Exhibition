@@ -159,9 +159,14 @@ const ActionsPanel = ({
   );
 
   // - - GLASS MAGNIFIER DIALOG - -
+  const shouldHideGlassMagnifier =
+    viewScreen?.type === "IMAGE_CHANGE" &&
+    viewScreen.animationType === "FADE_IN_OUT_TWO_IMAGES";
+
   const hasGlassMagnifier =
     !!viewScreen &&
-    glassMagnifierEnabled[mapScreenTypeValuesToKeys[viewScreen.type]];
+    glassMagnifierEnabled[mapScreenTypeValuesToKeys[viewScreen.type]] &&
+    !shouldHideGlassMagnifier;
 
   const openGlassMagnifierDialog = useCallback(
     () => openNewTopDialog(DialogRefType.GlassMagnifierDialog),
