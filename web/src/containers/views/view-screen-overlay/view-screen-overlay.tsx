@@ -442,6 +442,7 @@ export const ViewScreenOverlay = ({
             getTutorialEclipseClassnameByStepkeys
           }
           isMobileOverlay={isMobileOverlay}
+          step={step}
         />
 
         {/* 2b) Actions panel - right down corner, action buttons */}

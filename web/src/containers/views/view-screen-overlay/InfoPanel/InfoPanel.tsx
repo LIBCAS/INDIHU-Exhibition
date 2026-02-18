@@ -14,6 +14,7 @@ import { Icon } from "components/icon/icon";
 // Types
 import { AppState } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
+import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
 // Utils
 import classes from "../view-screen-overlay.module.scss";
@@ -38,6 +39,7 @@ type InfoPanelProps = {
   bind: (stepKey: string) => { ref: RefCallback };
   getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
   isMobileOverlay: boolean;
+  step: TutorialStep | null;
 };
 
 const InfoPanel = ({
@@ -47,6 +49,7 @@ const InfoPanel = ({
   bind,
   getTutorialEclipseClassnameByStepkeys,
   isMobileOverlay,
+  step,
 }: InfoPanelProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
@@ -69,24 +72,24 @@ const InfoPanel = ({
   /**
    *
    */
-  const isDrawerOpeningDisabled = useMemo(() => {
-    if (viewScreen?.type === "INTRO") {
-      const documentsLength = viewScreen.documents?.length ?? 0;
-      if (documentsLength <= 0) {
-        return true;
-      }
-    }
-    return false;
-  }, [viewScreen]);
-
-  /**
-   *
-   */
   const isVideoOrSlideshowScreen = useMemo(() => {
     return (
       viewScreen?.type === "VIDEO" || viewScreen?.type === screenType.SLIDESHOW
     );
   }, [viewScreen?.type]);
+
+  /**
+   *
+   */
+  const shouldHideInfoPanel = useMemo(() => {
+    if (viewScreen?.type !== "INTRO") {
+      return false;
+    }
+
+    const documentsLength = viewScreen?.documents?.length ?? 0;
+    const isDisabled = documentsLength <= 0;
+    return isDisabled;
+  }, [viewScreen]);
 
   // - - - GUI - - -
 
@@ -106,6 +109,10 @@ const InfoPanel = ({
         }}
       ></div>
     );
+  }
+
+  if (shouldHideInfoPanel && step?.stepKey !== "info") {
+    return <div />;
   }
 
   return (
@@ -138,14 +145,12 @@ const InfoPanel = ({
           <div
             className={cx(
               "flex justify-between gap-4 p-4 cursor-pointer min-w-[300px]",
-              {
-                ...bgFgTheming,
-              }
+              { ...bgFgTheming }
             )}
-            onClick={!isDrawerOpeningDisabled ? openDrawer : undefined}
+            onClick={openDrawer}
           >
             <span>{viewScreen?.title ?? t("overlay.no-title")}</span>
-            {!isDrawerOpeningDisabled && <Icon name="info" />}
+            <Icon name="info" />
           </div>
         </div>
       </div>
