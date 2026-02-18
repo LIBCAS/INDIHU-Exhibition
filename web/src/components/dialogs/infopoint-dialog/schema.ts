@@ -4,7 +4,7 @@ import { TFunction } from "i18next";
 
 export const retrieveInfopointSchema = (t: TFunction) => {
   return Yup.object({
-    header: Yup.string().optional(),
+    header: Yup.string().optional().max(60, t("max60Chars")),
     bodyContentType: Yup.mixed<InfopointBodyType>().oneOf([
       "TEXT",
       "IMAGE",
