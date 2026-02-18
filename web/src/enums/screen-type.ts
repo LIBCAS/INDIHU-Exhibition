@@ -268,7 +268,7 @@ export const musicEnabled = {
 export const glassMagnifierEnabled = {
   START: false,
   FINISH: false,
-  INTRO: true,
+  INTRO: false,
   IMAGE: true,
   VIDEO: false,
   TEXT: false,
