@@ -1,29 +1,35 @@
 import { MutableRefObject, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { useTranslation } from "react-i18next";
+
+// Custom Hooks
 import { useExpoScreenProgress } from "hooks/view-hooks/expo-screen-progress-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
+// Components
 import { ProgressBar } from "components/progress-bar/progress-bar";
 import { Icon } from "components/icon/icon";
 
+// Types
 import { AppState } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
 
+// Utils
 import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
 import { isGameScreen } from "utils/view-utils";
 import { tickTime } from "constants/view-screen-progress";
 import { screenType } from "enums/screen-type";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - - - -
 
 type InfoPanelProps = {
   infoPanelRef: MutableRefObject<HTMLDivElement | null>;
@@ -45,14 +51,24 @@ const InfoPanel = ({
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
 
+  // - - - Hooks - - -
+
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
   const { bgFgTheming } = useExpoDesignData();
 
+  // - - - Derived variables - - -
+
+  /**
+   *
+   */
   const amIGameScreen = useMemo(
     () => isGameScreen(viewScreen?.type),
     [viewScreen?.type]
   );
 
+  /**
+   *
+   */
   const isDrawerOpeningDisabled = useMemo(() => {
     if (viewScreen?.type === "INTRO") {
       const documentsLength = viewScreen.documents?.length ?? 0;
@@ -63,11 +79,16 @@ const InfoPanel = ({
     return false;
   }, [viewScreen]);
 
+  /**
+   *
+   */
   const isVideoOrSlideshowScreen = useMemo(() => {
     return (
       viewScreen?.type === "VIDEO" || viewScreen?.type === screenType.SLIDESHOW
     );
   }, [viewScreen?.type]);
+
+  // - - - GUI - - -
 
   // TODO: Handle something information about game screens in mobile
   // classic screen is handled by Drawer Panel with info button
