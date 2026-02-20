@@ -255,24 +255,13 @@ export const GameDraw = ({
           <div className="absolute w-full h-full">
             <animated.img
               ref={imageContainerRef}
-              style={{ opacity }}
-              className="absolute w-full h-full object-contain"
               src={assignmentImgSrc}
               alt="assignment img"
+              className="absolute w-full h-full object-contain"
+              style={{ opacity }}
             />
 
-            <canvas
-              className={cx("absolute touch-none", {
-                [classes.drawingCursor]: !isGameFinished && !isErasing,
-                [classes.erasingCursor]: !isGameFinished && isErasing,
-              })}
-              ref={canvasRef}
-              onPointerDown={startDrawing}
-              onPointerUp={stopDrawing}
-              onPointerMove={draw}
-            />
-
-            {/* Infopoints */}
+            {/* Infopoints for assignment image */}
             {viewScreen.infopoints1?.map((infopoint, infopointIndex) => {
               const infopointPosition = {
                 left: infopoint.left,
@@ -303,6 +292,7 @@ export const GameDraw = ({
                     left={adjustedLeft}
                     top={adjustedTop}
                     infopoint={infopoint}
+                    style={{ zIndex: infopointIndex + 1 }}
                   />
                   <TooltipInfoPoint
                     key={`draw-infopoint-tooltip-${infopointIndex}`}
@@ -317,14 +307,27 @@ export const GameDraw = ({
             })}
           </div>
         ) : (
-          <animated.img
-            style={{ opacity }}
-            className="absolute w-full h-full object-contain"
-            src={resultingImgSrc}
-            alt="result image"
-          />
+          <div className="absolute w-full h-full">
+            <animated.img
+              src={resultingImgSrc}
+              alt="result image"
+              className="absolute w-full h-full object-contain"
+              style={{ opacity }}
+            />
+          </div>
         )
       )}
+
+      <canvas
+        className={cx("absolute touch-none", {
+          [classes.drawingCursor]: !isGameFinished && !isErasing,
+          [classes.erasingCursor]: !isGameFinished && isErasing,
+        })}
+        ref={canvasRef}
+        onPointerDown={startDrawing}
+        onPointerUp={stopDrawing}
+        onPointerMove={draw}
+      />
 
       <Popper
         anchor={thicknessAnchor}
