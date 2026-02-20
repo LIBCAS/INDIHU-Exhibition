@@ -360,8 +360,8 @@ export const GameDraw = ({
                 imgViewSize
               );
 
-              const adjustedLeft = containedAssignmentImgWidth + left;
-              const adjustedTop = containedAssignmentImgHeight + top;
+              const adjustedLeft = containedAssignmentImgLeft + left;
+              const adjustedTop = containedAssignmentImgTop + top;
 
               return (
                 <Fragment key={`draw-infopoint-${infopointIndex}`}>
