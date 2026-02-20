@@ -218,10 +218,10 @@ export const GameDraw = ({
   );
 
   const {
-    width: containedImageWidth,
-    height: containedImageHeight,
-    left: fromLeftWidth,
-    top: fromTopHeight,
+    width: containedAssignmentImgWidth,
+    height: containedAssignmentImgHeight,
+    left: containedAssignmentImgLeft,
+    top: containedAssignmentImgTop,
   } = useMemo(
     () =>
       calculateObjectFit({
@@ -257,10 +257,10 @@ export const GameDraw = ({
   const { handleTakeScreenshot } = useGameDrawScreenshot({
     imageContainerEl: assignmentImgEl,
     canvasEl: canvasRef.current,
-    containedImageWidth: containedImageWidth,
-    containedImageHeight: containedImageHeight,
-    fromLeftWidth: fromLeftWidth,
-    fromTopHeight: fromTopHeight,
+    containedImageWidth: containedAssignmentImgWidth,
+    containedImageHeight: containedAssignmentImgHeight,
+    fromLeftWidth: containedAssignmentImgLeft,
+    fromTopHeight: containedAssignmentImgTop,
   });
 
   // - - - Game Auto Navigation - - -
@@ -294,8 +294,8 @@ export const GameDraw = ({
                 height: image1OrigData.height,
               };
               const imgViewSize = {
-                width: containedImageWidth,
-                height: containedImageHeight,
+                width: containedAssignmentImgWidth,
+                height: containedAssignmentImgHeight,
               };
 
               const { left, top } = calculateInfopointPositionByImageBoxSize(
@@ -304,8 +304,8 @@ export const GameDraw = ({
                 imgViewSize
               );
 
-              const adjustedLeft = fromLeftWidth + left;
-              const adjustedTop = fromTopHeight + top;
+              const adjustedLeft = containedAssignmentImgWidth + left;
+              const adjustedTop = containedAssignmentImgHeight + top;
 
               return (
                 <Fragment key={`draw-infopoint-${infopointIndex}`}>
