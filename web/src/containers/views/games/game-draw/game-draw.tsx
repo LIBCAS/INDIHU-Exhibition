@@ -138,8 +138,8 @@ export const GameDraw = ({
   // - - - Derived variables (helpers) - - -
 
   const shouldDisplayCanvas = useMemo<boolean>(
-    () => !isGameFinished || showDrawing,
-    [isGameFinished, showDrawing]
+    () => !isGameFinished || showDrawing || !resultingImgSrc,
+    [isGameFinished, showDrawing, resultingImgSrc]
   );
 
   const shouldDisplayResultImg = useMemo<boolean>(
@@ -166,7 +166,7 @@ export const GameDraw = ({
 
   // - - - Draw functionality - - -
 
-  const { startDrawing, stopDrawing, draw } = useGameDraw({
+  const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
     containerSize: assignmentImgSize,
     canvasRef,
     isGameFinished,
@@ -184,7 +184,8 @@ export const GameDraw = ({
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-  }, []);
+    clearCanvas();
+  }, [clearCanvas]);
 
   // - - - Transition animation between drawing and solution img - - -
 
