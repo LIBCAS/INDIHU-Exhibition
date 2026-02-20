@@ -156,7 +156,7 @@ export const GameDraw = ({
 
   // - - - Ref - - -
 
-  const [imageContainerRef, imageContainerSize, imageContainer] =
+  const [assignmentImgRef, assignmentImgSize, assignmentImgEl] =
     useResizeObserver<HTMLImageElement>();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -164,7 +164,7 @@ export const GameDraw = ({
   // - - - Draw functionality - - -
 
   const { startDrawing, stopDrawing, draw } = useGameDraw({
-    containerSize: imageContainerSize,
+    containerSize: assignmentImgSize,
     canvasRef,
     isGameFinished,
     color,
@@ -223,10 +223,10 @@ export const GameDraw = ({
     () =>
       calculateObjectFit({
         type: "contain",
-        parent: imageContainerSize,
+        parent: assignmentImgSize,
         child: image1OrigData,
       }),
-    [image1OrigData, imageContainerSize]
+    [image1OrigData, assignmentImgSize]
   );
 
   // - - - Infopoints (assignment image closing) - - -
@@ -252,7 +252,7 @@ export const GameDraw = ({
   // - - - Screenshot functionality - - -
 
   const { handleTakeScreenshot } = useGameDrawScreenshot({
-    imageContainerEl: imageContainer,
+    imageContainerEl: assignmentImgEl,
     canvasEl: canvasRef.current,
     containedImageWidth: containedImageWidth,
     containedImageHeight: containedImageHeight,
@@ -273,7 +273,7 @@ export const GameDraw = ({
         !shouldDisplayResultImg ? (
           <div className="absolute w-full h-full">
             <animated.img
-              ref={imageContainerRef}
+              ref={assignmentImgRef}
               src={assignmentImgSrc}
               alt="assignment img"
               className="absolute w-full h-full object-contain"
