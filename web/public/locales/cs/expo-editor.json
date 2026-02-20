@@ -415,7 +415,7 @@
       "imageReferenceLabel": "Porovnávaný předmět č. 1.",
       "imageReferenceTooltip": "Z knihovny dokumentů vyberte obrázek hádaného předmětu, jehož velikost mají návštěvníci porovnat s druhým obrázkem",
       "imageCompareLabel": "Porovnávaný předmět č. 2.",
-      "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek druhého předmětů na porovnání.",
+      "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek druhého předmětu na porovnání.",
       "imageResultLabel": "Výsledný obrázek",
       "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů. Využijte možnost přidání infopointů pro komentování vztahu mezi předměty.",
       "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
