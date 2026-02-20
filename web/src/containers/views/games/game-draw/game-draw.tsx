@@ -67,16 +67,35 @@ export const GameDraw = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const {
-    resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME,
-    showDrawing = false,
-    initialColor = GAME_DRAW_DEFAULT_COLOR,
-    initialThickness = GAME_DRAW_DEFAULT_THICKNESS,
-    initialTransparency = GAME_DRAW_DEFAULT_TRANSPARENCY,
-  } = viewScreen;
-
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
+
+  // - - - Derived variables (administration) - - -
+
+  const resultTime = useMemo<number>(
+    () => viewScreen.resultTime ?? GAME_SCREEN_DEFAULT_RESULT_TIME,
+    [viewScreen.resultTime]
+  );
+
+  const showDrawing = useMemo<boolean>(
+    () => viewScreen.showDrawing ?? false,
+    [viewScreen.showDrawing]
+  );
+
+  const initialColor = useMemo<string>(
+    () => viewScreen.initialColor ?? GAME_DRAW_DEFAULT_COLOR,
+    [viewScreen.initialColor]
+  );
+
+  const initialThickness = useMemo<number>(
+    () => viewScreen.initialThickness ?? GAME_DRAW_DEFAULT_THICKNESS,
+    [viewScreen.initialThickness]
+  );
+
+  const initialTransparency = useMemo<number>(
+    () => viewScreen.initialTransparency ?? GAME_DRAW_DEFAULT_TRANSPARENCY,
+    [viewScreen.initialTransparency]
+  );
 
   // - - - States - - -
 
