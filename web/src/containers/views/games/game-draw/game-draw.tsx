@@ -159,6 +159,9 @@ export const GameDraw = ({
   const [assignmentImgRef, assignmentImgSize, assignmentImgEl] =
     useResizeObserver<HTMLImageElement>();
 
+  const [resultImgRef, resultImgSize, resultImgEl] =
+    useResizeObserver<HTMLImageElement>();
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // - - - Draw functionality - - -
@@ -328,6 +331,7 @@ export const GameDraw = ({
         ) : (
           <div className="absolute w-full h-full">
             <animated.img
+              ref={resultImgRef}
               src={resultingImgSrc}
               alt="result image"
               className="absolute w-full h-full object-contain"
