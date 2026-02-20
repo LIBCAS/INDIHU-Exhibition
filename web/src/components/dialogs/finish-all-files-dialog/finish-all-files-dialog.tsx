@@ -1,40 +1,43 @@
 import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
 import { useSpring, animated } from "react-spring";
 
+// Hooks
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
 // Components
 import DialogWrap from "../dialog-wrap-noredux-typed";
-import { FileItem } from "../files-dialog/file-item"; // from FilesDialog
-
+import { FileItem } from "../files-dialog/file-item";
+import { Collapse } from "components/collapse/collapse";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-import { Collapse } from "components/collapse/collapse";
 
 // Models
-import { Document, ScreenWithOnlyTypeTitleDocuments } from "models";
+import { Document, File, ScreenWithOnlyTypeTitleDocuments } from "models";
 
+// Utils
 import { isWorksheetFile } from "utils/view-utils";
-
 import cx from "classnames";
 
-// - - - - -
+// - - - - - -
 
 export type FinishAllFilesDialogProps = {
   closeThisDialog: () => void;
-  startFiles: Document[]; // from viewExpo.structure.start.documents
-  screensFiles: ScreenWithOnlyTypeTitleDocuments[][]; // from viewExpo.structure.screens
+  startFiles: Document[]; // NOTE: This comes from `viewExpo.structure.start.documents`
+  screensFiles: ScreenWithOnlyTypeTitleDocuments[][]; // NOTE: This comes from `viewExpo.structure.screens`
+  expoAudioVersionFile: File | null; // NOTE: This comes from `viewExpo.structure.start.audio`
 };
 
 export const FinishAllFilesDialog = ({
   closeThisDialog,
   startFiles,
   screensFiles,
+  expoAudioVersionFile,
 }: FinishAllFilesDialogProps) => {
   const { t } = useTranslation("view-exhibition");
   const { isLightMode } = useExpoDesignData();
+
+  // - - - Derived variables - - -
 
   const expoFiles = startFiles?.filter(
     (file: Document) => !isWorksheetFile(file)
@@ -53,6 +56,8 @@ export const FinishAllFilesDialog = ({
         screenFile.documents.length > 0
     );
 
+  // - - - GUI - - -
+
   return (
     <DialogWrap
       closeThisDialog={closeThisDialog}
@@ -63,7 +68,7 @@ export const FinishAllFilesDialog = ({
       applyTheming
     >
       <div className="flex flex-col gap-6">
-        {/* Worksheets */}
+        {/* Expo Worksheets */}
         <div>
           <h1
             className={cx("text-xl underline", {
@@ -81,7 +86,7 @@ export const FinishAllFilesDialog = ({
           ))}
         </div>
 
-        {/* ExpoFiles */}
+        {/* Expo Standard Files */}
         <div>
           <h1
             className={cx("text-xl underline", {
@@ -99,7 +104,26 @@ export const FinishAllFilesDialog = ({
           ))}
         </div>
 
-        {/* ScreensFiles */}
+        {/* Expo Audio Version */}
+        {expoAudioVersionFile && (
+          <div>
+            <h1
+              className={cx("text-xl underline", {
+                "text-gray": isLightMode,
+                "text-dark-mode-f": !isLightMode,
+              })}
+            >
+              {t("expo-audio-version")}
+            </h1>
+            <FileItem
+              file={expoAudioVersionFile}
+              isFromFinishFileDialog
+              specialType="expoAudioVersion"
+            />
+          </div>
+        )}
+
+        {/* Files of particular screens */}
         <div>
           <h1
             className={cx("text-xl underline", {
@@ -126,7 +150,7 @@ export const FinishAllFilesDialog = ({
   );
 };
 
-// - - -
+// - - - - - -
 
 type ScreenDocumentsProps = {
   screenInfo: ScreenWithOnlyTypeTitleDocuments;

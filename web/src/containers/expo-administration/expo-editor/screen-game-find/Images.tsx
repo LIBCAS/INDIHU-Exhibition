@@ -7,6 +7,7 @@ import { useNumberOfPinsListener } from "./useNumberOfPinsListener";
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import ImageBox from "components/editors/ImageBox";
 import HelpIcon from "components/help-icon";
+import InfopointsTable from "components/editors/InfopointsTable";
 
 import { NumberOfPinsField } from "./NumberOfPinsField";
 import { PinTextField } from "./PinTextField";
@@ -19,6 +20,7 @@ import { AppDispatch } from "store/store";
 import { getFileById } from "actions/file-actions-typed";
 import { updateScreenData } from "actions/expoActions";
 import { GAME_FIND_DEFAULT_NUMBER_OF_PINS } from "constants/screen";
+import { compact, concat } from "lodash";
 
 // - -
 
@@ -72,6 +74,7 @@ const Images = ({ activeScreen }: ImagesProps) => {
               helpIconLabel={t("imageAssignmentTooltip")}
             />
           </div>
+
           <div className="flex-row-nowrap one-image-row">
             <ImageBox
               title={t("imageResultLabel")}
@@ -89,6 +92,19 @@ const Images = ({ activeScreen }: ImagesProps) => {
               }
               helpIconId="editor-game-find-image2"
               helpIconLabel={t("imageResultTooltip")}
+              infopoints={activeScreen.image2Infopoints ?? []}
+              onInfopointMove={(movedInfopointIdx, newLeft, newTop) => {
+                dispatch(
+                  updateScreenData({
+                    image2Infopoints: activeScreen.image2Infopoints?.map(
+                      (ip, ipIdx) =>
+                        ipIdx === movedInfopointIdx
+                          ? { ...ip, left: newLeft, top: newTop }
+                          : ip
+                    ),
+                  })
+                );
+              }}
             />
           </div>
         </div>
@@ -109,36 +125,106 @@ const Images = ({ activeScreen }: ImagesProps) => {
           />
         </div>
 
-        {/* Pins */}
-        <div className="ml-10 mt-6 flex flex-col justify-center items-start gap-4">
-          <div className="w-52">
-            <NumberOfPinsField numberOfPinsValue={numberOfPins} />
-          </div>
+        <div className="ml-10 mt-6">
+          <div className="flex justify-between items-start gap-8">
+            {/* Pins on the left */}
+            <div>
+              <div className="w-52">
+                <NumberOfPinsField numberOfPinsValue={numberOfPins} />
+              </div>
+              <div className="ml-5 flex flex-col justify-center items-center gap-2">
+                {pinsTexts?.map((pinText: string, index: number) => {
+                  if (index >= numberOfPins) {
+                    return null;
+                  }
 
-          <div className="ml-5 flex flex-col justify-center items-center gap-2">
-            {pinsTexts?.map((pinText: string, index: number) => {
-              if (index >= numberOfPins) {
-                return null;
-              }
+                  const onPinTextUpdate = (newPinText: string) =>
+                    dispatch(
+                      updateScreenData({
+                        pinsTexts: pinsTexts.map((pinText, idx) =>
+                          index === idx ? newPinText : pinText
+                        ),
+                      })
+                    );
 
-              const onPinTextUpdate = (newPinText: string) =>
-                dispatch(
-                  updateScreenData({
-                    pinsTexts: pinsTexts.map((pinText, idx) =>
-                      index === idx ? newPinText : pinText
-                    ),
-                  })
-                );
+                  return (
+                    <PinTextField
+                      key={index}
+                      pinTextValue={pinText}
+                      index={index}
+                      onPinTextUpdate={onPinTextUpdate}
+                    />
+                  );
+                })}
+              </div>
+            </div>
 
-              return (
-                <PinTextField
-                  key={index}
-                  pinTextValue={pinText}
-                  index={index}
-                  onPinTextUpdate={onPinTextUpdate}
-                />
-              );
-            })}
+            {/* Result Image Infopoints Table (comments) */}
+            {image2 && (
+              <div className="w-[45%] flex justify-end items-start">
+                <div className="w-full">
+                  <InfopointsTable
+                    title={t("imageResultInfopointsTableTitle")}
+                    infopoints={activeScreen.image2Infopoints ?? []}
+                    onInfopointAdd={(dialogFormData) => {
+                      dispatch(
+                        updateScreenData({
+                          image2Infopoints: compact(
+                            concat(activeScreen.image2Infopoints ?? [], {
+                              // Add new infopoint object
+                              ...dialogFormData,
+                              left: 17,
+                              top: 17,
+                            })
+                          ),
+                        })
+                      );
+                    }}
+                    onInfopointEdit={(infopointIdxToEdit, dialogFormData) => {
+                      dispatch(
+                        updateScreenData({
+                          image2Infopoints: activeScreen.image2Infopoints?.map(
+                            (ip, ipIdx) =>
+                              ipIdx === infopointIdxToEdit
+                                ? { ...ip, ...dialogFormData }
+                                : ip
+                          ),
+                        })
+                      );
+                    }}
+                    onInfopointDelete={(infopointIdxToDelete) => {
+                      dispatch(
+                        updateScreenData({
+                          image2Infopoints:
+                            activeScreen.image2Infopoints?.filter(
+                              (_ip, ipIdx) => ipIdx !== infopointIdxToDelete
+                            ),
+                        })
+                      );
+                    }}
+                    onInfopointAlwaysVisibleChange={(
+                      infopointIdxToEdit,
+                      newIsAlwaysVisibleValue
+                    ) => {
+                      dispatch(
+                        updateScreenData({
+                          image2Infopoints: activeScreen.image2Infopoints?.map(
+                            (ip, ipIdx) =>
+                              ipIdx === infopointIdxToEdit
+                                ? {
+                                    ...ip,
+                                    alwaysVisible: newIsAlwaysVisibleValue,
+                                  }
+                                : ip
+                          ),
+                        })
+                      );
+                    }}
+                    type="comment"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

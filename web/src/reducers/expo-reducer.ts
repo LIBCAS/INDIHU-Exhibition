@@ -28,6 +28,10 @@ export type ExpoReducerState = {
     speechVolume: Volumes;
     musicVolume: Volumes;
     soundtrackVolume: Volumes;
+
+    isSpeechDisabled: boolean;
+    isMusicDisabled: boolean;
+    isSoundtrackDisabled: boolean;
   };
   tooltipInfo: {
     tooltipContent: string | null;
@@ -64,6 +68,10 @@ const initialState: ExpoReducerState = {
     speechVolume: { previousVolume: 0, actualVolume: 100 },
     musicVolume: { previousVolume: 0, actualVolume: 20 },
     soundtrackVolume: { previousVolume: 0, actualVolume: 20 },
+
+    isSpeechDisabled: false,
+    isMusicDisabled: false,
+    isSoundtrackDisabled: false,
   },
   tooltipInfo: {
     tooltipContent: null,
@@ -366,6 +374,33 @@ const reducer: Reducer<ExpoReducerState> = (state = initialState, action) => {
         expoVolumes: {
           ...state.expoVolumes,
           ...action.payload,
+        },
+      };
+    }
+    case c.EXPO_IS_SPEECH_DISABLED_UPDATE: {
+      return {
+        ...state,
+        expoVolumes: {
+          ...state.expoVolumes,
+          isSpeechDisabled: action.payload,
+        },
+      };
+    }
+    case c.EXPO_IS_MUSIC_DISABLED_UPDATE: {
+      return {
+        ...state,
+        expoVolumes: {
+          ...state.expoVolumes,
+          isMusicDisabled: action.payload,
+        },
+      };
+    }
+    case c.EXPO_IS_SOUNDTRACK_DISABLED_UPDATE: {
+      return {
+        ...state,
+        expoVolumes: {
+          ...state.expoVolumes,
+          isSoundtrackDisabled: action.payload,
         },
       };
     }

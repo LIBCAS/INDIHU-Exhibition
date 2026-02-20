@@ -22,15 +22,23 @@ import {
 } from "enums/screen-type";
 
 // Redux (actions)
-import { setViewProgress } from "actions/expoActions/viewer-actions";
+import {
+  setIsMusicDisabled,
+  setIsSoundtrackDisabled,
+  setIsSpeechDisabled,
+  setViewProgress,
+} from "actions/expoActions/viewer-actions";
+import { IntroScreen } from "models";
 
 // - - - - - -
 
 const stateSelector = createSelector(
+  ({ expo }: AppState) => expo.viewExpo,
   ({ expo }: AppState) => expo.viewScreen,
   ({ expo }: AppState) => expo.viewProgress.shouldIncrement,
   ({ expo }: AppState) => expo.expoVolumes,
-  (viewScreen, shouldIncrement, expoVolumes) => ({
+  (viewExpo, viewScreen, shouldIncrement, expoVolumes) => ({
+    viewExpo,
     viewScreen,
     shouldIncrement,
     expoVolumes,
@@ -51,7 +59,7 @@ export const NewViewScreen = ({
 }: NewViewScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { viewScreen, shouldIncrement, expoVolumes } =
+  const { viewExpo, viewScreen, shouldIncrement, expoVolumes } =
     useSelector(stateSelector);
 
   const { section, screen } = useSectionScreenParams();
@@ -142,8 +150,15 @@ export const NewViewScreen = ({
       return true;
     }
 
+    const introScreen = viewExpo?.structure?.screens?.[section]?.[0];
+    const introScreenTyped = introScreen as IntroScreen;
+    const muteExpoSoundtrack = introScreenTyped?.muteExpoSoundtrack ?? false;
+    if (muteExpoSoundtrack) {
+      return true;
+    }
+
     return false;
-  }, [section]);
+  }, [section, viewExpo?.structure]);
 
   // - - - Callbacks - - -
 
@@ -226,10 +241,21 @@ export const NewViewScreen = ({
     }
   }, [soundtrackRef, isSoundtrackDisabled, dispatch]);
 
+  /**
+   * 5.)
+   */
+  useEffect(() => {
+    if (isSoundtrackDisabled) {
+      dispatch(setIsSoundtrackDisabled(true));
+    } else {
+      dispatch(setIsSoundtrackDisabled(false));
+    }
+  }, [isSoundtrackDisabled, dispatch]);
+
   // - - - Effects (music) - - -
 
   /**
-   * 5.) Effect responsible for setting `musicSrc` (when section, chapter of this exposition changes)
+   * 6.) Effect responsible for setting `musicSrc` (when section, chapter of this exposition changes)
    */
   useEffect(() => {
     if (section === undefined || section === "start" || section === "finish") {
@@ -247,7 +273,7 @@ export const NewViewScreen = ({
   }, [chapterMusicCache, section]);
 
   /**
-   * 6.) Effect responsible for automatic playing of `musicSrc`, reacting to previous effect
+   * 7.) Effect responsible for automatic playing of `musicSrc`, reacting to previous effect
    */
   useEffect(() => {
     if (!musicRef) {
@@ -272,7 +298,7 @@ export const NewViewScreen = ({
   }, [musicSrc, musicRef, dispatch]);
 
   /**
-   * 7.) Effect responsible for pausing `musicSrc`, when current screen does not support music playing
+   * 8.) Effect responsible for pausing `musicSrc`, when current screen does not support music playing
    */
   useEffect(() => {
     if (!musicRef) {
@@ -286,10 +312,21 @@ export const NewViewScreen = ({
     }
   }, [musicRef, isMusicDisabled]);
 
+  /**
+   * 9.)
+   */
+  useEffect(() => {
+    if (isMusicDisabled) {
+      dispatch(setIsMusicDisabled(true));
+    } else {
+      dispatch(setIsMusicDisabled(false));
+    }
+  }, [isMusicDisabled, dispatch]);
+
   // - - - Effects (audio) - - -
 
   /**
-   * 8.) Effect responsible for automatic playing of `audioSrc`
+   * 10.) Effect responsible for automatic playing of `audioSrc`
    */
   useEffect(() => {
     if (!audioSrc) {
@@ -324,10 +361,21 @@ export const NewViewScreen = ({
     };
   }, [audioSrc, audioRef, isAudioDisabled, dispatch]);
 
+  /**
+   * 11.)
+   */
+  useEffect(() => {
+    if (isAudioDisabled) {
+      dispatch(setIsSpeechDisabled(true));
+    } else {
+      dispatch(setIsSpeechDisabled(false));
+    }
+  }, [isAudioDisabled, dispatch]);
+
   // - - - Effects (music + audio + soundtrack) - - -
 
   /**
-   * 9.) Effect reponsible for muting all audio sources  (e.g. when mute button was pressed)
+   * 12.) Effect reponsible for muting all audio sources  (e.g. when mute button was pressed)
    */
   useEffect(() => {
     if (musicRef) {
@@ -344,7 +392,7 @@ export const NewViewScreen = ({
   }, [expoVolumes, audioRef, musicRef, soundtrackRef]);
 
   /**
-   * 10.) Effect responsible for pausing / playing  all audio sources (e.g. when pause/play button was pressed)
+   * 13.) Effect responsible for pausing / playing  all audio sources (e.g. when pause/play button was pressed)
    */
   useEffect(() => {
     if (musicRef) {

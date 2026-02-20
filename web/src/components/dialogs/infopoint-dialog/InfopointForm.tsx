@@ -59,6 +59,7 @@ const InfopointForm = ({ formik, type = "classic" }: InfopointFormProps) => {
           name="header"
           label={headerLabel}
           id="infopoint-header-textfield"
+          maxLength={60}
         />
       </div>
 

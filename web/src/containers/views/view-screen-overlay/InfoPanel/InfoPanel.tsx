@@ -1,29 +1,36 @@
 import { MutableRefObject, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { useTranslation } from "react-i18next";
+
+// Custom Hooks
 import { useExpoScreenProgress } from "hooks/view-hooks/expo-screen-progress-hook";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
+// Components
 import { ProgressBar } from "components/progress-bar/progress-bar";
 import { Icon } from "components/icon/icon";
 
+// Types
 import { AppState } from "store/store";
 import { RefCallback } from "context/tutorial-provider/use-tutorial";
+import { TutorialStep } from "context/tutorial-provider/tutorial-provider";
 
+// Utils
 import classes from "../view-screen-overlay.module.scss";
 import cx from "classnames";
 import { isGameScreen } from "utils/view-utils";
 import { tickTime } from "constants/view-screen-progress";
 import { screenType } from "enums/screen-type";
 
-// - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen,
   (viewScreen) => ({ viewScreen })
 );
+
+// - - - - - -
 
 type InfoPanelProps = {
   infoPanelRef: MutableRefObject<HTMLDivElement | null>;
@@ -32,6 +39,7 @@ type InfoPanelProps = {
   bind: (stepKey: string) => { ref: RefCallback };
   getTutorialEclipseClassnameByStepkeys: (stepKeys: string[]) => string;
   isMobileOverlay: boolean;
+  step: TutorialStep | null;
 };
 
 const InfoPanel = ({
@@ -41,33 +49,49 @@ const InfoPanel = ({
   bind,
   getTutorialEclipseClassnameByStepkeys,
   isMobileOverlay,
+  step,
 }: InfoPanelProps) => {
   const { viewScreen } = useSelector(stateSelector);
   const { t } = useTranslation("view-screen");
 
+  // - - - Hooks - - -
+
   const { percentage } = useExpoScreenProgress({ offsetTotalTime: -tickTime });
   const { bgFgTheming } = useExpoDesignData();
 
+  // - - - Derived variables - - -
+
+  /**
+   *
+   */
   const amIGameScreen = useMemo(
     () => isGameScreen(viewScreen?.type),
     [viewScreen?.type]
   );
 
-  const isDrawerOpeningDisabled = useMemo(() => {
-    if (viewScreen?.type === "INTRO") {
-      const documentsLength = viewScreen.documents?.length ?? 0;
-      if (documentsLength <= 0) {
-        return true;
-      }
-    }
-    return false;
-  }, [viewScreen]);
-
+  /**
+   *
+   */
   const isVideoOrSlideshowScreen = useMemo(() => {
     return (
       viewScreen?.type === "VIDEO" || viewScreen?.type === screenType.SLIDESHOW
     );
   }, [viewScreen?.type]);
+
+  /**
+   *
+   */
+  const shouldHideInfoPanel = useMemo(() => {
+    if (viewScreen?.type !== "INTRO") {
+      return false;
+    }
+
+    const documentsLength = viewScreen?.documents?.length ?? 0;
+    const isDisabled = documentsLength <= 0;
+    return isDisabled;
+  }, [viewScreen]);
+
+  // - - - GUI - - -
 
   // TODO: Handle something information about game screens in mobile
   // classic screen is handled by Drawer Panel with info button
@@ -85,6 +109,10 @@ const InfoPanel = ({
         }}
       ></div>
     );
+  }
+
+  if (shouldHideInfoPanel && step?.stepKey !== "info") {
+    return <div />;
   }
 
   return (
@@ -117,14 +145,12 @@ const InfoPanel = ({
           <div
             className={cx(
               "flex justify-between gap-4 p-4 cursor-pointer min-w-[300px]",
-              {
-                ...bgFgTheming,
-              }
+              { ...bgFgTheming }
             )}
-            onClick={!isDrawerOpeningDisabled ? openDrawer : undefined}
+            onClick={openDrawer}
           >
             <span>{viewScreen?.title ?? t("overlay.no-title")}</span>
-            {!isDrawerOpeningDisabled && <Icon name="info" />}
+            <Icon name="info" />
           </div>
         </div>
       </div>

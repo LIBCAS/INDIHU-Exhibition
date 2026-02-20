@@ -268,7 +268,7 @@ export const musicEnabled = {
 export const glassMagnifierEnabled = {
   START: false,
   FINISH: false,
-  INTRO: true,
+  INTRO: false,
   IMAGE: true,
   VIDEO: false,
   TEXT: false,
@@ -277,7 +277,7 @@ export const glassMagnifierEnabled = {
   TIMELINE: false,
   SLIDESHOW: true,
   PHOTOGALLERY_NEW: false,
-  IMAGE_CHANGE: false,
+  IMAGE_CHANGE: true,
   EXTERNAL: false,
   SIGNPOST: false,
   SURVEY: false,

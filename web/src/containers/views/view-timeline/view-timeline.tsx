@@ -28,6 +28,7 @@ import {
   calculateEdgeThickness,
   calculateEdgeDecorationClassName,
   calculateInfopointsPosition,
+  calculateInfopointTooltipPlacement,
 } from "./view-timeline-utils";
 import {
   DEFAULT_TIMELINE_BG_TRANSPARENCY,
@@ -213,6 +214,10 @@ export const ViewTimeline = ({ screenPreloadedFiles }: ScreenProps) => {
                     infopointStatusMap={infopointStatusMap}
                     setInfopointStatusMap={setInfopointStatusMap}
                     primaryKey={ipIdx.toString()}
+                    place={calculateInfopointTooltipPlacement(
+                      timelineType,
+                      ipIdx
+                    )}
                   />
                 </React.Fragment>
               ))}

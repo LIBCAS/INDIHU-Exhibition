@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { useSpring, animated } from "react-spring";
-import { useGlassMagnifier } from "hooks/view-hooks/glass-magnifier-hook/useGlassMagnifier";
 
 import { IntroScreen } from "models";
 import { AppState } from "store/store";
@@ -41,11 +40,6 @@ export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
 
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const containedImgRef = useRef<HTMLImageElement | null>(null);
-
-  const { GlassMagnifier } = useGlassMagnifier(
-    imageContainerRef.current,
-    containedImgRef.current
-  );
 
   const shadowColor = useMemo(() => {
     const textColor = viewScreen.introTextTheme ?? "light";
@@ -155,8 +149,6 @@ export const ViewChapter = ({ screenPreloadedFiles }: ScreenProps) => {
           </h2>
         </animated.div>
       </div>
-
-      {image && <GlassMagnifier />}
     </div>
   );
 };

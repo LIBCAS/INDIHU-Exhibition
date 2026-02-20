@@ -1,6 +1,7 @@
 {
   "required": "*Povinné",
   "max150Chars": "*Maximálně 150 znaků.",
+  "max60Chars": "*Maximálně 60 znaků.",
   "atLeastOnePixel": "*Nemůže být menší než 1 pixel.",
   "atLeastOne": "*Nemůže být menší než jedna.",
   "atLeast5Chars": "*Minimálně 5 znaků.",

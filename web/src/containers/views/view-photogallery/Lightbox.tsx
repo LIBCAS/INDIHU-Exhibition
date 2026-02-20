@@ -1,23 +1,25 @@
 import { useState, useCallback } from "react";
 import { animated, SpringValue } from "react-spring";
+import { useTranslation } from "react-i18next";
 
+// Dialogs
 import { useDialogRef } from "context/dialog-ref-provider/dialog-ref-provider";
 import { DialogRefType } from "context/dialog-ref-provider/dialog-ref-types";
 import DialogPortal from "context/dialog-ref-provider/DialogPortal";
 
+// Custom hooks
 import useResizeObserver from "hooks/use-resize-observer";
 
+// Components
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
-
 import { InformationDialog } from "components/dialogs/information-dialog/information-dialog";
 
+// Models
 import { Size, PhotogalleryImages } from "models";
-import { useTranslation } from "react-i18next";
 
-// - -
+// - - - - - -
 
 type LightBoxProps = {
   currPhotoObj: PhotogalleryImages[number];
@@ -40,7 +42,11 @@ const LightBox = ({
   });
 
   return (
-    <TransformWrapper disablePadding>
+    <TransformWrapper
+      disablePadding
+      panning={{ disabled: false }}
+      pinch={{ disabled: false }}
+    >
       {({ zoomIn, resetTransform, zoomOut }) => {
         return (
           <div className="w-full h-full flex flex-col gap-2">
@@ -54,7 +60,7 @@ const LightBox = ({
             />
 
             {/* Image itself */}
-            <div className="w-full h-full pointer-events-none">
+            <div className="w-full h-full">
               <div
                 ref={imgContainerRef}
                 style={{ width: "100%", height: "100%" }}

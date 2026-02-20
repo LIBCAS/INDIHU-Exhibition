@@ -71,6 +71,7 @@
     "organizationLink": "Odkaz na webové stránky organizácie",
     "organizationLinkTooltip": "Odkaz na webové stránky inštitúcie, ktorá výstavu vytvorila.",
     "musicTurnOff": "Vypnúť zvukovú stopu kapitoly",
+    "expoSoundtrackTurnOff": "Vypnúť zvukový podkres k výstave",
     "screenCompleted": "Obrazovka je dokončená",
     "text": "Text k téme",
     "textTooltip": "Doplňujúci text k téme poskytujúci informácie a vysvetlenie návštevníkovi.<br/><br/>Pre formátovanie textu (rezy písma, zarážky a pod.) použite jednotlivé možnosti v ponuke editora. Po označení textu môžete tiež vybrať veľkosť písma a zmenšiť ho alebo zväčšiť. Pre slovenské úvodzovky označte príslušnú pasáž a kliknite na úvodzovky.",
@@ -301,7 +302,7 @@
       "surveyTypeOnlyImageOption": "Iba obrázok",
       "surveyTypeImageTextOption": "Obrázok aj text",
       "surveyShouldIncludeFreeAnswerCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť aj možnosť voľnej odpovede",
-      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť spätná väzba",
+      "surveyShouldDisplayAnswerFeedbackCheckboxLabel": "Vyberte, či sa má návštevníkovi zobraziť, ako hlasovali ostatní",
       "closeAnswerTooltip": "Zavrieť odpoveď",
       "deleteAnswerTooltip": "Vymazať odpoveď",
       "variant": "Varianta",
@@ -315,15 +316,16 @@
         "textErrorLessThanThree": "Bol dosiahnutý minimálny povolený počet odpovedí, a to tri.",
         "textConfirm": "Naozaj chcete odstrániť túto možnosť? Akcia je nevratná!"
       },
-      "lockSurveyBtnLabel": "Uzamknúť a zverejniť anketu",
+      "lockSurveyBtnLabel": "Zverejniť anketu",
       "lockSurveyBtnTooltip": "Keď bude anketa hotová a pripravená na zverejnenie, kliknutím na tlačidlo ju zverejníte. Po zverejnení nebude možné anketu dodatočne upravovať. Testovacie odpovede zo obdobia tvorby výstavy budú odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa sa nezverejní.",
       "lockSurveyConfirmTitle": "Potvrdiť uzamknutie a zverejnenie ankety",
       "lockSurveyConfirmText": "Keď bude anketa hotová a pripravená na zverejnenie, kliknutím na tlačidlo ju zverejníte. Po zverejnení nebude možné anketu dodatočne upravovať. Testovacie odpovede zo obdobia tvorby výstavy budú odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa sa nezverejní.",
       "lockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o uzamknutie ankety",
-      "unlockSurveyBtnLabel": "Odblokovať a zrušiť publikáciu ankety",
+      "unlockSurveyBtnLabel": "Resetovať anketu",
       "unlockSurveyBtnTooltip": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
       "unlockSurveyConfirmTitle": "Potvrdiť odblokovanie a zrušenie publikácie ankety",
       "unlockSurveyConfirmText": "Kliknutím na tlačidlo odblokujete anketu a zrušíte jej zverejnenie. Z dôvodu zachovania integrity dát budú všetky nasbírané odpovede odstránené a zber dát začne od začiatku. Ak tlačidlo nekliknete, anketa zostane zverejnená a uzamknutá.",
+      "unlockSurveyConfirmText2": "Kliknutím na tlačidlo 'Potvrdiť' budú všetky odpovede vymazané.",
       "unlockSurveyErrMsgPrefix": "Došlo k nasledujúcej chybe počas pokusu o odblokovanie ankety",
       "saveScreenErrMsg": "Nepodarilo sa uložiť obrazovku",
 
@@ -371,7 +373,8 @@
       "showUsersTip": "Zobraziť tipy návštevníkov",
       "showUsersTipTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoj tip, zaškrtnite toto pole.",
       "numberOfPinsLabel": "Počet bodov na nájdenie",
-      "numberOfPinsTooltip": "Zadajte počet bodov, ktoré chcete aby návštevník našiel. Každý bod bude môcť mať následne pridelený svoj vlastný jedinečný text."
+      "numberOfPinsTooltip": "Zadajte počet bodov, ktoré chcete aby návštevník našiel. Každý bod bude môcť mať následne pridelený svoj vlastný jedinečný text.",
+      "imageResultInfopointsTableTitle": "Komentár k výsledku"
     },
     "gameDrawScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. dokreslite do grafu, ako sa vyvíjala ťažba uhlia po roku 1950).",

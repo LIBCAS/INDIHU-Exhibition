@@ -5,6 +5,7 @@ import {
   TimelineRightBoundary,
   TimelineType,
 } from "models";
+import { PlacesType } from "react-tooltip";
 import { TIMELINE_CONTAINER_SIZE } from "containers/expo-administration/expo-editor/screen-timeline/components/TimelineBox";
 
 // - - - - - -
@@ -102,4 +103,25 @@ export const calculateEdgeDecorationClassName = (
 
   const horizontalClassName = `timeline-line ${leftBoundary} ${rightBoundary}`;
   return horizontalClassName;
+};
+
+// - - - - - -
+
+export const calculateInfopointTooltipPlacement = (
+  timelineType: TimelineType,
+  ipIdx: number
+): PlacesType => {
+  if (timelineType === "HORIZONTAL") {
+    return ipIdx % 2 === 0 ? "top" : "bottom";
+  }
+  if (timelineType === "VERTICAL") {
+    return ipIdx % 2 === 0 ? "left" : "right";
+  }
+  if (timelineType === "DIAGONAL_BOTTOM_TO_TOP") {
+    return "top";
+  }
+  if (timelineType === "DIAGONAL_TOP_TO_BOTTOM") {
+    return "bottom";
+  }
+  return "top";
 };

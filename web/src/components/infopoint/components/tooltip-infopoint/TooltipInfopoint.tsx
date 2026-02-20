@@ -1,7 +1,7 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
-import { Tooltip } from "react-tooltip";
+import { Tooltip, PlacesType } from "react-tooltip";
 import InfopointBody from "./InfopointBody";
 
 // Models
@@ -24,6 +24,7 @@ type TooltipInfoPointProps = {
   primaryKey: string;
   secondaryKey?: string;
   canBeOpen?: boolean;
+  place?: PlacesType;
 };
 
 const TooltipInfoPoint = ({
@@ -34,6 +35,7 @@ const TooltipInfoPoint = ({
   primaryKey,
   secondaryKey,
   canBeOpen = true,
+  place,
 }: TooltipInfoPointProps) => {
   const { isLightMode } = useExpoDesignData();
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false); // infopoints's video if video type
@@ -98,6 +100,7 @@ const TooltipInfoPoint = ({
         }
       }}
       afterHide={() => setIsVideoLoaded(false)}
+      place={place}
     />
   );
 };

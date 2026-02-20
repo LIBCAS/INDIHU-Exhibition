@@ -191,7 +191,7 @@ export type StartScreen = {
   imageOrigData: ImageOrigData;
   animationType: ScreenStartAnimationType;
   expoTime: number;
-  audio: string;
+  audio: string; // NOTE: Audio verze výstavy
   collaborators?: Collaborator[];
   documents?: Document[];
   screenCompleted: boolean;
@@ -231,6 +231,7 @@ export type IntroScreen = {
   introTextTheme?: ScreenChapterIntroTextThemeType;
   isIntroTextHaloEffectOn?: ScreenChapterIntroTextHaloEffectOnType;
   screenBgColor?: string | null;
+  muteExpoSoundtrack?: boolean;
 };
 
 export type ImageScreen = {
@@ -484,6 +485,7 @@ export type GameFindScreen = {
   numberOfPins?: number;
   pinsTexts?: string[];
   screenBgColor?: string | null;
+  image2Infopoints?: Infopoint[];
 };
 
 export type GameDrawScreen = {

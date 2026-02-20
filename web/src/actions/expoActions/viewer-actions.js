@@ -5,6 +5,9 @@ import {
   EXPO_TOOLTIP_INFO_UPDATE,
   EXPO_VOLUMES_UPDATE,
   EXPO_SCREENS_INFO_UPDATE,
+  EXPO_IS_SPEECH_DISABLED_UPDATE,
+  EXPO_IS_MUSIC_DISABLED_UPDATE,
+  EXPO_IS_SOUNDTRACK_DISABLED_UPDATE,
 } from "../constants";
 import { screenUrl } from "../../enums/screen-type";
 import { tickTime } from "constants/view-screen-progress";
@@ -237,4 +240,27 @@ export const unmuteVolumes = (expoVolumes) => (dispatch) => {
       })
     );
   }
+};
+
+// - - - VOLUMES (part 2) - - -
+
+export const setIsSpeechDisabled = (isSpeechDisabled) => (dispatch) => {
+  dispatch({
+    type: EXPO_IS_SPEECH_DISABLED_UPDATE,
+    payload: isSpeechDisabled,
+  });
+};
+
+export const setIsMusicDisabled = (isMusicDisabled) => (dispatch) => {
+  dispatch({
+    type: EXPO_IS_MUSIC_DISABLED_UPDATE,
+    payload: isMusicDisabled,
+  });
+};
+
+export const setIsSoundtrackDisabled = (isSoundtrackDisabled) => (dispatch) => {
+  dispatch({
+    type: EXPO_IS_SOUNDTRACK_DISABLED_UPDATE,
+    payload: isSoundtrackDisabled,
+  });
 };

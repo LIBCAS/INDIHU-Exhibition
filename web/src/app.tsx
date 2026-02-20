@@ -28,7 +28,7 @@ import Admin from "containers/admin/admin";
 import OAuthProviderPage from "containers/OAuthProviderPage";
 
 import LandingPage from "containers/new-landing-page/LandingPage";
-// import AboutPage from "containers/about-page/AboutPage";
+import AboutPage from "containers/about-page/AboutPage";
 import TermsOfUsePage from "containers/terms-of-use-page/TermsOfUsePage";
 import PrivacyPolicyPage from "containers/privacy-policy-page/PrivacyPolicyPage";
 
@@ -138,10 +138,10 @@ export const App = () => {
           component={() => <LandingPage oauthConfigs={oauthConfigs} />}
         />
 
-        {/* <Route
-          path="/about"
+        <Route
+          path="/about-test"
           component={() => <AboutPage oauthConfigs={oauthConfigs} />}
-        /> */}
+        />
 
         <Route
           path="/about"

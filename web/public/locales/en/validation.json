@@ -1,6 +1,7 @@
 {
   "required": "*Required",
   "max150Chars": "*Maximum 150 characters.",
+  "max60Chars": "*Maximum 60 characters.",
   "atLeastOnePixel": "*Cannot be less than 1 pixel.",
   "atLeastOne": "*Cannot be less than one.",
   "atLeast5Chars": "*At least 5 characters.",
