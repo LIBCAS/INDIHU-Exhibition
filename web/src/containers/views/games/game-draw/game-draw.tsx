@@ -131,6 +131,18 @@ export const GameDraw = ({
     { toggle: toggleTransparencyPopover, setFalse: closeTransparencyPopover },
   ] = useBoolean(false);
 
+  // - - - Derived variables (helpers) - - -
+
+  /**
+   * Display canvas:
+   * - a) game is not finished (user is viewing assignment img)
+   * - b) game is finished, but showDrawing option is enabled (user is viewing result img and also canvas)
+   */
+  const shouldDisplayCanvas = useMemo<boolean>(
+    () => !isGameFinished || showDrawing,
+    [isGameFinished, showDrawing]
+  );
+
   // - - - Ref - - -
 
   const [imageContainerRef, imageContainerSize, imageContainer] =
@@ -140,7 +152,7 @@ export const GameDraw = ({
 
   // - - - Draw functionality - - -
 
-  const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
+  const { startDrawing, stopDrawing, draw } = useGameDraw({
     containerSize: imageContainerSize,
     canvasRef,
     isGameFinished,
@@ -154,15 +166,11 @@ export const GameDraw = ({
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
-    if (!showDrawing) {
-      clearCanvas();
-    }
-  }, [clearCanvas, showDrawing]);
+  }, []);
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
-    clearCanvas();
-  }, [clearCanvas]);
+  }, []);
 
   // - - - Transition animation between drawing and solution img - - -
 
@@ -318,16 +326,18 @@ export const GameDraw = ({
         )
       )}
 
-      <canvas
-        className={cx("absolute touch-none", {
-          [classes.drawingCursor]: !isGameFinished && !isErasing,
-          [classes.erasingCursor]: !isGameFinished && isErasing,
-        })}
-        ref={canvasRef}
-        onPointerDown={startDrawing}
-        onPointerUp={stopDrawing}
-        onPointerMove={draw}
-      />
+      {shouldDisplayCanvas && (
+        <canvas
+          className={cx("absolute touch-none", {
+            [classes.drawingCursor]: !isGameFinished && !isErasing,
+            [classes.erasingCursor]: !isGameFinished && isErasing,
+          })}
+          ref={canvasRef}
+          onPointerDown={startDrawing}
+          onPointerUp={stopDrawing}
+          onPointerMove={draw}
+        />
+      )}
 
       <Popper
         anchor={thicknessAnchor}
