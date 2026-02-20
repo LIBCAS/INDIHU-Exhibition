@@ -133,14 +133,14 @@ export const GameDraw = ({
 
   // - - - Derived variables (helpers) - - -
 
-  /**
-   * Display canvas:
-   * - a) game is not finished (user is viewing assignment img)
-   * - b) game is finished, but showDrawing option is enabled (user is viewing result img and also canvas)
-   */
   const shouldDisplayCanvas = useMemo<boolean>(
     () => !isGameFinished || showDrawing,
     [isGameFinished, showDrawing]
+  );
+
+  const shouldDisplayResultImg = useMemo<boolean>(
+    () => isGameFinished && !!resultingImgSrc,
+    [isGameFinished, resultingImgSrc]
   );
 
   // - - - Ref - - -
@@ -174,7 +174,7 @@ export const GameDraw = ({
 
   // - - - Transition animation between drawing and solution img - - -
 
-  const transition = useTransition(isGameFinished, {
+  const transition = useTransition(shouldDisplayResultImg, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -258,8 +258,8 @@ export const GameDraw = ({
 
   return (
     <div className="relative w-[100svw] h-[100svh]">
-      {transition(({ opacity }, isGameFinished) =>
-        !isGameFinished ? (
+      {transition(({ opacity }, shouldDisplayResultImg) =>
+        !shouldDisplayResultImg ? (
           <div className="absolute w-full h-full">
             <animated.img
               ref={imageContainerRef}
