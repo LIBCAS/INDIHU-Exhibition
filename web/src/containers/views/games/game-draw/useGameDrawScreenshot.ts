@@ -39,55 +39,63 @@ export const useGameDrawScreenshot = ({
 
   const handleTakeScreenshot = useCallback(
     async (applyBackgroundColor = true) => {
-      if (imageContainerEl === null) return;
-      if (canvasEl === null) return;
-
-      // Define the layers for the screenshot
-      const bgColor = backgroundColor;
-      const assignmentImg = imageContainerEl;
-      const userDrawing = canvasEl;
-
-      // Create the canvas for the screenshot
-      const screenshotCanvas = document.createElement("canvas");
-
-      screenshotCanvas.width = userDrawing.width;
-      screenshotCanvas.height = userDrawing.height;
-
-      const ctx = screenshotCanvas.getContext("2d");
-
-      if (ctx === null) {
-        const errMsg = "[handleTakeAccurateScreenshot]: Canvas ctx is null";
+      if (imageContainerEl === null) {
+        const errMsg = "[handleTakeScreenshot]: Underlying img is null";
+        console.error(errMsg);
+        return;
+      }
+      if (!imageContainerEl.src) {
+        const errMsg = "[handleTakeScreenshot]: Underlying source is undefined";
         console.error(errMsg);
         return;
       }
 
-      // Apply the first layer (background color)
+      // Step 1: Define the layers for the screenshot
+      const bgColor = backgroundColor;
+      const underlyingImg = imageContainerEl;
+      const userDrawing = canvasEl;
+
+      // Step 2: Create the canvas for the screenshot
+      const screenshotCanvas = document.createElement("canvas");
+      screenshotCanvas.width = imageContainerEl.width;
+      screenshotCanvas.height = imageContainerEl.height;
+      const ctx = screenshotCanvas.getContext("2d");
+
+      if (ctx === null) {
+        const errMsg = "[handleTakeScreenshot]: Canvas ctx is null";
+        console.error(errMsg);
+        return;
+      }
+
+      // Step 3: Apply the first layer (background color)
       if (applyBackgroundColor) {
         ctx.fillStyle = bgColor;
         ctx.fillRect(0, 0, screenshotCanvas.width, screenshotCanvas.height);
       }
 
-      // Apply the second layer (underlying asssignment image)
+      // Step 4: Apply the second layer (underlying asssignment or result image)
       const image = new Image();
-      image.src = assignmentImg.src;
+      image.src = underlyingImg.src;
       await image.decode();
 
       ctx.drawImage(
         image,
         0,
         0,
-        assignmentImg.naturalWidth,
-        assignmentImg.naturalHeight,
+        underlyingImg.naturalWidth,
+        underlyingImg.naturalHeight,
         fromLeftWidth,
         fromTopHeight,
         containedImageWidth,
         containedImageHeight
       );
 
-      // Apply the third and last layer (user's drawing on top)
-      ctx.drawImage(userDrawing, 0, 0);
+      // Step 5: Apply the third and last layer (user's drawing on top, if any, optional)
+      if (userDrawing) {
+        ctx.drawImage(userDrawing, 0, 0);
+      }
 
-      // Finally, output the final image as png
+      // Step 6: Finally, output the final image as png
       const dataUrl = screenshotCanvas.toDataURL("image/png");
       downloadFile(dataUrl, "drawing.png");
     },

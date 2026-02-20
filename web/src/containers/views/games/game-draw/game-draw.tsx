@@ -232,6 +232,28 @@ export const GameDraw = ({
     [image1OrigData, assignmentImgSize]
   );
 
+  // - - - Data (result image) - - -
+
+  const image2OrigData = useMemo(
+    () => viewScreen.image2OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image2OrigData]
+  );
+
+  const {
+    width: containedResultImgWidth,
+    height: containedResultImgHeight,
+    left: containedResultImgLeft,
+    top: containedResultImgTop,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        type: "contain",
+        parent: resultImgSize,
+        child: image2OrigData,
+      }),
+    [image2OrigData, resultImgSize]
+  );
+
   // - - - Infopoints (assignment image closing) - - -
 
   // Event handler on key down press
@@ -254,13 +276,47 @@ export const GameDraw = ({
 
   // - - - Screenshot functionality - - -
 
+  const [imgEl, imgWidth, imgHeight, imgLeft, imgTop] = useMemo(() => {
+    if (shouldDisplayResultImg) {
+      return [
+        resultImgEl,
+        containedResultImgWidth,
+        containedResultImgHeight,
+        containedResultImgLeft,
+        containedResultImgTop,
+      ];
+    }
+
+    return [
+      assignmentImgEl,
+      containedAssignmentImgWidth,
+      containedAssignmentImgHeight,
+      containedAssignmentImgLeft,
+      containedAssignmentImgTop,
+    ];
+  }, [
+    shouldDisplayResultImg,
+
+    resultImgEl,
+    containedResultImgWidth,
+    containedResultImgHeight,
+    containedResultImgLeft,
+    containedResultImgTop,
+
+    assignmentImgEl,
+    containedAssignmentImgWidth,
+    containedAssignmentImgHeight,
+    containedAssignmentImgLeft,
+    containedAssignmentImgTop,
+  ]);
+
   const { handleTakeScreenshot } = useGameDrawScreenshot({
-    imageContainerEl: assignmentImgEl,
+    imageContainerEl: imgEl,
     canvasEl: canvasRef.current,
-    containedImageWidth: containedAssignmentImgWidth,
-    containedImageHeight: containedAssignmentImgHeight,
-    fromLeftWidth: containedAssignmentImgLeft,
-    fromTopHeight: containedAssignmentImgTop,
+    containedImageWidth: imgWidth,
+    containedImageHeight: imgHeight,
+    fromLeftWidth: imgLeft,
+    fromTopHeight: imgTop,
   });
 
   // - - - Game Auto Navigation - - -
@@ -410,21 +466,17 @@ export const GameDraw = ({
             onGameFinish={onGameFinish}
             onGameReset={onGameReset}
             gameActions={[
-              isGameFinished === false ? (
-                <div key="screenshot-button" className="relative">
-                  <Button
-                    color="expoTheme"
-                    iconBefore={<Icon name="file_download" />}
-                    onClick={async () => await handleTakeScreenshot(true)}
-                    tooltip={{
-                      id: "game-draw-overlay-screenshot-button-tooltip",
-                      content: t("game-draw.takeScreenshotAction"),
-                    }}
-                  />
-                </div>
-              ) : (
-                <></>
-              ),
+              <div key="screenshot-button" className="relative">
+                <Button
+                  color="expoTheme"
+                  iconBefore={<Icon name="file_download" />}
+                  onClick={async () => await handleTakeScreenshot(true)}
+                  tooltip={{
+                    id: "game-draw-overlay-screenshot-button-tooltip",
+                    content: t("game-draw.takeScreenshotAction"),
+                  }}
+                />
+              </div>,
 
               <div key="tool-button" className="relative">
                 <Button
