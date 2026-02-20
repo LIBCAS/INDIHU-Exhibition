@@ -137,11 +137,6 @@ export const GameDraw = ({
 
   // - - - Derived variables (helpers) - - -
 
-  const shouldDisplayCanvas = useMemo<boolean>(
-    () => !isGameFinished || showDrawing || !resultingImgSrc,
-    [isGameFinished, showDrawing, resultingImgSrc]
-  );
-
   const shouldDisplayResultImg = useMemo<boolean>(
     () => isGameFinished && !!resultingImgSrc,
     [isGameFinished, resultingImgSrc]
@@ -180,7 +175,10 @@ export const GameDraw = ({
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
-  }, []);
+    if (!showDrawing || !resultingImgSrc) {
+      clearCanvas();
+    }
+  }, [clearCanvas, showDrawing, resultingImgSrc]);
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
@@ -398,18 +396,16 @@ export const GameDraw = ({
         )
       )}
 
-      {shouldDisplayCanvas && (
-        <canvas
-          className={cx("absolute touch-none", {
-            [classes.drawingCursor]: !isGameFinished && !isErasing,
-            [classes.erasingCursor]: !isGameFinished && isErasing,
-          })}
-          ref={canvasRef}
-          onPointerDown={startDrawing}
-          onPointerUp={stopDrawing}
-          onPointerMove={draw}
-        />
-      )}
+      <canvas
+        className={cx("absolute touch-none", {
+          [classes.drawingCursor]: !isGameFinished && !isErasing,
+          [classes.erasingCursor]: !isGameFinished && isErasing,
+        })}
+        ref={canvasRef}
+        onPointerDown={startDrawing}
+        onPointerUp={stopDrawing}
+        onPointerMove={draw}
+      />
 
       <Popper
         anchor={thicknessAnchor}
