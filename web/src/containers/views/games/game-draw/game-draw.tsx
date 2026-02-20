@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   Fragment,
+  ReactNode,
 } from "react";
 import { animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,9 @@ import { Popper } from "components/popper/popper";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
+import { PiEraserFill } from "react-icons/pi";
+import { MdDraw } from "react-icons/md";
+
 // Models
 import { GameDrawScreen, ScreenProps } from "models";
 import { AppState } from "store/store";
@@ -49,14 +53,14 @@ import {
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
-// - - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-// - - - -
+// - - - - - -
 
 export const GameDraw = ({
   screenPreloadedFiles,
@@ -142,6 +146,13 @@ export const GameDraw = ({
     () => isGameFinished && !!resultingImgSrc,
     [isGameFinished, resultingImgSrc]
   );
+
+  const ToolIcon = useMemo<ReactNode>(() => {
+    if (isErasing) {
+      return <MdDraw size={24} />;
+    }
+    return <PiEraserFill size={24} />;
+  }, [isErasing]);
 
   // - - - Ref - - -
 
@@ -415,7 +426,7 @@ export const GameDraw = ({
                 <Button
                   color="expoTheme"
                   onClick={toggleTool}
-                  iconBefore={<Icon name={isErasing ? "draw" : "healing"} />}
+                  iconBefore={<Icon name={ToolIcon} />}
                   tooltip={{
                     id: "game-overlay-tool-button-tooltip",
                     content: isErasing

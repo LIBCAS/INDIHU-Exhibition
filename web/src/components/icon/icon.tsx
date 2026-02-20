@@ -75,7 +75,15 @@ export const Icon = ({
       data-tooltip-id={tooltip?.id ?? undefined}
     >
       {/* Icon color either inherited from Button parent or div if some color prop is used */}
-      {useMaterialUiIcon ? (
+      {typeof name !== "string" ? (
+        <span
+          onClick={onClick}
+          className={cx(iconClassName)}
+          style={{ color: "inherit", ...iconStyle }}
+        >
+          {name}
+        </span>
+      ) : useMaterialUiIcon ? (
         <MuiIcon
           onClick={onClick}
           className={cx(iconClassName)}
