@@ -175,7 +175,7 @@ export const GameDraw = ({
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
-    if (!showDrawing || !resultingImgSrc) {
+    if (!showDrawing && !!resultingImgSrc) {
       clearCanvas();
     }
   }, [clearCanvas, showDrawing, resultingImgSrc]);
