@@ -106,7 +106,7 @@
   },
   "game-draw": {
     "solution": "Great! You completed the assignment and this is the result",
-    "takeScreenshotAction": "Take a screenshot of your drawing",
+    "takeScreenshotAction": "Download image",
     "switchToPencilAction": "Switch to pencil",
     "switchToEraserAction": "Switch to eraser",
     "thicknessChooserAction": "Choice of thickness",
