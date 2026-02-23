@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   Fragment,
+  ReactNode,
 } from "react";
 import { animated, useTransition } from "react-spring";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,9 @@ import { Popper } from "components/popper/popper";
 import { Button } from "components/button/button";
 import { Icon } from "components/icon/icon";
 
+import { PiEraserFill } from "react-icons/pi";
+import { MdDraw } from "react-icons/md";
+
 // Models
 import { GameDrawScreen, ScreenProps } from "models";
 import { AppState } from "store/store";
@@ -49,14 +53,14 @@ import {
 import { calculateObjectFit } from "utils/object-fit";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
 
-// - - - -
+// - - - - - -
 
 const stateSelector = createSelector(
   ({ expo }: AppState) => expo.viewScreen as GameDrawScreen,
   (viewScreen) => ({ viewScreen })
 );
 
-// - - - -
+// - - - - - -
 
 export const GameDraw = ({
   screenPreloadedFiles,
@@ -67,16 +71,35 @@ export const GameDraw = ({
   const { t } = useTranslation("view-screen");
   const { viewScreen } = useSelector(stateSelector);
 
-  const {
-    resultTime = GAME_SCREEN_DEFAULT_RESULT_TIME,
-    showDrawing = false,
-    initialColor = GAME_DRAW_DEFAULT_COLOR,
-    initialThickness = GAME_DRAW_DEFAULT_THICKNESS,
-    initialTransparency = GAME_DRAW_DEFAULT_TRANSPARENCY,
-  } = viewScreen;
-
   const { image1: assignmentImgSrc, image2: resultingImgSrc } =
     screenPreloadedFiles;
+
+  // - - - Derived variables (administration) - - -
+
+  const resultTime = useMemo<number>(
+    () => viewScreen.resultTime ?? GAME_SCREEN_DEFAULT_RESULT_TIME,
+    [viewScreen.resultTime]
+  );
+
+  const showDrawing = useMemo<boolean>(
+    () => viewScreen.showDrawing ?? false,
+    [viewScreen.showDrawing]
+  );
+
+  const initialColor = useMemo<string>(
+    () => viewScreen.initialColor ?? GAME_DRAW_DEFAULT_COLOR,
+    [viewScreen.initialColor]
+  );
+
+  const initialThickness = useMemo<number>(
+    () => viewScreen.initialThickness ?? GAME_DRAW_DEFAULT_THICKNESS,
+    [viewScreen.initialThickness]
+  );
+
+  const initialTransparency = useMemo<number>(
+    () => viewScreen.initialTransparency ?? GAME_DRAW_DEFAULT_TRANSPARENCY,
+    [viewScreen.initialTransparency]
+  );
 
   // - - - States - - -
 
@@ -112,9 +135,26 @@ export const GameDraw = ({
     { toggle: toggleTransparencyPopover, setFalse: closeTransparencyPopover },
   ] = useBoolean(false);
 
+  // - - - Derived variables (helpers) - - -
+
+  const shouldDisplayResultImg = useMemo<boolean>(
+    () => isGameFinished && !!resultingImgSrc,
+    [isGameFinished, resultingImgSrc]
+  );
+
+  const ToolIcon = useMemo<ReactNode>(() => {
+    if (isErasing) {
+      return <MdDraw size={24} />;
+    }
+    return <PiEraserFill size={24} />;
+  }, [isErasing]);
+
   // - - - Ref - - -
 
-  const [imageContainerRef, imageContainerSize, imageContainer] =
+  const [assignmentImgRef, assignmentImgSize, assignmentImgEl] =
+    useResizeObserver<HTMLImageElement>();
+
+  const [resultImgRef, resultImgSize, resultImgEl] =
     useResizeObserver<HTMLImageElement>();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -122,7 +162,7 @@ export const GameDraw = ({
   // - - - Draw functionality - - -
 
   const { startDrawing, stopDrawing, draw, clearCanvas } = useGameDraw({
-    containerSize: imageContainerSize,
+    containerSize: assignmentImgSize,
     canvasRef,
     isGameFinished,
     color,
@@ -135,10 +175,10 @@ export const GameDraw = ({
 
   const onGameFinish = useCallback(() => {
     setIsGameFinished(true);
-    if (!showDrawing) {
+    if (!showDrawing && !!resultingImgSrc) {
       clearCanvas();
     }
-  }, [clearCanvas, showDrawing]);
+  }, [clearCanvas, showDrawing, resultingImgSrc]);
 
   const onGameReset = useCallback(() => {
     setIsGameFinished(false);
@@ -147,7 +187,7 @@ export const GameDraw = ({
 
   // - - - Transition animation between drawing and solution img - - -
 
-  const transition = useTransition(isGameFinished, {
+  const transition = useTransition(shouldDisplayResultImg, {
     initial: { opacity: 1 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -177,18 +217,40 @@ export const GameDraw = ({
   );
 
   const {
-    width: containedImageWidth,
-    height: containedImageHeight,
-    left: fromLeftWidth,
-    top: fromTopHeight,
+    width: containedAssignmentImgWidth,
+    height: containedAssignmentImgHeight,
+    left: containedAssignmentImgLeft,
+    top: containedAssignmentImgTop,
   } = useMemo(
     () =>
       calculateObjectFit({
         type: "contain",
-        parent: imageContainerSize,
+        parent: assignmentImgSize,
         child: image1OrigData,
       }),
-    [image1OrigData, imageContainerSize]
+    [image1OrigData, assignmentImgSize]
+  );
+
+  // - - - Data (result image) - - -
+
+  const image2OrigData = useMemo(
+    () => viewScreen.image2OrigData ?? { width: 0, height: 0 },
+    [viewScreen.image2OrigData]
+  );
+
+  const {
+    width: containedResultImgWidth,
+    height: containedResultImgHeight,
+    left: containedResultImgLeft,
+    top: containedResultImgTop,
+  } = useMemo(
+    () =>
+      calculateObjectFit({
+        type: "contain",
+        parent: resultImgSize,
+        child: image2OrigData,
+      }),
+    [image2OrigData, resultImgSize]
   );
 
   // - - - Infopoints (assignment image closing) - - -
@@ -213,13 +275,47 @@ export const GameDraw = ({
 
   // - - - Screenshot functionality - - -
 
+  const [imgEl, imgWidth, imgHeight, imgLeft, imgTop] = useMemo(() => {
+    if (shouldDisplayResultImg) {
+      return [
+        resultImgEl,
+        containedResultImgWidth,
+        containedResultImgHeight,
+        containedResultImgLeft,
+        containedResultImgTop,
+      ];
+    }
+
+    return [
+      assignmentImgEl,
+      containedAssignmentImgWidth,
+      containedAssignmentImgHeight,
+      containedAssignmentImgLeft,
+      containedAssignmentImgTop,
+    ];
+  }, [
+    shouldDisplayResultImg,
+
+    resultImgEl,
+    containedResultImgWidth,
+    containedResultImgHeight,
+    containedResultImgLeft,
+    containedResultImgTop,
+
+    assignmentImgEl,
+    containedAssignmentImgWidth,
+    containedAssignmentImgHeight,
+    containedAssignmentImgLeft,
+    containedAssignmentImgTop,
+  ]);
+
   const { handleTakeScreenshot } = useGameDrawScreenshot({
-    imageContainerEl: imageContainer,
+    imageContainerEl: imgEl,
     canvasEl: canvasRef.current,
-    containedImageWidth: containedImageWidth,
-    containedImageHeight: containedImageHeight,
-    fromLeftWidth: fromLeftWidth,
-    fromTopHeight: fromTopHeight,
+    containedImageWidth: imgWidth,
+    containedImageHeight: imgHeight,
+    fromLeftWidth: imgLeft,
+    fromTopHeight: imgTop,
   });
 
   // - - - Game Auto Navigation - - -
@@ -231,29 +327,18 @@ export const GameDraw = ({
 
   return (
     <div className="relative w-[100svw] h-[100svh]">
-      {transition(({ opacity }, isGameFinished) =>
-        !isGameFinished ? (
+      {transition(({ opacity }, shouldDisplayResultImg) =>
+        !shouldDisplayResultImg ? (
           <div className="absolute w-full h-full">
             <animated.img
-              ref={imageContainerRef}
-              style={{ opacity }}
-              className="absolute w-full h-full object-contain"
+              ref={assignmentImgRef}
               src={assignmentImgSrc}
               alt="assignment img"
+              className="absolute w-full h-full object-contain"
+              style={{ opacity }}
             />
 
-            <canvas
-              className={cx("absolute touch-none", {
-                [classes.drawingCursor]: !isGameFinished && !isErasing,
-                [classes.erasingCursor]: !isGameFinished && isErasing,
-              })}
-              ref={canvasRef}
-              onPointerDown={startDrawing}
-              onPointerUp={stopDrawing}
-              onPointerMove={draw}
-            />
-
-            {/* Infopoints */}
+            {/* Infopoints for assignment image */}
             {viewScreen.infopoints1?.map((infopoint, infopointIndex) => {
               const infopointPosition = {
                 left: infopoint.left,
@@ -264,8 +349,8 @@ export const GameDraw = ({
                 height: image1OrigData.height,
               };
               const imgViewSize = {
-                width: containedImageWidth,
-                height: containedImageHeight,
+                width: containedAssignmentImgWidth,
+                height: containedAssignmentImgHeight,
               };
 
               const { left, top } = calculateInfopointPositionByImageBoxSize(
@@ -274,8 +359,8 @@ export const GameDraw = ({
                 imgViewSize
               );
 
-              const adjustedLeft = fromLeftWidth + left;
-              const adjustedTop = fromTopHeight + top;
+              const adjustedLeft = containedAssignmentImgLeft + left;
+              const adjustedTop = containedAssignmentImgTop + top;
 
               return (
                 <Fragment key={`draw-infopoint-${infopointIndex}`}>
@@ -284,6 +369,7 @@ export const GameDraw = ({
                     left={adjustedLeft}
                     top={adjustedTop}
                     infopoint={infopoint}
+                    style={{ zIndex: infopointIndex + 1 }}
                   />
                   <TooltipInfoPoint
                     key={`draw-infopoint-tooltip-${infopointIndex}`}
@@ -298,14 +384,28 @@ export const GameDraw = ({
             })}
           </div>
         ) : (
-          <animated.img
-            style={{ opacity }}
-            className="absolute w-full h-full object-contain"
-            src={resultingImgSrc}
-            alt="result image"
-          />
+          <div className="absolute w-full h-full">
+            <animated.img
+              ref={resultImgRef}
+              src={resultingImgSrc}
+              alt="result image"
+              className="absolute w-full h-full object-contain"
+              style={{ opacity }}
+            />
+          </div>
         )
       )}
+
+      <canvas
+        className={cx("absolute touch-none", {
+          [classes.drawingCursor]: !isGameFinished && !isErasing,
+          [classes.erasingCursor]: !isGameFinished && isErasing,
+        })}
+        ref={canvasRef}
+        onPointerDown={startDrawing}
+        onPointerUp={stopDrawing}
+        onPointerMove={draw}
+      />
 
       <Popper
         anchor={thicknessAnchor}
@@ -363,27 +463,23 @@ export const GameDraw = ({
             onGameFinish={onGameFinish}
             onGameReset={onGameReset}
             gameActions={[
-              isGameFinished === false ? (
-                <div key="screenshot-button" className="relative">
-                  <Button
-                    color="expoTheme"
-                    iconBefore={<Icon name="file_download" />}
-                    onClick={async () => await handleTakeScreenshot(true)}
-                    tooltip={{
-                      id: "game-draw-overlay-screenshot-button-tooltip",
-                      content: t("game-draw.takeScreenshotAction"),
-                    }}
-                  />
-                </div>
-              ) : (
-                <></>
-              ),
+              <div key="screenshot-button" className="relative">
+                <Button
+                  color="expoTheme"
+                  iconBefore={<Icon name="file_download" />}
+                  onClick={async () => await handleTakeScreenshot(true)}
+                  tooltip={{
+                    id: "game-draw-overlay-screenshot-button-tooltip",
+                    content: t("game-draw.takeScreenshotAction"),
+                  }}
+                />
+              </div>,
 
               <div key="tool-button" className="relative">
                 <Button
                   color="expoTheme"
                   onClick={toggleTool}
-                  iconBefore={<Icon name={isErasing ? "draw" : "healing"} />}
+                  iconBefore={<Icon name={ToolIcon} />}
                   tooltip={{
                     id: "game-overlay-tool-button-tooltip",
                     content: isErasing

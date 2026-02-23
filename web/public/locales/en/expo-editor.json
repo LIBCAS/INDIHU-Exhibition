@@ -381,7 +381,7 @@
       "imageAssignmentLabel": "Background image",
       "imageAssignmentTooltip": "Select an image from the document library, part of which will be missing and the user should draw it.",
       "imageResultLabel": "Result",
-      "imageResultTooltip": "Select a complete image from the document library.",
+      "imageResultTooltip": "Upload an image only if the game Draw the Correct Solution has one. The field can remain empty; in that case, the visitor’s drawing will be displayed on the background image.",
       "showUsersDrawing": "View user's drawing",
       "showUsersDrawingTooltip": "Check this box if you want the user to see both the correct solution and their guess.",
       "assignmentInfopointsTableTitle": "Infopoints for the underlying image",
@@ -418,7 +418,8 @@
       "imageCompareTooltip": "From the document library, select an image of the second object to compare.",
       "imageResultLabel": "The result image",
       "imageResultTooltip": "From the document library, select a pre-prepared image that clearly shows the size of both objects. Use the option to add infopoints to comment on the relationship between objects.",
-      "resultInfopointsTableTitle": "Infopoints for the resulting image"
+      "resultInfopointsTableTitle": "Infopoints for the resulting image",
+      "resultInfopointsTableTooltip": "Use the option to add infopoints to the resulting image to comment on the relationship between objects."
     },
     "gameMoveScreen": {
       "taskTooltip": "Describe the user's task as precisely as possible (e.g., select the correct shard and assemble the broken plate).",

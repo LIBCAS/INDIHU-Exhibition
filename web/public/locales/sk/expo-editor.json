@@ -381,7 +381,7 @@
       "imageAssignmentLabel": "Podkladový obrázok",
       "imageAssignmentTooltip": "Z knižnice dokumentov vyberte obrázok, ktorého časť bude chýbať a návštevníci ju majú dokresliť.",
       "imageResultLabel": "Výsledok",
-      "imageResultTooltip": "Z knižnice dokumentov vyberte kompletný obrázok.",
+      "imageResultTooltip": "Nahrajte obrázok len v prípade, že má hra Dokresli správne riešenie. Políčko môže zostať prázdne, v takom prípade sa návštevníkovi zobrazí jeho kresba na podkladovom obrázku.",
       "showUsersDrawing": "Zobraziť kresbu návštevníkov",
       "showUsersDrawingTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoje tipy, zaškrtnite toto pole.",
       "assignmentInfopointsTableTitle": "Infopointy k podkladovému obrázku",
@@ -418,7 +418,8 @@
       "imageCompareTooltip": "Z knižnice dokumentov vyberte obrázok druhého predmetu na porovnanie.",
       "imageResultLabel": "Výsledný obrázok",
       "imageResultTooltip": "Z knižnice dokumentov vyberte vopred pripravený obrázok, ktorý názorne ukazuje veľkosť oboch predmetov. Využite možnosť pridania infopointov pre komentovanie vzťahu medzi predmetmi.",
-      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
+      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku",
+      "resultInfopointsTableTooltip": "Využite možnosť pridania infopointov do výsledného obrázka na komentovanie vzťahu medzi predmetmi."
     },
     "gameMoveScreen": {
       "taskTooltip": "Čo najpresnejšie popíšte návštevníkom ich úlohu (napr. vyberte správny črep a zložte rozbitý tanier).",

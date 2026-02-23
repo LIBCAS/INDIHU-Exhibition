@@ -125,6 +125,8 @@ const Images = ({ activeScreen }: ImagesProps) => {
           <div className="w-[45%]">
             <InfopointsTable
               title={t("resultInfopointsTableTitle")}
+              helpIconLabel={t("resultInfopointsTableTooltip")}
+              helpIconId="game-sizing-result-image-infopoints-tooltip"
               infopoints={activeScreen.infopoints3 ?? []}
               onInfopointAdd={(dialogFormData) => {
                 dispatch(

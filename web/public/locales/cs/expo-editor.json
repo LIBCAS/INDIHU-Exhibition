@@ -381,7 +381,7 @@
       "imageAssignmentLabel": "Podkladový obrázek",
       "imageAssignmentTooltip": "Z knihovny dokumentů vyberte obrázek, jehož část bude chybět a návštěvníci ji mají dokreslit.",
       "imageResultLabel": "Výsledek",
-      "imageResultTooltip": "Z knihovny dokumentů vyberte kompletní obrázek.",
+      "imageResultTooltip": "Nahrajte obrázek pouze v případě, že má hra Dokresli správné řešení. Políčko může zůstat prázdné, v tom případě se návštěvníkovi zobrazí jeho kresba na podkladovém obrázku.",
       "showUsersDrawing": "Zobrazit kresbu návštěvníků",
       "showUsersDrawingTooltip": "Pokud chcete, aby návštěvníci viděli správné řešení i svoje tipy, zaškrtněte toto pole.",
       "assignmentInfopointsTableTitle": "Infopointy k podkladovému obrázku",
@@ -415,10 +415,11 @@
       "imageReferenceLabel": "Porovnávaný předmět č. 1.",
       "imageReferenceTooltip": "Z knihovny dokumentů vyberte obrázek hádaného předmětu, jehož velikost mají návštěvníci porovnat s druhým obrázkem",
       "imageCompareLabel": "Porovnávaný předmět č. 2.",
-      "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek druhého předmětů na porovnání.",
+      "imageCompareTooltip": "Z knihovny dokumentů vyberte obrázek druhého předmětu na porovnání.",
       "imageResultLabel": "Výsledný obrázek",
       "imageResultTooltip": "Z knihovny dokumentů vyberte předem připravený obrázek, který názorně ukazuje velikost obou předmětů. Využijte možnost přidání infopointů pro komentování vztahu mezi předměty.",
-      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku"
+      "resultInfopointsTableTitle": "Infopointy k výslednému obrázku",
+      "resultInfopointsTableTooltip": "Využijte možnost přidání infopointů do výsledného obrázku pro komentování vztahu mezi předměty."
     },
     "gameMoveScreen": {
       "taskTooltip": "Co nejpřesněji popište návštěvníkům jejich úkol (např. Vyberte správný střep a složte rozbitý talíř).",
