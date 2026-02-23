@@ -381,7 +381,7 @@
       "imageAssignmentLabel": "Podkladový obrázok",
       "imageAssignmentTooltip": "Z knižnice dokumentov vyberte obrázok, ktorého časť bude chýbať a návštevníci ju majú dokresliť.",
       "imageResultLabel": "Výsledok",
-      "imageResultTooltip": "Z knižnice dokumentov vyberte kompletný obrázok.",
+      "imageResultTooltip": "Nahrajte obrázok len v prípade, že má hra Dokresli správne riešenie. Políčko môže zostať prázdne, v takom prípade sa návštevníkovi zobrazí jeho kresba na podkladovom obrázku.",
       "showUsersDrawing": "Zobraziť kresbu návštevníkov",
       "showUsersDrawingTooltip": "Ak chcete, aby návštevníci videli správne riešenie aj svoje tipy, zaškrtnite toto pole.",
       "assignmentInfopointsTableTitle": "Infopointy k podkladovému obrázku",
