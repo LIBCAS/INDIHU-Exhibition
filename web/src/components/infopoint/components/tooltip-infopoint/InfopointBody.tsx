@@ -109,14 +109,14 @@ const InfopointBody = ({
       {infopoint.isScreenIdIncluded &&
         infopoint.screenIdReference &&
         infopoint.screenNameReference && (
-          <div className="flex">
+          <div className="flex min-w-0">
             <div
-              className="flex cursor-pointer"
+              className="flex cursor-pointer min-w-0"
               onClick={() => {
                 window.open(screenReferenceUrl, "_blank");
               }}
             >
-              <button className="text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
+              <button className="flex-1 min-w-0 break-words text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
                 {infopoint.screenNameReference}
               </button>
               <Icon name="arrow_forward" useMaterialUiIcon />
