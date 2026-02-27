@@ -32,17 +32,15 @@ const InfopointBody = ({
     <div className={cx("flex flex-col gap-[10px] p-1 max-w-[288px]")}>
       {/* 1. Infopoint Header */}
       {infopoint.header && (
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xl font-bold">{infopoint.header}</span>
+        <div className="flex justify-between items-center gap-2">
+          <span className="min-w-0 flex-1 break-words text-xl font-bold">
+            {infopoint.header}
+          </span>
           {!infopoint.alwaysVisible && (
             <Button
               noPadding
               iconBefore={<Icon name="close" />}
-              onClick={() => {
-                if (onClose) {
-                  onClose();
-                }
-              }}
+              onClick={() => onClose?.()}
             />
           )}
         </div>
