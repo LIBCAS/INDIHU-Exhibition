@@ -312,8 +312,8 @@
       "answerTextTooltip": "Zadajte primerane dlhý text pre túto variantu odpovede. Odporúčame maximálne 120–160 znakov.",
       "addNewAnswer": "Pridať novú odpoveď",
       "deleteAnswerDialog": {
-        "titleErrorLessThanThree": "Nie je možné zmazať viac možností!",
-        "textErrorLessThanThree": "Bol dosiahnutý minimálny povolený počet odpovedí, a to tri.",
+        "titleErrorLessThanTwo": "Nie je možné zmazať viac možností!",
+        "textErrorLessThanThree": "Bol dosiahnutý minimálny povolený počet odpovedí, a to dva.",
         "textConfirm": "Naozaj chcete odstrániť túto možnosť? Akcia je nevratná!"
       },
       "lockSurveyBtnLabel": "Zverejniť anketu",
