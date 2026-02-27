@@ -308,7 +308,7 @@
       "variant": "Varianta",
       "answerImageLabel": "Doprovodný obrázek",
       "answerImageTooltip": "Vyberte ilustrační obrázek z knihovny dokumentů.",
-      "answerTextLabel": "Text odpovědi",
+      "answerTextLabel": "Text anketní otázky",
       "answerTextTooltip": "Zadejte přiměřeně dlouhý text pro tuto variantu odpovědi. Doporučujeme max. 120-160 znaků. ",
       "addNewAnswer": "Přidat novou odpověď",
       "deleteAnswerDialog": {

@@ -308,7 +308,7 @@
       "variant": "Varianta",
       "answerImageLabel": "Sprievodný obrázok",
       "answerImageTooltip": "Vyberte ilustračný obrázok z knižnice dokumentov.",
-      "answerTextLabel": "Text odpovede",
+      "answerTextLabel": "Text anketovej otázky",
       "answerTextTooltip": "Zadajte primerane dlhý text pre túto variantu odpovede. Odporúčame maximálne 120–160 znakov.",
       "addNewAnswer": "Pridať novú odpoveď",
       "deleteAnswerDialog": {
