@@ -53,7 +53,7 @@ const InfopointBody = ({
         (infopoint.bodyContentType === "TEXT" && infopoint.text)) && (
         <div
           className={cx({
-            "expo-scrollbar pr-1 max-h-[115px] font-['Work_Sans'] text-[14px] leading-[22px] font-normal":
+            "min-w-0 break-words expo-scrollbar pr-1 max-h-[115px] font-['Work_Sans'] text-[14px] leading-[22px] font-normal":
               infopoint.bodyContentType === "TEXT",
             "text-gray": !!infopoint.header && isLightMode,
             "text-light-gray": !!infopoint.header && !isLightMode,
