@@ -84,9 +84,9 @@ const InfopointBody = ({
 
       {/* 3. Optional URL link */}
       {infopoint.isUrlIncluded && infopoint.url && infopoint.urlName && (
-        <div className="flex">
+        <div className="flex min-w-0">
           <div
-            className="flex cursor-pointer"
+            className="flex cursor-pointer min-w-0"
             onClick={() => {
               const url =
                 !infopoint.url?.startsWith("https://") &&
@@ -97,7 +97,7 @@ const InfopointBody = ({
               window.open(url, "_blank");
             }}
           >
-            <button className="text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
+            <button className="flex-1 min-w-0 break-words text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
               {infopoint.urlName}
             </button>
             <Icon name="arrow_forward" useMaterialUiIcon />
