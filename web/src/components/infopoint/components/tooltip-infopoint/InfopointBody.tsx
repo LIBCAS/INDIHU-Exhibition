@@ -32,17 +32,15 @@ const InfopointBody = ({
     <div className={cx("flex flex-col gap-[10px] p-1 max-w-[288px]")}>
       {/* 1. Infopoint Header */}
       {infopoint.header && (
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xl font-bold">{infopoint.header}</span>
+        <div className="flex justify-between items-center gap-2">
+          <span className="min-w-0 flex-1 break-words text-xl font-bold">
+            {infopoint.header}
+          </span>
           {!infopoint.alwaysVisible && (
             <Button
               noPadding
               iconBefore={<Icon name="close" />}
-              onClick={() => {
-                if (onClose) {
-                  onClose();
-                }
-              }}
+              onClick={() => onClose?.()}
             />
           )}
         </div>
@@ -55,7 +53,7 @@ const InfopointBody = ({
         (infopoint.bodyContentType === "TEXT" && infopoint.text)) && (
         <div
           className={cx({
-            "expo-scrollbar pr-1 max-h-[115px] font-['Work_Sans'] text-[14px] leading-[22px] font-normal":
+            "min-w-0 break-words expo-scrollbar pr-1 max-h-[115px] font-['Work_Sans'] text-[14px] leading-[22px] font-normal":
               infopoint.bodyContentType === "TEXT",
             "text-gray": !!infopoint.header && isLightMode,
             "text-light-gray": !!infopoint.header && !isLightMode,
@@ -86,9 +84,9 @@ const InfopointBody = ({
 
       {/* 3. Optional URL link */}
       {infopoint.isUrlIncluded && infopoint.url && infopoint.urlName && (
-        <div className="flex">
+        <div className="flex min-w-0">
           <div
-            className="flex cursor-pointer"
+            className="flex cursor-pointer min-w-0"
             onClick={() => {
               const url =
                 !infopoint.url?.startsWith("https://") &&
@@ -99,7 +97,7 @@ const InfopointBody = ({
               window.open(url, "_blank");
             }}
           >
-            <button className="text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
+            <button className="flex-1 min-w-0 break-words text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
               {infopoint.urlName}
             </button>
             <Icon name="arrow_forward" useMaterialUiIcon />
@@ -111,14 +109,14 @@ const InfopointBody = ({
       {infopoint.isScreenIdIncluded &&
         infopoint.screenIdReference &&
         infopoint.screenNameReference && (
-          <div className="flex">
+          <div className="flex min-w-0">
             <div
-              className="flex cursor-pointer"
+              className="flex cursor-pointer min-w-0"
               onClick={() => {
                 window.open(screenReferenceUrl, "_blank");
               }}
             >
-              <button className="text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
+              <button className="flex-1 min-w-0 break-words text-inherit font-['Work_Sans'] font-bold text-lg mr-1">
                 {infopoint.screenNameReference}
               </button>
               <Icon name="arrow_forward" useMaterialUiIcon />

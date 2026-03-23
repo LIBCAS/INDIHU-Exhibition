@@ -406,10 +406,8 @@ const DeleteButton = ({
 
         const answersLength = surveyAnswers.length;
 
-        if (answersLength <= 3) {
-          const dialogErrTitle = t(
-            "deleteAnswerDialog.titleErrorLessThanThree"
-          );
+        if (answersLength <= 2) {
+          const dialogErrTitle = t("deleteAnswerDialog.titleErrorLessThanTwo");
 
           dispatch(
             setDialog(DialogType.InfoDialog, {
@@ -417,7 +415,7 @@ const DeleteButton = ({
               title: dialogErrTitle,
               content: (
                 <div>
-                  <p>{t("deleteAnswerDialog.textErrorLessThanThree")}</p>
+                  <p>{t("deleteAnswerDialog.textErrorLessThanTwo")}</p>
                 </div>
               ),
             })
