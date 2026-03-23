@@ -48,7 +48,7 @@
     "react-slick": "^0.29.0",
     "react-spring": "^9.4.5",
     "react-swipeable": "^7.0.1",
-    "react-tooltip": "5.13.1",
+    "react-tooltip": "5.15.1",
     "react-zoom-pan-pinch": "^3.1.0",
     "recompose": "^0.30.0",
     "redux": "3.7.2",
