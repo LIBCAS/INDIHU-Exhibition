@@ -21,7 +21,7 @@
       "image": "Image screen",
       "video": "Video screen",
       "text": "Text screen",
-      "parallax": "Parallax",
+      "parallax": "Image layer animation",
       "image_zoom": "Image with zoom animation",
       "timeline": "Timeline screen",
       "slideshow": "Slideshow",
