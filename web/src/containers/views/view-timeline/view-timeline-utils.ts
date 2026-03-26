@@ -118,10 +118,10 @@ export const calculateInfopointTooltipPlacement = (
     return ipIdx % 2 === 0 ? "left" : "right";
   }
   if (timelineType === "DIAGONAL_BOTTOM_TO_TOP") {
-    return "top";
+    return ipIdx % 2 === 0 ? "top-end" : "bottom-start";
   }
   if (timelineType === "DIAGONAL_TOP_TO_BOTTOM") {
-    return "bottom";
+    return ipIdx % 2 === 0 ? "bottom-end" : "top-start";
   }
   return "top";
 };

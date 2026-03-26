@@ -40,23 +40,38 @@ const TooltipInfoPoint = ({
   const { isLightMode } = useExpoDesignData();
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false); // infopoints's video if video type
 
-  const currTooltipEl = document.querySelector<HTMLDivElement>(`#${id}`);
-  const currTooltipPlacement = currTooltipEl?.classList.contains(
-    "react-tooltip__place-top"
-  )
-    ? "top"
-    : currTooltipEl?.classList.contains("react-tooltip__place-left")
-    ? "left"
-    : currTooltipEl?.classList.contains("react-tooltip__place-bottom")
-    ? "bottom"
-    : currTooltipEl?.classList.contains("react-tooltip__place-right")
-    ? "right"
-    : undefined;
-
   const keyMap =
     secondaryKey === undefined
       ? `${primaryKey}`
       : `${primaryKey}-${secondaryKey}`;
+
+  const currTooltipEl = document.querySelector<HTMLDivElement>(`#${id}`);
+  const currTooltipPlacement: PlacesType | undefined =
+    currTooltipEl?.classList.contains("react-tooltip__place-top")
+      ? "top"
+      : currTooltipEl?.classList.contains("react-tooltip__place-top-start")
+      ? "top-start"
+      : currTooltipEl?.classList.contains("react-tooltip__place-top-end")
+      ? "top-end"
+      : currTooltipEl?.classList.contains("react-tooltip__place-left")
+      ? "left"
+      : currTooltipEl?.classList.contains("react-tooltip__place-left-start")
+      ? "left-start"
+      : currTooltipEl?.classList.contains("react-tooltip__place-left-end")
+      ? "left-end"
+      : currTooltipEl?.classList.contains("react-tooltip__place-bottom")
+      ? "bottom"
+      : currTooltipEl?.classList.contains("react-tooltip__place-bottom-start")
+      ? "bottom-start"
+      : currTooltipEl?.classList.contains("react-tooltip__place-bottom-end")
+      ? "bottom-end"
+      : currTooltipEl?.classList.contains("react-tooltip__place-right")
+      ? "right"
+      : currTooltipEl?.classList.contains("react-tooltip__place-right-start")
+      ? "right-start"
+      : currTooltipEl?.classList.contains("react-tooltip__place-right-end")
+      ? "right-end"
+      : undefined;
 
   return (
     <Tooltip

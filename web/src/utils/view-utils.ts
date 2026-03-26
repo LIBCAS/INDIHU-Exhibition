@@ -1,3 +1,4 @@
+import { PlacesType } from "react-tooltip";
 import { gameScreens } from "enums/screen-type";
 import { Screen, Document } from "models";
 
@@ -15,44 +16,57 @@ export const isWorksheetFile = (file: Document) => {
 
 // - - -
 
-type TooltipPlacement = "top" | "right" | "left" | "bottom";
-
 export const getTooltipArrowBorderClassName = ({
   isLightMode,
   placement,
 }: {
   isLightMode: boolean;
-  placement?: TooltipPlacement;
+  placement?: PlacesType;
 }): string => {
   if (!placement) {
     return "";
   }
 
-  if (placement === "top" && isLightMode) {
+  const isTopPlacement =
+    placement === "top" || placement === "top-start" || placement === "top-end";
+  const isLeftPlacement =
+    placement === "left" ||
+    placement === "left-start" ||
+    placement === "left-end";
+  const isBottomPlacement =
+    placement === "bottom" ||
+    placement === "bottom-start" ||
+    placement === "bottom-end";
+  const isRightPlacement =
+    placement === "right" ||
+    placement === "right-start" ||
+    placement === "right-end";
+
+  if (isTopPlacement && isLightMode) {
     return "border-b-solid border-b-[1px] border-b-black border-r-solid border-r-[1px] border-r-black";
   }
-  if (placement === "top" && !isLightMode) {
+  if (isTopPlacement && !isLightMode) {
     return "border-b-solid border-b-[1px] border-b-white border-r-solid border-r-[1px] border-r-white";
   }
 
-  if (placement === "left" && isLightMode) {
+  if (isLeftPlacement && isLightMode) {
     return "border-t-solid border-t-[1px] border-t-black border-r-solid border-r-[1px] border-r-black";
   }
-  if (placement === "left" && !isLightMode) {
+  if (isLeftPlacement && !isLightMode) {
     return "border-t-solid border-t-[1px] border-t-white border-r-solid border-r-[1px] border-r-white";
   }
 
-  if (placement === "bottom" && isLightMode) {
+  if (isBottomPlacement && isLightMode) {
     return "border-t-solid border-t-[1px] border-t-black border-l-solid border-l-[1px] border-l-black";
   }
-  if (placement === "bottom" && !isLightMode) {
+  if (isBottomPlacement && !isLightMode) {
     return "border-t-solid border-t-[1px] border-t-white border-l-solid border-l-[1px] border-l-white";
   }
 
-  if (placement === "right" && isLightMode) {
+  if (isRightPlacement && isLightMode) {
     return "border-b-solid border-b-[1px] border-b-black border-l-solid border-l-[1px] border-l-black";
   }
-  if (placement === "right" && !isLightMode) {
+  if (isRightPlacement && !isLightMode) {
     return "border-b-solid border-b-[1px] border-b-white border-l-solid border-l-[1px] border-l-white";
   }
 
