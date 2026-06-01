@@ -1,3 +1,5 @@
+import { TFunction } from "i18next";
+
 export const screenType = {
   START: "START",
   FINISH: "FINISH",
@@ -51,30 +53,30 @@ export const mapScreenTypeValuesToKeys = {
 } as const;
 
 /** vyhladavanie v nazvoch obrazoviek */
-export const screenTypeText = {
-  START: "Úvod výstavy",
-  FINISH: "Závěr výstavy",
-  INTRO: "Úvod do kapitoly",
-  IMAGE: "Obrazovka s obrázkem",
-  VIDEO: "Obrazovka s videem",
-  TEXT: "Obrazovka s textem",
-  PARALLAX: "Parallax",
-  IMAGE_ZOOM: "Animace přiblížení",
-  TIMELINE: "Obrazovka časová osa",
+export const retrieveScreenTypeText = (t: TFunction) => ({
+  START: t("structure.screenLabels.start"),
+  FINISH: t("structure.screenLabels.finish"),
+  INTRO: t("structure.screenLabels.intro"),
+  IMAGE: t("structure.screenLabels.image"),
+  VIDEO: t("structure.screenLabels.video"),
+  TEXT: t("structure.screenLabels.text"),
+  PARALLAX: t("structure.screenLabels.parallax"),
+  IMAGE_ZOOM: t("structure.screenLabels.image_zoom"),
+  TIMELINE: t("structure.screenLabels.timeline"),
 
-  SLIDESHOW: "Slideshow",
-  PHOTOGALLERY_NEW: "Fotogalerie",
-  IMAGE_CHANGE: "Foto před a po",
-  EXTERNAL: "Obrazovka s externím obsahem",
-  SIGNPOST: "Rozcestník",
-  SURVEY: "Anketa",
-  GAME_FIND: "Najdi na obrázku",
-  GAME_DRAW: "Dokresli",
-  GAME_WIPE: "Stírací los",
-  GAME_SIZING: "Hádej velikost",
-  GAME_MOVE: "Posuň na správne místo",
-  GAME_OPTIONS: "Kvíz",
-};
+  SLIDESHOW: t("structure.screenLabels.slideshow"),
+  PHOTOGALLERY_NEW: t("structure.screenLabels.photogallery_new"),
+  IMAGE_CHANGE: t("structure.screenLabels.image_change"),
+  EXTERNAL: t("structure.screenLabels.external"),
+  SIGNPOST: t("structure.screenLabels.signpost"),
+  SURVEY: t("structure.screenLabels.survey"),
+  GAME_FIND: t("structure.screenLabels.game_find"),
+  GAME_DRAW: t("structure.screenLabels.game_draw"),
+  GAME_WIPE: t("structure.screenLabels.game_wipe"),
+  GAME_SIZING: t("structure.screenLabels.game_sizing"),
+  GAME_MOVE: t("structure.screenLabels.game_move"),
+  GAME_OPTIONS: t("structure.screenLabels.game_options"),
+});
 
 export const screenTypeIcon = {
   START: "fa-star",

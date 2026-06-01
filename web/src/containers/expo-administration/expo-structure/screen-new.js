@@ -17,14 +17,18 @@ import {
 
 // - -
 
-const CardStyle = () => (
-  <Card raise className="new-content">
-    <CardText className="new-screen">
-      <i className="material-icons">add</i>
-      <p>Nová obrazovka</p>
-    </CardText>
-  </Card>
-);
+const CardStyle = () => {
+  const { t } = useTranslation("expo");
+
+  return (
+    <Card raise className="new-content">
+      <CardText className="new-screen">
+        <i className="material-icons">add</i>
+        <p>{t("structure.newScreen")}</p>
+      </CardText>
+    </Card>
+  );
+};
 
 const ScreenNew = ({
   large,
@@ -60,7 +64,7 @@ const ScreenNew = ({
               id="expo-structure-screen-new-intro"
               className="add-menu-item"
               primaryText={t("structure.screenLabels.intro")}
-              onClick={() => addScreen(rowNum, 0, screenType.INTRO, section)}
+              onClick={() => addScreen(rowNum, 0, screenType.INTRO, section, t)}
               data-tooltip-id="expo-structure-screen-new-tooltip"
               data-tooltip-content={t("structure.screenTooltips.intro")}
             />
@@ -88,7 +92,7 @@ const ScreenNew = ({
                         id
                       ].toLowerCase()}`
                     )}
-                    onClick={() => addScreen(rowNum, colNum, id, section)}
+                    onClick={() => addScreen(rowNum, colNum, id, section, t)}
                     data-tooltip-id="expo-structure-screen-new-tooltip"
                     data-tooltip-content={t(
                       `structure.screenTooltips.${mapScreenTypeValuesToKeys[

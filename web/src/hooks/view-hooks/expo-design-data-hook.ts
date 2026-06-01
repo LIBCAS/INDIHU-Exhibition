@@ -33,16 +33,21 @@ export const useExpoDesignData = () => {
   );
 
   /**
-   * In administration screens, light mode is always forced (because activeExpo is set).
+   * In administration screens, light mode is always forced (viewExpo is null).
    * In view screens, light mode is used only if it is explicitly configured.
    */
-  const isLightMode = useMemo<boolean>(
-    () =>
-      activeExpo !== undefined ||
-      expositionDesignData === undefined ||
-      expositionDesignData.theme === "LIGHT",
-    [activeExpo, expositionDesignData]
-  );
+  const isLightMode = useMemo<boolean>(() => {
+    const isAdministrationScreen = viewExpo === null;
+    if (isAdministrationScreen) {
+      return true;
+    }
+
+    if (expositionDesignData === undefined) {
+      return true;
+    }
+
+    return expositionDesignData.theme === "LIGHT";
+  }, [viewExpo, expositionDesignData]);
 
   // - - - Applying tailwind classes, based on the currently active theme - - -
 

@@ -12,7 +12,6 @@ import {
 } from "lodash";
 import { TAB_FOLDER, TAB_FILE, EXPO_STRUCTURE_SET } from "./constants";
 import { saveExpo } from "./expoActions";
-import { screenTypeText } from "../enums/screen-type";
 
 export const tabFolder = (name) => ({
   type: TAB_FOLDER,
@@ -303,7 +302,7 @@ export const isFileUsed = (id) => (_, getState) => {
     start.audio === id ||
     find(start.documents, (d) => d.id === id)
   )
-    return screenTypeText.START;
+    return "Úvod výstavy";
   const screens = structure.screens;
   let screen;
   find(screens, (chapter) =>
