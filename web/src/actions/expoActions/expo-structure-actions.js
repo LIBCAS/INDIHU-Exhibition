@@ -3,18 +3,20 @@ import * as uuid from "uuid/v4";
 import { EXPO_STRUCTURE_SET } from "../constants";
 import { saveExpo } from "./expo-actions";
 import {
-  screenTypeText,
   screenType,
   mapScreenTypeValuesToKeys,
+  retrieveScreenTypeText,
 } from "../../enums/screen-type";
 
 /** EXPO STRUCTURE */
 export const addScreen =
-  (row, idx, type, aloneScreen) => async (dispatch, getState) => {
+  (row, idx, type, aloneScreen, t) => async (dispatch, getState) => {
     const expo = getState().expo.activeExpo;
-    const title = `${screenTypeText[mapScreenTypeValuesToKeys[type]]}${
-      row ? ` ${row + 1}` : ""
-    }`;
+
+    const screenTexts = retrieveScreenTypeText(t);
+    const mappedScreenType = mapScreenTypeValuesToKeys[type];
+    const screenTitle = screenTexts[mappedScreenType];
+    const title = `${screenTitle}${row ? `${row + 1}` : ""}`;
 
     if (aloneScreen) {
       const screens = expo.structure.screens;
