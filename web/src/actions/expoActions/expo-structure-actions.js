@@ -16,7 +16,7 @@ export const addScreen =
     const screenTexts = retrieveScreenTypeText(t);
     const mappedScreenType = mapScreenTypeValuesToKeys[type];
     const screenTitle = screenTexts[mappedScreenType];
-    const title = `${screenTitle}${row ? `${row + 1}` : ""}`;
+    const title = `${screenTitle}${row ? ` ${row + 1}` : ""}`;
 
     if (aloneScreen) {
       const screens = expo.structure.screens;
