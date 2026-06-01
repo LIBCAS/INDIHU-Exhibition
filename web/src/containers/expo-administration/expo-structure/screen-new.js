@@ -17,14 +17,18 @@ import {
 
 // - -
 
-const CardStyle = () => (
-  <Card raise className="new-content">
-    <CardText className="new-screen">
-      <i className="material-icons">add</i>
-      <p>Nová obrazovka</p>
-    </CardText>
-  </Card>
-);
+const CardStyle = () => {
+  const { t } = useTranslation("expo");
+
+  return (
+    <Card raise className="new-content">
+      <CardText className="new-screen">
+        <i className="material-icons">add</i>
+        <p>{t("structure.newScreen")}</p>
+      </CardText>
+    </Card>
+  );
+};
 
 const ScreenNew = ({
   large,
