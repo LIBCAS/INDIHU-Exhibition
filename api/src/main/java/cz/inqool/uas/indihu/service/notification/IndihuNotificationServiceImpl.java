@@ -56,16 +56,20 @@ public class IndihuNotificationServiceImpl implements IndihuNotificationService 
     
     @Override
     public void notifyAccepted(String toNotify) {
-        String subject = "Registrace do INDIHU Exhibiton byla schválena";
-        String text = "Dobrý den,\n" +
-                "od této chvíle můžete na adrese: {url} využívat nástroj INDIHU Exhibition k tvorbě virtuálních výstav. " +
-                "Informace o tvorbě výstav a používání editoru najdete v manuálu: https://nnis.github.io/indihu-manual/.\n" +
-                "Přejeme Vám mnoho úspěšných virtuálních projektů. Tým INDIHU\n" +
-                "\n" +
-                "Více o projektu INDIHU nalezenete na: https://indihu.cz/\n" +
-                "Mezi další produkty INDIHU patří nástroj OCR (https://ocr.indihu.cz/).";
-
-        text = text.replace("{url}", url);
+        String subject = "Registrace do INDIHU Exhibition byla schválena";
+        String text = "Dobrý den,\n\n" +
+                "vaše registrace byla schválena a od této chvíle můžete začít vytvářet virtuální výstavy.\n\n" +
+                "Doporučujeme projít si manuál k nástroji: https://libcas.github.io/indihu-manual/, který kromě popisu jednotlivých funkcionalit obsahuje:\n\n" +
+                "- podrobnou sekci o konceptualizaci výstav:\n" +
+                "https://libcas.github.io/indihu-manual/uspesna-vystava/\n\n" +
+                "- pracovní listy ke stažení, které vám pomohou s přípravou obsahu i formy vhodné pro různé cílové skupiny:\n" +
+                "https://libcas.github.io/indihu-manual/img/INDIHU_listy3.pdf\n\n" +
+                "- doporučené funkce pro ty, co tvoří první výstavu:\n" +
+                "https://libcas.github.io/indihu-manual/uspesna-vystava/#doporucene-funkce-pro-zacatecniky\n\n" +
+                "- sekci inspirace, kde najdete odkazy na několik povedených výstav i s komentářem, jaké postupy autoři a autorky využili zajímavým způsobem:\n" +
+                "https://libcas.github.io/indihu-manual/inspirace/\n\n" +
+                "Více o projektu INDIHU naleznete na https://indihu.cz/. Rádi bychom vás také upozornili na nástroj INDIHU OCR: https://ocr.indihu.cz/, který umožňuje zdigitalizovat texty uložené jako obrázek do editovatelného formátu, a to z různých jazyků.\n\n" +
+                "Přejeme Vám radost při tvůrčí práci a hodně úspěšných virtuálních výstav! Tým INDIHU";
         sendMessage(text, subject, toNotify);
     }
 
