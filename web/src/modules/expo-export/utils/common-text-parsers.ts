@@ -39,7 +39,9 @@ export const addBaseScreenText = (
   sections: TextSections,
   screen: Screen
 ): void => {
-  addText(sections, "Název obrazovky", screen.title);
+  if (screen.type !== "FINISH") {
+    addText(sections, "Název obrazovky", screen.title);
+  }
 };
 
 /**
