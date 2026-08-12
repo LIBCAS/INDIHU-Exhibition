@@ -56,14 +56,24 @@ export const addInfopoints = (
   infopoints?.forEach((infopoint, index) => {
     const infopointSections: TextSections = [];
 
-    addText(infopointSections, "Název", infopoint.header);
-    addText(infopointSections, "Text", infopoint.text);
-    addText(infopointSections, "Název odkazu", infopoint.urlName);
-    addText(
-      infopointSections,
-      "Název odkazované obrazovky",
-      infopoint.screenNameReference
-    );
+    addText(infopointSections, "Nadpis", infopoint.header);
+
+    if (infopoint.bodyContentType === "TEXT") {
+      addText(infopointSections, "Text", infopoint.text);
+    }
+
+    if (infopoint.isUrlIncluded) {
+      addText(infopointSections, "URL adresa", infopoint.url);
+      addText(infopointSections, "Název odkazu", infopoint.urlName);
+    }
+
+    if (infopoint.isScreenIdIncluded) {
+      addText(
+        infopointSections,
+        "Název odkazované obrazovky",
+        infopoint.screenNameReference
+      );
+    }
 
     if (infopointSections.length > 0) {
       sections.push(
