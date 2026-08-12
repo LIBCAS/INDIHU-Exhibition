@@ -276,6 +276,8 @@ export const ViewScreenOverlay = ({
       navigateBack();
     },
     delta: 80,
+    trackTouch: true,
+    trackMouse: true,
   });
 
   // - - - Keyboard and Mouse handlers - - -
