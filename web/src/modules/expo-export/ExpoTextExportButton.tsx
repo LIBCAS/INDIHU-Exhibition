@@ -1,27 +1,48 @@
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+// Components
 import Button from "react-md/lib/Buttons/Button";
-
 import HelpIcon from "components/help-icon";
 import { Spinner } from "components/loaders/spinner";
 
-const sleep = (milliseconds: number) =>
-  new Promise<void>((resolve) => window.setTimeout(resolve, milliseconds));
+// Types
+import { ExpoStructure } from "models";
 
-const ExpoTextExportButton = () => {
+// Utils
+import { downloadFile } from "utils";
+import {
+  createExpoTextExport,
+  getExpoTextExportFileName,
+} from "./utils/create-expo-text-export";
+
+// - - - - - -
+
+type ExpoTextExportButtonProps = {
+  expoTitle: string;
+  structure: ExpoStructure;
+};
+
+const ExpoTextExportButton = ({
+  expoTitle,
+  structure,
+}: ExpoTextExportButtonProps): JSX.Element => {
   const { t } = useTranslation("expo");
 
   const [isExporting, setIsExporting] = useState<boolean>(false);
 
-  const handleExport = useCallback(async () => {
+  const handleExport = useCallback(async (): Promise<void> => {
     try {
       setIsExporting(true);
-      await sleep(3000);
+      const zipBlob = await createExpoTextExport(structure);
+      const zipFileName = getExpoTextExportFileName(expoTitle);
+      downloadFile(zipBlob, zipFileName);
+    } catch (error) {
+      console.error("Unable to export exhibition texts", error);
     } finally {
       setIsExporting(false);
     }
-  }, []);
+  }, [expoTitle, structure]);
 
   return (
     <div className="flex items-center gap-1">

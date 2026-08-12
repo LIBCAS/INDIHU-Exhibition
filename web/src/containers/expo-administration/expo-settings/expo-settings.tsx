@@ -86,7 +86,10 @@ const ExpoSettings = ({ activeExpo }: ExpoSettingsProps) => {
           <div className="font-bold text-lg">
             {t("settingsAndSharing.expoExport")}
           </div>
-          <ExpoTextExportButton />
+          <ExpoTextExportButton
+            expoTitle={activeExpo.title}
+            structure={activeExpo.structure}
+          />
         </div>
 
         {/* Tags */}
