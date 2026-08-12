@@ -9,11 +9,10 @@ export const parseGameQuizScreen = (
   addText(sections, "Zadání", screen.task);
 
   screen.answers.forEach((answer, index) => {
-    addText(
-      sections,
-      `Odpověď ${index + 1}`,
-      answer.customUserLabel ?? answer.text
-    );
+    const answerLabel = `Odpověď ${index + 1}`;
+    sections.push(answerLabel);
+
+    addText(sections, "Text odpovědi", answer.text);
     addInfopoints(sections, answer.infopoints);
   });
 };

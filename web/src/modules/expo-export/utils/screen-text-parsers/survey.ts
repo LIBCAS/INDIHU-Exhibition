@@ -9,10 +9,9 @@ export const parseSurveyScreen = (
   addText(sections, "Zadání", screen.task);
 
   screen.surveyAnswers?.forEach((answer, index) => {
-    addText(
-      sections,
-      `Odpověď ${index + 1}`,
-      answer.customUserLabel ?? answer.text
-    );
+    const surveyLabel = `Odpověď ${index + 1}`;
+    sections.push(surveyLabel);
+
+    addText(sections, "Text anketní otázky", answer.text);
   });
 };

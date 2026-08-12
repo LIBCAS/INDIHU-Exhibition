@@ -9,6 +9,9 @@ export const parseImageZoomScreen = (
   addText(sections, "Text obrazovky", screen.text);
 
   screen.sequences?.forEach((sequence, index) => {
-    addText(sections, `Sekvence ${index + 1}`, sequence.text);
+    const sequenceLabel = `Sekvence ${index + 1}`;
+    sections.push(sequenceLabel);
+
+    addText(sections, "Popis sekvence", sequence.text);
   });
 };

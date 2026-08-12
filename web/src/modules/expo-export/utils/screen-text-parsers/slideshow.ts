@@ -9,9 +9,9 @@ export const parseSlideshowScreen = (
   addText(sections, "Text obrazovky", screen.text);
 
   screen.images?.forEach((image, imageIndex) => {
-    if (image.infopoints.length > 0) {
-      sections.push(`Obrázek ${imageIndex + 1}`);
-      addInfopoints(sections, image.infopoints);
-    }
+    const imageLabel = `Obrázek ${imageIndex + 1}`;
+    sections.push(imageLabel);
+
+    addInfopoints(sections, image.infopoints);
   });
 };

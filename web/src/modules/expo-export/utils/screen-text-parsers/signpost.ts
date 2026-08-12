@@ -11,6 +11,9 @@ export const parseSignpostScreen = (
   addText(sections, "Podnadpis rozcestníku", screen.subheader);
 
   screen.links.forEach((link, index) => {
-    addText(sections, `Odkaz ${index + 1}`, link.customUserLabel ?? link.text);
+    const linkLabel = `Odkaz ${index + 1}`;
+    sections.push(linkLabel);
+
+    addText(sections, "Text odkazu", link.text);
   });
 };

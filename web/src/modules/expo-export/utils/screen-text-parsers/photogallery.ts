@@ -9,12 +9,10 @@ export const parsePhotogalleryScreen = (
   addText(sections, "Text obrazovky", screen.text);
 
   screen.images?.forEach((image, imageIndex) => {
-    const photoSections: TextSections = [];
+    const photoLabel = `Fotografie ${imageIndex + 1}`;
+    sections.push(photoLabel);
 
-    addText(photoSections, "Název", image.photoTitle);
-    addText(photoSections, "Popis", image.photoDescription);
-    sections.push(
-      `Fotografie ${imageIndex + 1}\n${photoSections.join("\n\n")}`
-    );
+    addText(sections, "Název fotografie", image.photoTitle);
+    addText(sections, "Popis fotografie", image.photoDescription);
   });
 };
