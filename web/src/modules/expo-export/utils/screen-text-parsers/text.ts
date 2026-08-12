@@ -6,5 +6,6 @@ export const parseTextScreen = (
   screen: TextScreen,
   sections: TextSections
 ): void => {
+  addText(sections, "Text obrazovky", screen.text);
   addText(sections, "Text obrazovky", screen.mainText);
 };

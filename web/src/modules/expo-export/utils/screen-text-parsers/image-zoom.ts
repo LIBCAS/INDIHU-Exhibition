@@ -6,6 +6,8 @@ export const parseImageZoomScreen = (
   screen: ZoomScreen,
   sections: TextSections
 ): void => {
+  addText(sections, "Text obrazovky", screen.text);
+
   screen.sequences?.forEach((sequence, index) => {
     addText(sections, `Sekvence ${index + 1}`, sequence.text);
   });

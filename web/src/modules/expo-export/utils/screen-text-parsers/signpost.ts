@@ -6,6 +6,7 @@ export const parseSignpostScreen = (
   screen: SignpostScreen,
   sections: TextSections
 ): void => {
+  addText(sections, "Text obrazovky", screen.text);
   addText(sections, "Nadpis rozcestníku", screen.header);
   addText(sections, "Podnadpis rozcestníku", screen.subheader);
 

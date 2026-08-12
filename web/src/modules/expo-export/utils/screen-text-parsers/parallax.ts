@@ -1,8 +1,10 @@
 import { ParallaxScreeen } from "models";
 import { TextSections } from "modules/expo-export/typings";
+import { addText } from "../common-text-parsers";
 
-// Parallax screens have no text fields beyond the shared title and description.
 export const parseParallaxScreen = (
-  _screen: ParallaxScreeen,
-  _sections: TextSections
-): undefined => undefined;
+  screen: ParallaxScreeen,
+  sections: TextSections
+): void => {
+  addText(sections, "Text obrazovky", screen.text);
+};
