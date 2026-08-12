@@ -7,5 +7,6 @@ export const parseTimelineScreen = (
   sections: TextSections
 ): void => {
   addText(sections, "Text obrazovky", screen.text);
+  addText(sections, "Název časové osy", screen.timelineName);
   addInfopoints(sections, screen.infopoints);
 };
