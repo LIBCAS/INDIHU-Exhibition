@@ -7,6 +7,10 @@ export const parseImageChangeScreen = (
   sections: TextSections
 ): void => {
   addText(sections, "Text obrazovky", screen.text);
+
+  sections.push("Obrázek před");
   addInfopoints(sections, screen.image1Infopoints);
+
+  sections.push("Obrázek po");
   addInfopoints(sections, screen.image2Infopoints);
 };
