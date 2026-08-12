@@ -21,18 +21,15 @@ export const getPlainText = (value: string | undefined): string => {
 };
 
 /**
- * Adds a labeled section only when its value contains visible text.
+ * Adds a labeled section and uses a dash when its value is empty.
  */
 export const addText = (
   sections: TextSections,
   label: string,
   value: string | undefined
 ): void => {
-  const text = getPlainText(value);
-
-  if (text) {
-    sections.push(`${label}\n${text}`);
-  }
+  const text = getPlainText(value) || "-";
+  sections.push(`${label}\n${text}`);
 };
 
 /**
