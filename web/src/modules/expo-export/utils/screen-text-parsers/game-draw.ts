@@ -7,5 +7,7 @@ export const parseGameDrawScreen = (
   sections: TextSections
 ): void => {
   addText(sections, "Zadání", screen.task);
+
+  sections.push("Podkladový obrázek");
   addInfopoints(sections, screen.infopoints1);
 };

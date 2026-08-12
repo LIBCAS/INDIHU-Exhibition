@@ -7,5 +7,7 @@ export const parseGameSizingScreen = (
   sections: TextSections
 ): void => {
   addText(sections, "Zadání", screen.task);
+
+  sections.push("Výsledný obrázek");
   addInfopoints(sections, screen.infopoints3);
 };
