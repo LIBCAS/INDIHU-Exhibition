@@ -7,6 +7,10 @@ export const parseGameWipeScreen = (
   sections: TextSections
 ): void => {
   addText(sections, "Zadání", screen.task);
+
+  sections.push("Vrchní obrázek");
   addInfopoints(sections, screen.infopoints1);
+
+  sections.push("Spodní obrázek");
   addInfopoints(sections, screen.infopoints2);
 };
