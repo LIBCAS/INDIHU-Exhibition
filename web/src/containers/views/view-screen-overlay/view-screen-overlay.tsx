@@ -170,6 +170,14 @@ export const ViewScreenOverlay = ({
   const { isGlassMagnifierEnabled, setIsGlassMagnifierEnabled } =
     useGlassMagnifierConfig();
 
+  const isSwipeNavigationBlocked =
+    amIGameScreen ||
+    isPhotogalleryLightboxOpened ||
+    isGlassMagnifierEnabled ||
+    isSurveyFreeAsnwerMarked ||
+    isAnyTutorialOpen ||
+    isDrawerPanelOpen;
+
   // - - - Animations - - -
 
   const { overlayOpacity } = useSpring({
@@ -256,21 +264,13 @@ export const ViewScreenOverlay = ({
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (_e) => {
-      if (
-        amIGameScreen ||
-        isPhotogalleryLightboxOpened ||
-        isGlassMagnifierEnabled
-      ) {
+      if (isSwipeNavigationBlocked) {
         return;
       }
       navigateForward();
     },
     onSwipedRight: (_e) => {
-      if (
-        amIGameScreen ||
-        isPhotogalleryLightboxOpened ||
-        isGlassMagnifierEnabled
-      ) {
+      if (isSwipeNavigationBlocked) {
         return;
       }
       navigateBack();
