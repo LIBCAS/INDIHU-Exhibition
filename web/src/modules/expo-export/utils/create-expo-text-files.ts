@@ -7,7 +7,7 @@ const screenTypeFileNames: Record<string, string> = {
   IMAGE: "obrazovka_s_obrazkem",
   VIDEO: "obrazovka_s_videem",
   TEXT: "obrazovka_s_textem",
-  PARALLAX: "parallax",
+  PARALLAX: "animace_obrazovych_vrstev",
   IMAGE_ZOOM: "animace_priblizeni",
   TIMELINE: "casova_osa",
   PHOTOGALERY: "slideshow",
@@ -28,11 +28,12 @@ const getScreenFileName = (
   screen: Screen,
   chapterIndex: number,
   screenIndex: number
-): string =>
-  `${chapterIndex + 1}.${screenIndex + 1}_${
-    screenTypeFileNames[screen.type]
-  }.txt`;
-
+): string => {
+  const chapterIdx = chapterIndex + 1;
+  const screenIdx = screenIndex;
+  const screenTypeName = screenTypeFileNames[screen.type];
+  return `${chapterIdx}.${screenIdx}_${screenTypeName}.txt`;
+};
 /**
  * Returns every export file in the same order as the exhibition structure.
  */
