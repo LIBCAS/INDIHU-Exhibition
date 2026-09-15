@@ -12,7 +12,12 @@ import TextField from "react-md/lib/TextFields";
 import HelpIcon from "components/help-icon";
 import ScreenChooser from "./ScreenChooser";
 
-import { ReferenceObj, SignpostScreen, File as IndihuFile } from "models";
+import {
+  ReferenceObj,
+  SignpostScreen,
+  File as IndihuFile,
+  SignpostReferenceType,
+} from "models";
 import { AppDispatch } from "store/store";
 
 import { updateScreenData } from "actions/expoActions";
@@ -26,8 +31,17 @@ import { palette } from "palette";
 // - - -
 
 export const isReferenceObjFilledSufficiently = (
-  linkObj: ReferenceObj
+  linkObj: ReferenceObj,
+  referenceType: SignpostReferenceType
 ): boolean => {
+  if (referenceType === "ONLY_TEXT") {
+    return !!linkObj.reference && !!linkObj.text;
+  }
+
+  if (referenceType === "ONLY_IMAGES") {
+    return !!linkObj.reference && !!linkObj.image && !!linkObj.imageOrigData;
+  }
+
   return (
     !!linkObj.reference &&
     !!linkObj.text &&
@@ -58,14 +72,14 @@ export const LinkItem = ({
     keyPrefix: "descFields.signpostScreen",
   });
 
-  const referenceType = useMemo(
+  const referenceType = useMemo<SignpostReferenceType>(
     () => activeScreen.referenceType ?? "TEXT_IMAGES",
     [activeScreen.referenceType]
   );
 
-  const isNotFilledEnough = useMemo(
-    () => !isReferenceObjFilledSufficiently(currLinkObj),
-    [currLinkObj]
+  const isNotFilledEnough = useMemo<boolean>(
+    () => !isReferenceObjFilledSufficiently(currLinkObj, referenceType),
+    [currLinkObj, referenceType]
   );
 
   return (
