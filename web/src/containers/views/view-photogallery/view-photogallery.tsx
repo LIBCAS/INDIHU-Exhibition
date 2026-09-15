@@ -211,7 +211,7 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
         <Grid
           container
           spacing={{ xs: 3, sm: 3, lg: 3 }}
-          className="w-full h-full overflow-x-hidden overflow-y-auto expo-scrollbar pr-[2.5%] 2xl:pr-[1.6%]"
+          className="w-full h-full !overflow-x-hidden overflow-y-auto expo-scrollbar pr-[2.5%] 2xl:pr-[1.6%]"
         >
           {images?.map((imageBlobSrc, imageIndex) => (
             <ImageItem
