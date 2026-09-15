@@ -192,6 +192,8 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
       switchToPreviousPhoto();
     },
     delta: 80,
+    trackTouch: true,
+    trackMouse: true,
   });
 
   // - - - GUI - - -

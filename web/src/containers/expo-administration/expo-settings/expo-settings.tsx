@@ -10,6 +10,7 @@ import EmbedCodeField from "./EmbedCodeField";
 import TagsSelect from "./tags/TagsSelect";
 import ClosedExpoSettings from "./ClosedExpoSettings";
 import CollaboratorsTable from "./CollaboratorsTable";
+import ExpoTextExportButton from "modules/expo-export/ExpoTextExportButton";
 
 // Models
 import { ActiveExpo } from "models";
@@ -78,6 +79,17 @@ const ExpoSettings = ({ activeExpo }: ExpoSettingsProps) => {
               <EmbedCodeField expoUrl={activeExpo.url} />
             </div>
           )}
+        </div>
+
+        {/* Exhibition export */}
+        <div className="w-fit flex flex-col gap-2">
+          <div className="font-bold text-lg">
+            {t("settingsAndSharing.expoExport")}
+          </div>
+          <ExpoTextExportButton
+            expoTitle={activeExpo.title}
+            structure={activeExpo.structure}
+          />
         </div>
 
         {/* Tags */}
