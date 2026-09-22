@@ -54,8 +54,6 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
 
   // - - - Derived variables - - -
 
-  const isLessPhotos = images ? images.length <= 6 : true;
-
   const isLightBoxOpened = useMemo(
     () => selectedImgIdx !== null,
     [selectedImgIdx]
@@ -218,8 +216,8 @@ export const ViewPhotogallery = ({ screenPreloadedFiles }: ScreenProps) => {
               key={imageIndex}
               imageUrl={imageBlobSrc}
               imageIndex={imageIndex}
+              numberOfPhotos={images.length}
               openLightBox={openLightBox}
-              isLessPhotos={isLessPhotos}
             />
           ))}
         </Grid>

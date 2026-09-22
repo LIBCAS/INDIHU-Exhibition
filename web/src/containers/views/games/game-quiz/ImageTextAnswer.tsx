@@ -128,7 +128,7 @@ const ImageTextAnswer = ({
   );
 
   return (
-    <Grid item {...getResponsiveGridItemProps(numberOfAnswers)}>
+    <Grid item {...getResponsiveGridItemProps(numberOfAnswers, true)}>
       <div
         className={cx(
           "relative h-full flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer",

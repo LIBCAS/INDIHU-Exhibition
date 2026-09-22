@@ -1,19 +1,20 @@
 import { useSpring, animated } from "react-spring";
 import { Grid } from "@mui/material";
 import { useState } from "react";
+import { getResponsiveGridItemProps } from "utils/grid-sizing";
 
 type ImageItemProps = {
   imageUrl: string | undefined;
   imageIndex: number;
+  numberOfPhotos: number;
   openLightBox: (selectedImageIndex: number) => void;
-  isLessPhotos: boolean;
 };
 
 const ImageItem = ({
   imageUrl,
   imageIndex,
+  numberOfPhotos,
   openLightBox,
-  isLessPhotos,
 }: ImageItemProps) => {
   const [isImageHovered, setIsImageHovered] = useState<boolean>(false);
 
@@ -21,19 +22,14 @@ const ImageItem = ({
     transform: isImageHovered ? "scale(1.1)" : "scale(1)",
   });
 
+  const isLessPhotos = numberOfPhotos <= 6;
+
   if (!imageUrl) {
     return null;
   }
 
   return (
-    <Grid
-      item
-      xs={isLessPhotos ? 12 : 12}
-      sm={isLessPhotos ? 12 : 12}
-      md={isLessPhotos ? 6 : 6}
-      lg={isLessPhotos ? 6 : 4}
-      xl={isLessPhotos ? 4 : 3}
-    >
+    <Grid item {...getResponsiveGridItemProps(numberOfPhotos, isLessPhotos)}>
       <animated.div
         className="w-full h-full cursor-pointer"
         onMouseEnter={() => setIsImageHovered(true)}

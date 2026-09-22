@@ -39,7 +39,7 @@ const SurveyAnswerItem = ({
   // - - - GUI - - -
 
   return (
-    <Grid item {...getResponsiveGridItemProps(numberOfAnswers)}>
+    <Grid item {...getResponsiveGridItemProps(numberOfAnswers, true)}>
       <div
         onClick={(e) => {
           e.stopPropagation();
