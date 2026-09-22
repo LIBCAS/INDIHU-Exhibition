@@ -35,12 +35,14 @@ import {
   getRadioMarkedIcon,
 } from "./utils";
 import { calculateInfopointPositionByImageBoxSize } from "utils/infopoint-utils";
+import { getResponsiveGridItemProps } from "utils/grid-sizing";
 
 // - - - - - -
 
 type ImageTextAnswerProps = {
   answer: GameQuizAnswer;
   answerIndex: number;
+  numberOfAnswers: number;
   preloadedImgSrc: string | undefined;
   isGameFinished: boolean;
   isMultipleChoice: boolean;
@@ -60,6 +62,7 @@ type ImageTextAnswerProps = {
 const ImageTextAnswer = ({
   answer,
   answerIndex,
+  numberOfAnswers,
   preloadedImgSrc,
   isGameFinished,
   isMultipleChoice,
@@ -125,7 +128,7 @@ const ImageTextAnswer = ({
   );
 
   return (
-    <Grid item xs={12} sm={12} md={6} lg={6} xl={4}>
+    <Grid item {...getResponsiveGridItemProps(numberOfAnswers)}>
       <div
         className={cx(
           "relative h-full flex flex-col gap-4 self-stretch p-4 md:p-10 border-4 border-solid border-transparent rounded-md bg-transparent hover:bg-light-gray/10 cursor-pointer",

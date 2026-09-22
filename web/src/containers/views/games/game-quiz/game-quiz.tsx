@@ -125,6 +125,7 @@ export const GameQuiz = ({
                   key={answerIndex}
                   answer={answer}
                   answerIndex={answerIndex}
+                  numberOfAnswers={viewScreen.answers.length}
                   preloadedImgSrc={
                     screenPreloadedFiles.answers?.[answerIndex]?.image
                   }

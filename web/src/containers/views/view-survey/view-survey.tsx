@@ -275,6 +275,7 @@ export const ViewSurvey = ({
                 key={answerIdx}
                 answer={answer}
                 answerIdx={answerIdx}
+                numberOfAnswers={surveyAnswers.length}
                 preloadedImgSrc={
                   screenPreloadedFiles?.surveyAnswers?.[answerIdx]?.image
                 }

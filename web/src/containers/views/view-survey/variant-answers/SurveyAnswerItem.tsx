@@ -9,12 +9,14 @@ import { SurveyAnswerEditor, SurveyType } from "models";
 
 // Utils
 import cx from "classnames";
+import { getResponsiveGridItemProps } from "utils/grid-sizing";
 
 // - - - - - -
 
 type SurveyViewAnswerProps = {
   answer: SurveyAnswerEditor;
   answerIdx: number;
+  numberOfAnswers: number;
   preloadedImgSrc: string | undefined;
   isGameFinished: boolean;
   surveyType: SurveyType;
@@ -25,6 +27,7 @@ type SurveyViewAnswerProps = {
 const SurveyAnswerItem = ({
   answer,
   answerIdx,
+  numberOfAnswers,
   preloadedImgSrc,
   isGameFinished,
   surveyType,
@@ -36,7 +39,7 @@ const SurveyAnswerItem = ({
   // - - - GUI - - -
 
   return (
-    <Grid item xs={12} sm={12} md={6} lg={6} xl={4}>
+    <Grid item {...getResponsiveGridItemProps(numberOfAnswers)}>
       <div
         onClick={(e) => {
           e.stopPropagation();
