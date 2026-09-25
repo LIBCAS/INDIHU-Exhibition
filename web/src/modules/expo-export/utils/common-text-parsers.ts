@@ -56,7 +56,10 @@ export const addInfopoints = (
 
     addText(infopointSections, "Nadpis", infopoint.header);
 
-    if (infopoint.bodyContentType === "TEXT") {
+    if (
+      infopoint.bodyContentType === undefined ||
+      infopoint.bodyContentType === "TEXT"
+    ) {
       addText(infopointSections, "Text", infopoint.text);
     }
 

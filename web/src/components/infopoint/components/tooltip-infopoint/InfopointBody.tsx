@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { useHistory } from "react-router-dom";
 import { useScreenDataByScreenId } from "hooks/view-hooks/useScreenDataByScreenId";
 import { useExpoDesignData } from "hooks/view-hooks/expo-design-data-hook";
 
@@ -24,6 +25,7 @@ const InfopointBody = ({
   setIsVideoLoaded,
 }: InputArguments) => {
   const { isLightMode } = useExpoDesignData();
+  const history = useHistory();
 
   const { screenReferenceUrl } =
     useScreenDataByScreenId(infopoint.screenIdReference ?? null) ?? {};
@@ -113,7 +115,9 @@ const InfopointBody = ({
             <div
               className="flex cursor-pointer min-w-0"
               onClick={() => {
-                window.open(screenReferenceUrl, "_blank");
+                if (screenReferenceUrl) {
+                  history.push(screenReferenceUrl);
+                }
               }}
             >
               <button className="flex-1 min-w-0 break-words text-inherit font-['Work_Sans'] font-bold text-lg mr-1">

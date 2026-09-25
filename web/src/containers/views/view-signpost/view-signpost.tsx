@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 
 import ReferenceItem from "./ReferenceItem";
 
-import { ScreenProps, SignpostScreen } from "models";
+import { ScreenProps, SignpostReferenceType, SignpostScreen } from "models";
 import { AppState } from "store/store";
 import { isReferenceObjFilledSufficiently } from "containers/expo-administration/expo-editor/screen-signpost/LinkItem";
 
@@ -18,7 +18,7 @@ const stateSelector = createSelector(
 export const ViewSignpost = ({ screenPreloadedFiles }: ScreenProps) => {
   const { viewScreen } = useSelector(stateSelector);
 
-  const referenceType = useMemo(
+  const referenceType = useMemo<SignpostReferenceType>(
     () => viewScreen.referenceType ?? "TEXT_IMAGES",
     [viewScreen.referenceType]
   );
@@ -35,7 +35,7 @@ export const ViewSignpost = ({ screenPreloadedFiles }: ScreenProps) => {
       {/* Links */}
       <div className="mt-6 w-full flex flex-wrap justify-evenly items-center gap-8 overflow-auto expo-scrollbar pb-32">
         {viewScreen?.links?.map((reference, referenceIndex) => {
-          if (!isReferenceObjFilledSufficiently(reference)) {
+          if (!isReferenceObjFilledSufficiently(reference, referenceType)) {
             return null;
           }
 
