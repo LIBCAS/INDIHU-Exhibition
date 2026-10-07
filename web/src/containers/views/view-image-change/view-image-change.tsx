@@ -507,9 +507,15 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
   /**
    * Only for animation type 'GRADUAL_TRANSITION'
    */
-  const clipPathGradual = isGradualTransitionVertical
-    ? y.to((y) => `inset(${y}px 0 0 0)`)
-    : x.to((x) => `inset(0 0 0 ${x}px)`);
+  const clipPathGradual =
+    gradualTransitionBeginPosition === "VERTICAL_TOP_TO_BOTTOM" ||
+    gradualTransitionBeginPosition === undefined
+      ? y.to((y) => `inset(0 0 ${screenContainerSize.height - y}px 0)`)
+      : gradualTransitionBeginPosition === "VERTICAL_BOTTOM_TO_TOP"
+      ? y.to((y) => `inset(${y}px 0 0 0)`)
+      : gradualTransitionBeginPosition === "HORIZONTAL_LEFT_TO_RIGHT"
+      ? x.to((x) => `inset(0 ${screenContainerSize.width - x}px 0 0)`)
+      : x.to((x) => `inset(0 0 0 ${x}px)`);
 
   /**
    *
@@ -761,6 +767,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           <div
             {...bind()}
             {...bindTutorial("dragThumb")}
+            data-prevent-screen-swipe={true}
             className={cx(
               "pointer-events-auto touch-none px-2 py-1 border-2 border-white bg-primary flex hover:cursor-pointer items-center gap-1",
               {
