@@ -761,6 +761,7 @@ export const ViewImageChange = ({ screenPreloadedFiles }: ScreenProps) => {
           <div
             {...bind()}
             {...bindTutorial("dragThumb")}
+            data-prevent-screen-swipe={true}
             className={cx(
               "pointer-events-auto touch-none px-2 py-1 border-2 border-white bg-primary flex hover:cursor-pointer items-center gap-1",
               {

@@ -139,6 +139,7 @@ export const ViewScreenOverlay = ({
   const infoPanelRef = useRef<HTMLDivElement | null>(null); // info, left down panel
   const actionsPanelRef = useRef<HTMLDivElement | null>(null); // actions, right down panel
   const forwardButtonRef = useRef<HTMLDivElement>(null);
+  const isSwipeStartedOnInteractiveElementRef = useRef<boolean>(false);
 
   // - - - Custom hooks - - -
 
@@ -263,14 +264,29 @@ export const ViewScreenOverlay = ({
   // - - - Swipe - - -
 
   const swipeHandlers = useSwipeable({
+    onTouchStartOrOnMouseDown: ({ event }) => {
+      const target = event.target;
+      isSwipeStartedOnInteractiveElementRef.current =
+        target instanceof Element &&
+        target.closest("[data-prevent-screen-swipe]") !== null;
+    },
+    onTouchEndOrOnMouseUp: () => {
+      isSwipeStartedOnInteractiveElementRef.current = false;
+    },
     onSwipedLeft: (_e) => {
-      if (isSwipeNavigationBlocked) {
+      if (
+        isSwipeNavigationBlocked ||
+        isSwipeStartedOnInteractiveElementRef.current
+      ) {
         return;
       }
       navigateForward();
     },
     onSwipedRight: (_e) => {
-      if (isSwipeNavigationBlocked) {
+      if (
+        isSwipeNavigationBlocked ||
+        isSwipeStartedOnInteractiveElementRef.current
+      ) {
         return;
       }
       navigateBack();
