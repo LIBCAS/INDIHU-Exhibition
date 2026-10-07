@@ -34,7 +34,7 @@ export const shouldShowBeforeImageInfopoint = ({
     animationType === "GRADUAL_TRANSITION" &&
     (gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
       gradualPosition === undefined) &&
-    currentRodPosition.top < infopointPosition.top
+    currentRodPosition.top > infopointPosition.top
   ) {
     return false;
   }
@@ -50,7 +50,7 @@ export const shouldShowBeforeImageInfopoint = ({
   if (
     animationType === "GRADUAL_TRANSITION" &&
     gradualPosition === "HORIZONTAL_LEFT_TO_RIGHT" &&
-    currentRodPosition.left < infopointPosition.left
+    currentRodPosition.left > infopointPosition.left
   ) {
     return false;
   }
@@ -97,7 +97,7 @@ export const shouldShowAfterImageInfopoint = ({
     animationType === "GRADUAL_TRANSITION" &&
     (gradualPosition === "VERTICAL_TOP_TO_BOTTOM" ||
       gradualPosition === undefined) &&
-    currentRodPosition.top > infopointPosition.top
+    currentRodPosition.top < infopointPosition.top
   ) {
     return false;
   }
@@ -113,7 +113,7 @@ export const shouldShowAfterImageInfopoint = ({
   if (
     animationType === "GRADUAL_TRANSITION" &&
     gradualPosition === "HORIZONTAL_LEFT_TO_RIGHT" &&
-    currentRodPosition.left > infopointPosition.left
+    currentRodPosition.left < infopointPosition.left
   ) {
     return false;
   }
